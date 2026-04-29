@@ -1,0 +1,684 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;900&family=JetBrains+Mono:wght@400;700&display=swap');
+:root{--bg:#050a0a;--s1:#081212;--s2:#0c1a1a;--s3:#112222;--bdr:#1a4040;--a1:#2dd4bf;--a2:#fb923c;--a3:#fbbf24;--a4:#f87171;--a5:#a78bfa;--a6:#34d399;--txt:#e2e8f0;--mu:#64748b;}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Noto Sans KR',sans-serif;background:var(--bg);color:var(--txt);min-height:100vh;}
+.hdr{padding:20px 24px 14px;background:linear-gradient(150deg,#050a0a,#091818,#050a0a);border-bottom:1px solid var(--bdr);}
+.hdr-r{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:6px;}
+.pill{padding:3px 10px;border-radius:20px;font-size:10px;font-weight:700;}
+.p1{background:linear-gradient(135deg,#134e4a,var(--a1));color:#000;}
+.p2{background:rgba(251,146,60,.15);color:var(--a2);border:1px solid rgba(251,146,60,.3);}
+.p3{background:rgba(251,191,36,.15);color:var(--a3);border:1px solid rgba(251,191,36,.3);}
+h1{font-size:18px;font-weight:900;}
+.h1g{background:linear-gradient(90deg,var(--a1),var(--a5),var(--a6));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.hdr p{color:var(--mu);font-size:11.5px;margin-top:3px;}
+.tabs{display:flex;padding:0 24px;background:var(--s1);border-bottom:1px solid var(--bdr);overflow-x:auto;scrollbar-width:none;}
+.tabs::-webkit-scrollbar{display:none;}
+.tab{padding:10px 13px;font-size:11.5px;font-weight:600;color:var(--mu);cursor:pointer;border-bottom:2px solid transparent;white-space:nowrap;transition:all .2s;background:none;border-top:none;border-left:none;border-right:none;font-family:'Noto Sans KR',sans-serif;}
+.tab.on{color:var(--a1);border-bottom-color:var(--a1);}
+.wrap{padding:18px 24px;max-width:960px;margin:0 auto;}
+.pnl{display:none;}.pnl.on{display:block;}
+.card{background:var(--s1);border:1px solid var(--bdr);border-radius:11px;padding:16px;margin-bottom:12px;}
+.card-h{display:flex;align-items:center;gap:9px;margin-bottom:12px;}
+.ico{width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0;}
+.it{background:rgba(45,212,191,.15);}.io{background:rgba(251,146,60,.15);}.iy{background:rgba(251,191,36,.15);}.ir{background:rgba(248,113,113,.15);}.ip{background:rgba(167,139,250,.15);}.ig{background:rgba(52,211,153,.15);}
+.card h3{font-size:13.5px;font-weight:700;}
+.tag{display:inline-block;padding:2px 7px;border-radius:4px;font-size:9.5px;font-weight:600;margin:2px 2px 2px 0;}
+.tt{background:rgba(45,212,191,.12);color:var(--a1);border:1px solid rgba(45,212,191,.25);}
+.to{background:rgba(251,146,60,.12);color:var(--a2);border:1px solid rgba(251,146,60,.25);}
+.ty{background:rgba(251,191,36,.12);color:var(--a3);border:1px solid rgba(251,191,36,.25);}
+.tr{background:rgba(248,113,113,.12);color:var(--a4);border:1px solid rgba(248,113,113,.25);}
+.tp{background:rgba(167,139,250,.12);color:var(--a5);border:1px solid rgba(167,139,250,.25);}
+.tg{background:rgba(52,211,153,.12);color:var(--a6);border:1px solid rgba(52,211,153,.25);}
+table{width:100%;border-collapse:collapse;font-size:12px;}
+th{background:var(--s2);color:var(--mu);font-weight:700;padding:7px 11px;text-align:left;font-size:9.5px;text-transform:uppercase;letter-spacing:.5px;border-bottom:1px solid var(--bdr);}
+td{padding:8px 11px;border-bottom:1px solid rgba(26,64,64,.5);vertical-align:top;line-height:1.55;}
+tr:last-child td{border-bottom:none;}
+tr:hover td{background:rgba(255,255,255,.02);}
+td strong{color:var(--a3);}
+ul.il{list-style:none;display:flex;flex-direction:column;gap:6px;}
+ul.il li{font-size:12px;padding-left:15px;position:relative;line-height:1.5;}
+ul.il li::before{content:'▸';position:absolute;left:0;color:var(--a1);font-size:9.5px;top:3px;}
+ul.il li strong{color:var(--a3);}
+ul.il li em{color:var(--a2);font-style:normal;}
+.memo{background:linear-gradient(135deg,rgba(45,212,191,.07),rgba(52,211,153,.07));border:1px solid rgba(45,212,191,.22);border-left:3px solid var(--a1);border-radius:7px;padding:9px 13px;font-size:12px;font-weight:600;color:var(--a1);margin:9px 0;}
+.memo::before{content:'🎯 핵심 암기 │ ';color:var(--mu);font-weight:400;}
+.warn{background:rgba(248,113,113,.07);border:1px solid rgba(248,113,113,.25);border-left:3px solid var(--a4);border-radius:7px;padding:9px 13px;font-size:12px;font-weight:600;color:var(--a4);margin:9px 0;}
+.warn::before{content:'⚠️ 함정 포인트 │ ';color:var(--mu);font-weight:400;}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px;}
+@media(max-width:580px){.g2{grid-template-columns:1fr;}}
+.code{background:var(--s2);border:1px solid rgba(45,212,191,.18);border-radius:7px;padding:10px 13px;font-family:'JetBrains Mono',monospace;font-size:11px;margin:8px 0;line-height:1.8;overflow-x:auto;}
+.code .cm{color:var(--mu);} .code .kw{color:var(--a1);} .code .val{color:var(--a3);} .code .bad{color:var(--a4);} .code .good{color:var(--a6);}
+/* lock matrix */
+.lk-grid{display:grid;grid-template-columns:auto 1fr 1fr;gap:2px;margin:10px 0;font-size:11.5px;}
+.lk-cell{padding:9px;text-align:center;border-radius:5px;font-weight:700;}
+/* schedule table */
+.sched{display:grid;gap:1px;margin:10px 0;font-family:'JetBrains Mono',monospace;font-size:11px;}
+.sched-row{display:flex;gap:6px;padding:5px 8px;border-radius:5px;}
+/* acc */
+.acc{background:var(--s2);border:1px solid var(--bdr);border-radius:9px;margin-bottom:8px;overflow:hidden;}
+.acc-h{display:flex;justify-content:space-between;align-items:center;padding:10px 14px;cursor:pointer;user-select:none;}
+.acc-h:hover{background:rgba(255,255,255,.02);}
+.acc-title{font-size:12.5px;font-weight:800;flex:1;}
+.acc-tgl{color:var(--mu);transition:transform .2s;font-size:14px;flex-shrink:0;margin-left:8px;}
+.acc.open .acc-tgl{transform:rotate(180deg);}
+.acc-body{display:none;border-top:1px solid var(--bdr);padding:12px 14px;background:var(--s3);font-size:12px;line-height:1.65;}
+.acc.open .acc-body{display:block;}
+.acc-body strong{color:var(--a3);}
+.acc-body em{color:var(--a2);font-style:normal;}
+/* qa */
+.qa{background:var(--s1);border:1px solid var(--bdr);border-radius:9px;margin-bottom:10px;overflow:hidden;}
+.qa:hover{border-color:rgba(45,212,191,.25);}
+.qa-hd{padding:12px 16px;cursor:pointer;display:flex;justify-content:space-between;align-items:flex-start;gap:9px;user-select:none;}
+.qa-meta{display:flex;align-items:center;gap:5px;margin-bottom:4px;flex-wrap:wrap;}
+.qn{font-family:'JetBrains Mono',monospace;font-size:9.5px;font-weight:700;color:var(--mu);}
+.qq{font-size:12.5px;font-weight:600;line-height:1.5;}
+.tgl{color:var(--mu);font-size:15px;flex-shrink:0;transition:transform .2s;}
+.qa.open .tgl{transform:rotate(180deg);}
+.qa-bd{display:none;border-top:1px solid var(--bdr);padding:12px 16px;background:var(--s2);}
+.qa.open .qa-bd{display:block;}
+.chs{display:flex;flex-direction:column;gap:6px;margin-bottom:10px;}
+.ch{display:flex;align-items:flex-start;gap:9px;padding:8px 12px;border-radius:6px;border:1px solid var(--bdr);font-size:12px;cursor:pointer;background:var(--s1);line-height:1.45;transition:all .15s;}
+.ch:hover:not(.lk){border-color:rgba(45,212,191,.3);background:rgba(45,212,191,.04);}
+.ch.ok{border-color:var(--a6);background:rgba(52,211,153,.1);color:var(--a6);}
+.ch.ng{border-color:var(--a4);background:rgba(248,113,113,.08);color:var(--a4);opacity:.7;}
+.ch.lk{cursor:default;}
+.cnum{font-family:'JetBrains Mono',monospace;font-weight:700;font-size:10.5px;flex-shrink:0;margin-top:1px;color:var(--mu);}
+.ch.ok .cnum{color:var(--a6);}.ch.ng .cnum{color:var(--a4);}
+.exp{background:rgba(45,212,191,.05);border:1px solid rgba(45,212,191,.18);border-radius:7px;padding:11px 13px;font-size:12px;line-height:1.6;display:none;}
+.exp.show{display:block;}
+.exp-t{font-size:9.5px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--a1);margin-bottom:5px;}
+.exp strong{color:var(--a3);}
+.exp em{color:var(--a2);font-style:normal;}
+.ox-wr{display:flex;gap:8px;margin-bottom:10px;}
+.ox{flex:1;padding:10px;border-radius:7px;border:1px solid var(--bdr);font-size:18px;cursor:pointer;background:var(--s1);transition:all .15s;font-family:'Noto Sans KR',sans-serif;color:var(--txt);}
+.ox:hover:not(.lk){transform:scale(1.02);}
+.ox.so{border-color:var(--a6);background:rgba(52,211,153,.15);}
+.ox.sx{border-color:var(--a4);background:rgba(248,113,113,.1);}
+.ox.lk{cursor:default;}
+.diff{display:inline-block;padding:2px 6px;border-radius:9px;font-size:8.5px;font-weight:700;}
+.easy{background:rgba(52,211,153,.2);color:var(--a6);}
+.mid{background:rgba(251,191,36,.2);color:var(--a3);}
+.hard{background:rgba(248,113,113,.2);color:var(--a4);}
+.fb-wr{display:flex;gap:5px;flex-wrap:wrap;margin-bottom:12px;}
+.fb{padding:4px 11px;border-radius:18px;border:1px solid var(--bdr);font-size:10.5px;font-weight:600;cursor:pointer;background:var(--s2);color:var(--mu);transition:all .15s;font-family:'Noto Sans KR',sans-serif;}
+.fb.on{background:rgba(45,212,191,.15);color:var(--a1);border-color:var(--a1);}
+.sc-b{background:var(--s2);border:1px solid var(--bdr);border-radius:7px;padding:4px 12px;font-size:11.5px;color:var(--mu);}
+.sc-b span{color:var(--a1);font-weight:700;}
+</style>
+</head>
+<body>
+<div class="hdr">
+  <div class="hdr-r">
+    <span class="pill p1">병행제어 (Concurrency Control)</span>
+    <span class="pill p2">Lock · 2PL · 타임스탬프 · MVCC</span>
+    <span class="pill p3">감리사 핵심 출제</span>
+  </div>
+  <h1><span class="h1g">병행제어 완전 정리</span></h1>
+  <p>직렬 가능성 · 이상 현상 · 락 프로토콜 · 2PL · 타임스탬프 · MVCC · 교착상태</p>
+</div>
+<div class="tabs">
+  <button class="tab on" data-p="p1">🔄 개요·이상현상</button>
+  <button class="tab" data-p="p2">🔒 Lock 프로토콜</button>
+  <button class="tab" data-p="p3">⏱️ 2PL·직렬가능성</button>
+  <button class="tab" data-p="p4">🕐 타임스탬프·MVCC</button>
+  <button class="tab" data-p="p5">💀 교착상태</button>
+  <button class="tab" data-p="p6">❓ 예상문제</button>
+</div>
+<div class="wrap">
+
+<!-- P1: 개요·이상현상 -->
+<div class="pnl on" id="p1">
+  <div class="card">
+    <div class="card-h"><div class="ico it">🔄</div><h3>병행제어 (Concurrency Control) 정의 ⭐</h3></div>
+    <div style="background:var(--s2);border:1px solid rgba(45,212,191,.25);border-radius:9px;padding:12px;margin-bottom:11px;font-size:12.5px;line-height:1.8;">
+      <strong style="color:var(--a1)">병행제어</strong>: 다수의 트랜잭션이 <em style="color:var(--a3);font-style:normal;">동시에 실행될 때 데이터 일관성과 무결성</em>을 유지하기 위한 메커니즘 — ACID의 <strong>격리성(Isolation)</strong> 보장
+    </div>
+    <div class="g2">
+      <div>
+        <p style="font-size:11.5px;font-weight:800;color:var(--a1);margin-bottom:7px;">병행 처리의 필요성</p>
+        <ul class="il">
+          <li><strong>처리량 향상:</strong> 여러 트랜잭션 동시 실행 → CPU·I/O 효율↑</li>
+          <li><strong>응답 시간 단축:</strong> 대기 없이 여러 요청 동시 처리</li>
+          <li><strong>자원 활용 극대화:</strong> 유휴 자원 최소화</li>
+        </ul>
+      </div>
+      <div>
+        <p style="font-size:11.5px;font-weight:800;color:var(--a4);margin-bottom:7px;">병행 처리 시 문제점</p>
+        <ul class="il">
+          <li><strong>갱신 분실 (Lost Update)</strong></li>
+          <li><strong>오손 읽기 (Dirty Read)</strong></li>
+          <li><strong>반복 불가 읽기 (Non-Repeatable Read)</strong></li>
+          <li><strong>유령 읽기 (Phantom Read)</strong></li>
+        </ul>
+      </div>
+    </div>
+    <div class="memo">병행제어=격리성 보장 / 목적: 처리량↑·응답↓·일관성 유지</div>
+  </div>
+
+  <div class="card">
+    <div class="card-h"><div class="ico ir">⚠️</div><h3>병행 처리 이상 현상 4가지 ⭐</h3></div>
+
+    <div class="acc open" onclick="this.classList.toggle('open')">
+      <div class="acc-h"><div class="acc-title" style="color:var(--a4);">① 갱신 분실 (Lost Update) ⭐ — 가장 심각</div><div class="acc-tgl">▾</div></div>
+      <div class="acc-body">
+        <ul class="il" style="margin-bottom:8px;">
+          <li><strong>정의:</strong> 두 트랜잭션이 같은 데이터를 동시에 수정할 때, 한 트랜잭션의 갱신이 다른 트랜잭션에 의해 덮어쓰여 <em>사라지는</em> 현상</li>
+        </ul>
+        <div class="code"><span class="cm">시간  T1                    T2</span>
+<span class="cm">t1    X 읽기 (X=10)</span>
+<span class="cm">t2                          X 읽기 (X=10)</span>
+<span class="cm">t3    X에 +5 → X=15</span>
+<span class="cm">t4                          X에 +3 → X=13 ← T1 갱신 분실!</span>
+<span class="bad">결과: X=13 (올바른 값은 10+5+3=18)</span></div>
+      </div>
+    </div>
+
+    <div class="acc" onclick="this.classList.toggle('open')">
+      <div class="acc-h"><div class="acc-title" style="color:var(--a2);">② 오손 읽기 (Dirty Read) ⭐</div><div class="acc-tgl">▾</div></div>
+      <div class="acc-body">
+        <ul class="il" style="margin-bottom:8px;">
+          <li><strong>정의:</strong> 한 트랜잭션이 <em>아직 COMMIT되지 않은</em> 다른 트랜잭션의 변경 데이터를 읽는 현상 — 롤백 시 잘못된 데이터 사용</li>
+        </ul>
+        <div class="code"><span class="cm">시간  T1                    T2</span>
+<span class="cm">t1    X = 100 → X = 200</span>
+<span class="cm">t2                          X 읽기 (X=200) ← 미완료 데이터!</span>
+<span class="cm">t3    ROLLBACK (X=100 복귀)</span>
+<span class="bad">T2는 이미 X=200을 기반으로 연산 → 잘못된 결과</span></div>
+        <div class="warn" style="margin-top:6px;">READ COMMITTED 이상의 격리 수준으로 방지</div>
+      </div>
+    </div>
+
+    <div class="acc" onclick="this.classList.toggle('open')">
+      <div class="acc-h"><div class="acc-title" style="color:var(--a3);">③ 반복 불가 읽기 (Non-Repeatable Read) ⭐</div><div class="acc-tgl">▾</div></div>
+      <div class="acc-body">
+        <ul class="il" style="margin-bottom:8px;">
+          <li><strong>정의:</strong> 한 트랜잭션 내에서 <em>같은 데이터를 두 번 읽었을 때 다른 값</em>이 나오는 현상 — 중간에 다른 트랜잭션이 UPDATE·DELETE</li>
+        </ul>
+        <div class="code"><span class="cm">시간  T1                    T2</span>
+<span class="cm">t1    X 읽기 (X=10)</span>
+<span class="cm">t2                          X = 20, COMMIT</span>
+<span class="cm">t3    X 읽기 (X=20) ← 같은 트랜잭션인데 값이 다름!</span></div>
+        <div class="warn" style="margin-top:6px;">REPEATABLE READ 이상의 격리 수준으로 방지</div>
+      </div>
+    </div>
+
+    <div class="acc" onclick="this.classList.toggle('open')">
+      <div class="acc-h"><div class="acc-title" style="color:var(--a5);">④ 유령 읽기 (Phantom Read)</div><div class="acc-tgl">▾</div></div>
+      <div class="acc-body">
+        <ul class="il" style="margin-bottom:8px;">
+          <li><strong>정의:</strong> 한 트랜잭션 내에서 <em>같은 범위 쿼리를 두 번 실행했을 때 행의 수가 다른</em> 현상 — 중간에 다른 트랜잭션이 INSERT</li>
+        </ul>
+        <div class="code"><span class="cm">시간  T1                       T2</span>
+<span class="cm">t1    SELECT WHERE age>20 → 3행</span>
+<span class="cm">t2                             INSERT age=25, COMMIT</span>
+<span class="cm">t3    SELECT WHERE age>20 → 4행 ← 유령 행 출현!</span></div>
+        <div class="warn" style="margin-top:6px;">SERIALIZABLE 격리 수준으로만 완전 방지</div>
+      </div>
+    </div>
+
+    <table style="margin-top:10px;">
+      <thead><tr><th>격리 수준</th><th>Dirty Read</th><th>Non-Repeatable Read</th><th>Phantom Read</th></tr></thead>
+      <tbody>
+        <tr><td>READ UNCOMMITTED</td><td><span class="tag tr">발생</span></td><td><span class="tag tr">발생</span></td><td><span class="tag tr">발생</span></td></tr>
+        <tr><td><strong>READ COMMITTED</strong></td><td><span class="tag tg">방지</span></td><td><span class="tag tr">발생</span></td><td><span class="tag tr">발생</span></td></tr>
+        <tr><td><strong>REPEATABLE READ</strong></td><td><span class="tag tg">방지</span></td><td><span class="tag tg">방지</span></td><td><span class="tag tr">발생</span></td></tr>
+        <tr><td><strong>SERIALIZABLE</strong></td><td><span class="tag tg">방지</span></td><td><span class="tag tg">방지</span></td><td><span class="tag tg">방지</span></td></tr>
+      </tbody>
+    </table>
+    <div class="memo">갱신분실·오손읽기·반복불가읽기·유령읽기 / READ COMMITTED=Dirty방지 / REPEATABLE=+NonRepeatable방지 / SERIALIZABLE=모두방지</div>
+  </div>
+</div>
+
+<!-- P2: Lock 프로토콜 -->
+<div class="pnl" id="p2">
+  <div class="card">
+    <div class="card-h"><div class="ico it">🔒</div><h3>Lock (락) 기반 병행제어 ⭐</h3></div>
+    <div style="background:var(--s2);border:1px solid rgba(45,212,191,.25);border-radius:9px;padding:12px;margin-bottom:11px;font-size:12.5px;line-height:1.8;">
+      <strong style="color:var(--a1)">Lock</strong>: 트랜잭션이 데이터에 접근하기 전 <em style="color:var(--a3);font-style:normal;">락을 획득</em>하고, 사용 후 <em style="color:var(--a2);font-style:normal;">해제</em>함으로써 다른 트랜잭션의 동시 접근을 제어하는 기본 메커니즘
+    </div>
+
+    <div class="acc open" onclick="this.classList.toggle('open')">
+      <div class="acc-h"><div class="acc-title" style="color:var(--a1);">락 종류 — 공유락 vs 배타락 ⭐</div><div class="acc-tgl">▾</div></div>
+      <div class="acc-body">
+        <div class="g2">
+          <div>
+            <p style="font-size:11.5px;font-weight:800;color:var(--a6);margin-bottom:7px;">공유 락 (Shared Lock, S-Lock) ⭐</p>
+            <ul class="il">
+              <li><strong>목적:</strong> 읽기 전용 (SELECT)</li>
+              <li><strong>공존:</strong> 여러 트랜잭션이 <em>동시에 S-Lock 보유 가능</em></li>
+              <li><strong>차단:</strong> X-Lock 요청은 차단</li>
+              <li><strong>표기:</strong> lock-S(X) 또는 S(X)</li>
+            </ul>
+          </div>
+          <div>
+            <p style="font-size:11.5px;font-weight:800;color:var(--a4);margin-bottom:7px;">배타 락 (Exclusive Lock, X-Lock) ⭐</p>
+            <ul class="il">
+              <li><strong>목적:</strong> 읽기 + 쓰기 (SELECT·UPDATE·DELETE·INSERT)</li>
+              <li><strong>공존:</strong> <em>다른 어떤 락과도 공존 불가</em></li>
+              <li><strong>차단:</strong> S-Lock, X-Lock 모두 차단</li>
+              <li><strong>표기:</strong> lock-X(X) 또는 X(X)</li>
+            </ul>
+          </div>
+        </div>
+        <p style="font-size:11.5px;font-weight:800;color:var(--a3);margin-bottom:8px;margin-top:8px;">락 호환성 행렬 ⭐</p>
+        <div class="lk-grid">
+          <div class="lk-cell" style="background:transparent;"></div>
+          <div class="lk-cell" style="background:rgba(52,211,153,.15);border:1px solid rgba(52,211,153,.3);color:var(--a6);">요청: S-Lock</div>
+          <div class="lk-cell" style="background:rgba(248,113,113,.15);border:1px solid rgba(248,113,113,.3);color:var(--a4);">요청: X-Lock</div>
+          <div class="lk-cell" style="background:rgba(52,211,153,.15);border:1px solid rgba(52,211,153,.3);color:var(--a6);">보유: S-Lock</div>
+          <div class="lk-cell" style="background:rgba(52,211,153,.1);border:1px solid rgba(52,211,153,.3);color:var(--a6);">✅ 호환<br>(동시 S 가능)</div>
+          <div class="lk-cell" style="background:rgba(248,113,113,.1);border:1px solid rgba(248,113,113,.3);color:var(--a4);">❌ 불호환<br>(대기)</div>
+          <div class="lk-cell" style="background:rgba(248,113,113,.15);border:1px solid rgba(248,113,113,.3);color:var(--a4);">보유: X-Lock</div>
+          <div class="lk-cell" style="background:rgba(248,113,113,.1);border:1px solid rgba(248,113,113,.3);color:var(--a4);">❌ 불호환<br>(대기)</div>
+          <div class="lk-cell" style="background:rgba(248,113,113,.1);border:1px solid rgba(248,113,113,.3);color:var(--a4);">❌ 불호환<br>(대기)</div>
+        </div>
+        <div class="warn">S-Lock끼리는 공존(호환) / X-Lock은 어떤 락과도 불호환 → X-Lock 요청 시 항상 대기!</div>
+      </div>
+    </div>
+
+    <div class="acc" onclick="this.classList.toggle('open')">
+      <div class="acc-h"><div class="acc-title" style="color:var(--a3);">락의 세분화 — 락 단위 (Granularity) ⭐</div><div class="acc-tgl">▾</div></div>
+      <div class="acc-body">
+        <table>
+          <thead><tr><th>락 단위</th><th>적용 범위</th><th>동시성</th><th>오버헤드</th><th>용도</th></tr></thead>
+          <tbody>
+            <tr><td><strong>데이터베이스</strong></td><td>전체 DB</td><td>가장 낮음</td><td>가장 낮음</td><td>백업·복구</td></tr>
+            <tr><td><strong>테이블</strong></td><td>테이블 전체</td><td>낮음</td><td>낮음</td><td>DDL·전체 스캔</td></tr>
+            <tr><td><strong>페이지</strong></td><td>디스크 페이지</td><td>중간</td><td>중간</td><td>일반 DML</td></tr>
+            <tr><td><strong>행 (Row) ⭐</strong></td><td>단일 레코드</td><td><strong>높음</strong></td><td>높음</td><td>OLTP 기본</td></tr>
+            <tr><td><strong>컬럼</strong></td><td>특정 컬럼</td><td>가장 높음</td><td>가장 높음</td><td>일부 DB</td></tr>
+          </tbody>
+        </table>
+        <div class="warn">락 단위가 클수록 동시성↓(대기 多)·오버헤드↓ / 단위가 작을수록 동시성↑·오버헤드↑ — 트레이드오프!</div>
+      </div>
+    </div>
+
+    <div class="acc" onclick="this.classList.toggle('open')">
+      <div class="acc-h"><div class="acc-title" style="color:var(--a5);">다중 세분화 락 (MGL — Multi-Granularity Locking) & 의도 락</div><div class="acc-tgl">▾</div></div>
+      <div class="acc-body">
+        <ul class="il">
+          <li><strong>목적:</strong> 다양한 락 단위를 계층적으로 관리 — 상위 객체에 의도 락을 설정하여 하위 객체의 락 확인 비용 절감</li>
+          <li><strong>IS (Intent Shared):</strong> 하위에 S-Lock 설정 예정을 상위에 표시</li>
+          <li><strong>IX (Intent Exclusive):</strong> 하위에 X-Lock 설정 예정을 상위에 표시</li>
+          <li><strong>SIX (Shared + Intent Exclusive):</strong> 현재 객체는 S-Lock, 하위 일부는 X-Lock</li>
+          <li><strong>규칙:</strong> 하위 객체 락 설정 전 반드시 상위 객체에 의도 락 획득</li>
+        </ul>
+      </div>
+    </div>
+    <div class="memo">S-Lock=읽기·공유가능 / X-Lock=읽쓰기·독점 / S-S=호환 / S-X·X-X=불호환 / 락단위↑=동시성↓오버헤드↓ / 행락=OLTP기본</div>
+  </div>
+</div>
+
+<!-- P3: 2PL·직렬가능성 -->
+<div class="pnl" id="p3">
+  <div class="card">
+    <div class="card-h"><div class="ico iy">⏱️</div><h3>직렬 가능성 (Serializability) ⭐</h3></div>
+    <div style="background:var(--s2);border:1px solid rgba(251,191,36,.25);border-radius:9px;padding:12px;margin-bottom:11px;font-size:12.5px;line-height:1.8;">
+      <strong style="color:var(--a3)">직렬 스케줄 (Serial Schedule)</strong>: 트랜잭션이 하나씩 순차적으로 실행되는 스케줄 — 항상 올바른 결과 보장<br>
+      <strong style="color:var(--a1)">직렬 가능 스케줄</strong>: 병행 실행 결과가 어떤 직렬 스케줄의 결과와 동등한 스케줄 — 병행 처리하면서도 올바른 결과 보장
+    </div>
+
+    <div class="acc open" onclick="this.classList.toggle('open')">
+      <div class="acc-h"><div class="acc-title" style="color:var(--a3);">충돌 직렬 가능성 (Conflict Serializability) ⭐</div><div class="acc-tgl">▾</div></div>
+      <div class="acc-body">
+        <ul class="il" style="margin-bottom:8px;">
+          <li><strong>충돌 연산:</strong> 서로 다른 트랜잭션이 <em>같은 데이터에 접근하고 그 중 하나 이상이 쓰기</em> — 순서 변경 시 결과가 달라짐</li>
+          <li><strong>충돌 직렬 가능성 판별:</strong> 우선순위 그래프(Precedence Graph)로 사이클 여부 확인</li>
+          <li><strong>사이클 없음:</strong> 충돌 직렬 가능 → 올바른 스케줄</li>
+          <li><strong>사이클 있음:</strong> 충돌 직렬 불가능 → 이상 현상 가능</li>
+        </ul>
+        <div class="code"><span class="cm">-- 우선순위 그래프 규칙</span>
+<span class="kw">Ti → Tj</span>: Ti 연산이 Tj 연산보다 먼저 실행되고 충돌하는 경우
+<span class="kw">사이클 없음</span> → 직렬 가능 (올바름)
+<span class="kw">사이클 있음</span> → 직렬 불가능 (문제 있음)</div>
+      </div>
+    </div>
+
+    <div class="card-h" style="margin-top:14px;margin-bottom:10px;"><div class="ico it">🔒</div><h3>2단계 락킹 프로토콜 (2PL — Two-Phase Locking) ⭐</h3></div>
+    <div style="background:var(--s2);border:1px solid rgba(45,212,191,.22);border-radius:9px;padding:12px;margin-bottom:10px;font-size:12.5px;line-height:1.8;">
+      <strong style="color:var(--a1)">2PL</strong>: 트랜잭션의 락 획득과 해제를 두 단계로 분리하는 프로토콜 — <em style="color:var(--a6);font-style:normal;">충돌 직렬 가능성을 보장</em>하는 가장 중요한 기법
+    </div>
+
+    <div class="acc open" onclick="this.classList.toggle('open')">
+      <div class="acc-h"><div class="acc-title" style="color:var(--a1);">2PL 두 단계 ⭐</div><div class="acc-tgl">▾</div></div>
+      <div class="acc-body">
+        <div class="g2">
+          <div>
+            <p style="font-size:11.5px;font-weight:800;color:var(--a1);margin-bottom:7px;">① 확장 단계 (Growing Phase)</p>
+            <ul class="il">
+              <li>락을 <strong>획득만</strong> 가능 — 해제 불가</li>
+              <li>필요한 모든 락을 이 단계에서 획득</li>
+              <li>락 포인트(Lock Point)에서 최대 보유</li>
+            </ul>
+          </div>
+          <div>
+            <p style="font-size:11.5px;font-weight:800;color:var(--a4);margin-bottom:7px;">② 수축 단계 (Shrinking Phase)</p>
+            <ul class="il">
+              <li>락을 <strong>해제만</strong> 가능 — 새 획득 불가</li>
+              <li>첫 번째 락 해제 이후 단계 진입</li>
+              <li>보통 COMMIT·ROLLBACK 시 모두 해제</li>
+            </ul>
+          </div>
+        </div>
+        <div class="code"><span class="cm">-- 2PL 올바른 예시</span>
+<span class="kw">lock-S(A)</span>  <span class="cm">← 확장 단계</span>
+<span class="kw">lock-X(B)</span>  <span class="cm">← 확장 단계</span>
+Read(A), Write(B)
+<span class="kw">unlock(A)</span>  <span class="cm">← 수축 단계 시작 (이후 새 락 획득 불가)</span>
+<span class="kw">unlock(B)</span>  <span class="cm">← 수축 단계</span>
+
+<span class="cm">-- 2PL 위반 예시 (직렬 가능성 보장 안 됨)</span>
+<span class="bad">lock-S(A) → Read(A) → unlock(A) → lock-X(B) → Write(B)</span>
+<span class="bad">← unlock 후 새 락 획득 = 2PL 위반!</span></div>
+        <div class="warn">2PL은 충돌 직렬 가능성을 보장하지만 교착상태(Deadlock)는 방지하지 못함!</div>
+      </div>
+    </div>
+
+    <div class="acc" onclick="this.classList.toggle('open')">
+      <div class="acc-h"><div class="acc-title" style="color:var(--a5);">2PL 변형 프로토콜 ⭐</div><div class="acc-tgl">▾</div></div>
+      <div class="acc-body">
+        <table>
+          <thead><tr><th>프로토콜</th><th>특징</th><th>교착상태</th><th>Cascading Rollback</th></tr></thead>
+          <tbody>
+            <tr><td><strong>기본 2PL</strong></td><td>락 포인트 후 해제 가능</td><td>발생 가능</td><td>발생 가능</td></tr>
+            <tr><td><strong>엄격 2PL (Strict 2PL) ⭐</strong></td><td>X-Lock을 COMMIT·ROLLBACK까지 유지</td><td>발생 가능</td><td><strong>방지</strong></td></tr>
+            <tr><td><strong>강건 2PL (Rigorous 2PL)</strong></td><td>S-Lock과 X-Lock 모두 COMMIT까지 유지</td><td>발생 가능</td><td><strong>방지</strong></td></tr>
+            <tr><td><strong>보수적 2PL (Conservative 2PL)</strong></td><td>트랜잭션 시작 전 모든 락 미리 획득</td><td><strong>방지</strong></td><td>방지</td></tr>
+          </tbody>
+        </table>
+        <ul class="il" style="margin-top:8px;">
+          <li><strong>Cascading Rollback:</strong> T1이 ROLLBACK할 때 T1의 데이터를 읽은 T2·T3...도 연쇄적으로 ROLLBACK</li>
+          <li><strong>Strict 2PL</strong>: X-Lock을 COMMIT까지 유지 → T1 롤백 전 T2가 T1 데이터를 읽을 수 없음 → 연쇄 롤백 방지</li>
+        </ul>
+      </div>
+    </div>
+    <div class="memo">2PL=확장단계(획득만)→수축단계(해제만) / 충돌직렬가능성 보장·교착상태 미방지 / Strict 2PL=X-Lock COMMIT까지유지·연쇄롤백방지</div>
+  </div>
+</div>
+
+<!-- P4: 타임스탬프·MVCC -->
+<div class="pnl" id="p4">
+  <div class="card">
+    <div class="card-h"><div class="ico io">🕐</div><h3>타임스탬프 순서 프로토콜 (Timestamp Ordering) ⭐</h3></div>
+    <div style="background:var(--s2);border:1px solid rgba(251,146,60,.25);border-radius:9px;padding:12px;margin-bottom:11px;font-size:12.5px;line-height:1.8;">
+      <strong style="color:var(--a2)">타임스탬프 프로토콜</strong>: 각 트랜잭션에 시작 시간 기반의 <em style="color:var(--a3);font-style:normal;">타임스탬프</em>를 부여하고, 이 순서에 따라 읽기·쓰기 허용 여부를 결정하는 <strong>락 없는(Lock-Free)</strong> 병행제어 기법
+    </div>
+
+    <div class="acc open" onclick="this.classList.toggle('open')">
+      <div class="acc-h"><div class="acc-title" style="color:var(--a2);">타임스탬프 프로토콜 규칙 ⭐</div><div class="acc-tgl">▾</div></div>
+      <div class="acc-body">
+        <ul class="il" style="margin-bottom:8px;">
+          <li><strong>TS(Ti):</strong> 트랜잭션 Ti의 타임스탬프 (시작 시간 또는 순번)</li>
+          <li><strong>R-TS(X):</strong> X를 마지막으로 읽은 트랜잭션의 타임스탬프</li>
+          <li><strong>W-TS(X):</strong> X를 마지막으로 쓴 트랜잭션의 타임스탬프</li>
+        </ul>
+        <table>
+          <thead><tr><th>연산</th><th>조건</th><th>처리</th></tr></thead>
+          <tbody>
+            <tr><td><strong>Ti가 X 읽기</strong></td><td>TS(Ti) &lt; W-TS(X)<br>(Ti보다 나중 트랜잭션이 이미 씀)</td><td><strong>Ti 롤백</strong> (오래된 값 읽기 방지)</td></tr>
+            <tr><td><strong>Ti가 X 읽기</strong></td><td>TS(Ti) ≥ W-TS(X)</td><td>읽기 허용, R-TS(X) = max(R-TS(X), TS(Ti))</td></tr>
+            <tr><td><strong>Ti가 X 쓰기</strong></td><td>TS(Ti) &lt; R-TS(X)<br>(Ti보다 나중 트랜잭션이 이미 읽음)</td><td><strong>Ti 롤백</strong></td></tr>
+            <tr><td><strong>Ti가 X 쓰기</strong></td><td>TS(Ti) &lt; W-TS(X)<br>(Ti보다 나중 트랜잭션이 이미 씀)</td><td><strong>Ti 롤백</strong> (또는 Thomas Write Rule로 허용)</td></tr>
+            <tr><td><strong>Ti가 X 쓰기</strong></td><td>TS(Ti) ≥ W-TS(X) and TS(Ti) ≥ R-TS(X)</td><td>쓰기 허용, W-TS(X) = TS(Ti)</td></tr>
+          </tbody>
+        </table>
+        <ul class="il" style="margin-top:8px;">
+          <li><strong>장점:</strong> 교착상태 발생 안 함 (대기 없음) / 락 오버헤드 없음</li>
+          <li><strong>단점:</strong> 잦은 롤백 가능 / 연쇄 롤백 가능 / 기아(Starvation) 위험</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="card-h" style="margin-top:14px;margin-bottom:10px;"><div class="ico ip">🌊</div><h3>MVCC (Multi-Version Concurrency Control) ⭐</h3></div>
+    <div style="background:var(--s2);border:1px solid rgba(167,139,250,.25);border-radius:9px;padding:12px;margin-bottom:10px;font-size:12.5px;line-height:1.8;">
+      <strong style="color:var(--a5)">MVCC</strong>: 데이터의 <em style="color:var(--a3);font-style:normal;">여러 버전</em>을 유지하여 읽기 트랜잭션이 쓰기를 차단하지 않고, 쓰기 트랜잭션이 읽기를 차단하지 않도록 하는 병행제어 기법 — <strong>읽기/쓰기 차단 없음!</strong>
+    </div>
+
+    <div class="acc" onclick="this.classList.toggle('open')">
+      <div class="acc-h"><div class="acc-title" style="color:var(--a5);">MVCC 동작 원리 ⭐</div><div class="acc-tgl">▾</div></div>
+      <div class="acc-body">
+        <ul class="il">
+          <li><strong>버전 관리:</strong> 데이터 수정 시 기존 버전을 유지하고 새 버전 생성 (버전 체인)</li>
+          <li><strong>읽기 트랜잭션:</strong> 자신의 시작 시점에 COMMIT된 가장 최신 버전을 읽음 → <em>읽기 작업에 S-Lock 불필요!</em></li>
+          <li><strong>쓰기 트랜잭션:</strong> 새 버전 생성 → X-Lock 필요 (쓰기 간 충돌은 Lock으로 처리)</li>
+          <li><strong>Undo 세그먼트:</strong> Oracle에서 이전 버전을 Undo 세그먼트에 보관</li>
+          <li><strong>MVTO(MVCC + Timestamp):</strong> 타임스탬프로 읽을 버전 결정</li>
+        </ul>
+        <div class="code"><span class="cm">-- MVCC 예시 (Snapshot Isolation)</span>
+<span class="kw">T1 시작</span> (Snapshot 시점: X=10)
+<span class="kw">T2:</span> X → 20, COMMIT
+<span class="kw">T1: SELECT X</span> <span class="good">→ 10 (T1 시작 시점 스냅샷 사용)</span>
+<span class="cm">T1은 T2의 변경을 보지 못함 → 일관된 읽기 보장</span></div>
+        <table style="margin-top:8px;">
+          <thead><tr><th>구분</th><th>Lock 기반</th><th>MVCC</th></tr></thead>
+          <tbody>
+            <tr><td><strong>읽기/쓰기 충돌</strong></td><td>읽기가 쓰기 대기</td><td><strong>읽기가 이전 버전 읽음 (대기 없음)</strong></td></tr>
+            <tr><td><strong>쓰기/쓰기 충돌</strong></td><td>X-Lock으로 대기</td><td>X-Lock으로 대기 (동일)</td></tr>
+            <tr><td><strong>교착상태</strong></td><td>발생 가능</td><td>읽기 관련 교착 없음</td></tr>
+            <tr><td><strong>공간</strong></td><td>추가 공간 불필요</td><td>버전 저장 공간 필요</td></tr>
+            <tr><td><strong>적용 DBMS</strong></td><td>전통 Lock 기반</td><td><strong>PostgreSQL, Oracle, MySQL InnoDB</strong></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="acc" onclick="this.classList.toggle('open')">
+      <div class="acc-h"><div class="acc-title" style="color:var(--a6);">낙관적 병행제어 (Optimistic Concurrency Control) ⭐</div><div class="acc-tgl">▾</div></div>
+      <div class="acc-body">
+        <ul class="il">
+          <li><strong>가정:</strong> 충돌이 드물게 발생한다는 낙관적 가정 → 실행 중 락 없이 진행</li>
+          <li><strong>3단계:</strong> ①<em>읽기 단계</em>: 로컬 복사본에서 작업 ②<em>검증 단계</em>: COMMIT 전 충돌 확인 ③<em>쓰기 단계</em>: 충돌 없으면 반영, 있으면 롤백</li>
+          <li><strong>장점:</strong> 읽기 위주 워크로드에서 성능 우수 / 교착상태 없음</li>
+          <li><strong>단점:</strong> 충돌 많으면 롤백 빈발 → 성능 저하</li>
+        </ul>
+      </div>
+    </div>
+    <div class="memo">타임스탬프=락없이 TS순서로 충돌처리·교착없음·롤백多 / MVCC=다중버전유지·읽기쓰기 무차단·PostgreSQL·Oracle / 낙관=충돌없다가정·검증단계</div>
+  </div>
+</div>
+
+<!-- P5: 교착상태 -->
+<div class="pnl" id="p5">
+  <div class="card">
+    <div class="card-h"><div class="ico ir">💀</div><h3>교착상태 (Deadlock) ⭐</h3></div>
+    <div style="background:var(--s2);border:1px solid rgba(248,113,113,.25);border-radius:9px;padding:12px;margin-bottom:11px;font-size:12.5px;line-height:1.8;">
+      <strong style="color:var(--a4)">교착상태</strong>: 두 개 이상의 트랜잭션이 <em style="color:var(--a3);font-style:normal;">서로 상대방이 보유한 락을 기다리며</em> 영원히 대기하는 상태
+    </div>
+
+    <div class="acc open" onclick="this.classList.toggle('open')">
+      <div class="acc-h"><div class="acc-title" style="color:var(--a4);">교착상태 발생 조건 (Coffman 4가지) ⭐</div><div class="acc-tgl">▾</div></div>
+      <div class="acc-body">
+        <div class="code"><span class="cm">-- 교착상태 예시</span>
+<span class="cm">시간  T1                    T2</span>
+<span class="kw">t1</span>    lock-X(A) 획득
+<span class="kw">t2</span>                          lock-X(B) 획득
+<span class="kw">t3</span>    lock-X(B) 요청 <span class="bad">← B를 T2가 보유 → 대기</span>
+<span class="kw">t4</span>                          lock-X(A) 요청 <span class="bad">← A를 T1이 보유 → 대기</span>
+<span class="bad">→ T1↔T2 서로 기다리며 교착!</span></div>
+        <table style="margin-top:8px;">
+          <thead><tr><th>조건</th><th>설명</th><th>제거 방법</th></tr></thead>
+          <tbody>
+            <tr><td><strong>① 상호 배제</strong></td><td>자원을 한 트랜잭션만 사용</td><td>공유 가능 자원으로 변경</td></tr>
+            <tr><td><strong>② 점유와 대기</strong></td><td>자원 보유하면서 다른 자원 대기</td><td>모든 자원 한꺼번에 요청</td></tr>
+            <tr><td><strong>③ 비선점</strong></td><td>보유 자원을 강제 회수 불가</td><td>선점 허용 (타임스탬프 기반)</td></tr>
+            <tr><td><strong>④ 순환 대기 ⭐</strong></td><td>T1→T2→T3→T1 순환 구조</td><td><strong>자원에 순서 부여 (순환 불가)</strong></td></tr>
+          </tbody>
+        </table>
+        <div class="warn">4가지 중 하나라도 제거하면 교착상태 발생 안 함 / 실용적으로는 ④순환대기 제거(자원 순서화)가 가장 많이 사용</div>
+      </div>
+    </div>
+
+    <div class="acc" onclick="this.classList.toggle('open')">
+      <div class="acc-h"><div class="acc-title" style="color:var(--a3);">교착상태 처리 방법 ⭐</div><div class="acc-tgl">▾</div></div>
+      <div class="acc-body">
+        <table>
+          <thead><tr><th>방법</th><th>전략</th><th>설명</th><th>장단점</th></tr></thead>
+          <tbody>
+            <tr><td><strong>예방 (Prevention)</strong></td><td>4조건 중 하나 제거</td><td>① 보수적 2PL(모든 락 미리 획득)<br>② 자원 순서 지정<br>③ Wait-Die / Wound-Wait</td><td>구현 복잡 / 자원 낭비</td></tr>
+            <tr><td><strong>회피 (Avoidance) ⭐</strong></td><td>안전 상태 유지</td><td>Banker's Algorithm — 자원 요청 시 안전 여부 확인 후 허용</td><td>최대 요구량 미리 선언 필요</td></tr>
+            <tr><td><strong>탐지 (Detection) ⭐</strong></td><td>발생 후 탐지</td><td>대기 그래프(Wait-for Graph)에서 사이클 탐지 → 희생자 선택·롤백</td><td>실용적 / 탐지 비용</td></tr>
+            <tr><td><strong>회복 (Recovery)</strong></td><td>발생 후 처리</td><td>희생자(Victim) 선택 기준: 최소 비용·최소 작업량·최소 롤백</td><td>탐지 이후 진행</td></tr>
+          </tbody>
+        </table>
+        <div class="code" style="margin-top:8px;"><span class="cm">-- Wait-Die vs Wound-Wait (타임스탬프 기반 예방)</span>
+<span class="cm">-- TS(Ti) < TS(Tj) : Ti가 더 오래된 트랜잭션</span>
+
+<span class="kw">Wait-Die (비선점)</span>:
+  Ti(오래됨) → Tj(최신) 대기 원하면: <span class="good">대기 허용</span>
+  Ti(최신) → Tj(오래됨) 대기 원하면: <span class="bad">Ti 롤백(die)</span>
+
+<span class="kw">Wound-Wait (선점)</span>:
+  Ti(오래됨) → Tj(최신) 대기 원하면: <span class="bad">Tj 강제 롤백(wound)</span>
+  Ti(최신) → Tj(오래됨) 대기 원하면: <span class="good">대기 허용</span></code></div>
+      </div>
+    </div>
+
+    <div class="acc" onclick="this.classList.toggle('open')">
+      <div class="acc-h"><div class="acc-title" style="color:var(--a5);">기아 (Starvation) — 교착상태와 구별!</div><div class="acc-tgl">▾</div></div>
+      <div class="acc-body">
+        <ul class="il">
+          <li><strong>정의:</strong> 특정 트랜잭션이 계속 희생자로 선택되어 <em>영원히 진행하지 못하는</em> 상태 — 교착상태는 아님!</li>
+          <li><strong>원인:</strong> 교착 탐지 시 동일 트랜잭션을 반복 선택 / 타임스탬프 기반 잦은 롤백</li>
+          <li><strong>해결:</strong> 롤백 횟수를 카운트하여 오래 기다린 트랜잭션 우선 처리 (FIFO 방식)</li>
+          <li><strong>교착상태 vs 기아:</strong> 교착=서로 기다림(순환) / 기아=한쪽만 계속 기다림(비순환)</li>
+        </ul>
+      </div>
+    </div>
+    <div class="memo">교착=서로대기·순환 / Coffman 4조건 / 탐지=Wait-for Graph 사이클 / Wait-Die=오래된트랜잭션대기·최신롤백 / Wound-Wait=오래된트랜잭션선점</div>
+  </div>
+</div>
+
+<!-- P6: QA -->
+<div class="pnl" id="p6">
+  <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:7px;margin-bottom:12px;">
+    <div class="fb-wr" id="fbar" style="margin:0;">
+      <button class="fb on" data-f="all">전체</button>
+      <button class="fb" data-f="이상현상">⚠️ 이상현상</button>
+      <button class="fb" data-f="Lock">🔒 Lock</button>
+      <button class="fb" data-f="2PL">⏱️ 2PL</button>
+      <button class="fb" data-f="MVCC">🌊 타임스탬프·MVCC</button>
+      <button class="fb" data-f="교착">💀 교착상태</button>
+      <button class="fb" data-f="OX">⭕ OX</button>
+    </div>
+    <div class="sc-b">정답: <span id="sc">0</span>/<span id="st">0</span></div>
+  </div>
+  <div id="ql"></div>
+</div>
+
+</div>
+<script>
+document.querySelectorAll('.tab').forEach(t=>t.addEventListener('click',()=>{
+  document.querySelectorAll('.tab,.pnl').forEach(x=>x.classList.remove('on'));
+  t.classList.add('on');document.getElementById(t.dataset.p).classList.add('on');
+}));
+const QA=[
+  {cat:'이상현상',diff:'easy',
+   q:'한 트랜잭션 내에서 같은 데이터를 두 번 읽었을 때 다른 값이 나오는 이상 현상은?',
+   cs:['갱신 분실 (Lost Update)','오손 읽기 (Dirty Read)','반복 불가 읽기 (Non-Repeatable Read)','유령 읽기 (Phantom Read)'],ans:2,
+   exp:'<strong>반복 불가 읽기(Non-Repeatable Read)</strong>: 한 트랜잭션이 같은 데이터를 두 번 읽었을 때 중간에 다른 트랜잭션이 UPDATE·DELETE하여 값이 달라지는 현상. <em>REPEATABLE READ</em> 이상 격리 수준으로 방지. 유령 읽기는 같은 범위 쿼리의 행 수가 달라지는 현상(INSERT로 인함).'},
+  {cat:'이상현상',diff:'mid',
+   q:'트랜잭션 격리 수준 중 Dirty Read는 방지하지만 Non-Repeatable Read와 Phantom Read는 방지하지 못하는 수준은?',
+   cs:['READ UNCOMMITTED','READ COMMITTED','REPEATABLE READ','SERIALIZABLE'],ans:1,
+   exp:'<strong>READ COMMITTED</strong>: COMMIT된 데이터만 읽을 수 있어 Dirty Read를 방지합니다. 그러나 같은 트랜잭션 내에서 동일 데이터를 두 번 읽을 때 다른 트랜잭션이 COMMIT하면 값이 달라질 수 있어 Non-Repeatable Read·Phantom Read는 발생합니다. Oracle·PostgreSQL의 기본 격리 수준입니다.'},
+  {cat:'이상현상',diff:'hard',
+   q:'갱신 분실(Lost Update) 문제가 발생하는 상황으로 가장 적절한 것은?',
+   cs:['한 트랜잭션이 COMMIT 안 된 데이터를 읽음','두 트랜잭션이 같은 데이터를 읽고 수정할 때 나중에 COMMIT된 수정이 먼저 COMMIT된 수정을 덮어씀','같은 범위 쿼리 두 번 실행 시 행 수가 다름','한 트랜잭션이 ROLLBACK 시 다른 트랜잭션도 롤백'],ans:1,
+   exp:'<strong>갱신 분실(Lost Update)</strong>: T1과 T2가 X=10을 읽고 각각 수정하면, T2의 COMMIT(X=13)이 T1의 COMMIT(X=15)을 덮어써서 T1의 갱신이 사라집니다. 올바른 결과(X=18)가 나오지 않는 현상. X-Lock으로 방지 가능합니다.'},
+  {cat:'Lock',diff:'mid',
+   q:'공유 락(S-Lock)과 배타 락(X-Lock)의 호환성으로 가장 적절한 것은?',
+   cs:['S-Lock과 S-Lock은 호환되지 않는다.','S-Lock과 X-Lock은 호환되고, X-Lock과 X-Lock은 호환되지 않는다.','S-Lock과 S-Lock은 호환되지만, S-Lock과 X-Lock, X-Lock과 X-Lock은 모두 호환되지 않는다.','모든 락 조합이 호환된다.'],ans:2,
+   exp:'락 호환성: <strong>S-Lock ↔ S-Lock</strong>: 호환(여러 읽기 동시 가능) / <strong>S-Lock ↔ X-Lock</strong>: 불호환(대기) / <strong>X-Lock ↔ X-Lock</strong>: 불호환(대기). X-Lock은 어떤 락과도 공존 불가합니다. 직관: S-Lock=공유 읽기, X-Lock=독점 쓰기.'},
+  {cat:'2PL',diff:'mid',
+   q:'2단계 락킹(2PL) 프로토콜에서 확장 단계(Growing Phase)와 수축 단계(Shrinking Phase)의 특징으로 가장 적절한 것은?',
+   cs:['확장 단계에서 락 획득·해제 모두 가능, 수축 단계에서 획득만 가능','확장 단계에서 락 획득만 가능하고 해제 불가, 수축 단계에서 해제만 가능하고 새 획득 불가','확장 단계에서 X-Lock만, 수축 단계에서 S-Lock만 획득 가능','두 단계 모두 락 획득과 해제가 가능하다.'],ans:1,
+   exp:'<strong>2PL 두 단계</strong>: ①<em>확장 단계</em>: 락 <strong>획득만</strong> 가능, 해제 불가 ②<em>수축 단계</em>: 락 <strong>해제만</strong> 가능, 새 락 획득 불가. 첫 번째 락 해제 시점부터 수축 단계 진입. 이 규칙이 충돌 직렬 가능성(Conflict Serializability)을 보장합니다. 단, 교착상태는 방지하지 못합니다.'},
+  {cat:'2PL',diff:'hard',
+   q:'Strict 2PL(엄격 2단계 락킹)의 특징으로 가장 적절한 것은?',
+   cs:['트랜잭션 시작 전 모든 락을 미리 획득한다.','X-Lock을 COMMIT 또는 ROLLBACK 시점까지 유지하여 연쇄 롤백(Cascading Rollback)을 방지한다.','교착상태를 완전히 방지한다.','S-Lock과 X-Lock 모두 즉시 해제한다.'],ans:1,
+   exp:'<strong>Strict 2PL</strong>: X-Lock을 <em>COMMIT·ROLLBACK 시점까지 유지</em>합니다. 이로 인해 T1이 롤백하기 전에 T2가 T1의 미확정 데이터를 읽을 수 없어 <em>연쇄 롤백(Cascading Rollback)</em>을 방지합니다. 교착상태는 여전히 발생 가능. 모든 락 미리 획득은 보수적 2PL(Conservative 2PL)의 특징.'},
+  {cat:'MVCC',diff:'mid',
+   q:'MVCC(다중 버전 동시성 제어)의 핵심 장점으로 가장 적절한 것은?',
+   cs:['교착상태를 완전히 방지한다.','읽기 트랜잭션과 쓰기 트랜잭션이 서로를 차단하지 않아 동시성이 높아진다.','별도의 저장 공간이 전혀 필요 없다.','모든 이상 현상을 방지한다.'],ans:1,
+   exp:'<strong>MVCC의 핵심</strong>: 데이터의 <em>여러 버전을 유지</em>하여 읽기 트랜잭션은 쓰기 트랜잭션이 만든 이전 버전을 읽고, 쓰기 트랜잭션은 새 버전을 생성합니다. 결과적으로 <em>읽기가 쓰기를 차단하지 않고, 쓰기가 읽기를 차단하지 않아</em> 동시성이 크게 향상됩니다. PostgreSQL·Oracle·MySQL InnoDB에서 사용. 단, 이전 버전 저장 공간이 필요합니다.'},
+  {cat:'교착',diff:'mid',
+   q:'교착상태 탐지(Detection) 방법으로 가장 적절한 것은?',
+   cs:['Banker 알고리즘으로 자원 할당 전 안전 상태를 확인한다.','대기 그래프(Wait-for Graph)에서 사이클이 존재하는지 확인한다.','모든 자원에 순서를 부여하여 순환 대기를 방지한다.','모든 락을 트랜잭션 시작 전에 미리 획득한다.'],ans:1,
+   exp:'<strong>교착상태 탐지</strong>: <em>대기 그래프(Wait-for Graph)</em>를 구성하고 사이클이 존재하면 교착상태로 판단. 사이클 탐지 후 희생자(Victim) 트랜잭션을 선택하여 롤백합니다. Banker 알고리즘=회피(Avoidance), 자원 순서=예방(Prevention·순환대기 제거), 미리 락 획득=보수적 2PL(예방).'},
+  {cat:'교착',diff:'hard',
+   q:'Wait-Die 알고리즘에서 타임스탬프가 더 오래된 트랜잭션 T1이 최신 트랜잭션 T2가 보유한 락을 요청할 때의 처리로 가장 적절한 것은?',
+   cs:['T1이 롤백(die)된다.','T1이 대기(wait)한다.','T2가 강제로 롤백된다.','T1과 T2가 모두 롤백된다.'],ans:1,
+   exp:'<strong>Wait-Die</strong>: TS(T1) < TS(T2) (T1이 더 오래됨). T1이 T2 요청 시: <em>T1이 대기(wait)</em>. T2가 T1 요청 시: T2가 롤백(die). 규칙: 오래된 트랜잭션이 최신을 기다리면 대기, 최신이 오래된 것을 기다리면 롤백. Wound-Wait은 반대로 오래된 트랜잭션이 최신 트랜잭션을 강제 롤백(wound)합니다.'},
+  {cat:'MVCC',diff:'hard',
+   q:'타임스탬프 순서 프로토콜(Timestamp Ordering)의 특징으로 가장 적절한 것은?',
+   cs:['락 기반이므로 교착상태가 발생할 수 있다.','락 없이 타임스탬프 순서를 기반으로 연산의 허용 여부를 결정하며, 교착상태가 발생하지 않는다.','COMMIT된 트랜잭션의 변경만 읽을 수 있어 Dirty Read를 방지한다.','모든 이상 현상을 방지하는 가장 강력한 병행제어 기법이다.'],ans:1,
+   exp:'<strong>타임스탬프 프로토콜</strong>: 각 트랜잭션에 TS를 부여하고 R-TS·W-TS와 비교하여 연산 허용 여부를 결정합니다. <em>락을 사용하지 않아 교착상태가 발생하지 않습니다</em>. 단, 타임스탬프 순서 위반 시 해당 트랜잭션을 롤백하여 잦은 롤백이 단점입니다. 기아(Starvation)도 발생할 수 있습니다.'},
+  {cat:'OX',diff:'easy',type:'ox',
+   q:'2단계 락킹(2PL) 프로토콜을 준수하면 충돌 직렬 가능성(Conflict Serializability)이 보장되고 교착상태도 방지된다.',ans:false,
+   exp:'<strong>×</strong> — 2PL은 <strong>충돌 직렬 가능성은 보장</strong>하지만 <strong>교착상태는 방지하지 못합니다</strong>. 예) T1이 A를 가지고 B를 기다리고, T2가 B를 가지고 A를 기다리면 교착상태 발생 — 둘 다 2PL을 준수하는 상황에서도 발생합니다. 교착상태 예방은 보수적 2PL·Wait-Die·Wound-Wait 등 별도 기법이 필요합니다.'},
+  {cat:'Lock',diff:'mid',type:'ox',
+   q:'배타 락(X-Lock)을 보유한 트랜잭션이 있을 때, 다른 트랜잭션이 같은 데이터에 공유 락(S-Lock)을 요청하면 대기해야 한다.',ans:true,
+   exp:'<strong>○</strong> — X-Lock은 <strong>어떤 락과도 호환되지 않습니다</strong>. X-Lock 보유 시 다른 트랜잭션의 S-Lock·X-Lock 요청은 모두 대기해야 합니다. 반면 S-Lock끼리는 호환되어 여러 트랜잭션이 동시에 S-Lock을 보유할 수 있습니다.'},
+  {cat:'이상현상',diff:'mid',type:'ox',
+   q:'Phantom Read(유령 읽기)는 중간에 다른 트랜잭션이 INSERT를 수행하여 같은 범위 쿼리의 결과 행 수가 달라지는 현상으로, REPEATABLE READ 격리 수준에서도 발생할 수 있다.',ans:true,
+   exp:'<strong>○</strong> — REPEATABLE READ는 <em>Non-Repeatable Read(UPDATE·DELETE에 의한 값 변경)</em>는 방지하지만, <em>Phantom Read(INSERT에 의한 새 행 추가)</em>는 방지하지 못합니다. Phantom Read를 방지하려면 <strong>SERIALIZABLE</strong> 격리 수준이 필요합니다. (단, MySQL InnoDB의 REPEATABLE READ는 Gap Lock으로 Phantom Read도 방지합니다.)'},
+  {cat:'교착',diff:'mid',type:'ox',
+   q:'기아(Starvation)는 교착상태(Deadlock)의 일종으로, 두 트랜잭션이 서로의 락을 기다리며 영원히 대기하는 현상이다.',ans:false,
+   exp:'<strong>×</strong> — <strong>기아(Starvation)</strong>와 교착상태는 다릅니다. 교착=서로 기다리는 순환 대기(T1↔T2). 기아=한 트랜잭션이 계속 희생자로 선택되어 <em>혼자서 영원히 진행 못하는</em> 현상(순환 아님). 예) 교착 탐지 시 동일 트랜잭션을 반복 선택하면 기아 발생. 해결: 롤백 횟수 카운트·FIFO 우선 처리.'},
+  {cat:'2PL',diff:'hard',type:'ox',
+   q:'Strict 2PL은 모든 락(S-Lock·X-Lock)을 트랜잭션 시작 전에 미리 획득하여 교착상태를 방지하는 프로토콜이다.',ans:false,
+   exp:'<strong>×</strong> — 설명은 <strong>보수적 2PL(Conservative 2PL)</strong>입니다. <strong>Strict 2PL</strong>은 <em>X-Lock(쓰기 락)만 COMMIT·ROLLBACK 시점까지 유지</em>하는 프로토콜로, 연쇄 롤백(Cascading Rollback)을 방지하지만 교착상태는 방지하지 못합니다. 보수적 2PL은 모든 락을 미리 획득하여 교착상태를 방지합니다.'},
+];
+let answered=0,correct=0;
+function renderQ(f){
+  const data=f==='all'?QA:QA.filter(q=>q.cat===f);
+  const list=document.getElementById('ql');list.innerHTML='';
+  answered=0;correct=0;upS();
+  const CATC={'이상현상':'tr','Lock':'tt','2PL':'ty','MVCC':'tp','교착':'to','OX':'tg'};
+  const DLC={'easy':'easy 쉬움','mid':'mid 보통','hard':'hard 어려움'};
+  const NL=['①','②','③','④'];
+  if(!data.length){list.innerHTML='<div style="text-align:center;padding:40px;color:var(--mu)">문제 없음</div>';return;}
+  data.forEach((q,i)=>{
+    const gi=QA.indexOf(q);
+    const el=document.createElement('div');el.className='qa';
+    const tc=CATC[q.cat]||'tt';
+    const [dc,dn]=(DLC[q.diff]||'mid 보통').split(' ');
+    if(q.type==='ox'){
+      el.innerHTML=`<div class="qa-hd" onclick="this.closest('.qa').classList.toggle('open')"><div><div class="qa-meta"><span class="qn">Q${String(i+1).padStart(2,'0')}</span><span class="tag ${tc}">${q.cat}</span><span class="diff ${dc}">${dn}</span><span class="tag tg">O/X</span></div><div class="qq">${q.q}</div></div><span class="tgl">▾</span></div>
+      <div class="qa-bd"><div class="ox-wr"><button class="ox" onclick="pickOX(this,true,${gi})">⭕ 옳다</button><button class="ox" onclick="pickOX(this,false,${gi})">❌ 틀리다</button></div><div class="exp" id="ex-${gi}"><div class="exp-t">💡 해설</div>${q.exp}</div></div>`;
+    } else {
+      el.innerHTML=`<div class="qa-hd" onclick="this.closest('.qa').classList.toggle('open')"><div><div class="qa-meta"><span class="qn">Q${String(i+1).padStart(2,'0')}</span><span class="tag ${tc}">${q.cat}</span><span class="diff ${dc}">${dn}</span></div><div class="qq">${q.q}</div></div><span class="tgl">▾</span></div>
+      <div class="qa-bd"><div class="chs">${q.cs.map((c,ci)=>`<div class="ch" data-ci="${ci}" onclick="pickCh(this,${gi})"><span class="cnum">${NL[ci]}</span><span>${c}</span></div>`).join('')}</div><div class="exp" id="ex-${gi}"><div class="exp-t">💡 해설</div>${q.exp}</div></div>`;
+    }
+    list.appendChild(el);
+  });
+}
+function pickCh(el,gi){
+  const bd=el.closest('.qa-bd');if(bd.querySelector('.ok,.ng'))return;
+  const q=QA[gi];
+  bd.querySelectorAll('.ch').forEach((c,i)=>{c.classList.add('lk');if(i===q.ans)c.classList.add('ok');else if(i===parseInt(el.dataset.ci))c.classList.add('ng');});
+  document.getElementById('ex-'+gi).classList.add('show');
+  answered++;if(parseInt(el.dataset.ci)===q.ans)correct++;upS();
+}
+function pickOX(btn,val,gi){
+  const bd=btn.closest('.qa-bd');if(bd.querySelector('.so,.sx'))return;
+  const q=QA[gi];
+  bd.querySelectorAll('.ox').forEach(b=>b.classList.add('lk'));
+  btn.classList.add(val?'so':'sx');
+  if(val!==q.ans){btn.style.opacity='.5';bd.querySelectorAll('.ox')[val?1:0].classList.add(q.ans?'so':'sx');}
+  document.getElementById('ex-'+gi).classList.add('show');
+  answered++;if(val===q.ans)correct++;upS();
+}
+function upS(){document.getElementById('sc').textContent=correct;document.getElementById('st').textContent=answered;}
+document.getElementById('fbar').addEventListener('click',e=>{
+  const b=e.target.closest('.fb');if(!b)return;
+  document.querySelectorAll('.fb').forEach(x=>x.classList.remove('on'));b.classList.add('on');renderQ(b.dataset.f);
+});
+renderQ('all');
+</script>
+</body>
+</html>

@@ -1,0 +1,673 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;900&family=JetBrains+Mono:wght@400;700&display=swap');
+:root{--bg:#030810;--s1:#060d1c;--s2:#0a1326;--s3:#0f1930;--bdr:#1c3060;--a1:#60a5fa;--a2:#34d399;--a3:#fbbf24;--a4:#f87171;--a5:#a78bfa;--a6:#fb923c;--txt:#e2e8f0;--mu:#64748b;}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Noto Sans KR',sans-serif;background:var(--bg);color:var(--txt);min-height:100vh;}
+.hdr{padding:20px 24px 14px;background:linear-gradient(150deg,#030810,#08102a,#030810);border-bottom:1px solid var(--bdr);}
+.hdr-r{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:6px;}
+.pill{padding:3px 10px;border-radius:20px;font-size:10px;font-weight:700;}
+.p1{background:linear-gradient(135deg,#1e3a8a,var(--a1));color:#fff;}
+.p2{background:rgba(52,211,153,.15);color:var(--a2);border:1px solid rgba(52,211,153,.3);}
+.p3{background:rgba(251,191,36,.15);color:var(--a3);border:1px solid rgba(251,191,36,.3);}
+h1{font-size:18px;font-weight:900;}
+.h1g{background:linear-gradient(90deg,var(--a1),var(--a2),var(--a3));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.hdr p{color:var(--mu);font-size:11.5px;margin-top:3px;}
+.tabs{display:flex;padding:0 24px;background:var(--s1);border-bottom:1px solid var(--bdr);overflow-x:auto;scrollbar-width:none;}
+.tabs::-webkit-scrollbar{display:none;}
+.tab{padding:10px 13px;font-size:11.5px;font-weight:600;color:var(--mu);cursor:pointer;border-bottom:2px solid transparent;white-space:nowrap;transition:all .2s;background:none;border-top:none;border-left:none;border-right:none;font-family:'Noto Sans KR',sans-serif;}
+.tab.on{color:var(--a1);border-bottom-color:var(--a1);}
+.wrap{padding:18px 24px;max-width:960px;margin:0 auto;}
+.pnl{display:none;}.pnl.on{display:block;}
+.card{background:var(--s1);border:1px solid var(--bdr);border-radius:11px;padding:16px;margin-bottom:12px;}
+.card-h{display:flex;align-items:center;gap:9px;margin-bottom:12px;}
+.ico{width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0;}
+.ib{background:rgba(96,165,250,.15);}.ig{background:rgba(52,211,153,.15);}.iy{background:rgba(251,191,36,.15);}.ir{background:rgba(248,113,113,.15);}.ip{background:rgba(167,139,250,.15);}.io{background:rgba(251,146,60,.15);}
+.card h3{font-size:13.5px;font-weight:700;}
+.tag{display:inline-block;padding:2px 7px;border-radius:4px;font-size:9.5px;font-weight:600;margin:2px 2px 2px 0;}
+.tb{background:rgba(96,165,250,.12);color:var(--a1);border:1px solid rgba(96,165,250,.25);}
+.tg{background:rgba(52,211,153,.12);color:var(--a2);border:1px solid rgba(52,211,153,.25);}
+.ty{background:rgba(251,191,36,.12);color:var(--a3);border:1px solid rgba(251,191,36,.25);}
+.tr{background:rgba(248,113,113,.12);color:var(--a4);border:1px solid rgba(248,113,113,.25);}
+.tp{background:rgba(167,139,250,.12);color:var(--a5);border:1px solid rgba(167,139,250,.25);}
+.to{background:rgba(251,146,60,.12);color:var(--a6);border:1px solid rgba(251,146,60,.25);}
+table{width:100%;border-collapse:collapse;font-size:12px;}
+th{background:var(--s2);color:var(--mu);font-weight:700;padding:7px 11px;text-align:left;font-size:9.5px;text-transform:uppercase;letter-spacing:.5px;border-bottom:1px solid var(--bdr);}
+td{padding:8px 11px;border-bottom:1px solid rgba(28,48,96,.5);vertical-align:top;line-height:1.55;}
+tr:last-child td{border-bottom:none;}
+tr:hover td{background:rgba(255,255,255,.02);}
+td strong{color:var(--a3);}
+ul.il{list-style:none;display:flex;flex-direction:column;gap:6px;}
+ul.il li{font-size:12px;padding-left:15px;position:relative;line-height:1.5;}
+ul.il li::before{content:'▸';position:absolute;left:0;color:var(--a1);font-size:9.5px;top:3px;}
+ul.il li strong{color:var(--a3);}
+ul.il li em{color:var(--a2);font-style:normal;}
+.memo{background:linear-gradient(135deg,rgba(96,165,250,.07),rgba(52,211,153,.07));border:1px solid rgba(96,165,250,.22);border-left:3px solid var(--a1);border-radius:7px;padding:9px 13px;font-size:12px;font-weight:600;color:var(--a1);margin:9px 0;}
+.memo::before{content:'🎯 핵심 암기 │ ';color:var(--mu);font-weight:400;}
+.warn{background:rgba(248,113,113,.07);border:1px solid rgba(248,113,113,.25);border-left:3px solid var(--a4);border-radius:7px;padding:9px 13px;font-size:12px;font-weight:600;color:var(--a4);margin:9px 0;}
+.warn::before{content:'⚠️ 유의 함정 │ ';color:var(--mu);font-weight:400;}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px;}
+@media(max-width:580px){.g2{grid-template-columns:1fr;}}
+.sql{background:var(--s2);border:1px solid rgba(96,165,250,.2);border-radius:7px;padding:10px 13px;font-family:'JetBrains Mono',monospace;font-size:11px;margin:8px 0;line-height:1.8;overflow-x:auto;}
+.sql .kw{color:var(--a1);font-weight:700;}
+.sql .val{color:var(--a3);}
+.sql .cm{color:var(--mu);}
+.sql .fn{color:var(--a2);}
+.sql .bad{color:var(--a4);}
+.sql .good{color:var(--a2);}
+/* acc */
+.acc{background:var(--s2);border:1px solid var(--bdr);border-radius:9px;margin-bottom:8px;overflow:hidden;}
+.acc-h{display:flex;justify-content:space-between;align-items:center;padding:10px 14px;cursor:pointer;user-select:none;}
+.acc-h:hover{background:rgba(255,255,255,.02);}
+.acc-title{font-size:12.5px;font-weight:800;flex:1;}
+.acc-tgl{color:var(--mu);transition:transform .2s;font-size:14px;flex-shrink:0;margin-left:8px;}
+.acc.open .acc-tgl{transform:rotate(180deg);}
+.acc-body{display:none;border-top:1px solid var(--bdr);padding:12px 14px;background:var(--s3);font-size:12px;line-height:1.65;}
+.acc.open .acc-body{display:block;}
+.acc-body strong{color:var(--a3);}
+.acc-body em{color:var(--a2);font-style:normal;}
+/* qa */
+.qa{background:var(--s1);border:1px solid var(--bdr);border-radius:9px;margin-bottom:10px;overflow:hidden;}
+.qa:hover{border-color:rgba(96,165,250,.25);}
+.qa-hd{padding:12px 16px;cursor:pointer;display:flex;justify-content:space-between;align-items:flex-start;gap:9px;user-select:none;}
+.qa-meta{display:flex;align-items:center;gap:5px;margin-bottom:4px;flex-wrap:wrap;}
+.qn{font-family:'JetBrains Mono',monospace;font-size:9.5px;font-weight:700;color:var(--mu);}
+.qq{font-size:12.5px;font-weight:600;line-height:1.5;}
+.tgl{color:var(--mu);font-size:15px;flex-shrink:0;transition:transform .2s;}
+.qa.open .tgl{transform:rotate(180deg);}
+.qa-bd{display:none;border-top:1px solid var(--bdr);padding:12px 16px;background:var(--s2);}
+.qa.open .qa-bd{display:block;}
+.chs{display:flex;flex-direction:column;gap:6px;margin-bottom:10px;}
+.ch{display:flex;align-items:flex-start;gap:9px;padding:8px 12px;border-radius:6px;border:1px solid var(--bdr);font-size:12px;cursor:pointer;background:var(--s1);line-height:1.45;transition:all .15s;}
+.ch:hover:not(.lk){border-color:rgba(96,165,250,.3);background:rgba(96,165,250,.04);}
+.ch.ok{border-color:var(--a2);background:rgba(52,211,153,.1);color:var(--a2);}
+.ch.ng{border-color:var(--a4);background:rgba(248,113,113,.08);color:var(--a4);opacity:.7;}
+.ch.lk{cursor:default;}
+.cnum{font-family:'JetBrains Mono',monospace;font-weight:700;font-size:10.5px;flex-shrink:0;margin-top:1px;color:var(--mu);}
+.ch.ok .cnum{color:var(--a2);}.ch.ng .cnum{color:var(--a4);}
+.exp{background:rgba(96,165,250,.05);border:1px solid rgba(96,165,250,.18);border-radius:7px;padding:11px 13px;font-size:12px;line-height:1.6;display:none;}
+.exp.show{display:block;}
+.exp-t{font-size:9.5px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--a1);margin-bottom:5px;}
+.exp strong{color:var(--a3);}
+.exp em{color:var(--a2);font-style:normal;}
+.ox-wr{display:flex;gap:8px;margin-bottom:10px;}
+.ox{flex:1;padding:10px;border-radius:7px;border:1px solid var(--bdr);font-size:18px;cursor:pointer;background:var(--s1);transition:all .15s;font-family:'Noto Sans KR',sans-serif;color:var(--txt);}
+.ox:hover:not(.lk){transform:scale(1.02);}
+.ox.so{border-color:var(--a2);background:rgba(52,211,153,.15);}
+.ox.sx{border-color:var(--a4);background:rgba(248,113,113,.1);}
+.ox.lk{cursor:default;}
+.diff{display:inline-block;padding:2px 6px;border-radius:9px;font-size:8.5px;font-weight:700;}
+.easy{background:rgba(52,211,153,.2);color:var(--a2);}
+.mid{background:rgba(251,191,36,.2);color:var(--a3);}
+.hard{background:rgba(248,113,113,.2);color:var(--a4);}
+.fb-wr{display:flex;gap:5px;flex-wrap:wrap;margin-bottom:12px;}
+.fb{padding:4px 11px;border-radius:18px;border:1px solid var(--bdr);font-size:10.5px;font-weight:600;cursor:pointer;background:var(--s2);color:var(--mu);transition:all .15s;font-family:'Noto Sans KR',sans-serif;}
+.fb.on{background:rgba(96,165,250,.15);color:var(--a1);border-color:var(--a1);}
+.sc-b{background:var(--s2);border:1px solid var(--bdr);border-radius:7px;padding:4px 12px;font-size:11.5px;color:var(--mu);}
+.sc-b span{color:var(--a1);font-weight:700;}
+</style>
+</head>
+<body>
+<div class="hdr">
+  <div class="hdr-r">
+    <span class="pill p1">SQL — 정보시스템 감리사</span>
+    <span class="pill p2">DDL·DML·DCL·TCL·JOIN·서브쿼리</span>
+    <span class="pill p3">핵심 유의사항</span>
+  </div>
+  <h1><span class="h1g">SQL 핵심 유의사항 완전 정리</span></h1>
+  <p>감리사 시험 단골 출제 포인트 · NULL 처리 · JOIN · 집합 연산 · 윈도우 함수 · 트랜잭션 · 인덱스</p>
+</div>
+<div class="tabs">
+  <button class="tab on" data-p="p1">📋 SQL 분류·DDL</button>
+  <button class="tab" data-p="p2">🔍 SELECT·NULL·집계</button>
+  <button class="tab" data-p="p3">🔗 JOIN·집합 연산</button>
+  <button class="tab" data-p="p4">🪟 서브쿼리·윈도우함수</button>
+  <button class="tab" data-p="p5">🔒 TCL·DCL·인덱스</button>
+  <button class="tab" data-p="p6">❓ 예상문제</button>
+</div>
+<div class="wrap">
+
+<!-- P1: SQL 분류·DDL -->
+<div class="pnl on" id="p1">
+  <div class="card">
+    <div class="card-h"><div class="ico ib">📋</div><h3>SQL 명령어 4대 분류 ⭐</h3></div>
+    <table>
+      <thead><tr><th>분류</th><th>Full Name</th><th>주요 명령어</th><th>특징</th></tr></thead>
+      <tbody>
+        <tr><td><span class="tag tb">DDL</span></td><td>Data Definition Language</td><td><strong>CREATE, ALTER, DROP, TRUNCATE, RENAME</strong></td><td>스키마·객체 정의 / <strong>AUTO COMMIT</strong> — 롤백 불가</td></tr>
+        <tr><td><span class="tag tg">DML</span></td><td>Data Manipulation Language</td><td><strong>SELECT, INSERT, UPDATE, DELETE</strong></td><td>데이터 조작 / 트랜잭션 내에서 실행 / COMMIT 필요</td></tr>
+        <tr><td><span class="tag ty">DCL</span></td><td>Data Control Language</td><td><strong>GRANT, REVOKE</strong></td><td>권한 부여·회수 / <strong>AUTO COMMIT</strong></td></tr>
+        <tr><td><span class="tag tp">TCL</span></td><td>Transaction Control Language</td><td><strong>COMMIT, ROLLBACK, SAVEPOINT</strong></td><td>트랜잭션 제어 / DML과 함께 사용</td></tr>
+      </tbody>
+    </table>
+    <div class="warn">DDL(CREATE·ALTER·DROP·TRUNCATE)과 DCL(GRANT·REVOKE)은 AUTO COMMIT — ROLLBACK 불가! DML만 ROLLBACK 가능</div>
+    <div class="memo">DDL=스키마정의·AUTO COMMIT / DML=데이터조작·COMMIT필요 / DCL=권한·AUTO COMMIT / TCL=트랜잭션제어</div>
+  </div>
+
+  <div class="card">
+    <div class="card-h"><div class="ico iy">🏗️</div><h3>DDL 핵심 유의사항 ⭐</h3></div>
+
+    <div class="acc open" onclick="this.classList.toggle('open')">
+      <div class="acc-h"><div class="acc-title" style="color:var(--a3);">DELETE vs TRUNCATE vs DROP 비교 ⭐</div><div class="acc-tgl">▾</div></div>
+      <div class="acc-body">
+        <table>
+          <thead><tr><th>구분</th><th>DELETE</th><th>TRUNCATE</th><th>DROP</th></tr></thead>
+          <tbody>
+            <tr><td><strong>분류</strong></td><td><span class="tag tg">DML</span></td><td><span class="tag tb">DDL</span></td><td><span class="tag tb">DDL</span></td></tr>
+            <tr><td><strong>대상</strong></td><td>행(Row) 삭제</td><td>모든 행 삭제</td><td>테이블 자체 삭제</td></tr>
+            <tr><td><strong>WHERE 사용</strong></td><td><strong>가능</strong></td><td>불가</td><td>불가</td></tr>
+            <tr><td><strong>ROLLBACK</strong></td><td><strong>가능</strong></td><td><strong>불가 (AUTO COMMIT)</strong></td><td>불가</td></tr>
+            <tr><td><strong>속도</strong></td><td>느림 (로그 기록)</td><td>빠름</td><td>빠름</td></tr>
+            <tr><td><strong>테이블 구조</strong></td><td>유지</td><td>유지</td><td>삭제</td></tr>
+            <tr><td><strong>AUTO_INCREMENT</strong></td><td>유지</td><td>초기화</td><td>삭제</td></tr>
+          </tbody>
+        </table>
+        <div class="warn" style="margin-top:8px;">TRUNCATE는 DDL이므로 AUTO COMMIT → ROLLBACK 불가 / DELETE는 DML이므로 ROLLBACK 가능 — 시험 단골 함정!</div>
+      </div>
+    </div>
+
+    <div class="acc" onclick="this.classList.toggle('open')">
+      <div class="acc-h"><div class="acc-title" style="color:var(--a1);">제약조건 (Constraints) ⭐</div><div class="acc-tgl">▾</div></div>
+      <div class="acc-body">
+        <table>
+          <thead><tr><th>제약조건</th><th>의미</th><th>유의사항</th></tr></thead>
+          <tbody>
+            <tr><td><strong>PRIMARY KEY</strong></td><td>기본키 — 유일 + NOT NULL</td><td>테이블당 1개 / 자동으로 NOT NULL+UNIQUE 보장</td></tr>
+            <tr><td><strong>UNIQUE</strong></td><td>중복 불허</td><td><strong>NULL은 여러 개 허용</strong> (NULL ≠ NULL) — 함정!</td></tr>
+            <tr><td><strong>NOT NULL</strong></td><td>NULL 불허</td><td>빈 문자열('')은 NULL이 아님</td></tr>
+            <tr><td><strong>FOREIGN KEY</strong></td><td>참조 무결성</td><td>참조 테이블의 PK 또는 UNIQUE 컬럼만 참조 가능</td></tr>
+            <tr><td><strong>CHECK</strong></td><td>조건 검증</td><td>삽입·수정 시 조건 위반이면 오류</td></tr>
+            <tr><td><strong>DEFAULT</strong></td><td>기본값 설정</td><td>INSERT 시 값 미지정이면 DEFAULT 적용</td></tr>
+          </tbody>
+        </table>
+        <div class="sql"><span class="cm">-- UNIQUE 제약조건: NULL은 중복 허용!</span>
+<span class="kw">CREATE TABLE</span> test (col <span class="val">VARCHAR(10)</span> <span class="kw">UNIQUE</span>);
+<span class="kw">INSERT INTO</span> test <span class="kw">VALUES</span>(<span class="val">NULL</span>);  <span class="good">-- OK</span>
+<span class="kw">INSERT INTO</span> test <span class="kw">VALUES</span>(<span class="val">NULL</span>);  <span class="good">-- OK (NULL 중복 허용!)</span>
+<span class="kw">INSERT INTO</span> test <span class="kw">VALUES</span>(<span class="val">'A'</span>);    <span class="good">-- OK</span>
+<span class="kw">INSERT INTO</span> test <span class="kw">VALUES</span>(<span class="val">'A'</span>);    <span class="bad">-- 오류! (일반값 중복 불가)</span></div>
+      </div>
+    </div>
+
+    <div class="acc" onclick="this.classList.toggle('open')">
+      <div class="acc-h"><div class="acc-title" style="color:var(--a5);">ALTER TABLE 주요 사용법</div><div class="acc-tgl">▾</div></div>
+      <div class="acc-body">
+        <div class="sql"><span class="kw">ALTER TABLE</span> emp <span class="kw">ADD</span> salary <span class="val">NUMBER</span>;           <span class="cm">-- 컬럼 추가</span>
+<span class="kw">ALTER TABLE</span> emp <span class="kw">MODIFY</span> name <span class="val">VARCHAR(100)</span>;    <span class="cm">-- 컬럼 수정 (Oracle)</span>
+<span class="kw">ALTER TABLE</span> emp <span class="kw">DROP COLUMN</span> salary;           <span class="cm">-- 컬럼 삭제</span>
+<span class="kw">ALTER TABLE</span> emp <span class="kw">RENAME COLUMN</span> name <span class="kw">TO</span> ename; <span class="cm">-- 컬럼명 변경</span>
+<span class="kw">ALTER TABLE</span> emp <span class="kw">ADD CONSTRAINT</span> pk_emp <span class="kw">PRIMARY KEY</span>(empno); <span class="cm">-- 제약조건 추가</span></div>
+        <div class="warn">컬럼 크기 축소(VARCHAR 100→50)는 기존 데이터가 크면 오류 / NOT NULL 추가는 기존 NULL 있으면 오류</div>
+      </div>
+    </div>
+    <div class="memo">DELETE=DML·ROLLBACK가능 / TRUNCATE=DDL·AUTO COMMIT·ROLLBACK불가 / UNIQUE는 NULL 여러 개 허용</div>
+  </div>
+</div>
+
+<!-- P2: SELECT·NULL·집계 -->
+<div class="pnl" id="p2">
+  <div class="card">
+    <div class="card-h"><div class="ico ig">🔍</div><h3>SELECT 실행 순서 & NULL 처리 ⭐</h3></div>
+
+    <div class="acc open" onclick="this.classList.toggle('open')">
+      <div class="acc-h"><div class="acc-title" style="color:var(--a2);">SELECT 논리적 실행 순서 ⭐ (작성 순서 ≠ 실행 순서)</div><div class="acc-tgl">▾</div></div>
+      <div class="acc-body">
+        <div class="sql"><span class="cm">-- 작성 순서</span>
+<span class="kw">SELECT</span>   컬럼           <span class="cm">-- 5번째 실행</span>
+<span class="kw">FROM</span>     테이블          <span class="cm">-- 1번째: 테이블 결정</span>
+<span class="kw">WHERE</span>    조건           <span class="cm">-- 2번째: 행 필터링 (집계함수 사용 불가!)</span>
+<span class="kw">GROUP BY</span> 그룹기준        <span class="cm">-- 3번째: 그룹핑</span>
+<span class="kw">HAVING</span>   그룹조건        <span class="cm">-- 4번째: 그룹 필터링 (집계함수 사용 가능)</span>
+<span class="kw">ORDER BY</span> 정렬기준        <span class="cm">-- 6번째 (SELECT 별칭 사용 가능!)</span></div>
+        <div class="warn">WHERE에서 집계함수(COUNT·SUM·AVG 등) 사용 불가! 집계 조건은 반드시 HAVING에서 / ORDER BY는 SELECT 별칭 사용 가능</div>
+      </div>
+    </div>
+
+    <div class="acc" onclick="this.classList.toggle('open')">
+      <div class="acc-h"><div class="acc-title" style="color:var(--a4);">NULL 처리 핵심 규칙 ⭐ — 가장 많은 함정 포인트</div><div class="acc-tgl">▾</div></div>
+      <div class="acc-body">
+        <ul class="il" style="margin-bottom:10px;">
+          <li><strong>NULL 비교는 = 사용 불가:</strong> IS NULL / IS NOT NULL 사용해야 함</li>
+          <li><strong>NULL 산술 연산 결과 = NULL:</strong> NULL + 1 = NULL, NULL * 0 = NULL</li>
+          <li><strong>NULL 논리 연산:</strong> NULL AND TRUE = NULL / NULL OR TRUE = TRUE / NULL AND FALSE = FALSE</li>
+          <li><strong>집계 함수와 NULL:</strong> COUNT(*) = NULL 포함 / COUNT(컬럼) = NULL 제외 / SUM·AVG·MAX·MIN도 NULL 제외</li>
+          <li><strong>GROUP BY와 NULL:</strong> NULL 값도 하나의 그룹으로 처리됨</li>
+          <li><strong>ORDER BY와 NULL:</strong> Oracle=NULL을 가장 큰 값, SQL Server=가장 작은 값으로 처리 (기본)</li>
+        </ul>
+        <div class="sql"><span class="cm">-- NULL 처리 예시</span>
+<span class="kw">SELECT</span> <span class="fn">COUNT</span>(*) <span class="kw">FROM</span> emp;           <span class="cm">-- NULL 포함 전체 행 수</span>
+<span class="kw">SELECT</span> <span class="fn">COUNT</span>(salary) <span class="kw">FROM</span> emp;      <span class="cm">-- NULL인 salary 제외</span>
+<span class="kw">SELECT</span> <span class="fn">AVG</span>(salary) <span class="kw">FROM</span> emp;        <span class="cm">-- NULL 제외 평균 (주의!)</span>
+
+<span class="cm">-- NULL 함수 처리</span>
+<span class="fn">NVL</span>(salary, 0)        <span class="cm">-- Oracle: NULL이면 0으로 대체</span>
+<span class="fn">ISNULL</span>(salary, 0)     <span class="cm">-- SQL Server: NULL이면 0으로 대체</span>
+<span class="fn">COALESCE</span>(a, b, c)    <span class="cm">-- 표준SQL: 첫 번째 NOT NULL 반환</span>
+<span class="fn">NULLIF</span>(a, b)         <span class="cm">-- a=b이면 NULL, 아니면 a 반환</span></div>
+        <div class="warn">AVG(salary): NULL인 행은 분모에서도 제외 → 전체 행 대비 실제 평균보다 높게 나올 수 있음! / COUNT(*)≠COUNT(컬럼)</div>
+      </div>
+    </div>
+
+    <div class="acc" onclick="this.classList.toggle('open')">
+      <div class="acc-h"><div class="acc-title" style="color:var(--a3);">GROUP BY · HAVING · 집계함수 유의사항 ⭐</div><div class="acc-tgl">▾</div></div>
+      <div class="acc-body">
+        <div class="sql"><span class="cm">-- GROUP BY 유의사항</span>
+<span class="cm">-- SELECT에 집계함수가 아닌 컬럼은 반드시 GROUP BY에 포함!</span>
+<span class="bad">SELECT deptno, ename, COUNT(*) FROM emp GROUP BY deptno;</span>  <span class="cm">-- 오류! ename 누락</span>
+<span class="good">SELECT deptno, COUNT(*) FROM emp GROUP BY deptno;</span>          <span class="cm">-- OK</span>
+
+<span class="cm">-- HAVING vs WHERE</span>
+<span class="good">SELECT deptno, AVG(salary) FROM emp GROUP BY deptno HAVING AVG(salary) > 3000;</span>
+<span class="bad">SELECT deptno, AVG(salary) FROM emp WHERE AVG(salary) > 3000 GROUP BY deptno;</span> <span class="cm">-- 오류!</span>
+
+<span class="cm">-- ROLLUP: 소계+합계 자동 생성</span>
+<span class="kw">SELECT</span> deptno, job, <span class="fn">SUM</span>(salary) <span class="kw">FROM</span> emp <span class="kw">GROUP BY</span> <span class="fn">ROLLUP</span>(deptno, job);</div>
+        <div class="memo">SELECT 절 집계함수 아닌 컬럼 → 반드시 GROUP BY에 포함 / HAVING = 집계 후 조건 / WHERE = 집계 전 조건</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-h"><div class="ico iy">📊</div><h3>CASE 문 & 조건 함수</h3></div>
+    <div class="sql"><span class="cm">-- CASE 표현식 (표준SQL)</span>
+<span class="kw">SELECT</span> ename,
+  <span class="kw">CASE</span> <span class="kw">WHEN</span> salary >= 5000 <span class="kw">THEN</span> <span class="val">'HIGH'</span>
+       <span class="kw">WHEN</span> salary >= 3000 <span class="kw">THEN</span> <span class="val">'MID'</span>
+       <span class="kw">ELSE</span> <span class="val">'LOW'</span>
+  <span class="kw">END</span> <span class="kw">AS</span> grade
+<span class="kw">FROM</span> emp;
+
+<span class="cm">-- DECODE (Oracle 전용)</span>
+<span class="fn">DECODE</span>(deptno, 10, <span class="val">'영업'</span>, 20, <span class="val">'인사'</span>, <span class="val">'기타'</span>)
+
+<span class="cm">-- NULL 주의: CASE WHEN salary = NULL → 항상 FALSE! IS NULL 사용</span>
+<span class="bad">CASE WHEN salary = NULL THEN 'NULL값'</span>    <span class="cm">-- 절대 실행 안 됨!</span>
+<span class="good">CASE WHEN salary IS NULL THEN 'NULL값'</span>   <span class="cm">-- 올바른 표현</span></div>
+    <div class="warn">CASE WHEN에서 NULL 비교는 반드시 IS NULL 사용 / CASE는 조건을 위에서부터 순서대로 평가하므로 순서가 중요!</div>
+  </div>
+</div>
+
+<!-- P3: JOIN·집합 연산 -->
+<div class="pnl" id="p3">
+  <div class="card">
+    <div class="card-h"><div class="ico ip">🔗</div><h3>JOIN 유형 완전 정리 ⭐</h3></div>
+
+    <div class="acc open" onclick="this.classList.toggle('open')">
+      <div class="acc-h"><div class="acc-title" style="color:var(--a5);">JOIN 종류별 결과 행 수 & 특징 ⭐</div><div class="acc-tgl">▾</div></div>
+      <div class="acc-body">
+        <table>
+          <thead><tr><th>JOIN 종류</th><th>반환 행</th><th>특징</th></tr></thead>
+          <tbody>
+            <tr><td><strong>INNER JOIN ⭐</strong></td><td>양쪽 모두 일치하는 행만</td><td>가장 일반적 / JOIN 조건 불일치 시 제외</td></tr>
+            <tr><td><strong>LEFT OUTER JOIN ⭐</strong></td><td>왼쪽 테이블 전체 + 오른쪽 일치</td><td>오른쪽 불일치 시 NULL로 채움</td></tr>
+            <tr><td><strong>RIGHT OUTER JOIN</strong></td><td>오른쪽 테이블 전체 + 왼쪽 일치</td><td>왼쪽 불일치 시 NULL로 채움</td></tr>
+            <tr><td><strong>FULL OUTER JOIN</strong></td><td>양쪽 모두 포함</td><td>불일치 시 양쪽 모두 NULL로 채움</td></tr>
+            <tr><td><strong>CROSS JOIN</strong></td><td>M × N (카르테시안 곱)</td><td>JOIN 조건 없음 / 주의해서 사용</td></tr>
+            <tr><td><strong>SELF JOIN</strong></td><td>같은 테이블을 두 번</td><td>별칭(Alias) 필수 / 계층적 데이터</td></tr>
+            <tr><td><strong>NATURAL JOIN</strong></td><td>같은 이름·타입 컬럼 자동 JOIN</td><td>동명 컬럼 자동 매칭 / 컬럼 중복 없음</td></tr>
+          </tbody>
+        </table>
+        <div class="sql"><span class="cm">-- LEFT JOIN 예시: 부서가 없는 직원도 포함</span>
+<span class="kw">SELECT</span> e.ename, d.dname
+<span class="kw">FROM</span> emp e <span class="kw">LEFT JOIN</span> dept d <span class="kw">ON</span> e.deptno = d.deptno;
+<span class="cm">-- deptno 없는 직원: dname = NULL로 표시</span>
+
+<span class="cm">-- INNER JOIN vs LEFT JOIN 결과 차이 핵심</span>
+<span class="cm">-- emp: {A:10, B:20, C:30(없음)} / dept: {10:'영업', 20:'인사'}</span>
+<span class="cm">-- INNER: A-영업, B-인사 (C 제외)</span>
+<span class="cm">-- LEFT: A-영업, B-인사, C-NULL (C 포함)</span></div>
+      </div>
+    </div>
+
+    <div class="acc" onclick="this.classList.toggle('open')">
+      <div class="acc-h"><div class="acc-title" style="color:var(--a3);">OUTER JOIN의 WHERE 조건 주의사항 ⭐ — 단골 함정!</div><div class="acc-tgl">▾</div></div>
+      <div class="acc-body">
+        <div class="sql"><span class="cm">-- LEFT JOIN 후 WHERE에 오른쪽 컬럼 조건 → INNER JOIN으로 변질!</span>
+<span class="bad">SELECT e.ename, d.dname
+FROM emp e LEFT JOIN dept d ON e.deptno = d.deptno
+WHERE d.dname = '영업';  -- NULL인 행(부서 없는 직원) 모두 제외 → INNER JOIN과 동일!</span>
+
+<span class="cm">-- 올바른 방법: ON 절에 조건 포함</span>
+<span class="good">SELECT e.ename, d.dname
+FROM emp e LEFT JOIN dept d ON e.deptno = d.deptno AND d.dname = '영업';</span>
+<span class="cm">-- 부서 없는 직원도 포함, d.dname='영업'이 아닌 경우 d컬럼=NULL</span></div>
+        <div class="warn">OUTER JOIN + WHERE 오른쪽 테이블 조건 = INNER JOIN으로 변질! / 필터 조건은 ON절에 넣거나 OUTER쪽 IS NULL 처리 필요</div>
+      </div>
+    </div>
+
+    <div class="acc" onclick="this.classList.toggle('open')">
+      <div class="acc-h"><div class="acc-title" style="color:var(--a2);">집합 연산자 — UNION·INTERSECT·EXCEPT ⭐</div><div class="acc-tgl">▾</div></div>
+      <div class="acc-body">
+        <table>
+          <thead><tr><th>연산자</th><th>의미</th><th>중복 처리</th><th>유의사항</th></tr></thead>
+          <tbody>
+            <tr><td><strong>UNION ⭐</strong></td><td>합집합</td><td><strong>중복 제거</strong></td><td>컬럼 수·데이터 타입 일치 필수</td></tr>
+            <tr><td><strong>UNION ALL ⭐</strong></td><td>합집합</td><td><strong>중복 포함</strong> (빠름)</td><td>정렬 없음 / 성능 유리</td></tr>
+            <tr><td><strong>INTERSECT</strong></td><td>교집합</td><td>중복 제거</td><td>양쪽에 모두 있는 행만</td></tr>
+            <tr><td><strong>EXCEPT (MINUS)</strong></td><td>차집합</td><td>중복 제거</td><td>왼쪽에만 있는 행 / Oracle=MINUS</td></tr>
+          </tbody>
+        </table>
+        <div class="sql"><span class="cm">-- UNION: 중복 제거 (정렬 발생 → 느림)</span>
+<span class="kw">SELECT</span> deptno <span class="kw">FROM</span> emp
+<span class="kw">UNION</span>
+<span class="kw">SELECT</span> deptno <span class="kw">FROM</span> dept;
+
+<span class="cm">-- UNION ALL: 중복 포함 (정렬 없음 → 빠름)</span>
+<span class="kw">SELECT</span> deptno <span class="kw">FROM</span> emp
+<span class="kw">UNION ALL</span>
+<span class="kw">SELECT</span> deptno <span class="kw">FROM</span> dept;
+
+<span class="cm">-- ORDER BY는 마지막 SELECT에만 1번!</span>
+<span class="kw">SELECT</span> a <span class="kw">FROM</span> t1 <span class="kw">UNION SELECT</span> a <span class="kw">FROM</span> t2 <span class="kw">ORDER BY</span> a;</div>
+        <div class="warn">UNION은 중복 제거로 느림 / 중복 유지·성능 필요 시 UNION ALL / ORDER BY는 전체 결과에 1번만 마지막에 사용</div>
+      </div>
+    </div>
+    <div class="memo">INNER JOIN=교집합행 / LEFT JOIN=왼쪽전체+오른쪽NULL / LEFT JOIN+WHERE우측컬럼=INNER JOIN변질 / UNION=중복제거 / UNION ALL=중복포함</div>
+  </div>
+</div>
+
+<!-- P4: 서브쿼리·윈도우함수 -->
+<div class="pnl" id="p4">
+  <div class="card">
+    <div class="card-h"><div class="ico ib">🪟</div><h3>서브쿼리 (Subquery) 핵심 ⭐</h3></div>
+
+    <div class="acc open" onclick="this.classList.toggle('open')">
+      <div class="acc-h"><div class="acc-title" style="color:var(--a1);">서브쿼리 위치별 분류 & 유의사항</div><div class="acc-tgl">▾</div></div>
+      <div class="acc-body">
+        <table>
+          <thead><tr><th>위치</th><th>명칭</th><th>반환</th><th>예시</th></tr></thead>
+          <tbody>
+            <tr><td>SELECT절</td><td>스칼라 서브쿼리</td><td>단일 값 (1행 1열)</td><td>SELECT (SELECT MAX(salary) FROM emp)</td></tr>
+            <tr><td>FROM절</td><td>인라인 뷰</td><td>가상 테이블</td><td>FROM (SELECT * FROM emp WHERE...) e</td></tr>
+            <tr><td>WHERE절</td><td>중첩 서브쿼리</td><td>단일값/다중행</td><td>WHERE salary = (SELECT MAX(salary)...)</td></tr>
+          </tbody>
+        </table>
+        <div class="sql"><span class="cm">-- 단일행 서브쿼리: =, >, <, >=, <= 사용</span>
+<span class="kw">SELECT</span> ename <span class="kw">FROM</span> emp
+<span class="kw">WHERE</span> salary = (<span class="kw">SELECT MAX</span>(salary) <span class="kw">FROM</span> emp);
+
+<span class="cm">-- 다중행 서브쿼리: IN, ANY, ALL, EXISTS 사용</span>
+<span class="kw">SELECT</span> ename <span class="kw">FROM</span> emp
+<span class="kw">WHERE</span> deptno <span class="kw">IN</span> (<span class="kw">SELECT</span> deptno <span class="kw">FROM</span> dept <span class="kw">WHERE</span> loc = <span class="val">'SEOUL'</span>);
+
+<span class="cm">-- ANY vs ALL</span>
+<span class="kw">WHERE</span> salary > <span class="kw">ANY</span> (1000, 2000, 3000)  <span class="cm">-- salary > 1000 (최솟값 초과)</span>
+<span class="kw">WHERE</span> salary > <span class="kw">ALL</span> (1000, 2000, 3000)  <span class="cm">-- salary > 3000 (최댓값 초과)</span></div>
+        <div class="warn">단일행 서브쿼리에 = 사용 시 2행 이상 반환되면 오류! / 다중행에는 IN·ANY·ALL·EXISTS 사용</div>
+      </div>
+    </div>
+
+    <div class="acc" onclick="this.classList.toggle('open')">
+      <div class="acc-h"><div class="acc-title" style="color:var(--a3);">EXISTS vs IN 비교 ⭐</div><div class="acc-tgl">▾</div></div>
+      <div class="acc-body">
+        <div class="sql"><span class="cm">-- IN: 서브쿼리 결과를 목록으로 비교</span>
+<span class="kw">SELECT</span> * <span class="kw">FROM</span> emp
+<span class="kw">WHERE</span> deptno <span class="kw">IN</span> (<span class="kw">SELECT</span> deptno <span class="kw">FROM</span> dept);
+<span class="cm">-- 서브쿼리 전체 실행 후 IN 목록과 비교</span>
+<span class="cm">-- NULL이 포함된 IN 목록: WHERE col IN (1, NULL) → col=NULL 절대 매칭 안 됨!</span>
+
+<span class="cm">-- EXISTS: 존재 여부만 확인 (TRUE/FALSE)</span>
+<span class="kw">SELECT</span> * <span class="kw">FROM</span> emp e
+<span class="kw">WHERE</span> <span class="kw">EXISTS</span> (<span class="kw">SELECT</span> 1 <span class="kw">FROM</span> dept d <span class="kw">WHERE</span> d.deptno = e.deptno);
+<span class="cm">-- 한 행이라도 찾으면 즉시 TRUE 반환 → 성능 유리 (대용량)</span>
+<span class="cm">-- NULL에 안전 (EXISTS는 존재 여부만, 값 비교 없음)</span></div>
+        <div class="warn">NOT IN + NULL 주의: NOT IN (1, NULL) → 항상 FALSE! 공집합 반환 / 서브쿼리에 NULL 가능성 있으면 NOT EXISTS 사용 권장</div>
+      </div>
+    </div>
+
+    <div class="acc" onclick="this.classList.toggle('open')">
+      <div class="acc-h"><div class="acc-title" style="color:var(--a2);">윈도우 함수 (Window Function / 분석 함수) ⭐</div><div class="acc-tgl">▾</div></div>
+      <div class="acc-body">
+        <div class="sql"><span class="cm">-- 윈도우 함수 기본 구문</span>
+함수명() <span class="kw">OVER</span> ([<span class="kw">PARTITION BY</span> 그룹기준] [<span class="kw">ORDER BY</span> 정렬기준] [ROWS/RANGE 프레임])
+
+<span class="cm">-- 순위 함수</span>
+<span class="fn">RANK</span>()       <span class="cm">-- 1,2,2,4 (동순위 다음 건너뜀)</span>
+<span class="fn">DENSE_RANK</span>() <span class="cm">-- 1,2,2,3 (동순위 다음 안 건너뜀)</span>
+<span class="fn">ROW_NUMBER</span>() <span class="cm">-- 1,2,3,4 (항상 유일한 순번)</span>
+<span class="fn">NTILE</span>(4)     <span class="cm">-- N개 구간으로 분할</span>
+
+<span class="cm">-- 집계 윈도우 함수</span>
+<span class="fn">SUM</span>(salary) <span class="kw">OVER</span>(<span class="kw">PARTITION BY</span> deptno <span class="kw">ORDER BY</span> empno) <span class="cm">-- 누적합</span>
+
+<span class="cm">-- LAG·LEAD: 이전/다음 행 참조</span>
+<span class="fn">LAG</span>(salary, 1, 0) <span class="kw">OVER</span>(<span class="kw">ORDER BY</span> empno)  <span class="cm">-- 이전 행 salary</span>
+<span class="fn">LEAD</span>(salary, 1, 0) <span class="kw">OVER</span>(<span class="kw">ORDER BY</span> empno) <span class="cm">-- 다음 행 salary</span></div>
+        <div class="warn">RANK()는 동순위 다음 번호 건너뜀(1,2,2,4) / DENSE_RANK()는 연속(1,2,2,3) / ROW_NUMBER()는 항상 고유 / WHERE에서 윈도우함수 사용 불가 → 인라인뷰로 감싸야</div>
+        <div class="memo">RANK=1,2,2,4 / DENSE_RANK=1,2,2,3 / ROW_NUMBER=1,2,3,4 / LAG=이전행·LEAD=다음행</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- P5: TCL·DCL·인덱스 -->
+<div class="pnl" id="p5">
+  <div class="card">
+    <div class="card-h"><div class="ico ir">🔒</div><h3>트랜잭션 (TCL) & 격리 수준 ⭐</h3></div>
+
+    <div class="acc open" onclick="this.classList.toggle('open')">
+      <div class="acc-h"><div class="acc-title" style="color:var(--a4);">COMMIT·ROLLBACK·SAVEPOINT ⭐</div><div class="acc-tgl">▾</div></div>
+      <div class="acc-body">
+        <div class="sql"><span class="cm">-- 트랜잭션 예시</span>
+<span class="kw">BEGIN TRANSACTION</span>;                          <span class="cm">-- 트랜잭션 시작 (일부 DB)</span>
+<span class="kw">UPDATE</span> emp <span class="kw">SET</span> salary = salary * 1.1;
+<span class="kw">SAVEPOINT</span> sp1;                               <span class="cm">-- 중간 저장점</span>
+<span class="kw">DELETE FROM</span> emp <span class="kw">WHERE</span> salary < 1000;
+<span class="kw">ROLLBACK TO SAVEPOINT</span> sp1;                   <span class="cm">-- sp1 시점으로 되돌림 (UPDATE는 유지)</span>
+<span class="kw">COMMIT</span>;                                      <span class="cm">-- 확정 저장</span></div>
+        <table style="margin-top:8px;">
+          <thead><tr><th>명령</th><th>동작</th><th>유의사항</th></tr></thead>
+          <tbody>
+            <tr><td><strong>COMMIT</strong></td><td>변경사항 영구 저장</td><td>COMMIT 후 ROLLBACK 불가</td></tr>
+            <tr><td><strong>ROLLBACK</strong></td><td>변경사항 취소·되돌림</td><td>마지막 COMMIT 시점까지 취소</td></tr>
+            <tr><td><strong>SAVEPOINT</strong></td><td>트랜잭션 중간 저장점</td><td>ROLLBACK TO 세이브포인트명</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="acc" onclick="this.classList.toggle('open')">
+      <div class="acc-h"><div class="acc-title" style="color:var(--a6);">트랜잭션 격리 수준 & 이상 현상 ⭐</div><div class="acc-tgl">▾</div></div>
+      <div class="acc-body">
+        <table>
+          <thead><tr><th>격리 수준</th><th>Dirty Read</th><th>Non-Repeatable Read</th><th>Phantom Read</th></tr></thead>
+          <tbody>
+            <tr><td><strong>READ UNCOMMITTED</strong></td><td>발생</td><td>발생</td><td>발생</td></tr>
+            <tr><td><strong>READ COMMITTED ⭐</strong></td><td><strong>방지</strong></td><td>발생</td><td>발생</td></tr>
+            <tr><td><strong>REPEATABLE READ ⭐</strong></td><td>방지</td><td><strong>방지</strong></td><td>발생</td></tr>
+            <tr><td><strong>SERIALIZABLE ⭐</strong></td><td>방지</td><td>방지</td><td><strong>방지</strong></td></tr>
+          </tbody>
+        </table>
+        <ul class="il" style="margin-top:8px;">
+          <li><strong>Dirty Read:</strong> 커밋 안 된 데이터 읽기 — 롤백 시 잘못된 데이터</li>
+          <li><strong>Non-Repeatable Read:</strong> 같은 쿼리를 두 번 실행했을 때 결과 다름 (중간에 다른 트랜잭션이 UPDATE·DELETE)</li>
+          <li><strong>Phantom Read:</strong> 같은 범위 쿼리 두 번 실행 시 행 수 다름 (중간에 INSERT)</li>
+        </ul>
+        <div class="warn">격리 수준 높을수록 이상 현상 감소하지만 동시성 낮아짐(성능 저하) / 기본값: Oracle=READ COMMITTED, MySQL InnoDB=REPEATABLE READ</div>
+      </div>
+    </div>
+
+    <div class="acc" onclick="this.classList.toggle('open')">
+      <div class="acc-h"><div class="acc-title" style="color:var(--a2);">인덱스 (Index) 핵심 유의사항 ⭐</div><div class="acc-tgl">▾</div></div>
+      <div class="acc-body">
+        <ul class="il" style="margin-bottom:10px;">
+          <li><strong>인덱스가 사용되지 않는 경우 (함정 포인트!):</strong></li>
+        </ul>
+        <div class="sql"><span class="bad">WHERE salary * 12 > 60000;    </span><span class="cm">-- 컬럼에 함수/연산 적용 → 인덱스 미사용!</span>
+<span class="bad">WHERE UPPER(ename) = 'SCOTT'; </span><span class="cm">-- 컬럼에 함수 적용 → 미사용!</span>
+<span class="bad">WHERE salary != 3000;          </span><span class="cm">-- 부정 연산자(!= <>) → 전체 스캔</span>
+<span class="bad">WHERE salary IS NULL;          </span><span class="cm">-- IS NULL → 인덱스 미사용 (일반 B-Tree)</span>
+<span class="bad">WHERE name LIKE '%SCOTT%';     </span><span class="cm">-- 앞에 % → 인덱스 미사용!</span>
+
+<span class="good">WHERE salary > 60000 / 12;    </span><span class="cm">-- 상수 연산으로 변경 → 인덱스 사용!</span>
+<span class="good">WHERE name LIKE 'SCOTT%';      </span><span class="cm">-- 앞에 % 없으면 인덱스 사용!</span></div>
+        <table style="margin-top:8px;">
+          <thead><tr><th>인덱스 종류</th><th>특징</th></tr></thead>
+          <tbody>
+            <tr><td><strong>클러스터드 인덱스</strong></td><td>데이터 물리 순서 정렬 / 테이블당 1개 / PK 자동 생성</td></tr>
+            <tr><td><strong>논클러스터드 인덱스</strong></td><td>별도 인덱스 페이지 / 테이블당 여러 개 가능</td></tr>
+            <tr><td><strong>복합 인덱스</strong></td><td>선행 컬럼 조건 없으면 인덱스 미사용 (최 좌측 접두사 규칙)</td></tr>
+          </tbody>
+        </table>
+        <div class="warn">컬럼에 함수·연산 적용, LIKE '%앞', !=, IS NULL → 인덱스 무효화! / 복합인덱스는 선두컬럼 조건 없으면 미사용</div>
+      </div>
+    </div>
+
+    <div class="acc" onclick="this.classList.toggle('open')">
+      <div class="acc-h"><div class="acc-title" style="color:var(--a5);">DCL — GRANT·REVOKE & 뷰(VIEW)</div><div class="acc-tgl">▾</div></div>
+      <div class="acc-body">
+        <div class="sql"><span class="cm">-- GRANT: 권한 부여</span>
+<span class="kw">GRANT</span> <span class="kw">SELECT</span>, <span class="kw">INSERT</span> <span class="kw">ON</span> emp <span class="kw">TO</span> user1;
+<span class="kw">GRANT</span> <span class="kw">SELECT</span> <span class="kw">ON</span> emp <span class="kw">TO</span> user1 <span class="kw">WITH GRANT OPTION</span>;  <span class="cm">-- 재부여 권한 포함</span>
+
+<span class="cm">-- REVOKE: 권한 회수</span>
+<span class="kw">REVOKE</span> <span class="kw">SELECT</span> <span class="kw">ON</span> emp <span class="kw">FROM</span> user1;
+<span class="cm">-- WITH GRANT OPTION으로 부여받은 권한도 연쇄 회수!</span>
+
+<span class="cm">-- VIEW: 가상 테이블</span>
+<span class="kw">CREATE VIEW</span> emp_view <span class="kw">AS</span>
+  <span class="kw">SELECT</span> empno, ename, deptno <span class="kw">FROM</span> emp <span class="kw">WHERE</span> deptno = 10;
+
+<span class="cm">-- VIEW의 DML 제한</span>
+<span class="cm">-- 아래 경우 뷰를 통한 UPDATE/INSERT 불가:</span>
+<span class="cm">-- 집계함수 포함 / GROUP BY / DISTINCT / ROWNUM</span>
+<span class="cm">-- 여러 테이블 JOIN / 서브쿼리 포함</span></div>
+        <div class="warn">WITH GRANT OPTION 부여 후 REVOKE 시 연쇄 권한 회수 / 집계함수·GROUP BY·DISTINCT 포함 뷰는 DML 불가</div>
+      </div>
+    </div>
+    <div class="memo">READ COMMITTED=Dirty Read방지 / REPEATABLE READ=NonRepeatableRead방지 / SERIALIZABLE=Phantom방지 / 컬럼함수→인덱스무효</div>
+  </div>
+</div>
+
+<!-- P6: QA -->
+<div class="pnl" id="p6">
+  <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:7px;margin-bottom:12px;">
+    <div class="fb-wr" id="fbar" style="margin:0;">
+      <button class="fb on" data-f="all">전체</button>
+      <button class="fb" data-f="DDL">📋 DDL</button>
+      <button class="fb" data-f="SELECT">🔍 SELECT·NULL</button>
+      <button class="fb" data-f="JOIN">🔗 JOIN</button>
+      <button class="fb" data-f="서브쿼리">🪟 서브쿼리</button>
+      <button class="fb" data-f="TCL">🔒 TCL·인덱스</button>
+      <button class="fb" data-f="OX">⭕ OX</button>
+    </div>
+    <div class="sc-b">정답: <span id="sc">0</span>/<span id="st">0</span></div>
+  </div>
+  <div id="ql"></div>
+</div>
+
+</div>
+<script>
+document.querySelectorAll('.tab').forEach(t=>t.addEventListener('click',()=>{
+  document.querySelectorAll('.tab,.pnl').forEach(x=>x.classList.remove('on'));
+  t.classList.add('on');document.getElementById(t.dataset.p).classList.add('on');
+}));
+const QA=[
+  {cat:'DDL',diff:'easy',
+   q:'다음 SQL 명령어 중 실행 후 ROLLBACK이 불가능한 것은?',
+   cs:['DELETE FROM emp WHERE deptno=10','UPDATE emp SET salary=salary*1.1','TRUNCATE TABLE emp','INSERT INTO emp VALUES (100, \'홍길동\')'],ans:2,
+   exp:'<strong>TRUNCATE</strong>는 DDL 명령어로 <em>AUTO COMMIT</em>이 적용되어 ROLLBACK이 불가능합니다. DELETE는 DML이므로 ROLLBACK 가능. DDL(CREATE·ALTER·DROP·TRUNCATE)과 DCL(GRANT·REVOKE)은 AUTO COMMIT — 이것이 시험 단골 함정입니다.'},
+  {cat:'DDL',diff:'mid',
+   q:'UNIQUE 제약조건에 대한 설명으로 가장 적절한 것은?',
+   cs:['UNIQUE 컬럼에는 NULL 값을 단 한 개도 입력할 수 없다.','UNIQUE 컬럼에는 NULL 값을 여러 개 입력할 수 있다.','UNIQUE는 PRIMARY KEY와 동일하게 NOT NULL을 자동 포함한다.','UNIQUE 제약조건은 테이블당 하나만 설정 가능하다.'],ans:1,
+   exp:'<strong>UNIQUE 제약조건과 NULL</strong>: NULL은 "알 수 없는 값"이므로 NULL ≠ NULL입니다. 따라서 UNIQUE 컬럼에 <em>NULL을 여러 개 입력할 수 있습니다</em>. PRIMARY KEY는 UNIQUE + NOT NULL이지만, UNIQUE 단독은 NULL 허용. 테이블당 여러 개의 UNIQUE 제약조건 설정 가능.'},
+  {cat:'SELECT',diff:'mid',
+   q:'SELECT 문의 논리적 실행 순서로 가장 적절한 것은?',
+   cs:['SELECT → FROM → WHERE → GROUP BY → HAVING → ORDER BY','FROM → WHERE → GROUP BY → HAVING → SELECT → ORDER BY','FROM → SELECT → WHERE → HAVING → GROUP BY → ORDER BY','WHERE → FROM → GROUP BY → SELECT → HAVING → ORDER BY'],ans:1,
+   exp:'<strong>SELECT 논리적 실행 순서</strong>: FROM(1) → WHERE(2) → GROUP BY(3) → HAVING(4) → SELECT(5) → ORDER BY(6). 중요한 유의사항: ①<em>WHERE에서 집계함수 사용 불가</em> (아직 그룹핑 전) ②<em>HAVING에서 집계함수 사용 가능</em> ③ORDER BY에서는 SELECT 별칭(alias) 사용 가능 (SELECT 이후 실행이므로).'},
+  {cat:'SELECT',diff:'hard',
+   q:'다음 SQL의 실행 결과로 가장 적절한 것은? (salary 컬럼에 NULL 값이 포함된 경우)\nSELECT AVG(salary) FROM emp;',
+   cs:['NULL을 0으로 처리하여 전체 행 수로 나눈 평균','NULL 행을 제외한 행의 salary 합계를 NULL이 아닌 행 수로 나눈 평균','오류 발생','NULL을 포함하므로 항상 NULL 반환'],ans:1,
+   exp:'<strong>AVG와 NULL</strong>: AVG(컬럼)은 <em>NULL을 제외한 행의 합계를 NULL이 아닌 행 수로 나눕니다</em>. 예) salary: [100, 200, NULL] → AVG = (100+200)/2 = 150 (분모가 3이 아닌 2). 이로 인해 전체 평균보다 높게 계산될 수 있습니다. NULL을 0으로 포함하려면 AVG(NVL(salary,0)) 또는 SUM(NVL(salary,0))/COUNT(*) 사용.'},
+  {cat:'JOIN',diff:'mid',
+   q:'LEFT OUTER JOIN 후 WHERE 절에 오른쪽 테이블의 컬럼 조건을 추가했을 때 발생하는 현상으로 가장 적절한 것은?',
+   cs:['LEFT JOIN의 특성이 유지되어 왼쪽 테이블의 모든 행이 반환된다.','WHERE 조건이 NULL인 행을 모두 제외하여 사실상 INNER JOIN과 동일한 결과가 나온다.','오류가 발생한다.','오른쪽 테이블의 모든 행이 추가로 반환된다.'],ans:1,
+   exp:'<strong>LEFT JOIN + WHERE 오른쪽 컬럼 조건</strong>: WHERE d.dname = \'영업\'을 추가하면, LEFT JOIN으로 생성된 오른쪽 NULL 행들이 WHERE 조건을 만족하지 못해 제거됩니다. 결과적으로 <em>INNER JOIN과 동일한 결과</em>가 나옵니다. 해결책: 조건을 ON절에 포함시키거나 WHERE d.dname = \'영업\' OR d.dname IS NULL 로 작성.'},
+  {cat:'JOIN',diff:'mid',
+   q:'UNION과 UNION ALL의 차이로 가장 적절한 것은?',
+   cs:['UNION ALL은 중복을 제거하고, UNION은 중복을 포함한다.','UNION은 중복을 제거하여 느리고, UNION ALL은 중복을 포함하여 빠르다.','UNION과 UNION ALL은 결과가 항상 동일하다.','UNION ALL은 컬럼 수가 달라도 사용 가능하다.'],ans:1,
+   exp:'<strong>UNION vs UNION ALL</strong>: <em>UNION</em>=중복 제거(정렬 작업 발생 → 느림) / <em>UNION ALL</em>=중복 포함(정렬 없음 → 빠름). 둘 다 컬럼 수와 데이터 타입이 일치해야 합니다. ORDER BY는 마지막 SELECT에 한 번만 사용 가능. 중복이 없거나 중복이 있어도 상관없을 때는 UNION ALL이 성능상 유리.'},
+  {cat:'서브쿼리',diff:'hard',
+   q:'다음 SQL에서 발생하는 문제로 가장 적절한 것은?\nSELECT * FROM emp WHERE deptno NOT IN (SELECT deptno FROM dept WHERE loc = \'SEOUL\');',
+   cs:['서브쿼리 결과가 여러 행이므로 NOT IN 사용이 불가능하다.','서브쿼리 결과에 NULL이 포함된 경우 아무 행도 반환되지 않는다.','NOT IN은 서브쿼리와 함께 사용할 수 없다.','GROUP BY 없이 서브쿼리를 사용하면 오류가 발생한다.'],ans:1,
+   exp:'<strong>NOT IN과 NULL 함정</strong>: 서브쿼리 결과에 NULL이 포함되면 NOT IN 조건 전체가 FALSE가 되어 <em>아무 행도 반환되지 않습니다</em>. deptno가 NULL인 부서가 있으면 NOT IN (10, 20, NULL)에서 모든 비교가 NULL과의 비교를 포함하여 UNKNOWN이 됩니다. 해결책: <em>NOT EXISTS 사용</em>하거나 WHERE deptno IS NOT NULL 추가.'},
+  {cat:'서브쿼리',diff:'mid',
+   q:'RANK(), DENSE_RANK(), ROW_NUMBER()의 차이로 가장 적절한 것은?',
+   cs:['셋 모두 동일한 결과를 반환한다.','RANK()는 1,2,2,4 / DENSE_RANK()는 1,2,2,3 / ROW_NUMBER()는 1,2,3,4를 반환한다.','DENSE_RANK()는 항상 고유한 순번을 반환한다.','ROW_NUMBER()는 동순위 처리를 위해 설계되었다.'],ans:1,
+   exp:'세 함수의 차이: <strong>RANK()</strong>: 동순위 후 다음 번호를 건너뜀 → 1,2,2,4 / <strong>DENSE_RANK()</strong>: 동순위 후 연속 번호 → 1,2,2,3 / <strong>ROW_NUMBER()</strong>: 항상 고유한 연속 번호(동순위 없음) → 1,2,3,4. 시험에서 3개 함수 적용 결과를 묻는 문제가 자주 출제됩니다.'},
+  {cat:'TCL',diff:'mid',
+   q:'트랜잭션 격리 수준 중 Dirty Read, Non-Repeatable Read는 방지하지만 Phantom Read는 방지하지 못하는 수준은?',
+   cs:['READ UNCOMMITTED','READ COMMITTED','REPEATABLE READ','SERIALIZABLE'],ans:2,
+   exp:'<strong>트랜잭션 격리 수준</strong>: READ UNCOMMITTED(모두 발생) → READ COMMITTED(Dirty Read 방지) → REPEATABLE READ(Dirty·Non-Repeatable 방지, Phantom 발생) → SERIALIZABLE(모두 방지). <em>REPEATABLE READ</em>는 같은 데이터 재읽기 시 일관성을 보장하지만, 새로운 행의 삽입(INSERT)에 의한 <em>Phantom Read</em>는 방지하지 못합니다.'},
+  {cat:'TCL',diff:'hard',
+   q:'인덱스가 사용되지 않는 경우로 가장 적절하지 않은 것은?',
+   cs:['WHERE salary * 12 > 60000','WHERE name LIKE \'%Smith%\'','WHERE deptno = 10','WHERE name IS NULL'],ans:2,
+   exp:'<strong>인덱스 사용 가능 여부</strong>: WHERE deptno = 10은 등호 조건으로 <em>인덱스를 사용합니다</em>. 인덱스 무효화 조건: ①<em>컬럼에 함수·연산 적용</em>(salary*12, UPPER(name)) ②<em>앞에 %가 있는 LIKE</em>(\'%Smith%\', \'%Smith\') ③IS NULL(일반 B-Tree) ④부정 연산자(!=, <>) ⑤복합인덱스에서 선두 컬럼 미포함.'},
+  {cat:'OX',diff:'easy',type:'ox',
+   q:'SELECT 문에서 WHERE 절에 집계함수(COUNT, SUM, AVG 등)를 직접 사용할 수 있다.',ans:false,
+   exp:'<strong>×</strong> — WHERE 절은 논리적 실행 순서에서 GROUP BY보다 먼저 실행되므로 <strong>집계함수를 사용할 수 없습니다</strong>. 집계 결과에 조건을 적용하려면 GROUP BY 이후 실행되는 <em>HAVING 절</em>을 사용해야 합니다. 예) WHERE COUNT(*) > 5 (오류) → HAVING COUNT(*) > 5 (올바름).'},
+  {cat:'JOIN',diff:'mid',type:'ox',
+   q:'UNION 연산자를 사용할 때 두 SELECT 문의 컬럼 수와 데이터 타입이 반드시 일치해야 한다.',ans:true,
+   exp:'<strong>○</strong> — UNION(및 UNION ALL·INTERSECT·EXCEPT) 집합 연산자 사용 조건: ①<em>SELECT 절의 컬럼 수가 동일</em>해야 함 ②<em>각 컬럼의 데이터 타입이 호환 가능</em>해야 함. 컬럼 이름은 첫 번째 SELECT의 컬럼명을 따름. ORDER BY는 마지막 SELECT 이후에 한 번만 사용 가능.'},
+  {cat:'SELECT',diff:'mid',type:'ox',
+   q:'GROUP BY 절에 포함되지 않은 컬럼은 SELECT 절에서 집계함수로 감싸지 않으면 오류가 발생한다.',ans:true,
+   exp:'<strong>○</strong> — GROUP BY의 규칙: SELECT 절에 나타나는 컬럼은 ①GROUP BY에 포함되거나 ②<em>집계함수(COUNT·SUM·AVG·MAX·MIN)로 감싸져야</em> 합니다. 예) SELECT deptno, ename, COUNT(*) FROM emp GROUP BY deptno → <strong>오류!</strong> ename이 GROUP BY에도 없고 집계함수로도 감싸지지 않았음.'},
+  {cat:'TCL',diff:'hard',type:'ox',
+   q:'SAVEPOINT를 사용하면 트랜잭션의 특정 시점으로 부분 롤백할 수 있으며, ROLLBACK TO SAVEPOINT 실행 후에도 해당 SAVEPOINT 이전의 변경사항은 유지된다.',ans:true,
+   exp:'<strong>○</strong> — SAVEPOINT의 특성: ROLLBACK TO SAVEPOINT sp1을 실행하면 sp1 이후의 변경사항만 취소되고, <em>sp1 이전의 변경사항은 유지</em>됩니다. 전체 트랜잭션을 취소하려면 ROLLBACK(저장점 없이) 실행. SAVEPOINT는 트랜잭션 내 여러 개 설정 가능하며, 특정 시점으로의 부분 롤백을 지원합니다.'},
+  {cat:'DDL',diff:'mid',type:'ox',
+   q:'DELETE 문은 DML에 속하므로 ROLLBACK이 가능하지만, TRUNCATE 문은 DDL에 속하므로 AUTO COMMIT이 적용되어 ROLLBACK이 불가능하다.',ans:true,
+   exp:'<strong>○</strong> — 핵심 구분: <strong>DELETE(DML)</strong>: 트랜잭션 내에서 실행, ROLLBACK 가능, WHERE 조건 사용 가능, 느림(행별 로그 기록). <strong>TRUNCATE(DDL)</strong>: AUTO COMMIT 적용, ROLLBACK 불가, WHERE 조건 불가, 빠름(테이블 통째로 삭제·재생성). 감리사 시험에서 가장 자주 출제되는 함정입니다.'},
+];
+let answered=0,correct=0;
+function renderQ(f){
+  const data=f==='all'?QA:QA.filter(q=>q.cat===f);
+  const list=document.getElementById('ql');list.innerHTML='';
+  answered=0;correct=0;upS();
+  const CATC={'DDL':'tb','SELECT':'tg','JOIN':'tp','서브쿼리':'ty','TCL':'tr','OX':'to'};
+  const DLC={'easy':'easy 쉬움','mid':'mid 보통','hard':'hard 어려움'};
+  const NL=['①','②','③','④'];
+  if(!data.length){list.innerHTML='<div style="text-align:center;padding:40px;color:var(--mu)">문제 없음</div>';return;}
+  data.forEach((q,i)=>{
+    const gi=QA.indexOf(q);
+    const el=document.createElement('div');el.className='qa';
+    const tc=CATC[q.cat]||'tb';
+    const [dc,dn]=(DLC[q.diff]||'mid 보통').split(' ');
+    if(q.type==='ox'){
+      el.innerHTML=`<div class="qa-hd" onclick="this.closest('.qa').classList.toggle('open')"><div><div class="qa-meta"><span class="qn">Q${String(i+1).padStart(2,'0')}</span><span class="tag ${tc}">${q.cat}</span><span class="diff ${dc}">${dn}</span><span class="tag tg">O/X</span></div><div class="qq">${q.q}</div></div><span class="tgl">▾</span></div>
+      <div class="qa-bd"><div class="ox-wr"><button class="ox" onclick="pickOX(this,true,${gi})">⭕ 옳다</button><button class="ox" onclick="pickOX(this,false,${gi})">❌ 틀리다</button></div><div class="exp" id="ex-${gi}"><div class="exp-t">💡 해설</div>${q.exp}</div></div>`;
+    } else {
+      el.innerHTML=`<div class="qa-hd" onclick="this.closest('.qa').classList.toggle('open')"><div><div class="qa-meta"><span class="qn">Q${String(i+1).padStart(2,'0')}</span><span class="tag ${tc}">${q.cat}</span><span class="diff ${dc}">${dn}</span></div><div class="qq">${q.q}</div></div><span class="tgl">▾</span></div>
+      <div class="qa-bd"><div class="chs">${q.cs.map((c,ci)=>`<div class="ch" data-ci="${ci}" onclick="pickCh(this,${gi})"><span class="cnum">${NL[ci]}</span><span>${c}</span></div>`).join('')}</div><div class="exp" id="ex-${gi}"><div class="exp-t">💡 해설</div>${q.exp}</div></div>`;
+    }
+    list.appendChild(el);
+  });
+}
+function pickCh(el,gi){
+  const bd=el.closest('.qa-bd');if(bd.querySelector('.ok,.ng'))return;
+  const q=QA[gi];
+  bd.querySelectorAll('.ch').forEach((c,i)=>{c.classList.add('lk');if(i===q.ans)c.classList.add('ok');else if(i===parseInt(el.dataset.ci))c.classList.add('ng');});
+  document.getElementById('ex-'+gi).classList.add('show');
+  answered++;if(parseInt(el.dataset.ci)===q.ans)correct++;upS();
+}
+function pickOX(btn,val,gi){
+  const bd=btn.closest('.qa-bd');if(bd.querySelector('.so,.sx'))return;
+  const q=QA[gi];
+  bd.querySelectorAll('.ox').forEach(b=>b.classList.add('lk'));
+  btn.classList.add(val?'so':'sx');
+  if(val!==q.ans){btn.style.opacity='.5';bd.querySelectorAll('.ox')[val?1:0].classList.add(q.ans?'so':'sx');}
+  document.getElementById('ex-'+gi).classList.add('show');
+  answered++;if(val===q.ans)correct++;upS();
+}
+function upS(){document.getElementById('sc').textContent=correct;document.getElementById('st').textContent=answered;}
+document.getElementById('fbar').addEventListener('click',e=>{
+  const b=e.target.closest('.fb');if(!b)return;
+  document.querySelectorAll('.fb').forEach(x=>x.classList.remove('on'));b.classList.add('on');renderQ(b.dataset.f);
+});
+renderQ('all');
+</script>
+</body>
+</html>

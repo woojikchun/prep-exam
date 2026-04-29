@@ -1,0 +1,709 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&family=JetBrains+Mono:wght@400;700&display=swap');
+:root{
+  --bg:#040d0a;--s1:#071510;--s2:#0b1d15;--s3:#10251c;
+  --bdr:#1a4030;--a1:#34d399;--a2:#60a5fa;--a3:#a78bfa;
+  --a4:#fbbf24;--a5:#f87171;--a6:#fb923c;
+  --txt:#e2e8f0;--mu:#64748b;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Noto Sans KR',sans-serif;background:var(--bg);color:var(--txt);min-height:100vh;}
+.hdr{padding:22px 24px 16px;background:linear-gradient(150deg,#040d0a 0%,#081a11 50%,#040d0a 100%);border-bottom:1px solid var(--bdr);position:relative;overflow:hidden;}
+.hdr::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 65% 85% at 80% 30%,rgba(52,211,153,.09),transparent 65%),radial-gradient(ellipse 45% 65% at 20% 80%,rgba(96,165,250,.06),transparent 60%);pointer-events:none;}
+.hdr-r{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:6px;}
+.pill{padding:3px 10px;border-radius:20px;font-size:10px;font-weight:700;letter-spacing:.8px;}
+.p1{background:linear-gradient(135deg,#052e16,var(--a1));color:#fff;}
+.p2{background:rgba(96,165,250,.15);color:var(--a2);border:1px solid rgba(96,165,250,.3);}
+.p3{background:rgba(251,191,36,.15);color:var(--a4);border:1px solid rgba(251,191,36,.3);}
+h1{font-size:19px;font-weight:900;}
+.h1g{background:linear-gradient(90deg,var(--a1),var(--a2),var(--a3));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.hdr p{color:var(--mu);font-size:12px;margin-top:3px;}
+.tabs{display:flex;padding:0 24px;background:var(--s1);border-bottom:1px solid var(--bdr);overflow-x:auto;scrollbar-width:none;}
+.tabs::-webkit-scrollbar{display:none;}
+.tab{padding:11px 14px;font-size:12px;font-weight:600;color:var(--mu);cursor:pointer;border-bottom:2px solid transparent;white-space:nowrap;transition:all .2s;background:none;border-top:none;border-left:none;border-right:none;font-family:'Noto Sans KR',sans-serif;}
+.tab:hover{color:var(--txt);}.tab.on{color:var(--a1);border-bottom-color:var(--a1);}
+.wrap{padding:20px 24px;max-width:960px;margin:0 auto;}
+.pnl{display:none;}.pnl.on{display:block;}
+.card{background:var(--s1);border:1px solid var(--bdr);border-radius:12px;padding:18px;margin-bottom:14px;}
+.card-h{display:flex;align-items:center;gap:10px;margin-bottom:14px;}
+.ico{width:34px;height:34px;border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:17px;flex-shrink:0;}
+.ig{background:rgba(52,211,153,.15);}.ib{background:rgba(96,165,250,.15);}.ip{background:rgba(167,139,250,.15);}.iy{background:rgba(251,191,36,.15);}.ir{background:rgba(248,113,113,.15);}.io{background:rgba(251,146,60,.15);}
+.card h3{font-size:14px;font-weight:700;}
+.tag{display:inline-block;padding:2px 8px;border-radius:4px;font-size:10px;font-weight:600;margin:2px 2px 2px 0;}
+.tg{background:rgba(52,211,153,.12);color:var(--a1);border:1px solid rgba(52,211,153,.25);}
+.tb{background:rgba(96,165,250,.12);color:var(--a2);border:1px solid rgba(96,165,250,.25);}
+.tp{background:rgba(167,139,250,.12);color:var(--a3);border:1px solid rgba(167,139,250,.25);}
+.ty{background:rgba(251,191,36,.12);color:var(--a4);border:1px solid rgba(251,191,36,.25);}
+.tr{background:rgba(248,113,113,.12);color:var(--a5);border:1px solid rgba(248,113,113,.25);}
+.to{background:rgba(251,146,60,.12);color:var(--a6);border:1px solid rgba(251,146,60,.25);}
+table{width:100%;border-collapse:collapse;font-size:12.5px;}
+th{background:var(--s2);color:var(--mu);font-weight:700;padding:8px 12px;text-align:left;font-size:10px;text-transform:uppercase;letter-spacing:.5px;border-bottom:1px solid var(--bdr);}
+td{padding:9px 12px;border-bottom:1px solid rgba(26,64,48,.45);vertical-align:top;line-height:1.6;}
+tr:last-child td{border-bottom:none;}
+tr:hover td{background:rgba(255,255,255,.02);}
+td strong{color:var(--a4);}
+ul.il{list-style:none;display:flex;flex-direction:column;gap:7px;}
+ul.il li{font-size:12.5px;padding-left:16px;position:relative;line-height:1.55;}
+ul.il li::before{content:'▸';position:absolute;left:0;color:var(--a1);font-size:10px;top:3px;}
+ul.il li strong{color:var(--a4);}
+ul.il li em{color:var(--a3);font-style:normal;}
+.memo{background:linear-gradient(135deg,rgba(52,211,153,.07),rgba(96,165,250,.07));border:1px solid rgba(52,211,153,.22);border-left:3px solid var(--a1);border-radius:8px;padding:10px 14px;font-size:12.5px;font-weight:600;color:var(--a1);margin:10px 0;}
+.memo::before{content:'🎯 한 줄 암기 │ ';color:var(--mu);font-weight:400;}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:14px;}
+@media(max-width:600px){.g2{grid-template-columns:1fr;}}
+
+/* 아키텍처 계층 */
+.arch-layers{display:flex;flex-direction:column;gap:4px;margin:10px 0;}
+.arch-layer{border-radius:8px;padding:11px 16px;display:flex;align-items:center;gap:12px;border:1px solid;}
+.arch-num{font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:900;width:20px;flex-shrink:0;}
+.arch-name{font-size:13px;font-weight:800;width:120px;flex-shrink:0;}
+.arch-detail{font-size:11.5px;color:var(--txt);flex:1;}
+.arch-ex{font-size:10.5px;color:var(--mu);flex-shrink:0;text-align:right;}
+
+/* 프로토콜 아코디언 */
+.proto{background:var(--s2);border:1px solid var(--bdr);border-radius:10px;margin-bottom:9px;overflow:hidden;}
+.proto-h{display:flex;justify-content:space-between;align-items:flex-start;padding:12px 16px;cursor:pointer;user-select:none;transition:background .15s;}
+.proto-h:hover{background:rgba(255,255,255,.02);}
+.proto-left{flex:1;}
+.proto-title{font-size:13px;font-weight:800;}
+.proto-en{font-size:10.5px;color:var(--mu);font-family:'JetBrains Mono',monospace;margin-top:2px;}
+.proto-tgl{color:var(--mu);transition:transform .2s;font-size:16px;flex-shrink:0;margin-left:8px;}
+.proto.open .proto-tgl{transform:rotate(180deg);}
+.proto-body{display:none;border-top:1px solid var(--bdr);padding:14px 16px;background:var(--s3);}
+.proto.open .proto-body{display:block;}
+
+/* 플랫폼 그리드 */
+.platform-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:10px 0;}
+@media(max-width:580px){.platform-grid{grid-template-columns:1fr 1fr;}}
+.pf-card{background:var(--s2);border:1px solid var(--bdr);border-radius:9px;padding:13px;}
+.pf-logo{font-size:22px;margin-bottom:5px;}
+.pf-name{font-size:12px;font-weight:800;margin-bottom:3px;}
+.pf-sub{font-size:10.5px;color:var(--mu);line-height:1.4;}
+
+/* QA */
+.qa{background:var(--s1);border:1px solid var(--bdr);border-radius:10px;margin-bottom:11px;overflow:hidden;transition:border-color .2s;}
+.qa:hover{border-color:rgba(52,211,153,.25);}
+.qa-hd{padding:14px 18px;cursor:pointer;display:flex;justify-content:space-between;align-items:flex-start;gap:10px;user-select:none;}
+.qa-meta{display:flex;align-items:center;gap:6px;margin-bottom:5px;flex-wrap:wrap;}
+.qn{font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:700;color:var(--mu);}
+.qq{font-size:13px;font-weight:600;line-height:1.55;}
+.tgl{color:var(--mu);font-size:16px;flex-shrink:0;transition:transform .2s;}
+.qa.open .tgl{transform:rotate(180deg);}
+.qa-bd{display:none;border-top:1px solid var(--bdr);padding:14px 18px;background:var(--s2);}
+.qa.open .qa-bd{display:block;}
+.chs{display:flex;flex-direction:column;gap:7px;margin-bottom:12px;}
+.ch{display:flex;align-items:flex-start;gap:10px;padding:9px 13px;border-radius:7px;border:1px solid var(--bdr);font-size:12.5px;cursor:pointer;background:var(--s1);line-height:1.5;transition:all .15s;}
+.ch:hover:not(.lk){border-color:rgba(52,211,153,.3);background:rgba(52,211,153,.04);}
+.ch.ok{border-color:var(--a1);background:rgba(52,211,153,.1);color:var(--a1);}
+.ch.ng{border-color:var(--a5);background:rgba(248,113,113,.08);color:var(--a5);opacity:.7;}
+.ch.lk{cursor:default;}
+.cnum{font-family:'JetBrains Mono',monospace;font-weight:700;font-size:11px;flex-shrink:0;margin-top:1px;color:var(--mu);}
+.ch.ok .cnum{color:var(--a1);}.ch.ng .cnum{color:var(--a5);}
+.exp{background:rgba(52,211,153,.05);border:1px solid rgba(52,211,153,.18);border-radius:8px;padding:12px 14px;font-size:12.5px;line-height:1.65;display:none;}
+.exp.show{display:block;}
+.exp-t{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--a1);margin-bottom:6px;}
+.exp strong{color:var(--a4);}
+.exp em{color:var(--a3);font-style:normal;}
+.ox-wr{display:flex;gap:10px;margin-bottom:12px;}
+.ox{flex:1;padding:11px;border-radius:8px;border:1px solid var(--bdr);font-size:20px;cursor:pointer;background:var(--s1);transition:all .15s;font-family:'Noto Sans KR',sans-serif;color:var(--txt);}
+.ox:hover:not(.lk){transform:scale(1.02);}
+.ox.so{border-color:var(--a1);background:rgba(52,211,153,.15);}
+.ox.sx{border-color:var(--a5);background:rgba(248,113,113,.1);}
+.ox.lk{cursor:default;}
+.diff{display:inline-block;padding:2px 7px;border-radius:10px;font-size:9px;font-weight:700;}
+.easy{background:rgba(52,211,153,.2);color:var(--a1);}
+.mid{background:rgba(251,191,36,.2);color:var(--a4);}
+.hard{background:rgba(248,113,113,.2);color:var(--a5);}
+.fb-wr{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:14px;}
+.fb{padding:5px 12px;border-radius:20px;border:1px solid var(--bdr);font-size:11px;font-weight:600;cursor:pointer;background:var(--s2);color:var(--mu);transition:all .15s;font-family:'Noto Sans KR',sans-serif;}
+.fb.on{background:rgba(52,211,153,.15);color:var(--a1);border-color:var(--a1);}
+.sc-b{background:var(--s2);border:1px solid var(--bdr);border-radius:8px;padding:5px 14px;font-size:12px;color:var(--mu);}
+.sc-b span{color:var(--a1);font-weight:700;}
+</style>
+</head>
+<body>
+
+<div class="hdr">
+  <div class="hdr-r">
+    <span class="pill p1">IoT Platform — Internet of Things</span>
+    <span class="pill p2">사물인터넷 플랫폼</span>
+    <span class="pill p3">감리사 핵심 출제</span>
+  </div>
+  <h1><span class="h1g">IoT 플랫폼 완전 정리</span></h1>
+  <p>IoT 아키텍처 계층 · 통신 프로토콜(MQTT·CoAP·AMQP) · 엣지컴퓨팅 · 보안위협 · 표준·플랫폼 비교</p>
+</div>
+
+<div class="tabs">
+  <button class="tab on" data-p="p1">🌐 IoT 개요·아키텍처</button>
+  <button class="tab" data-p="p2">📡 통신 프로토콜</button>
+  <button class="tab" data-p="p3">⚙️ 엣지·포그 컴퓨팅</button>
+  <button class="tab" data-p="p4">🔒 IoT 보안</button>
+  <button class="tab" data-p="p5">🏭 플랫폼·표준·응용</button>
+  <button class="tab" data-p="p6">❓ 예상문제</button>
+</div>
+
+<div class="wrap">
+
+<!-- ===== P1: 개요·아키텍처 ===== -->
+<div class="pnl on" id="p1">
+  <div class="card">
+    <div class="card-h"><div class="ico ig">🌐</div><h3>IoT (Internet of Things) 정의</h3></div>
+    <div style="background:var(--s2);border:1px solid rgba(52,211,153,.28);border-radius:10px;padding:14px;margin-bottom:12px;">
+      <p style="font-size:13px;line-height:1.8;font-weight:500;">
+        <strong style="color:var(--a1)">IoT</strong>란 사람·사물·공간 등 모든 것(Things)이 인터넷으로 연결되어 <em style="color:var(--a4);font-style:normal;">데이터를 수집·교환·분석</em>하고 자율적으로 제어하는 초연결 지능형 인프라
+      </p>
+    </div>
+    <table>
+      <thead><tr><th>항목</th><th>내용</th></tr></thead>
+      <tbody>
+        <tr><td><strong>핵심 특성</strong></td><td>초연결(Hyper-connectivity) / 상황인식(Context-Awareness) / 자율제어(Autonomy)</td></tr>
+        <tr><td><strong>구성 요소</strong></td><td>디바이스(센서·액추에이터) → 네트워크(게이트웨이·통신) → 플랫폼(클라우드) → 서비스(앱·분석)</td></tr>
+        <tr><td><strong>핵심 기술</strong></td><td>센서·임베디드 / 무선통신(LPWAN·WiFi·BLE) / 클라우드·빅데이터 / AI·머신러닝 / 보안</td></tr>
+        <tr><td><strong>관련 개념</strong></td><td>M2M(기계 간 통신)의 확장 / CPS(사이버물리시스템) / 산업용=IIoT</td></tr>
+        <tr><td><strong>표준 기관</strong></td><td>ITU-T, ISO/IEC JTC1, IETF, OCF, oneM2M, IEEE</td></tr>
+      </tbody>
+    </table>
+    <div class="memo">IoT = 사물+인터넷+지능 / 디바이스→네트워크→플랫폼→서비스 4계층 구조</div>
+  </div>
+
+  <div class="card">
+    <div class="card-h"><div class="ico iy">🏛️</div><h3>IoT 참조 아키텍처 계층 구조 ⭐</h3></div>
+    <div class="arch-layers">
+      <div class="arch-layer" style="background:rgba(248,113,113,.07);border-color:rgba(248,113,113,.3);">
+        <div class="arch-num" style="color:var(--a5);">L4</div>
+        <div class="arch-name" style="color:var(--a5);">서비스·응용 계층</div>
+        <div class="arch-detail">비즈니스 로직·서비스 제공 / 데이터 시각화·API / 의사결정 지원</div>
+        <div class="arch-ex">스마트홈·스마트시티·헬스케어</div>
+      </div>
+      <div class="arch-layer" style="background:rgba(251,191,36,.07);border-color:rgba(251,191,36,.3);">
+        <div class="arch-num" style="color:var(--a4);">L3</div>
+        <div class="arch-name" style="color:var(--a4);">플랫폼·처리 계층</div>
+        <div class="arch-detail">데이터 수집·저장·분석 / 디바이스 관리 / 클라우드·엣지 처리</div>
+        <div class="arch-ex">AWS IoT·Azure·클라우드</div>
+      </div>
+      <div class="arch-layer" style="background:rgba(96,165,250,.07);border-color:rgba(96,165,250,.3);">
+        <div class="arch-num" style="color:var(--a2);">L2</div>
+        <div class="arch-name" style="color:var(--a2);">네트워크 계층</div>
+        <div class="arch-detail">데이터 전송 / 게이트웨이 / LPWAN·WiFi·LTE·5G / 프로토콜 변환</div>
+        <div class="arch-ex">LoRa·NB-IoT·Zigbee</div>
+      </div>
+      <div class="arch-layer" style="background:rgba(52,211,153,.07);border-color:rgba(52,211,153,.3);">
+        <div class="arch-num" style="color:var(--a1);">L1</div>
+        <div class="arch-name" style="color:var(--a1);">인지·디바이스 계층</div>
+        <div class="arch-detail">물리 세계 데이터 수집 / 센서·액추에이터 / 임베디드 시스템</div>
+        <div class="arch-ex">온도·압력·카메라 센서</div>
+      </div>
+    </div>
+    <div class="memo">IoT 4계층: 인지(센서·디바이스) → 네트워크(전송·게이트웨이) → 플랫폼(처리·저장) → 서비스(응용·비즈니스)</div>
+  </div>
+
+  <div class="card">
+    <div class="card-h"><div class="ico ib">📡</div><h3>IoT 무선 통신 기술 분류</h3></div>
+    <table>
+      <thead><tr><th>분류</th><th>기술</th><th>범위</th><th>특징·용도</th></tr></thead>
+      <tbody>
+        <tr><td rowspan="3"><span class="tag tg">WPAN<br>(단거리)</span></td>
+          <td><strong>Bluetooth/BLE</strong></td><td>~10m</td><td>웨어러블·헬스케어·스마트폰 연동</td></tr>
+        <tr><td><strong>Zigbee</strong></td><td>~100m</td><td>저전력 메쉬 네트워크 / 스마트홈·조명</td></tr>
+        <tr><td><strong>Z-Wave</strong></td><td>~30m</td><td>홈 자동화·보안 특화 / 900MHz</td></tr>
+        <tr><td rowspan="2"><span class="tag tb">WLAN<br>(근거리)</span></td>
+          <td><strong>Wi-Fi (802.11)</strong></td><td>~100m</td><td>고속·광대역 / 스마트 가전·카메라</td></tr>
+        <tr><td><strong>Wi-Fi HaLow (802.11ah)</strong></td><td>~1km</td><td>저전력 장거리 Wi-Fi / 900MHz</td></tr>
+        <tr><td rowspan="3"><span class="tag ty">LPWAN<br>(광역)</span></td>
+          <td><strong>LoRa/LoRaWAN</strong></td><td>수 km~15km</td><td>초저전력·장거리 / 스마트시티·농업·환경</td></tr>
+        <tr><td><strong>NB-IoT</strong></td><td>수 km</td><td>LTE 기반 표준화 / 가스계량·주차관리</td></tr>
+        <tr><td><strong>Sigfox</strong></td><td>수 km~50km</td><td>초저전력·협대역 / 단방향 위주</td></tr>
+        <tr><td><span class="tag tp">셀룰러</span></td>
+          <td><strong>LTE-M / 5G</strong></td><td>광역</td><td>이동성·고속·저지연 / 커넥티드카·로봇</td></tr>
+      </tbody>
+    </table>
+    <div class="memo">단거리: BLE·Zigbee·Z-Wave / 광역LPWAN: LoRa·NB-IoT·Sigfox / 고속이동: LTE-M·5G</div>
+  </div>
+</div>
+
+<!-- ===== P2: 통신 프로토콜 ===== -->
+<div class="pnl" id="p2">
+  <div class="card">
+    <div class="card-h"><div class="ico ig">📡</div><h3>IoT 응용 계층 핵심 프로토콜 ⭐</h3></div>
+
+    <div class="proto open" onclick="this.classList.toggle('open')">
+      <div class="proto-h">
+        <div class="proto-left">
+          <div class="proto-title" style="color:var(--a1);">MQTT (Message Queuing Telemetry Transport)</div>
+          <div class="proto-en">발행-구독 패턴 / TCP / 브로커 중심 / 포트 1883(TLS:8883)</div>
+        </div>
+        <div style="display:flex;align-items:center;gap:6px;"><span class="tag tg">⭐최중요</span><div class="proto-tgl">▾</div></div>
+      </div>
+      <div class="proto-body">
+        <ul class="il">
+          <li><strong>아키텍처:</strong> 발행자(Publisher) → <em>브로커(Broker)</em> → 구독자(Subscriber) / 발행-구독(Pub-Sub) 패턴</li>
+          <li><strong>특징:</strong> 경량(헤더 최소 2바이트) / 저대역폭·저전력 / 비동기 메시지 전달 / TCP 기반</li>
+          <li><strong>QoS 레벨:</strong> 0(최대 1회, At Most Once) / 1(최소 1회, At Least Once) / 2(정확히 1회, Exactly Once)</li>
+          <li><strong>보안:</strong> TLS/SSL 암호화 / 사용자명·비밀번호 인증 / 인증서 기반 인증</li>
+          <li><strong>용도:</strong> 스마트홈·산업용 IoT·원격 센서 모니터링·메시징 앱</li>
+          <li><strong>브로커 예시:</strong> Mosquitto, HiveMQ, AWS IoT Core, Azure IoT Hub</li>
+          <li><strong>MQTT 5.0:</strong> 메시지 만료·사용자 속성·공유 구독 등 기능 강화</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="proto" onclick="this.classList.toggle('open')">
+      <div class="proto-h">
+        <div class="proto-left">
+          <div class="proto-title" style="color:var(--a2);">CoAP (Constrained Application Protocol)</div>
+          <div class="proto-en">REST 스타일 / UDP 기반 / 초저사양 디바이스 / 포트 5683(DTLS:5684)</div>
+        </div>
+        <div style="display:flex;align-items:center;gap:6px;"><span class="tag tb">⭐핵심</span><div class="proto-tgl">▾</div></div>
+      </div>
+      <div class="proto-body">
+        <ul class="il">
+          <li><strong>특징:</strong> HTTP를 제약된 환경에 맞게 경량화 / UDP 기반(신뢰성은 선택적 확인 메시지) / RESTful(GET·POST·PUT·DELETE)</li>
+          <li><strong>설계 목표:</strong> 마이크로컨트롤러·배터리 기기 등 초저사양 디바이스용 (코드 크기 수 KB)</li>
+          <li><strong>관찰(Observe):</strong> 리소스 변경 시 자동 알림 — 구독 기능과 유사</li>
+          <li><strong>CoAP vs HTTP:</strong> UDP 기반(HTTP는 TCP) / 이진 헤더(HTTP는 텍스트) / 멀티캐스트 지원</li>
+          <li><strong>보안:</strong> DTLS (UDP 기반 TLS) 적용 / 인증서·PSK(Pre-Shared Key)</li>
+          <li><strong>용도:</strong> 스마트 에너지·의료기기·센서 네트워크</li>
+          <li><strong>표준:</strong> IETF RFC 7252</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="proto" onclick="this.classList.toggle('open')">
+      <div class="proto-h">
+        <div class="proto-left">
+          <div class="proto-title" style="color:var(--a4);">AMQP (Advanced Message Queuing Protocol)</div>
+          <div class="proto-en">엔터프라이즈 메시징 / TCP / 발행-구독+큐 / 포트 5672(TLS:5671)</div>
+        </div>
+        <div style="display:flex;align-items:center;gap:6px;"><span class="tag ty">엔터프라이즈</span><div class="proto-tgl">▾</div></div>
+      </div>
+      <div class="proto-body">
+        <ul class="il">
+          <li><strong>특징:</strong> 엔터프라이즈급 메시지 큐잉 / 신뢰성 높음 / 트랜잭션 지원 / 복잡한 라우팅</li>
+          <li><strong>구성:</strong> Exchange(라우터) → Binding → Queue → Consumer</li>
+          <li><strong>Exchange 유형:</strong> Direct·Fanout·Topic·Headers 라우팅 방식</li>
+          <li><strong>MQTT 비교:</strong> AMQP=무거움·엔터프라이즈 / MQTT=경량·IoT 특화</li>
+          <li><strong>용도:</strong> 금융 거래·기업 미들웨어·Azure Service Bus / IoT 백엔드</li>
+          <li><strong>구현체:</strong> RabbitMQ, Apache Qpid, Azure Service Bus</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="proto" onclick="this.classList.toggle('open')">
+      <div class="proto-h">
+        <div class="proto-left">
+          <div class="proto-title" style="color:var(--a3);">DDS (Data Distribution Service)</div>
+          <div class="proto-en">실시간 발행-구독 / 브로커리스 / 군사·자율주행·산업</div>
+        </div>
+        <div style="display:flex;align-items:center;gap:6px;"><span class="tag tp">실시간</span><div class="proto-tgl">▾</div></div>
+      </div>
+      <div class="proto-body">
+        <ul class="il">
+          <li><strong>특징:</strong> 브로커 없는 분산 발행-구독 / 실시간 데이터 버스 / 23가지 QoS 정책 / P2P 멀티캐스트</li>
+          <li><strong>설계 목표:</strong> 실시간·고신뢰성·고성능 — 군사·의료·자율주행·로봇(ROS2)</li>
+          <li><strong>표준:</strong> OMG 표준 / ROS2의 기반 통신 미들웨어</li>
+          <li><strong>vs MQTT:</strong> DDS=브로커리스·실시간·복잡 / MQTT=브로커 중심·경량·IoT</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="card-h" style="margin-top:16px;margin-bottom:10px;"><div class="ico iy">⚖️</div><h3>IoT 프로토콜 핵심 비교</h3></div>
+    <table>
+      <thead><tr><th>구분</th><th style="color:var(--a1)">MQTT</th><th style="color:var(--a2)">CoAP</th><th style="color:var(--a4)">AMQP</th><th style="color:var(--a3)">DDS</th></tr></thead>
+      <tbody>
+        <tr><td><strong>전송</strong></td><td>TCP</td><td><strong>UDP</strong></td><td>TCP</td><td>UDP·TCP</td></tr>
+        <tr><td><strong>패턴</strong></td><td>Pub-Sub (브로커)</td><td>요청-응답 (REST)</td><td>Pub-Sub+큐</td><td>Pub-Sub (브로커리스)</td></tr>
+        <tr><td><strong>무게</strong></td><td>경량</td><td><strong>최경량</strong></td><td>무거움</td><td>중간</td></tr>
+        <tr><td><strong>보안</strong></td><td>TLS / DTLS</td><td><strong>DTLS</strong></td><td>TLS</td><td>DDS Security</td></tr>
+        <tr><td><strong>적용</strong></td><td>스마트홈·IoT</td><td>초저사양 센서</td><td>기업 미들웨어</td><td>자율주행·군사</td></tr>
+        <tr><td><strong>QoS</strong></td><td>3단계(0·1·2)</td><td>CON/NON</td><td>다양</td><td>23가지</td></tr>
+        <tr><td><strong>포트</strong></td><td>1883 / 8883</td><td>5683 / 5684</td><td>5672 / 5671</td><td>-</td></tr>
+      </tbody>
+    </table>
+    <div class="memo">MQTT=TCP·Pub-Sub·브로커·경량(IoT표준) / CoAP=UDP·REST·초경량(제약디바이스) / AMQP=엔터프라이즈 / DDS=실시간·브로커리스</div>
+  </div>
+</div>
+
+<!-- ===== P3: 엣지·포그 ===== -->
+<div class="pnl" id="p3">
+  <div class="card">
+    <div class="card-h"><div class="ico iy">⚙️</div><h3>엣지 컴퓨팅 (Edge Computing)</h3></div>
+    <div style="background:var(--s2);border:1px solid rgba(251,191,36,.25);border-radius:9px;padding:13px;margin-bottom:12px;font-size:12.5px;line-height:1.8;">
+      <strong style="color:var(--a4)">엣지 컴퓨팅</strong>: 데이터를 클라우드로 보내지 않고 <em style="color:var(--a1);font-style:normal;">데이터가 생성되는 곳(엣지) 근처</em>에서 처리·분석하는 분산 컴퓨팅 패러다임
+    </div>
+    <table>
+      <thead><tr><th>항목</th><th>내용</th></tr></thead>
+      <tbody>
+        <tr><td><strong>등장 배경</strong></td><td>IoT 디바이스 폭증 → 클라우드 집중 처리 한계 / 실시간성 요구·대역폭 부족·지연 문제 해결</td></tr>
+        <tr><td><strong>장점</strong></td><td>저지연(Low Latency) / 대역폭 절약 / 오프라인 동작 가능 / 개인정보 로컬 처리 / 실시간 제어</td></tr>
+        <tr><td><strong>단점</strong></td><td>분산 관리 복잡성 / 엣지 노드 보안 취약 / 스케일아웃 제한 / 중앙화된 분석 어려움</td></tr>
+        <tr><td><strong>적용 사례</strong></td><td>자율주행(ms 단위 반응) / 스마트 공장 실시간 제어 / 의료 현장 즉시 분석 / AR/VR</td></tr>
+        <tr><td><strong>핵심 표준</strong></td><td>ETSI MEC (Multi-access Edge Computing) / OpenFog / Linux Foundation LF Edge</td></tr>
+      </tbody>
+    </table>
+    <div class="memo">엣지 컴퓨팅 = 데이터 발생 지점 근처에서 처리 / 저지연·대역폭 절약·오프라인 동작이 핵심 장점</div>
+  </div>
+
+  <div class="card">
+    <div class="card-h"><div class="ico ib">☁️</div><h3>클라우드 vs 포그 vs 엣지 컴퓨팅 비교 ⭐</h3></div>
+    <table>
+      <thead><tr><th>항목</th><th style="color:var(--a5)">클라우드</th><th style="color:var(--a4)">포그 컴퓨팅</th><th style="color:var(--a1)">엣지 컴퓨팅</th></tr></thead>
+      <tbody>
+        <tr><td><strong>처리 위치</strong></td><td>중앙 데이터센터</td><td>네트워크 중간(게이트웨이)</td><td><strong>디바이스 근처</strong></td></tr>
+        <tr><td><strong>지연</strong></td><td>높음 (수백 ms)</td><td>중간 (수십 ms)</td><td><strong>최저 (수 ms)</strong></td></tr>
+        <tr><td><strong>대역폭 사용</strong></td><td>높음</td><td>중간</td><td>최저</td></tr>
+        <tr><td><strong>처리 능력</strong></td><td>무한 확장 가능</td><td>중간</td><td>제한적</td></tr>
+        <tr><td><strong>오프라인</strong></td><td>불가</td><td>부분 가능</td><td><strong>가능</strong></td></tr>
+        <tr><td><strong>보안·프라이버시</strong></td><td>중앙 집중 관리</td><td>계층적 보안</td><td>로컬 처리·분리</td></tr>
+        <tr><td><strong>제안 기관</strong></td><td>-</td><td>Cisco</td><td>OpenFog·ETSI MEC</td></tr>
+        <tr><td><strong>적용 예시</strong></td><td>대용량 분석·AI 학습</td><td>스마트 빌딩·공장</td><td>자율주행·산업용 로봇</td></tr>
+      </tbody>
+    </table>
+    <div class="memo">클라우드(중앙·고지연) → 포그(중간·Cisco제안) → 엣지(디바이스근처·최저지연) / 실시간 제어=엣지</div>
+  </div>
+
+  <div class="card">
+    <div class="card-h"><div class="ico ig">🏗️</div><h3>IoT 게이트웨이 (IoT Gateway)</h3></div>
+    <div class="g2">
+      <div>
+        <p style="font-size:12px;font-weight:700;color:var(--a1);margin-bottom:8px;">게이트웨이 역할</p>
+        <ul class="il">
+          <li><strong>프로토콜 변환:</strong> Zigbee·BLE → MQTT·HTTP 변환</li>
+          <li><strong>데이터 집계·필터링:</strong> 로컬 전처리로 데이터 축소</li>
+          <li><strong>보안 엔드포인트:</strong> TLS 종단·인증·방화벽</li>
+          <li><strong>오프라인 버퍼링:</strong> 네트워크 단절 시 데이터 임시 저장</li>
+          <li><strong>엣지 처리:</strong> 로컬 규칙·알람 처리</li>
+        </ul>
+      </div>
+      <div>
+        <p style="font-size:12px;font-weight:700;color:var(--a3);margin-bottom:8px;">디지털 트윈 (Digital Twin)</p>
+        <ul class="il">
+          <li><strong>정의:</strong> 물리적 객체·시스템의 가상 복제본 — 실시간 동기화·시뮬레이션</li>
+          <li><strong>구성:</strong> 물리 객체 ↔ 데이터 연결 ↔ 디지털 모델</li>
+          <li><strong>용도:</strong> 예지 정비·시뮬레이션·최적화·설계 검증</li>
+          <li><strong>플랫폼:</strong> Azure Digital Twins, AWS IoT TwinMaker</li>
+          <li><strong>표준:</strong> ISO 23247 (스마트 제조 디지털 트윈)</li>
+        </ul>
+      </div>
+    </div>
+    <div class="memo">게이트웨이=프로토콜변환+데이터필터링+보안+버퍼링 / 디지털 트윈=물리 객체의 가상 복제+실시간 동기화</div>
+  </div>
+</div>
+
+<!-- ===== P4: IoT 보안 ===== -->
+<div class="pnl" id="p4">
+  <div class="card">
+    <div class="card-h"><div class="ico ir">🔒</div><h3>IoT 보안 위협 분류 ⭐</h3></div>
+    <table>
+      <thead><tr><th>계층</th><th>주요 위협</th><th>예시</th></tr></thead>
+      <tbody>
+        <tr><td><span class="tag tg">디바이스 계층</span></td><td>물리적 탬퍼링 / 펌웨어 변조 / 기본 자격증명 / 하드웨어 취약점</td><td>기본 ID/PW 그대로 사용<br>물리적 접근으로 펌웨어 추출</td></tr>
+        <tr><td><span class="tag tb">통신 계층</span></td><td>도청(Sniffing) / MITM / 재전송 공격 / 프로토콜 취약점</td><td>암호화 없는 MQTT 도청<br>Wi-Fi 공격으로 센서 데이터 탈취</td></tr>
+        <tr><td><span class="tag ty">플랫폼 계층</span></td><td>API 취약점 / 클라우드 설정 오류 / 데이터 노출 / 인증 부재</td><td>취약한 REST API 접근<br>S3 버킷 공개 노출</td></tr>
+        <tr><td><span class="tag tr">서비스 계층</span></td><td>웹·앱 취약점 / 권한 상승 / 개인정보 침해 / DDoS</td><td>XSS·IDOR / 수십억 기기 동원 DDoS</td></tr>
+      </tbody>
+    </table>
+
+    <div style="margin-top:14px;">
+    <div class="proto" onclick="this.classList.toggle('open')">
+      <div class="proto-h">
+        <div class="proto-left">
+          <div class="proto-title" style="color:var(--a5);">Mirai 봇넷 공격 — IoT DDoS의 대표 사례</div>
+          <div class="proto-en">2016년 / IoT 기기 악용 / 역대 최대 규모 DDoS</div>
+        </div>
+        <div style="display:flex;align-items:center;gap:6px;"><span class="tag tr">⭐핵심</span><div class="proto-tgl">▾</div></div>
+      </div>
+      <div class="proto-body">
+        <ul class="il">
+          <li><strong>공격 방법:</strong> 기본 자격증명(admin/admin 등)을 사용하는 CCTV·라우터·DVR 등 IoT 기기 스캔 → 악성코드 감염 → 봇넷 구성</li>
+          <li><strong>규모:</strong> 60만~100만개 IoT 기기 동원 → Dyn DNS에 1.2Tbps DDoS → Twitter·GitHub·Netflix 등 인터넷 서비스 마비</li>
+          <li><strong>교훈:</strong> ①기본 자격증명 변경 필수 ②IoT 기기 펌웨어 업데이트 ③네트워크 분리(IoT VLAN)</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="proto" onclick="this.classList.toggle('open')">
+      <div class="proto-h">
+        <div class="proto-left">
+          <div class="proto-title" style="color:var(--a6);">OWASP IoT Top 10</div>
+          <div class="proto-en">IoT 보안 위협 10개 분류</div>
+        </div>
+        <div style="display:flex;align-items:center;gap:6px;"><span class="tag to">⭐핵심</span><div class="proto-tgl">▾</div></div>
+      </div>
+      <div class="proto-body">
+        <table>
+          <thead><tr><th>순위</th><th>취약점</th></tr></thead>
+          <tbody>
+            <tr><td><span class="tag tr">I1</span></td><td><strong>취약한 기본 비밀번호</strong> — 변경 불가능한 하드코딩 자격증명</td></tr>
+            <tr><td><span class="tag to">I2</span></td><td><strong>안전하지 않은 네트워크 서비스</strong> — 불필요한 포트·서비스 노출</td></tr>
+            <tr><td><span class="tag ty">I3</span></td><td><strong>안전하지 않은 에코시스템 인터페이스</strong> — 취약한 웹·API·앱</td></tr>
+            <tr><td><span class="tag tg">I4</span></td><td><strong>안전한 업데이트 메커니즘 부재</strong> — 미서명·미암호화 펌웨어</td></tr>
+            <tr><td><span class="tag tb">I5</span></td><td><strong>안전하지 않은 구식 구성요소</strong> — 패치되지 않은 OS·라이브러리</td></tr>
+            <tr><td><span class="tag tp">I6</span></td><td><strong>개인정보 보호 부족</strong></td></tr>
+            <tr><td><span class="tag ty">I7</span></td><td><strong>안전하지 않은 데이터 전송·저장</strong> — 평문 전송</td></tr>
+            <tr><td><span class="tag tg">I8</span></td><td><strong>디바이스 관리 부재</strong></td></tr>
+            <tr><td><span class="tag tr">I9</span></td><td><strong>안전하지 않은 기본 설정</strong></td></tr>
+            <tr><td><span class="tag to">I10</span></td><td><strong>물리적 강화 부재</strong> — 물리적 접근으로 데이터 탈취</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    </div>
+    <div class="memo">OWASP IoT I1=취약한 기본 비밀번호(Mirai 원인) / I4=안전한 업데이트 부재 / I7=평문 전송</div>
+  </div>
+
+  <div class="card">
+    <div class="card-h"><div class="ico ig">🛡️</div><h3>IoT 보안 대응 방안</h3></div>
+    <div class="g2">
+      <div>
+        <p style="font-size:12px;font-weight:700;color:var(--a1);margin-bottom:8px;">디바이스 보안</p>
+        <ul class="il">
+          <li><strong>기본 자격증명 변경</strong> 강제화 (출고 시 설정)</li>
+          <li><strong>보안 부팅(Secure Boot):</strong> 서명된 펌웨어만 실행</li>
+          <li><strong>OTA(Over-The-Air) 업데이트:</strong> 암호화·서명된 펌웨어</li>
+          <li><strong>하드웨어 보안 모듈(HSM·TPM):</strong> 키 저장·암호화</li>
+          <li><strong>최소 기능 원칙:</strong> 불필요한 포트·서비스 비활성화</li>
+          <li><strong>물리적 보호:</strong> 디버그 포트(JTAG·UART) 비활성화</li>
+        </ul>
+      </div>
+      <div>
+        <p style="font-size:12px;font-weight:700;color:var(--a2);margin-bottom:8px;">네트워크·플랫폼 보안</p>
+        <ul class="il">
+          <li><strong>TLS/DTLS:</strong> 모든 통신 암호화</li>
+          <li><strong>IoT VLAN 분리:</strong> IoT 기기를 일반 네트워크와 격리</li>
+          <li><strong>디바이스 인증:</strong> X.509 인증서 기반 PKI</li>
+          <li><strong>Zero Trust:</strong> 모든 디바이스를 검증 후 최소 권한</li>
+          <li><strong>이상 탐지(Anomaly Detection):</strong> AI 기반 비정상 행동 탐지</li>
+          <li><strong>API 보안:</strong> OAuth 2.0·API 키·Rate Limiting</li>
+        </ul>
+      </div>
+    </div>
+    <div class="memo">IoT 보안: 기본자격증명변경+보안부팅+TLS+VLAN분리+제로트러스트 / OTA 업데이트 서명 필수</div>
+  </div>
+</div>
+
+<!-- ===== P5: 플랫폼·표준·응용 ===== -->
+<div class="pnl" id="p5">
+  <div class="card">
+    <div class="card-h"><div class="ico iy">🏭</div><h3>주요 상용 IoT 플랫폼 비교</h3></div>
+    <div class="platform-grid">
+      <div class="pf-card">
+        <div class="pf-logo">🟠</div>
+        <div class="pf-name" style="color:var(--a6);">AWS IoT Core</div>
+        <div class="pf-sub">MQTT·HTTP·WebSocket<br>Rules Engine·Shadow<br>Greengrass(엣지)</div>
+      </div>
+      <div class="pf-card">
+        <div class="pf-logo">🔵</div>
+        <div class="pf-name" style="color:var(--a2);">Azure IoT Hub</div>
+        <div class="pf-sub">MQTT·AMQP·HTTP<br>디바이스 쌍(Device Twin)<br>IoT Edge·Digital Twins</div>
+      </div>
+      <div class="pf-card">
+        <div class="pf-logo">🔴</div>
+        <div class="pf-name" style="color:var(--a5);">Google Cloud IoT</div>
+        <div class="pf-sub">MQTT·HTTP<br>Pub/Sub 연동<br>Edge TPU</div>
+      </div>
+      <div class="pf-card">
+        <div class="pf-logo">🟢</div>
+        <div class="pf-name" style="color:var(--a1);">ThingsBoard</div>
+        <div class="pf-sub">오픈소스 IoT 플랫폼<br>MQTT·CoAP·HTTP<br>대시보드·룰 엔진</div>
+      </div>
+      <div class="pf-card">
+        <div class="pf-logo">🌐</div>
+        <div class="pf-name" style="color:var(--a3);">oneM2M</div>
+        <div class="pf-sub">글로벌 IoT 표준 플랫폼<br>수직적 사일로 해결<br>CSE·AE·CSF 구조</div>
+      </div>
+      <div class="pf-card">
+        <div class="pf-logo">🏠</div>
+        <div class="pf-name" style="color:var(--a4);">OCF / Matter</div>
+        <div class="pf-sub">스마트홈 표준<br>Apple·Google·Amazon 협력<br>IP 기반 상호운용성</div>
+      </div>
+    </div>
+    <div class="memo">상용: AWS IoT Core·Azure IoT Hub·Google Cloud IoT / 오픈소스: ThingsBoard / 표준: oneM2M·OCF·Matter</div>
+  </div>
+
+  <div class="card">
+    <div class="card-h"><div class="ico ib">📋</div><h3>IoT 주요 표준</h3></div>
+    <table>
+      <thead><tr><th>표준</th><th>기관</th><th>내용</th></tr></thead>
+      <tbody>
+        <tr><td><span class="tag tg">oneM2M</span></td><td>글로벌 7개 표준기관</td><td>IoT 서비스 계층 글로벌 표준 — 수직 사일로 해결, CSE(Common Service Entity) 구조</td></tr>
+        <tr><td><span class="tag tb">OCF (Open Connectivity Foundation)</span></td><td>OCF</td><td>IoT 디바이스 상호운용성 — CoAP 기반, Matter 표준의 기반</td></tr>
+        <tr><td><span class="tag ty">Matter</span></td><td>CSA (Connectivity Standards Alliance)</td><td>스마트홈 통합 표준 — Apple·Google·Amazon·Samsung 참여 / IP 기반</td></tr>
+        <tr><td><span class="tag tp">IEEE 802.15.4</span></td><td>IEEE</td><td>저속 무선 PAN 물리·MAC 계층 — Zigbee·6LoWPAN의 기반</td></tr>
+        <tr><td><span class="tag tg">6LoWPAN</span></td><td>IETF</td><td>IPv6 over Low-Power WPAN — 제약 환경에서 IPv6 사용 가능</td></tr>
+        <tr><td><span class="tag to">ETSI MEC</span></td><td>ETSI</td><td>Multi-access Edge Computing 표준 — 5G 엣지 컴퓨팅</td></tr>
+        <tr><td><span class="tag tr">IEC 62443</span></td><td>IEC</td><td>산업용 자동화 제어 시스템(IACS) 사이버보안 표준 — IIoT 보안</td></tr>
+      </tbody>
+    </table>
+    <div class="memo">IoT 표준: oneM2M(서비스계층표준) / Matter(스마트홈·CSA) / 6LoWPAN(IoT용 IPv6) / IEC 62443(산업보안)</div>
+  </div>
+
+  <div class="card">
+    <div class="card-h"><div class="ico ig">🌍</div><h3>IoT 주요 응용 분야</h3></div>
+    <table>
+      <thead><tr><th>분야</th><th>응용 예시</th><th>핵심 기술</th></tr></thead>
+      <tbody>
+        <tr><td><strong>🏠 스마트홈</strong></td><td>스마트 조명·온도조절·보안·가전 원격제어</td><td>Zigbee·Z-Wave·Matter·WiFi</td></tr>
+        <tr><td><strong>🏙️ 스마트시티</strong></td><td>교통 최적화·스마트 가로등·환경 모니터링·주차관리</td><td>LoRa·NB-IoT·5G</td></tr>
+        <tr><td><strong>🏭 스마트 팩토리(IIoT)</strong></td><td>생산 설비 모니터링·예지 정비·품질 제어·AGV 로봇</td><td>5G·OPC-UA·DDS·TSN</td></tr>
+        <tr><td><strong>🚗 커넥티드 카·자율주행</strong></td><td>V2X(차량-사물 통신)·OTA 업데이트·원격 진단</td><td>5G·DSRC·C-V2X</td></tr>
+        <tr><td><strong>🏥 스마트 헬스케어</strong></td><td>원격 환자 모니터링·웨어러블·의료기기 연동</td><td>BLE·WiFi·CoAP·HL7 FHIR</td></tr>
+        <tr><td><strong>🌾 스마트 농업</strong></td><td>토양 센서·드론·자동 관개·기상 모니터링</td><td>LoRa·Sigfox·위성</td></tr>
+        <tr><td><strong>⚡ 스마트 그리드</strong></td><td>스마트 미터·AMI·수요 반응 시스템</td><td>PLC·NB-IoT·ZigBee SEP</td></tr>
+      </tbody>
+    </table>
+    <div class="memo">스마트시티·농업=LoRa(광역·저전력) / 스마트팩토리=5G+OPC-UA / 자율주행=5G+C-V2X / 헬스케어=BLE+CoAP</div>
+  </div>
+</div>
+
+<!-- ===== P6: 예상문제 ===== -->
+<div class="pnl" id="p6">
+  <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;margin-bottom:14px;">
+    <div class="fb-wr" id="fbar" style="margin:0;">
+      <button class="fb on" data-f="all">전체</button>
+      <button class="fb" data-f="개요">🌐 개요</button>
+      <button class="fb" data-f="프로토콜">📡 프로토콜</button>
+      <button class="fb" data-f="엣지">⚙️ 엣지</button>
+      <button class="fb" data-f="보안">🔒 보안</button>
+      <button class="fb" data-f="표준">🏭 표준</button>
+      <button class="fb" data-f="OX">⭕ OX</button>
+    </div>
+    <div class="sc-b">정답: <span id="sc">0</span>/<span id="st">0</span></div>
+  </div>
+  <div id="ql"></div>
+</div>
+
+</div>
+
+<script>
+document.querySelectorAll('.tab').forEach(t=>t.addEventListener('click',()=>{
+  document.querySelectorAll('.tab,.pnl').forEach(x=>x.classList.remove('on'));
+  t.classList.add('on');document.getElementById(t.dataset.p).classList.add('on');
+}));
+
+const QA=[
+  {cat:'프로토콜',diff:'easy',
+   q:'IoT 환경에서 발행-구독(Pub-Sub) 패턴을 사용하며 브로커를 통해 메시지를 전달하는 경량 프로토콜은?',
+   cs:['HTTP','CoAP','MQTT','AMQP'],
+   ans:2,
+   exp:'<strong>MQTT(Message Queuing Telemetry Transport)</strong>: 발행자-브로커-구독자 구조의 Pub-Sub 패턴. TCP 기반, 헤더 최소 2바이트의 초경량 프로토콜로 IoT의 표준 메시지 프로토콜입니다. 포트 1883(평문) / 8883(TLS). QoS 3단계(0·1·2) 지원. CoAP는 UDP 기반 요청-응답 방식입니다.'},
+  {cat:'프로토콜',diff:'mid',
+   q:'CoAP(Constrained Application Protocol)의 특징으로 가장 적절하지 않은 것은?',
+   cs:['UDP를 기반으로 하여 신뢰성은 선택적 확인 메시지로 제공한다.','RESTful 방식(GET·POST·PUT·DELETE)을 지원한다.','TCP 기반으로 동작하여 신뢰성 있는 전송을 보장한다.','DTLS로 보안을 적용할 수 있다.'],
+   ans:2,
+   exp:'CoAP는 <strong>UDP 기반</strong>입니다. TCP가 아닙니다. UDP의 낮은 오버헤드를 이용해 초저사양 디바이스에서도 동작 가능합니다. 신뢰성이 필요한 경우 CON(Confirmable) 메시지를 사용하여 ACK를 요청합니다. 보안은 <em>DTLS(Datagram TLS)</em>를 적용합니다. 표준: IETF RFC 7252.'},
+  {cat:'프로토콜',diff:'mid',
+   q:'MQTT의 QoS 레벨 2가 의미하는 것으로 가장 적절한 것은?',
+   cs:['메시지를 최대 1회 전달하며 손실될 수 있다.','메시지를 최소 1회 전달하며 중복될 수 있다.','메시지를 정확히 1회만 전달한다(Exactly Once).','메시지를 최대한 빠르게 전달한다.'],
+   ans:2,
+   exp:'MQTT QoS 3단계: QoS <strong>0</strong> = At Most Once(최대 1회, 손실 가능), QoS <strong>1</strong> = At Least Once(최소 1회, 중복 가능), QoS <strong>2</strong> = <em>Exactly Once</em>(정확히 1회). QoS가 높을수록 신뢰성은 높아지지만 네트워크 오버헤드와 지연이 증가합니다.'},
+  {cat:'엣지',diff:'mid',
+   q:'엣지 컴퓨팅(Edge Computing)의 가장 핵심적인 이점으로 가장 적절한 것은?',
+   cs:['클라우드보다 훨씬 강력한 처리 능력을 제공한다.','데이터를 클라우드로 전송하지 않고 로컬에서 처리하여 저지연과 대역폭 절약을 실현한다.','무한한 스케일아웃이 가능하다.','중앙 집중식 관리로 보안이 더욱 강화된다.'],
+   ans:1,
+   exp:'엣지 컴퓨팅의 핵심 이점: <strong>저지연(Low Latency)</strong> — 데이터를 클라우드로 보내지 않고 발생 지점 근처에서 처리하여 수 ms 단위 반응 시간 실현. <strong>대역폭 절약</strong> — 필요한 데이터만 클라우드로 전송. 자율주행·산업용 로봇처럼 실시간 제어가 필요한 경우에 필수적입니다.'},
+  {cat:'엣지',diff:'hard',
+   q:'포그 컴퓨팅(Fog Computing)의 특징으로 가장 적절한 것은?',
+   cs:['클라우드와 동일하며 단지 물리적 위치만 다른 개념이다.','디바이스 내부에서만 처리가 이루어지는 방식이다.','Cisco가 제안한 개념으로 네트워크 에지(게이트웨이 등)에서 클라우드와 디바이스 사이에서 처리를 담당하는 분산 컴퓨팅이다.','오프라인 동작이 불가능하다.'],
+   ans:2,
+   exp:'<strong>포그 컴퓨팅</strong>: Cisco가 제안한 개념으로, 클라우드(중앙)와 엣지(디바이스) 사이의 <em>네트워크 에지 계층(게이트웨이·스위치)</em>에서 처리를 담당합니다. 엣지보다 처리 능력이 크고 클라우드보다 지연이 낮습니다. 스마트 빌딩·공장에 적합합니다. 엣지는 OpenFog·ETSI MEC가 주도합니다.'},
+  {cat:'보안',diff:'easy',
+   q:'2016년 Mirai 봇넷 공격에서 IoT 기기를 감염시킨 주된 원인은?',
+   cs:['최신 취약점(Zero-day) 익스플로잇','변경하지 않은 기본 자격증명(default credentials) 사용','암호화되지 않은 펌웨어 업데이트','물리적 접근을 통한 하드웨어 해킹'],
+   ans:1,
+   exp:'<strong>Mirai 봇넷</strong>: admin/admin, root/root 등 <em>기본 자격증명을 변경하지 않은</em> CCTV·라우터·DVR 등 IoT 기기 60만~100만대를 감염시켜 1.2Tbps DDoS 공격. Dyn DNS 마비로 Twitter·GitHub·Netflix 접속 불가. 이것이 OWASP IoT Top 10의 I1(취약한 기본 비밀번호)이 1위인 이유입니다.'},
+  {cat:'보안',diff:'mid',
+   q:'IoT 보안 강화를 위해 보안 부팅(Secure Boot)이 방어하는 위협으로 가장 적절한 것은?',
+   cs:['네트워크 도청','서명되지 않은 악의적인 펌웨어가 디바이스에서 실행되는 것','DDoS 공격에 의한 서비스 거부','API를 통한 무단 접근'],
+   ans:1,
+   exp:'<strong>보안 부팅(Secure Boot)</strong>: 부팅 과정에서 펌웨어의 디지털 서명을 검증하여 <em>서명되지 않거나 변조된 펌웨어가 실행되는 것</em>을 방지합니다. 공격자가 악성 펌웨어를 디바이스에 심어도 보안 부팅이 서명 검증에 실패하면 실행을 거부합니다. OWASP IoT I4(안전한 업데이트 메커니즘 부재)에 대한 핵심 대응 기술입니다.'},
+  {cat:'표준',diff:'mid',
+   q:'oneM2M의 핵심 목적으로 가장 적절한 것은?',
+   cs:['RFID 태그 인식을 위한 물리계층 표준화','스마트홈 기기의 음성 인터페이스 표준화','IoT 서비스 계층의 글로벌 수평 플랫폼 표준화로 수직적 사일로 문제 해결','5G 네트워크의 엣지 컴퓨팅 표준화'],
+   ans:2,
+   exp:'<strong>oneM2M</strong>: 7개 글로벌 표준 기관이 공동으로 개발한 IoT <em>서비스 계층</em> 국제 표준. 산업별·기업별로 파편화된 수직적 사일로(Vertical Silo) 문제를 해결하기 위한 수평 공통 플랫폼 제공. CSE(Common Service Entity), AE(Application Entity), CSF(Common Service Function) 구조로 구성됩니다.'},
+  {cat:'개요',diff:'hard',
+   q:'IoT에서 6LoWPAN이 해결하는 문제로 가장 적절한 것은?',
+   cs:['IPv4에서 IPv6로의 마이그레이션을 지원하는 표준','메모리·처리능력이 제한된 IoT 디바이스에서 IPv6 패킷이 동작할 수 있도록 IPv6 패킷을 압축·분할하는 기술','Zigbee와 Wi-Fi 간 프로토콜 변환을 수행하는 게이트웨이 표준','IoT 디바이스의 전력을 무선으로 공급하는 기술'],
+   ans:1,
+   exp:'<strong>6LoWPAN (IPv6 over Low-Power Wireless Personal Area Networks)</strong>: IPv6 패킷(1280바이트 MTU)은 IEEE 802.15.4(127바이트 MTU)에서 직접 전송 불가. 6LoWPAN은 IPv6 패킷을 <em>압축·단편화</em>하여 제약된 저전력 무선 네트워크(Zigbee 등)에서 IPv6 통신이 가능하게 합니다. CoAP와 함께 IoT 표준 스택의 핵심 요소입니다.'},
+  {cat:'프로토콜',diff:'hard',
+   q:'DDS(Data Distribution Service)를 MQTT보다 자율주행·군사 시스템에 더 적합한 이유로 가장 적절한 것은?',
+   cs:['MQTT보다 더 가볍고 적은 대역폭을 사용하기 때문에','브로커 없는 분산 P2P 아키텍처와 23가지 QoS 정책으로 실시간·고신뢰성 통신을 보장하기 때문에','DDS가 TCP 기반이어서 신뢰성이 더 높기 때문에','DDS는 클라우드 플랫폼과 더 쉽게 통합되기 때문에'],
+   ans:1,
+   exp:'<strong>DDS</strong>: 브로커 없는 분산 P2P 발행-구독 / 23가지 QoS 정책(신뢰성·지연·지속성·수명 등) / 멀티캐스트 / ms 단위 실시간 보장. <em>자율주행(ROS2 기반)·군사·의료</em>처럼 <strong>실시간·고신뢰성·브로커 단일 장애점 없는</strong> 환경에 적합합니다. MQTT는 브로커에 의존하여 브로커 장애 시 전체 시스템 마비 위험이 있습니다.'},
+  // OX
+  {cat:'OX',diff:'easy',type:'ox',
+   q:'MQTT는 UDP를 기반으로 하여 최소한의 오버헤드로 IoT 환경에서 사용된다.',
+   ans:false,
+   exp:'<strong>×</strong> — MQTT는 <strong>TCP</strong> 기반 프로토콜입니다. UDP가 아닙니다. TCP의 신뢰성 있는 연결을 사용하면서 헤더를 최소 2바이트로 줄여 경량화했습니다. UDP 기반 IoT 프로토콜은 <em>CoAP</em>입니다. MQTT: TCP / CoAP: UDP — 이 구분이 시험의 핵심입니다.'},
+  {cat:'OX',diff:'mid',type:'ox',
+   q:'엣지 컴퓨팅은 클라우드보다 처리 능력이 제한적이지만, 저지연과 오프라인 동작이 가능한 장점이 있다.',
+   ans:true,
+   exp:'<strong>○</strong> — 엣지 컴퓨팅의 장단점: <strong>장점</strong> = 저지연(ms 단위), 대역폭 절약, 오프라인 동작, 개인정보 로컬 처리. <strong>단점</strong> = 처리 능력 제한, 분산 관리 복잡성, 엣지 노드 보안 취약. 클라우드는 무한 확장이 가능하지만 지연이 높고 인터넷 연결이 필요합니다.'},
+  {cat:'OX',diff:'mid',type:'ox',
+   q:'IoT 보안에서 IoT 디바이스를 일반 업무 네트워크와 같은 VLAN에 배치하여 통합 관리하는 것이 권장된다.',
+   ans:false,
+   exp:'<strong>×</strong> — 보안 관점에서 IoT 디바이스는 일반 업무 네트워크와 <strong>분리된 별도 VLAN</strong>에 배치해야 합니다. IoT 기기는 보안이 취약한 경우가 많아 같은 네트워크에 있으면 공격자가 IoT 기기를 통해 업무 시스템까지 침투할 수 있습니다. Mirai 봇넷도 IoT 기기를 통해 네트워크 전체를 공격했습니다.'},
+  {cat:'OX',diff:'hard',type:'ox',
+   q:'CoAP는 HTTP와 달리 UDP를 사용하므로 보안을 위한 TLS 적용이 불가능하다.',
+   ans:false,
+   exp:'<strong>×</strong> — CoAP는 UDP 기반이므로 TCP 전용인 TLS 대신 <strong>DTLS(Datagram TLS)</strong>를 사용하여 보안을 적용합니다. DTLS는 UDP 환경에서 TLS와 동일한 수준의 암호화·인증·무결성을 제공합니다. CoAP+DTLS: 포트 5684 / CoAP(평문): 포트 5683.'},
+  {cat:'OX',diff:'mid',type:'ox',
+   q:'MQTT의 QoS 레벨 1은 메시지를 정확히 한 번만 전달하는 "Exactly Once" 방식이다.',
+   ans:false,
+   exp:'<strong>×</strong> — QoS 레벨 1은 <strong>At Least Once(최소 1회)</strong>로, 메시지가 중복 전달될 수 있습니다. <em>정확히 1회(Exactly Once)</em>는 <strong>QoS 2</strong>입니다. QoS 0 = At Most Once(최대 1회, 손실 가능) → QoS 1 = At Least Once(최소 1회, 중복 가능) → QoS 2 = Exactly Once(정확히 1회, 오버헤드 높음).'},
+];
+
+let answered=0,correct=0;
+function renderQ(f){
+  const data=f==='all'?QA:QA.filter(q=>q.cat===f);
+  const list=document.getElementById('ql');list.innerHTML='';
+  answered=0;correct=0;upS();
+  const CATC={'개요':'tg','프로토콜':'tb','엣지':'ty','보안':'tr','표준':'tp','OX':'to'};
+  const DLC={'easy':'easy 쉬움','mid':'mid 보통','hard':'hard 어려움'};
+  const NL=['①','②','③','④'];
+  if(!data.length){list.innerHTML='<div style="text-align:center;padding:40px;color:var(--mu)">문제 없음</div>';return;}
+  data.forEach((q,i)=>{
+    const gi=QA.indexOf(q);
+    const el=document.createElement('div');el.className='qa';
+    const tc=CATC[q.cat]||'tg';
+    const [dc,dn]=(DLC[q.diff]||'mid 보통').split(' ');
+    if(q.type==='ox'){
+      el.innerHTML=`<div class="qa-hd" onclick="this.closest('.qa').classList.toggle('open')"><div><div class="qa-meta"><span class="qn">Q${String(i+1).padStart(2,'0')}</span><span class="tag ${tc}">${q.cat}</span><span class="diff ${dc}">${dn}</span><span class="tag tg">O/X</span></div><div class="qq">${q.q}</div></div><span class="tgl">▾</span></div>
+      <div class="qa-bd"><div class="ox-wr"><button class="ox" onclick="pickOX(this,true,${gi})">⭕ 옳다</button><button class="ox" onclick="pickOX(this,false,${gi})">❌ 틀리다</button></div><div class="exp" id="ex-${gi}"><div class="exp-t">💡 해설</div>${q.exp}</div></div>`;
+    } else {
+      el.innerHTML=`<div class="qa-hd" onclick="this.closest('.qa').classList.toggle('open')"><div><div class="qa-meta"><span class="qn">Q${String(i+1).padStart(2,'0')}</span><span class="tag ${tc}">${q.cat}</span><span class="diff ${dc}">${dn}</span></div><div class="qq">${q.q}</div></div><span class="tgl">▾</span></div>
+      <div class="qa-bd"><div class="chs">${q.cs.map((c,ci)=>`<div class="ch" data-ci="${ci}" onclick="pickCh(this,${gi})"><span class="cnum">${NL[ci]}</span><span>${c}</span></div>`).join('')}</div><div class="exp" id="ex-${gi}"><div class="exp-t">💡 해설</div>${q.exp}</div></div>`;
+    }
+    list.appendChild(el);
+  });
+}
+function pickCh(el,gi){
+  const bd=el.closest('.qa-bd');if(bd.querySelector('.ok,.ng'))return;
+  const q=QA[gi];
+  bd.querySelectorAll('.ch').forEach((c,i)=>{c.classList.add('lk');if(i===q.ans)c.classList.add('ok');else if(i===parseInt(el.dataset.ci))c.classList.add('ng');});
+  document.getElementById('ex-'+gi).classList.add('show');
+  answered++;if(parseInt(el.dataset.ci)===q.ans)correct++;upS();
+}
+function pickOX(btn,val,gi){
+  const bd=btn.closest('.qa-bd');if(bd.querySelector('.so,.sx'))return;
+  const q=QA[gi];
+  bd.querySelectorAll('.ox').forEach(b=>b.classList.add('lk'));
+  btn.classList.add(val?'so':'sx');
+  if(val!==q.ans){btn.style.opacity='.5';bd.querySelectorAll('.ox')[val?1:0].classList.add(q.ans?'so':'sx');}
+  document.getElementById('ex-'+gi).classList.add('show');
+  answered++;if(val===q.ans)correct++;upS();
+}
+function upS(){document.getElementById('sc').textContent=correct;document.getElementById('st').textContent=answered;}
+document.getElementById('fbar').addEventListener('click',e=>{
+  const b=e.target.closest('.fb');if(!b)return;
+  document.querySelectorAll('.fb').forEach(x=>x.classList.remove('on'));b.classList.add('on');renderQ(b.dataset.f);
+});
+renderQ('all');
+</script>
+</body>
+</html>

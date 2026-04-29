@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>컴시응 — 알고리즘·자료구조·큐잉 기출 분석</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Noto Sans KR','Apple SD Gothic Neo','Malgun Gothic',sans-serif;background:#f5f4ef;color:#1a1a18;padding:1.5rem}
+.wrap{max-width:900px;margin:0 auto;background:#fff;border-radius:14px;padding:2rem 2.25rem 3rem;border:0.5px solid rgba(0,0,0,.12)}
+h1{font-size:18px;font-weight:600;margin-bottom:.25rem}
+.subtitle{font-size:12px;color:#73726c;margin-bottom:1.25rem}
+/* 탭 */
+.tabs{display:flex;gap:4px;flex-wrap:wrap;margin-bottom:1rem}
+.tab{font-size:12px;padding:5px 12px;border-radius:8px;border:0.5px solid rgba(0,0,0,.2);background:#fff;color:#5f5e5a;cursor:pointer}
+.tab.on{background:#185FA5;color:#E6F1FB;border-color:#185FA5}
+.panel{display:none}.panel.on{display:block}
+/* 박스 */
+.card{border:0.5px solid rgba(0,0,0,.12);border-radius:12px;padding:.85rem 1rem;margin-bottom:.7rem}
+.card h3{font-size:13px;font-weight:600;margin-bottom:.5rem}
+.hl{background:#f5f4ef;border-left:2.5px solid #185FA5;padding:.5rem .85rem;font-size:13px;margin:.4rem 0 .7rem;line-height:1.8}
+.gl{background:#f5f4ef;border-left:2.5px solid #3B6D11;padding:.5rem .85rem;font-size:13px;margin:.4rem 0 .7rem;line-height:1.8;color:#173404}
+.wl{background:#faeeda;border-left:2.5px solid #BA7517;padding:.5rem .85rem;font-size:13px;margin:.4rem 0 .7rem;line-height:1.8;color:#412402}
+.body-t{font-size:13px;line-height:1.85;margin-bottom:.4rem}
+/* 표 */
+table{width:100%;border-collapse:collapse;font-size:12px;margin:.35rem 0 .6rem}
+th{font-size:11px;font-weight:600;background:#f5f4ef;padding:6px 8px;border:0.5px solid rgba(0,0,0,.12);color:#5f5e5a;text-align:left}
+td{padding:6px 8px;border:0.5px solid rgba(0,0,0,.12);vertical-align:top;line-height:1.6;font-size:12px}
+tr:nth-child(even) td{background:#fafaf8}
+/* 뱃지 */
+.badge{display:inline-block;font-size:10px;padding:2px 7px;border-radius:6px;margin:1px;font-weight:600}
+.bd-b{background:#E6F1FB;color:#0C447C}.bd-g{background:#EAF3DE;color:#27500A}
+.bd-r{background:#FCEBEB;color:#791F1F}.bd-a{background:#FAEEDA;color:#633806}
+.bd-p{background:#EEEDFE;color:#26215C}.bd-t{background:#E1F5EE;color:#04342C}
+/* 레이아웃 */
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:.65rem;margin:.35rem 0}
+.mini{display:grid;grid-template-columns:repeat(auto-fit,minmax(145px,1fr));gap:.4rem;margin:.35rem 0}
+.mc{background:#f5f4ef;border-radius:8px;padding:.5rem .65rem;font-size:12px;line-height:1.55}
+.mc strong{display:block;font-size:12px;font-weight:600;margin-bottom:2px}
+/* 빈도 바 */
+.freq-row{display:flex;align-items:center;gap:8px;margin:.2rem 0}
+.freq-label{font-size:12px;min-width:190px}
+.freq-bar-wrap{flex:1;height:7px;background:#f5f4ef;border-radius:3px;overflow:hidden}
+.freq-bar{height:100%;border-radius:3px}
+.freq-cnt{font-size:11px;color:#73726c;min-width:28px;text-align:right}
+/* 기출 아이템 */
+.row-item{border:0.5px solid rgba(0,0,0,.12);border-radius:8px;padding:.6rem .8rem;margin:.3rem 0}
+.row-q{font-size:13px;font-weight:600;margin-bottom:.25rem;line-height:1.55}
+.row-years{display:flex;gap:3px;flex-wrap:wrap;margin-bottom:.2rem}
+.row-tip{font-size:12px;color:#5f5e5a;line-height:1.6}
+/* 통계 */
+.stat-row{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-bottom:.85rem}
+.stat{background:#f5f4ef;border-radius:8px;padding:.6rem .8rem}
+.stat-n{font-size:21px;font-weight:600}.stat-l{font-size:11px;color:#73726c;margin-top:2px}
+/* Q&A */
+.sb-wrap{display:flex;align-items:center;gap:10px;padding:.6rem .85rem;background:#f5f4ef;border-radius:8px;margin-bottom:.6rem}
+.sn{font-size:20px;font-weight:600}
+.qitem{border:0.5px solid rgba(0,0,0,.12);border-radius:8px;padding:.7rem .85rem;margin:.45rem 0}
+.qtext{font-size:13px;margin-bottom:.45rem;line-height:1.65;font-weight:500}
+.qopts button{display:block;width:100%;text-align:left;font-size:12px;padding:5px 8px;margin:3px 0;border:0.5px solid rgba(0,0,0,.15);border-radius:6px;background:#fff;cursor:pointer;color:#1a1a18}
+.qopts button:hover{background:#f5f4ef}
+.qopts button.correct{background:#EAF3DE;border-color:#3B6D11;color:#173404}
+.qopts button.wrong{background:#FCEBEB;border-color:#A32D2D;color:#501313}
+.explain{font-size:12px;margin-top:.35rem;padding:.4rem .6rem;background:#f5f4ef;border-radius:6px;color:#5f5e5a;display:none;line-height:1.6}
+.reset-btn{font-size:11px;padding:4px 10px;border:0.5px solid rgba(0,0,0,.2);border-radius:6px;background:#fff;cursor:pointer;color:#5f5e5a}
+/* 계산 박스 */
+.calc-box{border:1.5px solid #185FA5;border-radius:10px;padding:.8rem 1rem;margin:.5rem 0;background:#E6F1FB20}
+.calc-box h4{font-size:13px;font-weight:600;color:#0C447C;margin-bottom:.4rem}
+</style>
+</head>
+<body>
+<div class="wrap">
+<h1>컴퓨터시스템응용 기술사 — 알고리즘·자료구조·큐잉 기출 분류·분석</h1>
+<div class="subtitle">정렬·탐색 / 그래프 / 트리·자료구조 / DP·분할정복 / 문자열·기타 / 큐잉이론 / 복잡도·계산이론 | 8개 탭 구성</div>
+
+<div class="tabs">
+  <button class="tab on" data-p="p0">전체 개요</button>
+  <button class="tab" data-p="p1">정렬·탐색</button>
+  <button class="tab" data-p="p2">그래프</button>
+  <button class="tab" data-p="p3">트리·자료구조</button>
+  <button class="tab" data-p="p4">DP·분할정복</button>
+  <button class="tab" data-p="p5">큐잉이론</button>
+  <button class="tab" data-p="p6">빈도·경향</button>
+  <button class="tab" data-p="p7">기출 Q&amp;A</button>
+</div>
+
+<!-- ① 전체 개요 -->
+<div class="panel on" id="p0">
+<div class="stat-row">
+  <div class="stat"><div class="stat-n">7</div><div class="stat-l">대분류 영역</div></div>
+  <div class="stat"><div class="stat-n">38%</div><div class="stat-l">비교형 출제 비율</div></div>
+  <div class="stat"><div class="stat-n">22%</div><div class="stat-l">계산형 출제 비율</div></div>
+  <div class="stat"><div class="stat-n">큐잉</div><div class="stat-l">최근 급증 영역</div></div>
+</div>
+<div class="hl">컴시응 알고리즘·자료구조·큐잉 기출은 <strong>① 정렬·탐색 ② 그래프 ③ 트리·자료구조 ④ DP·분할정복 ⑤ 문자열·확률 자료구조 ⑥ 큐잉이론 ⑦ 복잡도·계산이론</strong> 7대 영역으로 분류된다. 단순 개념 암기보다 <strong>복잡도 계산 · 트레이드오프 분석 · 반례</strong>를 함께 서술해야 고득점.</div>
+<div class="card">
+  <h3>7대 분류 × 출제 특성 한눈에 보기</h3>
+  <table>
+    <tr><th>분류</th><th>핵심 토픽</th><th>출제 유형</th><th>빈도</th><th>암기 필수 공식/개념</th></tr>
+    <tr><td><span class="badge bd-b">정렬·탐색</span></td><td>퀵·합병·힙·기수, 팀소트</td><td>비교표, 복잡도 계산, 하한 증명</td><td><span class="badge bd-r">★★★★★</span></td><td>하한 Ω(n log n), 결정 트리 log₂(n!)</td></tr>
+    <tr><td><span class="badge bd-g">그래프</span></td><td>Dijkstra, Bellman-Ford, Floyd, MST, 위상정렬</td><td>동작 추적, 적용 조건 비교</td><td><span class="badge bd-r">★★★★★</span></td><td>O((V+E)logV), O(VE), O(V³)</td></tr>
+    <tr><td><span class="badge bd-p">트리·자료구조</span></td><td>AVL, RB트리, B+트리, 힙, 해시, Union-Find</td><td>연산 과정, 회전 단계, 비교</td><td><span class="badge bd-r">★★★★☆</span></td><td>AVL BF·4회전, B+리프연결, 해시 적재율</td></tr>
+    <tr><td><span class="badge bd-a">DP·분할정복</span></td><td>LCS, LIS, 0/1배낭, 허프만, 마스터정리</td><td>점화식, DP 테이블, 반례</td><td><span class="badge bd-g">★★★★☆</span></td><td>LCS O(mn), 마스터정리 3케이스</td></tr>
+    <tr><td><span class="badge bd-t">문자열·기타</span></td><td>KMP, 블룸필터, 스킵리스트, 일관성해싱</td><td>원리, 응용 사례, 시스템 연계</td><td><span class="badge bd-a">★★★☆☆</span></td><td>KMP π배열, 블룸필터 FP율</td></tr>
+    <tr><td><span class="badge bd-t">큐잉이론</span></td><td>M/M/1, M/M/c, 켄달표기법, 리틀법칙</td><td>수치 계산, 용량 설계, 모델 선택</td><td><span class="badge bd-g">★★★★☆</span></td><td>L=ρ/(1-ρ), W=1/(μ-λ), L=λW</td></tr>
+    <tr><td><span class="badge bd-r">복잡도·계산이론</span></td><td>P·NP·NP-C, 다항시간환원, 분할상환</td><td>정의·관계 서술, 반례</td><td><span class="badge bd-a">★★★★☆</span></td><td>Cook-Levin, 마스터정리</td></tr>
+  </table>
+</div>
+<div class="card">
+  <h3>출제 유형 분포 & 시험 전략</h3>
+  <div class="g2">
+    <table>
+      <tr><th>유형</th><th>비율</th></tr>
+      <tr><td>비교·분류형 ("A와 B를 비교하시오")</td><td><strong>38%</strong></td></tr>
+      <tr><td>설명·원리형 ("~를 설명하시오")</td><td><strong>27%</strong></td></tr>
+      <tr><td>계산·풀이형 (복잡도, 큐잉 수치)</td><td><strong>22%</strong></td></tr>
+      <tr><td>설계·응용형 ("설계하고 논하시오")</td><td><strong>13%</strong></td></tr>
+    </table>
+    <div>
+      <div class="gl">계산형(22%)은 정답이 명확해 부분 점수 획득이 쉬움 — 수식 암기와 계산 연습으로 안전하게 점수 확보.</div>
+      <div class="wl">비교형(38%) 최다: 두 알고리즘 비교표를 A4 1/4 크기로 그리는 습관이 핵심 전략.</div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- ② 정렬·탐색 -->
+<div class="panel" id="p1">
+<div class="card">
+  <h3>정렬 알고리즘 완전 비교표 — 매 시험 출제</h3>
+  <table>
+    <tr><th>알고리즘</th><th>Best</th><th>Average</th><th>Worst</th><th>공간</th><th>안정</th><th>핵심 특징</th></tr>
+    <tr><td>버블 정렬</td><td>O(n)</td><td>O(n²)</td><td>O(n²)</td><td>O(1)</td><td>✓</td><td>인접 교환, 조기종료 가능</td></tr>
+    <tr><td>선택 정렬</td><td>O(n²)</td><td>O(n²)</td><td>O(n²)</td><td>O(1)</td><td>✗</td><td>교환 횟수 최소 (n-1회)</td></tr>
+    <tr><td>삽입 정렬</td><td>O(n)</td><td>O(n²)</td><td>O(n²)</td><td>O(1)</td><td>✓</td><td>거의 정렬된 데이터 최적</td></tr>
+    <tr><td>합병 정렬</td><td>O(n log n)</td><td>O(n log n)</td><td>O(n log n)</td><td>O(n)</td><td>✓</td><td>분할정복, 외부정렬 적합</td></tr>
+    <tr><td>퀵 정렬</td><td>O(n log n)</td><td>O(n log n)</td><td>O(n²)</td><td>O(log n)</td><td>✗</td><td>평균 가장 빠름, 피벗 선택 핵심</td></tr>
+    <tr><td>힙 정렬</td><td>O(n log n)</td><td>O(n log n)</td><td>O(n log n)</td><td>O(1)</td><td>✗</td><td>최악 보장, 제자리 정렬</td></tr>
+    <tr><td>계수 정렬</td><td>O(n+k)</td><td>O(n+k)</td><td>O(n+k)</td><td>O(k)</td><td>✓</td><td>비교 없음, k=값 범위</td></tr>
+    <tr><td>기수 정렬</td><td>O(nk)</td><td>O(nk)</td><td>O(nk)</td><td>O(n+k)</td><td>✓</td><td>자릿수별, k=자릿수 수</td></tr>
+    <tr><td>팀 정렬</td><td>O(n)</td><td>O(n log n)</td><td>O(n log n)</td><td>O(n)</td><td>✓</td><td>삽입+합병 혼합, Python·Java 기본</td></tr>
+  </table>
+  <div class="gl">한 줄 암기: 비교 기반 하한 Ω(n log n) — 결정 트리 리프 수 = n! → 높이 ≥ log₂(n!) ≈ n log n (Stirling 근사)</div>
+</div>
+<div class="card">
+  <h3>단골 기출 문제 & 작성 포인트</h3>
+  <div class="row-item">
+    <div class="row-q">퀵 정렬의 최악 O(n²) 발생 조건과 개선 방법을 설명하시오.</div>
+    <div class="row-years"><span class="badge bd-b">102회</span><span class="badge bd-b">108회</span><span class="badge bd-b">114회</span><span class="badge bd-b">120회</span></div>
+    <div class="row-tip">이미 정렬된 배열에서 항상 최솟값/최댓값을 피벗으로 선택 시 T(n)=T(n-1)+O(n)=O(n²). 개선: ① 랜덤 피벗 ② 3-중간값(Median-of-3) ③ 작은 파티션 먼저 재귀(스택 깊이 O(log n) 보장).</div>
+  </div>
+  <div class="row-item">
+    <div class="row-q">안정 정렬의 필요성과 안정성을 보장하는 알고리즘을 설명하시오.</div>
+    <div class="row-years"><span class="badge bd-b">105회</span><span class="badge bd-b">111회</span><span class="badge bd-b">116회</span><span class="badge bd-b">121회</span></div>
+    <div class="row-tip">동일 키의 상대 순서 유지. 안정: 합병·삽입·버블·계수·팀소트. 불안정: 퀵·힙·선택. 적용 사례: 다중 키 정렬(이름 정렬 후 학번 정렬 시 이름 순서 유지).</div>
+  </div>
+  <div class="row-item">
+    <div class="row-q">외부 정렬(External Sort)의 개념과 합병 정렬 기반 구현을 설명하시오.</div>
+    <div class="row-years"><span class="badge bd-b">103회</span><span class="badge bd-b">110회</span><span class="badge bd-b">117회</span><span class="badge bd-b">122회</span></div>
+    <div class="row-tip">데이터가 메모리를 초과할 때. ① 청크 분할 → 내부정렬로 런(Run) 생성 ② k-way 합병(우선순위 큐 활용). 디스크 I/O 최소화가 핵심. 버퍼풀(B개 페이지)로 성능 향상.</div>
+  </div>
+  <div class="row-item">
+    <div class="row-q">기수 정렬과 계수 정렬을 비교하고 적용 조건을 설명하시오.</div>
+    <div class="row-years"><span class="badge bd-b">104회</span><span class="badge bd-b">109회</span><span class="badge bd-b">115회</span><span class="badge bd-b">120회</span></div>
+    <div class="row-tip">계수: O(n+k), k=값 범위. 기수: O(nk), k=자릿수 수. 둘 다 비교 없음·안정 정렬. 계수는 값 범위 작을 때, 기수는 정수·고정 길이 문자열에 적합.</div>
+  </div>
+</div>
+</div>
+
+<!-- ③ 그래프 -->
+<div class="panel" id="p2">
+<div class="card">
+  <h3>그래프 알고리즘 복잡도·특성 비교</h3>
+  <table>
+    <tr><th>알고리즘</th><th>시간 복잡도</th><th>공간</th><th>조건/특징</th><th>주요 용도</th><th>빈도</th></tr>
+    <tr><td>BFS</td><td>O(V+E)</td><td>O(V)</td><td>-</td><td>비가중 최단경로, 레벨 탐색</td><td><span class="badge bd-r">★★★★★</span></td></tr>
+    <tr><td>DFS</td><td>O(V+E)</td><td>O(V)</td><td>-</td><td>연결요소, 위상정렬, SCC</td><td><span class="badge bd-r">★★★★★</span></td></tr>
+    <tr><td>Dijkstra (이진힙)</td><td>O((V+E)log V)</td><td>O(V)</td><td>양수 가중치만</td><td>단일출발 최단경로</td><td><span class="badge bd-r">★★★★★</span></td></tr>
+    <tr><td>Bellman-Ford</td><td>O(VE)</td><td>O(V)</td><td>음수 가중치 허용</td><td>음수 가중치, 사이클 검출</td><td><span class="badge bd-g">★★★★☆</span></td></tr>
+    <tr><td>Floyd-Warshall</td><td>O(V³)</td><td>O(V²)</td><td>-</td><td>전쌍 최단경로</td><td><span class="badge bd-g">★★★★☆</span></td></tr>
+    <tr><td>Kruskal (Union-Find)</td><td>O(E log E)</td><td>O(V)</td><td>희소 그래프 유리</td><td>MST</td><td><span class="badge bd-r">★★★★★</span></td></tr>
+    <tr><td>Prim (이진힙)</td><td>O(E log V)</td><td>O(V)</td><td>밀집 그래프 유리</td><td>MST</td><td><span class="badge bd-g">★★★★☆</span></td></tr>
+    <tr><td>위상 정렬 (Kahn's)</td><td>O(V+E)</td><td>O(V)</td><td>DAG 필수</td><td>선행관계, 빌드 순서</td><td><span class="badge bd-g">★★★★☆</span></td></tr>
+    <tr><td>SCC (Tarjan)</td><td>O(V+E)</td><td>O(V)</td><td>DFS 1회</td><td>강연결요소, 2-SAT</td><td><span class="badge bd-a">★★★☆☆</span></td></tr>
+    <tr><td>Network Flow (Edmonds-Karp)</td><td>O(VE²)</td><td>O(V+E)</td><td>BFS 증가 경로</td><td>최대유량, 이분매칭</td><td><span class="badge bd-a">★★★☆☆</span></td></tr>
+  </table>
+  <div class="wl">Dijkstra vs Bellman-Ford 선택 기준이 매 시험 반복: 음수 가중치 유무가 결정적. OSPF=Dijkstra, RIP=Bellman-Ford 기반. 음수 사이클 검출 = Bellman-Ford V번째 완화 시 갱신 발생.</div>
+</div>
+<div class="card">
+  <h3>단골 기출 & 포인트</h3>
+  <div class="row-item">
+    <div class="row-q">Dijkstra와 Bellman-Ford 알고리즘을 비교하고 적용 조건을 설명하시오.</div>
+    <div class="row-years"><span class="badge bd-b">99회</span><span class="badge bd-b">105회</span><span class="badge bd-b">110회</span><span class="badge bd-b">115회</span><span class="badge bd-b">120회</span></div>
+    <div class="row-tip">Dijkstra: 그리디 기반, 음수 불가, O((V+E)log V). Bellman-Ford: DP 기반, 음수 허용, O(VE), 음수 사이클 탐지. 실제 적용: OSPF(Dijkstra), RIP(Bellman-Ford).</div>
+  </div>
+  <div class="row-item">
+    <div class="row-q">Kruskal과 Prim 알고리즘의 동작 원리, 복잡도, 선택 기준을 설명하시오.</div>
+    <div class="row-years"><span class="badge bd-b">101회</span><span class="badge bd-b">107회</span><span class="badge bd-b">112회</span><span class="badge bd-b">117회</span><span class="badge bd-b">122회</span></div>
+    <div class="row-tip">Kruskal: 간선 정렬(O(E log E)) + Union-Find 사이클 검사. Prim: 정점 기반 우선순위 큐 O(E log V). 희소 그래프→Kruskal, 밀집 그래프→Prim 선택 기준 서술 필수.</div>
+  </div>
+  <div class="row-item">
+    <div class="row-q">Floyd-Warshall의 DP 점화식과 음수 사이클 검출 방법을 설명하시오.</div>
+    <div class="row-years"><span class="badge bd-b">104회</span><span class="badge bd-b">109회</span><span class="badge bd-b">115회</span><span class="badge bd-b">121회</span></div>
+    <div class="row-tip">dp[i][j] = min(dp[i][j], dp[i][k]+dp[k][j]), O(V³). 완료 후 dp[i][i]&lt;0인 정점 존재 → 음수 사이클. 밀집 그래프 전쌍 최단경로에 가장 적합.</div>
+  </div>
+</div>
+</div>
+
+<!-- ④ 트리·자료구조 -->
+<div class="panel" id="p3">
+<div class="card">
+  <h3>트리 자료구조 연산 복잡도 비교</h3>
+  <table>
+    <tr><th>구조</th><th>검색</th><th>삽입</th><th>삭제</th><th>핵심 특징 및 기출 포인트</th></tr>
+    <tr><td>BST</td><td>O(h)</td><td>O(h)</td><td>O(h)</td><td>편향 시 O(n). 중위순회=정렬 결과</td></tr>
+    <tr><td>AVL 트리</td><td>O(log n)</td><td>O(log n)</td><td>O(log n)</td><td>|BF|≤1. LL·LR·RL·RR 4가지 회전. 검색 최적화</td></tr>
+    <tr><td>레드-블랙 트리</td><td>O(log n)</td><td>O(log n)</td><td>O(log n)</td><td>5속성. AVL보다 삽입/삭제 빠름. Java TreeMap, C++ STL</td></tr>
+    <tr><td>B 트리</td><td>O(log n)</td><td>O(log n)</td><td>O(log n)</td><td>다방향 균형트리. 디스크 I/O 최소화. 내부 노드에 데이터</td></tr>
+    <tr><td>B+ 트리</td><td>O(log n)</td><td>O(log n)</td><td>O(log n)</td><td>내부=키만. 리프 연결리스트→범위검색 O(log n+k). DBMS 인덱스 표준</td></tr>
+    <tr><td>힙 (Max/Min)</td><td>최솟값 O(1)</td><td>O(log n)</td><td>O(log n)</td><td>완전이진트리. 배열 구현 가능. 우선순위 큐</td></tr>
+    <tr><td>트라이 (Trie)</td><td>O(m)</td><td>O(m)</td><td>O(m)</td><td>m=문자열 길이. 자동완성·DNS. 압축 트라이(Radix Tree)</td></tr>
+    <tr><td>해시 테이블</td><td>O(1)*</td><td>O(1)*</td><td>O(1)*</td><td>체이닝/개방주소법. 적재율 α&lt;0.7 권장. 최악 O(n)</td></tr>
+    <tr><td>Union-Find</td><td>O(α(n))</td><td>O(α(n))</td><td>-</td><td>경로압축+랭크. Kruskal MST 사이클 탐지. α≈O(1)</td></tr>
+    <tr><td>스킵 리스트</td><td>O(log n)*</td><td>O(log n)*</td><td>O(log n)*</td><td>계층적 연결리스트. 확률적 균형. Redis Sorted Set</td></tr>
+  </table>
+  <div class="gl">B트리 vs B+트리가 매 시험 출제: 내부 노드 데이터 저장 유무, 리프 체인 연결, 범위검색 효율 — B+가 DBMS 인덱스 표준인 이유 = 리프 순차 탐색 + 팬아웃 증가로 트리 높이 감소.</div>
+</div>
+<div class="card">
+  <h3>단골 기출 & 포인트</h3>
+  <div class="row-item">
+    <div class="row-q">AVL 트리의 4가지 회전(LL, LR, RL, RR)을 예를 들어 설명하시오.</div>
+    <div class="row-years"><span class="badge bd-b">98회</span><span class="badge bd-b">104회</span><span class="badge bd-b">109회</span><span class="badge bd-b">114회</span><span class="badge bd-b">119회</span></div>
+    <div class="row-tip">BF=왼쪽높이-오른쪽높이. LL→우회전 1회. RR→좌회전 1회. LR→왼쪽자식 좌회전 후 루트 우회전. RL→오른쪽자식 우회전 후 루트 좌회전. 삽입 노드 위치로 회전 유형 결정. 그림 필수.</div>
+  </div>
+  <div class="row-item">
+    <div class="row-q">B트리와 B+트리의 구조 차이와 DBMS가 B+트리를 선택하는 이유를 설명하시오.</div>
+    <div class="row-years"><span class="badge bd-b">100회</span><span class="badge bd-b">106회</span><span class="badge bd-b">111회</span><span class="badge bd-b">116회</span><span class="badge bd-b">121회</span></div>
+    <div class="row-tip">B: 내부 노드에도 데이터 포인터. B+: 내부=키만, 리프=모든 데이터+연결리스트. B+ 장점: ① 리프 순차 탐색→범위검색 효율 ② 내부 팬아웃 증가→트리 높이 감소→디스크 I/O 절감.</div>
+  </div>
+  <div class="row-item">
+    <div class="row-q">해시 테이블의 충돌 해결(체이닝, 개방주소법)과 적재율의 영향을 설명하시오.</div>
+    <div class="row-years"><span class="badge bd-b">99회</span><span class="badge bd-b">105회</span><span class="badge bd-b">111회</span><span class="badge bd-b">116회</span><span class="badge bd-b">121회</span></div>
+    <div class="row-tip">체이닝: 최악 O(n), 삭제 용이. 개방주소: 선형탐사(군집화)·이차탐사·이중해싱. 적재율 α=n/m. α↑→충돌↑→성능↓. Java HashMap 기본 α=0.75. α&lt;0.7 권장.</div>
+  </div>
+</div>
+</div>
+
+<!-- ⑤ DP·분할정복 -->
+<div class="panel" id="p4">
+<div class="card">
+  <h3>동적 프로그래밍 vs 그리디 비교</h3>
+  <div class="g2">
+    <table>
+      <tr><th colspan="2"><span class="badge bd-p">동적 프로그래밍 (DP)</span></th></tr>
+      <tr><th>적용 조건</th><td>최적 부분 구조 + 중복 부분 문제</td></tr>
+      <tr><th>구현 방식</th><td>Top-Down(메모이제이션) / Bottom-Up(타뷸레이션)</td></tr>
+      <tr><th>기출 문제</th><th>복잡도</th></tr>
+      <tr><td>LCS (최장 공통 부분수열)</td><td>O(mn)</td></tr>
+      <tr><td>LIS (최장 증가 부분수열)</td><td>O(n log n)</td></tr>
+      <tr><td>0/1 배낭 문제</td><td>O(nW)</td></tr>
+      <tr><td>행렬 연쇄 곱셈</td><td>O(n³)</td></tr>
+      <tr><td>편집 거리</td><td>O(mn)</td></tr>
+      <tr><td>Floyd-Warshall</td><td>O(V³)</td></tr>
+    </table>
+    <table>
+      <tr><th colspan="2"><span class="badge bd-t">그리디 알고리즘</span></th></tr>
+      <tr><th>적용 조건</th><td>탐욕적 선택 속성 + 최적 부분 구조</td></tr>
+      <tr><th>DP와 차이</th><td>더 빠르나 적용 가능 문제 제한적</td></tr>
+      <tr><th>기출 문제</th><th>복잡도</th></tr>
+      <tr><td>활동 선택 문제</td><td>O(n log n)</td></tr>
+      <tr><td>허프만 코딩</td><td>O(n log n)</td></tr>
+      <tr><td>MST (Kruskal·Prim)</td><td>O(E log E)</td></tr>
+      <tr><td>분수 배낭 문제</td><td>O(n log n)</td></tr>
+      <tr><td>Dijkstra</td><td>O((V+E)log V)</td></tr>
+      <tr><td>작업 스케줄링</td><td>O(n log n)</td></tr>
+    </table>
+  </div>
+  <div class="wl">0/1 배낭=DP, 분수 배낭=그리디 — 이 차이가 단골 출제. 0/1 배낭에서 그리디가 최적해를 보장하지 못하는 반례: 무게[3,4,5] 가치[4,5,6] 용량=7.</div>
+</div>
+<div class="card">
+  <h3>마스터 정리 — 계산 문제 단골</h3>
+  <div class="hl">T(n) = aT(n/b) + f(n) 형태 점화식 (a≥1, b>1):<br>
+  <strong>Case 1</strong>: f(n)=O(n^(log_b a-ε)) → T(n)=Θ(n^log_b a)<br>
+  <strong>Case 2</strong>: f(n)=Θ(n^log_b a) → T(n)=Θ(n^log_b a · log n)<br>
+  <strong>Case 3</strong>: f(n)=Ω(n^(log_b a+ε)) 및 정규성 조건 → T(n)=Θ(f(n))</div>
+  <table>
+    <tr><th>알고리즘</th><th>점화식</th><th>Case</th><th>결과</th></tr>
+    <tr><td>합병 정렬</td><td>T(n)=2T(n/2)+O(n)</td><td>Case 2</td><td><strong>O(n log n)</strong></td></tr>
+    <tr><td>이진 탐색</td><td>T(n)=T(n/2)+O(1)</td><td>Case 2</td><td><strong>O(log n)</strong></td></tr>
+    <tr><td>스트라센 행렬곱</td><td>T(n)=7T(n/2)+O(n²)</td><td>Case 1</td><td><strong>O(n^2.807)</strong></td></tr>
+    <tr><td>카라추바 곱셈</td><td>T(n)=3T(n/2)+O(n)</td><td>Case 1</td><td><strong>O(n^1.585)</strong></td></tr>
+    <tr><td>퀵 정렬 (최선)</td><td>T(n)=2T(n/2)+O(n)</td><td>Case 2</td><td><strong>O(n log n)</strong></td></tr>
+  </table>
+</div>
+<div class="card">
+  <h3>단골 기출 & 포인트</h3>
+  <div class="row-item">
+    <div class="row-q">LCS(최장 공통 부분수열)를 DP로 구하는 점화식과 복잡도를 설명하시오.</div>
+    <div class="row-years"><span class="badge bd-b">101회</span><span class="badge bd-b">107회</span><span class="badge bd-b">112회</span><span class="badge bd-b">117회</span><span class="badge bd-b">122회</span></div>
+    <div class="row-tip">dp[i][j]: X[i]=Y[j]이면 dp[i-1][j-1]+1, 다르면 max(dp[i-1][j], dp[i][j-1]). O(mn) 시간·공간. 역추적으로 실제 LCS 문자열 복원. "ABCBDAB"와 "BDCAB"의 LCS 예제 준비 권장.</div>
+  </div>
+  <div class="row-item">
+    <div class="row-q">허프만 코딩의 최적 접두사 코드 생성 과정과 복잡도를 설명하시오.</div>
+    <div class="row-years"><span class="badge bd-b">102회</span><span class="badge bd-b">108회</span><span class="badge bd-b">113회</span><span class="badge bd-b">118회</span></div>
+    <div class="row-tip">최소힙으로 빈도 낮은 두 노드 반복 합병 → O(n log n). 탐욕적 선택 속성 증명 가능. 평균 코드길이 = Σ(p_i × l_i). 무손실 압축의 이론적 최적 코드 (엔트로피 하한 근접).</div>
+  </div>
+</div>
+</div>
+
+<!-- ⑥ 큐잉이론 -->
+<div class="panel" id="p5">
+<div class="hl"><strong>큐잉이론(Queueing Theory)</strong>: 대기 시스템 성능을 수학적으로 분석하는 이론. 컴시응에서 시스템 성능 분석·OS 스케줄링·네트워크 모델링과 연계 출제. <strong>켄달 표기법 + 리틀의 법칙 + M/M/1 수식</strong>이 핵심 3요소.</div>
+
+<div class="card">
+  <h3>켄달 표기법 A/B/c/K/N/D</h3>
+  <table>
+    <tr><th>기호</th><th>의미</th><th>주요 값</th></tr>
+    <tr><td><strong>A</strong></td><td>도착 분포 (Arrival)</td><td>M=마르코프(포아송), D=결정적, G=일반, Ek=얼랑-k</td></tr>
+    <tr><td><strong>B</strong></td><td>서비스 시간 분포</td><td>M=지수분포, D=결정적, G=일반</td></tr>
+    <tr><td><strong>c</strong></td><td>서버(채널) 수</td><td>1, 2, …, ∞</td></tr>
+    <tr><td><strong>K</strong></td><td>시스템 최대 수용 (생략=∞)</td><td>유한 버퍼 모델링</td></tr>
+    <tr><td><strong>N</strong></td><td>고객 모집단 크기 (생략=∞)</td><td>닫힌 시스템</td></tr>
+    <tr><td><strong>D</strong></td><td>서비스 규율 (생략=FCFS)</td><td>FCFS, LCFS, PS, SIRO, 우선순위</td></tr>
+  </table>
+  <div class="mini" style="margin-top:.5rem">
+    <div class="mc"><strong>M/M/1</strong><span>단일서버·포아송도착·지수서비스. 가장 기본 모델. 단순 서버·라우터</span></div>
+    <div class="mc"><strong>M/M/c</strong><span>다중 서버 c개. 콜센터·멀티코어 CPU. Erlang-C 공식 사용</span></div>
+    <div class="mc"><strong>M/M/1/K</strong><span>유한 대기열, 최대 K명. 네트워크 패킷 버퍼 모델링</span></div>
+    <div class="mc"><strong>M/D/1</strong><span>결정적 서비스. ATM·고정 패킷. 대기 = M/M/1의 절반</span></div>
+    <div class="mc"><strong>M/G/1</strong><span>일반 서비스 분포. P-K 공식. 실제 웹서버 모델링</span></div>
+    <div class="mc"><strong>G/G/1</strong><span>가장 일반적. 닫힌 해 없음. 시뮬레이션으로 분석</span></div>
+  </div>
+</div>
+
+<div class="card">
+  <h3>M/M/1 핵심 수식 — 계산 문제 직결</h3>
+  <div class="body-t" style="font-size:12px;margin-bottom:.5rem">λ=도착률, μ=서비스율, <strong>ρ=λ/μ (이용률)</strong>. 안정 조건: <strong>ρ &lt; 1 (반드시 확인!)</strong></div>
+  <table>
+    <tr><th>성능 지표</th><th>수식</th><th>의미</th></tr>
+    <tr><td>이용률</td><td><strong>ρ = λ/μ</strong></td><td>서버가 바쁜 비율</td></tr>
+    <tr><td>시스템 내 평균 고객 수 (L)</td><td><strong>L = ρ/(1-ρ)</strong></td><td>대기 + 서비스 중 고객 수</td></tr>
+    <tr><td>대기열 내 평균 고객 수 (Lq)</td><td><strong>Lq = ρ²/(1-ρ)</strong></td><td>서비스 대기 중인 고객 수</td></tr>
+    <tr><td>평균 체류 시간 (W)</td><td><strong>W = 1/(μ-λ)</strong></td><td>입장부터 퇴장까지 총 시간</td></tr>
+    <tr><td>평균 대기 시간 (Wq)</td><td><strong>Wq = ρ/(μ-λ)</strong></td><td>서비스 받기 전 대기 시간</td></tr>
+    <tr><td><strong>리틀의 법칙 (범용)</strong></td><td><strong>L = λW, Lq = λWq</strong></td><td>큐 모델·규율 무관하게 항상 성립</td></tr>
+  </table>
+  <div class="calc-box">
+    <h4>📐 기출 계산 예제 — λ=8/초, μ=10/초</h4>
+    <table>
+      <tr><td>이용률 ρ = 8/10</td><td><strong>= 0.8 (80%)</strong></td></tr>
+      <tr><td>L = 0.8/(1-0.8)</td><td><strong>= 4명</strong></td></tr>
+      <tr><td>Lq = 0.8²/(1-0.8)</td><td><strong>= 3.2명</strong></td></tr>
+      <tr><td>W = 1/(10-8)</td><td><strong>= 0.5초</strong></td></tr>
+      <tr><td>Wq = 0.8/(10-8)</td><td><strong>= 0.4초</strong></td></tr>
+      <tr><td>리틀 법칙 검증: L = 8×0.5</td><td><strong>= 4명 ✓</strong></td></tr>
+    </table>
+    <div class="wl" style="margin-top:.45rem">λ=9(ρ=0.9)로 증가 시 L=9명, W=1초로 폭발적 증가. ρ가 1에 가까울수록 대기가 비선형 증가 — 이것이 용량 설계 시 ρ≤0.7을 권장하는 핵심 이유.</div>
+  </div>
+</div>
+
+<div class="card">
+  <h3>큐잉이론 컴시응 적용 도메인</h3>
+  <table>
+    <tr><th>도메인</th><th>큐 모델</th><th>출제 키워드</th></tr>
+    <tr><td>CPU 스케줄링</td><td>M/G/1, M/M/c</td><td>멀티코어=서버 수 c, 컨텍스트 스위칭 오버헤드</td></tr>
+    <tr><td>디스크 I/O</td><td>M/G/1</td><td>SSTF·SCAN 서비스 시간 분포</td></tr>
+    <tr><td>네트워크 패킷 스위칭</td><td>M/D/1, M/M/1/K</td><td>고정 패킷=D, 버퍼 크기=K, 패킷 손실률</td></tr>
+    <tr><td>웹/WAS 서버</td><td>M/G/1</td><td>Pollaczek-Khinchine 공식, 커넥션 풀</td></tr>
+    <tr><td>DB 커넥션 풀</td><td>M/M/c</td><td>c=풀 크기, Erlang-C 공식</td></tr>
+    <tr><td>클라우드 오토스케일</td><td>M/M/c/K</td><td>동적 c 조정, 이탈률(Balking·Reneging)</td></tr>
+    <tr><td>AI 추론 서버 (신유형)</td><td>M/M/c</td><td>GPU 서버=c, 배치 크기·응답 지연 목표</td></tr>
+  </table>
+  <div class="gl">감리 포인트: 시스템 용량 계획 시 이용률 ρ를 70% 이하로 설계 — M/M/1에서 Wq=ρ/(μ(1-ρ)), ρ→1이면 Wq→∞. 이 비선형성을 그래프로 표현하면 고득점.</div>
+</div>
+</div>
+
+<!-- ⑦ 빈도·경향 -->
+<div class="panel" id="p6">
+<div class="card">
+  <h3>토픽별 출제 빈도 순위</h3>
+  <div id="fbars"></div>
+</div>
+<div class="card">
+  <h3>최근 10년 출제 경향 변화</h3>
+  <table>
+    <tr><th>시기</th><th>증가 토픽</th><th>감소 토픽</th><th>신규 등장</th></tr>
+    <tr><td>~2015년</td><td>정렬·기본 탐색·BST 기초</td><td>-</td><td>-</td></tr>
+    <tr><td>2015~2019</td><td>그래프 알고리즘·DP·P-NP</td><td>단순 버블/선택 암기형</td><td>병렬 알고리즘, 확률적 자료구조</td></tr>
+    <tr><td>2020~2022</td><td>큐잉이론·분산 자료구조</td><td>정렬 단순 나열형</td><td>Consistent Hashing, LSM-Tree, Skip List</td></tr>
+    <tr><td>2023~현재</td><td>AI 알고리즘 복잡도·큐잉 응용</td><td>고전 탐색 단독 출제</td><td>Flash Attention O(n²→n), HNSW 벡터 인덱스, 양자 알고리즘</td></tr>
+  </table>
+  <div class="wl">최신 트렌드: AI 시스템(LLM 추론 서버)에 큐잉이론 M/M/c 적용하는 신유형 증가. Transformer Self-Attention의 O(n²) 병목과 Flash Attention 개선도 등장 중.</div>
+</div>
+<div class="card">
+  <h3>P·NP 이론 — 고득점 심화</h3>
+  <table>
+    <tr><th>분류</th><th>정의</th><th>대표 문제</th><th>빈도</th></tr>
+    <tr><td><span class="badge bd-g">P</span></td><td>결정론적 다항 시간 내 풀이 가능</td><td>정렬, 최단경로, MST, 행렬 곱셈</td><td><span class="badge bd-r">★★★★★</span></td></tr>
+    <tr><td><span class="badge bd-b">NP</span></td><td>비결정론적 다항 시간 풀이 / 해 검증 다항 시간</td><td>SAT, TSP(결정형), 해밀턴 경로</td><td><span class="badge bd-r">★★★★★</span></td></tr>
+    <tr><td><span class="badge bd-a">NP-Hard</span></td><td>모든 NP 문제 다항 환원 가능. NP 외부 가능</td><td>TSP(최적화), 정지 문제</td><td><span class="badge bd-g">★★★★☆</span></td></tr>
+    <tr><td><span class="badge bd-r">NP-Complete</span></td><td>NP ∩ NP-Hard. NP에서 가장 어려운 집합</td><td>3-SAT, 클리크, 독립집합, 0/1 배낭(결정형)</td><td><span class="badge bd-g">★★★★☆</span></td></tr>
+  </table>
+  <div class="hl">P=NP이면? → RSA·타원곡선 암호 붕괴 가능. 대부분의 학자는 P≠NP로 추정. Cook-Levin 정리(1971): 3-SAT가 최초 NP-Complete 증명. 다항 환원 체인: 3-SAT→클리크→독립집합→버텍스커버.</div>
+</div>
+</div>
+
+<!-- ⑧ Q&A -->
+<div class="panel" id="p7">
+<div class="sb-wrap">
+  <div><div style="font-size:11px;color:#73726c">점수</div><div class="sn" id="sc">0 / 0</div></div>
+  <div style="flex:1;height:5px;background:#e0dfd9;border-radius:3px;overflow:hidden"><div id="sb" style="height:100%;background:#185FA5;width:0%;transition:width .3s"></div></div>
+  <button class="reset-btn" onclick="rQ()">초기화</button>
+</div>
+<div id="ql"></div>
+</div>
+
+</div><!-- /wrap -->
+
+<script>
+/* 탭 */
+document.querySelectorAll('.tab').forEach(t=>t.addEventListener('click',()=>{
+  document.querySelectorAll('.tab').forEach(x=>x.classList.remove('on'));
+  document.querySelectorAll('.panel').forEach(x=>x.classList.remove('on'));
+  t.classList.add('on');document.getElementById(t.dataset.p).classList.add('on');
+}));
+
+/* 빈도 바 */
+const FD=[
+  {l:'정렬 알고리즘 비교',n:32,c:'#185FA5'},{l:'그래프 최단경로 (Dijkstra 등)',n:28,c:'#3B6D11'},
+  {l:'MST (Kruskal·Prim)',n:22,c:'#3B6D11'},{l:'트리 자료구조 (AVL·B+)',n:20,c:'#534AB7'},
+  {l:'P·NP 이론',n:18,c:'#A32D2D'},{l:'동적 프로그래밍 (LCS·배낭 등)',n:17,c:'#BA7517'},
+  {l:'큐잉이론 M/M/1·리틀법칙',n:16,c:'#0F6E56'},{l:'해시 테이블·충돌 해결',n:14,c:'#534AB7'},
+  {l:'마스터 정리',n:12,c:'#185FA5'},{l:'허프만 코딩',n:11,c:'#BA7517'},
+  {l:'KMP 문자열 탐색',n:10,c:'#0F6E56'},{l:'일관성 해싱',n:9,c:'#185FA5'},
+  {l:'블룸 필터',n:8,c:'#3B6D11'},{l:'분할상환 분석',n:7,c:'#534AB7'},
+];
+const fb=document.getElementById('fbars'),mx=FD[0].n;
+FD.forEach(d=>{
+  const div=document.createElement('div');div.className='freq-row';
+  div.innerHTML=`<div class="freq-label">${d.l}</div><div class="freq-bar-wrap"><div class="freq-bar" style="width:${Math.round(d.n/mx*100)}%;background:${d.c}"></div></div><div class="freq-cnt">${d.n}회</div>`;
+  fb.appendChild(div);
+});
+
+/* Q&A */
+const QS=[
+  {q:'M/M/1 큐에서 λ=6/초, μ=10/초일 때 시스템 내 평균 고객 수 L은?',
+   opts:['1.0명','1.5명','2.0명','3.0명'],ans:1,
+   exp:'ρ=6/10=0.6. L=ρ/(1-ρ)=0.6/0.4=1.5명. 리틀 법칙 검증: W=1/(10-6)=0.25초, L=λW=6×0.25=1.5명 ✓'},
+  {q:'비교 기반 정렬의 이론적 하한이 Ω(n log n)인 근거로 가장 옳은 것은?',
+   opts:['힙 정렬이 O(n log n)이기 때문','결정 트리의 리프 수가 n!이고 트리 높이 ≥ log₂(n!) ≥ n log n이기 때문','퀵 정렬의 평균 복잡도가 O(n log n)이기 때문','모든 실험에서 n log n을 보이기 때문'],ans:1,
+   exp:'n개 원소의 모든 순열(n!)을 구분하려면 이진 결정 트리의 리프 수가 n! 이상이어야 한다. 높이 h≥log₂(n!)이고 Stirling 근사로 log₂(n!)≥n log n/2이므로 하한 Ω(n log n)이 도출된다.'},
+  {q:'0/1 배낭 문제에서 그리디(단위 무게당 가치 기준)로 최적해를 보장할 수 없는 핵심 이유는?',
+   opts:['시간 복잡도가 너무 높기 때문','물건을 분수로 쪼갤 수 없어 탐욕적 선택이 전역 최적을 보장하지 않기 때문','배낭 용량이 정수가 아닐 수 있기 때문','물건 수가 너무 많기 때문'],ans:1,
+   exp:'0/1 배낭은 물건을 통째로 담거나 제외해야 한다. 탐욕적 선택(단위 가치 최대)이 전역 최적해를 보장하지 않는다. 분수 배낭(물건을 나눌 수 있음)은 그리디로 최적해 달성 가능.'},
+  {q:'Dijkstra 알고리즘 대신 Bellman-Ford를 사용해야 하는 상황은?',
+   opts:['그래프가 매우 밀집된 경우','음수 가중치 간선이 존재하는 경우','정점 수가 많은 경우','무방향 그래프인 경우'],ans:1,
+   exp:'Dijkstra는 음수 가중치가 있으면 부정확. Bellman-Ford는 음수 가중치 허용, 음수 사이클 검출 가능(V번째 완화 시 갱신 발생). 대신 O(VE)로 더 느림.'},
+  {q:'AVL 트리에서 LR 불균형(왼쪽 자식의 오른쪽 서브트리 불균형) 해소 방법은?',
+   opts:['우회전 1회','좌회전 1회','왼쪽 자식 좌회전 후 루트 우회전 (좌-우 이중 회전)','루트 좌회전 후 오른쪽 자식 우회전'],ans:2,
+   exp:'LR 불균형: 왼쪽 자식을 먼저 좌회전하여 LL 형태로 변환한 후, 루트를 우회전. RL 불균형은 반대: 오른쪽 자식을 우회전→RR 변환 후 루트 좌회전.'},
+  {q:'리틀의 법칙(L=λW)이 성립하는 조건으로 가장 정확한 것은?',
+   opts:['M/M/1 큐에서만 성립','FCFS 서비스 규율에서만 성립','시스템이 정상 상태이면 큐 모델·서비스 규율 무관하게 성립','λ<μ 조건을 만족하는 경우에만'],ans:2,
+   exp:'리틀의 법칙은 시스템이 안정적 정상 상태에 있기만 하면 큐 모델(M/M/1, M/G/1, G/G/1 등), 서비스 규율(FCFS, LCFS, 우선순위 등)에 무관하게 항상 성립하는 매우 강력한 범용 법칙이다.'},
+  {q:'Floyd-Warshall 알고리즘에서 음수 사이클 존재를 판단하는 방법은?',
+   opts:['dist[i][j]<0인 쌍 발견','알고리즘 완료 후 dist[i][i]<0인 정점 존재','dist[0][n-1]<0인 경우','간선 가중치 합이 음수인 경우'],ans:1,
+   exp:'Floyd-Warshall 완료 후 대각선 원소 dist[i][i]<0이면 그 정점을 포함하는 음수 사이클 존재. 정상적으로는 자기 자신까지 거리=0이어야 한다.'},
+  {q:'B+트리가 DBMS 인덱스로 B트리보다 선호되는 핵심 이유는?',
+   opts:['삽입·삭제 연산이 더 빠름','내부 노드에 데이터 포인터를 저장해 검색이 빠름','리프 노드 연결리스트로 범위 검색이 효율적이고 내부 팬아웃이 증가하여 디스크 I/O가 감소','키 비교 횟수가 더 적음'],ans:2,
+   exp:'B+트리: 내부 노드에는 키만 저장 → 팬아웃 증가 → 트리 높이 감소 → 디스크 I/O 절감. 리프가 연결리스트로 연결 → 범위 검색 O(log n+k). 이 두 가지가 DBMS가 B+를 선택하는 핵심 이유.'},
+];
+
+let an={},cr=0,tt=0;
+function rQ(){an={};cr=0;tt=0;document.getElementById('sc').textContent='0 / 0';document.getElementById('sb').style.width='0%';renderQ();}
+function renderQ(){
+  document.getElementById('ql').innerHTML=QS.map((q,i)=>{
+    const s=an[i];
+    return`<div class="qitem"><div class="qtext"><b>Q${i+1}.</b> ${q.q}</div>
+    <div class="qopts">${q.opts.map((o,j)=>{
+      let c='';if(s!==undefined){if(j===q.ans)c='correct';else if(j===s&&s!==q.ans)c='wrong';}
+      return`<button onclick="chk(${i},${j})" ${s!==undefined?'disabled':''} class="${c}">${['①','②','③','④'][j]} ${o}</button>`;
+    }).join('')}</div>
+    <div class="explain" id="ex${i}" style="display:${s!==undefined?'block':'none'}">${q.exp}</div></div>`;
+  }).join('');
+}
+function chk(qi,ch){
+  if(an[qi]!==undefined)return;an[qi]=ch;tt++;
+  if(ch===QS[qi].ans)cr++;
+  document.getElementById('sc').textContent=cr+' / '+tt;
+  document.getElementById('sb').style.width=(tt?Math.round(cr/tt*100):0)+'%';
+  renderQ();
+}
+renderQ();
+</script>
+</body>
+</html>

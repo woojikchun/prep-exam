@@ -1,0 +1,321 @@
+
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+.w{padding:.75rem 0 2.5rem;font-family:var(--font-sans)}
+.warn{background:#FAEEDA;border:0.5px solid #EF9F27;border-radius:var(--border-radius-md);padding:.65rem .9rem;font-size:12px;color:#412402;margin-bottom:1rem;line-height:1.65}
+.stage-row{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-bottom:1.25rem}
+.stage{border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-md);padding:.6rem .75rem;cursor:pointer;transition:all .15s;text-align:center}
+.stage:hover{background:var(--color-background-secondary)}
+.stage.on{border-color:#185FA5;background:#E6F1FB}
+.stage-n{font-size:11px;font-weight:500;color:var(--color-text-secondary)}
+.stage.on .stage-n{color:#0C447C}
+.stage-label{font-size:12px;font-weight:500;margin-top:3px;color:var(--color-text-primary)}
+.stage.on .stage-label{color:#0C447C}
+.section-title{font-size:11px;font-weight:500;color:var(--color-text-secondary);letter-spacing:.06em;margin:.75rem 0 .4rem;text-transform:uppercase}
+.book-card{border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-lg);padding:.85rem 1rem;margin-bottom:.65rem;display:grid;grid-template-columns:auto 1fr;gap:.75rem;align-items:start}
+.book-card.star{border-color:#185FA5;border-width:1.5px}
+.book-icon{width:44px;height:56px;border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0}
+.bi-b{background:#E6F1FB}
+.bi-g{background:#EAF3DE}
+.bi-p{background:#EEEDFE}
+.bi-a{background:#FAEEDA}
+.bi-t{background:#E1F5EE}
+.bi-r{background:#FCEBEB}
+.book-title{font-size:13px;font-weight:500;color:var(--color-text-primary);margin-bottom:3px;line-height:1.45}
+.book-meta{font-size:11px;color:var(--color-text-secondary);margin-bottom:5px}
+.book-desc{font-size:12px;line-height:1.65;color:var(--color-text-secondary)}
+.tags{display:flex;gap:4px;flex-wrap:wrap;margin-top:5px}
+.tag{font-size:10px;padding:2px 7px;border-radius:var(--border-radius-md);font-weight:500}
+.tg-b{background:#E6F1FB;color:#0C447C}
+.tg-g{background:#EAF3DE;color:#27500A}
+.tg-r{background:#FCEBEB;color:#791F1F}
+.tg-a{background:#FAEEDA;color:#412402}
+.tg-p{background:#EEEDFE;color:#26215C}
+.tg-t{background:#E1F5EE;color:#04342C}
+.star-badge{font-size:10px;padding:2px 7px;border-radius:var(--border-radius-md);background:#185FA5;color:#E6F1FB;margin-left:6px;vertical-align:middle;font-weight:500}
+.tip-box{background:var(--color-background-secondary);border-left:2.5px solid #534AB7;padding:.55rem .85rem;font-size:12px;line-height:1.75;margin:1rem 0 .5rem;color:var(--color-text-secondary)}
+.roadmap{display:grid;grid-template-columns:repeat(4,1fr);gap:4px;margin:.75rem 0}
+.rm-step{background:var(--color-background-secondary);border-radius:var(--border-radius-md);padding:.55rem .65rem;text-align:center}
+.rm-step .n{font-size:18px;font-weight:500;color:#185FA5}
+.rm-step .l{font-size:10px;color:var(--color-text-secondary);margin-top:2px;line-height:1.45}
+.arrow{display:flex;align-items:center;justify-content:center;font-size:14px;color:var(--color-text-secondary)}
+.panel{display:none}.panel.on{display:block}
+.free-row{display:grid;grid-template-columns:repeat(2,1fr);gap:.5rem;margin:.5rem 0}
+.free-card{border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-md);padding:.65rem .75rem}
+.free-card .fc-title{font-size:12px;font-weight:500;color:var(--color-text-primary);margin-bottom:3px}
+.free-card .fc-desc{font-size:11px;color:var(--color-text-secondary);line-height:1.55}
+</style>
+<div class="w">
+
+<div class="warn">
+  ⚠️ 기술사 시험은 논술형 답안 작성이 핵심입니다. <strong>도서만으로 합격하기 매우 어려우며</strong>, 업계에서는 학원·스터디그룹 병행을 강권합니다. 독학 시 반드시 <strong>서브노트 작성 + 답안 쓰기 훈련</strong>을 병행해야 합니다.
+</div>
+
+<div class="stage-row">
+  <div class="stage on" onclick="sw(0,this)"><div class="stage-n">STEP 1</div><div class="stage-label">전용 수험서</div></div>
+  <div class="stage" onclick="sw(1,this)"><div class="stage-n">STEP 2</div><div class="stage-label">영역별 심화서</div></div>
+  <div class="stage" onclick="sw(2,this)"><div class="stage-n">STEP 3</div><div class="stage-label">CS 기초 원서</div></div>
+  <div class="stage" onclick="sw(3,this)"><div class="stage-n">BONUS</div><div class="stage-label">무료 자료</div></div>
+</div>
+
+<!-- STEP 1: 전용 수험서 -->
+<div class="panel on" id="p0">
+  <div class="tip-box">먼저 이 카테고리의 책 1권을 선택해 전체 출제 범위를 파악하는 것이 독학 출발점입니다. 핵심 토픽서 → Vol. 시리즈 순서로 진행하면 효율적입니다.</div>
+
+  <div class="section-title">🎯 가장 먼저 볼 책 — 핵심 토픽 단권화</div>
+
+  <div class="book-card star">
+    <div class="book-icon bi-b">📘</div>
+    <div>
+      <div class="book-title">핵심 토픽 104개로 끝내는 컴퓨터시스템응용기술사 <span class="star-badge">★ 1순위</span></div>
+      <div class="book-meta">임호진 저 | 성안당 | 컴퓨터시스템응용기술사 전용</div>
+      <div class="book-desc">시험 전용으로 출제 비중 높은 104개 토픽을 선별. 토픽마다 대표 기출문제·답안 작성법·학습 가이드 수록. 구매 시 limbest.com 무료 동영상 강의 제공.</div>
+      <div class="tags">
+        <span class="tag tg-r">컴시응 전용</span>
+        <span class="tag tg-b">104토픽</span>
+        <span class="tag tg-g">무료강의포함</span>
+        <span class="tag tg-a">답안작성법</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="book-card star">
+    <div class="book-icon bi-p">📗</div>
+    <div>
+      <div class="book-title">핵심 토픽 98개로 끝내는 정보관리기술사 <span class="star-badge">★ 병행 권장</span></div>
+      <div class="book-meta">임호진 저 | 성안당 | 정보관리기술사 (공통 범위 80% 이상)</div>
+      <div class="book-desc">정보관리기술사용이지만 SW공학·DB·네트워크·보안 등 공통 출제 범위가 80% 이상 겹침. 컴시응 104토픽서와 함께 보면 시너지 극대화.</div>
+      <div class="tags">
+        <span class="tag tg-p">98토픽</span>
+        <span class="tag tg-b">공통범위 80%↑</span>
+        <span class="tag tg-g">무료강의포함</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="section-title">📚 영역별 분권 — 심층 학습용 (Vol. 시리즈)</div>
+
+  <div class="book-card">
+    <div class="book-icon bi-t">📙</div>
+    <div>
+      <div class="book-title">정보관리 & 컴퓨터시스템응용기술사 Vol.1~8 (분권 시리즈)</div>
+      <div class="book-meta">임베스트 편저 | 알라딘·교보 판매 | 개정증보판</div>
+      <div class="book-desc">
+        Vol.1 컴퓨터 구조 / Vol.2 운영체제 / Vol.3 네트워크 / Vol.4 보안 / Vol.5 소프트웨어공학 / Vol.6 알고리즘 / Vol.8 데이터베이스. 취약 영역만 선택 구매 가능.
+      </div>
+      <div class="tags">
+        <span class="tag tg-b">8권 분권</span>
+        <span class="tag tg-g">영역별 선택</span>
+        <span class="tag tg-p">개정증보판</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="section-title">📄 기출문제집</div>
+
+  <div class="book-card">
+    <div class="book-icon bi-a">📕</div>
+    <div>
+      <div class="book-title">정보관리기술사 기출문제 2005~2024 (전자책)</div>
+      <div class="book-meta">알라딘 전자책 | 20년치 기출 수록 | 해설 미포함</div>
+      <div class="book-desc">20년치 기출 원문을 한 권으로 정리. 해설은 없지만 스스로 모범 답안을 작성하며 공부하는 용도로 활용. 출제 경향·반복 패턴 파악에 필수.</div>
+      <div class="tags">
+        <span class="tag tg-a">20년 기출</span>
+        <span class="tag tg-b">전자책</span>
+        <span class="tag tg-r">해설 없음(직접 작성)</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- STEP 2: 영역별 심화서 -->
+<div class="panel" id="p1">
+  <div class="tip-box">기출 빈도가 높은 영역부터 우선 공략하세요. 각 분야 국내 교과서를 1권씩 읽고 해당 Vol. 수험서와 교차 학습하면 이해도가 크게 올라갑니다.</div>
+
+  <div class="section-title">💻 운영체제</div>
+  <div class="book-card star">
+    <div class="book-icon bi-b">🐉</div>
+    <div>
+      <div class="book-title">운영체제 (공룡책) — Operating System Concepts <span class="star-badge">★ 필독</span></div>
+      <div class="book-meta">Silberschatz, Galvin, Gagne | 한빛아카데미 번역판 | 10판</div>
+      <div class="book-desc">기술사 OS 영역의 교과서. 프로세스·스레드·스케줄링·교착상태·가상 메모리·파일 시스템을 체계적으로 서술. 번역판은 "운영체제"(한빛아카데미) 구매 추천.</div>
+      <div class="tags"><span class="tag tg-b">스케줄링</span><span class="tag tg-p">교착상태</span><span class="tag tg-g">가상메모리</span><span class="tag tg-a">동기화</span></div>
+    </div>
+  </div>
+
+  <div class="section-title">🗄️ 데이터베이스</div>
+  <div class="book-card star">
+    <div class="book-icon bi-t">🐘</div>
+    <div>
+      <div class="book-title">데이터베이스 시스템 — Database System Concepts <span class="star-badge">★ 필독</span></div>
+      <div class="book-meta">Silberschatz, Korth, Sudarshan | 한빛아카데미 번역판 | 7판</div>
+      <div class="book-desc">정규화·트랜잭션·동시성 제어·인덱스·쿼리 최적화의 표준 교재. Vol.8 데이터베이스 수험서와 함께 보면 이론 이해도 탁월.</div>
+      <div class="tags"><span class="tag tg-b">정규화</span><span class="tag tg-t">트랜잭션</span><span class="tag tg-p">인덱스</span></div>
+    </div>
+  </div>
+
+  <div class="section-title">🌐 네트워크</div>
+  <div class="book-card">
+    <div class="book-icon bi-g">🌐</div>
+    <div>
+      <div class="book-title">컴퓨터 네트워킹 하향식 접근 — Computer Networking: A Top-Down Approach</div>
+      <div class="book-meta">Kurose & Ross | 퍼스트북 번역판 | 8판</div>
+      <div class="book-desc">OSI 7계층을 응용→물리 하향식으로 설명. TCP/IP·라우팅·혼잡 제어를 직관적으로 이해할 수 있는 최적 교재. 번역판 "컴퓨터 네트워킹" 추천.</div>
+      <div class="tags"><span class="tag tg-b">TCP/IP</span><span class="tag tg-g">라우팅</span><span class="tag tg-a">혼잡제어</span></div>
+    </div>
+  </div>
+
+  <div class="section-title">⚙️ 컴퓨터 구조</div>
+  <div class="book-card">
+    <div class="book-icon bi-a">🔧</div>
+    <div>
+      <div class="book-title">컴퓨터 조직 및 구조 — Computer Organization and Architecture</div>
+      <div class="book-meta">William Stallings | 한빛아카데미 번역판 | 11판</div>
+      <div class="book-desc">CPU 파이프라인·캐시·메모리 계층·I/O 방식을 깊이 있게 다룸. 컴퓨터 구조 영역 기출문제의 이론적 근거가 되는 표준 교재.</div>
+      <div class="tags"><span class="tag tg-a">파이프라인</span><span class="tag tg-b">캐시</span><span class="tag tg-g">메모리</span></div>
+    </div>
+  </div>
+
+  <div class="section-title">🔐 정보 보안</div>
+  <div class="book-card">
+    <div class="book-icon bi-r">🔐</div>
+    <div>
+      <div class="book-title">정보 보안 개론 (국내 교재)</div>
+      <div class="book-meta">양대일 저 | 한빛아카데미 | 최신판</div>
+      <div class="book-desc">암호화·PKI·접근 통제·침해 대응을 국내 시험 기준에 맞게 서술. ISMS·개인정보보호법 등 국내 법제 포함. 외국 원서보다 시험 직결도 높음.</div>
+      <div class="tags"><span class="tag tg-r">암호화</span><span class="tag tg-p">PKI</span><span class="tag tg-b">접근통제</span><span class="tag tg-g">국내법제</span></div>
+    </div>
+  </div>
+
+  <div class="section-title">📐 알고리즘</div>
+  <div class="book-card">
+    <div class="book-icon bi-p">📐</div>
+    <div>
+      <div class="book-title">Introduction to Algorithms (CLRS) — 알고리즘 개론</div>
+      <div class="book-meta">Cormen, Leiserson, Rivest, Stein | MIT Press | 4판 (번역: 한빛미디어)</div>
+      <div class="book-desc">정렬·그래프·동적 프로그래밍·NP이론의 바이블. 기술사 알고리즘 영역 전 범위 커버. 분량이 방대하므로 출제 빈도 높은 챕터 위주로 선택적 학습.</div>
+      <div class="tags"><span class="tag tg-p">정렬</span><span class="tag tg-b">그래프</span><span class="tag tg-g">DP</span><span class="tag tg-r">NP이론</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- STEP 3: CS 기초 원서 -->
+<div class="panel" id="p2">
+  <div class="tip-box">기초가 약한 경우 이 단계 도서로 먼저 CS 전반의 맥락을 잡으세요. 두껍지 않고 핵심 개념이 잘 정리된 입문용 도서들입니다.</div>
+
+  <div class="book-card">
+    <div class="book-icon bi-b">💻</div>
+    <div>
+      <div class="book-title">혼자 공부하는 컴퓨터 구조 + 운영체제</div>
+      <div class="book-meta">강민철 저 | 한빛미디어 | 2022년</div>
+      <div class="book-desc">컴퓨터 구조와 운영체제를 입문자 눈높이로 설명. 기술사 준비 전 CS 기초를 빠르게 세울 때 적합. 유튜브 저자 강의 무료 제공.</div>
+      <div class="tags"><span class="tag tg-b">입문</span><span class="tag tg-g">무료강의</span><span class="tag tg-a">컴구조+OS</span></div>
+    </div>
+  </div>
+
+  <div class="book-card">
+    <div class="book-icon bi-p">🗂️</div>
+    <div>
+      <div class="book-title">데이터베이스 개론 (3판)</div>
+      <div class="book-meta">김연희 저 | 한빛아카데미 | 2021년</div>
+      <div class="book-desc">국내 대학 DB 표준 교재. 관계 대수·SQL·정규화·트랜잭션을 한국어로 명료하게 설명. 기술사 DB 답안 작성 용어의 기준이 되는 교재.</div>
+      <div class="tags"><span class="tag tg-p">국내 표준</span><span class="tag tg-b">SQL</span><span class="tag tg-t">정규화</span></div>
+    </div>
+  </div>
+
+  <div class="book-card">
+    <div class="book-icon bi-g">🏗️</div>
+    <div>
+      <div class="book-title">소프트웨어 공학의 모든 것</div>
+      <div class="book-meta">최은만 저 | 생능출판 | 최신판</div>
+      <div class="book-desc">국내 SW공학 표준 교재. SDLC·UML·테스트·품질·프로젝트 관리를 기술사 출제 범위에 맞게 커버. 기술사 SW공학 답안의 이론 베이스.</div>
+      <div class="tags"><span class="tag tg-g">SDLC</span><span class="tag tg-b">UML</span><span class="tag tg-p">테스트</span><span class="tag tg-a">품질</span></div>
+    </div>
+  </div>
+
+  <div class="book-card">
+    <div class="book-icon bi-a">🔒</div>
+    <div>
+      <div class="book-title">이것이 정보보안이다 (시리즈)</div>
+      <div class="book-meta">양대일 외 | 한빛미디어 | 시스템·네트워크 편</div>
+      <div class="book-desc">보안기사 수준의 보안 개념을 실무 사례 중심으로 설명. 기술사 보안 영역에서 요구하는 실질적 대응 방안 서술에 도움.</div>
+      <div class="tags"><span class="tag tg-a">실무중심</span><span class="tag tg-r">공격기법</span><span class="tag tg-b">대응방안</span></div>
+    </div>
+  </div>
+
+  <div class="book-card">
+    <div class="book-icon bi-t">📊</div>
+    <div>
+      <div class="book-title">코딩 인터뷰 완전 분석 (Cracking the Coding Interview)</div>
+      <div class="book-meta">Gayle Laakmann McDowell | 인사이트 번역판 | 6판</div>
+      <div class="book-desc">자료구조·알고리즘을 문제 풀이 형태로 정리. 기술사 1교시(단답형) 알고리즘·자료구조 문제 대비에 의외로 유효. CS 기초를 빠르게 점검하는 용도.</div>
+      <div class="tags"><span class="tag tg-t">자료구조</span><span class="tag tg-p">알고리즘</span><span class="tag tg-g">문제풀이</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- BONUS: 무료 자료 -->
+<div class="panel" id="p3">
+  <div class="tip-box">독학자에게 가장 중요한 자산은 무료 자료입니다. 아래 리소스를 최대한 활용하고, 서브노트 작성 훈련을 반드시 병행하세요.</div>
+
+  <div class="section-title">🎥 무료 동영상 강의</div>
+  <div class="free-row">
+    <div class="free-card">
+      <div class="fc-title">임베스트 (limbest.com)</div>
+      <div class="fc-desc">핵심 토픽서 구매자 대상 무료 강의. 서브노트 작성법·암기법·학습 전략 영상 포함. 성안당 도서 구매 후 이용 가능.</div>
+    </div>
+    <div class="free-card">
+      <div class="fc-title">임베스트TV (유튜브)</div>
+      <div class="fc-desc">정보관리기술사·컴시응기술사 핵심 노트 강의 무료 공개. 서브노트 작성방법·기출 분석 영상 다수. 구독 후 활용.</div>
+    </div>
+  </div>
+
+  <div class="section-title">📰 온라인 커뮤니티 & 자료</div>
+  <div class="free-row">
+    <div class="free-card">
+      <div class="fc-title">Q-Net (국가기술자격 홈페이지)</div>
+      <div class="fc-desc">기술사 과목별 출제기준·응시자격·시험 일정 공식 확인. 최근 3년치 기출문제 무료 공개 (q-net.or.kr).</div>
+    </div>
+    <div class="free-card">
+      <div class="fc-title">ITPE 스터디 카페 / 네이버 카페</div>
+      <div class="fc-desc">"기술사 스터디" 검색 시 관련 카페 다수. 합격자 서브노트 공유, 스터디 모집, 기출 답안 샘플 확보 가능.</div>
+    </div>
+  </div>
+
+  <div class="section-title">📝 독학 핵심 전략 — 서브노트 작성법</div>
+  <div class="book-card" style="border-color:#534AB7;border-width:1.5px">
+    <div class="book-icon bi-p">📓</div>
+    <div>
+      <div class="book-title" style="color:#3C3489">서브노트(Sub-Note) 작성 원칙</div>
+      <div class="book-desc" style="color:var(--color-text-primary)">
+        1. A4 용지 한 장에 1 토픽 (개요→구조→비교→결론 4단 구성)<br>
+        2. 그림·표를 반드시 포함 (시험장에서 15분 내 작성 목표)<br>
+        3. <strong>이해가 목표가 아니라 반복 훈련이 목표</strong> — 같은 토픽 10회 이상 쓰기<br>
+        4. 매주 1회 실전 모의 답안 작성 (100분 타이머 사용)
+      </div>
+      <div class="tags">
+        <span class="tag tg-p">독학 핵심</span>
+        <span class="tag tg-r">반복훈련</span>
+        <span class="tag tg-b">답안쓰기</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="section-title">📅 독학 학습 로드맵 (최소 12개월)</div>
+  <div class="roadmap">
+    <div class="rm-step"><div class="n">1~3</div><div class="l">월 · 핵심 토픽서 1회 정독 + 기출 파악</div></div>
+    <div class="rm-step"><div class="n">4~6</div><div class="l">월 · 영역별 심화서 + 서브노트 초안 작성</div></div>
+    <div class="rm-step"><div class="n">7~9</div><div class="l">월 · 서브노트 반복 + 실전 답안 쓰기</div></div>
+    <div class="rm-step"><div class="n">10~12</div><div class="l">월 · 기출 완전 정복 + 모의시험 반복</div></div>
+  </div>
+</div>
+
+</div>
+<script>
+function sw(idx, el){
+  document.querySelectorAll('.stage').forEach(s=>s.classList.remove('on'));
+  document.querySelectorAll('.panel').forEach(p=>p.classList.remove('on'));
+  el.classList.add('on');
+  document.getElementById('p'+idx).classList.add('on');
+}
+</script>

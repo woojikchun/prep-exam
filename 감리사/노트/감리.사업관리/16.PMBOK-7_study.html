@@ -1,0 +1,464 @@
+
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:var(--font-sans)}
+.tabs{display:flex;gap:6px;flex-wrap:wrap;padding:1rem 0 0.5rem}
+.tab{padding:7px 14px;font-size:13px;border:0.5px solid var(--color-border-secondary);border-radius:var(--border-radius-md);cursor:pointer;background:var(--color-background-primary);color:var(--color-text-secondary)}
+.tab.on{background:var(--color-background-tertiary);color:var(--color-text-primary);font-weight:500;border-color:var(--color-border-primary)}
+.page{display:none}.page.on{display:block}
+.card{background:var(--color-background-primary);border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-lg);padding:1rem 1.25rem;margin-bottom:12px}
+.sec{font-size:12px;font-weight:500;color:var(--color-text-secondary);letter-spacing:.04em;margin:1.1rem 0 6px}
+.memo{background:var(--color-background-secondary);border-left:3px solid #7F77DD;border-radius:0 var(--border-radius-md) var(--border-radius-md) 0;padding:9px 13px;font-size:13px;color:var(--color-text-primary);margin-top:10px;line-height:1.75}
+.warn{background:var(--color-background-secondary);border-left:3px solid #E24B4A;border-radius:0 var(--border-radius-md) var(--border-radius-md) 0;padding:9px 13px;font-size:13px;color:var(--color-text-primary);margin-top:10px;line-height:1.75}
+table{width:100%;border-collapse:collapse;font-size:13px}
+th{background:var(--color-background-secondary);padding:7px 10px;text-align:left;font-weight:500;font-size:12px;color:var(--color-text-secondary);border-bottom:0.5px solid var(--color-border-tertiary)}
+td{padding:8px 10px;border-bottom:0.5px solid var(--color-border-tertiary);color:var(--color-text-primary);vertical-align:top;line-height:1.55}
+.badge{display:inline-block;font-size:11px;padding:2px 8px;border-radius:var(--border-radius-md);font-weight:500;white-space:nowrap;margin-right:3px}
+.bl{background:#E6F1FB;color:#0C447C}
+.bt{background:#E1F5EE;color:#085041}
+.ba{background:#FAEEDA;color:#633806}
+.bc{background:#FAECE7;color:#712B13}
+.bp{background:#EEEDFE;color:#3C3489}
+.bg{background:#EAF3DE;color:#27500A}
+.br{background:#FCEBEB;color:#791F1F}
+.row{display:flex;gap:10px;padding:8px 0;border-bottom:0.5px solid var(--color-border-tertiary);font-size:13px;align-items:flex-start}
+.row:last-child{border-bottom:none}
+.lbl{font-weight:500;min-width:110px;flex-shrink:0;color:var(--color-text-primary)}
+.val{color:var(--color-text-secondary);flex:1;line-height:1.65}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.hl{background:#EEEDFE;color:#3C3489;padding:2px 6px;border-radius:4px;font-weight:500;font-size:12px}
+.p-card{border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-lg);padding:10px 12px;cursor:pointer;transition:background .15s}
+.p-card:hover{background:var(--color-background-secondary)}
+.p-card.open .p-body{display:block}
+.p-num{font-size:11px;font-weight:500;margin-bottom:4px}
+.p-title{font-size:13px;font-weight:500;color:var(--color-text-primary);margin-bottom:2px}
+.p-sub{font-size:12px;color:var(--color-text-secondary)}
+.p-body{display:none;margin-top:10px;padding-top:10px;border-top:0.5px solid var(--color-border-tertiary);font-size:13px;color:var(--color-text-secondary);line-height:1.7}
+.vs-box{border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-lg);overflow:hidden;margin-bottom:12px}
+.vs-head{display:grid;grid-template-columns:1fr 1fr;font-size:12px;font-weight:500}
+.vs-head div{padding:8px 12px;text-align:center}
+.vs-row{display:grid;grid-template-columns:1fr 1fr;border-top:0.5px solid var(--color-border-tertiary)}
+.vs-row div{padding:8px 12px;font-size:13px;line-height:1.6;color:var(--color-text-primary)}
+.vs-row div:first-child{border-right:0.5px solid var(--color-border-tertiary)}
+.dom-card{border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-lg);padding:10px 12px;cursor:pointer}
+.dom-card:hover{background:var(--color-background-secondary)}
+.dom-card.open .dom-body{display:block}
+.dom-body{display:none;margin-top:8px;padding-top:8px;border-top:0.5px solid var(--color-border-tertiary)}
+.opt{display:block;width:100%;text-align:left;padding:10px 14px;margin:6px 0;border:0.5px solid var(--color-border-secondary);border-radius:var(--border-radius-md);font-size:13px;background:var(--color-background-primary);color:var(--color-text-primary);cursor:pointer;line-height:1.5}
+.opt:hover{background:var(--color-background-secondary)}
+.opt.correct{background:#EAF3DE;border-color:#3B6D11;color:#173404}
+.opt.wrong{background:#FCEBEB;border-color:#A32D2D;color:#501313}
+.opt.reveal{background:#E6F1FB;border-color:#185FA5;color:#042C53}
+.opt:disabled{cursor:default}
+.expl{background:var(--color-background-secondary);border-left:3px solid #7F77DD;border-radius:0 var(--border-radius-md) var(--border-radius-md) 0;padding:10px 14px;font-size:13px;color:var(--color-text-primary);line-height:1.7;margin-top:10px;display:none}
+.expl.on{display:block}
+.prog-bar{height:4px;background:var(--color-background-secondary);border-radius:2px;margin:6px 0 10px}
+.prog-fill{height:4px;background:#534AB7;border-radius:2px;transition:width .3s}
+.dot{display:inline-block;width:9px;height:9px;border-radius:50%;margin:0 2px}
+.fbtn{padding:5px 11px;font-size:12px;border:0.5px solid var(--color-border-secondary);border-radius:var(--border-radius-md);background:var(--color-background-primary);color:var(--color-text-secondary);cursor:pointer}
+.fbtn.on{background:var(--color-background-tertiary);color:var(--color-text-primary);font-weight:500}
+.nav{display:flex;gap:8px;margin-top:12px;flex-wrap:wrap}
+</style>
+
+<div style="padding:0 0 2rem">
+<div class="tabs">
+  <div class="tab on" onclick="show(0)">6판 vs 7판</div>
+  <div class="tab" onclick="show(1)">12 원칙</div>
+  <div class="tab" onclick="show(2)">8 성과 영역</div>
+  <div class="tab" onclick="show(3)">가치전달시스템</div>
+  <div class="tab" onclick="show(4)">테일러링·모델</div>
+  <div class="tab" onclick="show(5)">예상 퀴즈 (15)</div>
+</div>
+
+<!-- 0: 6판 vs 7판 -->
+<div class="page on">
+  <p class="sec">패러다임 전환 — 핵심 차이</p>
+  <div class="vs-box">
+    <div class="vs-head">
+      <div style="background:#E6F1FB;color:#0C447C">PMBOK 6판 (이전)</div>
+      <div style="background:#EEEDFE;color:#3C3489">PMBOK 7판 (현재)</div>
+    </div>
+    <div class="vs-body">
+      <div class="vs-row">
+        <div><span style="font-weight:500">초점</span><br>프로세스 중심<br>(49개 프로세스)</div>
+        <div><span style="font-weight:500">초점</span><br>원칙 + 성과 중심<br>(12원칙 + 8성과영역)</div>
+      </div>
+      <div class="vs-row">
+        <div><span style="font-weight:500">철학</span><br>무엇을(What) 해야 하는가<br>정해진 방법론</div>
+        <div><span style="font-weight:500">철학</span><br>왜(Why), 어떤 가치를<br>상황에 맞는 테일러링</div>
+      </div>
+      <div class="vs-row">
+        <div><span style="font-weight:500">구조</span><br>5 프로세스 그룹<br>10 지식 영역</div>
+        <div><span style="font-weight:500">구조</span><br>12 프로젝트 관리 원칙<br>8 성과 영역 (Performance Domain)</div>
+      </div>
+      <div class="vs-row">
+        <div><span style="font-weight:500">방법론</span><br>예측형(Waterfall) 중심<br>Agile은 별도 부록</div>
+        <div><span style="font-weight:500">방법론</span><br>예측형·적응형·혼합형<br>모두 포괄 (방법론 중립)</div>
+      </div>
+      <div class="vs-row">
+        <div><span style="font-weight:500">산출물</span><br>프로세스별 투입물·도구·산출물<br>(ITTO) 상세 정의</div>
+        <div><span style="font-weight:500">산출물</span><br>ITTO 폐기<br>성과(Outcome) 중심 기술</div>
+      </div>
+      <div class="vs-row">
+        <div><span style="font-weight:500">핵심 개념</span><br>프로젝트 = 일시적 노력<br>철의 삼각형 (범위·일정·비용)</div>
+        <div><span style="font-weight:500">핵심 개념</span><br>가치 전달 시스템<br>이해관계자 가치 창출</div>
+      </div>
+    </div>
+  </div>
+  <div class="warn">★ 감리사 시험 핵심: 7판은 "프로세스를 따르는 것"이 아니라 "가치를 전달하는 것"이 목표<br>★ 6판의 5 프로세스 그룹(착수·기획·실행·감시통제·종료)은 7판에서 별도 문서(Process Groups: A Practice Guide)로 분리</div>
+
+  <p class="sec">7판 전체 구조 한눈에 보기</p>
+  <div class="card">
+    <div style="display:flex;flex-direction:column;gap:8px">
+      <div style="background:#EEEDFE;border-radius:var(--border-radius-md);padding:10px 14px">
+        <div style="font-size:12px;font-weight:500;color:#3C3489;margin-bottom:4px">가치 전달 시스템 (Value Delivery System)</div>
+        <div style="font-size:12px;color:#534AB7">포트폴리오 → 프로그램 → 프로젝트 → 제품 가치 연결</div>
+      </div>
+      <div style="background:#E6F1FB;border-radius:var(--border-radius-md);padding:10px 14px">
+        <div style="font-size:12px;font-weight:500;color:#0C447C;margin-bottom:4px">12 프로젝트 관리 원칙 (Principles)</div>
+        <div style="font-size:12px;color:#185FA5">프로젝트 관리자와 팀이 따라야 할 행동 지침·가치관</div>
+      </div>
+      <div style="background:#E1F5EE;border-radius:var(--border-radius-md);padding:10px 14px">
+        <div style="font-size:12px;font-weight:500;color:#085041;margin-bottom:4px">8 성과 영역 (Performance Domains)</div>
+        <div style="font-size:12px;color:#0F6E56">프로젝트 성과 달성을 위해 주의를 기울여야 할 8가지 영역</div>
+      </div>
+      <div style="background:#FAEEDA;border-radius:var(--border-radius-md);padding:10px 14px">
+        <div style="font-size:12px;font-weight:500;color:#633806;margin-bottom:4px">테일러링 (Tailoring)</div>
+        <div style="font-size:12px;color:#854F0B">프로젝트 상황에 맞게 접근 방식을 조정하는 원칙</div>
+      </div>
+      <div style="background:#EAF3DE;border-radius:var(--border-radius-md);padding:10px 14px">
+        <div style="font-size:12px;font-weight:500;color:#27500A;margin-bottom:4px">모델·방법·산출물 (Models, Methods, Artifacts)</div>
+        <div style="font-size:12px;color:#3B6D11">다양한 접근법의 구체적 도구·기법·문서 모음</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 1: 12 원칙 -->
+<div class="page">
+  <p class="sec">12 프로젝트 관리 원칙 — 클릭해서 상세 보기</p>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px" id="principles-grid"></div>
+  <div class="memo" style="margin-top:12px">암기 키워드: <span class="hl">청성공가팀질복이변복리변</span><br>청지기·성과·공정·가치·팀·질적·복잡성·이해관계자·변화·복원력·리더십·변화관리</div>
+</div>
+
+<!-- 2: 8 성과 영역 -->
+<div class="page">
+  <p class="sec">8 성과 영역 — 클릭해서 상세 보기</p>
+  <div style="display:flex;flex-direction:column;gap:8px" id="domains-list"></div>
+  <div class="warn" style="margin-top:12px">★ 성과 영역은 프로세스 그룹과 다르다 — 순서가 없고 동시에 진행됨<br>★ 각 성과 영역에는 '목표 성과(Desired Outcomes)'가 있으며, 이를 달성했는지 점검함</div>
+</div>
+
+<!-- 3: 가치전달시스템 -->
+<div class="page">
+  <p class="sec">가치 전달 시스템 (Value Delivery System)</p>
+  <div class="card">
+    <div style="display:flex;flex-direction:column;gap:6px;margin-bottom:10px">
+      <div style="display:flex;align-items:center;gap:8px">
+        <div style="background:#EEEDFE;border-radius:var(--border-radius-md);padding:8px 14px;font-size:12px;color:#3C3489;font-weight:500;min-width:90px;text-align:center">포트폴리오</div>
+        <div style="color:var(--color-text-secondary);font-size:12px">→</div>
+        <div style="font-size:12px;color:var(--color-text-secondary)">조직 전략·목표에 맞는 투자 집합 / 전략적 가치 창출</div>
+      </div>
+      <div style="display:flex;align-items:center;gap:8px">
+        <div style="background:#E6F1FB;border-radius:var(--border-radius-md);padding:8px 14px;font-size:12px;color:#0C447C;font-weight:500;min-width:90px;text-align:center">프로그램</div>
+        <div style="color:var(--color-text-secondary);font-size:12px">→</div>
+        <div style="font-size:12px;color:var(--color-text-secondary)">관련 프로젝트·활동 묶음 / 개별 관리보다 큰 편익 실현</div>
+      </div>
+      <div style="display:flex;align-items:center;gap:8px">
+        <div style="background:#E1F5EE;border-radius:var(--border-radius-md);padding:8px 14px;font-size:12px;color:#085041;font-weight:500;min-width:90px;text-align:center">프로젝트</div>
+        <div style="color:var(--color-text-secondary);font-size:12px">→</div>
+        <div style="font-size:12px;color:var(--color-text-secondary)">일시적이고 고유한 결과물·능력·가치를 창출하는 노력</div>
+      </div>
+      <div style="display:flex;align-items:center;gap:8px">
+        <div style="background:#FAEEDA;border-radius:var(--border-radius-md);padding:8px 14px;font-size:12px;color:#633806;font-weight:500;min-width:90px;text-align:center">운영</div>
+        <div style="color:var(--color-text-secondary);font-size:12px">→</div>
+        <div style="font-size:12px;color:var(--color-text-secondary)">지속적·반복적 활동 / 프로젝트 산출물의 운영·유지</div>
+      </div>
+    </div>
+    <div class="memo">가치 전달 시스템의 핵심: 조직 전략 → 포트폴리오 → 프로그램 → 프로젝트 → 산출물 → 편익 → 조직 가치</div>
+  </div>
+
+  <p class="sec">거버넌스 (Governance)</p>
+  <div class="card">
+    <div class="row"><div class="lbl">정의</div><div class="val">조직이 목표를 달성하기 위해 통제·관리하는 프레임워크 — 권한·책임·의사결정 구조</div></div>
+    <div class="row"><div class="lbl">포트폴리오 거버넌스</div><div class="val">투자 우선순위, 자원 배분, 전략 정렬 여부 감독</div></div>
+    <div class="row"><div class="lbl">프로젝트 거버넌스</div><div class="val">PM 권한 범위, 변경 통제, 스폰서 책임, 보고 체계</div></div>
+    <div class="row"><div class="lbl">감리 연계</div><div class="val">거버넌스 구조 미비 → 책임 공백, 의사결정 지연 → 감리 지적 대상</div></div>
+  </div>
+
+  <p class="sec">프로젝트 환경 — 내부·외부</p>
+  <div class="card">
+    <div class="grid2">
+      <div>
+        <div style="font-size:12px;font-weight:500;color:var(--color-text-secondary);margin-bottom:6px">내부 환경 (EEF 내부)</div>
+        <div style="font-size:13px;color:var(--color-text-secondary);line-height:1.8">조직 문화·구조<br>기존 시스템·인프라<br>인적 자원 역량<br>조직의 위험 허용 수준</div>
+      </div>
+      <div>
+        <div style="font-size:12px;font-weight:500;color:var(--color-text-secondary);margin-bottom:6px">외부 환경 (EEF 외부)</div>
+        <div style="font-size:13px;color:var(--color-text-secondary);line-height:1.8">시장 조건·경쟁<br>법규·규제<br>사회·문화적 영향<br>기술 트렌드</div>
+      </div>
+    </div>
+    <div class="memo">EEF (Enterprise Environmental Factors): 프로젝트에 영향을 주는 내외부 환경 요인<br>OPA (Organizational Process Assets): 조직이 축적한 지식·절차·교훈·템플릿</div>
+  </div>
+
+  <p class="sec">편익 실현 (Benefits Realization)</p>
+  <div class="card">
+    <div class="row"><div class="lbl">개념</div><div class="val">프로젝트 산출물이 실제로 조직에 편익(이익)을 가져오는 것 — 7판 핵심 강조 사항</div></div>
+    <div class="row"><div class="lbl">산출물 vs 편익</div><div class="val">산출물(Deliverable): 프로젝트가 만든 것 / 편익(Benefit): 그것이 가져온 가치</div></div>
+    <div class="row"><div class="lbl">프로젝트 종료 후</div><div class="val">편익 실현은 프로젝트 종료 이후에도 계속됨 — 운영 단계로 이어짐</div></div>
+    <div class="row"><div class="lbl">감리 관점</div><div class="val">사업 목표 달성 여부, 기대 편익 측정 계획 수립 여부 점검</div></div>
+  </div>
+</div>
+
+<!-- 4: 테일러링·모델 -->
+<div class="page">
+  <p class="sec">테일러링 (Tailoring)</p>
+  <div class="card">
+    <div class="row"><div class="lbl">정의</div><div class="val">프로젝트의 특성·환경·제약에 맞게 접근 방식·프로세스·산출물을 의도적으로 조정하는 것</div></div>
+    <div class="row"><div class="lbl">테일러링 대상</div><div class="val">개발 접근 방식, 프로세스, 참여, 도구, 방법, 산출물 등</div></div>
+    <div class="row"><div class="lbl">테일러링 기준</div><div class="val">프로젝트 규모·복잡도, 조직 문화, 규제 환경, 팀 역량, 고객 요구</div></div>
+    <div class="row"><div class="lbl">7판 핵심 메시지</div><div class="val">"표준을 따르는 것"이 아니라 "상황에 맞게 적용하는 것"이 올바른 PM</div></div>
+    <div class="memo">테일러링 4단계: ① 맥락 선택 → ② 초기 개발 접근법 수립 → ③ 조직에 맞게 조정 → ④ 프로젝트에 맞게 추가 조정</div>
+  </div>
+
+  <p class="sec">개발 접근 방식 3가지</p>
+  <div class="card">
+    <table>
+      <tr><th>유형</th><th>특징</th><th>적합 상황</th><th>예시</th></tr>
+      <tr>
+        <td><span class="badge bl">예측형 Predictive</span></td>
+        <td>요구사항·범위 사전 확정<br>계획 중심, 순차 진행</td>
+        <td>요구사항 안정·명확<br>기술적 위험 낮음</td>
+        <td>건설, 제조, 규제 산업</td>
+      </tr>
+      <tr>
+        <td><span class="badge bt">적응형 Adaptive</span></td>
+        <td>반복·증분 개발<br>변화 수용, 고객 피드백 중심</td>
+        <td>요구사항 불명확·변경 多<br>혁신·탐색적 프로젝트</td>
+        <td>소프트웨어, 신제품 개발</td>
+      </tr>
+      <tr>
+        <td><span class="badge bp">혼합형 Hybrid</span></td>
+        <td>예측형 + 적응형 결합<br>상황에 따라 혼용</td>
+        <td>일부는 확정, 일부는 탐색<br>대형 복합 프로젝트</td>
+        <td>IT 시스템 + 인프라 통합</td>
+      </tr>
+    </table>
+  </div>
+
+  <p class="sec">7판 주요 모델 (Models)</p>
+  <div class="card">
+    <table>
+      <tr><th>모델 이름</th><th>핵심 내용</th><th>활용</th></tr>
+      <tr><td>상황적 리더십 II<br>(Situational Leadership)</td><td>구성원 역량·의지에 따라 리더십 스타일 조정</td><td>팀 관리</td></tr>
+      <tr><td>동기부여 모델<br>(내재적·외재적)</td><td>내재적 동기(의미·성장) vs 외재적 동기(보상·처벌)</td><td>팀 개발</td></tr>
+      <tr><td>커뮤니케이션 모델</td><td>발신자→인코딩→채널→디코딩→수신자→피드백</td><td>이해관계자 소통</td></tr>
+      <tr><td>변화 관리 모델<br>(ADKAR, Kotter 8단계)</td><td>조직 변화를 단계적으로 관리하는 프레임워크</td><td>조직 변화 추진</td></tr>
+      <tr><td>복잡성 모델<br>(Cynefin 프레임워크)</td><td>단순·복잡·복잡계·혼돈 4영역 구분</td><td>상황 판단·대응</td></tr>
+      <tr><td>팀 성과 모델<br>(Tuckman, Drexler/Sibbet)</td><td>팀 개발 단계 및 팀 성과 향상 프레임워크</td><td>팀 빌딩</td></tr>
+    </table>
+  </div>
+
+  <p class="sec">Cynefin 프레임워크 (복잡성 판단)</p>
+  <div class="card">
+    <table>
+      <tr><th>영역</th><th>특징</th><th>대응 방식</th></tr>
+      <tr><td><span class="badge bg">단순 (Simple/Clear)</span></td><td>원인-결과 명확, 모범 사례 존재</td><td>감지 → 분류 → 대응 (Best Practice)</td></tr>
+      <tr><td><span class="badge bl">난잡 (Complicated)</span></td><td>원인-결과 파악 가능, 전문가 필요</td><td>감지 → 분석 → 대응 (Good Practice)</td></tr>
+      <tr><td><span class="badge ba">복잡 (Complex)</span></td><td>원인-결과 사후 파악, 창발적</td><td>탐색 → 감지 → 대응 (Emergent Practice)</td></tr>
+      <tr><td><span class="badge br">혼돈 (Chaotic)</span></td><td>원인-결과 불명확, 위기 상황</td><td>행동 → 감지 → 대응 (Novel Practice)</td></tr>
+    </table>
+    <div class="memo">IT 프로젝트의 대부분은 '복잡(Complex)' 영역 → 탐색(Probe)이 먼저, Agile·반복적 접근 적합</div>
+  </div>
+</div>
+
+<!-- 5: 퀴즈 -->
+<div class="page">
+  <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px">
+    <span id="qc" style="font-size:13px;color:var(--color-text-secondary)">문제 1 / 15</span>
+    <div id="dots" style="display:flex;align-items:center;gap:3px"></div>
+  </div>
+  <div class="prog-bar"><div class="prog-fill" id="prog" style="width:6.67%"></div></div>
+  <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px">
+    <span style="font-size:12px;color:var(--color-text-secondary);align-self:center">필터:</span>
+    <button class="fbtn on" onclick="sf('all',this)">전체 (15)</button>
+    <button class="fbtn" onclick="sf('hard',this)">고난도</button>
+    <button class="fbtn" onclick="sf('mid',this)">중급</button>
+    <button class="fbtn" onclick="sf('6vs7',this)">6 vs 7판</button>
+    <button class="fbtn" onclick="sf('원칙',this)">원칙</button>
+    <button class="fbtn" onclick="sf('성과영역',this)">성과영역</button>
+    <button class="fbtn" onclick="sf('테일러링',this)">테일러링</button>
+  </div>
+  <div class="card" id="qcard">
+    <div style="display:flex;gap:6px;margin-bottom:10px;flex-wrap:wrap">
+      <span class="badge bp" id="qt"></span>
+      <span class="badge" id="qd"></span>
+    </div>
+    <p id="qtxt" style="font-size:14px;font-weight:500;color:var(--color-text-primary);line-height:1.7;margin-bottom:12px"></p>
+    <div id="qopts"></div>
+    <div class="expl" id="qexpl"></div>
+  </div>
+  <div class="nav">
+    <button onclick="qprev()" style="font-size:13px">← 이전</button>
+    <button onclick="qskip()" id="bskip" style="font-size:13px">건너뛰기</button>
+    <button onclick="qnext()" id="bnext" style="font-size:13px;display:none">다음 →</button>
+    <button onclick="qresult()" id="bres" style="font-size:13px;display:none">결과 보기 →</button>
+  </div>
+  <div id="resbox" style="display:none;margin-top:12px">
+    <div class="card">
+      <p style="font-size:15px;font-weight:500;margin-bottom:12px;color:var(--color-text-primary)">최종 결과</p>
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:12px">
+        <div style="background:var(--color-background-secondary);border-radius:var(--border-radius-md);padding:10px;text-align:center"><div style="font-size:11px;color:var(--color-text-secondary)">정답</div><div style="font-size:22px;font-weight:500;color:var(--color-text-primary)" id="rc">0</div></div>
+        <div style="background:var(--color-background-secondary);border-radius:var(--border-radius-md);padding:10px;text-align:center"><div style="font-size:11px;color:var(--color-text-secondary)">오답</div><div style="font-size:22px;font-weight:500;color:var(--color-text-primary)" id="rw">0</div></div>
+        <div style="background:var(--color-background-secondary);border-radius:var(--border-radius-md);padding:10px;text-align:center"><div style="font-size:11px;color:var(--color-text-secondary)">정답률</div><div style="font-size:22px;font-weight:500;color:var(--color-text-primary)" id="rr">0%</div></div>
+      </div>
+      <div id="rcmt" style="font-size:13px;color:var(--color-text-secondary);margin-bottom:12px;line-height:1.6"></div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap">
+        <button onclick="qrestart()" style="font-size:13px">처음부터 다시</button>
+        <button onclick="sendPrompt('PMBOK 7판 틀린 개념을 더 자세히 설명해줘')" style="font-size:13px">오답 복습 ↗</button>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+
+<script>
+var PRINCIPLES=[
+  {num:"원칙 1",color:"#E6F1FB",tc:"#0C447C",title:"청지기 정신 (Stewardship)",sub:"성실함, 배려, 신뢰성, 준법",detail:"PM과 팀은 조직·고객·사회에 대해 성실하고 윤리적으로 행동해야 한다. 내부·외부 이해관계자의 이익을 모두 고려하는 책임감 있는 청지기 역할 수행."},
+  {num:"원칙 2",color:"#E1F5EE",tc:"#085041",title:"팀 (Team)",sub:"협업 문화, 공유 책임, 성장",detail:"프로젝트 팀원 모두가 서로를 존중하고 협업하는 문화를 만든다. 역할·책임 명확화, 심리적 안전감 확보, 다양성 활용."},
+  {num:"원칙 3",color:"#FAEEDA",tc:"#633806",title:"이해관계자 (Stakeholders)",sub:"참여, 기대 관리, 가치 창출",detail:"이해관계자를 적극적으로 파악하고, 그들의 기대·관심사·영향력을 지속적으로 관리한다. 프로젝트 성공의 핵심은 이해관계자 만족."},
+  {num:"원칙 4",color:"#FAECE7",tc:"#712B13",title:"가치 (Value)",sub:"편익 실현, 가치 집중",detail:"모든 프로젝트 활동은 가치 창출에 집중해야 한다. 산출물(Output)이 아닌 편익(Benefit)과 결과(Outcome) 중심으로 사고."},
+  {num:"원칙 5",color:"#EEEDFE",tc:"#3C3489",title:"시스템 사고 (Systems Thinking)",sub:"전체적 관점, 상호의존성",detail:"프로젝트를 고립된 단위가 아닌 더 큰 시스템의 일부로 본다. 조직·환경·이해관계자와의 상호의존성을 인식하고 전체 최적화 추구."},
+  {num:"원칙 6",color:"#EAF3DE",tc:"#27500A",title:"리더십 (Leadership)",sub:"동기부여, 영향력, 서번트 리더십",detail:"PM은 권한만이 아닌 영향력과 서번트 리더십으로 팀을 이끈다. 상황에 맞는 리더십 스타일 적용, 팀원 성장 지원."},
+  {num:"원칙 7",color:"#E6F1FB",tc:"#0C447C",title:"테일러링 (Tailoring)",sub:"맥락 적응, 방법론 유연성",detail:"모든 프로젝트는 고유하다. 표준을 그대로 적용하는 것이 아니라 프로젝트 특성·환경·제약에 맞게 접근 방식을 조정해야 한다."},
+  {num:"원칙 8",color:"#FCEBEB",tc:"#791F1F",title:"품질 (Quality)",sub:"프로세스·결과물 품질",detail:"프로젝트 프로세스와 산출물 모두 품질 기준을 충족해야 한다. 품질은 사후 검사가 아닌 처음부터 내재화(Built-in Quality)."},
+  {num:"원칙 9",color:"#EEEDFE",tc:"#3C3489",title:"복잡성 (Complexity)",sub:"불확실성, 창발성 대응",detail:"현대 프로젝트는 복잡계(Complex System). 선형적 사고가 아닌 복잡성을 인정하고 적응·탐색적 접근을 활용해야 한다."},
+  {num:"원칙 10",color:"#FAEEDA",tc:"#633806",title:"위험 (Risk)",sub:"기회와 위협 균형 대응",detail:"위험은 부정적 위협과 긍정적 기회를 모두 포함한다. 위험 허용 수준에 맞게 지속적으로 식별·평가·대응해야 한다."},
+  {num:"원칙 11",color:"#E1F5EE",tc:"#085041",title:"적응성과 복원력 (Adaptability & Resiliency)",sub:"변화 수용, 회복 능력",detail:"프로젝트와 조직은 변화에 빠르게 적응하고, 역경 속에서도 회복하는 능력(Resiliency)을 길러야 한다. 불확실성을 위협이 아닌 기회로."},
+  {num:"원칙 12",color:"#EAF3DE",tc:"#27500A",title:"변화 관리 (Change)",sub:"변화 수용, 기대 결과 달성",detail:"의도한 미래 상태를 달성하기 위한 변화를 준비하고 지원한다. 조직·개인의 변화 수용 능력을 개발하고 변화 저항을 관리."},
+];
+
+var DOMAINS=[
+  {color:"#E6F1FB",tc:"#0C447C",num:"성과 영역 1",title:"이해관계자 (Stakeholders)",sub:"참여, 기대 관리",goal:"이해관계자의 생산적 참여 유지",detail:"이해관계자 파악 → 분석 → 참여 계획 → 실행 → 모니터링\n목표 성과: 이해관계자가 프로젝트에 생산적으로 참여하고, 지속적으로 만족도 유지"},
+  {color:"#E1F5EE",tc:"#085041",num:"성과 영역 2",title:"팀 (Team)",sub:"팀 문화, 협업, 성장",goal:"고성과 팀 구축",detail:"팀 헌장 수립, 다양성 활용, 심리적 안전 확보, 역량 개발\n목표 성과: 공유된 책임감, 높은 성과, 지속적 학습 문화"},
+  {color:"#FAEEDA",tc:"#633806",num:"성과 영역 3",title:"개발 접근 방식과 생애주기 (Development Approach & Life Cycle)",sub:"예측·적응·혼합형",goal:"적절한 접근법 선택",detail:"프로젝트 특성에 맞는 개발 방식 선택 (예측형/적응형/혼합형)\n생애주기: 페이즈 정의, 페이즈 게이트(관문 검토)"},
+  {color:"#FAECE7",tc:"#712B13",num:"성과 영역 4",title:"기획 (Planning)",sub:"충분하고 적시의 계획",goal:"가치 실현을 위한 적절한 계획",detail:"과도한 계획 지양, 필요 수준의 기획\n예측형: 상세한 사전 기획 / 적응형: 순차적 정교화\n목표 성과: 체계적이고 적응 가능한 계획"},
+  {color:"#EEEDFE",tc:"#3C3489",num:"성과 영역 5",title:"프로젝트 작업 (Project Work)",sub:"프로세스 실행, 물리적 자원",goal:"효율적 운영과 팀 성과",detail:"프로젝트 프로세스 수립·실행, 자원 조달·관리\n지식 관리, 변경 처리, 지속적 개선\n목표 성과: 효율적 운영, 적절한 자원 관리"},
+  {color:"#EAF3DE",tc:"#27500A",num:"성과 영역 6",title:"인도 (Delivery)",sub:"범위·품질·가치 인도",goal:"편익과 가치 실현",detail:"요구사항 정의 → 범위 관리 → 품질 보증 → 인도\n목표 성과: 프로젝트가 의도한 가치와 편익을 실현함"},
+  {color:"#FCEBEB",tc:"#791F1F",num:"성과 영역 7",title:"측정 (Measurement)",sub:"성과 측정, 올바른 정보 제공",goal:"정확한 성과 평가와 대응",detail:"KPI 설정, 성과 지표 추적, 예측 분석\nEVM(획득가치관리), 번다운 차트, OKR\n목표 성과: 올바른 의사결정을 위한 시의적절한 정보"},
+  {color:"#EEEDFE",tc:"#3C3489",num:"성과 영역 8",title:"불확실성 (Uncertainty)",sub:"위험, 모호성, 복잡성",goal:"위험·불확실성 최소화",detail:"위험 식별·대응, 모호성 감소, 복잡성 처리\n목표 성과: 위협과 기회를 균형 있게 관리, 프로젝트 목표 달성"},
+];
+
+var g=document.getElementById('principles-grid');
+PRINCIPLES.forEach(function(p,i){
+  var d=document.createElement('div');
+  d.className='p-card';
+  d.innerHTML='<div class="p-num" style="color:'+p.tc+'">'+p.num+'</div><div class="p-title">'+p.title+'</div><div class="p-sub">'+p.sub+'</div><div class="p-body">'+p.detail+'</div>';
+  d.style.borderLeft='3px solid '+p.tc;
+  d.onclick=function(){this.classList.toggle('open');};
+  g.appendChild(d);
+});
+
+var dl=document.getElementById('domains-list');
+DOMAINS.forEach(function(d,i){
+  var el=document.createElement('div');
+  el.className='dom-card';
+  el.innerHTML='<div style="display:flex;align-items:center;gap:10px"><div style="background:'+d.color+';border-radius:var(--border-radius-md);padding:4px 10px;font-size:11px;font-weight:500;color:'+d.tc+';white-space:nowrap">'+d.num+'</div><div style="flex:1"><div style="font-size:13px;font-weight:500;color:var(--color-text-primary)">'+d.title+'</div><div style="font-size:12px;color:var(--color-text-secondary)">'+d.sub+'</div></div><div style="font-size:11px;color:var(--color-text-secondary)">목표: '+d.goal+'</div></div><div class="dom-body"><div style="font-size:13px;color:var(--color-text-secondary);line-height:1.7">'+d.detail.replace(/\n/g,'<br>')+'</div></div>';
+  el.onclick=function(){this.classList.toggle('open');};
+  dl.appendChild(el);
+});
+
+function show(i){
+  document.querySelectorAll('.tab').forEach(function(t,j){t.classList.toggle('on',i===j);});
+  document.querySelectorAll('.page').forEach(function(p,j){p.classList.toggle('on',i===j);});
+}
+
+var QQ=[
+  {t:"6vs7",d:"mid",q:"PMBOK 7판에서 6판과 비교하여 가장 크게 달라진 점은?",o:["10개 지식 영역이 12개로 늘었다","49개 프로세스가 52개로 확장되었다","프로세스 중심에서 원칙·성과 중심으로 전환되었다","5개 프로세스 그룹이 8개로 늘었다"],a:2,e:"PMBOK 7판의 가장 큰 변화: 6판의 49개 프로세스·10 지식 영역 중심 구조에서 12 프로젝트 관리 원칙 + 8 성과 영역 중심 구조로 전환. '무엇을 해야 하는가(What)'에서 '왜, 어떤 가치를(Why, Value)'로 철학 전환."},
+  {t:"6vs7",d:"mid",q:"PMBOK 7판에서 ITTO(투입물·도구·산출물)를 폐기한 이유로 가장 적절한 것은?",o:["ITTO가 너무 복잡해서 이해하기 어렵기 때문","프로세스가 아닌 성과(Outcome) 중심으로 접근하기 위해","디지털 도구가 ITTO를 대체했기 때문","국제 표준과의 정렬을 위해"],a:1,e:"7판은 특정 프로세스를 어떻게 수행할지보다 어떤 성과(Outcome)를 달성해야 하는지에 초점을 맞춥니다. ITTO는 '정해진 방법'을 강제하는 측면이 있어 테일러링 철학과 맞지 않았습니다. 6판의 프로세스는 별도 문서(Process Groups: A Practice Guide)로 분리."},
+  {t:"원칙",d:"mid",q:"PMBOK 7판 12원칙 중 '테일러링(Tailoring)' 원칙의 핵심 내용으로 옳은 것은?",o:["모든 프로젝트는 동일한 방법론을 적용해야 한다","표준 방법론을 그대로 사용하는 것이 위험을 줄인다","모든 프로젝트는 고유하므로 상황에 맞게 접근 방식을 조정해야 한다","테일러링은 프로젝트 종료 단계에서만 수행한다"],a:2,e:"테일러링 원칙: 모든 프로젝트는 고유(Unique)하므로 표준 방법론을 맹목적으로 따르기보다 프로젝트 특성·환경·제약에 맞게 접근 방식을 의도적으로 조정해야 한다. 7판의 핵심 철학 중 하나."},
+  {t:"원칙",d:"hard",q:"PMBOK 7판의 12원칙 중 '시스템 사고(Systems Thinking)' 원칙에 대한 설명으로 옳은 것은?",o:["프로젝트를 독립적 단위로 보고 외부 영향을 최소화한다","프로젝트를 더 큰 시스템의 일부로 보고 상호의존성을 인식한다","시스템 개발 방법론(SDM)을 반드시 적용해야 한다","IT 시스템 아키텍처 설계 원칙이다"],a:1,e:"시스템 사고 원칙: 프로젝트를 고립된 단위가 아닌 조직·환경·이해관계자와 연결된 더 큰 시스템의 구성 요소로 바라본다. 각 요소 간 상호의존성·피드백 루프를 고려해 전체 최적화를 추구하는 관점."},
+  {t:"성과영역",d:"mid",q:"PMBOK 7판의 8 성과 영역에 해당하지 않는 것은?",o:["이해관계자 (Stakeholders)","측정 (Measurement)","조달 (Procurement)","불확실성 (Uncertainty)"],a:2,e:"PMBOK 7판 8 성과 영역: 이해관계자, 팀, 개발 접근 방식과 생애주기, 기획, 프로젝트 작업, 인도, 측정, 불확실성. '조달(Procurement)'은 6판의 10 지식 영역 중 하나로, 7판 성과 영역에는 포함되지 않습니다."},
+  {t:"성과영역",d:"hard",q:"PMBOK 7판 성과 영역 중 '인도(Delivery)' 영역의 목표 성과로 가장 적절한 것은?",o:["이해관계자의 생산적 참여 유지","프로젝트 팀의 고성과 달성","프로젝트가 의도한 가치와 편익을 실현","위협과 기회를 균형 있게 관리"],a:2,e:"인도(Delivery) 성과 영역: 요구사항 정의, 범위 관리, 품질 보증을 통해 프로젝트가 의도한 가치와 편익을 실현하는 것이 목표 성과. ①이해관계자 영역, ②팀 영역, ④불확실성 영역의 목표 성과입니다."},
+  {t:"성과영역",d:"hard",q:"PMBOK 7판에서 성과 영역과 6판 프로세스 그룹의 차이에 대한 설명으로 옳은 것은?",o:["성과 영역은 6판 프로세스 그룹과 동일한 순서로 진행된다","성과 영역은 순서 없이 동시에 진행되며 프로젝트 내내 주의가 필요하다","성과 영역은 착수 단계에서만 적용된다","성과 영역 수행 결과로 ITTO 산출물이 만들어진다"],a:1,e:"핵심 차이: 6판 프로세스 그룹(착수→기획→실행→감시통제→종료)은 순서가 있는 반면, 7판 성과 영역은 프로젝트 전 기간에 걸쳐 동시에 상호작용하며 진행됩니다. 순서가 없고, 특정 단계에 국한되지 않음."},
+  {t:"테일러링",d:"mid",q:"PMBOK 7판의 개발 접근 방식 중 '적응형(Adaptive)' 방식이 가장 적합한 상황은?",o:["요구사항이 명확하고 기술적 위험이 낮은 건설 프로젝트","변경이 거의 없고 규제가 엄격한 의료기기 개발","요구사항이 불명확하고 고객 피드백이 중요한 소프트웨어 개발","설계 완료 후 구현하는 대형 인프라 프로젝트"],a:2,e:"적응형(Adaptive) 접근 방식: 요구사항이 불명확하거나 자주 변경되는 환경, 고객 피드백을 빠르게 반영해야 하는 상황에 적합. 반복(Iteration)과 점진적 인도(Incremental Delivery)를 통해 가치를 조기에 실현. 소프트웨어 개발, 신제품 혁신에 주로 활용."},
+  {t:"테일러링",d:"hard",q:"Cynefin 프레임워크에서 '복잡(Complex)' 영역에 해당하는 대응 방식은?",o:["감지 → 분류 → 대응 (Best Practice 적용)","감지 → 분석 → 대응 (전문가 활용)","탐색 → 감지 → 대응 (창발적 실천)","행동 → 감지 → 대응 (위기 대응)"],a:2,e:"Cynefin 4영역 대응 방식:\n• 단순(Simple/Clear): 감지→분류→대응 (Best Practice)\n• 난잡(Complicated): 감지→분석→대응 (Good Practice, 전문가 필요)\n• 복잡(Complex): 탐색→감지→대응 (Emergent Practice) ← 이것\n• 혼돈(Chaotic): 행동→감지→대응 (Novel Practice, 위기)\nIT 프로젝트 대부분은 복잡 영역 → 탐색(Probe) 먼저."},
+  {t:"6vs7",d:"hard",q:"PMBOK 7판에서 '가치 전달 시스템(Value Delivery System)'에 대한 설명으로 옳지 않은 것은?",o:["포트폴리오, 프로그램, 프로젝트, 운영이 연결되어 가치를 전달한다","프로젝트 종료 후 편익 실현은 운영 단계로 이어진다","프로젝트 산출물 자체가 가치이므로 산출물 인도로 PM의 책임이 끝난다","조직 전략이 포트폴리오를 통해 프로젝트로 연결된다"],a:2,e:"7판의 핵심 철학: 프로젝트 산출물(Output) 인도로 끝이 아니라, 그 산출물이 편익(Benefit)과 가치(Value)로 이어지는 것이 목표. PM의 책임은 산출물을 넘어 가치 실현까지 고려해야 한다는 것이 7판의 핵심 메시지."},
+  {t:"원칙",d:"hard",q:"다음 중 PMBOK 7판의 '복잡성(Complexity)' 원칙에 대한 설명으로 옳은 것은?",o:["복잡한 프로젝트일수록 더 상세한 사전 계획이 필요하다","복잡성은 관리 가능하며 선형적 방법으로 해결할 수 있다","복잡성을 인정하고 탐색·적응적 접근으로 대응해야 한다","복잡성은 프로젝트 규모로만 결정된다"],a:2,e:"복잡성 원칙: 현대 프로젝트는 예측 불가능한 복잡계(Complex System)적 특성을 가진다. 더 많은 계획이 아닌 지속적 탐색·관찰·적응을 통해 대응해야 한다. 복잡성의 원인: 인간 행동, 시스템 상호작용, 불확실성, 기술 변화 등."},
+  {t:"성과영역",d:"mid",q:"PMBOK 7판의 '측정(Measurement)' 성과 영역에서 활용하는 성과 측정 도구가 아닌 것은?",o:["EVM (획득가치관리)","OKR (목표·핵심결과)","번다운 차트 (Burndown Chart)","PERT 네트워크 다이어그램"],a:3,e:"측정(Measurement) 성과 영역 도구: EVM(획득가치관리, SV·CV·SPI·CPI), OKR(목표 및 핵심결과), 번다운/번업 차트, KPI, 대시보드 등.\nPERT 네트워크 다이어그램은 일정 개발 도구로, 측정보다는 기획(Planning) 성과 영역에 더 연관됩니다."},
+  {t:"테일러링",d:"mid",q:"PMBOK 7판에서 테일러링을 수행하는 올바른 순서는?",o:["프로젝트 착수 후 이해관계자 요청에 따라 수시 변경","맥락 선택 → 초기 개발 접근법 수립 → 조직에 맞게 조정 → 프로젝트에 맞게 추가 조정","PM이 임의로 판단하여 표준 방법론 생략","프로젝트 종료 후 다음 프로젝트를 위해 방법론 개선"],a:1,e:"테일러링 4단계:\n① 맥락 선택 (프로젝트 유형·특성 파악)\n② 초기 개발 접근법 수립 (예측/적응/혼합 결정)\n③ 조직에 맞게 조정 (거버넌스·표준 반영)\n④ 프로젝트에 맞게 추가 조정 (팀·기술·규모 반영)\n테일러링은 임의 생략이 아닌 의도적·체계적 조정이다."},
+  {t:"6vs7",d:"hard",q:"PMBOK 7판에서 '원칙(Principles)'과 '성과 영역(Performance Domains)'의 관계를 가장 잘 설명한 것은?",o:["원칙은 성과 영역의 하위 구성 요소이다","원칙은 PM의 행동 지침이고, 성과 영역은 주의를 기울여야 할 활동 영역이다","성과 영역을 달성하면 원칙은 자동으로 준수된다","원칙과 성과 영역은 독립적으로 작동하며 상호 무관하다"],a:1,e:"원칙(Principles): PM과 팀이 따라야 할 행동 가치관·지침 (무엇을 믿고 어떻게 행동할 것인가)\n성과 영역(Performance Domains): 프로젝트 성과를 위해 지속적으로 주의를 기울여야 할 8가지 활동 영역 (어디에 집중할 것인가)\n원칙이 '왜'를 설명하고, 성과 영역이 '어디서'를 안내하며, 테일러링이 '어떻게'를 결정."},
+  {t:"원칙",d:"mid",q:"PMBOK 7판 '이해관계자(Stakeholders)' 원칙과 관련하여, 감리사 시험에서 가장 자주 출제되는 포인트는?",o:["이해관계자 수는 최소화하는 것이 좋다","이해관계자는 프로젝트 착수 시에만 파악하면 된다","이해관계자를 지속적으로 파악하고 생산적 참여를 유지해야 한다","이해관계자의 부정적 영향만 관리하면 된다"],a:2,e:"이해관계자 원칙: 이해관계자는 프로젝트 전 기간에 걸쳐 지속적으로 파악·분석하고 참여를 관리해야 한다. 이해관계자는 프로젝트에 영향을 주거나 영향을 받는 모든 개인·그룹. 부정적 이해관계자(반대자)도 참여 관리 대상임."},
+];
+
+var FL=QQ.slice(),cur=0,ans=[],sc=[];
+function sf(f,el){
+  document.querySelectorAll('.fbtn').forEach(function(b){b.classList.remove('on');});
+  el.classList.add('on');
+  FL=f==='all'?QQ.slice():f==='hard'?QQ.filter(function(q){return q.d==='hard';}):f==='mid'?QQ.filter(function(q){return q.d==='mid';}):QQ.filter(function(q){return q.t===f;});
+  cur=0;ans=[];sc=[];qrender();qdots();
+}
+function qrender(){
+  if(cur>=FL.length){qresult();return;}
+  var q=FL[cur];
+  document.getElementById('qc').textContent='문제 '+(cur+1)+' / '+FL.length;
+  document.getElementById('prog').style.width=Math.round((cur/FL.length)*100)+'%';
+  document.getElementById('qt').textContent=q.t;
+  var db=document.getElementById('qd');
+  db.textContent=q.d==='hard'?'고난도':'중급';
+  db.className='badge '+(q.d==='hard'?'br':'ba');
+  document.getElementById('qtxt').textContent=q.q;
+  var od=document.getElementById('qopts');
+  od.innerHTML='';
+  q.o.forEach(function(o,i){
+    var b=document.createElement('button');
+    b.className='opt';
+    b.textContent=(i===0?'① ':i===1?'② ':i===2?'③ ':'④ ')+o;
+    b.onclick=function(){qanswer(i,b,q);};
+    od.appendChild(b);
+  });
+  document.getElementById('qexpl').className='expl';
+  document.getElementById('qexpl').innerHTML='';
+  document.getElementById('bnext').style.display='none';
+  document.getElementById('bres').style.display='none';
+  document.getElementById('bskip').style.display='inline-block';
+  document.getElementById('resbox').style.display='none';
+}
+function qanswer(i,btn,q){
+  document.querySelectorAll('.opt').forEach(function(o){o.disabled=true;});
+  var ok=i===q.a;
+  btn.classList.add(ok?'correct':'wrong');
+  document.querySelectorAll('.opt')[q.a].classList.add(ok?'correct':'reveal');
+  var ex=document.getElementById('qexpl');
+  ex.innerHTML=q.e.replace(/\n/g,'<br>');
+  ex.className='expl on';
+  if(ans.indexOf(cur)<0){ans.push(cur);sc.push(ok?1:0);}
+  qdots();
+  document.getElementById('bskip').style.display='none';
+  if(cur<FL.length-1) document.getElementById('bnext').style.display='inline-block';
+  else document.getElementById('bres').style.display='inline-block';
+}
+function qskip(){if(ans.indexOf(cur)<0){ans.push(cur);sc.push(-1);}qdots();cur++;if(cur>=FL.length)qresult();else qrender();}
+function qprev(){if(cur>0){cur--;qrender();}}
+function qnext(){cur++;qrender();}
+function qdots(){
+  var d=document.getElementById('dots');d.innerHTML='';
+  FL.forEach(function(_,i){
+    var s=document.createElement('span');s.className='dot';
+    var idx=ans.indexOf(i);
+    s.style.background=idx<0?'var(--color-border-secondary)':sc[idx]===1?'#3B6D11':sc[idx]===-1?'#888780':'#A32D2D';
+    d.appendChild(s);
+  });
+}
+function qresult(){
+  document.getElementById('resbox').style.display='block';
+  var c=sc.filter(function(s){return s===1;}).length;
+  var w=sc.filter(function(s){return s===0;}).length;
+  var t=c+w,r=t>0?Math.round(c/t*100):0;
+  document.getElementById('rc').textContent=c;
+  document.getElementById('rw').textContent=w;
+  document.getElementById('rr').textContent=r+'%';
+  document.getElementById('rcmt').textContent=r>=80?'PMBOK 7판을 완벽히 이해하고 있습니다. 합격권!':r>=60?'핵심 개념은 잡혔습니다. 성과 영역과 테일러링 부분을 집중 복습하세요.':'6판 vs 7판 차이와 12원칙부터 다시 정리하세요.';
+}
+function qrestart(){cur=0;ans=[];sc=[];document.getElementById('resbox').style.display='none';qrender();qdots();}
+qrender();qdots();
+</script>

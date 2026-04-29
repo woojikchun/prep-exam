@@ -1,0 +1,598 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Apriori · FP-Growth 알고리즘 — 컴퓨터시스템응용 기술사 모범 답안</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;500;700&family=Noto+Sans+KR:wght@400;500;700&family=JetBrains+Mono:wght@400;600&display=swap');
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --ink:#1a1a1a;--ink2:#333;--ink3:#666;
+  --line:#c8c8c8;--line2:#e2e0da;--bg:#fdfcf8;
+  --accent:#1a3a6e;--accent2:#7a3010;--green:#2d6a4f;--purple:#4a3080;
+}
+body{background:#dddad2;font-family:'Noto Sans KR',sans-serif;color:var(--ink);padding:20px 0 40px}
+.doc{max-width:800px;margin:0 auto;background:var(--bg);box-shadow:0 4px 32px rgba(0,0,0,.22)}
+
+.hdr{border-bottom:3px double var(--ink);padding:20px 36px 16px;display:flex;align-items:flex-start;gap:16px}
+.hdr-l{flex:1}
+.lbl{font-size:11px;letter-spacing:.14em;color:var(--ink3);font-family:'Noto Serif KR',serif}
+.ttl{font-size:20px;font-weight:700;font-family:'Noto Serif KR',serif;color:var(--accent);line-height:1.35;margin-top:5px}
+.pills{display:flex;gap:8px;margin-top:9px;flex-wrap:wrap}
+.pill{font-size:11px;padding:2px 10px;border:1px solid var(--line);border-radius:2px;color:var(--ink2);background:#fff}
+.score-box{border:1.5px solid var(--ink);padding:10px 16px;text-align:center;min-width:72px}
+.sc-lbl{font-size:10px;color:var(--ink3);letter-spacing:.06em}
+.sc-n{font-size:24px;font-weight:700;font-family:'Noto Serif KR',serif;color:var(--accent);line-height:1.1}
+
+.body{padding:24px 40px 48px}
+.qbox{background:#f0efea;border:1px solid #bbb;padding:14px 18px;border-radius:3px;margin-bottom:24px;font-size:12.5px;color:var(--ink2);line-height:1.85}
+.qbox strong{color:var(--ink);font-weight:700}
+
+.sh {font-size:14.5px;font-weight:700;font-family:'Noto Serif KR',serif;color:var(--accent);border-bottom:1.5px solid var(--accent);padding-bottom:5px;margin:0 0 13px}
+.sh2{font-size:13px;font-weight:700;color:var(--ink);margin:13px 0 5px;padding-left:8px;border-left:3px solid var(--accent2)}
+.sh3{font-size:12.5px;font-weight:700;color:var(--ink2);margin:9px 0 4px;padding-left:18px}
+.sec{margin-bottom:22px}
+.txt{font-size:12.5px;line-height:1.92;color:var(--ink2)}
+.txt p{margin-bottom:5px}
+.i1{padding-left:14px}
+.i2{padding-left:28px}
+.kw{font-weight:700;color:var(--ink)}
+
+.tw{margin:10px 0 14px;overflow-x:auto}
+table{width:100%;border-collapse:collapse;font-size:11.5px}
+th{background:var(--accent);color:#fff;padding:6px 9px;text-align:left;font-weight:500;border:1px solid var(--accent)}
+td{padding:6px 9px;border:1px solid var(--line);vertical-align:top;line-height:1.75;color:var(--ink2)}
+tr:nth-child(even) td{background:#f4f3ef}
+.kc{font-weight:700;color:var(--ink)}
+.tc{text-align:center}
+
+.fig{margin:13px 0 16px;background:#f8f7f3;border:1px solid var(--line2);border-radius:4px;padding:10px 8px}
+.fc{font-size:11px;color:var(--ink3);text-align:center;margin-top:7px;font-style:italic}
+
+/* itemset 박스 스타일 */
+.iset-grid{display:flex;gap:8px;flex-wrap:wrap;margin:8px 0 12px}
+.iset-box{border:1px solid var(--line);border-radius:4px;padding:6px 10px;font-size:11.5px;background:#fff}
+.iset-box.pass{border-color:#2d6a4f;background:#EAF3DE}
+.iset-box.fail{border-color:#A32D2D;background:#FCEBEB;text-decoration:line-through;color:#A32D2D}
+.iset-box .sup{font-size:10px;color:var(--ink3);margin-top:2px}
+.iset-box.pass .sup{color:#2d6a4f;font-weight:700}
+
+/* FP-Tree node */
+.fp-node{display:inline-block;border:1.5px solid var(--accent);border-radius:50%;width:36px;height:36px;line-height:36px;text-align:center;font-size:11px;font-weight:700;color:var(--accent);background:#fff;margin:2px}
+.fp-node.root{background:var(--accent);color:#fff;border-color:var(--accent)}
+.fp-node.hi{background:#7a3010;color:#fff;border-color:#7a3010}
+.fp-node.mid{background:#2d6a4f;color:#fff;border-color:#2d6a4f}
+
+/* 코드 블록 */
+.code-wrap{margin:8px 0 12px;background:#1e1e2e;border-radius:5px;overflow:auto;padding:12px 16px}
+.code-wrap pre{font-family:'JetBrains Mono','Courier New',monospace;font-size:11px;line-height:1.75;color:#cdd6f4}
+.c-kw{color:#cba6f7}
+.c-fn{color:#89b4fa}
+.c-cm{color:#6c7086}
+.c-nm{color:#fab387}
+.c-st{color:#a6e3a1}
+
+.note{margin:16px 0 0;padding:12px 16px;border:1px solid #8b6914;background:#fffbef;border-radius:3px}
+.nt{font-size:12px;font-weight:700;color:#6a4f00;margin-bottom:5px}
+.nb{font-size:12px;color:#4a3800;line-height:1.85}
+
+.pb{border:none;border-top:2px dashed #bbb;margin:24px 0;position:relative}
+.pb::after{content:"— 다음 페이지 —";position:absolute;top:-9px;left:50%;transform:translateX(-50%);background:var(--bg);padding:0 10px;font-size:10px;color:#bbb;white-space:nowrap}
+
+.ftr{border-top:2px solid var(--ink);margin:0 40px;padding:10px 0;display:flex;justify-content:space-between;font-size:10px;color:var(--ink3)}
+
+.badge{display:inline-block;font-size:10.5px;padding:1px 8px;border-radius:2px;font-weight:600;margin:1px 2px}
+.badge-r{background:#FCEBEB;color:#A32D2D;border:1px solid #f0b8b8}
+.badge-g{background:#EAF3DE;color:#2d6a4f;border:1px solid #b0d89a}
+.badge-b{background:#E6F1FB;color:#0C447C;border:1px solid #9dc4f0}
+.badge-o{background:#FAEEDA;color:#7a3010;border:1px solid #f0c88a}
+
+.formula{display:inline-block;font-family:'JetBrains Mono',monospace;font-size:11.5px;background:#f0efea;border:1px solid var(--line2);border-radius:3px;padding:2px 8px;color:#1a3a6e;font-weight:700;margin:2px 0}
+.formula-block{text-align:center;margin:8px 0 10px}
+</style>
+</head>
+<body>
+<div class="doc">
+
+<!-- ── Header ── -->
+<div class="hdr">
+  <div class="hdr-l">
+    <div class="lbl">컴퓨터시스템응용 기술사 · 예상 문제 및 모범 답안</div>
+    <div class="ttl">연관 규칙 마이닝<br>Apriori · FP-Growth 알고리즘</div>
+    <div class="pills">
+      <span class="pill">4교시 · 논술형</span>
+      <span class="pill">데이터 마이닝 / 알고리즘</span>
+      <span class="pill">키워드: 연관 규칙 · 지지도 · 신뢰도 · FP-Tree · 조건 패턴 베이스</span>
+    </div>
+  </div>
+  <div class="score-box">
+    <div class="sc-lbl">배점</div>
+    <div class="sc-n">25</div>
+    <div class="sc-lbl">점</div>
+  </div>
+</div>
+
+<div class="body">
+
+<!-- 문제 -->
+<div class="qbox">
+  <strong>【 문 제 】</strong><br><br>
+  데이터 마이닝의 핵심 기법인 <strong>연관 규칙 마이닝(Association Rule Mining)</strong>에서 사용되는
+  <strong>Apriori 알고리즘</strong>과 <strong>FP-Growth 알고리즘</strong>에 대하여 다음을 설명하시오.<br><br>
+  &emsp;(1) 연관 규칙의 개념 및 핵심 평가 척도 (지지도·신뢰도·향상도) &nbsp;(5점)<br>
+  &emsp;(2) Apriori 알고리즘의 동작 원리, 단조성 성질 및 예제 &nbsp;(8점)<br>
+  &emsp;(3) FP-Growth 알고리즘의 동작 원리 — FP-Tree 구축 및 패턴 탐사 &nbsp;(8점)<br>
+  &emsp;(4) 두 알고리즘의 비교 및 실무 적용 시 고려사항 &nbsp;(4점)
+</div>
+
+<!-- ─── Ⅰ. 개요 ─── -->
+<div class="sec">
+  <div class="sh">Ⅰ. 연관 규칙의 개념 및 핵심 평가 척도</div>
+
+  <div class="sh2">1. 연관 규칙(Association Rule)의 정의</div>
+  <div class="txt i1">
+    <p><span class="kw">연관 규칙 마이닝(Association Rule Mining)</span>이란 대용량 트랜잭션 데이터에서 항목들 간의 <span class="kw">흥미로운 공동 출현(Co-occurrence) 패턴</span>을 자동으로 발견하는 데이터 마이닝 기법이다. 1993년 Agrawal 등이 장바구니 분석(Market Basket Analysis)에 처음 적용하였다.</p>
+    <p>연관 규칙은 <span class="formula">X → Y</span> 형태로 표현되며, "항목 집합 X를 구매한 고객은 항목 집합 Y도 구매하는 경향이 있다"를 의미한다. X를 <span class="kw">전건(Antecedent)</span>, Y를 <span class="kw">후건(Consequent)</span>이라 한다.</p>
+  </div>
+
+  <div class="sh2">2. 핵심 평가 척도</div>
+  <div class="tw">
+    <table>
+      <tr><th style="width:18%">척도</th><th style="width:28%">정의 및 수식</th><th style="width:28%">의미</th><th>임계값</th></tr>
+      <tr>
+        <td><span class="kc">지지도<br>(Support)</span></td>
+        <td>
+          <div class="formula-block" style="margin:2px 0;text-align:left">
+            <span class="formula">sup(X→Y) = |X∪Y| / |D|</span>
+          </div>
+          X와 Y가 동시에 나타나는 트랜잭션 비율
+        </td>
+        <td>규칙의 <span class="kw">통계적 유의미성</span>. 너무 낮으면 우연일 가능성↑</td>
+        <td>최소 지지도<br>(min_sup) 이상</td>
+      </tr>
+      <tr>
+        <td><span class="kc">신뢰도<br>(Confidence)</span></td>
+        <td>
+          <div class="formula-block" style="margin:2px 0;text-align:left">
+            <span class="formula">conf(X→Y) = sup(X∪Y) / sup(X)</span>
+          </div>
+          X가 있을 때 Y도 있을 조건부 확률
+        </td>
+        <td>규칙의 <span class="kw">정확도(신뢰성)</span>. X 구매자 중 Y도 구매한 비율</td>
+        <td>최소 신뢰도<br>(min_conf) 이상</td>
+      </tr>
+      <tr>
+        <td><span class="kc">향상도<br>(Lift)</span></td>
+        <td>
+          <div class="formula-block" style="margin:2px 0;text-align:left">
+            <span class="formula">lift(X→Y) = conf(X→Y) / sup(Y)</span>
+          </div>
+          X와 Y가 독립일 때 대비 연관 강도
+        </td>
+        <td>Lift &gt; 1: 양의 연관<br>Lift = 1: 독립<br>Lift &lt; 1: 음의 연관</td>
+        <td>1 초과 시<br>유의미</td>
+      </tr>
+    </table>
+  </div>
+  <div class="fc" style="margin-top:-8px;margin-bottom:12px">【표 1】 연관 규칙 핵심 평가 척도</div>
+
+  <div class="sh2">3. 빈발 항목집합(Frequent Itemset) 문제의 난이도</div>
+  <div class="txt i1">
+    <p>n개의 아이템에서 가능한 항목집합 수는 <span class="formula">2ⁿ − 1</span>개이다. 아이템이 1,000개면 후보 집합이 2¹⁰⁰⁰개에 달해 완전 탐색(Brute Force)이 불가능하며, 효율적 알고리즘이 필수적이다.</p>
+  </div>
+</div>
+
+<hr class="pb">
+
+<!-- ─── Ⅱ. Apriori ─── -->
+<div class="sec">
+  <div class="sh">Ⅱ. Apriori 알고리즘의 동작 원리, 단조성 성질 및 예제</div>
+
+  <div class="sh2">1. Apriori 핵심 원리 — 반단조성(Anti-monotone) 성질</div>
+  <div class="txt i1">
+    <p><span class="kw">Apriori 성질(Anti-monotone Property)</span>: 빈발 항목집합의 모든 부분집합은 반드시 빈발하고, 비빈발 항목집합의 모든 상위집합(Superset)도 반드시 비빈발하다.</p>
+    <div class="formula-block">
+      <span class="formula">sup(X) &lt; min_sup &nbsp;⟹&nbsp; ∀Y ⊇ X : sup(Y) &lt; min_sup</span>
+    </div>
+    <p>이 성질로 비빈발 집합의 모든 상위집합을 가지치기(Pruning)하여 후보 집합을 대폭 감소시킨다.</p>
+  </div>
+
+  <div class="sh2">2. Apriori 알고리즘 동작 단계</div>
+  <div class="txt i1">
+    <p>① <span class="kw">후보 생성(Candidate Generation, Cₖ):</span> 이전 단계의 빈발 k-1 항목집합(Lₖ₋₁)에서 k-항목집합 후보를 생성<br>
+    ② <span class="kw">지지도 계산 — DB 스캔:</span> 후보 집합 Cₖ의 지지도를 전체 트랜잭션 DB 스캔으로 계산<br>
+    ③ <span class="kw">가지치기(Pruning):</span> min_sup 미만 집합과 부분집합에 비빈발 포함 집합 제거 → 빈발 집합 Lₖ 확정<br>
+    ④ Lₖ가 공집합이 될 때까지 ①~③ 반복</p>
+  </div>
+
+  <div class="code-wrap">
+    <pre><span class="c-cm"># Apriori 알고리즘 수도코드</span>
+L₁ ← {빈발 1-항목집합}  <span class="c-cm"># DB 1회 스캔</span>
+<span class="c-kw">for</span> k = 2, 3, ... <span class="c-kw">while</span> Lₖ₋₁ ≠ ∅:
+    Cₖ ← <span class="c-fn">apriori_gen</span>(Lₖ₋₁)   <span class="c-cm"># ① Join: Lₖ₋₁ ⊕ Lₖ₋₁ → k-항목집합 후보</span>
+    <span class="c-kw">for</span> each 트랜잭션 t ∈ D:  <span class="c-cm"># ② DB 스캔 (k번째 반복마다 전체 스캔)</span>
+        Cₜ ← subset(Cₖ, t)
+        <span class="c-kw">for</span> each c ∈ Cₜ: c.count++
+    <span class="c-kw">prune</span>: 부분집합에 비빈발 포함 후보 제거  <span class="c-cm"># ③ Anti-monotone 가지치기</span>
+    Lₖ ← {c ∈ Cₖ | c.count / |D| ≥ min_sup}
+<span class="c-kw">return</span> ∪ₖ Lₖ</pre>
+  </div>
+
+  <div class="sh2">3. Apriori 예제 — min_sup = 50% (2/4 트랜잭션)</div>
+  <div class="tw">
+    <table style="max-width:340px">
+      <tr><th style="width:28%">TID</th><th>항목</th></tr>
+      <tr><td class="tc">T1</td><td>A, B, C</td></tr>
+      <tr><td class="tc">T2</td><td>A, C</td></tr>
+      <tr><td class="tc">T3</td><td>A, B, D</td></tr>
+      <tr><td class="tc">T4</td><td>B, C, D</td></tr>
+    </table>
+  </div>
+  <div class="fc" style="margin-top:-8px;margin-bottom:10px">【표 2】 예제 트랜잭션 DB (|D|=4, min_sup=50%=2건)</div>
+
+  <!-- 1-항목집합 -->
+  <div class="sh3">가. 1-항목집합 후보(C₁) → 빈발(L₁)</div>
+  <div class="iset-grid">
+    <div class="iset-box pass">{A}<div class="sup">sup=3/4=75% ✔</div></div>
+    <div class="iset-box pass">{B}<div class="sup">sup=3/4=75% ✔</div></div>
+    <div class="iset-box pass">{C}<div class="sup">sup=3/4=75% ✔</div></div>
+    <div class="iset-box pass">{D}<div class="sup">sup=2/4=50% ✔</div></div>
+  </div>
+
+  <!-- 2-항목집합 -->
+  <div class="sh3">나. 2-항목집합 후보(C₂) → 빈발(L₂)</div>
+  <div class="iset-grid">
+    <div class="iset-box pass">{A,B}<div class="sup">sup=2/4=50% ✔</div></div>
+    <div class="iset-box pass">{A,C}<div class="sup">sup=2/4=50% ✔</div></div>
+    <div class="iset-box fail">{A,D}<div class="sup">sup=1/4=25% ✗</div></div>
+    <div class="iset-box pass">{B,C}<div class="sup">sup=2/4=50% ✔</div></div>
+    <div class="iset-box pass">{B,D}<div class="sup">sup=2/4=50% ✔</div></div>
+    <div class="iset-box fail">{C,D}<div class="sup">sup=1/4=25% ✗</div></div>
+  </div>
+
+  <!-- 3-항목집합 -->
+  <div class="sh3">다. 3-항목집합 후보(C₃) → 빈발(L₃)</div>
+  <div class="iset-grid">
+    <div class="iset-box pass">{A,B,C}<div class="sup">sup=2/4=50% ✔</div></div>
+    <div class="iset-box fail">{A,B,D} 가지치기<div class="sup">{A,D}가 비빈발 → 즉시 제거</div></div>
+    <div class="iset-box fail">{B,C,D} 가지치기<div class="sup">{C,D}가 비빈발 → 즉시 제거</div></div>
+  </div>
+  <div class="txt i1" style="margin-top:4px;font-size:11.5px">
+    <p><span class="kw">최종 빈발 항목집합:</span> {A}, {B}, {C}, {D}, {A,B}, {A,C}, {B,C}, {B,D}, {A,B,C}</p>
+    <p><span class="kw">연관 규칙 예:</span> {A,B} → {C}: conf = sup{A,B,C}/sup{A,B} = (2/4)/(2/4) = <span class="kw">100%</span>, lift = 1.00/(3/4) = <span class="kw">1.33</span></p>
+  </div>
+
+  <div class="fig">
+    <svg width="100%" viewBox="0 0 680 260" xmlns="http://www.w3.org/2000/svg" role="img">
+      <title>Apriori 격자 탐색 — 가지치기 시각화</title>
+      <defs>
+        <marker id="ap" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse">
+          <path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </marker>
+      </defs>
+      <!-- Level labels -->
+      <text font-size="11" font-weight="700" fill="#555" x="16" y="52"  font-family="'Noto Sans KR',sans-serif">L₁</text>
+      <text font-size="11" font-weight="700" fill="#555" x="16" y="130" font-family="'Noto Sans KR',sans-serif">L₂</text>
+      <text font-size="11" font-weight="700" fill="#555" x="16" y="208" font-family="'Noto Sans KR',sans-serif">L₃</text>
+
+      <!-- L1 nodes -->
+      <g>
+        <rect x="60"  y="34" width="48" height="28" rx="14" fill="#2d6a4f" stroke="#1a3d2b" stroke-width="1"/>
+        <text font-size="12" font-weight="700" fill="#fff" x="84"  y="52" text-anchor="middle" font-family="'Noto Sans KR',sans-serif">{A}</text>
+        <rect x="200" y="34" width="48" height="28" rx="14" fill="#2d6a4f" stroke="#1a3d2b" stroke-width="1"/>
+        <text font-size="12" font-weight="700" fill="#fff" x="224" y="52" text-anchor="middle" font-family="'Noto Sans KR',sans-serif">{B}</text>
+        <rect x="340" y="34" width="48" height="28" rx="14" fill="#2d6a4f" stroke="#1a3d2b" stroke-width="1"/>
+        <text font-size="12" font-weight="700" fill="#fff" x="364" y="52" text-anchor="middle" font-family="'Noto Sans KR',sans-serif">{C}</text>
+        <rect x="480" y="34" width="48" height="28" rx="14" fill="#2d6a4f" stroke="#1a3d2b" stroke-width="1"/>
+        <text font-size="12" font-weight="700" fill="#fff" x="504" y="52" text-anchor="middle" font-family="'Noto Sans KR',sans-serif">{D}</text>
+      </g>
+
+      <!-- L2 nodes (pass) -->
+      <rect x="46"  y="112" width="56" height="28" rx="14" fill="#1a3a6e" stroke="#0d2347" stroke-width="1"/>
+      <text font-size="11" font-weight="700" fill="#fff" x="74"  y="130" text-anchor="middle" font-family="'Noto Sans KR',sans-serif">{A,B}</text>
+      <rect x="174" y="112" width="56" height="28" rx="14" fill="#1a3a6e" stroke="#0d2347" stroke-width="1"/>
+      <text font-size="11" font-weight="700" fill="#fff" x="202" y="130" text-anchor="middle" font-family="'Noto Sans KR',sans-serif">{A,C}</text>
+      <rect x="302" y="112" width="56" height="28" rx="14" fill="#1a3a6e" stroke="#0d2347" stroke-width="1"/>
+      <text font-size="11" font-weight="700" fill="#fff" x="330" y="130" text-anchor="middle" font-family="'Noto Sans KR',sans-serif">{B,C}</text>
+      <rect x="430" y="112" width="56" height="28" rx="14" fill="#1a3a6e" stroke="#0d2347" stroke-width="1"/>
+      <text font-size="11" font-weight="700" fill="#fff" x="458" y="130" text-anchor="middle" font-family="'Noto Sans KR',sans-serif">{B,D}</text>
+
+      <!-- L2 pruned -->
+      <rect x="558" y="112" width="56" height="28" rx="14" fill="#ddd" stroke="#A32D2D" stroke-width="1.5" stroke-dasharray="4 2"/>
+      <text font-size="11" font-weight="700" fill="#A32D2D" x="586" y="130" text-anchor="middle" font-family="'Noto Sans KR',sans-serif">{A,D}</text>
+      <text font-size="10" fill="#A32D2D" x="586" y="150" text-anchor="middle" font-family="'Noto Sans KR',sans-serif">✗ 가지치기</text>
+      <rect x="558" y="160" width="56" height="28" rx="14" fill="#ddd" stroke="#A32D2D" stroke-width="1.5" stroke-dasharray="4 2"/>
+      <text font-size="11" font-weight="700" fill="#A32D2D" x="586" y="178" text-anchor="middle" font-family="'Noto Sans KR',sans-serif">{C,D}</text>
+      <text font-size="10" fill="#A32D2D" x="586" y="198" text-anchor="middle" font-family="'Noto Sans KR',sans-serif">✗ 가지치기</text>
+
+      <!-- L3 -->
+      <rect x="220" y="194" width="72" height="28" rx="14" fill="#7a3010" stroke="#4a1a00" stroke-width="1"/>
+      <text font-size="11" font-weight="700" fill="#fff" x="256" y="212" text-anchor="middle" font-family="'Noto Sans KR',sans-serif">{A,B,C}</text>
+
+      <!-- Connecting lines -->
+      <line x1="84"  y1="62" x2="74"  y2="110" stroke="#aaa" stroke-width="0.8"/>
+      <line x1="84"  y1="62" x2="202" y2="110" stroke="#aaa" stroke-width="0.8"/>
+      <line x1="224" y1="62" x2="74"  y2="110" stroke="#aaa" stroke-width="0.8"/>
+      <line x1="224" y1="62" x2="330" y2="110" stroke="#aaa" stroke-width="0.8"/>
+      <line x1="224" y1="62" x2="458" y2="110" stroke="#aaa" stroke-width="0.8"/>
+      <line x1="364" y1="62" x2="202" y2="110" stroke="#aaa" stroke-width="0.8"/>
+      <line x1="364" y1="62" x2="330" y2="110" stroke="#aaa" stroke-width="0.8"/>
+      <line x1="504" y1="62" x2="458" y2="110" stroke="#aaa" stroke-width="0.8"/>
+
+      <line x1="74"  y1="140" x2="240" y2="192" stroke="#7a3010" stroke-width="1"/>
+      <line x1="202" y1="140" x2="256" y2="192" stroke="#7a3010" stroke-width="1"/>
+      <line x1="330" y1="140" x2="270" y2="192" stroke="#7a3010" stroke-width="1"/>
+
+      <!-- DB 스캔 횟수 -->
+      <rect x="30" y="230" width="500" height="22" rx="3" fill="#E6F1FB" stroke="#1a3a6e" stroke-width="0.8"/>
+      <text font-size="11" fill="#0C447C" font-weight="700" x="280" y="245" text-anchor="middle" font-family="'Noto Sans KR',sans-serif">DB 스캔 횟수 = 최대 항목집합 크기 k회 (이 예제: 3회 전체 DB 스캔)</text>
+    </svg>
+    <div class="fc">【그림 1】 Apriori 격자 탐색 — 초록(L₁), 파랑(L₂), 주황(L₃), 빨강 점선(가지치기)</div>
+  </div>
+
+  <div class="sh2">4. Apriori의 한계</div>
+  <div class="txt i1">
+    <p>① <span class="kw">반복적 DB 스캔:</span> 최대 k-항목집합 크기만큼 전체 DB를 반복 스캔 → I/O 비용 막대<br>
+    ② <span class="kw">방대한 후보 집합:</span> 빈발 아이템이 많으면 후보 집합의 수가 폭발적 증가<br>
+    ③ <span class="kw">메모리 오버헤드:</span> 후보 집합 전체를 메모리에 유지해야 함</p>
+  </div>
+</div>
+
+<hr class="pb">
+
+<!-- ─── Ⅲ. FP-Growth ─── -->
+<div class="sec">
+  <div class="sh">Ⅲ. FP-Growth 알고리즘의 동작 원리 — FP-Tree 구축 및 패턴 탐사</div>
+
+  <div class="sh2">1. FP-Growth 핵심 아이디어</div>
+  <div class="txt i1">
+    <p>Han et al.(2000)이 제안한 <span class="kw">FP-Growth(Frequent Pattern Growth)</span>는 Apriori의 반복 DB 스캔과 후보 생성을 완전히 제거한다. 전체 DB를 단 <span class="kw">2회만 스캔</span>하여 <span class="kw">FP-Tree(Frequent Pattern Tree)</span>를 구축하고, 이 압축된 자료구조에서 <span class="kw">조건 패턴 베이스(Conditional Pattern Base)</span>를 반복 생성하여 빈발 패턴을 탐사한다.</p>
+  </div>
+
+  <div class="sh2">2. FP-Tree 구축 절차 (2회 DB 스캔)</div>
+  <div class="tw">
+    <table>
+      <tr><th style="width:16%">스캔</th><th style="width:36%">작업</th><th>결과</th></tr>
+      <tr>
+        <td><span class="kc">1차 스캔</span></td>
+        <td>각 아이템의 지지도 계산 → min_sup 이상인 아이템만 추출</td>
+        <td>빈발 1-항목 목록, 지지도 내림차순 정렬</td>
+      </tr>
+      <tr>
+        <td><span class="kc">2차 스캔</span></td>
+        <td>각 트랜잭션을 빈발 아이템만 남기고 지지도 내림차순 재정렬 → FP-Tree에 삽입</td>
+        <td>FP-Tree 완성 + 헤더 테이블(Header Table)</td>
+      </tr>
+    </table>
+  </div>
+  <div class="fc" style="margin-top:-8px;margin-bottom:12px">【표 3】 FP-Tree 구축 2회 스캔</div>
+
+  <div class="sh2">3. FP-Tree 구축 예제</div>
+  <div class="txt i1"><p>앞의 동일 DB 사용. min_sup = 50% (2건). <br>
+  1차 스캔 결과 빈발 아이템 지지도 내림차순: <span class="kw">A(3) &gt; B(3) &gt; C(3) &gt; D(2)</span></p></div>
+
+  <div class="tw">
+    <table>
+      <tr><th>TID</th><th>원본</th><th>정렬 후 (빈발 순서)</th></tr>
+      <tr><td class="tc">T1</td><td>A, B, C</td><td><span class="kw">A → B → C</span></td></tr>
+      <tr><td class="tc">T2</td><td>A, C</td><td><span class="kw">A → C</span></td></tr>
+      <tr><td class="tc">T3</td><td>A, B, D</td><td><span class="kw">A → B → D</span></td></tr>
+      <tr><td class="tc">T4</td><td>B, C, D</td><td><span class="kw">B → C → D</span></td></tr>
+    </table>
+  </div>
+  <div class="fc" style="margin-top:-8px;margin-bottom:10px">【표 4】 2차 스캔 — 트랜잭션 재정렬</div>
+
+  <div class="fig">
+    <svg width="100%" viewBox="0 0 680 290" xmlns="http://www.w3.org/2000/svg" role="img">
+      <title>FP-Tree 구조도</title>
+      <defs>
+        <marker id="fp" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse">
+          <path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </marker>
+        <marker id="lk" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="4" markerHeight="4" orient="auto-start-reverse">
+          <path d="M2 1L8 5L2 9" fill="none" stroke="#b8860b" stroke-width="1.5" stroke-linecap="round"/>
+        </marker>
+      </defs>
+
+      <!-- Header Table -->
+      <text font-size="11" font-weight="700" fill="#555" x="20" y="22" font-family="'Noto Sans KR',sans-serif">헤더 테이블</text>
+      <rect x="14" y="28" width="100" height="220" rx="4" fill="#f8f7f3" stroke="#ccc" stroke-width="0.8"/>
+      <rect x="18" y="32" width="92" height="22" rx="2" fill="#1a3a6e"/>
+      <text font-size="10.5" font-weight="700" fill="#fff" x="64" y="47" text-anchor="middle" font-family="'Noto Sans KR',sans-serif">Item | Cnt | →</text>
+      <rect x="18" y="58" width="92" height="22" rx="2" fill="#EAF3DE"/>
+      <text font-size="11" font-weight="700" fill="#2d6a4f" x="64" y="73" text-anchor="middle" font-family="'Noto Sans KR',sans-serif">A : 3</text>
+      <rect x="18" y="84" width="92" height="22" rx="2" fill="#E6F1FB"/>
+      <text font-size="11" font-weight="700" fill="#1a3a6e" x="64" y="99" text-anchor="middle" font-family="'Noto Sans KR',sans-serif">B : 3</text>
+      <rect x="18" y="110" width="92" height="22" rx="2" fill="#FAEEDA"/>
+      <text font-size="11" font-weight="700" fill="#7a3010" x="64" y="125" text-anchor="middle" font-family="'Noto Sans KR',sans-serif">C : 3</text>
+      <rect x="18" y="136" width="92" height="22" rx="2" fill="#eeedfe"/>
+      <text font-size="11" font-weight="700" fill="#4a3080" x="64" y="151" text-anchor="middle" font-family="'Noto Sans KR',sans-serif">D : 2</text>
+
+      <!-- FP-Tree 노드 -->
+      <!-- Root -->
+      <circle cx="360" cy="30" r="20" fill="#555" stroke="#333" stroke-width="1"/>
+      <text font-size="11" font-weight="700" fill="#fff" x="360" y="34" text-anchor="middle" font-family="'Noto Sans KR',sans-serif">root</text>
+
+      <!-- A:3 -->
+      <circle cx="300" cy="96" r="20" fill="#2d6a4f" stroke="#1a3d2b" stroke-width="1"/>
+      <text font-size="11" font-weight="700" fill="#fff" x="300" y="100" text-anchor="middle" font-family="'Noto Sans KR',sans-serif">A:3</text>
+      <line x1="345" y1="46" x2="315" y2="78" stroke="#555" stroke-width="1.2" marker-end="url(#fp)" fill="none"/>
+
+      <!-- B:2 (under A) -->
+      <circle cx="240" cy="162" r="20" fill="#1a3a6e" stroke="#0d2347" stroke-width="1"/>
+      <text font-size="11" font-weight="700" fill="#fff" x="240" y="166" text-anchor="middle" font-family="'Noto Sans KR',sans-serif">B:2</text>
+      <line x1="286" y1="112" x2="256" y2="144" stroke="#555" stroke-width="1.2" marker-end="url(#fp)" fill="none"/>
+
+      <!-- C:1 (under A→B) -->
+      <circle cx="190" cy="228" r="20" fill="#7a3010" stroke="#4a1a00" stroke-width="1"/>
+      <text font-size="11" font-weight="700" fill="#fff" x="190" y="232" text-anchor="middle" font-family="'Noto Sans KR',sans-serif">C:1</text>
+      <line x1="224" y1="178" x2="204" y2="210" stroke="#555" stroke-width="1.2" marker-end="url(#fp)" fill="none"/>
+
+      <!-- D:1 (under A→B) -->
+      <circle cx="280" cy="228" r="20" fill="#4a3080" stroke="#2d1a60" stroke-width="1"/>
+      <text font-size="11" font-weight="700" fill="#fff" x="280" y="232" text-anchor="middle" font-family="'Noto Sans KR',sans-serif">D:1</text>
+      <line x1="248" y1="178" x2="268" y2="210" stroke="#555" stroke-width="1.2" marker-end="url(#fp)" fill="none"/>
+
+      <!-- C:1 (under A) -->
+      <circle cx="360" cy="162" r="20" fill="#7a3010" stroke="#4a1a00" stroke-width="1"/>
+      <text font-size="11" font-weight="700" fill="#fff" x="360" y="166" text-anchor="middle" font-family="'Noto Sans KR',sans-serif">C:1</text>
+      <line x1="308" y1="108" x2="344" y2="144" stroke="#555" stroke-width="1.2" marker-end="url(#fp)" fill="none"/>
+
+      <!-- B:1 (under root, T4) -->
+      <circle cx="470" cy="96" r="20" fill="#1a3a6e" stroke="#0d2347" stroke-width="1"/>
+      <text font-size="11" font-weight="700" fill="#fff" x="470" y="100" text-anchor="middle" font-family="'Noto Sans KR',sans-serif">B:1</text>
+      <line x1="375" y1="46" x2="455" y2="78" stroke="#555" stroke-width="1.2" marker-end="url(#fp)" fill="none"/>
+
+      <!-- C:1 (under root→B) -->
+      <circle cx="440" cy="162" r="20" fill="#7a3010" stroke="#4a1a00" stroke-width="1"/>
+      <text font-size="11" font-weight="700" fill="#fff" x="440" y="166" text-anchor="middle" font-family="'Noto Sans KR',sans-serif">C:1</text>
+      <line x1="456" y1="112" x2="448" y2="144" stroke="#555" stroke-width="1.2" marker-end="url(#fp)" fill="none"/>
+
+      <!-- D:1 (under root→B→C) -->
+      <circle cx="510" cy="228" r="20" fill="#4a3080" stroke="#2d1a60" stroke-width="1"/>
+      <text font-size="11" font-weight="700" fill="#fff" x="510" y="232" text-anchor="middle" font-family="'Noto Sans KR',sans-serif">D:1</text>
+      <line x1="456" y1="178" x2="498" y2="210" stroke="#555" stroke-width="1.2" marker-end="url(#fp)" fill="none"/>
+
+      <!-- 헤더 링크 (점선) -->
+      <!-- A → A:3 -->
+      <path d="M112 69 L280 90" fill="none" stroke="#b8860b" stroke-width="1" stroke-dasharray="4 2" marker-end="url(#lk)"/>
+      <!-- B → B:2 → B:1 -->
+      <path d="M112 95 L220 158" fill="none" stroke="#b8860b" stroke-width="1" stroke-dasharray="4 2" marker-end="url(#lk)"/>
+      <path d="M260 162 L450 96" fill="none" stroke="#b8860b" stroke-width="1" stroke-dasharray="4 2" marker-end="url(#lk)"/>
+      <!-- C 링크 화살표 표시 생략 (복잡도) -->
+
+      <!-- 트랜잭션 삽입 경로 설명 -->
+      <text font-size="10" fill="#888" x="360" y="270" text-anchor="middle" font-family="'Noto Sans KR',sans-serif">T1(A→B→C), T2(A→C), T3(A→B→D) 공유 접두사 A:3, A→B:2</text>
+      <text font-size="10" fill="#888" x="360" y="284" text-anchor="middle" font-family="'Noto Sans KR',sans-serif">T4(B→C→D)는 A 없으므로 root→B:1 별도 경로</text>
+    </svg>
+    <div class="fc">【그림 2】 FP-Tree 구조도 — 공유 접두사 압축, 헤더 테이블 링크(점선)</div>
+  </div>
+
+  <div class="sh2">4. 조건 패턴 베이스 및 조건 FP-Tree (패턴 탐사)</div>
+  <div class="txt i1">
+    <p>FP-Tree 구축 후 헤더 테이블을 <span class="kw">지지도 오름차순(하위 → 상위)</span>으로 순회하며 각 아이템의 <span class="kw">조건 패턴 베이스(Conditional Pattern Base)</span>를 추출하고, 이를 바탕으로 조건 FP-Tree를 재귀 생성하여 빈발 패턴을 탐사한다.</p>
+  </div>
+  <div class="tw">
+    <table>
+      <tr><th style="width:10%">아이템</th><th style="width:34%">조건 패턴 베이스 (접두사 경로)</th><th style="width:24%">조건 FP-Tree</th><th>생성 빈발 패턴</th></tr>
+      <tr>
+        <td class="tc"><span class="kc" style="color:#4a3080">D</span></td>
+        <td>{A,B}:1, {B}:1 (D의 접두사)</td>
+        <td>{B}:2 만 min_sup 충족</td>
+        <td>{D,B}:2, {D}:2</td>
+      </tr>
+      <tr>
+        <td class="tc"><span class="kc" style="color:#7a3010">C</span></td>
+        <td>{A,B}:1, {A}:1, {B}:1 (C의 접두사)</td>
+        <td>{A}:2, {B}:2 둘 다 충족</td>
+        <td>{C,A}:2, {C,B}:2, {C,A,B}:2(재귀), {C}:3</td>
+      </tr>
+      <tr>
+        <td class="tc"><span class="kc" style="color:#1a3a6e">B</span></td>
+        <td>{A}:2 (B를 포함하는 경로의 접두사)</td>
+        <td>{A}:2 min_sup 충족</td>
+        <td>{B,A}:2, {B}:3</td>
+      </tr>
+      <tr>
+        <td class="tc"><span class="kc" style="color:#2d6a4f">A</span></td>
+        <td>∅ (root 자식이므로 접두사 없음)</td>
+        <td>공 FP-Tree</td>
+        <td>{A}:3</td>
+      </tr>
+    </table>
+  </div>
+  <div class="fc" style="margin-top:-8px;margin-bottom:12px">【표 5】 조건 패턴 베이스 및 생성 빈발 패턴 (min_sup=2)</div>
+
+  <div class="sh2">5. FP-Growth 수도코드</div>
+  <div class="code-wrap">
+    <pre><span class="c-kw">def</span> <span class="c-fn">fp_growth</span>(FP_Tree, α):
+    <span class="c-kw">if</span> FP_Tree 에 단일 경로 P:                  <span class="c-cm"># 단일 경로 → 조합만 생성</span>
+        <span class="c-kw">for each</span> 경로 노드 집합 β ⊆ P:
+            <span class="c-kw">yield</span> α ∪ β,  min(β.count)
+    <span class="c-kw">else</span>:
+        <span class="c-kw">for each</span> aᵢ ∈ header_table (하위 지지도 순):
+            β = α ∪ {aᵢ}
+            <span class="c-kw">yield</span> β, aᵢ.count          <span class="c-cm"># 빈발 패턴 출력</span>
+            CPB ← <span class="c-fn">conditional_pattern_base</span>(aᵢ, FP_Tree)
+            T_β ← <span class="c-fn">build_fp_tree</span>(CPB, min_sup) <span class="c-cm"># 조건 FP-Tree 구축</span>
+            <span class="c-kw">if</span> T_β ≠ ∅:
+                <span class="c-fn">fp_growth</span>(T_β, β)         <span class="c-cm"># 재귀 탐사</span></pre>
+  </div>
+</div>
+
+<hr class="pb">
+
+<!-- ─── Ⅳ. 비교 및 고려사항 ─── -->
+<div class="sec">
+  <div class="sh">Ⅳ. Apriori vs. FP-Growth 비교 및 실무 적용 고려사항</div>
+
+  <div class="sh2">1. 두 알고리즘 종합 비교</div>
+  <div class="tw">
+    <table>
+      <tr><th style="width:24%">비교 항목</th><th>Apriori</th><th>FP-Growth</th></tr>
+      <tr><td><span class="kc">제안자·연도</span></td><td>Agrawal &amp; Srikant, 1994</td><td>Han, Pei, Yin, 2000</td></tr>
+      <tr><td><span class="kc">DB 스캔 횟수</span></td><td>최대 k회 (k = 최대 빈발집합 크기)</td><td>단 <span class="kw">2회</span> (고정)</td></tr>
+      <tr><td><span class="kc">후보 집합 생성</span></td><td>명시적 후보 생성 필요 (대량 발생)</td><td>후보 생성 없음 (FP-Tree 탐사)</td></tr>
+      <tr><td><span class="kc">메모리 사용</span></td><td>후보 집합 테이블 저장 → 메모리↑</td><td>FP-Tree 크기에 의존 (압축)</td></tr>
+      <tr><td><span class="kc">시간 복잡도</span></td><td>O(2ⁿ) 최악 (가지치기로 감소)</td><td>O(|FP-Tree|) — 일반적으로 빠름</td></tr>
+      <tr><td><span class="kc">희소 DB (Sparse)</span></td><td>상대적으로 유리 — 가지치기 효과↑</td><td>FP-Tree가 크게 성장 → 불리</td></tr>
+      <tr><td><span class="kc">밀집 DB (Dense)</span></td><td>후보 폭발로 느림</td><td>공유 접두사 압축으로 빠름</td></tr>
+      <tr><td><span class="kc">병렬화</span></td><td>후보별 독립 카운팅 → 병렬화 용이</td><td>FP-Tree 분할 필요 — PFP-Growth</td></tr>
+      <tr><td><span class="kc">구현 복잡도</span></td><td>단순 — 교육·프로토타입 적합</td><td>복잡 — FP-Tree 자료구조 필요</td></tr>
+    </table>
+  </div>
+  <div class="fc" style="margin-top:-8px;margin-bottom:12px">【표 6】 Apriori vs. FP-Growth 종합 비교</div>
+
+  <div class="sh2">2. 실무 적용 시 고려사항</div>
+  <div class="txt i1">
+    <p>① <span class="kw">min_sup·min_conf 임계값 설정:</span> 너무 낮으면 규칙 수 폭발·품질 저하, 너무 높으면 유의미한 규칙 누락. 도메인 지식 기반 반복 실험으로 조정 필요</p>
+    <p>② <span class="kw">향상도(Lift) 활용:</span> 신뢰도가 높아도 Lift ≤ 1이면 Y가 단독으로 발생 확률이 높은 것이므로 무의미한 규칙. 반드시 Lift &gt; 1을 함께 검증해야 한다</p>
+    <p>③ <span class="kw">데이터 전처리:</span> 아이템 수가 매우 많을 경우 도메인 기반 사전 집약(카테고리 통합), 거래 빈도가 낮은 롱테일 아이템 제거로 후보 폭발 억제</p>
+    <p>④ <span class="kw">대용량 확장:</span> Hadoop/Spark 기반 분산 처리 — Apriori는 파티션 방식(SON Algorithm), FP-Growth는 PFP-Growth(Parallel FP-Growth)로 확장</p>
+    <p>⑤ <span class="kw">연관 규칙의 활용:</span> 장바구니 분석·추천 시스템·이상 탐지(보안)·의료 진단 연관 증상 발굴 등. 규칙의 통계적 유의미성뿐 아니라 비즈니스 해석 가능성을 함께 검증해야 한다</p>
+  </div>
+
+  <div class="sh2">3. 알고리즘 선택 가이드</div>
+  <div class="tw">
+    <table>
+      <tr><th style="width:32%">상황</th><th>권장 알고리즘</th></tr>
+      <tr><td>소규모 DB, 교육·프로토타이핑</td><td><span class="badge badge-o">Apriori</span> — 구현 간단, 결과 추적 용이</td></tr>
+      <tr><td>대용량·밀집 DB (아이템 공동 출현 빈번)</td><td><span class="badge badge-g">FP-Growth</span> — DB 스캔 2회, 속도 우위</td></tr>
+      <tr><td>메모리 제한 환경 (FP-Tree 적재 불가)</td><td><span class="badge badge-o">Apriori</span> + 분할(Partitioning) 방식</td></tr>
+      <tr><td>분산·클러스터 환경</td><td><span class="badge badge-g">PFP-Growth</span> (Spark MLlib 내장)</td></tr>
+    </table>
+  </div>
+  <div class="fc" style="margin-top:-8px;margin-bottom:12px">【표 7】 알고리즘 선택 가이드</div>
+</div>
+
+<!-- ─── Ⅴ. 결론 ─── -->
+<div class="sec">
+  <div class="sh">Ⅴ. 결론</div>
+  <div class="txt">
+    <p>Apriori는 <span class="kw">반단조성 성질을 이용한 후보 가지치기</span>로 탐색 공간을 축소하는 직관적 방식이며, FP-Growth는 <span class="kw">FP-Tree 압축 구조와 조건 패턴 베이스 재귀 탐사</span>로 후보 생성과 반복 DB 스캔을 완전히 제거한 진화된 방식이다. 두 알고리즘은 연관 규칙 마이닝의 이론적 토대를 공유하며, 실무에서는 데이터 밀도·규모·환경에 따라 적합한 방식을 선택하고 향상도(Lift) 검증과 도메인 해석을 통해 의미 있는 패턴을 추출해야 한다.</p>
+  </div>
+</div>
+
+<div class="note">
+  <div class="nt">★ 기술사 핵심 코멘트</div>
+  <div class="nb">
+    연관 규칙 마이닝의 본질은 <strong>지지도·신뢰도·향상도 세 척도의 균형 잡힌 해석</strong>이며, 시스템·알고리즘 설계 감리 시 다음을 중점 검토해야 한다.<br>
+    ① <strong>임계값 설정 근거:</strong> min_sup·min_conf가 도메인 지식이나 실험적 근거 없이 임의 설정된 경우 결과 신뢰도 훼손 — 설정 근거 문서화 여부 확인<br>
+    ② <strong>향상도(Lift) 검증 누락:</strong> 신뢰도만으로 규칙을 채택하면 자주 발생하는 아이템 쌍이 무의미한 규칙으로 남용될 수 있음 — Lift &gt; 1 필터링 적용 여부 점검<br>
+    ③ <strong>FP-Growth 메모리 관리:</strong> 밀집 대용량 DB에서 FP-Tree가 메인 메모리를 초과할 경우 DB 분할(Partitioned FP-Growth) 또는 스트리밍 방식 채택 여부<br>
+    ④ <strong>분산 처리 정확성:</strong> PFP-Growth 등 분산 처리 시 파티션 간 경계 트랜잭션 처리에 의한 지지도 오차 발생 가능 — 샘플링 검증 수행 여부 확인
+  </div>
+</div>
+
+</div><!-- /body -->
+
+<div class="ftr">
+  <span>컴퓨터시스템응용 기술사 · 모범 답안</span>
+  <span>Apriori · FP-Growth — 연관 규칙 마이닝</span>
+  <span>총 5개 항목 · 표 7개 · 그림 2개 · 코드 2개 · 아이템셋 시각화 포함</span>
+</div>
+
+</div><!-- /doc -->
+</body>
+</html>

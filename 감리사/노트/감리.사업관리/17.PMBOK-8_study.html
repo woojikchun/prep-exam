@@ -1,0 +1,440 @@
+
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:var(--font-sans)}
+.tabs{display:flex;gap:6px;flex-wrap:wrap;padding:1rem 0 0.5rem}
+.tab{padding:7px 14px;font-size:13px;border:0.5px solid var(--color-border-secondary);border-radius:var(--border-radius-md);cursor:pointer;background:var(--color-background-primary);color:var(--color-text-secondary)}
+.tab.on{background:var(--color-background-tertiary);color:var(--color-text-primary);font-weight:500;border-color:var(--color-border-primary)}
+.page{display:none}.page.on{display:block}
+.card{background:var(--color-background-primary);border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-lg);padding:1rem 1.25rem;margin-bottom:12px}
+.sec{font-size:12px;font-weight:500;color:var(--color-text-secondary);letter-spacing:.04em;margin:1.1rem 0 6px}
+.memo{background:var(--color-background-secondary);border-left:3px solid #7F77DD;border-radius:0 var(--border-radius-md) var(--border-radius-md) 0;padding:9px 13px;font-size:13px;color:var(--color-text-primary);margin-top:10px;line-height:1.75}
+.warn{background:var(--color-background-secondary);border-left:3px solid #E24B4A;border-radius:0 var(--border-radius-md) var(--border-radius-md) 0;padding:9px 13px;font-size:13px;color:var(--color-text-primary);margin-top:10px;line-height:1.75}
+table{width:100%;border-collapse:collapse;font-size:13px}
+th{background:var(--color-background-secondary);padding:7px 10px;text-align:left;font-weight:500;font-size:12px;color:var(--color-text-secondary);border-bottom:0.5px solid var(--color-border-tertiary)}
+td{padding:8px 10px;border-bottom:0.5px solid var(--color-border-tertiary);color:var(--color-text-primary);vertical-align:top;line-height:1.55}
+.badge{display:inline-block;font-size:11px;padding:2px 8px;border-radius:var(--border-radius-md);font-weight:500;white-space:nowrap;margin-right:3px}
+.bl{background:#E6F1FB;color:#0C447C}
+.bt{background:#E1F5EE;color:#085041}
+.ba{background:#FAEEDA;color:#633806}
+.bc{background:#FAECE7;color:#712B13}
+.bp{background:#EEEDFE;color:#3C3489}
+.bg{background:#EAF3DE;color:#27500A}
+.br{background:#FCEBEB;color:#791F1F}
+.row{display:flex;gap:10px;padding:8px 0;border-bottom:0.5px solid var(--color-border-tertiary);font-size:13px;align-items:flex-start}
+.row:last-child{border-bottom:none}
+.lbl{font-weight:500;min-width:120px;flex-shrink:0;color:var(--color-text-primary)}
+.val{color:var(--color-text-secondary);flex:1;line-height:1.65}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.hl{background:#EEEDFE;color:#3C3489;padding:2px 6px;border-radius:4px;font-weight:500;font-size:12px}
+.vs-box{border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-lg);overflow:hidden;margin-bottom:12px}
+.vs-head{display:grid;font-size:12px;font-weight:500}
+.vs-head div{padding:8px 12px;text-align:center}
+.vs-body{font-size:13px}
+.vs-row{display:grid;border-top:0.5px solid var(--color-border-tertiary)}
+.vs-row div{padding:8px 12px;line-height:1.6;color:var(--color-text-primary)}
+.p-card{border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-lg);padding:10px 12px;cursor:pointer;margin-bottom:8px}
+.p-card:hover{background:var(--color-background-secondary)}
+.p-card.open .p-body{display:block}
+.p-body{display:none;margin-top:8px;padding-top:8px;border-top:0.5px solid var(--color-border-tertiary);font-size:13px;color:var(--color-text-secondary);line-height:1.7}
+.opt{display:block;width:100%;text-align:left;padding:10px 14px;margin:6px 0;border:0.5px solid var(--color-border-secondary);border-radius:var(--border-radius-md);font-size:13px;background:var(--color-background-primary);color:var(--color-text-primary);cursor:pointer;line-height:1.5}
+.opt:hover{background:var(--color-background-secondary)}
+.opt.correct{background:#EAF3DE;border-color:#3B6D11;color:#173404}
+.opt.wrong{background:#FCEBEB;border-color:#A32D2D;color:#501313}
+.opt.reveal{background:#E6F1FB;border-color:#185FA5;color:#042C53}
+.opt:disabled{cursor:default}
+.expl{background:var(--color-background-secondary);border-left:3px solid #7F77DD;border-radius:0 var(--border-radius-md) var(--border-radius-md) 0;padding:10px 14px;font-size:13px;color:var(--color-text-primary);line-height:1.7;margin-top:10px;display:none}
+.expl.on{display:block}
+.prog-bar{height:4px;background:var(--color-background-secondary);border-radius:2px;margin:6px 0 10px}
+.prog-fill{height:4px;background:#534AB7;border-radius:2px;transition:width .3s}
+.dot{display:inline-block;width:9px;height:9px;border-radius:50%;margin:0 2px}
+.fbtn{padding:5px 11px;font-size:12px;border:0.5px solid var(--color-border-secondary);border-radius:var(--border-radius-md);background:var(--color-background-primary);color:var(--color-text-secondary);cursor:pointer}
+.fbtn.on{background:var(--color-background-tertiary);color:var(--color-text-primary);font-weight:500}
+.nav{display:flex;gap:8px;margin-top:12px;flex-wrap:wrap}
+.new-badge{display:inline-block;font-size:10px;padding:1px 6px;border-radius:10px;background:#FAEEDA;color:#633806;font-weight:500;margin-left:4px;vertical-align:middle}
+.del-badge{display:inline-block;font-size:10px;padding:1px 6px;border-radius:10px;background:#FCEBEB;color:#791F1F;font-weight:500;margin-left:4px;vertical-align:middle}
+</style>
+
+<div style="padding:0 0 2rem">
+<div class="tabs">
+  <div class="tab on" onclick="show(0)">7판 vs 8판</div>
+  <div class="tab" onclick="show(1)">6 원칙</div>
+  <div class="tab" onclick="show(2)">7 성과 영역</div>
+  <div class="tab" onclick="show(3)">5 포커스 영역</div>
+  <div class="tab" onclick="show(4)">신규 주제</div>
+  <div class="tab" onclick="show(5)">예상 퀴즈 (14)</div>
+</div>
+
+<!-- 0: 7판 vs 8판 -->
+<div class="page on">
+  <p class="sec">출시 정보</p>
+  <div class="card">
+    <div class="row"><div class="lbl">디지털 출시일</div><div class="val">2025년 11월 13일 (PMI 회원 무료 다운로드)</div></div>
+    <div class="row"><div class="lbl">페이퍼백 출시일</div><div class="val">2026년 1월 13일</div></div>
+    <div class="row"><div class="lbl">PMP 시험 반영</div><div class="val">2026년 7월 9일 (신규 PMP 시험 시작)</div></div>
+    <div class="row"><div class="lbl">연구 기반</div><div class="val">5개 대륙 실무자 48,000+ 데이터 포인트 분석</div></div>
+  </div>
+
+  <p class="sec">3판 비교 — 구조 핵심 변화</p>
+  <div class="vs-box">
+    <div class="vs-head" style="grid-template-columns:1fr 1fr 1fr">
+      <div style="background:#E6F1FB;color:#0C447C">PMBOK 6판</div>
+      <div style="background:#EEEDFE;color:#3C3489">PMBOK 7판 (2021)</div>
+      <div style="background:#E1F5EE;color:#085041">PMBOK 8판 (2025)</div>
+    </div>
+    <div class="vs-body">
+      <div class="vs-row" style="grid-template-columns:1fr 1fr 1fr">
+        <div><span style="font-weight:500">원칙</span><br>없음<br>(프로세스 중심)</div>
+        <div><span style="font-weight:500">원칙</span><br>12 원칙</div>
+        <div><span style="font-weight:500">원칙</span><br><span style="color:#085041;font-weight:500">6 원칙</span> (통합·간소화)</div>
+      </div>
+      <div class="vs-row" style="grid-template-columns:1fr 1fr 1fr">
+        <div><span style="font-weight:500">영역</span><br>10 지식 영역</div>
+        <div><span style="font-weight:500">성과 영역</span><br>8 성과 영역</div>
+        <div><span style="font-weight:500">성과 영역</span><br><span style="color:#085041;font-weight:500">7 성과 영역</span> (개편)</div>
+      </div>
+      <div class="vs-row" style="grid-template-columns:1fr 1fr 1fr">
+        <div><span style="font-weight:500">프로세스 그룹</span><br>5개 프로세스 그룹<br>49개 프로세스</div>
+        <div><span style="font-weight:500">프로세스 그룹</span><br>폐기<br>(성과 중심)</div>
+        <div><span style="font-weight:500">포커스 영역</span><br><span style="color:#085041;font-weight:500">5 포커스 영역</span> 복원<br>40개 비처방적 프로세스</div>
+      </div>
+      <div class="vs-row" style="grid-template-columns:1fr 1fr 1fr">
+        <div><span style="font-weight:500">ITTO</span><br>상세 정의</div>
+        <div><span style="font-weight:500">ITTO</span><br>폐기</div>
+        <div><span style="font-weight:500">프로세스</span><br>비처방적 40개<br>(유연 적용)</div>
+      </div>
+      <div class="vs-row" style="grid-template-columns:1fr 1fr 1fr">
+        <div><span style="font-weight:500">AI·지속가능성</span><br>없음</div>
+        <div><span style="font-weight:500">AI·지속가능성</span><br>언급 수준</div>
+        <div><span style="font-weight:500">AI·지속가능성</span><br><span style="color:#085041;font-weight:500">독립 원칙·부록</span>으로 강조</div>
+      </div>
+    </div>
+  </div>
+
+  <p class="sec">8판의 핵심 통합 구조</p>
+  <div class="card">
+    <div style="display:flex;flex-direction:column;gap:8px">
+      <div style="display:flex;align-items:center;gap:10px">
+        <div style="background:#EEEDFE;border-radius:var(--border-radius-md);padding:9px 14px;font-size:12px;font-weight:500;color:#3C3489;min-width:100px;text-align:center">Why<br>왜</div>
+        <div style="color:var(--color-text-secondary);font-size:13px">→</div>
+        <div style="flex:1;background:var(--color-background-secondary);border-radius:var(--border-radius-md);padding:9px 14px;font-size:12px;color:var(--color-text-primary)"><span style="font-weight:500">6 원칙</span> — 행동 나침반, 의사결정 지침</div>
+      </div>
+      <div style="display:flex;align-items:center;gap:10px">
+        <div style="background:#E1F5EE;border-radius:var(--border-radius-md);padding:9px 14px;font-size:12px;font-weight:500;color:#085041;min-width:100px;text-align:center">What<br>무엇을</div>
+        <div style="color:var(--color-text-secondary);font-size:13px">→</div>
+        <div style="flex:1;background:var(--color-background-secondary);border-radius:var(--border-radius-md);padding:9px 14px;font-size:12px;color:var(--color-text-primary)"><span style="font-weight:500">7 성과 영역</span> — 집중해야 할 핵심 책임 영역</div>
+      </div>
+      <div style="display:flex;align-items:center;gap:10px">
+        <div style="background:#FAEEDA;border-radius:var(--border-radius-md);padding:9px 14px;font-size:12px;font-weight:500;color:#633806;min-width:100px;text-align:center">When<br>언제</div>
+        <div style="color:var(--color-text-secondary);font-size:13px">→</div>
+        <div style="flex:1;background:var(--color-background-secondary);border-radius:var(--border-radius-md);padding:9px 14px;font-size:12px;color:var(--color-text-primary)"><span style="font-weight:500">5 포커스 영역</span> — 프로젝트 생애주기 틀 (40개 프로세스)</div>
+      </div>
+    </div>
+    <div class="memo">8판 핵심 철학: Why(원칙) + What(성과영역) + When(포커스영역)을 하나의 통합 프레임워크로 연결</div>
+  </div>
+
+  <div class="warn">★ 감리사 시험 주의: 8판은 2025년 말 출시 → 2026년 7월 PMP 반영 예정<br>현재 한국 감리사 시험은 7판 기반이 주류이나, 8판 변경 방향성(6원칙·7영역)을 파악해두는 것이 유리함</div>
+</div>
+
+<!-- 1: 6 원칙 -->
+<div class="page">
+  <p class="sec">12 → 6으로 통합된 이유</p>
+  <div class="card">
+    <div class="row"><div class="lbl">통합 배경</div><div class="val">7판 12원칙이 중복되고 추상적이라는 현장 피드백 → 88%의 실무자가 "원칙 기반 유지하되 더 명확하게" 요청</div></div>
+    <div class="row"><div class="lbl">변경 방식</div><div class="val">유사 원칙 통합 (예: 청지기+리더십 → 책임 있는 리더) + 지속가능성 신규 독립 원칙으로 승격</div></div>
+  </div>
+
+  <p class="sec">6 원칙 상세 — 클릭해서 상세 보기</p>
+  <div id="p8-grid"></div>
+  <div class="memo">암기: <span class="hl">전가품책지문</span> (전체적 관점·가치·품질·책임 리더십·지속가능성·문화)</div>
+</div>
+
+<!-- 2: 7 성과 영역 -->
+<div class="page">
+  <p class="sec">7판 8개 → 8판 7개 변화</p>
+  <div class="card">
+    <table>
+      <tr><th>7판 8 성과 영역</th><th>8판 7 성과 영역</th><th>변화</th></tr>
+      <tr><td>이해관계자 (Stakeholders)</td><td>이해관계자 (Stakeholders)</td><td><span class="badge bt">유지</span></td></tr>
+      <tr><td>팀 (Team)</td><td>자원 (Resources)</td><td><span class="badge ba">명칭 변경</span></td></tr>
+      <tr><td>개발 접근법·생애주기</td><td>—</td><td><span class="badge br">→ 포커스영역으로 이동</span></td></tr>
+      <tr><td>기획 (Planning)</td><td>범위 (Scope)</td><td><span class="badge ba">세분화·재편</span></td></tr>
+      <tr><td>프로젝트 작업 (Project Work)</td><td>일정 (Schedule)</td><td><span class="badge ba">세분화·재편</span></td></tr>
+      <tr><td>인도 (Delivery)</td><td>재무 (Finance) <span class="new-badge">신규</span></td><td><span class="badge bg">Cost→Finance 확장</span></td></tr>
+      <tr><td>측정 (Measurement)</td><td>거버넌스 (Governance) <span class="new-badge">신규</span></td><td><span class="badge bg">Integration→Governance</span></td></tr>
+      <tr><td>불확실성 (Uncertainty)</td><td>위험 (Risk)</td><td><span class="badge bt">유지·강화</span></td></tr>
+    </table>
+    <div class="warn">제거된 독립 영역: 품질(Quality)·의사소통(Communications)·조달(Procurement)<br>→ 다른 영역에 통합 또는 별도 부록으로 처리</div>
+  </div>
+
+  <p class="sec">7 성과 영역 — 클릭해서 상세 보기</p>
+  <div id="d8-list"></div>
+</div>
+
+<!-- 3: 5 포커스 영역 -->
+<div class="page">
+  <p class="sec">포커스 영역 개념</p>
+  <div class="card">
+    <div class="row"><div class="lbl">정의</div><div class="val">7판에서 제거됐던 프로세스 그룹을 '비처방적' 형태로 복원 — 착수·기획·실행·감시통제·종료의 흐름 구조 회복</div></div>
+    <div class="row"><div class="lbl">6판 프로세스 그룹과 차이</div><div class="val">6판: 순차적·처방적 (반드시 이 순서로) / 8판: 기술적·유연 (접근법 무관하게 어느 프로젝트에나 적용)</div></div>
+    <div class="row"><div class="lbl">포함 프로세스</div><div class="val">40개 비처방적 프로세스 — 예측형·적응형·혼합형 모두에서 활용 가능</div></div>
+    <div class="row"><div class="lbl">변경 배경</div><div class="val">79%의 실무자가 "프로세스 구조의 명확성이 실무에 필요하다"고 응답</div></div>
+  </div>
+
+  <p class="sec">5 포커스 영역 (Focus Areas)</p>
+  <div style="display:flex;flex-direction:column;gap:8px">
+    <div style="display:flex;align-items:flex-start;gap:10px">
+      <div style="background:#E6F1FB;border-radius:var(--border-radius-md);padding:10px 14px;min-width:110px;text-align:center;flex-shrink:0">
+        <div style="font-size:12px;font-weight:500;color:#0C447C">① 착수</div>
+        <div style="font-size:11px;color:#185FA5">Initiating</div>
+      </div>
+      <div style="font-size:13px;color:var(--color-text-secondary);padding-top:4px;line-height:1.7">프로젝트 비전 수립, 조직 전략과 정렬, 헌장·스폰서 확보<br>Agile: 비전 선언문 / 예측형: 공식 프로젝트 헌장</div>
+    </div>
+    <div style="display:flex;align-items:flex-start;gap:10px">
+      <div style="background:#EEEDFE;border-radius:var(--border-radius-md);padding:10px 14px;min-width:110px;text-align:center;flex-shrink:0">
+        <div style="font-size:12px;font-weight:500;color:#3C3489">② 기획</div>
+        <div style="font-size:11px;color:#534AB7">Planning</div>
+      </div>
+      <div style="font-size:13px;color:var(--color-text-secondary);padding-top:4px;line-height:1.7">범위·일정·자원·위험·거버넌스 정의<br>Agile: 반복 계획 / 예측형: 상세 선행 기획·임계경로</div>
+    </div>
+    <div style="display:flex;align-items:flex-start;gap:10px">
+      <div style="background:#E1F5EE;border-radius:var(--border-radius-md);padding:10px 14px;min-width:110px;text-align:center;flex-shrink:0">
+        <div style="font-size:12px;font-weight:500;color:#085041">③ 실행</div>
+        <div style="font-size:11px;color:#0F6E56">Executing</div>
+      </div>
+      <div style="font-size:13px;color:var(--color-text-secondary);padding-top:4px;line-height:1.7">팀 관리, 이해관계자 참여, 산출물 인도, 변경 처리<br>Agile: 스프린트 실행 / 예측형: 작업 패키지 수행</div>
+    </div>
+    <div style="display:flex;align-items:flex-start;gap:10px">
+      <div style="background:#FAEEDA;border-radius:var(--border-radius-md);padding:10px 14px;min-width:110px;text-align:center;flex-shrink:0">
+        <div style="font-size:12px;font-weight:500;color:#633806">④ 감시·통제</div>
+        <div style="font-size:11px;color:#854F0B">Monitoring & Controlling</div>
+      </div>
+      <div style="font-size:13px;color:var(--color-text-secondary);padding-top:4px;line-height:1.7">성과 추적, EVM, 위험 재평가, 변경 통제<br>Agile: 번다운 차트·회고 / 예측형: 정기 상태 보고</div>
+    </div>
+    <div style="display:flex;align-items:flex-start;gap:10px">
+      <div style="background:#FAECE7;border-radius:var(--border-radius-md);padding:10px 14px;min-width:110px;text-align:center;flex-shrink:0">
+        <div style="font-size:12px;font-weight:500;color:#712B13">⑤ 종료</div>
+        <div style="font-size:11px;color:#993C1D">Closing</div>
+      </div>
+      <div style="font-size:13px;color:var(--color-text-secondary);padding-top:4px;line-height:1.7">산출물 인수, 교훈 문서화, 자원 해제, 편익 이전<br>Agile: 최종 검토·팀 해산 / 예측형: 공식 종료 문서</div>
+    </div>
+  </div>
+  <div class="memo" style="margin-top:12px">포커스 영역은 엄격한 순서가 아닌 카테고리 — 예측형·적응형·혼합형 모두에서 동일하게 적용됨<br>6판 프로세스 그룹의 이름은 동일하나 처방적 강제성이 없어짐</div>
+</div>
+
+<!-- 4: 신규 주제 -->
+<div class="page">
+  <p class="sec">AI 프로젝트 관리 통합</p>
+  <div class="card">
+    <div class="row"><div class="lbl">위상</div><div class="val">8판에서 처음으로 AI를 독립 부록(Appendix)으로 다룸 — 7판은 단순 언급 수준</div></div>
+    <div class="row"><div class="lbl">PM에서의 AI 활용</div><div class="val">일정·비용·위험 예측, 반복 작업 자동화, 이해관계자 감정 분석, 자연어 보고서 생성</div></div>
+    <div class="row"><div class="lbl">AI 프로젝트 특수성</div><div class="val">데이터 품질 위험, 모델 편향, 설명 가능성(XAI), 윤리적 AI 거버넌스 — 위험 영역 확대</div></div>
+    <div class="row"><div class="lbl">감리 연계</div><div class="val">AI 시스템 도입 프로젝트 감리 시: 데이터 편향·모델 신뢰성·윤리 준수 여부 점검</div></div>
+    <div class="memo">8판 AI 메시지: AI는 PM을 대체하지 않고, 더 나은 의사결정을 지원하는 도구</div>
+  </div>
+
+  <p class="sec">지속가능성 (Sustainability) — 독립 원칙으로 승격</p>
+  <div class="card">
+    <div class="row"><div class="lbl">7판 대비 변화</div><div class="val">7판: 일부 원칙에 언급 → 8판: 독립 원칙 "모든 프로젝트 영역에 지속가능성 통합"</div></div>
+    <div class="row"><div class="lbl">3대 지속가능성</div><div class="val">환경(E) — 탄소 발자국·자원 효율 / 사회(S) — 이해관계자 복지·형평성 / 경제(G) — 장기 재무 가치</div></div>
+    <div class="row"><div class="lbl">ESG 연계</div><div class="val">ESG(환경·사회·지배구조) 기준과 정렬 — 조직의 지속가능성 목표를 프로젝트에 반영</div></div>
+    <div class="row"><div class="lbl">감리 연계</div><div class="val">공공 IT 시스템 감리 시 ESG·지속가능성 목표 달성 여부 점검 항목 추가 예상</div></div>
+  </div>
+
+  <p class="sec">PMO (프로젝트 관리 오피스) 역할 강화</p>
+  <div class="card">
+    <table>
+      <tr><th>PMO 유형</th><th>역할</th><th>8판 강조점</th></tr>
+      <tr><td>지원형 (Supportive)</td><td>템플릿·교훈·모범사례 제공</td><td>지식 관리·AI 도구 통합</td></tr>
+      <tr><td>통제형 (Controlling)</td><td>방법론·표준 준수 요구</td><td>거버넌스 강화·테일러링 가이드</td></tr>
+      <tr><td>지시형 (Directive)</td><td>프로젝트 직접 관리·PM 파견</td><td>가치 전달 책임 강화</td></tr>
+    </table>
+    <div class="memo">8판: PMO는 단순 지원 조직이 아닌 전략적 가치 전달의 허브로 위상 강화</div>
+  </div>
+
+  <p class="sec">조달 및 재무 영역 변화</p>
+  <div class="card">
+    <div class="row"><div class="lbl">조달 (Procurement)</div><div class="val">독립 성과 영역에서 제거 → 다른 영역에 통합 + 별도 부록으로 상세 가이드 제공</div></div>
+    <div class="row"><div class="lbl">Cost → Finance</div><div class="val">'원가 관리' 개념이 '재무 관리(Finance)'로 확장 — 투자 수익(ROI)·편익 실현·재무 지속가능성까지 포함</div></div>
+    <div class="row"><div class="lbl">거버넌스 (Governance)</div><div class="val">'통합 관리(Integration)'가 '거버넌스'로 전환 — 의사결정 구조·책임·감독 강조</div></div>
+  </div>
+</div>
+
+<!-- 5: 퀴즈 -->
+<div class="page">
+  <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px">
+    <span id="qc" style="font-size:13px;color:var(--color-text-secondary)">문제 1 / 14</span>
+    <div id="dots" style="display:flex;align-items:center;gap:3px"></div>
+  </div>
+  <div class="prog-bar"><div class="prog-fill" id="prog" style="width:7.14%"></div></div>
+  <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px">
+    <span style="font-size:12px;color:var(--color-text-secondary);align-self:center">필터:</span>
+    <button class="fbtn on" onclick="sf('all',this)">전체 (14)</button>
+    <button class="fbtn" onclick="sf('hard',this)">고난도</button>
+    <button class="fbtn" onclick="sf('mid',this)">중급</button>
+    <button class="fbtn" onclick="sf('비교',this)">7 vs 8판</button>
+    <button class="fbtn" onclick="sf('원칙',this)">6원칙</button>
+    <button class="fbtn" onclick="sf('영역',this)">7성과영역</button>
+    <button class="fbtn" onclick="sf('신규',this)">신규주제</button>
+  </div>
+  <div class="card" id="qcard">
+    <div style="display:flex;gap:6px;margin-bottom:10px;flex-wrap:wrap">
+      <span class="badge bp" id="qt"></span>
+      <span class="badge" id="qd"></span>
+    </div>
+    <p id="qtxt" style="font-size:14px;font-weight:500;color:var(--color-text-primary);line-height:1.7;margin-bottom:12px"></p>
+    <div id="qopts"></div>
+    <div class="expl" id="qexpl"></div>
+  </div>
+  <div class="nav">
+    <button onclick="qprev()" style="font-size:13px">← 이전</button>
+    <button onclick="qskip()" id="bskip" style="font-size:13px">건너뛰기</button>
+    <button onclick="qnext()" id="bnext" style="font-size:13px;display:none">다음 →</button>
+    <button onclick="qresult()" id="bres" style="font-size:13px;display:none">결과 보기 →</button>
+  </div>
+  <div id="resbox" style="display:none;margin-top:12px">
+    <div class="card">
+      <p style="font-size:15px;font-weight:500;margin-bottom:12px;color:var(--color-text-primary)">최종 결과</p>
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:12px">
+        <div style="background:var(--color-background-secondary);border-radius:var(--border-radius-md);padding:10px;text-align:center"><div style="font-size:11px;color:var(--color-text-secondary)">정답</div><div style="font-size:22px;font-weight:500;color:var(--color-text-primary)" id="rc">0</div></div>
+        <div style="background:var(--color-background-secondary);border-radius:var(--border-radius-md);padding:10px;text-align:center"><div style="font-size:11px;color:var(--color-text-secondary)">오답</div><div style="font-size:22px;font-weight:500;color:var(--color-text-primary)" id="rw">0</div></div>
+        <div style="background:var(--color-background-secondary);border-radius:var(--border-radius-md);padding:10px;text-align:center"><div style="font-size:11px;color:var(--color-text-secondary)">정답률</div><div style="font-size:22px;font-weight:500;color:var(--color-text-primary)" id="rr">0%</div></div>
+      </div>
+      <div id="rcmt" style="font-size:13px;color:var(--color-text-secondary);margin-bottom:12px;line-height:1.6"></div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap">
+        <button onclick="qrestart()" style="font-size:13px">처음부터 다시</button>
+        <button onclick="sendPrompt('PMBOK 8판 틀린 개념 더 자세히 설명해줘')" style="font-size:13px">오답 복습 ↗</button>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+
+<script>
+var P8=[
+  {num:"원칙 1",lc:"#E6F1FB",tc:"#0C447C",title:"전체적 관점 채택 (Adopt a Holistic View)",sub:"7판 시스템사고+복잡성+적응성 통합",detail:"프로젝트를 조직·환경·이해관계자와 연결된 더 큰 시스템의 일부로 바라본다. 7판의 '시스템 사고', '복잡성', '적응성과 복원력' 3개 원칙을 하나로 통합. 전체 맥락을 고려한 의사결정 강조."},
+  {num:"원칙 2",lc:"#E1F5EE",tc:"#085041",title:"가치에 집중 (Focus on Value)",sub:"7판 가치 원칙 유지·강화",detail:"모든 프로젝트 활동은 가치 창출에 집중해야 한다. 산출물(Output)이 아닌 결과(Outcome)와 편익(Benefit)이 성공의 기준. PMI 2024 연구: 프로젝트의 48%만이 가치 기준으로 성공 판정됨."},
+  {num:"원칙 3",lc:"#FAEEDA",tc:"#633806",title:"품질을 프로세스·산출물에 내재화 (Embed Quality)",sub:"7판 품질 원칙 유지·강화",detail:"품질은 사후 검사가 아닌 처음부터 내재화(Built-in Quality). 프로세스와 산출물 모두에서 품질 기준을 지속적으로 준수. Agile의 '완료 기준(Definition of Done)'과 연결."},
+  {num:"원칙 4",lc:"#FAECE7",tc:"#712B13",title:"책임 있는 리더가 되어라 (Be an Accountable Leader)",sub:"7판 청지기+리더십 통합",detail:"7판의 청지기 정신(Stewardship)과 리더십(Leadership) 두 원칙을 하나로 통합. PM은 성실·윤리·책임감으로 조직·팀·사회에 대해 권한과 책임을 함께 수행하는 리더."},
+  {num:"원칙 5",lc:"#EEEDFE",tc:"#3C3489",title:"모든 영역에 지속가능성 통합 (Integrate Sustainability)",sub:"8판 신규 독립 원칙 — 가장 큰 변화",detail:"8판 최대 변화: 지속가능성이 독립 원칙으로 격상. 환경(E)·사회(S)·경제(G) 모든 측면을 프로젝트 계획·실행·종료에 통합. ESG 기준과 직접 연결. 7판에는 없던 원칙."},
+  {num:"원칙 6",lc:"#EAF3DE",tc:"#27500A",title:"역량 강화 문화 구축 (Build an Empowered Culture)",sub:"7판 팀+이해관계자 통합",detail:"7판의 '팀(Team)'과 '이해관계자(Stakeholders)' 원칙을 하나로 통합. 팀원과 이해관계자 모두가 자율적으로 참여하고 성장할 수 있는 심리적 안전·다양성·포용의 문화 조성."},
+];
+
+var D8=[
+  {lc:"#EEEDFE",tc:"#3C3489",num:"영역 1",title:"거버넌스 (Governance)",sub:"7판 Integration 대체 — 신규",goal:"의사결정 구조·책임 명확화",detail:"프로젝트 의사결정 구조, 권한 범위, 변경 통제, 스폰서 책임 등 감독 체계를 다룸. 6판 '통합 관리'의 처방적 프로세스를 원칙 기반 거버넌스 접근으로 재편."},
+  {lc:"#E6F1FB",tc:"#0C447C",num:"영역 2",title:"범위 (Scope)",sub:"7판 기획·인도 분리",goal:"요구사항·인도물 정의 및 관리",detail:"요구사항 수집, WBS 정의, 범위 검증·통제를 포함. 예측형: 상세 범위 기준선 / 적응형: 제품 백로그·우선순위 관리."},
+  {lc:"#FAEEDA",tc:"#633806",num:"영역 3",title:"일정 (Schedule)",sub:"시간 관리 독립 강화",goal:"적시 인도 및 일정 최적화",detail:"활동 정의, 순서 배열, 기간 추정, 임계경로/임계체인. 예측형: 간트 차트·CPM / 적응형: 스프린트 계획·속도(Velocity) 추적."},
+  {lc:"#E1F5EE",tc:"#085041",num:"영역 4",title:"재무 (Finance)",sub:"7판 Cost를 Finance로 확장 — 신규",goal:"재무 가치 및 편익 실현",detail:"원가 추정·예산·통제를 넘어 ROI, 편익 실현, 재무 지속가능성까지 포함. 우발사태 예비비·관리 예비비 관리, EVM을 통한 재무 성과 추적."},
+  {lc:"#FAECE7",tc:"#712B13",num:"영역 5",title:"이해관계자 (Stakeholders)",sub:"7판 유지",goal:"생산적 참여와 기대 관리",detail:"이해관계자 식별·분석·참여 계획·실행·모니터링. 지지자와 반대자 모두 관리 대상. 8판에서는 이해관계자가 '원칙'이 아닌 '성과 영역'으로만 포함됨."},
+  {lc:"#EAF3DE",tc:"#27500A",num:"영역 6",title:"자원 (Resources)",sub:"7판 팀 → 자원으로 확장",goal:"인적·물적 자원 최적 활용",detail:"팀 관리를 넘어 물적 자원·기술·외주까지 포함. RACI, 팀 개발(Tuckman), 역량 관리, 자원 통제. '팀'보다 넓은 개념으로 재편."},
+  {lc:"#FCEBEB",tc:"#791F1F",num:"영역 7",title:"위험 (Risk)",sub:"7판 불확실성에서 위험으로 구체화",goal:"위협과 기회의 균형 관리",detail:"위험 식별·정성·정량 분석·대응·감시. 8판에서 AI 관련 위험(데이터 편향·모델 실패) 포함. '불확실성'이라는 추상 개념에서 '위험' 실무 용어로 명확화."},
+];
+
+var g=document.getElementById('p8-grid');
+P8.forEach(function(p){
+  var d=document.createElement('div');
+  d.className='p-card';
+  d.style.borderLeft='3px solid '+p.tc;
+  d.innerHTML='<div style="font-size:11px;font-weight:500;color:'+p.tc+'">'+p.num+'</div><div style="font-size:13px;font-weight:500;color:var(--color-text-primary);margin-top:2px">'+p.title+'</div><div style="font-size:12px;color:var(--color-text-secondary);margin-top:2px">'+p.sub+'</div><div class="p-body">'+p.detail+'</div>';
+  d.onclick=function(){this.classList.toggle('open');};
+  g.appendChild(d);
+});
+
+var dl=document.getElementById('d8-list');
+D8.forEach(function(d){
+  var el=document.createElement('div');
+  el.className='p-card';
+  el.innerHTML='<div style="display:flex;align-items:center;gap:10px"><div style="background:'+d.lc+';border-radius:var(--border-radius-md);padding:4px 10px;font-size:11px;font-weight:500;color:'+d.tc+';white-space:nowrap">'+d.num+'</div><div style="flex:1"><div style="font-size:13px;font-weight:500;color:var(--color-text-primary)">'+d.title+'</div><div style="font-size:12px;color:var(--color-text-secondary)">'+d.sub+'</div></div><div style="font-size:11px;color:var(--color-text-secondary);text-align:right">목표: '+d.goal+'</div></div><div class="p-body">'+d.detail+'</div>';
+  el.onclick=function(){this.classList.toggle('open');};
+  dl.appendChild(el);
+});
+
+function show(i){
+  document.querySelectorAll('.tab').forEach(function(t,j){t.classList.toggle('on',i===j);});
+  document.querySelectorAll('.page').forEach(function(p,j){p.classList.toggle('on',i===j);});
+}
+
+var QQ=[
+  {t:"비교",d:"mid",q:"PMBOK 8판에서 7판의 12개 원칙을 6개로 줄인 주된 이유는?",o:["원칙 수가 많을수록 혼란을 일으키므로 국제 표준과 맞추기 위해","실무자 피드백에서 원칙 간 중복·추상성 문제 제기 → 통합·명확화","비용 절감을 위해 내용을 축소했기 때문","PMBOK 8판이 소규모 프로젝트만 대상으로 하기 때문"],a:1,e:"88%의 실무자가 '원칙 기반 유지하되 더 명확하고 실행 가능하게' 요청. 7판 12원칙 중 유사 원칙 통합(예: 청지기+리더십 → 책임 있는 리더, 시스템사고+복잡성+적응성 → 전체적 관점)하고, 지속가능성은 신규 독립 원칙으로 격상."},
+  {t:"원칙",d:"mid",q:"PMBOK 8판에서 7판과 비교해 가장 크게 달라진 원칙 관련 변화는?",o:["테일러링이 독립 원칙에서 제거됨","지속가능성이 처음으로 독립 원칙으로 격상됨","청지기 정신이 삭제됨","이해관계자 관리 원칙이 신설됨"],a:1,e:"8판 최대 원칙 변화: 지속가능성(Sustainability)이 7판에서는 다른 원칙 내 언급 수준이었으나, 8판에서 '모든 프로젝트 영역에 지속가능성 통합'이라는 독립 원칙(원칙 5)으로 격상. ESG 경영 트렌드와 연동됨."},
+  {t:"원칙",d:"hard",q:"PMBOK 8판 6원칙 중 7판의 '청지기 정신(Stewardship)'과 '리더십(Leadership)'을 통합한 원칙은?",o:["전체적 관점 채택 (Adopt a Holistic View)","가치에 집중 (Focus on Value)","책임 있는 리더가 되어라 (Be an Accountable Leader)","역량 강화 문화 구축 (Build an Empowered Culture)"],a:2,e:"원칙 4 '책임 있는 리더가 되어라(Be an Accountable Leader)': 7판의 청지기 정신(윤리·성실·신뢰)과 리더십(영향력·동기부여·서번트 리더십)을 하나로 통합. PM은 권한뿐 아니라 책임·윤리적 행동으로 조직·팀을 이끄는 리더."},
+  {t:"영역",d:"mid",q:"PMBOK 8판 7 성과 영역에서 7판과 비교해 신규로 추가된 것이 아닌 것은?",o:["거버넌스 (Governance)","재무 (Finance)","위험 (Risk)","두 가지 모두 신규 (거버넌스·재무)"],a:2,e:"위험(Risk)은 7판의 불확실성(Uncertainty) 영역이 명칭 변경된 것으로, 완전 신규는 아님. 진정한 신규/전환 항목은:\n• 거버넌스(Governance): 6판 통합 관리(Integration) 계보 + 7판 기획 통합\n• 재무(Finance): 6판 원가 관리(Cost)를 ROI·편익 실현까지 확장"},
+  {t:"영역",d:"hard",q:"PMBOK 8판에서 독립 성과 영역에서 제거된 항목이 아닌 것은?",o:["품질 (Quality)","의사소통 (Communications)","조달 (Procurement)","이해관계자 (Stakeholders)"],a:3,e:"8판에서 독립 성과 영역에서 제거된 것: 품질(Quality)·의사소통(Communications)·조달(Procurement) — 다른 영역에 통합 또는 별도 부록으로 처리.\n이해관계자(Stakeholders)는 7판과 동일하게 7 성과 영역 중 하나로 유지됨."},
+  {t:"비교",d:"mid",q:"PMBOK 8판의 '포커스 영역(Focus Areas)'에 대한 설명으로 옳은 것은?",o:["7판에서 새롭게 도입된 개념으로 성과 영역과 동일하다","6판 프로세스 그룹처럼 반드시 순서대로 따라야 한다","7판에서 제거된 프로세스 그룹을 비처방적 형태로 복원한 것이다","예측형 프로젝트에서만 적용 가능하다"],a:2,e:"포커스 영역(Focus Areas): 7판이 프로세스 그룹을 완전 제거한 것에 대한 현장 피드백(79% '프로세스 구조 필요') 수용 → 착수·기획·실행·감시통제·종료의 5가지 구조를 복원하되, 6판처럼 처방적 순서가 아닌 기술적·유연한 카테고리로 재도입. 예측형·적응형·혼합형 모두 적용 가능."},
+  {t:"비교",d:"hard",q:"PMBOK 6판·7판·8판의 구조적 특징을 올바르게 연결한 것은?",o:["6판: 12원칙 / 7판: 49프로세스 / 8판: 8성과영역","6판: 49프로세스·10지식영역 / 7판: 12원칙·8성과영역 / 8판: 6원칙·7성과영역·40프로세스","6판: 6원칙 / 7판: 7성과영역 / 8판: 49프로세스","6판: 5포커스영역 / 7판: 6원칙 / 8판: 8성과영역"],a:1,e:"정확한 구조:\n• 6판: 49 프로세스, 10 지식 영역, 5 프로세스 그룹, ITTO\n• 7판: 12 원칙, 8 성과 영역 (프로세스 그룹·ITTO 폐기)\n• 8판: 6 원칙, 7 성과 영역, 5 포커스 영역, 40 비처방적 프로세스"},
+  {t:"신규",d:"mid",q:"PMBOK 8판에서 AI(인공지능)의 위상에 대한 설명으로 옳은 것은?",o:["AI는 8판에서 처음으로 독립 부록으로 다루어진다","AI는 7판부터 독립 챕터로 포함되었다","AI는 PM을 대체하는 주요 주제로 다루어진다","AI에 관련된 내용은 8판에서 제거되었다"],a:0,e:"8판이 처음으로 AI를 독립 부록(Appendix)으로 다룸 — 7판은 단순 언급 수준. 내용: PM에서의 AI 활용(예측·자동화·분석), AI 프로젝트 특수 위험(데이터 편향·모델 신뢰성·윤리적 거버넌스). 핵심 메시지: 'AI는 PM을 대체하지 않고 더 나은 의사결정을 지원하는 도구'"},
+  {t:"신규",d:"hard",q:"PMBOK 8판에서 '재무(Finance)' 성과 영역이 6판 '원가 관리(Cost)'와 다른 점은?",o:["재무 영역은 원가 추정·예산만 다루며 더 간소화됐다","재무 영역은 원가 관리를 넘어 ROI·편익 실현·재무 지속가능성까지 포함한다","재무 영역은 조달 관리를 대체하는 개념이다","재무 영역은 스폰서의 역할만 다룬다"],a:1,e:"원가 관리(Cost) → 재무(Finance) 확장:\n• 기존: 비용 추정·예산·통제 (프로젝트 내부 원가 중심)\n• 확장: ROI 분석, 편익 실현 계획·추적, 재무 지속가능성, ESG 관련 재무 고려사항까지 포함\n프로젝트 산출물이 조직에 어떤 재무적 가치를 가져오는지까지 책임 범위 확대"},
+  {t:"원칙",d:"hard",q:"PMBOK 8판 원칙 1 '전체적 관점 채택(Adopt a Holistic View)'에 통합된 7판 원칙들은?",o:["청지기 정신 + 리더십 + 가치","시스템 사고 + 복잡성 + 적응성과 복원력","이해관계자 + 팀 + 테일러링","품질 + 위험 + 변화 관리"],a:1,e:"원칙 1 '전체적 관점 채택'은 7판 원칙 중 3개를 통합:\n• 시스템 사고(Systems Thinking)\n• 복잡성(Complexity)\n• 적응성과 복원력(Adaptability & Resiliency)\n세 원칙 모두 '전체를 보고 변화에 적응하라'는 공통 방향성을 가지므로 하나로 통합."},
+  {t:"영역",d:"mid",q:"PMBOK 8판 '거버넌스(Governance)' 성과 영역이 7판과 비교해 가장 강조하는 것은?",o:["프로젝트 산출물의 품질 보증","의사결정 구조·권한·책임의 명확화 및 감독 체계","이해관계자 커뮤니케이션 계획","팀 성과 측정 및 보상 체계"],a:1,e:"거버넌스(Governance) 영역: 6판 통합 관리의 계보를 이으나, '거버넌스'라는 용어로 명확화. 핵심 강조점: 의사결정 권한 구조, 변경 통제, 스폰서 책임, PM 권한 범위, 보고 체계 등 감독(Oversight) 기능. 감리 연계: 거버넌스 미비 → 책임 공백 → 지적 대상."},
+  {t:"신규",d:"hard",q:"PMBOK 8판에서 지속가능성 원칙과 관련한 '3대 지속가능성'으로 옳은 것은?",o:["경제·기술·사회","환경(E)·사회(S)·경제(G/거버넌스)","비용·품질·일정","이해관계자·팀·조직"],a:1,e:"8판 지속가능성 원칙의 3대 축 = ESG:\n• 환경(Environmental): 탄소 발자국, 자원 효율, 생태계 영향\n• 사회(Social): 이해관계자 복지, 공정성, 지역사회 영향\n• 경제/거버넌스(Economic/Governance): 장기 재무 가치, 지속 가능한 성장\n공공 IT 감리에서 ESG 달성 여부 점검 항목 추가 예상."},
+  {t:"비교",d:"mid",q:"PMBOK 8판 PMP 시험 반영 일정으로 옳은 것은?",o:["2025년 11월 디지털 출시와 동시에 PMP 시험 변경","2026년 1월 페이퍼백 출시 시점에 PMP 시험 변경","2026년 7월 9일부터 새로운 PMP 시험 적용","2027년 이후 PMP 시험에 반영 예정"],a:2,e:"PMBOK 8판 디지털 출시: 2025년 11월 13일\nPMP 시험 반영: 2026년 7월 9일 (신규 PMP 시험 시작)\n현재 PMP 준비 중이라면 2026년 7월 8일까지는 기존 시험 응시 가능. 2026년 4월 14일부터 새로운 학습 자료 출시 예정."},
+  {t:"영역",d:"hard",q:"PMBOK 8판에서 '자원(Resources)' 성과 영역이 7판 '팀(Team)' 영역과 다른 점은?",o:["자원 영역은 인적 자원만 다루며 더 좁아졌다","자원 영역은 팀에서 물적 자원·기술·외주까지 포함하여 범위가 확장됐다","자원 영역은 재무(Finance)와 통합됐다","자원 영역에서 팀 개발(Tuckman 모델)은 제거됐다"],a:1,e:"팀(Team) → 자원(Resources) 확장:\n• 7판: 팀 구성·개발·문화·심리적 안전 중심 (인적 자원)\n• 8판: 팀(인적 자원) + 물적 자원(장비·시설) + 기술 자원 + 외주/조달 자원까지 포함\n더 넓은 '자원 관리' 개념으로 재편. RACI, 팀 개발 모델(Tuckman 등)은 여전히 활용."},
+];
+
+var FL=QQ.slice(),cur=0,ans=[],sc=[];
+function sf(f,el){
+  document.querySelectorAll('.fbtn').forEach(function(b){b.classList.remove('on');});
+  el.classList.add('on');
+  FL=f==='all'?QQ.slice():f==='hard'?QQ.filter(function(q){return q.d==='hard';}):f==='mid'?QQ.filter(function(q){return q.d==='mid';}):QQ.filter(function(q){return q.t===f;});
+  cur=0;ans=[];sc=[];qrender();qdots();
+}
+function qrender(){
+  if(cur>=FL.length){qresult();return;}
+  var q=FL[cur];
+  document.getElementById('qc').textContent='문제 '+(cur+1)+' / '+FL.length;
+  document.getElementById('prog').style.width=Math.round((cur/FL.length)*100)+'%';
+  document.getElementById('qt').textContent=q.t;
+  var db=document.getElementById('qd');
+  db.textContent=q.d==='hard'?'고난도':'중급';
+  db.className='badge '+(q.d==='hard'?'br':'ba');
+  document.getElementById('qtxt').textContent=q.q;
+  var od=document.getElementById('qopts'); od.innerHTML='';
+  q.o.forEach(function(o,i){
+    var b=document.createElement('button'); b.className='opt';
+    b.textContent=(i===0?'① ':i===1?'② ':i===2?'③ ':'④ ')+o;
+    b.onclick=function(){qanswer(i,b,q);}; od.appendChild(b);
+  });
+  document.getElementById('qexpl').className='expl';
+  document.getElementById('qexpl').innerHTML='';
+  document.getElementById('bnext').style.display='none';
+  document.getElementById('bres').style.display='none';
+  document.getElementById('bskip').style.display='inline-block';
+  document.getElementById('resbox').style.display='none';
+}
+function qanswer(i,btn,q){
+  document.querySelectorAll('.opt').forEach(function(o){o.disabled=true;});
+  var ok=i===q.a; btn.classList.add(ok?'correct':'wrong');
+  document.querySelectorAll('.opt')[q.a].classList.add(ok?'correct':'reveal');
+  var ex=document.getElementById('qexpl');
+  ex.innerHTML=q.e.replace(/\n/g,'<br>'); ex.className='expl on';
+  if(ans.indexOf(cur)<0){ans.push(cur);sc.push(ok?1:0);}
+  qdots();
+  document.getElementById('bskip').style.display='none';
+  if(cur<FL.length-1) document.getElementById('bnext').style.display='inline-block';
+  else document.getElementById('bres').style.display='inline-block';
+}
+function qskip(){if(ans.indexOf(cur)<0){ans.push(cur);sc.push(-1);}qdots();cur++;if(cur>=FL.length)qresult();else qrender();}
+function qprev(){if(cur>0){cur--;qrender();}}
+function qnext(){cur++;qrender();}
+function qdots(){
+  var d=document.getElementById('dots'); d.innerHTML='';
+  FL.forEach(function(_,i){
+    var s=document.createElement('span'); s.className='dot';
+    var idx=ans.indexOf(i);
+    s.style.background=idx<0?'var(--color-border-secondary)':sc[idx]===1?'#3B6D11':sc[idx]===-1?'#888780':'#A32D2D';
+    d.appendChild(s);
+  });
+}
+function qresult(){
+  document.getElementById('resbox').style.display='block';
+  var c=sc.filter(function(s){return s===1;}).length;
+  var w=sc.filter(function(s){return s===0;}).length;
+  var t=c+w, r=t>0?Math.round(c/t*100):0;
+  document.getElementById('rc').textContent=c;
+  document.getElementById('rw').textContent=w;
+  document.getElementById('rr').textContent=r+'%';
+  document.getElementById('rcmt').textContent=r>=80?'PMBOK 8판을 완벽히 이해! 6판~8판 변천사까지 꿰고 있습니다.':r>=60?'핵심은 잡혔습니다. 6원칙 통합 과정과 7 성과 영역 변화를 집중 복습하세요.':'7판 vs 8판 비교 탭부터 다시 정독 후 재도전해 보세요.';
+}
+function qrestart(){cur=0;ans=[];sc=[];document.getElementById('resbox').style.display='none';qrender();qdots();}
+qrender(); qdots();
+</script>

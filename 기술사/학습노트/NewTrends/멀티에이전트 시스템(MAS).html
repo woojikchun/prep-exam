@@ -1,0 +1,316 @@
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;500;700&family=Noto+Sans+KR:wght@400;500;700&display=swap');
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --ink:#1a1a1a;--ink2:#3a3a3a;--ink3:#666;
+  --line:#c8c8c8;--line2:#e0e0e0;--bg:#fdfcf8;
+  --accent:#1a3a6e;--accent2:#2d6a4f;
+}
+body{background:#e8e6e0;font-family:'Noto Sans KR',sans-serif;color:var(--ink)}
+.doc-wrap{max-width:740px;margin:0 auto;background:var(--bg);box-shadow:0 4px 24px rgba(0,0,0,.18);min-height:100vh}
+/* Header */
+.doc-header{border-bottom:3px double var(--ink);padding:18px 32px 14px;display:flex;align-items:flex-start;gap:16px}
+.doc-header-left{flex:1}
+.exam-label{font-size:11px;letter-spacing:.12em;color:var(--ink3);font-family:'Noto Serif KR',serif;text-transform:uppercase}
+.exam-title{font-size:18px;font-weight:700;font-family:'Noto Serif KR',serif;color:var(--accent);line-height:1.4;margin-top:4px}
+.exam-meta{display:flex;gap:16px;margin-top:8px;flex-wrap:wrap}
+.meta-pill{font-size:11px;padding:2px 10px;border:1px solid var(--line);border-radius:2px;color:var(--ink2);background:#fff}
+.score-box{border:1.5px solid var(--ink);padding:10px 16px;text-align:center;min-width:70px}
+.score-label{font-size:10px;color:var(--ink3);letter-spacing:.06em}
+.score-num{font-size:22px;font-weight:700;font-family:'Noto Serif KR',serif;color:var(--accent);line-height:1}
+/* Body */
+.doc-body{padding:24px 36px 40px}
+/* Section */
+.sec{margin-bottom:20px}
+.sec-h{font-size:13.5px;font-weight:700;font-family:'Noto Serif KR',serif;color:var(--accent);border-bottom:1.5px solid var(--accent);padding-bottom:5px;margin-bottom:12px;letter-spacing:.02em}
+.sec-h2{font-size:13px;font-weight:700;color:var(--ink);margin:10px 0 5px;padding-left:6px;border-left:3px solid var(--accent2)}
+.sec-h3{font-size:12.5px;font-weight:700;color:var(--ink2);margin:8px 0 4px;padding-left:12px}
+.body{font-size:12.5px;line-height:1.9;color:var(--ink2)}
+.body p{margin-bottom:6px}
+.indent{padding-left:14px}
+.indent2{padding-left:28px}
+.kw{font-weight:700;color:var(--ink)}
+.divider{border:none;border-top:1px dashed var(--line);margin:18px 0}
+/* Table */
+.tbl-wrap{margin:10px 0 14px;overflow:auto}
+table{width:100%;border-collapse:collapse;font-size:11.5px}
+table th{background:var(--accent);color:#fff;padding:6px 9px;text-align:left;font-weight:500;border:1px solid var(--accent);letter-spacing:.02em}
+table td{padding:6px 9px;border:1px solid var(--line);vertical-align:top;line-height:1.7;color:var(--ink2)}
+table tr:nth-child(even) td{background:#f4f3ef}
+table .kc{font-weight:700;color:var(--ink)}
+/* SVG figure */
+.fig-wrap{margin:12px 0 16px;background:#f8f7f3;border:1px solid var(--line2);border-radius:4px;padding:10px 8px}
+.fig-cap{font-size:11px;color:var(--ink3);text-align:center;margin-top:6px;font-style:italic}
+/* Note box */
+.note{margin:14px 0;padding:10px 14px;border:1px solid #b8860b;background:#fffbef;border-radius:3px}
+.note-title{font-size:11.5px;font-weight:700;color:#7a5c00;margin-bottom:4px}
+.note-body{font-size:11.5px;color:#5a4400;line-height:1.8}
+/* Page break marker */
+.page-break{border:none;border-top:2px dashed #bbb;margin:24px 0;position:relative}
+.page-break::after{content:"— 다음 페이지 —";position:absolute;top:-9px;left:50%;transform:translateX(-50%);background:var(--bg);padding:0 10px;font-size:10px;color:#bbb;white-space:nowrap}
+/* Footer */
+.doc-footer{border-top:2px solid var(--ink);margin:0 36px;padding:10px 0;display:flex;justify-content:space-between;font-size:10px;color:var(--ink3)}
+</style>
+
+<div class="doc-wrap">
+
+<!-- Header -->
+<div class="doc-header">
+  <div class="doc-header-left">
+    <div class="exam-label">컴퓨터시스템응용 기술사 · 예상 문제 및 모범 답안</div>
+    <div class="exam-title">멀티에이전트 시스템(Multiagent Systems, MAS)</div>
+    <div class="exam-meta">
+      <span class="meta-pill">4교시 · 논술형</span>
+      <span class="meta-pill">Gartner 2026 Top 10 — The Synthesist · Trend #4</span>
+      <span class="meta-pill">키워드: MAS · 오케스트레이션 · AI 자동화</span>
+    </div>
+  </div>
+  <div class="score-box">
+    <div class="score-label">배점</div>
+    <div class="score-num">25</div>
+    <div class="score-label">점</div>
+  </div>
+</div>
+
+<!-- Body -->
+<div class="doc-body">
+
+<!-- 문제 -->
+<div class="sec" style="background:#f0f0f0;border:1px solid var(--line);padding:14px 16px;border-radius:3px;margin-bottom:22px">
+  <div style="font-size:12px;font-weight:700;color:var(--ink);margin-bottom:8px">【 문 제 】</div>
+  <div class="body">Gartner는 2026년 10대 전략기술트렌드(Top Strategic Technology Trends for 2026) 중 하나로 <span class="kw">멀티에이전트 시스템(Multiagent Systems, MAS)</span>을 'The Synthesist' 테마의 핵심 트렌드로 선정하였다. 이에 대하여 다음을 설명하시오.</div>
+  <div style="margin-top:8px;font-size:12px;color:var(--ink2)">
+    &emsp;(1) MAS의 개념 및 Gartner 2026 트렌드에서의 위상 &nbsp;(5점)<br>
+    &emsp;(2) MAS의 핵심 구성요소 및 에이전트 간 협업 메커니즘 &nbsp;(8점)<br>
+    &emsp;(3) MAS의 유형 분류 및 단일 에이전트(Single Agent)와의 비교 &nbsp;(7점)<br>
+    &emsp;(4) MAS 도입 시 고려사항 및 향후 발전 방향 &nbsp;(5점)
+  </div>
+</div>
+
+<!-- ─── Ⅰ. 개요 ─── -->
+<div class="sec">
+  <div class="sec-h">Ⅰ. MAS의 개념 및 Gartner 2026 트렌드에서의 위상</div>
+
+  <div class="sec-h2">1. 정의</div>
+  <div class="body indent">
+    <p><span class="kw">멀티에이전트 시스템(Multiagent Systems, MAS)</span>이란 복수의 자율적 AI 에이전트가 개별 목표를 추구하거나, 공유된 복잡한 목표를 달성하기 위해 상호작용 및 협업하는 <span class="kw">분산 지능 컴퓨팅 패러다임</span>이다. 각 에이전트는 독립적으로 개발·배포될 수 있으며, 단일 환경 또는 분산 환경에서 동작한다.</p>
+    <p>에이전트(Agent)는 환경을 인지(Perceive)하고, 추론(Reason)하여 행동(Act)하는 자율적 소프트웨어 개체로, LLM(Large Language Model) 기반의 의사결정 능력을 갖춘다.</p>
+  </div>
+
+  <div class="sec-h2">2. Gartner 2026 트렌드에서의 위상</div>
+  <div class="body indent">
+    <p>Gartner는 2026년 10대 전략기술트렌드를 세 가지 테마로 구분하며, MAS를 <span class="kw">'The Synthesist'(지능 합성·오케스트레이션)</span> 테마의 핵심 트렌드(Trend #4)로 선정하였다.</p>
+  </div>
+
+  <div class="fig-wrap">
+    <svg width="100%" viewBox="0 0 640 175" role="img"><title>Gartner 2026 세 가지 테마</title>
+      <defs><marker id="a0" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+      <!-- Architect -->
+      <rect x="8" y="16" width="190" height="152" rx="7" fill="#E6F1FB" stroke="#185FA5" stroke-width="1"/>
+      <text font-size="13" font-weight="700" fill="#185FA5" x="103" y="40" text-anchor="middle" font-family="'Noto Sans KR',sans-serif">The Architect</text>
+      <text font-size="11" fill="#0C447C" x="103" y="58" text-anchor="middle" font-family="'Noto Sans KR',sans-serif">기반 인프라 구축</text>
+      <line x1="30" y1="66" x2="175" y2="66" stroke="#185FA5" stroke-width="0.5" stroke-dasharray="3 2"/>
+      <text font-size="10.5" fill="#185FA5" x="103" y="85" text-anchor="middle" font-family="'Noto Sans KR',sans-serif">AI-Native Dev Platforms</text>
+      <text font-size="10.5" fill="#185FA5" x="103" y="105" text-anchor="middle" font-family="'Noto Sans KR',sans-serif">AI Supercomputing</text>
+      <text font-size="10.5" fill="#185FA5" x="103" y="125" text-anchor="middle" font-family="'Noto Sans KR',sans-serif">Confidential Computing</text>
+      <!-- Synthesist (highlighted) -->
+      <rect x="218" y="8" width="204" height="160" rx="7" fill="#d4edda" stroke="#2d6a4f" stroke-width="2"/>
+      <text font-size="13" font-weight="700" fill="#2d6a4f" x="320" y="34" text-anchor="middle" font-family="'Noto Sans KR',sans-serif">The Synthesist ★</text>
+      <text font-size="11" fill="#2d6a4f" x="320" y="52" text-anchor="middle" font-family="'Noto Sans KR',sans-serif">지능 합성·오케스트레이션</text>
+      <line x1="240" y1="60" x2="402" y2="60" stroke="#2d6a4f" stroke-width="0.5" stroke-dasharray="3 2"/>
+      <rect x="238" y="67" width="164" height="22" rx="4" fill="#2d6a4f"/>
+      <text font-size="11" font-weight="700" fill="#fff" x="320" y="82" text-anchor="middle" font-family="'Noto Sans KR',sans-serif">▶ Multiagent Systems</text>
+      <text font-size="10.5" fill="#2d6a4f" x="320" y="107" text-anchor="middle" font-family="'Noto Sans KR',sans-serif">Domain-Specific LLMs</text>
+      <text font-size="10.5" fill="#2d6a4f" x="320" y="127" text-anchor="middle" font-family="'Noto Sans KR',sans-serif">Physical AI</text>
+      <!-- Vanguard -->
+      <rect x="432" y="16" width="200" height="152" rx="7" fill="#f3e8ff" stroke="#534AB7" stroke-width="1"/>
+      <text font-size="13" font-weight="700" fill="#534AB7" x="532" y="40" text-anchor="middle" font-family="'Noto Sans KR',sans-serif">The Vanguard</text>
+      <text font-size="11" fill="#3C3489" x="532" y="58" text-anchor="middle" font-family="'Noto Sans KR',sans-serif">신뢰·보안·거버넌스</text>
+      <line x1="452" y1="66" x2="622" y2="66" stroke="#534AB7" stroke-width="0.5" stroke-dasharray="3 2"/>
+      <text font-size="10.5" fill="#534AB7" x="532" y="85" text-anchor="middle" font-family="'Noto Sans KR',sans-serif">Preemptive Cybersecurity</text>
+      <text font-size="10.5" fill="#534AB7" x="532" y="105" text-anchor="middle" font-family="'Noto Sans KR',sans-serif">Digital Provenance</text>
+      <text font-size="10.5" fill="#534AB7" x="532" y="125" text-anchor="middle" font-family="'Noto Sans KR',sans-serif">AI Security Platforms</text>
+      <text font-size="10.5" fill="#534AB7" x="532" y="145" text-anchor="middle" font-family="'Noto Sans KR',sans-serif">Geopatriation</text>
+    </svg>
+    <div class="fig-cap">【그림 1】 Gartner 2026 Top 10 전략기술트렌드 세 가지 테마 구성</div>
+  </div>
+
+  <div class="sec-h2">3. 등장 배경</div>
+  <div class="body indent">
+    <p>① <span class="kw">단일 LLM의 한계 극복:</span> 단일 모델의 컨텍스트 윈도우·도메인 정확도 제약을 전문화된 에이전트 분업으로 해결</p>
+    <p>② <span class="kw">복잡 업무 자동화 수요:</span> 다단계 워크플로우(기획→분석→실행→보고)의 엔드투엔드 자동화 필요성 증가</p>
+    <p>③ <span class="kw">인프라 성숙:</span> 클라우드·컨테이너 환경의 고도화로 분산 에이전트 배포 비용 급감</p>
+  </div>
+</div>
+
+<hr class="page-break">
+
+<!-- ─── Ⅱ. 구성요소 및 협업 ─── -->
+<div class="sec">
+  <div class="sec-h">Ⅱ. 핵심 구성요소 및 에이전트 간 협업 메커니즘</div>
+
+  <div class="sec-h2">1. 핵심 구성요소</div>
+  <div class="tbl-wrap">
+    <table>
+      <tr><th style="width:22%">구성요소</th><th style="width:32%">역할 및 기능</th><th>핵심 기술·표준</th></tr>
+      <tr><td><span class="kc">Orchestrator Agent</span></td><td>전체 태스크 분해(Decompose)·할당·결과 집계</td><td>LLM 기반 Task Planner, ReAct Loop</td></tr>
+      <tr><td><span class="kc">Worker Agent</span></td><td>도메인 특화 태스크 자율 실행</td><td>Domain-Specific LLM, Tool Calling</td></tr>
+      <tr><td><span class="kc">Memory Module</span></td><td>단기(세션) 및 장기(영구) 컨텍스트 관리</td><td>Vector DB, Episodic Memory Store</td></tr>
+      <tr><td><span class="kc">Tool / API Layer</span></td><td>외부 시스템·데이터 소스 연동</td><td>Function Calling, MCP(Model Context Protocol)</td></tr>
+      <tr><td><span class="kc">Communication Bus</span></td><td>에이전트 간 메시지 라우팅·이벤트 전달</td><td>A2A Protocol, Event Streaming (Kafka)</td></tr>
+      <tr><td><span class="kc">Guardrail / Policy Engine</span></td><td>안전성·윤리·규정 준수 필터링</td><td>Output Validation, Human-in-the-Loop Gate</td></tr>
+    </table>
+  </div>
+  <div class="fig-cap" style="margin-top:-8px;margin-bottom:10px">【표 1】 MAS 핵심 구성요소</div>
+
+  <div class="sec-h2">2. 에이전트 간 협업 메커니즘</div>
+
+  <div class="fig-wrap">
+    <svg width="100%" viewBox="0 0 620 250" role="img"><title>MAS 협업 아키텍처</title>
+      <defs><marker id="a1" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+      <!-- User -->
+      <rect x="230" y="10" width="160" height="36" rx="5" fill="#e8e6e0" stroke="#888" stroke-width="0.8"/>
+      <text font-size="12" font-weight="700" fill="#333" x="310" y="33" text-anchor="middle" font-family="'Noto Sans KR',sans-serif">사용자 / 비즈니스 시스템</text>
+      <line x1="310" y1="46" x2="310" y2="68" stroke="#555" stroke-width="1" marker-end="url(#a1)" fill="none"/>
+      <!-- Orchestrator -->
+      <rect x="175" y="70" width="270" height="48" rx="6" fill="#2d6a4f" stroke="#1a3d2b" stroke-width="1"/>
+      <text font-size="13" font-weight="700" fill="#fff" x="310" y="91" text-anchor="middle" font-family="'Noto Sans KR',sans-serif">Orchestrator Agent</text>
+      <text font-size="11" fill="#a8dfc9" x="310" y="109" text-anchor="middle" font-family="'Noto Sans KR',sans-serif">태스크 분해 · 라우팅 · 결과 집계</text>
+      <!-- Arrows down -->
+      <path d="M240 118 L130 148" fill="none" stroke="#555" stroke-width="1" marker-end="url(#a1)"/>
+      <line x1="310" y1="118" x2="310" y2="148" stroke="#555" stroke-width="1" marker-end="url(#a1)" fill="none"/>
+      <path d="M380 118 L490 148" fill="none" stroke="#555" stroke-width="1" marker-end="url(#a1)"/>
+      <!-- Workers -->
+      <rect x="60" y="150" width="140" height="48" rx="5" fill="#1a3a6e" stroke="#0d2347" stroke-width="0.8"/>
+      <text font-size="12" font-weight="700" fill="#fff" x="130" y="171" text-anchor="middle" font-family="'Noto Sans KR',sans-serif">Research Agent</text>
+      <text font-size="10.5" fill="#9dc4f0" x="130" y="189" text-anchor="middle" font-family="'Noto Sans KR',sans-serif">정보 수집 · 분석</text>
+      <rect x="240" y="150" width="140" height="48" rx="5" fill="#1a3a6e" stroke="#0d2347" stroke-width="0.8"/>
+      <text font-size="12" font-weight="700" fill="#fff" x="310" y="171" text-anchor="middle" font-family="'Noto Sans KR',sans-serif">Coding Agent</text>
+      <text font-size="10.5" fill="#9dc4f0" x="310" y="189" text-anchor="middle" font-family="'Noto Sans KR',sans-serif">코드 생성 · 실행</text>
+      <rect x="420" y="150" width="140" height="48" rx="5" fill="#1a3a6e" stroke="#0d2347" stroke-width="0.8"/>
+      <text font-size="12" font-weight="700" fill="#fff" x="490" y="171" text-anchor="middle" font-family="'Noto Sans KR',sans-serif">Reporting Agent</text>
+      <text font-size="10.5" fill="#9dc4f0" x="490" y="189" text-anchor="middle" font-family="'Noto Sans KR',sans-serif">문서 · 보고서 생성</text>
+      <!-- Tools bar -->
+      <rect x="55" y="218" width="515" height="26" rx="4" fill="none" stroke="#b8860b" stroke-width="0.9" stroke-dasharray="4 2"/>
+      <text font-size="11" fill="#7a5c00" x="313" y="235" text-anchor="middle" font-family="'Noto Sans KR',sans-serif">Tool/API Layer — Web Search · Code Executor · DB · External APIs (MCP 표준)</text>
+      <!-- Connecting lines to tools -->
+      <line x1="130" y1="198" x2="130" y2="216" stroke="#b8860b" stroke-width="0.6" stroke-dasharray="2 2"/>
+      <line x1="310" y1="198" x2="310" y2="216" stroke="#b8860b" stroke-width="0.6" stroke-dasharray="2 2"/>
+      <line x1="490" y1="198" x2="490" y2="216" stroke="#b8860b" stroke-width="0.6" stroke-dasharray="2 2"/>
+    </svg>
+    <div class="fig-cap">【그림 2】 MAS 협업 아키텍처 — Orchestrator 중심 계층형 협업 흐름</div>
+  </div>
+
+  <div class="sec-h3">가. 계층적 오케스트레이션(Hierarchical Orchestration)</div>
+  <div class="body indent2">
+    <p>Orchestrator가 목표를 하위 태스크로 분해(Task Decomposition) → Worker Agent에 위임 → 결과를 수집·집계(Aggregation)하는 가장 일반적인 협업 방식</p>
+  </div>
+  <div class="sec-h3">나. P2P 협상(Peer-to-Peer Negotiation)</div>
+  <div class="body indent2">
+    <p>에이전트가 대등한 위치에서 역할 분담을 협상하는 방식. 분산 합의(Distributed Consensus) 알고리즘 활용, 단일 장애점(SPOF) 없음</p>
+  </div>
+  <div class="sec-h3">다. 블랙보드 패턴(Blackboard Pattern)</div>
+  <div class="body indent2">
+    <p>공유 메모리 공간(Blackboard)에 중간 결과를 게시하고 에이전트가 조건부로 구독·반응. 느슨한 결합(Loose Coupling)으로 유연한 확장 가능</p>
+  </div>
+  <div class="sec-h3">라. ReAct 루프(Reasoning + Acting)</div>
+  <div class="body indent2">
+    <p><span class="kw">Think → Act → Observe</span> 사이클 반복으로 동적 의사결정 수행. 오류 발생 시 자가 수정(Self-Correction)을 통한 목표 재시도</p>
+  </div>
+</div>
+
+<hr class="page-break">
+
+<!-- ─── Ⅲ. 유형·비교 ─── -->
+<div class="sec">
+  <div class="sec-h">Ⅲ. MAS 유형 분류 및 단일 에이전트와의 비교</div>
+
+  <div class="sec-h2">1. MAS 유형 분류</div>
+  <div class="tbl-wrap">
+    <table>
+      <tr><th style="width:18%">유형</th><th style="width:20%">제어 구조</th><th style="width:28%">특징</th><th>적용 사례</th></tr>
+      <tr><td><span class="kc">계층형</span><br>(Hierarchical)</td><td>Orchestrator → Workers</td><td>명확한 책임 분리, 중앙 통제·가시성 우수</td><td>기업 ERP/RPA 자동화</td></tr>
+      <tr><td><span class="kc">분산형</span><br>(Decentralized)</td><td>P2P 협상</td><td>SPOF 없음, 합의(Consensus) 비용 발생</td><td>공급망 협상 에이전트</td></tr>
+      <tr><td><span class="kc">시장형</span><br>(Market-based)</td><td>입찰·경매 메커니즘</td><td>자원 최적 배분, 경쟁 기반 효율화</td><td>클라우드 자원 스케줄링</td></tr>
+      <tr><td><span class="kc">혼합형</span><br>(Hybrid)</td><td>계층 + 분산 결합</td><td>유연성·확장성·신뢰성 균형</td><td>자율주행 차량 군집 제어</td></tr>
+    </table>
+  </div>
+  <div class="fig-cap" style="margin-top:-8px;margin-bottom:12px">【표 2】 MAS 유형 분류</div>
+
+  <div class="sec-h2">2. 단일 에이전트 vs. MAS 비교</div>
+  <div class="tbl-wrap">
+    <table>
+      <tr><th style="width:22%">비교 항목</th><th>단일 에이전트(Single Agent)</th><th>멀티에이전트 시스템(MAS)</th></tr>
+      <tr><td><span class="kc">복잡성 처리</span></td><td>단일 컨텍스트 내 순차 처리</td><td>병렬 분산 처리, 복합 태스크 대응</td></tr>
+      <tr><td><span class="kc">확장성</span></td><td>LLM 컨텍스트 윈도우 제한으로 한계 명확</td><td>에이전트 수평 추가(Scale-out) 가능</td></tr>
+      <tr><td><span class="kc">전문성</span></td><td>범용(Generalist) — 도메인 정확도 제한</td><td>도메인 특화 에이전트 조합으로 고정밀</td></tr>
+      <tr><td><span class="kc">내결함성</span></td><td>낮음 — 단일 실패 지점(SPOF)</td><td>높음 — 실패 에이전트를 타 에이전트가 대체</td></tr>
+      <tr><td><span class="kc">거버넌스</span></td><td>단순·관리 용이</td><td>에이전트 충돌·루프 방지 거버넌스 필요</td></tr>
+      <tr><td><span class="kc">운영 비용</span></td><td>단순·저비용</td><td>오케스트레이션 오버헤드 및 다중 LLM 호출 비용</td></tr>
+      <tr><td><span class="kc">적합 업무</span></td><td>단순·독립적 태스크 처리</td><td>다단계·크로스도메인 복합 워크플로우</td></tr>
+    </table>
+  </div>
+  <div class="fig-cap" style="margin-top:-8px;margin-bottom:12px">【표 3】 단일 에이전트 vs. MAS 비교</div>
+
+  <div class="sec-h2">3. 산업별 활용 사례</div>
+  <div class="body indent">
+    <p>① <span class="kw">금융:</span> 시장 분석 에이전트(Research) → 매매 결정 에이전트(Decision) → 주문 실행 에이전트(Execution) 분리·협업</p>
+    <p>② <span class="kw">의료:</span> 진단 에이전트 → 처방 검토 에이전트 → 보험 청구 에이전트 간 임상 데이터 공유·협업</p>
+    <p>③ <span class="kw">제조:</span> 설계 에이전트 → BOM(Bill of Materials) 생성 에이전트 → 품질 검사 에이전트 자동화 체인</p>
+  </div>
+</div>
+
+<hr class="page-break">
+
+<!-- ─── Ⅳ. 고려사항·발전 ─── -->
+<div class="sec">
+  <div class="sec-h">Ⅳ. 도입 시 고려사항 및 향후 발전 방향</div>
+
+  <div class="sec-h2">1. 도입 시 고려사항</div>
+
+  <div class="tbl-wrap">
+    <table>
+      <tr><th style="width:22%">고려사항</th><th style="width:36%">내용</th><th>대응 방안</th></tr>
+      <tr><td><span class="kc">책임 추적성<br>(Accountability)</span></td><td>에이전트 행동의 귀책 주체 불명확, 감사 추적 어려움</td><td>불변 실행 로그(Audit Trail), 에이전트별 Action ID 부여</td></tr>
+      <tr><td><span class="kc">보안 — Prompt Injection</span></td><td>악의적 입력으로 에이전트 행동 조작 위험</td><td>Agent Sandboxing, 입력 검증·화이트리스트 Tool 제한</td></tr>
+      <tr><td><span class="kc">루프·충돌 방지</span></td><td>에이전트 간 순환 호출(Circular Dependency) 발생</td><td>최대 반복 횟수(Max Iteration) 제한, 의존성 그래프 검사</td></tr>
+      <tr><td><span class="kc">비용 관리</span></td><td>다중 LLM 호출로 토큰 비용 급증</td><td>응답 캐싱, 경량 모델(SLM) 라우팅, 비용 임계값 알림</td></tr>
+      <tr><td><span class="kc">Human-in-the-Loop</span></td><td>고위험 의사결정의 완전 자동화 위험</td><td>승인 게이트(Approval Gate) 삽입, 자율화 수준 단계적 확대</td></tr>
+    </table>
+  </div>
+  <div class="fig-cap" style="margin-top:-8px;margin-bottom:12px">【표 4】 MAS 도입 시 주요 고려사항</div>
+
+  <div class="sec-h2">2. 향후 발전 방향</div>
+  <div class="body indent">
+    <p>① <span class="kw">Physical AI 융합 (Gartner Trend #6 연계):</span> 디지털 에이전트가 로봇·드론 제어 에이전트와 통합되어 현실 세계 작업을 수행하는 사이버-피지컬 MAS로 발전</p>
+    <p>② <span class="kw">자가 개선 에이전트(Self-Improving Agent):</span> 실행 결과 기반 프롬프트·파라미터 자동 최적화. AutoML과의 결합으로 지속적 성능 향상</p>
+    <p>③ <span class="kw">에이전트 간 통신 표준화:</span> Google A2A(Agent-to-Agent Protocol), Anthropic MCP(Model Context Protocol) 등 표준 정착으로 이기종 에이전트 상호운용성 확보</p>
+    <p>④ <span class="kw">규제 대응 체계 수립:</span> EU AI Act의 고위험(High-Risk) AI 시스템 요건 적용 시 에이전트별 위험 등급 분류 및 투명성 보고서(Transparency Report) 의무화 예상</p>
+  </div>
+</div>
+
+<!-- 결론 -->
+<div class="sec">
+  <div class="sec-h">Ⅴ. 결론</div>
+  <div class="body">
+    <p>MAS는 단순한 AI 자동화 기술을 넘어 <span class="kw">복잡 엔터프라이즈 업무의 지능적 오케스트레이션을 실현하는 핵심 아키텍처</span>로 부상하고 있다. Gartner가 2026년 전략 트렌드로 선정한 배경에는 단일 에이전트의 한계를 전문화된 협업으로 극복하려는 산업 전반의 수요가 있다. 성공적인 MAS 도입을 위해서는 기술적 설계와 함께 <span class="kw">거버넌스·보안·비용 관리</span>를 포괄하는 체계적 접근이 필수적이다.</p>
+  </div>
+</div>
+
+<!-- Comment Box -->
+<div class="note">
+  <div class="note-title">★ 기술사 핵심 코멘트</div>
+  <div class="note-body">MAS의 본질은 <strong>전문화된 에이전트의 협업을 통한 복잡 업무 자동화</strong>이며, 시스템 감리 시 <strong>에이전트 행동의 추적 가능성(Traceability)·보안성(Prompt Injection 방어)·인간 통제 메커니즘(Human-in-the-Loop)</strong>의 구현 여부를 중점 검토해야 한다. 특히 고위험 의사결정 영역에서의 자율화 수준과 승인 게이트 설계의 적정성이 감리의 핵심 쟁점이 될 것이다.</div>
+</div>
+
+</div><!-- /doc-body -->
+
+<!-- Footer -->
+<div class="doc-footer">
+  <span>컴퓨터시스템응용 기술사 · 모범 답안</span>
+  <span>Multiagent Systems (MAS) — Gartner 2026 Top Strategic Tech Trends</span>
+  <span>총 5개 항목 · 표 4개 · 그림 2개</span>
+</div>
+
+</div><!-- /doc-wrap -->

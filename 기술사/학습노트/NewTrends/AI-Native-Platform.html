@@ -1,0 +1,328 @@
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;500;700&family=Noto+Sans+KR:wght@400;500;700&display=swap');
+*{box-sizing:border-box;margin:0;padding:0}
+:root{--ink:#1a1a1a;--ink2:#333;--ink3:#666;--line:#c8c8c8;--line2:#e0e0e0;--bg:#fdfcf8;--accent:#1a3a6e;--accent2:#7a3010;--g:#2d6a4f}
+body{background:#e0ddd6;font-family:'Noto Sans KR',sans-serif;color:var(--ink)}
+.doc{max-width:740px;margin:0 auto;background:var(--bg);box-shadow:0 4px 28px rgba(0,0,0,.2);min-height:100vh}
+.hdr{border-bottom:3px double var(--ink);padding:18px 32px 14px;display:flex;align-items:flex-start;gap:16px}
+.hdr-l{flex:1}
+.exam-lbl{font-size:11px;letter-spacing:.12em;color:var(--ink3);font-family:'Noto Serif KR',serif}
+.exam-ttl{font-size:19px;font-weight:700;font-family:'Noto Serif KR',serif;color:var(--accent);line-height:1.35;margin-top:5px}
+.metas{display:flex;gap:10px;margin-top:8px;flex-wrap:wrap}
+.pill{font-size:11px;padding:2px 10px;border:1px solid var(--line);border-radius:2px;color:var(--ink2);background:#fff}
+.score{border:1.5px solid var(--ink);padding:10px 16px;text-align:center;min-width:72px}
+.sc-lbl{font-size:10px;color:var(--ink3);letter-spacing:.06em}
+.sc-n{font-size:22px;font-weight:700;font-family:'Noto Serif KR',serif;color:var(--accent);line-height:1}
+.body{padding:22px 36px 40px}
+/* Question box */
+.q-box{background:#f0efea;border:1px solid #bbb;padding:14px 16px;border-radius:3px;margin-bottom:22px;font-size:12px}
+.q-title{font-weight:700;color:var(--ink);margin-bottom:8px}
+.q-text{color:var(--ink2);line-height:1.85}
+/* Sections */
+.sh{font-size:14px;font-weight:700;font-family:'Noto Serif KR',serif;color:var(--accent);border-bottom:1.5px solid var(--accent);padding-bottom:5px;margin:0 0 12px}
+.sh2{font-size:13px;font-weight:700;color:var(--ink);margin:12px 0 5px;padding-left:7px;border-left:3px solid var(--accent2)}
+.sh3{font-size:12.5px;font-weight:700;color:var(--ink2);margin:8px 0 4px;padding-left:16px}
+.txt{font-size:12.5px;line-height:1.9;color:var(--ink2)}
+.txt p{margin-bottom:5px}
+.i1{padding-left:14px}
+.i2{padding-left:28px}
+.kw{font-weight:700;color:var(--ink)}
+.sec{margin-bottom:20px}
+/* Tables */
+.tw{margin:10px 0 14px;overflow-x:auto}
+table{width:100%;border-collapse:collapse;font-size:11.5px}
+th{background:var(--accent);color:#fff;padding:6px 9px;text-align:left;font-weight:500;border:1px solid var(--accent)}
+td{padding:6px 9px;border:1px solid var(--line);vertical-align:top;line-height:1.7;color:var(--ink2)}
+tr:nth-child(even) td{background:#f4f3ef}
+.kc{font-weight:700;color:var(--ink)}
+/* SVG figures */
+.fig{margin:12px 0 16px;background:#f8f7f3;border:1px solid var(--line2);border-radius:4px;padding:10px 8px}
+.fc{font-size:11px;color:var(--ink3);text-align:center;margin-top:6px;font-style:italic}
+/* Note */
+.note{margin:14px 0;padding:11px 14px;border:1px solid #8b6914;background:#fffbef;border-radius:3px}
+.nt{font-size:11.5px;font-weight:700;color:#6a4f00;margin-bottom:5px}
+.nb{font-size:11.5px;color:#4a3800;line-height:1.85}
+/* Prediction badge */
+.pred{display:inline-block;font-size:11px;padding:3px 10px;background:#1a3a6e;color:#fff;border-radius:2px;margin:4px 0 6px;letter-spacing:.02em}
+/* Page break */
+.pb{border:none;border-top:2px dashed #bbb;margin:22px 0;position:relative}
+.pb::after{content:"— 다음 페이지 —";position:absolute;top:-9px;left:50%;transform:translateX(-50%);background:var(--bg);padding:0 10px;font-size:10px;color:#bbb;white-space:nowrap}
+/* Footer */
+.ftr{border-top:2px solid var(--ink);margin:0 36px;padding:10px 0;display:flex;justify-content:space-between;font-size:10px;color:var(--ink3)}
+</style>
+
+<div class="doc">
+
+<!-- Header -->
+<div class="hdr">
+  <div class="hdr-l">
+    <div class="exam-lbl">컴퓨터시스템응용 기술사 · 예상 문제 및 모범 답안</div>
+    <div class="exam-ttl">AI-Native 개발 플랫폼<br>(AI-Native Development Platforms)</div>
+    <div class="metas">
+      <span class="pill">4교시 · 논술형</span>
+      <span class="pill">Gartner 2026 Top 10 — The Architect · Trend #1</span>
+      <span class="pill">키워드: GenAI · Spec-Driven · Forward-Deployed Engineer</span>
+    </div>
+  </div>
+  <div class="score"><div class="sc-lbl">배점</div><div class="sc-n">25</div><div class="sc-lbl">점</div></div>
+</div>
+
+<div class="body">
+
+<!-- 문제 -->
+<div class="q-box">
+  <div class="q-title">【 문 제 】</div>
+  <div class="q-text">Gartner는 2026년 10대 전략기술트렌드 중 'The Architect' 테마의 핵심으로 <span class="kw">AI-Native 개발 플랫폼(AI-Native Development Platforms)</span>을 선정하였다. 이에 대하여 다음을 설명하시오.<br><br>
+  &emsp;(1) AI-Native 개발 플랫폼의 개념 및 등장 배경 &nbsp;(5점)<br>
+  &emsp;(2) 핵심 구성요소 및 기술 스택 &nbsp;(8점)<br>
+  &emsp;(3) 전통 개발 방식과의 비교 및 개발 패러다임 변화 &nbsp;(7점)<br>
+  &emsp;(4) 도입 시 고려사항 및 향후 발전 방향 &nbsp;(5점)
+  </div>
+</div>
+
+<!-- ─── Ⅰ ─── -->
+<div class="sec">
+  <div class="sh">Ⅰ. AI-Native 개발 플랫폼의 개념 및 등장 배경</div>
+
+  <div class="sh2">1. 정의</div>
+  <div class="txt i1">
+    <p><span class="kw">AI-Native 개발 플랫폼(AI-Native Development Platforms)</span>이란 생성형 AI(Generative AI)를 소프트웨어 개발 생명주기(SDLC) 전 단계에 내재화하여, 요구사항 명세(Spec)부터 코드 생성·테스트·배포에 이르는 전 과정을 AI가 주도적으로 지원하는 개발 환경이다.</p>
+    <p>단순히 AI 도구를 기존 개발 프로세스에 추가하는 'AI-Assisted' 방식과 달리, <span class="kw">AI가 개발 아키텍처의 핵심(Core)으로 설계되어 인간 개발자와 동등한 역할을 수행</span>하는 것이 본질적 차이다.</p>
+  </div>
+
+  <div class="sh2">2. Gartner 2026 트렌드에서의 위상</div>
+  <div class="txt i1">
+    <p>Gartner는 AI-Native 개발 플랫폼을 2026년 10대 트렌드 중 <span class="kw">'The Architect'(기반 인프라 구축)</span> 테마의 첫 번째 트렌드로 선정하였다.</p>
+    <div class="pred">Gartner 예측: 2030년까지 AI-Native 개발 플랫폼으로 인해 80%의 기업이 대규모 소프트웨어 엔지니어링 팀을 AI로 증강된 소규모 민첩팀으로 전환</div>
+  </div>
+
+  <div class="fig">
+    <svg width="100%" viewBox="0 0 620 185" role="img"><title>AI-Native 개발 플랫폼 위상도</title>
+      <defs><marker id="av" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+      <!-- Architect box highlighted -->
+      <rect x="8" y="10" width="200" height="168" rx="8" fill="#E6F1FB" stroke="#1a3a6e" stroke-width="2"/>
+      <text font-size="13" font-weight="700" fill="#1a3a6e" x="108" y="34" text-anchor="middle" font-family="'Noto Sans KR',sans-serif">The Architect ★</text>
+      <text font-size="11" fill="#0C447C" x="108" y="52" text-anchor="middle" font-family="'Noto Sans KR',sans-serif">기반 인프라 구축</text>
+      <line x1="22" y1="58" x2="194" y2="58" stroke="#1a3a6e" stroke-width="0.5" stroke-dasharray="3 2"/>
+      <rect x="22" y="64" width="172" height="22" rx="4" fill="#1a3a6e"/>
+      <text font-size="11" font-weight="700" fill="#fff" x="108" y="79" text-anchor="middle" font-family="'Noto Sans KR',sans-serif">① AI-Native Dev Platforms</text>
+      <text font-size="10.5" fill="#1a3a6e" x="108" y="106" text-anchor="middle" font-family="'Noto Sans KR',sans-serif">② AI Supercomputing Platforms</text>
+      <text font-size="10.5" fill="#1a3a6e" x="108" y="126" text-anchor="middle" font-family="'Noto Sans KR',sans-serif">③ Confidential Computing</text>
+      <!-- Synthesist -->
+      <rect x="220" y="18" width="188" height="152" rx="7" fill="#d4edda" stroke="#2d6a4f" stroke-width="1"/>
+      <text font-size="13" font-weight="700" fill="#2d6a4f" x="314" y="42" text-anchor="middle" font-family="'Noto Sans KR',sans-serif">The Synthesist</text>
+      <text font-size="10.5" fill="#2d6a4f" x="314" y="60" text-anchor="middle" font-family="'Noto Sans KR',sans-serif">지능 합성·오케스트레이션</text>
+      <line x1="234" y1="66" x2="396" y2="66" stroke="#2d6a4f" stroke-width="0.5" stroke-dasharray="3 2"/>
+      <text font-size="10.5" fill="#2d6a4f" x="314" y="90" text-anchor="middle" font-family="'Noto Sans KR',sans-serif">Multiagent Systems</text>
+      <text font-size="10.5" fill="#2d6a4f" x="314" y="110" text-anchor="middle" font-family="'Noto Sans KR',sans-serif">Domain-Specific LLMs</text>
+      <text font-size="10.5" fill="#2d6a4f" x="314" y="130" text-anchor="middle" font-family="'Noto Sans KR',sans-serif">Physical AI</text>
+      <!-- Vanguard -->
+      <rect x="420" y="18" width="192" height="152" rx="7" fill="#f3e8ff" stroke="#534AB7" stroke-width="1"/>
+      <text font-size="13" font-weight="700" fill="#534AB7" x="516" y="42" text-anchor="middle" font-family="'Noto Sans KR',sans-serif">The Vanguard</text>
+      <text font-size="10.5" fill="#534AB7" x="516" y="60" text-anchor="middle" font-family="'Noto Sans KR',sans-serif">신뢰·보안·거버넌스</text>
+      <line x1="434" y1="66" x2="600" y2="66" stroke="#534AB7" stroke-width="0.5" stroke-dasharray="3 2"/>
+      <text font-size="10.5" fill="#534AB7" x="516" y="90" text-anchor="middle" font-family="'Noto Sans KR',sans-serif">Preemptive Cybersecurity</text>
+      <text font-size="10.5" fill="#534AB7" x="516" y="110" text-anchor="middle" font-family="'Noto Sans KR',sans-serif">Digital Provenance</text>
+      <text font-size="10.5" fill="#534AB7" x="516" y="130" text-anchor="middle" font-family="'Noto Sans KR',sans-serif">AI Security Platforms</text>
+      <text font-size="10.5" fill="#534AB7" x="516" y="150" text-anchor="middle" font-family="'Noto Sans KR',sans-serif">Geopatriation</text>
+    </svg>
+    <div class="fc">【그림 1】 Gartner 2026 세 가지 테마 — AI-Native Dev Platforms 위상</div>
+  </div>
+
+  <div class="sh2">3. 등장 배경</div>
+  <div class="txt i1">
+    <p>① <span class="kw">소프트웨어 수요 폭발:</span> 디지털 전환 가속으로 기업 내 소프트웨어 수요가 공급 가능 개발자 수를 초과, 전통적 대규모 팀 모델의 비용·속도 한계 노출</p>
+    <p>② <span class="kw">생성형 AI의 코드 생성 역량 성숙:</span> GPT-4o·Claude 3.5 등 LLM의 코드 품질이 시니어 개발자 수준에 근접, 실용적 개발 보조 도구로 전환</p>
+    <p>③ <span class="kw">Spec-Driven Development 패러다임 부상:</span> 자연어 명세(Specification)를 직접 실행 가능한 코드로 변환하는 방식으로, 도메인 전문가가 개발 주도권 확보</p>
+    <p>④ <span class="kw">SaaS 대체 필요성:</span> 범용 SaaS 대신 조직 특화 맞춤 애플리케이션을 더 빠르고 저렴하게 구축할 수 있는 인하우스(In-house) 개발 역량 요구 증가</p>
+  </div>
+</div>
+
+<hr class="pb">
+
+<!-- ─── Ⅱ ─── -->
+<div class="sec">
+  <div class="sh">Ⅱ. 핵심 구성요소 및 기술 스택</div>
+
+  <div class="sh2">1. 플랫폼 레이어 구조</div>
+  <div class="fig">
+    <svg width="100%" viewBox="0 0 620 310" role="img"><title>AI-Native 개발 플랫폼 기술 스택</title>
+      <defs><marker id="as" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+      <!-- Layer 1: Spec / 요구 -->
+      <rect x="30" y="16" width="560" height="42" rx="6" fill="#1a3a6e"/>
+      <text font-size="12" font-weight="700" fill="#fff" x="310" y="33" text-anchor="middle" font-family="'Noto Sans KR',sans-serif">① Spec &amp; Requirements Layer — 자연어 명세(Prompt) / 비즈니스 요구사항</text>
+      <text font-size="10.5" fill="#9dc4f0" x="310" y="51" text-anchor="middle" font-family="'Noto Sans KR',sans-serif">도메인 전문가 / Forward-Deployed Engineer 입력 계층</text>
+      <!-- Arrow -->
+      <line x1="310" y1="58" x2="310" y2="76" stroke="#555" stroke-width="1" marker-end="url(#as)" fill="none"/>
+      <!-- Layer 2: AI Core -->
+      <rect x="30" y="78" width="560" height="52" rx="6" fill="#7a3010"/>
+      <text font-size="12" font-weight="700" fill="#fff" x="310" y="97" text-anchor="middle" font-family="'Noto Sans KR',sans-serif">② AI Core Engine — Code LLM · Reasoning Model · Agentic Loop</text>
+      <text font-size="10.5" fill="#f5c4a0" x="310" y="115" text-anchor="middle" font-family="'Noto Sans KR',sans-serif">코드 생성 · 리팩토링 · 버그 수정 · 테스트 케이스 자동 생성</text>
+      <!-- Arrow -->
+      <line x1="310" y1="130" x2="310" y2="148" stroke="#555" stroke-width="1" marker-end="url(#as)" fill="none"/>
+      <!-- Layer 3: Toolchain -->
+      <rect x="30" y="150" width="560" height="52" rx="6" fill="#2d6a4f"/>
+      <text font-size="12" font-weight="700" fill="#fff" x="310" y="169" text-anchor="middle" font-family="'Noto Sans KR',sans-serif">③ AI-Powered Toolchain — IDE Plugin · CI/CD · Review Bot · Test Runner</text>
+      <text font-size="10.5" fill="#a8dfc9" x="310" y="187" text-anchor="middle" font-family="'Noto Sans KR',sans-serif">GitHub Copilot · Cursor · Devin · Amazon Q Developer · Gemini Code Assist</text>
+      <!-- Arrow -->
+      <line x1="310" y1="202" x2="310" y2="220" stroke="#555" stroke-width="1" marker-end="url(#as)" fill="none"/>
+      <!-- Layer 4: Governance -->
+      <rect x="30" y="222" width="270" height="50" rx="6" fill="#534AB7"/>
+      <text font-size="11.5" font-weight="700" fill="#fff" x="165" y="241" text-anchor="middle" font-family="'Noto Sans KR',sans-serif">④ Governance &amp; Guardrail Layer</text>
+      <text font-size="10.5" fill="#CECBF6" x="165" y="259" text-anchor="middle" font-family="'Noto Sans KR',sans-serif">보안 정책 · IP 필터 · 코드 품질 게이트</text>
+      <!-- Layer 5: Observability -->
+      <rect x="320" y="222" width="270" height="50" rx="6" fill="#0F6E56"/>
+      <text font-size="11.5" font-weight="700" fill="#fff" x="455" y="241" text-anchor="middle" font-family="'Noto Sans KR',sans-serif">⑤ Observability &amp; Feedback Loop</text>
+      <text font-size="10.5" fill="#a8dfc9" x="455" y="259" text-anchor="middle" font-family="'Noto Sans KR',sans-serif">모델 성능 모니터링 · 개발자 피드백 수집</text>
+      <!-- Foundation -->
+      <rect x="30" y="284" width="560" height="20" rx="4" fill="#888"/>
+      <text font-size="10.5" font-weight="700" fill="#fff" x="310" y="298" text-anchor="middle" font-family="'Noto Sans KR',sans-serif">⑥ Foundation — Cloud Infra · LLM API · Vector DB · Version Control (Git)</text>
+    </svg>
+    <div class="fc">【그림 2】 AI-Native 개발 플랫폼 6계층 기술 스택</div>
+  </div>
+
+  <div class="sh2">2. 핵심 구성요소 상세</div>
+  <div class="tw">
+    <table>
+      <tr><th style="width:22%">구성요소</th><th style="width:34%">역할 및 기능</th><th>대표 기술·도구</th></tr>
+      <tr><td><span class="kc">Code LLM</span></td><td>자연어 명세→코드 변환, 코드 완성·설명·리팩토링</td><td>GPT-4o, Claude 3.5 Sonnet, Gemini 1.5 Pro, StarCoder2</td></tr>
+      <tr><td><span class="kc">AI IDE / Coding Agent</span></td><td>IDE 내 실시간 코드 제안, 멀티파일 수정, 자율 에이전트 개발</td><td>GitHub Copilot, Cursor, Devin, Amazon Q Developer</td></tr>
+      <tr><td><span class="kc">Spec-Driven Engine</span></td><td>자연어 요구사항을 실행 가능한 코드 스펙으로 변환</td><td>Prompt Engineering, PRD→Code Pipeline</td></tr>
+      <tr><td><span class="kc">AI Test Generator</span></td><td>단위·통합·E2E 테스트 케이스 자동 생성 및 실행</td><td>Codium AI, Diffblue Cover, GitHub Actions + AI</td></tr>
+      <tr><td><span class="kc">AI Code Review Bot</span></td><td>PR 자동 리뷰, 보안 취약점·버그 탐지, 코드 품질 평가</td><td>CodeRabbit, Snyk, SonarQube AI Mode</td></tr>
+      <tr><td><span class="kc">Guardrail / Policy Engine</span></td><td>지적재산권(IP) 보호, 라이선스 충돌 탐지, 보안 코드 게이트</td><td>IP 필터, OWASP 기반 룰셋, 기업 정책 레이어</td></tr>
+      <tr><td><span class="kc">MLOps / DevAI Pipeline</span></td><td>AI 모델 버전 관리, 배포 자동화, 성능 피드백 루프</td><td>MLflow, Kubeflow, LangSmith, Weights &amp; Biases</td></tr>
+    </table>
+  </div>
+  <div class="fc" style="margin-top:-8px;margin-bottom:12px">【표 1】 AI-Native 개발 플랫폼 핵심 구성요소</div>
+</div>
+
+<hr class="pb">
+
+<!-- ─── Ⅲ ─── -->
+<div class="sec">
+  <div class="sh">Ⅲ. 전통 개발 방식과의 비교 및 개발 패러다임 변화</div>
+
+  <div class="sh2">1. 전통 방식 vs. AI-Native 개발 비교</div>
+  <div class="tw">
+    <table>
+      <tr><th style="width:22%">비교 항목</th><th>전통 소프트웨어 개발</th><th>AI-Native 개발</th></tr>
+      <tr><td><span class="kc">개발 주체</span></td><td>전문 개발자 중심 대규모 팀</td><td>소규모 팀 + AI 에이전트 협업 (Tiny Team)</td></tr>
+      <tr><td><span class="kc">요구사항 처리</span></td><td>기획 → 설계 → 개발 순차 프로세스</td><td>자연어 명세(Spec) → AI 직접 코드 생성 (Spec-Driven)</td></tr>
+      <tr><td><span class="kc">개발 속도</span></td><td>수개월~수년 (대형 프로젝트)</td><td>수일~수주 단위 반복·배포 가능</td></tr>
+      <tr><td><span class="kc">진입 장벽</span></td><td>고급 프로그래밍 언어 숙련 필수</td><td>도메인 전문가도 직접 개발 참여 가능</td></tr>
+      <tr><td><span class="kc">테스트</span></td><td>수작업 테스트 케이스 작성</td><td>AI 자동 테스트 생성·실행·회귀 감지</td></tr>
+      <tr><td><span class="kc">코드 리뷰</span></td><td>시니어 개발자 수동 리뷰 (병목)</td><td>AI 코드 리뷰 봇 자동 1차 검토</td></tr>
+      <tr><td><span class="kc">지식 자산화</span></td><td>개인 역량 의존, 이직 시 지식 손실</td><td>코드베이스+AI가 조직 지식 내재화</td></tr>
+      <tr><td><span class="kc">주요 위험</span></td><td>인력 부족, 일정 지연, 기술 부채</td><td>AI 환각(Hallucination), IP 침해, 보안 취약점 삽입</td></tr>
+    </table>
+  </div>
+  <div class="fc" style="margin-top:-8px;margin-bottom:12px">【표 2】 전통 개발 방식 vs. AI-Native 개발 방식 비교</div>
+
+  <div class="sh2">2. 핵심 패러다임 변화</div>
+
+  <div class="sh3">가. Spec-Driven Development (SDD)</div>
+  <div class="txt i2">
+    <p>자연어로 작성된 비즈니스 요구사항(Specification)을 AI가 직접 실행 가능한 코드로 변환하는 방식. 기획자·도메인 전문가가 코드 작성 없이 소프트웨어 생산에 직접 참여 가능</p>
+  </div>
+
+  <div class="sh3">나. Forward-Deployed Engineer 모델</div>
+  <div class="txt i2">
+    <p>소프트웨어 엔지니어가 비즈니스 부서에 <span class="kw">임베드(Embed)</span>되어 도메인 전문가와 함께 AI 도구로 애플리케이션을 직접 개발. Gartner가 2026년 핵심 인력 모델로 제시</p>
+  </div>
+
+  <div class="sh3">다. AI-Augmented Team (Tiny Team) 모델</div>
+  <div class="txt i2">
+    <p>2~5인의 소규모 팀이 AI 에이전트를 팀원으로 활용하여 기존 10~20인 팀과 동등한 개발 산출물 창출. 2030년까지 80% 기업이 전환 예상(Gartner)</p>
+  </div>
+
+  <div class="fig">
+    <svg width="100%" viewBox="0 0 620 190" role="img"><title>개발 패러다임 전환 흐름도</title>
+      <defs><marker id="at" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+      <!-- Stage 1 -->
+      <rect x="10" y="30" width="140" height="130" rx="6" fill="#e8e6e0" stroke="#aaa" stroke-width="0.8"/>
+      <text font-size="11" font-weight="700" fill="#333" x="80" y="55" text-anchor="middle" font-family="'Noto Sans KR',sans-serif">전통 개발</text>
+      <text font-size="10" fill="#555" x="80" y="74" text-anchor="middle" font-family="'Noto Sans KR',sans-serif">대규모 팀</text>
+      <text font-size="10" fill="#555" x="80" y="92" text-anchor="middle" font-family="'Noto Sans KR',sans-serif">순차 프로세스</text>
+      <text font-size="10" fill="#555" x="80" y="110" text-anchor="middle" font-family="'Noto Sans KR',sans-serif">코드 중심</text>
+      <text font-size="10" fill="#555" x="80" y="128" text-anchor="middle" font-family="'Noto Sans KR',sans-serif">수개월 사이클</text>
+      <text font-size="10" fill="#888" x="80" y="150" text-anchor="middle" font-family="'Noto Sans KR',sans-serif">~2022</text>
+      <!-- Arrow 1 -->
+      <line x1="150" y1="95" x2="178" y2="95" stroke="#7a3010" stroke-width="1.5" marker-end="url(#at)" fill="none"/>
+      <!-- Stage 2 -->
+      <rect x="180" y="20" width="150" height="150" rx="6" fill="#faeeda" stroke="#b8860b" stroke-width="1"/>
+      <text font-size="11" font-weight="700" fill="#7a3010" x="255" y="46" text-anchor="middle" font-family="'Noto Sans KR',sans-serif">AI-Assisted 개발</text>
+      <text font-size="10" fill="#7a3010" x="255" y="66" text-anchor="middle" font-family="'Noto Sans KR',sans-serif">AI 보조 도구 활용</text>
+      <text font-size="10" fill="#7a3010" x="255" y="84" text-anchor="middle" font-family="'Noto Sans KR',sans-serif">Copilot·ChatGPT</text>
+      <text font-size="10" fill="#7a3010" x="255" y="102" text-anchor="middle" font-family="'Noto Sans KR',sans-serif">개발자가 주도</text>
+      <text font-size="10" fill="#7a3010" x="255" y="120" text-anchor="middle" font-family="'Noto Sans KR',sans-serif">생산성 20~50% 향상</text>
+      <text font-size="10" fill="#a07020" x="255" y="155" text-anchor="middle" font-family="'Noto Sans KR',sans-serif">2022~2025</text>
+      <!-- Arrow 2 -->
+      <line x1="330" y1="95" x2="358" y2="95" stroke="#1a3a6e" stroke-width="1.5" marker-end="url(#at)" fill="none"/>
+      <!-- Stage 3 -->
+      <rect x="360" y="10" width="250" height="170" rx="6" fill="#1a3a6e" stroke="#0d2347" stroke-width="1.5"/>
+      <text font-size="12" font-weight="700" fill="#fff" x="485" y="37" text-anchor="middle" font-family="'Noto Sans KR',sans-serif">AI-Native 개발 ★</text>
+      <text font-size="10.5" fill="#9dc4f0" x="485" y="58" text-anchor="middle" font-family="'Noto Sans KR',sans-serif">AI가 개발 핵심 주체</text>
+      <text font-size="10.5" fill="#9dc4f0" x="485" y="78" text-anchor="middle" font-family="'Noto Sans KR',sans-serif">Spec-Driven / 자연어 개발</text>
+      <text font-size="10.5" fill="#9dc4f0" x="485" y="98" text-anchor="middle" font-family="'Noto Sans KR',sans-serif">Tiny Team + AI Agent</text>
+      <text font-size="10.5" fill="#9dc4f0" x="485" y="118" text-anchor="middle" font-family="'Noto Sans KR',sans-serif">비개발자도 앱 구축 가능</text>
+      <text font-size="10.5" fill="#9dc4f0" x="485" y="138" text-anchor="middle" font-family="'Noto Sans KR',sans-serif">수일 단위 배포 사이클</text>
+      <text font-size="10.5" fill="#5a9fd4" x="485" y="168" text-anchor="middle" font-family="'Noto Sans KR',sans-serif">2025~ (Gartner 2026 전략 트렌드)</text>
+    </svg>
+    <div class="fc">【그림 3】 소프트웨어 개발 패러다임 전환 3단계</div>
+  </div>
+</div>
+
+<hr class="pb">
+
+<!-- ─── Ⅳ ─── -->
+<div class="sec">
+  <div class="sh">Ⅳ. 도입 시 고려사항 및 향후 발전 방향</div>
+
+  <div class="sh2">1. 도입 시 주요 고려사항</div>
+  <div class="tw">
+    <table>
+      <tr><th style="width:22%">고려사항</th><th style="width:36%">위험 내용</th><th>대응 방안</th></tr>
+      <tr><td><span class="kc">AI 환각(Hallucination)으로 인한 코드 오류</span></td><td>AI가 존재하지 않는 API·라이브러리를 생성하거나 논리 오류 포함 코드 산출</td><td>AI 테스트 자동화 강화, 코드 리뷰 2중 게이트(AI + Human) 적용</td></tr>
+      <tr><td><span class="kc">지적재산권(IP) 침해</span></td><td>학습 데이터 내 오픈소스 코드 복제로 라이선스 위반 가능성</td><td>IP 필터 레이어 적용, 코드 출처 추적(Provenance) 도구 활용</td></tr>
+      <tr><td><span class="kc">보안 취약점 삽입</span></td><td>AI 생성 코드에 OWASP Top 10 취약점(SQL Injection, XSS 등) 포함 위험</td><td>SAST/DAST 파이프라인 자동 통합, AI 보안 코드 리뷰 봇 적용</td></tr>
+      <tr><td><span class="kc">개발자 역량 저하</span></td><td>AI 의존도 증가로 핵심 알고리즘·아키텍처 설계 역량 퇴화 우려</td><td>AI 보조 한계 영역 설정, 핵심 역량 교육 프로그램 병행</td></tr>
+      <tr><td><span class="kc">거버넌스 및 감사 추적</span></td><td>AI 생성 코드의 변경 이력·의사결정 근거 추적 어려움</td><td>AI 생성 코드 메타데이터 태깅, Git 커밋 메시지 자동화 표준화</td></tr>
+      <tr><td><span class="kc">데이터 유출 위험</span></td><td>코드·비즈니스 로직이 외부 LLM API 전송 시 기밀 노출</td><td>온프레미스/프라이빗 LLM 도입, 입력 데이터 마스킹 정책 수립</td></tr>
+    </table>
+  </div>
+  <div class="fc" style="margin-top:-8px;margin-bottom:12px">【표 3】 AI-Native 개발 플랫폼 도입 시 주요 고려사항</div>
+
+  <div class="sh2">2. 향후 발전 방향</div>
+  <div class="txt i1">
+    <p>① <span class="kw">완전 자율 소프트웨어 엔지니어링 에이전트:</span> 요구사항 접수부터 배포까지 인간 개입 없이 처리하는 End-to-End 자율 개발 에이전트 성숙 (Devin 2.0 등)</p>
+    <p>② <span class="kw">멀티에이전트 개발 파이프라인 (Gartner MAS 연계):</span> 설계 에이전트 → 개발 에이전트 → QA 에이전트 → 보안 에이전트가 협업하는 AI-Native SDLC 완성</p>
+    <p>③ <span class="kw">비전문가 개발 민주화:</span> 비즈니스 분석가·기획자가 자연어만으로 엔터프라이즈 애플리케이션을 직접 생성·유지보수하는 환경 실현 (No-Code의 진화형)</p>
+    <p>④ <span class="kw">AI-Native DevSecOps:</span> 보안·테스트·컴플라이언스 검증이 AI에 의해 개발 초기부터 자동 통합되는 Shift-Left + AI 결합 모델 확산</p>
+  </div>
+</div>
+
+<!-- ─── Ⅴ. 결론 ─── -->
+<div class="sec">
+  <div class="sh">Ⅴ. 결론</div>
+  <div class="txt">
+    <p>AI-Native 개발 플랫폼은 단순한 생산성 향상 도구를 넘어 <span class="kw">소프트웨어 개발 조직의 구조와 인력 모델 자체를 재정의</span>하는 전략적 기술이다. Gartner의 2030년 예측대로 대규모 개발 조직이 소규모 AI 증강 팀으로 전환될 때, 경쟁 우위는 AI 도구의 보유가 아닌 <span class="kw">AI와 인간의 협업 거버넌스를 얼마나 효과적으로 설계하느냐</span>에 달려 있다.</p>
+  </div>
+</div>
+
+<div class="note">
+  <div class="nt">★ 기술사 핵심 코멘트</div>
+  <div class="nb">AI-Native 개발 플랫폼의 본질은 <strong>Spec-Driven Development와 Tiny Team 모델을 통한 소프트웨어 개발 민주화</strong>이며, 시스템 감리 시 <strong>AI 생성 코드의 보안 취약점(OWASP) 자동 탐지 체계, 지적재산권 보호 레이어 구현 여부, AI 코드 추적 가능성(Traceability) 확보</strong>를 중점 검토해야 한다. 특히 외부 LLM API 활용 시 기업 기밀 데이터 유출 방지를 위한 온프레미스 LLM 또는 입력 마스킹 정책의 적정성이 핵심 감리 쟁점이다.</div>
+</div>
+
+</div><!-- /body -->
+
+<!-- Footer -->
+<div class="ftr">
+  <span>컴퓨터시스템응용 기술사 · 모범 답안</span>
+  <span>AI-Native Development Platforms — Gartner 2026 The Architect #1</span>
+  <span>총 5개 항목 · 표 3개 · 그림 3개</span>
+</div>
+
+</div><!-- /doc -->

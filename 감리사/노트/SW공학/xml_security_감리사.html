@@ -1,0 +1,501 @@
+
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+.wrap{padding:1rem 0;font-family:var(--font-sans)}
+.tabs{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:1.25rem;border-bottom:0.5px solid var(--color-border-tertiary);padding-bottom:.75rem}
+.tab{padding:5px 14px;border-radius:var(--border-radius-md);border:0.5px solid var(--color-border-tertiary);font-size:13px;cursor:pointer;background:transparent;color:var(--color-text-secondary);transition:all .15s}
+.tab.on{background:var(--color-background-secondary);color:var(--color-text-primary);border-color:var(--color-border-secondary);font-weight:500}
+.panel{display:none}.panel.on{display:block}
+.sec{font-size:12px;font-weight:500;color:var(--color-text-secondary);text-transform:uppercase;letter-spacing:.05em;margin:1.5rem 0 .75rem}
+.sec:first-child{margin-top:0}
+.grid2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin-bottom:1.25rem}
+.grid3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin-bottom:1.25rem}
+.card{background:var(--color-background-primary);border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-lg);padding:14px}
+.ct{font-size:13px;font-weight:500;margin-bottom:6px;color:var(--color-text-primary)}
+.cs{font-size:12px;color:var(--color-text-secondary);line-height:1.65}
+.badge{display:inline-block;font-size:11px;padding:2px 8px;border-radius:var(--border-radius-md);margin-bottom:8px}
+.b-blue{background:#E6F1FB;color:#0C447C}
+.b-teal{background:#E1F5EE;color:#085041}
+.b-amber{background:#FAEEDA;color:#633806}
+.b-coral{background:#FAECE7;color:#712B13}
+.b-purple{background:#EEEDFE;color:#3C3489}
+.b-green{background:#EAF3DE;color:#27500A}
+.b-pink{background:#FBEAF0;color:#72243E}
+.b-gray{background:#F1EFE8;color:#444441}
+.tw{border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-lg);overflow:hidden;margin-bottom:1.25rem}
+table{width:100%;border-collapse:collapse;font-size:13px}
+th{background:var(--color-background-secondary);font-weight:500;padding:8px 12px;text-align:left;border-bottom:0.5px solid var(--color-border-tertiary);color:var(--color-text-primary)}
+td{padding:8px 12px;border-bottom:0.5px solid var(--color-border-tertiary);color:var(--color-text-secondary);vertical-align:top;line-height:1.55}
+tr:last-child td{border-bottom:none}
+td:first-child{color:var(--color-text-primary);font-weight:500}
+.tip{border-left:3px solid #1D9E75;border-radius:0 var(--border-radius-md) var(--border-radius-md) 0;padding:10px 14px;font-size:13px;margin-bottom:1rem;line-height:1.65;background:var(--color-background-secondary)}
+.warn{border-left:3px solid #BA7517;border-radius:0 var(--border-radius-md) var(--border-radius-md) 0;padding:10px 14px;font-size:13px;margin-bottom:1rem;line-height:1.65;background:var(--color-background-secondary)}
+.danger{border-left:3px solid #D85A30;border-radius:0 var(--border-radius-md) var(--border-radius-md) 0;padding:10px 14px;font-size:13px;margin-bottom:1rem;line-height:1.65;background:var(--color-background-secondary)}
+.one{background:var(--color-background-secondary);border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-lg);padding:12px 16px;font-size:13px;margin-top:1rem}
+.one span{color:var(--color-text-secondary);font-size:12px;display:block;margin-bottom:4px}
+.code{background:var(--color-background-secondary);border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-md);padding:10px 14px;font-size:12px;font-family:var(--font-mono);margin-bottom:10px;color:var(--color-text-primary);line-height:1.7;white-space:pre}
+.qa-item{border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-lg);margin-bottom:8px;overflow:hidden}
+.qa-q{padding:11px 14px;font-size:13px;cursor:pointer;font-weight:500;display:flex;justify-content:space-between;align-items:center;background:var(--color-background-primary);color:var(--color-text-primary)}
+.qa-a{display:none;padding:10px 14px;font-size:13px;color:var(--color-text-secondary);border-top:0.5px solid var(--color-border-tertiary);line-height:1.65;background:var(--color-background-secondary)}
+.qa-a.open{display:block}
+.icon{font-size:12px;color:var(--color-text-tertiary)}
+.flow{display:flex;align-items:center;flex-wrap:wrap;gap:6px;margin-bottom:1.25rem}
+.fb{background:var(--color-background-primary);border:0.5px solid var(--color-border-secondary);border-radius:var(--border-radius-md);padding:6px 12px;font-size:12px;font-weight:500;color:var(--color-text-primary)}
+.arr{font-size:14px;color:var(--color-text-tertiary)}
+.layer{border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-lg);overflow:hidden;margin-bottom:1.25rem}
+.layer-row{display:flex;align-items:stretch;border-bottom:0.5px solid var(--color-border-tertiary)}
+.layer-row:last-child{border-bottom:none}
+.layer-label{width:130px;padding:10px 12px;font-size:12px;font-weight:500;display:flex;align-items:center;border-right:0.5px solid var(--color-border-tertiary);flex-shrink:0;color:var(--color-text-primary)}
+.layer-content{padding:10px 12px;font-size:12px;color:var(--color-text-secondary);line-height:1.55;flex:1}
+</style>
+
+<div class="wrap">
+<div class="tabs">
+  <button class="tab on" onclick="sw(0)">보안 체계 개요</button>
+  <button class="tab" onclick="sw(1)">XML Signature</button>
+  <button class="tab" onclick="sw(2)">XML Encryption</button>
+  <button class="tab" onclick="sw(3)">SAML</button>
+  <button class="tab" onclick="sw(4)">WS-Security</button>
+  <button class="tab" onclick="sw(5)">XML 취약점</button>
+  <button class="tab" onclick="sw(6)">기출 Q&A</button>
+</div>
+
+<!-- 탭0 보안 체계 개요 -->
+<div class="panel on" id="p0">
+  <p class="sec">XML 보안 기술 전체 맵</p>
+  <div class="tw">
+    <table>
+      <tr><th>기술</th><th>보안 목표</th><th>표준 기관</th><th>핵심 역할</th></tr>
+      <tr><td>XML Signature (XML-DSig)</td><td>무결성·인증·부인방지</td><td>W3C + IETF</td><td>XML 데이터에 디지털 서명</td></tr>
+      <tr><td>XML Encryption (XML-Enc)</td><td>기밀성</td><td>W3C</td><td>XML 요소·내용 암호화</td></tr>
+      <tr><td>SAML</td><td>인증·권한부여·SSO</td><td>OASIS</td><td>XML 기반 인증 정보 교환</td></tr>
+      <tr><td>XKMS</td><td>키 관리</td><td>W3C</td><td>공개키 등록·검증·위탁</td></tr>
+      <tr><td>XACML</td><td>접근 제어·권한부여</td><td>OASIS</td><td>XML 기반 접근 제어 정책 언어</td></tr>
+      <tr><td>WS-Security</td><td>메시지 수준 보안</td><td>OASIS</td><td>SOAP 메시지에 보안 헤더 추가</td></tr>
+      <tr><td>WS-Trust</td><td>신뢰 관계·토큰 발급</td><td>OASIS</td><td>보안 토큰 서비스(STS) 정의</td></tr>
+      <tr><td>WS-Federation</td><td>페더레이션·SSO</td><td>OASIS</td><td>이기종 도메인 간 신뢰 연합</td></tr>
+    </table>
+  </div>
+
+  <p class="sec">CIA 보안 목표 대응</p>
+  <div class="grid3">
+    <div class="card">
+      <span class="badge b-coral">기밀성 (Confidentiality)</span>
+      <div class="ct">XML Encryption</div>
+      <div class="cs">요소·속성·문서 전체를 암호화. 인가된 수신자만 복호화 가능. 전송 레벨(TLS)과 달리 메시지 레벨 보호</div>
+    </div>
+    <div class="card">
+      <span class="badge b-blue">무결성 (Integrity)</span>
+      <div class="ct">XML Signature</div>
+      <div class="cs">서명된 후 내용이 변조되면 서명 검증 실패. 부분 서명(특정 요소만)도 지원</div>
+    </div>
+    <div class="card">
+      <span class="badge b-teal">인증·부인방지</span>
+      <div class="ct">XML Signature + SAML</div>
+      <div class="cs">서명자 신원 확인(인증), 서명 후 발송 사실 부인 불가(부인방지). SAML로 SSO 구현</div>
+    </div>
+  </div>
+
+  <p class="sec">전송 수준 보안 vs 메시지 수준 보안 (빈출)</p>
+  <div class="grid2">
+    <div class="card">
+      <span class="badge b-gray">전송 수준 (TLS/HTTPS)</span>
+      <div class="ct">채널 암호화</div>
+      <div class="cs">전송 구간(Point-to-Point)만 보호. 중간 노드(프록시·라우터)에서 복호화 후 재암호화. End-to-End 보장 어려움</div>
+    </div>
+    <div class="card">
+      <span class="badge b-purple">메시지 수준 (XML-Enc/WS-Security)</span>
+      <div class="ct">메시지 자체 암호화</div>
+      <div class="cs">중간 노드를 거쳐도 메시지 내용 보호. 전송 프로토콜 독립. 부분 암호화·서명 가능. End-to-End 보장</div>
+    </div>
+  </div>
+
+  <div class="tip">감리 핵심: HTTPS만으로는 중간 노드(프록시·ESB)에서 메시지가 노출될 수 있음. 민감 데이터 교환 시스템에서는 XML Encryption/WS-Security로 메시지 수준 보안을 추가해야 함</div>
+  <div class="one"><span>한 줄 암기</span>XML 보안 3축: 서명(XML-DSig·무결성·부인방지) + 암호화(XML-Enc·기밀성) + 인증(SAML·SSO). 전송보안(TLS) ≠ 메시지보안(End-to-End)</div>
+</div>
+
+<!-- 탭1 XML Signature -->
+<div class="panel" id="p1">
+  <p class="sec">XML Signature (XML-DSig) 개요</p>
+  <div class="card" style="margin-bottom:1.25rem">
+    <div class="cs" style="font-size:13px;line-height:1.75">
+      W3C + IETF 공동 표준. XML 문서 또는 특정 요소에 <b style="color:var(--color-text-primary)">디지털 서명</b>을 추가.<br>
+      서명 대상이 XML 내부·외부 리소스 모두 가능. 부분 서명(특정 요소만) 지원이 핵심 장점.<br>
+      보안 목표: <b style="color:var(--color-text-primary)">무결성 + 인증 + 부인방지</b>.
+    </div>
+  </div>
+
+  <p class="sec">서명 위치 유형 (빈출)</p>
+  <div class="grid3">
+    <div class="card">
+      <span class="badge b-blue">Enveloped 서명</span>
+      <div class="ct">서명이 원본 안에 포함</div>
+      <div class="cs">서명 요소가 서명 대상 XML 내부에 자식으로 삽입. 가장 일반적. 원본 구조 유지</div>
+    </div>
+    <div class="card">
+      <span class="badge b-teal">Enveloping 서명</span>
+      <div class="ct">원본이 서명 안에 포함</div>
+      <div class="cs">서명 요소가 원본 데이터를 자식으로 포함. 서명이 컨테이너 역할</div>
+    </div>
+    <div class="card">
+      <span class="badge b-amber">Detached 서명</span>
+      <div class="ct">서명이 원본과 분리</div>
+      <div class="cs">서명과 원본이 별도 요소·파일. URI 참조로 연결. 외부 리소스(이미지 등) 서명에 적합</div>
+    </div>
+  </div>
+
+  <p class="sec">XML Signature 구조</p>
+  <div class="code">&lt;Signature xmlns="http://www.w3.org/2000/09/xmldsig#"&gt;
+  &lt;SignedInfo&gt;
+    &lt;CanonicalizationMethod          &lt;!-- 정규화 알고리즘 --&gt;
+      Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315"/&gt;
+    &lt;SignatureMethod                  &lt;!-- 서명 알고리즘 (RSA-SHA256 등) --&gt;
+      Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha256"/&gt;
+    &lt;Reference URI="#order-001"&gt;     &lt;!-- 서명 대상 참조 --&gt;
+      &lt;DigestMethod Algorithm="...sha-256"/&gt;
+      &lt;DigestValue&gt;ABC123...&lt;/DigestValue&gt; &lt;!-- 해시값 --&gt;
+    &lt;/Reference&gt;
+  &lt;/SignedInfo&gt;
+  &lt;SignatureValue&gt;XYZ789...&lt;/SignatureValue&gt; &lt;!-- 암호화된 서명값 --&gt;
+  &lt;KeyInfo&gt;                           &lt;!-- 서명 검증용 키 정보 --&gt;
+    &lt;X509Data&gt;&lt;X509Certificate&gt;...&lt;/X509Certificate&gt;&lt;/X509Data&gt;
+  &lt;/KeyInfo&gt;
+&lt;/Signature&gt;</div>
+
+  <p class="sec">서명 프로세스</p>
+  <div class="flow">
+    <div class="fb">원본 XML 선택</div><span class="arr">→</span>
+    <div class="fb">정규화 (C14N)</div><span class="arr">→</span>
+    <div class="fb">해시 (SHA-256)</div><span class="arr">→</span>
+    <div class="fb">DigestValue 저장</div><span class="arr">→</span>
+    <div class="fb">SignedInfo 서명 (개인키·RSA)</div><span class="arr">→</span>
+    <div class="fb">SignatureValue 저장</div>
+  </div>
+
+  <p class="sec">정규화 (Canonicalization, C14N)가 필요한 이유</p>
+  <div class="tip">XML은 논리적으로 동일한 문서도 공백·속성 순서·네임스페이스 선언 위치에 따라 다른 바이트열이 될 수 있음. 해시를 구하기 전 반드시 정규화(C14N)로 표준 표현으로 변환해야 서명 검증이 일치함. 정규화 알고리즘 불일치는 서명 검증 실패 원인 중 하나</div>
+  <div class="one"><span>한 줄 암기</span>XML Signature = C14N(정규화) → 해시(Digest) → 개인키 서명(SignatureValue). 서명 위치: Enveloped(안에) / Enveloping(감쌈) / Detached(분리)</div>
+</div>
+
+<!-- 탭2 XML Encryption -->
+<div class="panel" id="p2">
+  <p class="sec">XML Encryption (XML-Enc) 개요</p>
+  <div class="card" style="margin-bottom:1.25rem">
+    <div class="cs" style="font-size:13px;line-height:1.75">
+      W3C 표준. XML 문서의 <b style="color:var(--color-text-primary)">요소·속성·내용·문서 전체</b>를 선택적으로 암호화.<br>
+      암호화된 내용은 &lt;EncryptedData&gt; 요소로 대체됨.<br>
+      보안 목표: <b style="color:var(--color-text-primary)">기밀성 (Confidentiality)</b>. 전송 구간이 아닌 메시지 자체를 보호.
+    </div>
+  </div>
+
+  <p class="sec">암호화 대상 범위</p>
+  <div class="tw">
+    <table>
+      <tr><th>암호화 대상</th><th>설명</th><th>type 속성값</th></tr>
+      <tr><td>요소 전체</td><td>시작·종료 태그 포함 전체 암호화</td><td>http://...#Element</td></tr>
+      <tr><td>요소 내용만</td><td>태그는 유지, 내용(텍스트·자식)만 암호화</td><td>http://...#Content</td></tr>
+      <tr><td>문서 전체</td><td>XML 문서 전체를 바이너리로 암호화</td><td>없음 (기본)</td></tr>
+      <tr><td>임의 데이터</td><td>XML 외부 데이터(이미지 등) 암호화 후 삽입</td><td>MIME 타입</td></tr>
+    </table>
+  </div>
+
+  <p class="sec">XML Encryption 구조</p>
+  <div class="code">&lt;EncryptedData
+  xmlns="http://www.w3.org/2001/04/xmlenc#"
+  Type="http://www.w3.org/2001/04/xmlenc#Element"&gt;
+
+  &lt;EncryptionMethod                  &lt;!-- 대칭키 암호화 알고리즘 --&gt;
+    Algorithm="http://...#aes256-cbc"/&gt;
+
+  &lt;KeyInfo xmlns="http://www.w3.org/2000/09/xmldsig#"&gt;
+    &lt;EncryptedKey&gt;                   &lt;!-- 대칭키를 공개키로 암호화 --&gt;
+      &lt;EncryptionMethod
+        Algorithm="http://...#rsa-oaep-mgf1p"/&gt;
+      &lt;CipherData&gt;
+        &lt;CipherValue&gt;암호화된 대칭키...&lt;/CipherValue&gt;
+      &lt;/CipherData&gt;
+    &lt;/EncryptedKey&gt;
+  &lt;/KeyInfo&gt;
+
+  &lt;CipherData&gt;
+    &lt;CipherValue&gt;암호화된 실제 데이터...&lt;/CipherValue&gt;
+  &lt;/CipherData&gt;
+
+&lt;/EncryptedData&gt;</div>
+
+  <p class="sec">하이브리드 암호화 방식</p>
+  <div class="flow">
+    <div class="fb">원본 데이터</div><span class="arr">→</span>
+    <div class="fb">대칭키(AES)로 암호화</div><span class="arr">→</span>
+    <div class="fb">CipherValue</div>
+  </div>
+  <div class="flow">
+    <div class="fb">대칭키 자체</div><span class="arr">→</span>
+    <div class="fb">수신자 공개키(RSA)로 암호화</div><span class="arr">→</span>
+    <div class="fb">EncryptedKey</div>
+  </div>
+  <div class="tip">XML Encryption은 대칭키(AES)로 데이터를 암호화하고, 그 대칭키를 수신자의 공개키(RSA)로 암호화하는 하이브리드 방식. 공개키 암호화의 속도 문제와 대칭키의 키 배포 문제를 동시에 해결</div>
+
+  <p class="sec">XML Signature + XML Encryption 함께 사용</p>
+  <div class="warn">서명 후 암호화(Sign-then-Encrypt) vs 암호화 후 서명(Encrypt-then-Sign) 순서에 따라 보안 속성이 달라짐. 일반적으로 <b>서명 후 암호화</b>가 권장됨 — 서명은 평문에, 암호화는 서명된 전체에 적용하여 기밀성과 무결성을 동시에 보장</div>
+  <div class="one"><span>한 줄 암기</span>XML Encryption = 요소/내용/문서 선택 암호화. AES(데이터) + RSA(대칭키) 하이브리드. 순서: 서명→암호화(Sign-then-Encrypt) 권장</div>
+</div>
+
+<!-- 탭3 SAML -->
+<div class="panel" id="p3">
+  <p class="sec">SAML (Security Assertion Markup Language)</p>
+  <div class="card" style="margin-bottom:1.25rem">
+    <div class="cs" style="font-size:13px;line-height:1.75">
+      OASIS 표준. 인증·권한부여 정보를 XML로 표현·교환하는 프레임워크.<br>
+      핵심 사용 사례: <b style="color:var(--color-text-primary)">SSO(Single Sign-On)</b> — 한 번 로그인으로 여러 서비스 접근.<br>
+      현재 SAML 2.0이 표준. 기업·공공 SSO에서 사실상 표준으로 사용.
+    </div>
+  </div>
+
+  <p class="sec">SAML 3대 구성 요소</p>
+  <div class="grid3">
+    <div class="card">
+      <span class="badge b-coral">IdP (Identity Provider)</span>
+      <div class="ct">신원 제공자</div>
+      <div class="cs">사용자 인증 수행 후 SAML Assertion 발급. 예: 사내 Active Directory, Google, Okta</div>
+    </div>
+    <div class="card">
+      <span class="badge b-blue">SP (Service Provider)</span>
+      <div class="ct">서비스 제공자</div>
+      <div class="cs">SAML Assertion을 받아 서비스 접근 허용. 예: Salesforce, Office365, 전자정부 시스템</div>
+    </div>
+    <div class="card">
+      <span class="badge b-teal">Subject (주체)</span>
+      <div class="ct">인증 대상 사용자</div>
+      <div class="cs">IdP에서 인증받고 SP 서비스에 접근하려는 사용자 또는 시스템</div>
+    </div>
+  </div>
+
+  <p class="sec">SAML Assertion 유형</p>
+  <div class="tw">
+    <table>
+      <tr><th>Assertion 유형</th><th>내용</th><th>용도</th></tr>
+      <tr><td>Authentication Assertion</td><td>언제, 어떤 방법으로 인증했는지</td><td>SSO — 로그인 사실 증명</td></tr>
+      <tr><td>Attribute Assertion</td><td>사용자 속성 정보 (이름, 역할, 부서 등)</td><td>권한 결정에 활용</td></tr>
+      <tr><td>Authorization Decision Assertion</td><td>특정 리소스에 대한 접근 허용·거부</td><td>접근 제어</td></tr>
+    </table>
+  </div>
+
+  <p class="sec">SAML SSO 흐름 (SP-Initiated)</p>
+  <div class="flow">
+    <div class="fb">사용자 → SP 접근</div><span class="arr">→</span>
+    <div class="fb">SP → AuthnRequest 생성</div><span class="arr">→</span>
+    <div class="fb">사용자 → IdP로 리디렉트</div><span class="arr">→</span>
+    <div class="fb">IdP 인증 수행</div><span class="arr">→</span>
+    <div class="fb">IdP → SAML Response(Assertion) 발급</div><span class="arr">→</span>
+    <div class="fb">사용자 → SP에 Assertion 전달</div><span class="arr">→</span>
+    <div class="fb">SP 검증 후 서비스 허용</div>
+  </div>
+
+  <p class="sec">SAML Assertion 구조 (예시)</p>
+  <div class="code">&lt;saml:Assertion
+  xmlns:saml="urn:oasis:names:tc:SAML:2.0:assertion"
+  Version="2.0"
+  IssueInstant="2025-04-01T09:00:00Z"&gt;
+
+  &lt;saml:Issuer&gt;https://idp.example.com&lt;/saml:Issuer&gt;
+
+  &lt;saml:Subject&gt;
+    &lt;saml:NameID Format="...emailAddress"&gt;
+      user@example.com
+    &lt;/saml:NameID&gt;
+    &lt;saml:SubjectConfirmation Method="...bearer"&gt;
+      &lt;saml:SubjectConfirmationData
+        NotOnOrAfter="2025-04-01T09:05:00Z"
+        Recipient="https://sp.example.com/acs"/&gt;
+    &lt;/saml:SubjectConfirmation&gt;
+  &lt;/saml:Subject&gt;
+
+  &lt;saml:Conditions                   &lt;!-- 유효 조건 --&gt;
+    NotBefore="2025-04-01T08:59:00Z"
+    NotOnOrAfter="2025-04-01T09:05:00Z"&gt;
+    &lt;saml:AudienceRestriction&gt;
+      &lt;saml:Audience&gt;https://sp.example.com&lt;/saml:Audience&gt;
+    &lt;/saml:AudienceRestriction&gt;
+  &lt;/saml:Conditions&gt;
+
+  &lt;saml:AuthnStatement               &lt;!-- 인증 Assertion --&gt;
+    AuthnInstant="2025-04-01T09:00:00Z"&gt;
+    &lt;saml:AuthnContext&gt;
+      &lt;saml:AuthnContextClassRef&gt;
+        urn:oasis:...PasswordProtectedTransport
+      &lt;/saml:AuthnContextClassRef&gt;
+    &lt;/saml:AuthnContext&gt;
+  &lt;/saml:AuthnStatement&gt;
+
+&lt;/saml:Assertion&gt;</div>
+
+  <p class="sec">SAML vs OAuth 2.0 vs OIDC 비교</p>
+  <div class="tw">
+    <table>
+      <tr><th>항목</th><th>SAML 2.0</th><th>OAuth 2.0</th><th>OIDC</th></tr>
+      <tr><td>목적</td><td>인증 + 권한부여 (SSO)</td><td>권한부여 (위임)</td><td>인증 (OAuth 2.0 확장)</td></tr>
+      <tr><td>형식</td><td>XML</td><td>JSON (토큰)</td><td>JSON (JWT)</td></tr>
+      <tr><td>주 용도</td><td>엔터프라이즈 SSO</td><td>API 접근 위임</td><td>소셜 로그인</td></tr>
+      <tr><td>전송</td><td>HTTP POST/Redirect</td><td>HTTP</td><td>HTTP</td></tr>
+      <tr><td>복잡도</td><td>높음</td><td>중간</td><td>중간</td></tr>
+    </table>
+  </div>
+  <div class="one"><span>한 줄 암기</span>SAML = IdP(인증) → Assertion(XML) → SP(서비스). Assertion 3종: 인증·속성·권한결정. SSO 흐름: SP 접근 → IdP 인증 → Assertion 전달 → 서비스 허용</div>
+</div>
+
+<!-- 탭4 WS-Security -->
+<div class="panel" id="p4">
+  <p class="sec">WS-Security (WSS) 개요</p>
+  <div class="card" style="margin-bottom:1.25rem">
+    <div class="cs" style="font-size:13px;line-height:1.75">
+      OASIS 표준. SOAP 메시지의 <b style="color:var(--color-text-primary)">헤더(Header)에 보안 정보를 추가</b>하는 메시지 수준 보안 프레임워크.<br>
+      XML Signature·XML Encryption·SAML을 SOAP에 통합. WS-* 보안 스택의 핵심.
+    </div>
+  </div>
+
+  <p class="sec">WS-* 보안 스택</p>
+  <div class="layer">
+    <div class="layer-row">
+      <div class="layer-label" style="background:#EEEDFE;color:#3C3489">WS-Federation</div>
+      <div class="layer-content">이기종 도메인 간 신뢰 연합. 크로스 도메인 SSO</div>
+    </div>
+    <div class="layer-row">
+      <div class="layer-label" style="background:#E1F5EE;color:#085041">WS-Trust</div>
+      <div class="layer-content">보안 토큰 서비스(STS). 토큰 발급·갱신·검증·취소</div>
+    </div>
+    <div class="layer-row">
+      <div class="layer-label" style="background:#FAEEDA;color:#633806">WS-SecureConversation</div>
+      <div class="layer-content">세션 기반 보안 컨텍스트. 다중 메시지 교환 시 효율적 보안</div>
+    </div>
+    <div class="layer-row">
+      <div class="layer-label" style="background:#FAECE7;color:#712B13">WS-SecurityPolicy</div>
+      <div class="layer-content">보안 정책 기술. 어떤 토큰·알고리즘·암호화 방식을 요구하는지 선언</div>
+    </div>
+    <div class="layer-row">
+      <div class="layer-label" style="background:#E6F1FB;color:#0C447C">WS-Security (기반)</div>
+      <div class="layer-content">SOAP Header에 보안 토큰·서명·암호화 추가. XML-DSig + XML-Enc 통합</div>
+    </div>
+  </div>
+
+  <p class="sec">WS-Security SOAP 메시지 구조</p>
+  <div class="code">&lt;soap:Envelope&gt;
+  &lt;soap:Header&gt;
+    &lt;wsse:Security                   &lt;!-- WS-Security 헤더 --&gt;
+      xmlns:wsse="http://...secext-1.0.xsd"
+      soap:mustUnderstand="1"&gt;
+
+      &lt;wsse:UsernameToken&gt;           &lt;!-- 사용자 자격증명 --&gt;
+        &lt;wsse:Username&gt;admin&lt;/wsse:Username&gt;
+        &lt;wsse:Password Type="...PasswordDigest"&gt;
+          해시된_패스워드
+        &lt;/wsse:Password&gt;
+        &lt;wsu:Nonce&gt;랜덤값&lt;/wsse:Nonce&gt;
+        &lt;wsu:Created&gt;2025-04-01T09:00:00Z&lt;/wsu:Created&gt;
+      &lt;/wsse:UsernameToken&gt;
+
+      &lt;wsse:BinarySecurityToken&gt;     &lt;!-- X.509 인증서 --&gt;
+        Base64인코딩된_인증서
+      &lt;/wsse:BinarySecurityToken&gt;
+
+      &lt;ds:Signature&gt;...&lt;/ds:Signature&gt;        &lt;!-- XML Signature --&gt;
+      &lt;xenc:EncryptedData&gt;...&lt;/xenc:EncryptedData&gt; &lt;!-- XML Encryption --&gt;
+
+    &lt;/wsse:Security&gt;
+  &lt;/soap:Header&gt;
+  &lt;soap:Body&gt; ... &lt;/soap:Body&gt;
+&lt;/soap:Envelope&gt;</div>
+
+  <p class="sec">WS-Security 토큰 유형</p>
+  <div class="tw">
+    <table>
+      <tr><th>토큰 유형</th><th>설명</th><th>적합 상황</th></tr>
+      <tr><td>UsernameToken</td><td>사용자명·패스워드 기반. PasswordDigest 권장</td><td>간단한 인증</td></tr>
+      <tr><td>BinarySecurityToken</td><td>X.509 인증서·Kerberos 티켓 등 바이너리 토큰</td><td>PKI 기반 강한 인증</td></tr>
+      <tr><td>SAML Token</td><td>SAML Assertion을 WS-Security 헤더에 포함</td><td>페더레이션·SSO</td></tr>
+      <tr><td>EncryptedKey Token</td><td>XML Encryption의 암호화된 키 참조</td><td>기밀성 보장</td></tr>
+    </table>
+  </div>
+  <div class="one"><span>한 줄 암기</span>WS-Security = SOAP Header에 보안 추가(서명+암호화+토큰). WS-Trust(STS 토큰발급) → WS-SecureConversation(세션) → WS-Federation(크로스도메인)</div>
+</div>
+
+<!-- 탭5 XML 취약점 -->
+<div class="panel" id="p5">
+  <p class="sec">XML 주요 보안 취약점</p>
+  <div class="tw">
+    <table>
+      <tr><th>취약점</th><th>설명</th><th>대응 방법</th></tr>
+      <tr><td>XXE (XML External Entity)</td><td>외부 엔티티 참조를 통해 서버 파일 읽기·SSRF·DoS 유발. OWASP Top 10 포함</td><td>외부 엔티티 처리 비활성화. 입력 검증</td></tr>
+      <tr><td>XML Injection</td><td>사용자 입력에 XML 특수문자 삽입해 구조 변조</td><td>입력값 이스케이프 (&amp;amp; &amp;lt; 등)</td></tr>
+      <tr><td>XML Bomb (Billion Laughs)</td><td>중첩 엔티티 참조로 메모리 폭발. DoS 공격</td><td>엔티티 확장 깊이·크기 제한</td></tr>
+      <tr><td>XPath Injection</td><td>XPath 표현식에 악성 입력 삽입해 인증 우회·데이터 탈취</td><td>파라미터화된 XPath. 입력 검증</td></tr>
+      <tr><td>SOAP Action Spoofing</td><td>HTTP SOAPAction 헤더와 SOAP Body 오퍼레이션 불일치로 권한 우회</td><td>서버에서 SOAPAction과 Body 일치 검증</td></tr>
+      <tr><td>Schema Poisoning</td><td>DTD/XSD 파일 변조로 검증 우회</td><td>스키마 파일 무결성 검증. 서명 적용</td></tr>
+      <tr><td>Replay Attack</td><td>캡처한 유효 SOAP 메시지를 재전송</td><td>wsu:Timestamp + Nonce. 메시지 만료 시간 설정</td></tr>
+    </table>
+  </div>
+
+  <p class="sec">XXE (XML External Entity) 상세</p>
+  <div class="code">&lt;!-- 공격 예시: 외부 엔티티로 서버 파일 읽기 --&gt;
+&lt;?xml version="1.0"?&gt;
+&lt;!DOCTYPE foo [
+  &lt;!ENTITY xxe SYSTEM "file:///etc/passwd"&gt;  &lt;!-- 서버 파일 참조 --&gt;
+]&gt;
+&lt;user&gt;&lt;name&gt;&amp;xxe;&lt;/name&gt;&lt;/user&gt;  &lt;!-- 엔티티 사용 → 파일 내용 노출 --&gt;</div>
+  <div class="danger">XXE는 OWASP Top 10(A05:2021 Security Misconfiguration 포함)에 등재된 심각한 취약점. 외부 엔티티 처리를 XML 파서 설정에서 반드시 비활성화해야 함. Java: factory.setFeature("http://apache.org/.../disallow-doctype-decl", true)</div>
+
+  <p class="sec">XML Bomb (Billion Laughs) 예시</p>
+  <div class="code">&lt;!DOCTYPE bomb [
+  &lt;!ENTITY a "AAAA..."&gt;            &lt;!-- 4 bytes --&gt;
+  &lt;!ENTITY b "&amp;a;&amp;a;&amp;a;&amp;a;"&gt;   &lt;!-- 16 bytes --&gt;
+  &lt;!ENTITY c "&amp;b;&amp;b;&amp;b;&amp;b;"&gt;   &lt;!-- 64 bytes --&gt;
+  &lt;!ENTITY d "&amp;c;&amp;c;&amp;c;&amp;c;"&gt;   &lt;!-- 256 bytes --&gt;
+  ... (반복) ...                   &lt;!-- 10단계 → 수 GB --&gt;
+]&gt;
+&lt;root&gt;&amp;d;&lt;/root&gt;                  &lt;!-- 파싱 시 메모리 폭발 --&gt;</div>
+
+  <p class="sec">감리 시 XML 보안 체크리스트</p>
+  <div class="tw">
+    <table>
+      <tr><th>확인 항목</th><th>세부 내용</th></tr>
+      <tr><td>XXE 방어</td><td>XML 파서에서 외부 엔티티·DTD 처리 비활성화 설정 확인</td></tr>
+      <tr><td>입력 검증</td><td>XML·XPath Injection 방지용 입력값 이스케이프 처리</td></tr>
+      <tr><td>스키마 검증</td><td>수신 XML을 XSD로 반드시 검증 후 처리</td></tr>
+      <tr><td>SOAP 보안</td><td>WS-Security 헤더 적용 여부·토큰 유형·암호화 알고리즘</td></tr>
+      <tr><td>재전송 방지</td><td>wsu:Timestamp, Nonce 사용으로 메시지 재사용 차단</td></tr>
+      <tr><td>TLS 적용</td><td>전송 구간 TLS + 메시지 수준 XML-Enc 이중 보호</td></tr>
+      <tr><td>엔티티 제한</td><td>엔티티 확장 크기·깊이 제한으로 XML Bomb 방어</td></tr>
+    </table>
+  </div>
+  <div class="one"><span>한 줄 암기</span>XML 4대 취약점: XXE(파일읽기) · XML Bomb(DoS) · XPath Injection(인증우회) · Replay Attack(재전송). XXE는 OWASP Top 10 등재. 파서에서 외부 엔티티 비활성화 필수</div>
+</div>
+
+<!-- 탭6 기출 Q&A -->
+<div class="panel" id="p6">
+  <p class="sec">기출 예상 Q&A</p>
+
+  <div class="qa-item"><div class="qa-q" onclick="tog(this)">전송 수준 보안(TLS)과 메시지 수준 보안(XML Encryption)의 차이는? <span class="icon">▾</span></div><div class="qa-a">TLS(HTTPS)는 전송 채널을 암호화하는 Point-to-Point 방식. 중간 노드(프록시·ESB·로드밸런서)에서 TLS를 종료하면 메시지가 평문으로 노출될 수 있음. XML Encryption은 메시지 자체를 암호화하는 End-to-End 방식. 중간 노드를 거쳐도 메시지 내용이 보호됨. 전송 프로토콜 독립적이며 부분 암호화(특정 요소만)도 가능. 민감 데이터 교환 시스템은 TLS + XML Encryption을 이중으로 적용하는 것이 권장됨.</div></div>
+
+  <div class="qa-item"><div class="qa-q" onclick="tog(this)">XML Signature의 3가지 서명 위치 유형을 설명하시오 <span class="icon">▾</span></div><div class="qa-a">Enveloped 서명: 서명 요소가 서명 대상 XML 내부에 자식으로 삽입. 원본 문서 구조 유지. 가장 일반적. Enveloping 서명: 서명 요소가 원본 데이터를 자식으로 포함. 서명이 컨테이너 역할을 함. Detached 서명: 서명과 원본이 별도 요소·파일로 분리. URI 참조로 서명 대상 지정. 여러 문서에 하나의 서명, 외부 리소스(이미지·바이너리) 서명에 적합.</div></div>
+
+  <div class="qa-item"><div class="qa-q" onclick="tog(this)">XML Signature에서 정규화(C14N)가 필요한 이유는? <span class="icon">▾</span></div><div class="qa-a">XML은 논리적으로 동일한 문서도 속성 순서, 공백 처리, 네임스페이스 선언 위치 등에 따라 다른 바이트열로 표현될 수 있음. 해시 함수는 동일한 입력에 대해 동일한 출력을 내야 하므로, 서명 전 XML을 표준 형식(Canonical XML)으로 변환하는 정규화(Canonicalization, C14N) 과정이 필수. 정규화 알고리즘이 서명자와 검증자 간에 일치하지 않으면 서명 검증이 실패함.</div></div>
+
+  <div class="qa-item"><div class="qa-q" onclick="tog(this)">SAML의 역할과 SSO 동작 흐름을 설명하시오 <span class="icon">▾</span></div><div class="qa-a">SAML(Security Assertion Markup Language)은 인증·권한부여 정보를 XML로 교환하는 OASIS 표준. SSO 동작: ① 사용자가 SP(서비스 제공자)에 접근 요청 ② SP가 AuthnRequest 생성 후 IdP(신원 제공자)로 리디렉트 ③ IdP에서 사용자 인증 수행 ④ IdP가 SAML Assertion 발급(인증·속성·권한 정보 포함) ⑤ 사용자가 Assertion을 SP에 전달 ⑥ SP가 Assertion 서명 검증 후 서비스 접근 허용. Assertion에는 NotBefore/NotOnOrAfter로 유효 기간이 설정됨.</div></div>
+
+  <div class="qa-item"><div class="qa-q" onclick="tog(this)">XXE(XML External Entity) 취약점의 원리와 대응 방법은? <span class="icon">▾</span></div><div class="qa-a">XXE는 XML 파서가 외부 엔티티를 처리할 때 발생. 공격자가 DTD에 SYSTEM 키워드로 서버 내부 파일(file:///etc/passwd)이나 내부 네트워크 URL을 참조하는 엔티티를 정의하면, 파서가 해당 내용을 읽어 응답에 포함시킴. SSRF(서버 측 요청 위조)·파일 읽기·DoS로 이어질 수 있어 OWASP Top 10에 포함. 대응: XML 파서에서 외부 엔티티 처리 및 DTD 로딩을 비활성화. 신뢰할 수 없는 XML 입력은 XSD 검증 후 처리. 엔티티 확장 크기·깊이 제한.</div></div>
+
+  <div class="qa-item"><div class="qa-q" onclick="tog(this)">WS-Security가 HTTPS만으로 부족한 이유와 추가 보안 기능은? <span class="icon">▾</span></div><div class="qa-a">HTTPS(TLS)는 전송 구간만 보호하는 Point-to-Point 방식. ESB·프록시 등 중간 노드에서 TLS가 종료되면 SOAP 메시지가 평문으로 처리됨. WS-Security는 SOAP Header에 직접 보안 정보를 포함해 End-to-End 메시지 수준 보안을 제공. 추가 기능: UsernameToken/X.509/SAML 토큰으로 인증, XML Signature로 메시지 무결성·부인방지, XML Encryption으로 Body 기밀성 보호, Timestamp+Nonce로 재전송 공격 방지. 전송 프로토콜 독립적.</div></div>
+</div>
+</div>
+
+<script>
+function sw(i){
+  document.querySelectorAll('.tab').forEach((t,j)=>t.classList.toggle('on',i===j));
+  document.querySelectorAll('.panel').forEach((p,j)=>p.classList.toggle('on',i===j));
+}
+function tog(el){
+  const a=el.nextElementSibling;
+  a.classList.toggle('open');
+  el.querySelector('.icon').textContent=a.classList.contains('open')?'▴':'▾';
+}
+</script>

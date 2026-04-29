@@ -1,0 +1,838 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;900&family=JetBrains+Mono:wght@400;700&display=swap');
+:root{--bg:#040a0f;--s1:#070f1c;--s2:#0b1528;--s3:#101c34;--bdr:#1e3560;--a1:#60a5fa;--a2:#34d399;--a3:#fbbf24;--a4:#f87171;--a5:#a78bfa;--a6:#fb923c;--txt:#e2e8f0;--mu:#64748b;}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Noto Sans KR',sans-serif;background:var(--bg);color:var(--txt);min-height:100vh;}
+.hdr{padding:20px 24px 14px;background:linear-gradient(150deg,#040a0f,#091222,#040a0f);border-bottom:1px solid var(--bdr);}
+.hdr-r{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:6px;}
+.pill{padding:3px 10px;border-radius:20px;font-size:10px;font-weight:700;}
+.p1{background:linear-gradient(135deg,#1e3a8a,var(--a1));color:#fff;}
+.p2{background:rgba(52,211,153,.15);color:var(--a2);border:1px solid rgba(52,211,153,.3);}
+.p3{background:rgba(251,191,36,.15);color:var(--a3);border:1px solid rgba(251,191,36,.3);}
+h1{font-size:18px;font-weight:900;}
+.h1g{background:linear-gradient(90deg,var(--a1),var(--a5),var(--a2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.hdr p{color:var(--mu);font-size:11.5px;margin-top:3px;}
+.tabs{display:flex;padding:0 24px;background:var(--s1);border-bottom:1px solid var(--bdr);overflow-x:auto;scrollbar-width:none;}
+.tabs::-webkit-scrollbar{display:none;}
+.tab{padding:10px 13px;font-size:11.5px;font-weight:600;color:var(--mu);cursor:pointer;border-bottom:2px solid transparent;white-space:nowrap;transition:all .2s;background:none;border-top:none;border-left:none;border-right:none;font-family:'Noto Sans KR',sans-serif;}
+.tab.on{color:var(--a1);border-bottom-color:var(--a1);}
+.wrap{padding:18px 24px;max-width:960px;margin:0 auto;}
+.pnl{display:none;}.pnl.on{display:block;}
+.card{background:var(--s1);border:1px solid var(--bdr);border-radius:11px;padding:16px;margin-bottom:12px;}
+.card-h{display:flex;align-items:center;gap:9px;margin-bottom:12px;}
+.ico{width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0;}
+.ib{background:rgba(96,165,250,.15);}.ig{background:rgba(52,211,153,.15);}.iy{background:rgba(251,191,36,.15);}.ir{background:rgba(248,113,113,.15);}.ip{background:rgba(167,139,250,.15);}.io{background:rgba(251,146,60,.15);}
+.card h3{font-size:13.5px;font-weight:700;}
+.tag{display:inline-block;padding:2px 7px;border-radius:4px;font-size:9.5px;font-weight:600;margin:2px 2px 2px 0;}
+.tb{background:rgba(96,165,250,.12);color:var(--a1);border:1px solid rgba(96,165,250,.25);}
+.tg{background:rgba(52,211,153,.12);color:var(--a2);border:1px solid rgba(52,211,153,.25);}
+.ty{background:rgba(251,191,36,.12);color:var(--a3);border:1px solid rgba(251,191,36,.25);}
+.tr{background:rgba(248,113,113,.12);color:var(--a4);border:1px solid rgba(248,113,113,.25);}
+.tp{background:rgba(167,139,250,.12);color:var(--a5);border:1px solid rgba(167,139,250,.25);}
+.to{background:rgba(251,146,60,.12);color:var(--a6);border:1px solid rgba(251,146,60,.25);}
+table{width:100%;border-collapse:collapse;font-size:12px;}
+th{background:var(--s2);color:var(--mu);font-weight:700;padding:7px 11px;text-align:left;font-size:9.5px;text-transform:uppercase;letter-spacing:.5px;border-bottom:1px solid var(--bdr);}
+td{padding:8px 11px;border-bottom:1px solid rgba(30,53,96,.5);vertical-align:top;line-height:1.55;}
+tr:last-child td{border-bottom:none;}
+tr:hover td{background:rgba(255,255,255,.02);}
+td strong{color:var(--a3);}
+ul.il{list-style:none;display:flex;flex-direction:column;gap:6px;}
+ul.il li{font-size:12px;padding-left:15px;position:relative;line-height:1.5;}
+ul.il li::before{content:'▸';position:absolute;left:0;color:var(--a1);font-size:9.5px;top:3px;}
+ul.il li strong{color:var(--a3);}
+ul.il li em{color:var(--a2);font-style:normal;}
+.memo{background:linear-gradient(135deg,rgba(96,165,250,.07),rgba(52,211,153,.07));border:1px solid rgba(96,165,250,.22);border-left:3px solid var(--a1);border-radius:7px;padding:9px 13px;font-size:12px;font-weight:600;color:var(--a1);margin:9px 0;}
+.memo::before{content:'🎯 핵심 암기 │ ';color:var(--mu);font-weight:400;}
+.warn{background:rgba(248,113,113,.07);border:1px solid rgba(248,113,113,.25);border-left:3px solid var(--a4);border-radius:7px;padding:9px 13px;font-size:12px;font-weight:600;color:var(--a4);margin:9px 0;}
+.warn::before{content:'⚠️ 함정 포인트 │ ';color:var(--mu);font-weight:400;}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px;}
+@media(max-width:580px){.g2{grid-template-columns:1fr;}}
+.code{background:var(--s2);border:1px solid rgba(96,165,250,.18);border-radius:7px;padding:10px 13px;font-family:'JetBrains Mono',monospace;font-size:10.5px;margin:8px 0;line-height:1.8;overflow-x:auto;}
+.code .cm{color:var(--mu);}.code .kw{color:var(--a1);}.code .val{color:var(--a3);}.code .g{color:var(--a2);}
+/* acc */
+.acc{background:var(--s2);border:1px solid var(--bdr);border-radius:9px;margin-bottom:8px;overflow:hidden;}
+.acc-h{display:flex;justify-content:space-between;align-items:center;padding:10px 14px;cursor:pointer;user-select:none;}
+.acc-h:hover{background:rgba(255,255,255,.02);}
+.acc-title{font-size:12.5px;font-weight:800;flex:1;}
+.acc-tgl{color:var(--mu);transition:transform .2s;font-size:14px;flex-shrink:0;margin-left:8px;}
+.acc.open .acc-tgl{transform:rotate(180deg);}
+.acc-body{display:none;border-top:1px solid var(--bdr);padding:12px 14px;background:var(--s3);font-size:12px;line-height:1.65;}
+.acc.open .acc-body{display:block;}
+.acc-body strong{color:var(--a3);}
+.acc-body em{color:var(--a2);font-style:normal;}
+/* qa */
+.qa{background:var(--s1);border:1px solid var(--bdr);border-radius:9px;margin-bottom:10px;overflow:hidden;}
+.qa:hover{border-color:rgba(96,165,250,.25);}
+.qa-hd{padding:12px 16px;cursor:pointer;display:flex;justify-content:space-between;align-items:flex-start;gap:9px;user-select:none;}
+.qa-meta{display:flex;align-items:center;gap:5px;margin-bottom:4px;flex-wrap:wrap;}
+.qn{font-family:'JetBrains Mono',monospace;font-size:9.5px;font-weight:700;color:var(--mu);}
+.qq{font-size:12.5px;font-weight:600;line-height:1.5;}
+.tgl{color:var(--mu);font-size:15px;flex-shrink:0;transition:transform .2s;}
+.qa.open .tgl{transform:rotate(180deg);}
+.qa-bd{display:none;border-top:1px solid var(--bdr);padding:12px 16px;background:var(--s2);}
+.qa.open .qa-bd{display:block;}
+.chs{display:flex;flex-direction:column;gap:6px;margin-bottom:10px;}
+.ch{display:flex;align-items:flex-start;gap:9px;padding:8px 12px;border-radius:6px;border:1px solid var(--bdr);font-size:12px;cursor:pointer;background:var(--s1);line-height:1.45;transition:all .15s;}
+.ch:hover:not(.lk){border-color:rgba(96,165,250,.3);background:rgba(96,165,250,.04);}
+.ch.ok{border-color:var(--a2);background:rgba(52,211,153,.1);color:var(--a2);}
+.ch.ng{border-color:var(--a4);background:rgba(248,113,113,.08);color:var(--a4);opacity:.7;}
+.ch.lk{cursor:default;}
+.cnum{font-family:'JetBrains Mono',monospace;font-weight:700;font-size:10.5px;flex-shrink:0;margin-top:1px;color:var(--mu);}
+.ch.ok .cnum{color:var(--a2);}.ch.ng .cnum{color:var(--a4);}
+.exp{background:rgba(96,165,250,.05);border:1px solid rgba(96,165,250,.18);border-radius:7px;padding:11px 13px;font-size:12px;line-height:1.6;display:none;}
+.exp.show{display:block;}
+.exp-t{font-size:9.5px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--a1);margin-bottom:5px;}
+.exp strong{color:var(--a3);}
+.exp em{color:var(--a2);font-style:normal;}
+.ox-wr{display:flex;gap:8px;margin-bottom:10px;}
+.ox{flex:1;padding:10px;border-radius:7px;border:1px solid var(--bdr);font-size:18px;cursor:pointer;background:var(--s1);transition:all .15s;font-family:'Noto Sans KR',sans-serif;color:var(--txt);}
+.ox:hover:not(.lk){transform:scale(1.02);}
+.ox.so{border-color:var(--a2);background:rgba(52,211,153,.15);}
+.ox.sx{border-color:var(--a4);background:rgba(248,113,113,.1);}
+.ox.lk{cursor:default;}
+.diff{display:inline-block;padding:2px 6px;border-radius:9px;font-size:8.5px;font-weight:700;}
+.easy{background:rgba(52,211,153,.2);color:var(--a2);}
+.mid{background:rgba(251,191,36,.2);color:var(--a3);}
+.hard{background:rgba(248,113,113,.2);color:var(--a4);}
+.fb-wr{display:flex;gap:5px;flex-wrap:wrap;margin-bottom:12px;}
+.fb{padding:4px 11px;border-radius:18px;border:1px solid var(--bdr);font-size:10.5px;font-weight:600;cursor:pointer;background:var(--s2);color:var(--mu);transition:all .15s;font-family:'Noto Sans KR',sans-serif;}
+.fb.on{background:rgba(96,165,250,.15);color:var(--a1);border-color:var(--a1);}
+.sc-b{background:var(--s2);border:1px solid var(--bdr);border-radius:7px;padding:4px 12px;font-size:11.5px;color:var(--mu);}
+.sc-b span{color:var(--a1);font-weight:700;}
+</style>
+</head>
+<body>
+<div class="hdr">
+  <div class="hdr-r">
+    <span class="pill p1">UML Class Diagram</span>
+    <span class="pill p2">클래스 다이어그램</span>
+    <span class="pill p3">감리사 핵심 출제</span>
+  </div>
+  <h1><span class="h1g">UML Class Diagram 완전 정리</span></h1>
+  <p>클래스 구조 · 가시성 · 관계 6종(연관·의존·집합·합성·실현·상속) · 다중성 · 다이어그램 예시 · 감리</p>
+</div>
+<div class="tabs">
+  <button class="tab on" data-p="p1">📋 개요·클래스 구조</button>
+  <button class="tab" data-p="p2">🔗 관계 I (연관·의존·상속)</button>
+  <button class="tab" data-p="p3">🔗 관계 II (집합·합성·실현)</button>
+  <button class="tab" data-p="p4">🖼️ 다이어그램 예시</button>
+  <button class="tab" data-p="p5">📊 관계 총정리·감리</button>
+  <button class="tab" data-p="p6">❓ 예상문제</button>
+</div>
+<div class="wrap">
+
+<!-- P1: 개요·클래스 구조 -->
+<div class="pnl on" id="p1">
+  <div class="card">
+    <div class="card-h"><div class="ico ib">📋</div><h3>클래스 다이어그램 정의 & 목적 ⭐</h3></div>
+    <div style="background:var(--s2);border:1px solid rgba(96,165,250,.28);border-radius:9px;padding:13px;margin-bottom:12px;font-size:12.5px;line-height:1.85;">
+      <strong style="color:var(--a1)">클래스 다이어그램</strong>: 시스템의 <em style="color:var(--a3);font-style:normal;">정적(Static) 구조</em>를 표현하는 UML 구조 다이어그램 — 클래스의 속성·메서드·클래스 간 관계를 시각화하여 객체지향 설계의 청사진을 제공
+    </div>
+    <div class="g2">
+      <div>
+        <p style="font-size:11.5px;font-weight:800;color:var(--a1);margin-bottom:7px;">목적 & 활용</p>
+        <ul class="il">
+          <li><strong>OOP 설계 표현:</strong> 클래스·인터페이스·추상 클래스 구조</li>
+          <li><strong>데이터 모델 매핑:</strong> ER 다이어그램과 대응 가능</li>
+          <li><strong>코드 생성 기반:</strong> 다이어그램 → 코드 자동 생성(Forward Engineering)</li>
+          <li><strong>역공학(Reverse Engineering):</strong> 기존 코드 → 다이어그램</li>
+          <li><strong>팀 소통:</strong> 설계 의도를 시각적으로 공유</li>
+        </ul>
+      </div>
+      <div>
+        <p style="font-size:11.5px;font-weight:800;color:var(--a3);margin-bottom:7px;">UML 다이어그램 위치</p>
+        <table>
+          <thead><tr><th>분류</th><th>다이어그램</th></tr></thead>
+          <tbody>
+            <tr><td><span class="tag tb">구조 다이어그램</span></td><td><strong>클래스·객체·컴포넌트·배포·패키지</strong></td></tr>
+            <tr><td><span class="tag tg">행위 다이어그램</span></td><td>유스케이스·활동·상태머신</td></tr>
+            <tr><td><span class="tag ty">상호작용</span></td><td>순서·협력·타이밍</td></tr>
+          </tbody>
+        </table>
+        <p style="font-size:10.5px;color:var(--mu);margin-top:6px;">클래스 다이어그램 = <em style="color:var(--a2);">정적 구조 다이어그램</em>의 대표</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-h"><div class="ico iy">🧱</div><h3>클래스 표기 구조 & 가시성 ⭐</h3></div>
+
+    <!-- 클래스 박스 SVG -->
+    <svg viewBox="0 0 680 240" xmlns="http://www.w3.org/2000/svg" style="width:100%;background:var(--s2);border-radius:9px;border:1px solid var(--bdr);margin:10px 0;">
+      <!-- 일반 클래스 -->
+      <rect x="20" y="20" width="180" height="200" fill="var(--s3)" stroke="#60a5fa" stroke-width="1.5" rx="4"/>
+      <rect x="20" y="20" width="180" height="36" fill="rgba(96,165,250,.2)" rx="4"/>
+      <text x="110" y="43" text-anchor="middle" font-family="JetBrains Mono" font-size="13" font-weight="bold" fill="#60a5fa">Person</text>
+      <line x1="20" y1="56" x2="200" y2="56" stroke="#60a5fa" stroke-width="1"/>
+      <text x="30" y="75" font-family="JetBrains Mono" font-size="10" fill="#fbbf24">- name: String</text>
+      <text x="30" y="92" font-family="JetBrains Mono" font-size="10" fill="#fbbf24">- age: int</text>
+      <text x="30" y="109" font-family="JetBrains Mono" font-size="10" fill="#34d399"># email: String</text>
+      <text x="30" y="126" font-family="JetBrains Mono" font-size="10" fill="#60a5fa">+ id: Long</text>
+      <line x1="20" y1="136" x2="200" y2="136" stroke="#60a5fa" stroke-width="1"/>
+      <text x="30" y="155" font-family="JetBrains Mono" font-size="10" fill="#60a5fa">+ getName(): String</text>
+      <text x="30" y="172" font-family="JetBrains Mono" font-size="10" fill="#60a5fa">+ setAge(int)</text>
+      <text x="30" y="189" font-family="JetBrains Mono" font-size="10" fill="#34d399"># validate()</text>
+      <text x="30" y="206" font-family="JetBrains Mono" font-size="10" fill="#fbbf24">- calcScore(): int</text>
+      <text x="110" y="230" text-anchor="middle" font-family="Noto Sans KR" font-size="9" fill="#64748b">일반 클래스</text>
+
+      <!-- 추상 클래스 -->
+      <rect x="230" y="20" width="190" height="140" fill="var(--s3)" stroke="#a78bfa" stroke-width="1.5" rx="4"/>
+      <rect x="230" y="20" width="190" height="36" fill="rgba(167,139,250,.2)" rx="4"/>
+      <text x="325" y="37" text-anchor="middle" font-family="JetBrains Mono" font-size="9" fill="#a78bfa" font-style="italic">«abstract»</text>
+      <text x="325" y="52" text-anchor="middle" font-family="JetBrains Mono" font-size="12" font-weight="bold" fill="#a78bfa" font-style="italic">Shape</text>
+      <line x1="230" y1="56" x2="420" y2="56" stroke="#a78bfa" stroke-width="1"/>
+      <text x="240" y="75" font-family="JetBrains Mono" font-size="10" fill="#fbbf24">- color: String</text>
+      <line x1="230" y1="85" x2="420" y2="85" stroke="#a78bfa" stroke-width="1"/>
+      <text x="240" y="104" font-family="JetBrains Mono" font-size="10" fill="#60a5fa">+ getColor(): String</text>
+      <text x="240" y="121" font-family="JetBrains Mono" font-size="10" fill="#a78bfa" font-style="italic">{abstract} draw()</text>
+      <text x="240" y="138" font-family="JetBrains Mono" font-size="10" fill="#a78bfa" font-style="italic">{abstract} area(): double</text>
+      <text x="325" y="175" text-anchor="middle" font-family="Noto Sans KR" font-size="9" fill="#64748b">추상 클래스 (이탤릭)</text>
+
+      <!-- 인터페이스 -->
+      <rect x="450" y="20" width="210" height="130" fill="var(--s3)" stroke="#34d399" stroke-width="1.5" rx="4"/>
+      <rect x="450" y="20" width="210" height="36" fill="rgba(52,211,153,.15)" rx="4"/>
+      <text x="555" y="37" text-anchor="middle" font-family="JetBrains Mono" font-size="9" fill="#34d399">«interface»</text>
+      <text x="555" y="52" text-anchor="middle" font-family="JetBrains Mono" font-size="12" font-weight="bold" fill="#34d399">Drawable</text>
+      <line x1="450" y1="56" x2="660" y2="56" stroke="#34d399" stroke-width="1"/>
+      <text x="460" y="76" font-family="JetBrains Mono" font-size="10" fill="#64748b">(속성 없음)</text>
+      <line x1="450" y1="86" x2="660" y2="86" stroke="#34d399" stroke-width="1"/>
+      <text x="460" y="106" font-family="JetBrains Mono" font-size="10" fill="#34d399">+ draw()</text>
+      <text x="460" y="123" font-family="JetBrains Mono" font-size="10" fill="#34d399">+ resize(factor: double)</text>
+      <text x="555" y="168" text-anchor="middle" font-family="Noto Sans KR" font-size="9" fill="#64748b">인터페이스 (스테레오타입)</text>
+
+      <!-- 가시성 범례 -->
+      <rect x="20" y="195" width="400" height="42" fill="none" stroke="var(--bdr)" stroke-width="1" rx="4"/>
+      <text x="30" y="210" font-family="JetBrains Mono" font-size="10" fill="#f87171">-  private</text>
+      <text x="120" y="210" font-family="JetBrains Mono" font-size="10" fill="#34d399">#  protected</text>
+      <text x="240" y="210" font-family="JetBrains Mono" font-size="10" fill="#60a5fa">+  public</text>
+      <text x="330" y="210" font-family="JetBrains Mono" font-size="10" fill="#fbbf24">~  package</text>
+      <text x="30" y="228" font-family="Noto Sans KR" font-size="9" fill="#64748b">가시성 기호: - private  # protected  + public  ~ package(default)</text>
+    </svg>
+
+    <div class="acc open" onclick="this.classList.toggle('open')">
+      <div class="acc-h"><div class="acc-title" style="color:var(--a3);">클래스 표기 상세 규칙 ⭐</div><div class="acc-tgl">▾</div></div>
+      <div class="acc-body">
+        <table>
+          <thead><tr><th>구획</th><th>표기 형식</th><th>예시</th></tr></thead>
+          <tbody>
+            <tr><td><strong>클래스명</strong></td><td>명사·PascalCase·중앙정렬 / 추상=이탤릭 / 인터페이스=«interface»</td><td>Person, «interface»Drawable, <em>AbstractShape</em></td></tr>
+            <tr><td><strong>속성(Attribute)</strong></td><td>가시성 이름: 타입 [= 기본값]</td><td>- name: String = "Unknown"</td></tr>
+            <tr><td><strong>메서드(Operation)</strong></td><td>가시성 이름(매개변수: 타입): 반환타입</td><td>+ getName(): String</td></tr>
+            <tr><td><strong>정적 멤버</strong></td><td>밑줄로 표기</td><td><u>+ count: int</u></td></tr>
+            <tr><td><strong>추상 메서드</strong></td><td>이탤릭 또는 {abstract}</td><td><em>+ draw()</em> 또는 + draw() {abstract}</td></tr>
+          </tbody>
+        </table>
+        <div class="code"><span class="cm">// UML 표기 → 코드 대응</span>
+<span class="cm">// - name: String  →  private String name;</span>
+<span class="cm">// # age: int      →  protected int age;</span>
+<span class="cm">// + getId(): Long →  public Long getId() {...}</span></div>
+      </div>
+    </div>
+    <div class="memo">클래스=3구획(이름·속성·메서드) / 가시성: +=public, -=private, #=protected, ~=package / 추상=이탤릭 / 인터페이스=«interface» 스테레오타입</div>
+  </div>
+</div>
+
+<!-- P2: 관계 I -->
+<div class="pnl" id="p2">
+  <div class="card">
+    <div class="card-h"><div class="ico ig">🔗</div><h3>클래스 관계 I — 연관·의존·상속 ⭐</h3></div>
+
+    <div class="acc open" onclick="this.classList.toggle('open')">
+      <div class="acc-h"><div class="acc-title" style="color:var(--a1);">① 연관 (Association) ⭐ — 가장 기본 관계</div><div class="acc-tgl">▾</div></div>
+      <div class="acc-body">
+        <div class="g2">
+          <ul class="il">
+            <li><strong>정의:</strong> 두 클래스가 <em>구조적으로 연결</em>된 관계 — 한 클래스가 다른 클래스를 참조</li>
+            <li><strong>표기:</strong> 실선 (방향성 없는) / 방향 연관 = 화살표 실선</li>
+            <li><strong>다중성(Multiplicity) ⭐:</strong> 관계에 참여하는 객체 수 표시</li>
+            <li><strong>역할명(Role Name):</strong> 연관 선 끝에 역할 이름 표기 가능</li>
+            <li><strong>예시:</strong> Customer가 여러 Order를 가짐</li>
+          </ul>
+          <div>
+            <svg viewBox="0 0 240 80" style="width:100%;background:var(--s3);border-radius:6px;border:1px solid var(--bdr);">
+              <rect x="10" y="10" width="80" height="60" fill="var(--s2)" stroke="#60a5fa" stroke-width="1.5" rx="3"/>
+              <text x="50" y="45" text-anchor="middle" font-family="JetBrains Mono" font-size="11" fill="#60a5fa" font-weight="bold">Customer</text>
+              <line x1="90" y1="40" x2="150" y2="40" stroke="#60a5fa" stroke-width="1.5"/>
+              <polygon points="150,40 140,35 140,45" fill="#60a5fa"/>
+              <text x="97" y="33" font-family="JetBrains Mono" font-size="9" fill="#fbbf24">1</text>
+              <text x="135" y="33" font-family="JetBrains Mono" font-size="9" fill="#fbbf24">0..*</text>
+              <rect x="150" y="10" width="80" height="60" fill="var(--s2)" stroke="#60a5fa" stroke-width="1.5" rx="3"/>
+              <text x="190" y="45" text-anchor="middle" font-family="JetBrains Mono" font-size="11" fill="#60a5fa" font-weight="bold">Order</text>
+            </svg>
+            <p style="font-size:10px;color:var(--mu);text-align:center;margin-top:4px;">1:0..* — 고객 1명당 0개 이상의 주문</p>
+          </div>
+        </div>
+        <p style="font-size:11.5px;font-weight:800;color:var(--a3);margin:8px 0 5px;">다중성(Multiplicity) 표기 ⭐</p>
+        <table>
+          <thead><tr><th>표기</th><th>의미</th><th>예시</th></tr></thead>
+          <tbody>
+            <tr><td><strong>1</strong></td><td>정확히 1개</td><td>학생은 반드시 1개 학번</td></tr>
+            <tr><td><strong>0..1</strong></td><td>0개 또는 1개 (선택적)</td><td>고객은 프로필 0~1개</td></tr>
+            <tr><td><strong>0..* 또는 *</strong></td><td>0개 이상 (제한 없음)</td><td>고객은 주문 0건 이상</td></tr>
+            <tr><td><strong>1..*</strong></td><td>1개 이상</td><td>주문은 상품 1개 이상 포함</td></tr>
+            <tr><td><strong>n</strong></td><td>정확히 n개</td><td>주사위는 면 6개</td></tr>
+            <tr><td><strong>m..n</strong></td><td>m개 이상 n개 이하</td><td>팀원은 3..10명</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="acc" onclick="this.classList.toggle('open')">
+      <div class="acc-h"><div class="acc-title" style="color:var(--a3);">② 의존 (Dependency) ⭐</div><div class="acc-tgl">▾</div></div>
+      <div class="acc-body">
+        <div class="g2">
+          <ul class="il">
+            <li><strong>정의:</strong> 한 클래스가 다른 클래스를 <em>일시적으로 사용</em>하는 약한 관계 — 메서드 매개변수·지역 변수·반환 타입으로만 사용</li>
+            <li><strong>표기:</strong> <em>점선 화살표 (- - -→)</em> — "사용하는 쪽"에서 "사용되는 쪽"으로</li>
+            <li><strong>관계 강도:</strong> 가장 약한 관계 (연관보다 약함)</li>
+            <li><strong>예시:</strong> PaymentService가 결제 시 CreditCard를 매개변수로 받아 처리</li>
+          </ul>
+          <div>
+            <svg viewBox="0 0 240 80" style="width:100%;background:var(--s3);border-radius:6px;border:1px solid var(--bdr);">
+              <rect x="10" y="10" width="100" height="60" fill="var(--s2)" stroke="#fbbf24" stroke-width="1.5" rx="3"/>
+              <text x="60" y="38" text-anchor="middle" font-family="JetBrains Mono" font-size="10" fill="#fbbf24" font-weight="bold">Payment</text>
+              <text x="60" y="54" text-anchor="middle" font-family="JetBrains Mono" font-size="10" fill="#fbbf24">Service</text>
+              <line x1="110" y1="40" x2="148" y2="40" stroke="#fbbf24" stroke-width="1.5" stroke-dasharray="5,3"/>
+              <polygon points="150,40 140,35 140,45" fill="#fbbf24"/>
+              <text x="118" y="33" font-family="JetBrains Mono" font-size="8" fill="#fbbf24">«use»</text>
+              <rect x="150" y="10" width="82" height="60" fill="var(--s2)" stroke="#fbbf24" stroke-width="1.5" rx="3"/>
+              <text x="191" y="38" text-anchor="middle" font-family="JetBrains Mono" font-size="10" fill="#fbbf24" font-weight="bold">Credit</text>
+              <text x="191" y="54" text-anchor="middle" font-family="JetBrains Mono" font-size="10" fill="#fbbf24">Card</text>
+            </svg>
+            <p style="font-size:10px;color:var(--mu);text-align:center;margin-top:4px;">점선 화살표 — 일시적 사용</p>
+          </div>
+        </div>
+        <div class="warn">의존=점선화살표·일시적사용 / 연관=실선·구조적참조(속성으로 보유) — 구분이 핵심!</div>
+      </div>
+    </div>
+
+    <div class="acc" onclick="this.classList.toggle('open')">
+      <div class="acc-h"><div class="acc-title" style="color:var(--a2);">③ 상속/일반화 (Inheritance/Generalization) ⭐</div><div class="acc-tgl">▾</div></div>
+      <div class="acc-body">
+        <div class="g2">
+          <ul class="il">
+            <li><strong>정의:</strong> 자식 클래스가 부모 클래스의 속성·메서드를 <em>상속(is-a 관계)</em></li>
+            <li><strong>표기:</strong> <em>속이 빈 삼각형 + 실선</em> — 자식→부모 방향</li>
+            <li><strong>의미:</strong> "A는 B이다(is-a)" — 학생은 사람이다</li>
+            <li><strong>추상 클래스 상속:</strong> 추상 메서드를 자식에서 반드시 구현</li>
+            <li><strong>특징:</strong> 가장 강한 정적 결합 / 재사용·다형성의 기반</li>
+          </ul>
+          <div>
+            <svg viewBox="0 0 200 140" style="width:100%;background:var(--s3);border-radius:6px;border:1px solid var(--bdr);">
+              <rect x="60" y="10" width="80" height="40" fill="var(--s2)" stroke="#34d399" stroke-width="1.5" rx="3"/>
+              <text x="100" y="35" text-anchor="middle" font-family="JetBrains Mono" font-size="11" fill="#34d399" font-weight="bold">Animal</text>
+              <line x1="100" y1="50" x2="100" y2="75" stroke="#34d399" stroke-width="1.5"/>
+              <polygon points="100,75 93,65 107,65" fill="var(--s1)" stroke="#34d399" stroke-width="1.5"/>
+              <line x1="50" y1="75" x2="150" y2="75" stroke="#34d399" stroke-width="1.5"/>
+              <line x1="50" y1="75" x2="50" y2="88" stroke="#34d399" stroke-width="1.5"/>
+              <line x1="150" y1="75" x2="150" y2="88" stroke="#34d399" stroke-width="1.5"/>
+              <rect x="10" y="88" width="80" height="40" fill="var(--s2)" stroke="#34d399" stroke-width="1.5" rx="3"/>
+              <text x="50" y="113" text-anchor="middle" font-family="JetBrains Mono" font-size="11" fill="#34d399" font-weight="bold">Dog</text>
+              <rect x="110" y="88" width="80" height="40" fill="var(--s2)" stroke="#34d399" stroke-width="1.5" rx="3"/>
+              <text x="150" y="113" text-anchor="middle" font-family="JetBrains Mono" font-size="11" fill="#34d399" font-weight="bold">Cat</text>
+            </svg>
+            <p style="font-size:10px;color:var(--mu);text-align:center;margin-top:4px;">속이 빈 삼각형 실선 — 자식→부모</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="memo">연관=실선·구조적참조·다중성표기 / 의존=점선화살표·일시적사용 / 상속=속이빈삼각형+실선·is-a관계·자식→부모</div>
+  </div>
+</div>
+
+<!-- P3: 관계 II -->
+<div class="pnl" id="p3">
+  <div class="card">
+    <div class="card-h"><div class="ico ip">🔗</div><h3>클래스 관계 II — 집합·합성·실현 ⭐</h3></div>
+
+    <div class="acc open" onclick="this.classList.toggle('open')">
+      <div class="acc-h"><div class="acc-title" style="color:var(--a3);">④ 집합 (Aggregation) ⭐ — "has-a" 약한 포함</div><div class="acc-tgl">▾</div></div>
+      <div class="acc-body">
+        <div class="g2">
+          <ul class="il">
+            <li><strong>정의:</strong> 전체-부분 관계이지만 <em>부분이 전체에 독립적으로 존재</em> 가능</li>
+            <li><strong>표기:</strong> <em>속이 빈 다이아몬드 + 실선</em> — 다이아몬드가 "전체" 쪽</li>
+            <li><strong>생명주기:</strong> 전체가 소멸해도 <em>부분은 독립 생존</em></li>
+            <li><strong>의미:</strong> "A는 B를 가진다(has-a)" — 느슨한 포함</li>
+            <li><strong>예시:</strong> 대학교(전체)는 학생(부분)을 포함 — 대학 폐교해도 학생은 존재</li>
+          </ul>
+          <div>
+            <svg viewBox="0 0 240 80" style="width:100%;background:var(--s3);border-radius:6px;border:1px solid var(--bdr);">
+              <rect x="130" y="10" width="90" height="60" fill="var(--s2)" stroke="#fbbf24" stroke-width="1.5" rx="3"/>
+              <text x="175" y="45" text-anchor="middle" font-family="JetBrains Mono" font-size="11" fill="#fbbf24" font-weight="bold">Student</text>
+              <line x1="130" y1="40" x2="94" y2="40" stroke="#fbbf24" stroke-width="1.5"/>
+              <polygon points="82,40 92,35 102,40 92,45" fill="var(--s1)" stroke="#fbbf24" stroke-width="1.5"/>
+              <line x1="82" y1="40" x2="10" y2="40" stroke="#fbbf24" stroke-width="1.5"/>
+              <rect x="10" y="10" width="70" height="60" fill="var(--s2)" stroke="#fbbf24" stroke-width="1.5" rx="3"/>
+              <text x="45" y="38" text-anchor="middle" font-family="JetBrains Mono" font-size="10" fill="#fbbf24" font-weight="bold">Univ</text>
+              <text x="45" y="53" text-anchor="middle" font-family="JetBrains Mono" font-size="10" fill="#fbbf24">ersity</text>
+            </svg>
+            <p style="font-size:10px;color:var(--mu);text-align:center;margin-top:4px;">속이 빈 다이아몬드 — 전체(다이아몬드) 쪽</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="acc" onclick="this.classList.toggle('open')">
+      <div class="acc-h"><div class="acc-title" style="color:var(--a4);">⑤ 합성/복합 (Composition) ⭐ — "part-of" 강한 포함</div><div class="acc-tgl">▾</div></div>
+      <div class="acc-body">
+        <div class="g2">
+          <ul class="il">
+            <li><strong>정의:</strong> 전체-부분 관계이며 <em>부분이 전체에 완전히 종속</em> — 강한 포함</li>
+            <li><strong>표기:</strong> <em>속이 찬 다이아몬드 + 실선</em> — 다이아몬드가 "전체" 쪽</li>
+            <li><strong>생명주기:</strong> 전체가 소멸하면 <em>부분도 함께 소멸</em></li>
+            <li><strong>의미:</strong> "A는 B로 이루어진다(part-of)" — 강한 포함</li>
+            <li><strong>예시:</strong> 주문(전체)은 주문항목(부분)으로 구성 — 주문 삭제 시 주문항목도 삭제</li>
+          </ul>
+          <div>
+            <svg viewBox="0 0 240 80" style="width:100%;background:var(--s3);border-radius:6px;border:1px solid var(--bdr);">
+              <rect x="130" y="10" width="100" height="60" fill="var(--s2)" stroke="#f87171" stroke-width="1.5" rx="3"/>
+              <text x="180" y="38" text-anchor="middle" font-family="JetBrains Mono" font-size="10" fill="#f87171" font-weight="bold">Order</text>
+              <text x="180" y="54" text-anchor="middle" font-family="JetBrains Mono" font-size="10" fill="#f87171">Item</text>
+              <line x1="130" y1="40" x2="94" y2="40" stroke="#f87171" stroke-width="1.5"/>
+              <polygon points="82,40 92,35 102,40 92,45" fill="#f87171" stroke="#f87171" stroke-width="1.5"/>
+              <line x1="82" y1="40" x2="10" y2="40" stroke="#f87171" stroke-width="1.5"/>
+              <rect x="10" y="10" width="70" height="60" fill="var(--s2)" stroke="#f87171" stroke-width="1.5" rx="3"/>
+              <text x="45" y="45" text-anchor="middle" font-family="JetBrains Mono" font-size="11" fill="#f87171" font-weight="bold">Order</text>
+            </svg>
+            <p style="font-size:10px;color:var(--mu);text-align:center;margin-top:4px;">속이 찬 다이아몬드 — 생명주기 공유</p>
+          </div>
+        </div>
+        <div class="warn">집합 vs 합성: 다이아몬드 색깔로 구분! 속이 빈=집합(독립 생존) / 속이 찬=합성(함께 소멸) — 시험 단골 함정</div>
+      </div>
+    </div>
+
+    <div class="acc" onclick="this.classList.toggle('open')">
+      <div class="acc-h"><div class="acc-title" style="color:var(--a2);">⑥ 실현 (Realization) ⭐ — 인터페이스 구현</div><div class="acc-tgl">▾</div></div>
+      <div class="acc-body">
+        <div class="g2">
+          <ul class="il">
+            <li><strong>정의:</strong> 클래스가 인터페이스(또는 추상 클래스)의 <em>명세를 구현</em>하는 관계</li>
+            <li><strong>표기:</strong> <em>속이 빈 삼각형 + 점선</em> — 구현 클래스→인터페이스 방향</li>
+            <li><strong>vs 상속:</strong> 상속=실선+삼각형(클래스→클래스) / 실현=점선+삼각형(클래스→인터페이스)</li>
+            <li><strong>의미:</strong> "A는 B를 구현한다(implements)"</li>
+            <li><strong>예시:</strong> Circle이 Drawable 인터페이스를 구현</li>
+          </ul>
+          <div>
+            <svg viewBox="0 0 200 120" style="width:100%;background:var(--s3);border-radius:6px;border:1px solid var(--bdr);">
+              <rect x="60" y="10" width="80" height="40" fill="var(--s2)" stroke="#34d399" stroke-width="1.5" rx="3"/>
+              <text x="100" y="27" text-anchor="middle" font-family="JetBrains Mono" font-size="8" fill="#34d399">«interface»</text>
+              <text x="100" y="43" text-anchor="middle" font-family="JetBrains Mono" font-size="11" fill="#34d399" font-weight="bold">Drawable</text>
+              <line x1="100" y1="50" x2="100" y2="72" stroke="#34d399" stroke-width="1.5" stroke-dasharray="5,3"/>
+              <polygon points="100,72 93,62 107,62" fill="var(--s1)" stroke="#34d399" stroke-width="1.5"/>
+              <rect x="60" y="80" width="80" height="35" fill="var(--s2)" stroke="#34d399" stroke-width="1.5" rx="3"/>
+              <text x="100" y="102" text-anchor="middle" font-family="JetBrains Mono" font-size="11" fill="#34d399" font-weight="bold">Circle</text>
+            </svg>
+            <p style="font-size:10px;color:var(--mu);text-align:center;margin-top:4px;">속이 빈 삼각형 + 점선 — 인터페이스 구현</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="memo">집합=빈다이아몬드·독립생존 / 합성=찬다이아몬드·함께소멸 / 실현=빈삼각형+점선·인터페이스구현 / 상속=빈삼각형+실선·클래스상속</div>
+  </div>
+</div>
+
+<!-- P4: 다이어그램 예시 -->
+<div class="pnl" id="p4">
+  <div class="card">
+    <div class="card-h"><div class="ico iy">🖼️</div><h3>온라인 쇼핑몰 클래스 다이어그램 예시 ⭐</h3></div>
+
+    <svg viewBox="0 0 760 560" xmlns="http://www.w3.org/2000/svg" style="width:100%;background:var(--s2);border-radius:10px;border:1px solid var(--bdr);margin:10px 0;">
+
+      <!-- IPayable 인터페이스 -->
+      <rect x="290" y="15" width="130" height="70" fill="var(--s3)" stroke="#34d399" stroke-width="1.5" rx="3"/>
+      <rect x="290" y="15" width="130" height="28" fill="rgba(52,211,153,.15)" rx="3"/>
+      <text x="355" y="26" text-anchor="middle" font-family="JetBrains Mono" font-size="8" fill="#34d399">«interface»</text>
+      <text x="355" y="40" text-anchor="middle" font-family="JetBrains Mono" font-size="11" fill="#34d399" font-weight="bold">IPayable</text>
+      <line x1="290" y1="43" x2="420" y2="43" stroke="#34d399" stroke-width="1"/>
+      <text x="298" y="58" font-family="JetBrains Mono" font-size="9" fill="#34d399">+ pay(amt)</text>
+      <text x="298" y="72" font-family="JetBrains Mono" font-size="9" fill="#34d399">+ getStatus()</text>
+
+      <!-- Person 추상 클래스 -->
+      <rect x="30" y="130" width="150" height="100" fill="var(--s3)" stroke="#a78bfa" stroke-width="1.5" rx="3"/>
+      <rect x="30" y="130" width="150" height="28" fill="rgba(167,139,250,.15)" rx="3"/>
+      <text x="105" y="141" text-anchor="middle" font-family="JetBrains Mono" font-size="8" fill="#a78bfa" font-style="italic">«abstract»</text>
+      <text x="105" y="155" text-anchor="middle" font-family="JetBrains Mono" font-size="11" fill="#a78bfa" font-weight="bold" font-style="italic">Person</text>
+      <line x1="30" y1="158" x2="180" y2="158" stroke="#a78bfa" stroke-width="1"/>
+      <text x="38" y="173" font-family="JetBrains Mono" font-size="9" fill="#fbbf24">- name: String</text>
+      <text x="38" y="188" font-family="JetBrains Mono" font-size="9" fill="#fbbf24">- email: String</text>
+      <line x1="30" y1="195" x2="180" y2="195" stroke="#a78bfa" stroke-width="1"/>
+      <text x="38" y="210" font-family="JetBrains Mono" font-size="9" fill="#60a5fa">+ getName()</text>
+      <text x="38" y="224" font-family="JetBrains Mono" font-size="9" fill="#a78bfa" font-style="italic">{abstract}login()</text>
+
+      <!-- Customer 클래스 -->
+      <rect x="30" y="290" width="155" height="110" fill="var(--s3)" stroke="#60a5fa" stroke-width="1.5" rx="3"/>
+      <rect x="30" y="290" width="155" height="28" fill="rgba(96,165,250,.15)" rx="3"/>
+      <text x="107" y="309" text-anchor="middle" font-family="JetBrains Mono" font-size="11" fill="#60a5fa" font-weight="bold">Customer</text>
+      <line x1="30" y1="318" x2="185" y2="318" stroke="#60a5fa" stroke-width="1"/>
+      <text x="38" y="333" font-family="JetBrains Mono" font-size="9" fill="#fbbf24">- point: int</text>
+      <text x="38" y="348" font-family="JetBrains Mono" font-size="9" fill="#fbbf24">- grade: String</text>
+      <line x1="30" y1="358" x2="185" y2="358" stroke="#60a5fa" stroke-width="1"/>
+      <text x="38" y="373" font-family="JetBrains Mono" font-size="9" fill="#60a5fa">+ placeOrder()</text>
+      <text x="38" y="388" font-family="JetBrains Mono" font-size="9" fill="#60a5fa">+ login()</text>
+
+      <!-- Order 클래스 -->
+      <rect x="285" y="130" width="145" height="120" fill="var(--s3)" stroke="#fbbf24" stroke-width="1.5" rx="3"/>
+      <rect x="285" y="130" width="145" height="28" fill="rgba(251,191,36,.15)" rx="3"/>
+      <text x="357" y="149" text-anchor="middle" font-family="JetBrains Mono" font-size="11" fill="#fbbf24" font-weight="bold">Order</text>
+      <line x1="285" y1="158" x2="430" y2="158" stroke="#fbbf24" stroke-width="1"/>
+      <text x="293" y="173" font-family="JetBrains Mono" font-size="9" fill="#fbbf24">- orderId: Long</text>
+      <text x="293" y="188" font-family="JetBrains Mono" font-size="9" fill="#fbbf24">- orderDate: Date</text>
+      <text x="293" y="203" font-family="JetBrains Mono" font-size="9" fill="#fbbf24">- status: String</text>
+      <line x1="285" y1="210" x2="430" y2="210" stroke="#fbbf24" stroke-width="1"/>
+      <text x="293" y="225" font-family="JetBrains Mono" font-size="9" fill="#60a5fa">+ getTotal(): int</text>
+      <text x="293" y="240" font-family="JetBrains Mono" font-size="9" fill="#60a5fa">+ cancel()</text>
+
+      <!-- OrderItem 클래스 -->
+      <rect x="285" y="310" width="145" height="100" fill="var(--s3)" stroke="#fb923c" stroke-width="1.5" rx="3"/>
+      <rect x="285" y="310" width="145" height="28" fill="rgba(251,146,60,.15)" rx="3"/>
+      <text x="357" y="329" text-anchor="middle" font-family="JetBrains Mono" font-size="11" fill="#fb923c" font-weight="bold">OrderItem</text>
+      <line x1="285" y1="338" x2="430" y2="338" stroke="#fb923c" stroke-width="1"/>
+      <text x="293" y="353" font-family="JetBrains Mono" font-size="9" fill="#fbbf24">- quantity: int</text>
+      <text x="293" y="368" font-family="JetBrains Mono" font-size="9" fill="#fbbf24">- price: int</text>
+      <line x1="285" y1="378" x2="430" y2="378" stroke="#fb923c" stroke-width="1"/>
+      <text x="293" y="393" font-family="JetBrains Mono" font-size="9" fill="#60a5fa">+ getSubTotal()</text>
+
+      <!-- Product 클래스 -->
+      <rect x="540" y="210" width="150" height="100" fill="var(--s3)" stroke="#60a5fa" stroke-width="1.5" rx="3"/>
+      <rect x="540" y="210" width="150" height="28" fill="rgba(96,165,250,.15)" rx="3"/>
+      <text x="615" y="229" text-anchor="middle" font-family="JetBrains Mono" font-size="11" fill="#60a5fa" font-weight="bold">Product</text>
+      <line x1="540" y1="238" x2="690" y2="238" stroke="#60a5fa" stroke-width="1"/>
+      <text x="548" y="253" font-family="JetBrains Mono" font-size="9" fill="#fbbf24">- name: String</text>
+      <text x="548" y="268" font-family="JetBrains Mono" font-size="9" fill="#fbbf24">- price: int</text>
+      <text x="548" y="283" font-family="JetBrains Mono" font-size="9" fill="#fbbf24">- stock: int</text>
+      <line x1="540" y1="290" x2="690" y2="290" stroke="#60a5fa" stroke-width="1"/>
+      <text x="548" y="305" font-family="JetBrains Mono" font-size="9" fill="#60a5fa">+ getInfo()</text>
+
+      <!-- PaymentService (의존) -->
+      <rect x="540" y="360" width="150" height="80" fill="var(--s3)" stroke="#fbbf24" stroke-width="1.5" rx="3" stroke-dasharray="4,2"/>
+      <text x="615" y="388" text-anchor="middle" font-family="JetBrains Mono" font-size="10" fill="#fbbf24" font-weight="bold">Payment</text>
+      <text x="615" y="403" text-anchor="middle" font-family="JetBrains Mono" font-size="10" fill="#fbbf24">Service</text>
+      <text x="615" y="432" text-anchor="middle" font-family="Noto Sans KR" font-size="9" fill="#64748b">«utility»</text>
+
+      <!-- 관계선들 -->
+      <!-- Customer 상속 Person (속이빈삼각형+실선) -->
+      <line x1="107" y1="290" x2="107" y2="237" stroke="#a78bfa" stroke-width="1.5"/>
+      <polygon points="107,237 100,248 114,248" fill="var(--s1)" stroke="#a78bfa" stroke-width="1.5"/>
+      <text x="115" y="265" font-family="Noto Sans KR" font-size="8" fill="#a78bfa">상속</text>
+
+      <!-- Customer 연관 Order (1:0..*) -->
+      <line x1="185" y1="345" x2="285" y2="220" stroke="#60a5fa" stroke-width="1.5"/>
+      <polygon points="285,220 275,225 278,213" fill="#60a5fa"/>
+      <text x="195" y="295" font-family="JetBrains Mono" font-size="9" fill="#60a5fa">1</text>
+      <text x="255" y="230" font-family="JetBrains Mono" font-size="9" fill="#60a5fa">0..*</text>
+      <text x="195" y="275" font-family="Noto Sans KR" font-size="8" fill="#64748b">연관</text>
+
+      <!-- Order 합성 OrderItem (찬 다이아몬드) -->
+      <line x1="357" y1="250" x2="357" y2="296" stroke="#fb923c" stroke-width="1.5"/>
+      <polygon points="357,296 348,288 357,302 366,288" fill="#fb923c" stroke="#fb923c" stroke-width="1"/>
+      <text x="365" y="275" font-family="JetBrains Mono" font-size="9" fill="#fb923c">1</text>
+      <text x="365" y="295" font-family="JetBrains Mono" font-size="9" fill="#fb923c">1..*</text>
+      <text x="370" y="282" font-family="Noto Sans KR" font-size="8" fill="#64748b">합성</text>
+
+      <!-- OrderItem 연관 Product -->
+      <line x1="430" y1="360" x2="540" y2="280" stroke="#60a5fa" stroke-width="1.5"/>
+      <polygon points="540,280 530,285 533,273" fill="#60a5fa"/>
+      <text x="447" y="340" font-family="JetBrains Mono" font-size="9" fill="#60a5fa">*</text>
+      <text x="520" y="285" font-family="JetBrains Mono" font-size="9" fill="#60a5fa">1</text>
+
+      <!-- Order 실현 IPayable (빈삼각형+점선) -->
+      <line x1="357" y1="130" x2="357" y2="88" stroke="#34d399" stroke-width="1.5" stroke-dasharray="5,3"/>
+      <polygon points="357,88 350,98 364,98" fill="var(--s1)" stroke="#34d399" stroke-width="1.5"/>
+      <text x="365" y="112" font-family="Noto Sans KR" font-size="8" fill="#34d399">실현</text>
+
+      <!-- Order 의존 PaymentService (점선 화살표) -->
+      <line x1="430" y1="220" x2="536" y2="390" stroke="#fbbf24" stroke-width="1.5" stroke-dasharray="5,3"/>
+      <polygon points="536,390 525,382 533,372" fill="#fbbf24"/>
+      <text x="460" y="310" font-family="Noto Sans KR" font-size="8" fill="#fbbf24">의존</text>
+
+      <!-- 범례 -->
+      <rect x="10" y="460" width="740" height="90" fill="var(--s3)" stroke="var(--bdr)" stroke-width="1" rx="5"/>
+      <text x="20" y="478" font-family="Noto Sans KR" font-size="10" font-weight="bold" fill="#64748b">범례</text>
+      <!-- 상속 -->
+      <line x1="20" y1="495" x2="55" y2="495" stroke="#a78bfa" stroke-width="1.5"/>
+      <polygon points="55,495 45,490 45,500" fill="var(--s1)" stroke="#a78bfa" stroke-width="1.5"/>
+      <text x="60" y="499" font-family="Noto Sans KR" font-size="9" fill="#a78bfa">상속(일반화)</text>
+      <!-- 실현 -->
+      <line x1="150" y1="495" x2="185" y2="495" stroke="#34d399" stroke-width="1.5" stroke-dasharray="4,2"/>
+      <polygon points="185,495 175,490 175,500" fill="var(--s1)" stroke="#34d399" stroke-width="1.5"/>
+      <text x="190" y="499" font-family="Noto Sans KR" font-size="9" fill="#34d399">실현(interface)</text>
+      <!-- 연관 -->
+      <line x1="295" y1="495" x2="330" y2="495" stroke="#60a5fa" stroke-width="1.5"/>
+      <polygon points="330,495 320,490 320,500" fill="#60a5fa"/>
+      <text x="335" y="499" font-family="Noto Sans KR" font-size="9" fill="#60a5fa">연관</text>
+      <!-- 의존 -->
+      <line x1="400" y1="495" x2="435" y2="495" stroke="#fbbf24" stroke-width="1.5" stroke-dasharray="4,2"/>
+      <polygon points="435,495 425,490 425,500" fill="#fbbf24"/>
+      <text x="440" y="499" font-family="Noto Sans KR" font-size="9" fill="#fbbf24">의존</text>
+      <!-- 합성 -->
+      <line x1="510" y1="495" x2="545" y2="495" stroke="#fb923c" stroke-width="1.5"/>
+      <polygon points="520,495 510,490 520,500 530,490" fill="#fb923c"/>
+      <text x="550" y="499" font-family="Noto Sans KR" font-size="9" fill="#fb923c">합성(찬 다이아몬드)</text>
+      <!-- 집합 -->
+      <line x1="20" y1="535" x2="55" y2="535" stroke="#fbbf24" stroke-width="1.5"/>
+      <polygon points="30,535 20,530 30,540 40,530" fill="var(--s1)" stroke="#fbbf24" stroke-width="1.5"/>
+      <text x="60" y="539" font-family="Noto Sans KR" font-size="9" fill="#fbbf24">집합(빈 다이아몬드)</text>
+    </svg>
+    <div class="memo">다이어그램 읽기: 실선=구조적관계 / 점선=약한관계 / 삼각형=상속·실현 / 다이아몬드=집합·합성 / 화살표방향=참조방향</div>
+  </div>
+</div>
+
+<!-- P5: 관계 총정리·감리 -->
+<div class="pnl" id="p5">
+  <div class="card">
+    <div class="card-h"><div class="ico ir">📊</div><h3>클래스 관계 6종 완전 비교표 ⭐ — 시험 핵심</h3></div>
+    <table>
+      <thead><tr><th>#</th><th>관계</th><th>표기법</th><th>선 종류</th><th>의미</th><th>생명주기</th><th>강도</th></tr></thead>
+      <tbody>
+        <tr>
+          <td><span class="tag tb">①</span></td>
+          <td><strong>연관 (Association)</strong></td>
+          <td>────→</td>
+          <td>실선 (화살표)</td>
+          <td>구조적 참조 / has 관계</td>
+          <td>독립</td>
+          <td>중간</td>
+        </tr>
+        <tr>
+          <td><span class="tag ty">②</span></td>
+          <td><strong>의존 (Dependency)</strong></td>
+          <td>- - -→</td>
+          <td>점선 화살표</td>
+          <td>일시적 사용 (매개변수·지역변수)</td>
+          <td>독립</td>
+          <td>약함</td>
+        </tr>
+        <tr>
+          <td><span class="tag tg">③</span></td>
+          <td><strong>상속/일반화 (Generalization)</strong></td>
+          <td>────▷</td>
+          <td>실선 + 빈 삼각형</td>
+          <td>is-a 관계 / 클래스→클래스</td>
+          <td>종속</td>
+          <td>가장 강함</td>
+        </tr>
+        <tr>
+          <td><span class="tag tp">④</span></td>
+          <td><strong>집합 (Aggregation)</strong></td>
+          <td>◇────</td>
+          <td>실선 + <strong>빈 다이아몬드</strong></td>
+          <td>has-a / 전체-부분 (약한 포함)</td>
+          <td><strong>독립 생존</strong></td>
+          <td>중간 강함</td>
+        </tr>
+        <tr>
+          <td><span class="tag tr">⑤</span></td>
+          <td><strong>합성 (Composition)</strong></td>
+          <td>◆────</td>
+          <td>실선 + <strong>찬 다이아몬드</strong></td>
+          <td>part-of / 전체-부분 (강한 포함)</td>
+          <td><strong>함께 소멸</strong></td>
+          <td>강함</td>
+        </tr>
+        <tr>
+          <td><span class="tag tg">⑥</span></td>
+          <td><strong>실현 (Realization)</strong></td>
+          <td>- - -▷</td>
+          <td>점선 + 빈 삼각형</td>
+          <td>인터페이스 구현 / implements</td>
+          <td>종속</td>
+          <td>강함</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="acc open" onclick="this.classList.toggle('open')">
+      <div class="acc-h"><div class="acc-title" style="color:var(--a4);">혼동하기 쉬운 관계 구분법 ⭐</div><div class="acc-tgl">▾</div></div>
+      <div class="acc-body">
+        <table>
+          <thead><tr><th>비교 쌍</th><th>차이점</th><th>암기법</th></tr></thead>
+          <tbody>
+            <tr>
+              <td><strong>상속 vs 실현</strong></td>
+              <td>상속: 실선+빈삼각형(클래스→클래스) / 실현: 점선+빈삼각형(클래스→인터페이스)</td>
+              <td>인터페이스면 점선 / 클래스면 실선</td>
+            </tr>
+            <tr>
+              <td><strong>집합 vs 합성</strong></td>
+              <td>집합: 빈 다이아몬드(부분 독립) / 합성: 찬 다이아몬드(함께 소멸)</td>
+              <td>찬(꽉찬)=합성=강한=함께소멸</td>
+            </tr>
+            <tr>
+              <td><strong>연관 vs 의존</strong></td>
+              <td>연관: 실선(속성으로 보유) / 의존: 점선(일시적 매개변수)</td>
+              <td>점선=약한=일시적=의존</td>
+            </tr>
+            <tr>
+              <td><strong>집합·합성 다이아몬드 위치</strong></td>
+              <td>다이아몬드는 항상 "전체(Owner)" 클래스 쪽에 붙음</td>
+              <td>다이아몬드=전체쪽 / 반대편=부분</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="acc" onclick="this.classList.toggle('open')">
+      <div class="acc-h"><div class="acc-title" style="color:var(--a2);">SOLID 원칙과 클래스 다이어그램 연관 ⭐</div><div class="acc-tgl">▾</div></div>
+      <div class="acc-body">
+        <table>
+          <thead><tr><th>원칙</th><th>클래스 다이어그램 표현</th></tr></thead>
+          <tbody>
+            <tr><td><strong>SRP (단일책임)</strong></td><td>하나의 클래스가 하나의 역할만 — 클래스 수 적정, 메서드 분리</td></tr>
+            <tr><td><strong>OCP (개방폐쇄)</strong></td><td>인터페이스·추상클래스로 확장 열고 수정 닫음 — 실현 관계 활용</td></tr>
+            <tr><td><strong>LSP (리스코프 치환)</strong></td><td>상속 계층이 올바른지 검토 — 자식이 부모를 완전히 대체 가능</td></tr>
+            <tr><td><strong>ISP (인터페이스 분리)</strong></td><td>비대한 인터페이스 분리 — 작은 인터페이스 여러 개</td></tr>
+            <tr><td><strong>DIP (의존역전)</strong></td><td>구체 클래스가 아닌 인터페이스에 의존 — 점선 화살표가 추상 쪽으로</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="acc" onclick="this.classList.toggle('open')">
+      <div class="acc-h"><div class="acc-title" style="color:var(--a3);">감리 관점 체크포인트 ⭐</div><div class="acc-tgl">▾</div></div>
+      <div class="acc-body">
+        <ul class="il">
+          <li><strong>관계 정확성:</strong> 집합·합성·연관 관계가 올바르게 사용되었는가 / 생명주기 정확히 표현</li>
+          <li><strong>다중성 명시:</strong> 모든 연관 관계에 다중성(1, 0..*, 1..*) 표기 여부</li>
+          <li><strong>추상화 수준:</strong> 인터페이스와 추상 클래스가 적절히 사용되었는가</li>
+          <li><strong>가시성 표기:</strong> 속성·메서드의 가시성(-/+/#/~) 정확히 표기 여부</li>
+          <li><strong>응집도·결합도:</strong> 높은 응집도·낮은 결합도 설계 원칙 준수 여부</li>
+          <li><strong>SOLID 원칙:</strong> 단일책임·개방폐쇄·의존역전 원칙 적용 여부</li>
+          <li><strong>코드 추적성:</strong> 다이어그램이 실제 구현 코드와 일치하는가</li>
+        </ul>
+      </div>
+    </div>
+    <div class="memo">6관계: 연관(실선)·의존(점선)·상속(빈△실선)·집합(빈◇실선)·합성(찬◇실선)·실현(빈△점선) / 점선=약한관계 / 빈=독립 / 찬=강한</div>
+  </div>
+</div>
+
+<!-- P6: QA -->
+<div class="pnl" id="p6">
+  <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:7px;margin-bottom:12px;">
+    <div class="fb-wr" id="fbar" style="margin:0;">
+      <button class="fb on" data-f="all">전체</button>
+      <button class="fb" data-f="구조">📋 구조</button>
+      <button class="fb" data-f="연관">🔗 연관·의존</button>
+      <button class="fb" data-f="상속">🌳 상속·실현</button>
+      <button class="fb" data-f="집합">💎 집합·합성</button>
+      <button class="fb" data-f="OX">⭕ OX</button>
+    </div>
+    <div class="sc-b">정답: <span id="sc">0</span>/<span id="st">0</span></div>
+  </div>
+  <div id="ql"></div>
+</div>
+
+</div>
+<script>
+document.querySelectorAll('.tab').forEach(t=>t.addEventListener('click',()=>{
+  document.querySelectorAll('.tab,.pnl').forEach(x=>x.classList.remove('on'));
+  t.classList.add('on');document.getElementById(t.dataset.p).classList.add('on');
+}));
+const QA=[
+  {cat:'구조',diff:'easy',
+   q:'UML 클래스 다이어그램에서 속성(Attribute)의 가시성 표기 중 protected를 나타내는 기호는?',
+   cs:['+  (플러스)','#  (샾)','- (마이너스)','~  (물결)'],ans:1,
+   exp:'<strong>가시성 기호</strong>: + = public, <em># = protected</em>, - = private, ~ = package(default). 감리사 시험에서 가시성 기호는 자주 출제됩니다. 속성 표기 형식: "가시성 이름: 타입 = 기본값" 예) - name: String = "Unknown" / + getId(): Long'},
+  {cat:'구조',diff:'mid',
+   q:'UML 클래스 다이어그램에서 추상 클래스를 표현하는 방법으로 가장 적절한 것은?',
+   cs:['클래스명을 빨간색으로 표시한다.','클래스명과 추상 메서드를 이탤릭체로 표기하거나 «abstract» 스테레오타입을 사용한다.','클래스 박스를 점선으로 표시한다.','«interface» 스테레오타입을 사용한다.'],ans:1,
+   exp:'<strong>추상 클래스 표기</strong>: 클래스명과 추상 메서드를 <em>이탤릭체</em>로 표기합니다. 또는 {abstract} 키워드를 메서드 뒤에 붙이거나 클래스명 위에 «abstract» 스테레오타입을 사용합니다. 인터페이스는 «interface» 스테레오타입 사용. 추상 클래스≠인터페이스 — 추상 클래스는 속성과 구체 메서드를 가질 수 있음.'},
+  {cat:'연관',diff:'mid',
+   q:'클래스 다이어그램에서 연관(Association) 관계와 의존(Dependency) 관계의 차이로 가장 적절한 것은?',
+   cs:['연관은 점선, 의존은 실선으로 표기한다.','연관은 클래스가 다른 클래스를 속성으로 보유하는 구조적 관계이고, 의존은 메서드 매개변수처럼 일시적으로 사용하는 약한 관계이다.','연관은 상속을 포함하고, 의존은 집합을 포함한다.','두 관계는 동일하며 이름만 다르다.'],ans:1,
+   exp:'<strong>연관 vs 의존</strong>: <em>연관</em>=실선·A가 B를 속성으로 가짐·구조적·장기적 참조. <em>의존</em>=점선화살표·A의 메서드 매개변수나 지역변수로 B를 일시 사용·약하고 일시적. 관계 강도: 합성>집합>연관>의존. 연관=속성으로 보유 / 의존=매개변수·지역변수로만 사용.'},
+  {cat:'연관',diff:'mid',
+   q:'클래스 다이어그램에서 다중성(Multiplicity) "1..*"의 의미로 가장 적절한 것은?',
+   cs:['정확히 1개','0개 이상 (제한 없음)','1개 이상 (반드시 하나는 있어야 함)','0개 또는 1개'],ans:2,
+   exp:'<strong>다중성 표기</strong>: <em>1..*</em> = 1개 이상(최소 1개, 최대 제한 없음). 1=정확히 1, 0..1=0개 또는 1개, 0..* 또는 *=0개 이상, 1..*=1개 이상, m..n=m~n개. 예) 주문은 반드시 1개 이상의 주문항목을 포함 → 주문 : 주문항목 = 1 : 1..*.'},
+  {cat:'상속',diff:'mid',
+   q:'클래스 다이어그램에서 상속(Generalization)과 실현(Realization)의 표기법 차이로 가장 적절한 것은?',
+   cs:['상속: 점선+빈삼각형, 실현: 실선+빈삼각형','상속: 실선+빈삼각형(클래스→클래스), 실현: 점선+빈삼각형(클래스→인터페이스)','상속과 실현 모두 점선+빈삼각형으로 동일하게 표기한다.','상속: 실선+찬삼각형, 실현: 점선+찬삼각형'],ans:1,
+   exp:'<strong>상속 vs 실현</strong>: <em>상속(일반화)</em>=실선+속이 빈 삼각형(자식클래스→부모클래스). <em>실현(Realization)</em>=점선+속이 빈 삼각형(구현클래스→인터페이스). 삼각형 모양은 같지만 선 종류가 다릅니다! 인터페이스 구현이면 점선, 클래스 상속이면 실선.'},
+  {cat:'집합',diff:'mid',
+   q:'집합(Aggregation)과 합성(Composition)의 핵심 차이로 가장 적절한 것은?',
+   cs:['집합은 다이아몬드가 찬 형태이고, 합성은 빈 형태이다.','집합은 부분 객체가 전체 객체와 독립적으로 존재할 수 있지만, 합성은 전체 객체가 소멸하면 부분 객체도 함께 소멸한다.','집합과 합성은 표기법이 동일하다.','합성에서 부분 객체는 여러 전체 객체에 공유될 수 있다.'],ans:1,
+   exp:'<strong>집합 vs 합성 — 생명주기 차이</strong>: <em>집합(Aggregation)</em>=빈 다이아몬드·부분이 전체에 독립적 생존 가능(대학 폐교→학생 생존). <em>합성(Composition)</em>=찬(꽉찬) 다이아몬드·전체 소멸 시 부분도 함께 소멸(주문 삭제→주문항목 삭제). 합성에서 부분은 반드시 하나의 전체에만 속함.'},
+  {cat:'집합',diff:'hard',
+   q:'클래스 다이어그램에서 합성(Composition)을 사용하는 가장 적합한 예시는?',
+   cs:['대학교(University)와 학생(Student)의 관계 — 학생은 대학 폐교 후에도 존재','자동차(Car)와 엔진(Engine)의 관계 — 자동차 폐차 시 엔진도 함께 소멸','팀(Team)과 선수(Player)의 관계 — 선수는 팀 해체 후 이적 가능','회사(Company)와 직원(Employee)의 관계 — 직원은 퇴사 후 존재'],ans:1,
+   exp:'<strong>합성 적합 예시</strong>: 자동차와 엔진 — 자동차가 폐차(전체 소멸)되면 해당 엔진도 함께 소멸(부분 소멸). 부분이 전체에 완전히 종속. 대학-학생, 팀-선수, 회사-직원은 모두 전체 소멸 후 부분이 독립 생존 가능 → 집합(Aggregation). 추가 합성 예: 주문-주문항목, 문서-단락, 창(Window)-버튼(Button).'},
+  {cat:'상속',diff:'mid',
+   q:'클래스 다이어그램에서 인터페이스(Interface)와 추상 클래스(Abstract Class)의 차이로 가장 적절한 것은?',
+   cs:['인터페이스와 추상 클래스는 동일하다.','인터페이스는 모든 메서드가 추상적이며 속성을 가질 수 없고(기본적으로), 추상 클래스는 구체 메서드와 속성을 가질 수 있으며 단일 상속만 지원한다.','추상 클래스는 다중 상속이 가능하고, 인터페이스는 단일 구현만 가능하다.','인터페이스는 구체 메서드를 가질 수 없으며 다중 구현이 가능하다. 추상 클래스는 단일 상속만 지원하지만 구체 메서드와 속성을 가질 수 있다.'],ans:3,
+   exp:'<strong>인터페이스 vs 추상 클래스</strong>: <em>인터페이스</em>=«interface» 스테레오타입·모든 메서드 추상(Java 8+ default 제외)·다중 구현 가능·속성 없음(기본적으로). <em>추상 클래스</em>=이탤릭 클래스명·구체+추상 메서드 혼합·속성 보유·단일 상속만. UML 표기: 인터페이스=«interface» / 추상=이탤릭.'},
+  {cat:'구조',diff:'easy',
+   q:'클래스 다이어그램에서 정적(static) 멤버를 표기하는 방법은?',
+   cs:['별표(*)로 표시한다.','밑줄(underline)로 표시한다.','이탤릭체로 표시한다.','클래스 박스의 맨 위 구획에 배치한다.'],ans:1,
+   exp:'<strong>정적 멤버(Static)</strong>: UML에서 정적 속성·메서드는 <em>밑줄(Underline)</em>로 표시합니다. 예) <u>+ count: int</u>, <u>+ getInstance(): Singleton</u>. 이탤릭=추상 멤버, 별표 없음. 정적 멤버는 인스턴스가 아닌 클래스에 귀속됩니다.'},
+  {cat:'연관',diff:'hard',
+   q:'클래스 다이어그램의 연관 관계에서 역할명(Role Name)과 다중성(Multiplicity)의 위치에 대한 설명으로 가장 적절한 것은?',
+   cs:['역할명과 다중성 모두 연관선의 중앙에 표기한다.','다중성은 연관선의 각 끝(클래스 근처)에 표기하고, 역할명도 각 끝 근처에 표기하여 해당 관점에서의 역할을 나타낸다.','역할명은 연관선의 중앙에, 다중성은 클래스 박스 안에 표기한다.','다중성은 연관선 위에, 역할명은 연관선 아래에 일괄 표기한다.'],ans:1,
+   exp:'<strong>연관 관계 표기 세부</strong>: <em>다중성</em>=연관선의 각 끝(각 클래스 근처)에 표기. Customer(1) ─────────── (0..*)Order 처럼. <em>역할명</em>=연관선 각 끝 근처에 표기하여 해당 클래스가 상대방에게 어떤 역할인지 나타냄. 예) Customer ─(orders)─ Order: orders가 Customer 관점에서 Order의 역할명.'},
+  {cat:'집합',diff:'mid',type:'ox',
+   q:'합성(Composition) 관계에서는 부분(Part) 객체가 여러 전체(Whole) 객체에 동시에 속할 수 있다.',ans:false,
+   exp:'<strong>×</strong> — 합성(Composition)에서 부분 객체는 <strong>반드시 하나의 전체 객체에만</strong> 속합니다. 전체가 소멸하면 부분도 함께 소멸하므로, 부분이 여러 전체에 공유될 수 없습니다. 여러 전체에 공유 가능한 경우는 <em>집합(Aggregation)</em>입니다. 집합=공유 가능, 합성=독점 소유.'},
+  {cat:'상속',diff:'easy',type:'ox',
+   q:'클래스 다이어그램에서 실현(Realization) 관계의 화살표는 인터페이스에서 구현 클래스 방향을 가리킨다.',ans:false,
+   exp:'<strong>×</strong> — 실현(Realization) 관계의 화살표 방향은 <strong>구현 클래스 → 인터페이스</strong>입니다. "Circle implements Drawable"에서 화살표는 Circle에서 Drawable을 가리킵니다. 상속도 마찬가지로 자식 클래스 → 부모 클래스 방향입니다. 일반적으로 UML에서 "사용·구현·상속"하는 쪽에서 "사용·정의"되는 쪽으로 화살표가 향합니다.'},
+  {cat:'연관',diff:'mid',type:'ox',
+   q:'의존(Dependency) 관계는 한 클래스가 다른 클래스를 속성(attribute)으로 보유하는 경우에 사용한다.',ans:false,
+   exp:'<strong>×</strong> — 속성으로 보유하는 경우는 <strong>연관(Association)</strong> 관계입니다. <em>의존(Dependency)</em>은 메서드의 매개변수·지역변수·반환 타입으로 다른 클래스를 일시적으로 사용하는 경우에 사용합니다(점선 화살표). 구분: 속성으로 보유=연관(실선), 메서드 안에서만 사용=의존(점선).'},
+  {cat:'집합',diff:'hard',type:'ox',
+   q:'집합(Aggregation) 관계에서 다이아몬드 기호는 "전체(Whole)" 클래스 쪽에 붙는다.',ans:true,
+   exp:'<strong>○</strong> — 집합과 합성 관계에서 다이아몬드 기호(빈◇ 또는 찬◆)는 항상 <em>"전체(Owner, Whole)" 클래스</em> 쪽에 위치합니다. 다이아몬드 반대편이 "부분(Part)" 클래스입니다. 예) University ◇─── Student: ◇가 University(전체) 쪽에 위치. 이 방향을 혼동하면 시험에서 오답이 됩니다.'},
+];
+let answered=0,correct=0;
+function renderQ(f){
+  const data=f==='all'?QA:QA.filter(q=>q.cat===f);
+  const list=document.getElementById('ql');list.innerHTML='';
+  answered=0;correct=0;upS();
+  const CATC={'구조':'tb','연관':'tg','상속':'tp','집합':'ty','OX':'to'};
+  const DLC={'easy':'easy 쉬움','mid':'mid 보통','hard':'hard 어려움'};
+  const NL=['①','②','③','④'];
+  if(!data.length){list.innerHTML='<div style="text-align:center;padding:40px;color:var(--mu)">문제 없음</div>';return;}
+  data.forEach((q,i)=>{
+    const gi=QA.indexOf(q);
+    const el=document.createElement('div');el.className='qa';
+    const tc=CATC[q.cat]||'tb';
+    const [dc,dn]=(DLC[q.diff]||'mid 보통').split(' ');
+    if(q.type==='ox'){
+      el.innerHTML=`<div class="qa-hd" onclick="this.closest('.qa').classList.toggle('open')"><div><div class="qa-meta"><span class="qn">Q${String(i+1).padStart(2,'0')}</span><span class="tag ${tc}">${q.cat}</span><span class="diff ${dc}">${dn}</span><span class="tag tg">O/X</span></div><div class="qq">${q.q}</div></div><span class="tgl">▾</span></div>
+      <div class="qa-bd"><div class="ox-wr"><button class="ox" onclick="pickOX(this,true,${gi})">⭕ 옳다</button><button class="ox" onclick="pickOX(this,false,${gi})">❌ 틀리다</button></div><div class="exp" id="ex-${gi}"><div class="exp-t">💡 해설</div>${q.exp}</div></div>`;
+    } else {
+      el.innerHTML=`<div class="qa-hd" onclick="this.closest('.qa').classList.toggle('open')"><div><div class="qa-meta"><span class="qn">Q${String(i+1).padStart(2,'0')}</span><span class="tag ${tc}">${q.cat}</span><span class="diff ${dc}">${dn}</span></div><div class="qq">${q.q}</div></div><span class="tgl">▾</span></div>
+      <div class="qa-bd"><div class="chs">${q.cs.map((c,ci)=>`<div class="ch" data-ci="${ci}" onclick="pickCh(this,${gi})"><span class="cnum">${NL[ci]}</span><span>${c}</span></div>`).join('')}</div><div class="exp" id="ex-${gi}"><div class="exp-t">💡 해설</div>${q.exp}</div></div>`;
+    }
+    list.appendChild(el);
+  });
+}
+function pickCh(el,gi){
+  const bd=el.closest('.qa-bd');if(bd.querySelector('.ok,.ng'))return;
+  const q=QA[gi];
+  bd.querySelectorAll('.ch').forEach((c,i)=>{c.classList.add('lk');if(i===q.ans)c.classList.add('ok');else if(i===parseInt(el.dataset.ci))c.classList.add('ng');});
+  document.getElementById('ex-'+gi).classList.add('show');
+  answered++;if(parseInt(el.dataset.ci)===q.ans)correct++;upS();
+}
+function pickOX(btn,val,gi){
+  const bd=btn.closest('.qa-bd');if(bd.querySelector('.so,.sx'))return;
+  const q=QA[gi];
+  bd.querySelectorAll('.ox').forEach(b=>b.classList.add('lk'));
+  btn.classList.add(val?'so':'sx');
+  if(val!==q.ans){btn.style.opacity='.5';bd.querySelectorAll('.ox')[val?1:0].classList.add(q.ans?'so':'sx');}
+  document.getElementById('ex-'+gi).classList.add('show');
+  answered++;if(val===q.ans)correct++;upS();
+}
+function upS(){document.getElementById('sc').textContent=correct;document.getElementById('st').textContent=answered;}
+document.getElementById('fbar').addEventListener('click',e=>{
+  const b=e.target.closest('.fb');if(!b)return;
+  document.querySelectorAll('.fb').forEach(x=>x.classList.remove('on'));b.classList.add('on');renderQ(b.dataset.f);
+});
+renderQ('all');
+</script>
+</body>
+</html>

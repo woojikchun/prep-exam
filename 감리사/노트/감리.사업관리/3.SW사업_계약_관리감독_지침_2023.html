@@ -1,0 +1,529 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&family=JetBrains+Mono:wght@400;700&display=swap');
+:root{
+  --bg:#060c1a;--s1:#0b1528;--s2:#10203a;--s3:#16294c;
+  --bdr:#1c3462;--a1:#38bdf8;--a2:#a78bfa;--a3:#34d399;
+  --a4:#fbbf24;--a5:#f87171;--a6:#fb923c;
+  --txt:#e2e8f0;--mu:#64748b;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Noto Sans KR',sans-serif;background:var(--bg);color:var(--txt);min-height:100vh;}
+.hdr{padding:22px 24px 16px;background:linear-gradient(150deg,#060c1a 0%,#0e1e38 50%,#060c1a 100%);border-bottom:1px solid var(--bdr);position:relative;overflow:hidden;}
+.hdr::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 65% 85% at 80% 30%,rgba(56,189,248,.09),transparent 65%),radial-gradient(ellipse 45% 65% at 20% 80%,rgba(167,139,250,.07),transparent 60%);pointer-events:none;}
+.hdr-r{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:6px;align-items:center;}
+.pill{padding:3px 10px;border-radius:20px;font-size:10px;font-weight:700;letter-spacing:.8px;}
+.p1{background:linear-gradient(135deg,#1e3a8a,var(--a1));color:#fff;}
+.p2{background:rgba(251,191,36,.15);color:var(--a4);border:1px solid rgba(251,191,36,.3);}
+.p3{background:rgba(167,139,250,.15);color:var(--a2);border:1px solid rgba(167,139,250,.3);}
+h1{font-size:19px;font-weight:900;}
+.h1g{background:linear-gradient(90deg,var(--a1),var(--a2),var(--a3));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.hdr p{color:var(--mu);font-size:12px;margin-top:3px;}
+.tabs{display:flex;padding:0 24px;background:var(--s1);border-bottom:1px solid var(--bdr);overflow-x:auto;scrollbar-width:none;}
+.tabs::-webkit-scrollbar{display:none;}
+.tab{padding:11px 14px;font-size:12px;font-weight:600;color:var(--mu);cursor:pointer;border-bottom:2px solid transparent;white-space:nowrap;transition:all .2s;background:none;border-top:none;border-left:none;border-right:none;font-family:'Noto Sans KR',sans-serif;}
+.tab:hover{color:var(--txt);}.tab.on{color:var(--a1);border-bottom-color:var(--a1);}
+.wrap{padding:20px 24px;max-width:960px;margin:0 auto;}
+.pnl{display:none;}.pnl.on{display:block;}
+.card{background:var(--s1);border:1px solid var(--bdr);border-radius:12px;padding:18px;margin-bottom:14px;}
+.card-h{display:flex;align-items:center;gap:10px;margin-bottom:14px;}
+.ico{width:34px;height:34px;border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:17px;flex-shrink:0;}
+.ib{background:rgba(56,189,248,.15);}.ip{background:rgba(167,139,250,.15);}.ig{background:rgba(52,211,153,.15);}.iy{background:rgba(251,191,36,.15);}.ir{background:rgba(248,113,113,.15);}.io{background:rgba(251,146,60,.15);}
+.card h3{font-size:14px;font-weight:700;}
+.tag{display:inline-block;padding:2px 8px;border-radius:4px;font-size:10px;font-weight:600;margin:2px 2px 2px 0;}
+.tb{background:rgba(56,189,248,.12);color:var(--a1);border:1px solid rgba(56,189,248,.25);}
+.tp{background:rgba(167,139,250,.12);color:var(--a2);border:1px solid rgba(167,139,250,.25);}
+.tg{background:rgba(52,211,153,.12);color:var(--a3);border:1px solid rgba(52,211,153,.25);}
+.ty{background:rgba(251,191,36,.12);color:var(--a4);border:1px solid rgba(251,191,36,.25);}
+.tr{background:rgba(248,113,113,.12);color:var(--a5);border:1px solid rgba(248,113,113,.25);}
+.to{background:rgba(251,146,60,.12);color:var(--a6);border:1px solid rgba(251,146,60,.25);}
+table{width:100%;border-collapse:collapse;font-size:12.5px;}
+th{background:var(--s2);color:var(--mu);font-weight:700;padding:8px 12px;text-align:left;font-size:10px;text-transform:uppercase;letter-spacing:.5px;border-bottom:1px solid var(--bdr);}
+td{padding:9px 12px;border-bottom:1px solid rgba(28,52,96,.45);vertical-align:top;line-height:1.6;}
+tr:last-child td{border-bottom:none;}
+tr:hover td{background:rgba(255,255,255,.02);}
+td strong{color:var(--a4);}
+ul.il{list-style:none;display:flex;flex-direction:column;gap:7px;}
+ul.il li{font-size:12.5px;padding-left:16px;position:relative;line-height:1.55;}
+ul.il li::before{content:'▸';position:absolute;left:0;color:var(--a1);font-size:10px;top:3px;}
+ul.il li strong{color:var(--a4);}
+ul.il li em{color:var(--a3);font-style:normal;}
+.memo{background:linear-gradient(135deg,rgba(56,189,248,.07),rgba(167,139,250,.07));border:1px solid rgba(56,189,248,.22);border-left:3px solid var(--a1);border-radius:8px;padding:10px 14px;font-size:12.5px;font-weight:600;color:var(--a1);margin:10px 0;}
+.memo::before{content:'🎯 한 줄 암기 │ ';color:var(--mu);font-weight:400;}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:14px;}
+@media(max-width:600px){.g2{grid-template-columns:1fr;}}
+.law-ref{background:rgba(251,191,36,.08);border:1px solid rgba(251,191,36,.25);border-radius:8px;padding:10px 14px;font-size:12px;line-height:1.6;color:var(--a4);margin:8px 0;}
+.law-ref::before{content:'⚖️ 근거 │ ';color:var(--mu);}
+.alert-box{background:rgba(248,113,113,.08);border:1px solid rgba(248,113,113,.3);border-left:4px solid var(--a5);border-radius:8px;padding:12px 16px;margin:10px 0;}
+.alert-title{font-size:10px;font-weight:700;color:var(--a5);margin-bottom:5px;letter-spacing:.8px;text-transform:uppercase;}
+.alert-text{font-size:12.5px;line-height:1.65;}
+.alert-text strong{color:var(--a5);}
+.info-box{background:rgba(56,189,248,.07);border:1px solid rgba(56,189,248,.25);border-left:4px solid var(--a1);border-radius:8px;padding:12px 16px;margin:10px 0;font-size:12.5px;line-height:1.65;}
+.success-box{background:rgba(52,211,153,.07);border:1px solid rgba(52,211,153,.25);border-left:4px solid var(--a3);border-radius:8px;padding:12px 16px;margin:10px 0;font-size:12.5px;line-height:1.65;}
+
+/* 조문 아코디언 */
+.acc{background:var(--s1);border:1px solid var(--bdr);border-radius:10px;margin-bottom:8px;overflow:hidden;}
+.acc-h{display:flex;justify-content:space-between;align-items:center;padding:12px 16px;cursor:pointer;user-select:none;}
+.acc-h:hover{background:rgba(255,255,255,.02);}
+.acc-title{font-size:13px;font-weight:700;}
+.acc-sub{font-size:11px;color:var(--mu);}
+.acc-tgl{color:var(--mu);transition:transform .2s;font-size:16px;}
+.acc.open .acc-tgl{transform:rotate(180deg);}
+.acc-body{display:none;border-top:1px solid var(--bdr);padding:14px 16px;background:var(--s2);}
+.acc.open .acc-body{display:block;}
+
+/* QA */
+.qa{background:var(--s1);border:1px solid var(--bdr);border-radius:10px;margin-bottom:11px;overflow:hidden;transition:border-color .2s;}
+.qa:hover{border-color:rgba(56,189,248,.25);}
+.qa-hd{padding:14px 18px;cursor:pointer;display:flex;justify-content:space-between;align-items:flex-start;gap:10px;user-select:none;}
+.qa-meta{display:flex;align-items:center;gap:6px;margin-bottom:5px;flex-wrap:wrap;}
+.qn{font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:700;color:var(--mu);}
+.qq{font-size:13px;font-weight:600;line-height:1.55;}
+.tgl{color:var(--mu);font-size:16px;flex-shrink:0;transition:transform .2s;}
+.qa.open .tgl{transform:rotate(180deg);}
+.qa-bd{display:none;border-top:1px solid var(--bdr);padding:14px 18px;background:var(--s2);}
+.qa.open .qa-bd{display:block;}
+.chs{display:flex;flex-direction:column;gap:7px;margin-bottom:12px;}
+.ch{display:flex;align-items:flex-start;gap:10px;padding:9px 13px;border-radius:7px;border:1px solid var(--bdr);font-size:12.5px;cursor:pointer;background:var(--s1);line-height:1.5;transition:all .15s;}
+.ch:hover:not(.lk){border-color:rgba(56,189,248,.3);background:rgba(56,189,248,.04);}
+.ch.ok{border-color:var(--a3);background:rgba(52,211,153,.1);color:var(--a3);}
+.ch.ng{border-color:var(--a5);background:rgba(248,113,113,.08);color:var(--a5);opacity:.7;}
+.ch.lk{cursor:default;}
+.cnum{font-family:'JetBrains Mono',monospace;font-weight:700;font-size:11px;flex-shrink:0;margin-top:1px;color:var(--mu);}
+.ch.ok .cnum{color:var(--a3);}.ch.ng .cnum{color:var(--a5);}
+.exp{background:rgba(56,189,248,.05);border:1px solid rgba(56,189,248,.18);border-radius:8px;padding:12px 14px;font-size:12.5px;line-height:1.65;display:none;}
+.exp.show{display:block;}
+.exp-t{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--a1);margin-bottom:6px;}
+.exp strong{color:var(--a4);}
+.exp em{color:var(--a3);font-style:normal;}
+.ox-wr{display:flex;gap:10px;margin-bottom:12px;}
+.ox{flex:1;padding:11px;border-radius:8px;border:1px solid var(--bdr);font-size:20px;cursor:pointer;background:var(--s1);transition:all .15s;font-family:'Noto Sans KR',sans-serif;color:var(--txt);}
+.ox:hover:not(.lk){transform:scale(1.02);}
+.ox.so{border-color:var(--a3);background:rgba(52,211,153,.15);}
+.ox.sx{border-color:var(--a5);background:rgba(248,113,113,.1);}
+.ox.lk{cursor:default;}
+.diff{display:inline-block;padding:2px 7px;border-radius:10px;font-size:9px;font-weight:700;}
+.easy{background:rgba(52,211,153,.2);color:var(--a3);}
+.mid{background:rgba(251,191,36,.2);color:var(--a4);}
+.hard{background:rgba(248,113,113,.2);color:var(--a5);}
+.fb-wr{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:14px;}
+.fb{padding:5px 12px;border-radius:20px;border:1px solid var(--bdr);font-size:11px;font-weight:600;cursor:pointer;background:var(--s2);color:var(--mu);transition:all .15s;font-family:'Noto Sans KR',sans-serif;}
+.fb.on{background:rgba(56,189,248,.15);color:var(--a1);border-color:var(--a1);}
+.sc-b{background:var(--s2);border:1px solid var(--bdr);border-radius:8px;padding:5px 14px;font-size:12px;color:var(--mu);}
+.sc-b span{color:var(--a1);font-weight:700;}
+</style>
+</head>
+<body>
+
+<div class="hdr">
+  <div class="hdr-r">
+    <span class="pill p1">과기부 고시 제2023-15호</span>
+    <span class="pill p2">소프트웨어진흥법 근거</span>
+    <span class="pill p3">2023.5.15. 시행 최신</span>
+  </div>
+  <h1><span class="h1g">소프트웨어사업 계약 및 관리감독에 관한 지침</span></h1>
+  <p>과학기술정보통신부 고시 제2023-15호 · 공공 SW사업의 계약·관리감독·대가산정·직접구매 등 종합 규정</p>
+</div>
+
+<div class="tabs">
+  <button class="tab on" data-p="p1">📌 개요·정의</button>
+  <button class="tab" data-p="p2">🛒 직접구매 제도</button>
+  <button class="tab" data-p="p3">📋 발주·계약 규정</button>
+  <button class="tab" data-p="p4">🏗️ 사업관리·하도급</button>
+  <button class="tab" data-p="p5">🔑 핵심 금지·의무</button>
+  <button class="tab" data-p="p6">❓ 예상문제</button>
+</div>
+
+<div class="wrap">
+
+<!-- ===== P1: 개요 ===== -->
+<div class="pnl on" id="p1">
+  <div class="card">
+    <div class="card-h"><div class="ico ib">📌</div><h3>지침 개요</h3></div>
+    <div class="law-ref">소프트웨어진흥법 제34조·제45조·제46조·제47조·제48조·제54조 등 근거 / 과기부 고시</div>
+    <table style="margin-top:12px;">
+      <thead><tr><th>구분</th><th>내용</th></tr></thead>
+      <tbody>
+        <tr><td><strong>지침명</strong></td><td>소프트웨어사업 계약 및 관리감독에 관한 지침</td></tr>
+        <tr><td><strong>최신 고시</strong></td><td>과학기술정보통신부 고시 제2023-15호 (2023.5.15. 시행)</td></tr>
+        <tr><td><strong>주관 부처</strong></td><td>과학기술정보통신부</td></tr>
+        <tr><td><strong>목적</strong></td><td>국가기관등이 SW사업을 발주·계약·관리감독함에 있어 적용할 기준과 절차 규정</td></tr>
+        <tr><td><strong>2023 주요 개정</strong></td><td>① SaaS 직접구매 대상 포함 ② 직접구매비율 간소화 기준 60%↑으로 강화</td></tr>
+        <tr><td><strong>관련 지침</strong></td><td>행정기관 정보시스템 구축·운영 지침(행안부), SW사업 대가산정 가이드(KOSA)</td></tr>
+      </tbody>
+    </table>
+    <div class="memo">과기부 고시 제2023-15호 · SW진흥법 근거 · 2023 개정: SaaS 포함 + 직접구매 60%↑ 간소화</div>
+  </div>
+
+  <div class="card">
+    <div class="card-h"><div class="ico iy">📖</div><h3>지침 구성 체계 (주요 파트)</h3></div>
+    <table>
+      <thead><tr><th>파트</th><th>주요 조문</th><th>핵심 내용</th></tr></thead>
+      <tbody>
+        <tr><td><strong>발주·계약</strong></td><td>§4 적정사업기간<br>§10 사업기간 산정</td><td>적정 사업기간 산정 의무, 과업심의위원회</td></tr>
+        <tr><td><strong>RFP·제안</strong></td><td>§11 투입인력 금지<br>§20 제안서 발표</td><td>FP/SLA 방식 시 투입인력 요구 금지, 사업관리자 제안서 발표 의무</td></tr>
+        <tr><td><strong>직접구매</strong></td><td>§7 직접구매 대상<br>§8 직접구매 절차</td><td>상용SW 직접구매 대상 요건, SaaS 포함</td></tr>
+        <tr><td><strong>사업관리</strong></td><td>§13 사업관리<br>§14 작업장소</td><td>사업관리 계획 수립, 원격지 개발(작업장소) 규정</td></tr>
+        <tr><td><strong>하도급</strong></td><td>§19 하도급 관리</td><td>하도급 계획서 제출, 대금지급, 적정성 판단</td></tr>
+        <tr><td><strong>표준계약</strong></td><td>§12 표준계약서</td><td>SW 표준계약서 6종 사용 — 기술성평가 가점(5점)</td></tr>
+        <tr><td><strong>과업심의</strong></td><td>§25 과업심의위원회</td><td>과업내용 변경 심의, 재심의 14일 이내</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="card">
+    <div class="card-h"><div class="ico ig">🔗</div><h3>SW영향평가 (소프트웨어진흥법 §24조의2)</h3></div>
+    <table>
+      <thead><tr><th>구분</th><th>기한</th></tr></thead>
+      <tbody>
+        <tr><td><strong>SW영향평가 실시</strong></td><td>입찰공고일 <strong>30일 전</strong> (긴급한 경우 <strong>10일 전</strong>)</td></tr>
+        <tr><td><strong>평가결과 공시</strong></td><td>입찰공고일 <strong>5일 전</strong> (긴급한 경우 <strong>3일 전</strong>)</td></tr>
+      </tbody>
+    </table>
+    <div class="memo">SW영향평가: 입찰공고 30일 전 실시 / 결과 공시 5일 전 (긴급: 10일·3일)</div>
+  </div>
+</div>
+
+<!-- ===== P2: 직접구매 ===== -->
+<div class="pnl" id="p2">
+  <div class="card">
+    <div class="card-h"><div class="ico iy">🛒</div><h3>상용SW 직접구매 제도 (§7·§8)</h3></div>
+    <div class="law-ref">소프트웨어진흥법 제54조 (국가기관등의 상용소프트웨어 구매)</div>
+    <div class="info-box">
+      <strong style="color:var(--a1)">개념:</strong> 국가기관등이 상용SW가 사용되는 SW사업을 발주할 때, 상용SW를 사업자에게 일괄 구매를 맡기지 않고 <strong>발주기관이 직접 구매</strong>하는 제도 (구 분리발주)
+    </div>
+    <table style="margin-top:10px;">
+      <thead><tr><th>요건</th><th>기준</th></tr></thead>
+      <tbody>
+        <tr><td><strong>적용 대상 사업</strong></td><td>총 사업규모 기준 (고시 별도 규정) - 3억 이상</td></tr>
+        <tr><td><strong>직접구매 대상 SW</strong></td><td>해당 사업에서 사용되는 상용SW 중 가격 <strong>5천만원 이상</strong>(부가세 포함)</td></tr>
+        <tr><td><strong>5천만원 미만 포함</strong></td><td>종합쇼핑몰·디지털서비스몰 등록 SW는 5천만원 미만도 포함 가능</td></tr>
+        <tr><td><strong>직접구매 대상 SW 종류 ①</strong></td><td>국가종합전자조달시스템 <strong>종합쇼핑몰</strong> 또는 <strong>디지털서비스몰</strong> 등록 SW (SaaS 포함)</td></tr>
+        <tr><td><strong>직접구매 대상 SW 종류 ②</strong></td><td>SW진흥법 §20에 따른 <strong>GS인증</strong> SW</td></tr>
+        <tr><td><strong>직접구매 대상 SW 종류 ③</strong></td><td><strong>CC인증</strong>(정보보호시스템) 및 <strong>국정원 검증·지정</strong> SW</td></tr>
+      </tbody>
+    </table>
+    <div class="memo">직접구매 대상: 5천만원↑ + (종합쇼핑몰·디지털서비스몰 OR GS인증 OR CC인증·국정원 검증)</div>
+  </div>
+
+  <div class="card">
+    <div class="card-h"><div class="ico ig">⚡</div><h3>2023년 개정 핵심 (2가지)</h3></div>
+    <div class="g2">
+      <div style="background:rgba(56,189,248,.08);border:1px solid rgba(56,189,248,.3);border-radius:9px;padding:14px;">
+        <div style="font-size:11px;font-weight:700;color:var(--a1);margin-bottom:8px;text-transform:uppercase;letter-spacing:.5px;">개정 ① SaaS 포함</div>
+        <div style="font-size:12.5px;line-height:1.6;">기존 설치형 SW만 적용되던 직접구매 제도를 <strong>디지털서비스몰에 등록된 서비스형 소프트웨어(SaaS)</strong>까지 확대</div>
+        <div style="font-size:11px;color:var(--mu);margin-top:6px;">SaaS 사업자의 정당한 대가 보장, 클라우드 생태계 지원</div>
+      </div>
+      <div style="background:rgba(52,211,153,.08);border:1px solid rgba(52,211,153,.3);border-radius:9px;padding:14px;">
+        <div style="font-size:11px;font-weight:700;color:var(--a3);margin-bottom:8px;text-transform:uppercase;letter-spacing:.5px;">개정 ② 검토 간소화 60%↑</div>
+        <div style="font-size:12.5px;line-height:1.6;">전체 구매품목 중 상용SW 비율이 <strong>60% 이상</strong>이면 별도 심의 없이 서식(구매계획서)으로 대체</div>
+        <div style="font-size:11px;color:var(--mu);margin-top:6px;">기존 50% 이상 → 60% 이상으로 강화하여 행정 부담 완화</div>
+      </div>
+    </div>
+    <div class="memo">2023 개정: ①SaaS 직접구매 포함 ②60%↑ 시 서식 제출로 심의 갈음</div>
+  </div>
+
+  <div class="card">
+    <div class="card-h"><div class="ico ip">📋</div><h3>직접구매 절차 및 의무사항</h3></div>
+    <ul class="il">
+      <li><strong>구매계획서 명시:</strong> 제1항 해당 사업 발주 시 <em>별지 제2호 서식</em> 직접구매 대상 SW 구매계획을 발주계획서 및 입찰공고문에 명시</li>
+      <li><strong>기술지원 확약서:</strong> 직접구매 시 사후기술지원 범위 명확화를 위해 해당 SW 사업자에게 기술지원 확약서 요청 가능</li>
+      <li><strong>조달청 계약 요청:</strong> 종합쇼핑몰 등록 제품은 조달청장에게 계약 체결 요청</li>
+      <li><strong>품목 내 1개 이상 포함:</strong> 동일 SW 품목 중 직접구매 대상이 1개라도 있으면 직접구매 대상으로 분류</li>
+      <li><strong>임의 직접구매:</strong> 대상 요건 미충족 시에도 기관이 자율적으로 직접구매 가능</li>
+    </ul>
+  </div>
+</div>
+
+<!-- ===== P3: 발주·계약 ===== -->
+<div class="pnl" id="p3">
+  <div class="card">
+    <div class="card-h"><div class="ico ib">⏱️</div><h3>적정 사업기간 산정 (§10)</h3></div>
+    <div class="alert-box">
+      <div class="alert-title">⭐ 핵심 의무 규정</div>
+      <div class="alert-text">국가기관등의 장은 SW 개발사업을 추진하는 경우 <strong>소프트웨어진흥법 §45①</strong>에 따라 <strong>별표 1의 적정 사업기간 산정 기준</strong>을 활용하여 적정 사업기간을 산정하여야 한다</div>
+    </div>
+    <table style="margin-top:10px;">
+      <thead><tr><th>구분</th><th>내용</th></tr></thead>
+      <tbody>
+        <tr><td><strong>산정 의무</strong></td><td>SW 개발사업 추진 시 별표1 기준 적용하여 적정 사업기간 산정 <strong>필수</strong></td></tr>
+        <tr><td><strong>과업심의위원회 요청</strong></td><td>적정 사업기간 산정을 위해 시행령 §47①①에 따라 <em>과업심의위원회 위원장에게 요청</em></td></tr>
+        <tr><td><strong>예외: 1억원 이하</strong></td><td>사업금액이 <strong>1억원 이하</strong>인 사업의 경우 국가기관등의 장이 직접 적정 사업기간 산정 가능</td></tr>
+        <tr><td><strong>RFP 명시</strong></td><td>제안요청서에 "소프트웨어 개발사업 적정 사업기간 산정 기준에 따른 사업"임 명시 + 종합 산정서 첨부</td></tr>
+        <tr><td><strong>근거 조항 참조</strong></td><td>행정기관 구축운영 지침 §4조: "사업이 제때에 발주될 수 있도록 적정 사업기간 보장" 규정</td></tr>
+      </tbody>
+    </table>
+    <div class="memo">적정사업기간 산정 의무 / 1억원↓ 예외 / RFP에 명시 + 종합산정서 첨부</div>
+  </div>
+
+  <div class="card">
+    <div class="card-h"><div class="ico ig">📑</div><h3>표준계약서 사용 (§12)</h3></div>
+    <div class="success-box">
+      <strong style="color:var(--a3)">SW 표준계약서 6종</strong> (과기부 마련, 2020.12.31 배포·시행) — 공공SW사업에서 사용 시 기술성평가에 <strong>가점 최대 5점</strong> 부여 (SW기술성 평가기준 지침 §4④⑥)
+    </div>
+    <ul class="il">
+      <li><strong>사용 장점 ①:</strong> 입찰 시 기술성평가 가점(최대 5점) 부여</li>
+      <li><strong>사용 장점 ②:</strong> 하도급 승인 시 하도급 계약 적정성 판단기준에 반영 (지침 §20③)</li>
+      <li><strong>종류:</strong> SW개발·유지보수·운영 등 6종 유형별 계약서</li>
+      <li><strong>하도급:</strong> 하도급법 원사업자 → 소프트웨어사업 표준하도급계약서 사용</li>
+    </ul>
+    <div class="memo">표준계약서 사용 시 기술성평가 가점 최대 5점 / 하도급 적정성 판단 시 반영</div>
+  </div>
+
+  <div class="card">
+    <div class="card-h"><div class="ico io">🏛️</div><h3>과업심의위원회 (§25)</h3></div>
+    <ul class="il">
+      <li><strong>역할:</strong> 과업내용 변경 심의 — 과업 증감·설계변경·재작업 등 계약 과업 내용 변경 심의</li>
+      <li><strong>재심의 기한:</strong> 계약상대자는 이의가 있는 경우 통지받은 날부터 <strong>14일 이내</strong>에 재심의 요청 가능</li>
+      <li><strong>과업 변경 기준:</strong> 과업범위는 과업심의위원회 개최 전까지 확정된 과업내용 기준</li>
+      <li><strong>계약금액 조정:</strong> 변경 후 계약금액 조정 청구 시 30일 이내 처리 (SW사업 대가산정 가이드와 연계)</li>
+    </ul>
+    <div class="memo">과업심의위원회: 과업내용 변경 심의 / 재심의 요청 = 통지받은 날부터 14일 이내</div>
+  </div>
+</div>
+
+<!-- ===== P4: 사업관리·하도급 ===== -->
+<div class="pnl" id="p4">
+  <div class="card">
+    <div class="card-h"><div class="ico ib">🏗️</div><h3>사업관리 (§13)</h3></div>
+    <ul class="il">
+      <li><strong>사업관리 계획:</strong> 국가기관등의 장은 사업목표 달성을 위해 상세 요구사항 포함한 <em>추진단계별 사업관리 계획 수립</em> — 일정·품질·위험·산출물 확인·통제</li>
+      <li><strong>사업수행계획서:</strong> 계약상대자는 계약체결 후 <em>사업수행계획서 제출</em> / 발주기관은 계약이행에 필요한 정보 제공</li>
+      <li><strong>투입인력 관리 금지:</strong> FP·SLA 방식 산정 사업에 대해서는 <strong>투입인력 수·투입기간 관리 불가</strong></li>
+    </ul>
+    <div class="memo">FP/SLA 방식 사업 → 투입인력 수·기간 관리 불가 (성과중심 계약 원칙)</div>
+  </div>
+
+  <div class="card">
+    <div class="card-h"><div class="ico ip">🏠</div><h3>작업장소 (원격지 개발) (§14)</h3></div>
+    <div class="info-box">
+      SW진흥법 §49③: 소프트웨어 유지·관리를 제외한 SW사업을 발주할 때 <strong>사업자가 사업수행 장소를 제안 가능</strong>함을 RFP에 명시해야 함
+    </div>
+    <ul class="il">
+      <li><strong>사업자 제안 가능:</strong> 발주기관은 RFP에 사업자가 작업장소를 제안 가능함을 명시</li>
+      <li><strong>우선 검토 의무:</strong> 작업장소 협의 시 <em>사업자가 제안한 작업장소를 우선 검토</em>해야 함 (행안부 구축운영 지침 §14⑥)</li>
+      <li><strong>우대 가능:</strong> 원격지 개발(재택·사업자 사무실 등) 제안 시 우대 가능</li>
+      <li><strong>예외:</strong> 정보 보안 등 사업수행 장소에 대한 요건 제시 가능</li>
+    </ul>
+    <div class="memo">원격지 개발: 사업자 제안 우선 검토 의무 / RFP에 "작업장소 제안 가능" 명시 필수</div>
+  </div>
+
+  <div class="card">
+    <div class="card-h"><div class="ico ir">🔗</div><h3>하도급 관리 (§19)</h3></div>
+    <table>
+      <thead><tr><th>항목</th><th>내용</th></tr></thead>
+      <tbody>
+        <tr><td><strong>하도급 계획서 제출</strong></td><td>사업자는 하도급 계획을 발주기관에 사전 제출</td></tr>
+        <tr><td><strong>적정성 판단</strong></td><td>발주기관은 하도급 계획서 검토 후 적정성 판단 — 하도급 계약의 공정성 확보</td></tr>
+        <tr><td><strong>대금지급 의무</strong></td><td>하도급 대금을 정해진 기한 내에 협력업체에 지급하도록 규정</td></tr>
+        <tr><td><strong>표준계약서 연계</strong></td><td>하도급 승인 시 SW 표준계약서 사용 여부를 적정성 판단기준에 반영</td></tr>
+      </tbody>
+    </table>
+    <div class="memo">하도급: 계획서 사전제출 + 발주기관 적정성 판단 / 표준계약서 사용 여부 반영</div>
+  </div>
+</div>
+
+<!-- ===== P5: 핵심 금지·의무 ===== -->
+<div class="pnl" id="p5">
+  <div class="card">
+    <div class="card-h"><div class="ico ir">🚫</div><h3>⭐ 투입인력 요구·관리 금지 (§11·§13)</h3></div>
+    <div class="alert-box">
+      <div class="alert-title">⭐⭐ 시험 핵심 금지규정</div>
+      <div class="alert-text">
+        국가기관등의 장은 소프트웨어 개발비·재개발비 등을 <strong>기능점수(FP) 방식 또는 SLA(서비스수준협약) 방식</strong>으로 산정한 경우<br>
+        → RFP에 <strong>투입인력의 수·인적사항·투입기간 요구 불가</strong> (§11③)<br>
+        → 사업 추진 중 <strong>투입인력 수·투입기간 관리 불가</strong> (§13③)
+      </div>
+    </div>
+    <table style="margin-top:10px;">
+      <thead><tr><th>구분</th><th>금지 대상</th><th>예외 허용</th></tr></thead>
+      <tbody>
+        <tr><td><strong>RFP 단계</strong></td><td>투입인력 수·인적사항·투입기간 요구</td><td>컨설팅, 감리, PMO, DB구축, 디지털콘텐츠 사업</td></tr>
+        <tr><td><strong>사업수행 단계</strong></td><td>투입인력 수·투입기간 관리·통제</td><td>컨설팅, 감리, PMO, DB구축, 디지털콘텐츠 사업</td></tr>
+      </tbody>
+    </table>
+    <p style="font-size:11px;color:var(--mu);margin-top:8px;">※ 예외 허용 사업: 정보화전략계획(ISP), 업무재설계(BPR), 정보시스템 구축계획 수립, 정보보안컨설팅 등 컨설팅 성격 / 감리 / PMO / DB구축 / 디지털콘텐츠 개발</p>
+    <div class="memo">FP/SLA 방식 = 투입인력 요구·관리 모두 금지 / 컨설팅·감리·PMO·DB구축은 예외</div>
+  </div>
+
+  <div class="card">
+    <div class="card-h"><div class="ico iy">✅</div><h3>제안서 작성비 보상 (§11②)</h3></div>
+    <ul class="il">
+      <li><strong>근거:</strong> 소프트웨어진흥법 제52조에 따라 국가기관등의 장은 제안서 작성비의 일부를 보상하도록 <em>노력하여야</em> 한다 (의무 아님, 노력 의무)</li>
+      <li><strong>보상받은 제안서 활용:</strong> 국가기관등은 보상받은 제안서 내용을 제안자의 동의 없이 해당 사업에 활용 가능</li>
+      <li><strong>거부 불가:</strong> 제안서 보상을 받은 자는 특별한 사유가 없는 한 활용을 거부할 수 없음</li>
+    </ul>
+    <div class="memo">제안서 작성비 보상 = 노력 의무(강제 아님) / 보상받은 제안서는 동의 없이 활용 가능</div>
+  </div>
+
+  <div class="card">
+    <div class="card-h"><div class="ico ig">📊</div><h3>관리감독 상시 모니터링 항목</h3></div>
+    <p style="font-size:12px;color:var(--mu);margin-bottom:10px;">NIPA(정보통신산업진흥원)가 나라장터 공고 SW사업의 사전규격·RFP 검토 및 개선 권고</p>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;margin:10px 0;">
+      <div style="background:var(--s2);border:1px solid var(--bdr);border-radius:8px;padding:10px;font-size:11.5px;"><strong style="color:var(--a4)">①</strong> SW 직접구매 (분리발주)</div>
+      <div style="background:var(--s2);border:1px solid var(--bdr);border-radius:8px;padding:10px;font-size:11.5px;"><strong style="color:var(--a4)">②</strong> 대기업 참여제한</div>
+      <div style="background:var(--s2);border:1px solid var(--bdr);border-radius:8px;padding:10px;font-size:11.5px;"><strong style="color:var(--a4)">③</strong> 하도급 규정 준수</div>
+      <div style="background:var(--s2);border:1px solid var(--bdr);border-radius:8px;padding:10px;font-size:11.5px;"><strong style="color:var(--a4)">④</strong> SW사업 요구사항 상세화</div>
+      <div style="background:var(--s2);border:1px solid var(--bdr);border-radius:8px;padding:10px;font-size:11.5px;"><strong style="color:var(--a4)">⑤</strong> 투입인력 관리 금지</div>
+      <div style="background:var(--s2);border:1px solid var(--bdr);border-radius:8px;padding:10px;font-size:11.5px;"><strong style="color:var(--a4)">⑥</strong> 적정 사업기간 산정</div>
+    </div>
+    <div class="memo">6대 관리감독 항목: 직접구매·대기업참여·하도급·요구상세화·투입인력금지·사업기간</div>
+  </div>
+</div>
+
+<!-- ===== P6: 예상문제 ===== -->
+<div class="pnl" id="p6">
+  <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;margin-bottom:14px;">
+    <div class="fb-wr" id="fbar" style="margin:0;">
+      <button class="fb on" data-f="all">전체</button>
+      <button class="fb" data-f="개요">📌 개요</button>
+      <button class="fb" data-f="직접">🛒 직접구매</button>
+      <button class="fb" data-f="발주">📋 발주</button>
+      <button class="fb" data-f="금지">🚫 금지·의무</button>
+      <button class="fb" data-f="OX">⭕ OX</button>
+    </div>
+    <div class="sc-b">정답: <span id="sc">0</span>/<span id="st">0</span></div>
+  </div>
+  <div id="ql"></div>
+</div>
+
+</div>
+
+<script>
+document.querySelectorAll('.tab').forEach(t=>t.addEventListener('click',()=>{
+  document.querySelectorAll('.tab,.pnl').forEach(x=>x.classList.remove('on'));
+  t.classList.add('on');document.getElementById(t.dataset.p).classList.add('on');
+}));
+
+const QA=[
+  {cat:'개요',diff:'easy',
+   q:'소프트웨어사업 계약 및 관리감독에 관한 지침의 주관 부처로 가장 적절한 것은?',
+   cs:['행정안전부','과학기술정보통신부','기획재정부','소프트웨어진흥법 소관 중소벤처기업부'],
+   ans:1,
+   exp:'소프트웨어사업 계약 및 관리감독에 관한 지침은 <strong>과학기술정보통신부</strong> 고시(제2023-15호, 2023.5.15. 시행)입니다. 소프트웨어진흥법을 근거로 공공 SW사업의 계약·관리감독·직접구매 등을 규정합니다. (행안부 고시인 "행정기관 정보시스템 구축운영 지침"과 주관 부처를 구분하세요.)'},
+  {cat:'개요',diff:'mid',
+   q:'SW영향평가 결과를 공시해야 하는 시기로 가장 적절한 것은?',
+   cs:['입찰공고일 10일 전','입찰공고일 5일 전','입찰공고일 30일 전','입찰공고일 당일'],
+   ans:1,
+   exp:'SW영향평가: ①<strong>실시</strong> = 입찰공고일 30일 전(긴급 10일 전), ②<strong>결과 공시</strong> = 입찰공고일 <strong>5일 전</strong>(긴급 3일 전). 평가 실시(30일)와 결과 공시(5일)를 구분하여 암기하세요.'},
+  {cat:'직접',diff:'mid',
+   q:'상용SW 직접구매 대상으로 가장 적절한 것은?',
+   cs:['해당 사업에서 사용되는 모든 상용SW','가격이 5천만원 이상인 GS인증 SW','가격이 5천만원 미만인 상용SW (단, 종합쇼핑몰 등록 시 포함)','국산 SW만 해당하는 제도'],
+   ans:1,
+   exp:'직접구매 대상 상용SW: 가격 <strong>5천만원 이상</strong>(부가세 포함)이고, ①종합쇼핑몰·디지털서비스몰 등록 SW(SaaS 포함), ②<strong>GS인증</strong> SW, ③<strong>CC인증·국정원 검증</strong> SW 중 하나에 해당. 단, 종합쇼핑몰 등록 SW는 5천만원 미만도 포함 가능합니다.'},
+  {cat:'직접',diff:'mid',
+   q:'2023년 소프트웨어사업 계약 및 관리감독에 관한 지침 개정에서 추가된 내용으로 가장 적절한 것은?',
+   cs:['클라우드 서비스(IaaS)를 직접구매 대상에 추가','서비스형 소프트웨어(SaaS)를 직접구매 대상에 포함','모든 상용SW의 직접구매를 의무화','직접구매비율 기준을 50% 이상에서 40% 이상으로 하향'],
+   ans:1,
+   exp:'2023년 개정(제2023-15호) 주요 내용: ①기존 설치형 SW만 적용되던 직접구매를 <strong>디지털서비스몰 등록 서비스형 소프트웨어(SaaS)까지 확대</strong>, ②검토 절차 간소화 기준을 <strong>60% 이상</strong>으로 강화(기존 50% 이상). 직접구매비율이 60% 이상이면 서식 제출로 심의 갈음 가능합니다.'},
+  {cat:'직접',diff:'hard',
+   q:'상용SW 직접구매 대상에 해당하지 않는 것은?',
+   cs:['GS인증(소프트웨어 품질인증) SW','국가종합전자조달시스템 종합쇼핑몰 등록 SW','지능정보화 기본법 §58조에 따른 정보보호시스템 CC인증 SW','GS인증 미취득 상용 오피스 SW (가격 5천만원 이상)'],
+   ans:3,
+   exp:'직접구매 대상 SW 3가지: ①<strong>종합쇼핑몰·디지털서비스몰 등록 SW</strong>, ②<strong>GS인증(SW진흥법 §20)</strong> SW, ③<strong>CC인증·국정원 검증·지정</strong> SW. <strong>GS인증도 CC인증도 받지 않은 일반 상용 SW는 5천만원 이상이어도 직접구매 대상 SW 유형에 해당하지 않습니다</strong>.'},
+  {cat:'발주',diff:'mid',
+   q:'소프트웨어 개발사업의 적정 사업기간 산정과 관련하여 가장 적절한 것은?',
+   cs:['사업금액에 관계없이 항상 과업심의위원회 위원장에게 산정을 요청해야 한다.',
+       '사업금액이 1억원 이하인 경우에는 국가기관등의 장이 직접 적정 사업기간을 산정할 수 있다.',
+       '적정 사업기간 산정은 선택 사항이다.',
+       '과업심의위원회는 사업 완료 후 적정 사업기간 적합성을 사후 심의한다.'],
+   ans:1,
+   exp:'적정 사업기간 산정(§10): ①사업금액 <strong>1억원 초과</strong> → 과업심의위원회 위원장에게 요청, ②사업금액 <strong>1억원 이하</strong> → 국가기관등의 장이 직접 산정 가능. 적정 사업기간 산정은 SW 개발사업 추진 시 <em>의무 사항</em>입니다.'},
+  {cat:'발주',diff:'mid',
+   q:'과업심의위원회에서 과업내용 변경 통지를 받은 계약상대자가 이의가 있는 경우 재심의 요청 기한으로 가장 적절한 것은?',
+   cs:['통지받은 날부터 7일 이내','통지받은 날부터 14일 이내','통지받은 날부터 30일 이내','계약 종료 전 언제든지'],
+   ans:1,
+   exp:'과업심의위원회(§25): 계약상대자는 이의가 있을 경우 <strong>통지받은 날부터 14일 이내</strong>에 재심의 요청 가능합니다. (단, 일정 예외 사유에 해당하지 않아야 함.) 하도급 승인 통보 기한(10일) 및 계약금액 조정 처리(30일)와 구분하여 암기하세요.'},
+  {cat:'금지',diff:'mid',
+   q:'기능점수(FP) 방식으로 SW 개발비를 산정한 경우 RFP에서 요구할 수 없는 사항은?',
+   cs:['소프트웨어 개발 목표와 기대효과','투입인력의 수·인적사항·투입기간','기술적용계획표 작성','소프트웨어 개발보안 적용'],
+   ans:1,
+   exp:'FP 방식(또는 SLA 방식)으로 사업대가를 산정한 경우, RFP에 <strong>투입인력의 수·인적사항·투입기간 등을 요구할 수 없습니다</strong>(§11③). 이는 성과 중심 계약을 촉진하고 사업자의 인력 구성 자유를 보장하기 위한 규정입니다.'},
+  {cat:'금지',diff:'hard',
+   q:'투입인력 요구·관리 금지 규정의 예외 허용 사업 유형으로 가장 적절하지 않은 것은?',
+   cs:['정보화전략계획(ISP) 수립 등 컨설팅 성격의 사업','정보시스템 감리사업','전자정부사업관리 위탁(PMO) 사업','일반 애플리케이션 소프트웨어 개발사업'],
+   ans:3,
+   exp:'투입인력 관리 금지 예외 허용 사업: ①컨설팅 성격(ISP·BPR·ITA·정보보안컨설팅 등), ②<strong>감리사업</strong>, ③<strong>PMO 위탁사업</strong>, ④데이터베이스 구축 사업, ⑤디지털콘텐츠 개발 사업. <strong>일반 애플리케이션 개발사업</strong>은 예외 대상이 아니라 원칙(투입인력 요구·관리 금지) 적용 대상입니다.'},
+  {cat:'금지',diff:'mid',
+   q:'제안서 작성비 보상에 관한 설명으로 가장 적절한 것은?',
+   cs:['모든 공공 SW사업에서 제안서 작성비를 반드시 보상해야 한다.',
+       '국가기관등의 장은 제안서 작성비 일부를 보상하도록 노력하여야 하며, 보상받은 제안서는 제안자 동의 없이 활용 가능하다.',
+       '제안서 작성비 보상을 받은 자는 항상 해당 사업에서의 활용을 거부할 수 있다.',
+       '제안서 작성비 보상은 낙찰자에게만 지급한다.'],
+   ans:1,
+   exp:'제안서 작성비 보상(§11②): 국가기관등의 장은 <strong>노력하여야</strong> 한다(의무 아닌 노력 의무). 보상받은 제안서는 <strong>제안자 동의 없이 해당 사업에 활용 가능</strong>하며, 보상받은 자는 특별한 사유 없이 거부할 수 없습니다.'},
+  // OX
+  {cat:'OX',diff:'easy',type:'ox',
+   q:'소프트웨어 개발비를 기능점수(FP) 방식으로 산정한 경우, RFP에 투입인력의 수·인적사항·투입기간을 요구할 수 없다.',
+   ans:true,
+   exp:'<strong>○</strong> — §11③: 국가기관등의 장은 소프트웨어 개발비·재개발비 등에 대한 사업대가를 <em>기능점수 방식 또는 서비스수준협약 방식</em>으로 산정한 경우에는 RFP에 <strong>투입인력의 수·인적사항·투입기간 등을 요구할 수 없습니다</strong>.'},
+  {cat:'OX',diff:'mid',type:'ox',
+   q:'SW 표준계약서를 사용한 경우 공공SW사업에서 기술성평가 시 최대 5점까지 가점을 부여받을 수 있다.',
+   ans:true,
+   exp:'<strong>○</strong> — SW기술성 평가기준 지침 제4조제4항제6호: 공공SW사업에서 <strong>SW 표준계약서를 사용하는 경우 기술성평가에 가점(최대 5점) 부여</strong>. 이는 표준계약서 사용을 장려하기 위한 인센티브 규정입니다.'},
+  {cat:'OX',diff:'mid',type:'ox',
+   q:'2023년 개정으로 서비스형 소프트웨어(SaaS)는 디지털서비스몰 등록 시 직접구매 대상으로 포함된다.',
+   ans:true,
+   exp:'<strong>○</strong> — 2023년 개정(제2023-15호)으로 기존 설치형 SW에만 적용되던 직접구매 제도를 <strong>디지털서비스몰에 등록된 SaaS(서비스형 소프트웨어)까지 확대</strong>하였습니다. 이로써 SaaS 사업자의 정당한 대가 보장이 가능해졌습니다.'},
+  {cat:'OX',diff:'hard',type:'ox',
+   q:'사업금액이 1억원 이하인 SW 개발사업은 과업심의위원회 요청 없이 국가기관등의 장이 직접 적정 사업기간을 산정할 수 있다.',
+   ans:true,
+   exp:'<strong>○</strong> — 적정 사업기간 산정(§10): 원칙적으로 과업심의위원회 위원장에게 요청해야 하지만, <strong>사업금액이 1억원 이하인 경우</strong>에는 국가기관등의 장이 직접 적정 사업기간을 산정할 수 있습니다. 소규모 사업의 행정 부담 경감을 위한 예외 규정입니다.'},
+  {cat:'OX',diff:'mid',type:'ox',
+   q:'SW영향평가는 입찰공고일 5일 전까지 실시해야 한다.',
+   ans:false,
+   exp:'<strong>×</strong> — SW영향평가 기한 구분: <strong>실시</strong> = 입찰공고일 <strong>30일 전</strong>(긴급 10일 전), <strong>결과 공시</strong> = 입찰공고일 <strong>5일 전</strong>(긴급 3일 전). 5일 전은 실시 기한이 아니라 결과 공시 기한입니다.'},
+];
+
+let answered=0,correct=0;
+function renderQ(f){
+  const data=f==='all'?QA:QA.filter(q=>q.cat===f);
+  const list=document.getElementById('ql');list.innerHTML='';
+  answered=0;correct=0;upS();
+  const CATC={'개요':'tb','직접':'ty','발주':'tg','금지':'tr','OX':'tp'};
+  const DLC={'easy':'easy 쉬움','mid':'mid 보통','hard':'hard 어려움'};
+  const NL=['①','②','③','④'];
+  if(!data.length){list.innerHTML='<div style="text-align:center;padding:40px;color:var(--mu)">문제 없음</div>';return;}
+  data.forEach((q,i)=>{
+    const gi=QA.indexOf(q);
+    const el=document.createElement('div');el.className='qa';
+    const tc=CATC[q.cat]||'tb';
+    const [dc,dn]=(DLC[q.diff]||'mid 보통').split(' ');
+    if(q.type==='ox'){
+      el.innerHTML=`<div class="qa-hd" onclick="this.closest('.qa').classList.toggle('open')"><div><div class="qa-meta"><span class="qn">Q${String(i+1).padStart(2,'0')}</span><span class="tag ${tc}">${q.cat}</span><span class="diff ${dc}">${dn}</span><span class="tag tp">O/X</span></div><div class="qq">${q.q}</div></div><span class="tgl">▾</span></div>
+      <div class="qa-bd"><div class="ox-wr"><button class="ox" onclick="pickOX(this,true,${gi})">⭕ 옳다</button><button class="ox" onclick="pickOX(this,false,${gi})">❌ 틀리다</button></div><div class="exp" id="ex-${gi}"><div class="exp-t">💡 해설</div>${q.exp}</div></div>`;
+    } else {
+      el.innerHTML=`<div class="qa-hd" onclick="this.closest('.qa').classList.toggle('open')"><div><div class="qa-meta"><span class="qn">Q${String(i+1).padStart(2,'0')}</span><span class="tag ${tc}">${q.cat}</span><span class="diff ${dc}">${dn}</span></div><div class="qq">${q.q}</div></div><span class="tgl">▾</span></div>
+      <div class="qa-bd"><div class="chs">${q.cs.map((c,ci)=>`<div class="ch" data-ci="${ci}" onclick="pickCh(this,${gi})"><span class="cnum">${NL[ci]}</span><span>${c}</span></div>`).join('')}</div><div class="exp" id="ex-${gi}"><div class="exp-t">💡 해설</div>${q.exp}</div></div>`;
+    }
+    list.appendChild(el);
+  });
+}
+function pickCh(el,gi){
+  const bd=el.closest('.qa-bd');if(bd.querySelector('.ok,.ng'))return;
+  const q=QA[gi];
+  bd.querySelectorAll('.ch').forEach((c,i)=>{c.classList.add('lk');if(i===q.ans)c.classList.add('ok');else if(i===parseInt(el.dataset.ci))c.classList.add('ng');});
+  document.getElementById('ex-'+gi).classList.add('show');
+  answered++;if(parseInt(el.dataset.ci)===q.ans)correct++;upS();
+}
+function pickOX(btn,val,gi){
+  const bd=btn.closest('.qa-bd');if(bd.querySelector('.so,.sx'))return;
+  const q=QA[gi];
+  bd.querySelectorAll('.ox').forEach(b=>b.classList.add('lk'));
+  btn.classList.add(val?'so':'sx');
+  if(val!==q.ans){btn.style.opacity='.5';bd.querySelectorAll('.ox')[val?1:0].classList.add(q.ans?'so':'sx');}
+  document.getElementById('ex-'+gi).classList.add('show');
+  answered++;if(val===q.ans)correct++;upS();
+}
+function upS(){document.getElementById('sc').textContent=correct;document.getElementById('st').textContent=answered;}
+document.getElementById('fbar').addEventListener('click',e=>{
+  const b=e.target.closest('.fb');if(!b)return;
+  document.querySelectorAll('.fb').forEach(x=>x.classList.remove('on'));b.classList.add('on');renderQ(b.dataset.f);
+});
+renderQ('all');
+</script>
+</body>
+</html>

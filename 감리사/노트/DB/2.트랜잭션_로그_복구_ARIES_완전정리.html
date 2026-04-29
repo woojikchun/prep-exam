@@ -1,0 +1,637 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;900&family=JetBrains+Mono:wght@400;700&display=swap');
+:root{--bg:#040810;--s1:#070d1c;--s2:#0b1326;--s3:#0f1930;--bdr:#1c3060;--a1:#60a5fa;--a2:#34d399;--a3:#fbbf24;--a4:#f87171;--a5:#a78bfa;--a6:#fb923c;--txt:#e2e8f0;--mu:#64748b;}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Noto Sans KR',sans-serif;background:var(--bg);color:var(--txt);min-height:100vh;}
+.hdr{padding:20px 24px 14px;background:linear-gradient(150deg,#040810,#08102a,#040810);border-bottom:1px solid var(--bdr);}
+.hdr-r{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:6px;}
+.pill{padding:3px 10px;border-radius:20px;font-size:10px;font-weight:700;}
+.p1{background:linear-gradient(135deg,#1e3a8a,var(--a1));color:#fff;}
+.p2{background:rgba(52,211,153,.15);color:var(--a2);border:1px solid rgba(52,211,153,.3);}
+.p3{background:rgba(251,191,36,.15);color:var(--a3);border:1px solid rgba(251,191,36,.3);}
+h1{font-size:18px;font-weight:900;}
+.h1g{background:linear-gradient(90deg,var(--a1),var(--a5),var(--a2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.hdr p{color:var(--mu);font-size:11.5px;margin-top:3px;}
+.tabs{display:flex;padding:0 24px;background:var(--s1);border-bottom:1px solid var(--bdr);overflow-x:auto;scrollbar-width:none;}
+.tabs::-webkit-scrollbar{display:none;}
+.tab{padding:10px 13px;font-size:11.5px;font-weight:600;color:var(--mu);cursor:pointer;border-bottom:2px solid transparent;white-space:nowrap;transition:all .2s;background:none;border-top:none;border-left:none;border-right:none;font-family:'Noto Sans KR',sans-serif;}
+.tab.on{color:var(--a1);border-bottom-color:var(--a1);}
+.wrap{padding:18px 24px;max-width:960px;margin:0 auto;}
+.pnl{display:none;}.pnl.on{display:block;}
+.card{background:var(--s1);border:1px solid var(--bdr);border-radius:11px;padding:16px;margin-bottom:12px;}
+.card-h{display:flex;align-items:center;gap:9px;margin-bottom:12px;}
+.ico{width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0;}
+.ib{background:rgba(96,165,250,.15);}.ig{background:rgba(52,211,153,.15);}.iy{background:rgba(251,191,36,.15);}.ir{background:rgba(248,113,113,.15);}.ip{background:rgba(167,139,250,.15);}.io{background:rgba(251,146,60,.15);}
+.card h3{font-size:13.5px;font-weight:700;}
+.tag{display:inline-block;padding:2px 7px;border-radius:4px;font-size:9.5px;font-weight:600;margin:2px 2px 2px 0;}
+.tb{background:rgba(96,165,250,.12);color:var(--a1);border:1px solid rgba(96,165,250,.25);}
+.tg{background:rgba(52,211,153,.12);color:var(--a2);border:1px solid rgba(52,211,153,.25);}
+.ty{background:rgba(251,191,36,.12);color:var(--a3);border:1px solid rgba(251,191,36,.25);}
+.tr{background:rgba(248,113,113,.12);color:var(--a4);border:1px solid rgba(248,113,113,.25);}
+.tp{background:rgba(167,139,250,.12);color:var(--a5);border:1px solid rgba(167,139,250,.25);}
+.to{background:rgba(251,146,60,.12);color:var(--a6);border:1px solid rgba(251,146,60,.25);}
+table{width:100%;border-collapse:collapse;font-size:12px;}
+th{background:var(--s2);color:var(--mu);font-weight:700;padding:7px 11px;text-align:left;font-size:9.5px;text-transform:uppercase;letter-spacing:.5px;border-bottom:1px solid var(--bdr);}
+td{padding:8px 11px;border-bottom:1px solid rgba(28,48,96,.5);vertical-align:top;line-height:1.55;}
+tr:last-child td{border-bottom:none;}
+tr:hover td{background:rgba(255,255,255,.02);}
+td strong{color:var(--a3);}
+ul.il{list-style:none;display:flex;flex-direction:column;gap:6px;}
+ul.il li{font-size:12px;padding-left:15px;position:relative;line-height:1.5;}
+ul.il li::before{content:'▸';position:absolute;left:0;color:var(--a1);font-size:9.5px;top:3px;}
+ul.il li strong{color:var(--a3);}
+ul.il li em{color:var(--a2);font-style:normal;}
+.memo{background:linear-gradient(135deg,rgba(96,165,250,.07),rgba(52,211,153,.07));border:1px solid rgba(96,165,250,.22);border-left:3px solid var(--a1);border-radius:7px;padding:9px 13px;font-size:12px;font-weight:600;color:var(--a1);margin:9px 0;}
+.memo::before{content:'🎯 핵심 암기 │ ';color:var(--mu);font-weight:400;}
+.warn{background:rgba(248,113,113,.07);border:1px solid rgba(248,113,113,.25);border-left:3px solid var(--a4);border-radius:7px;padding:9px 13px;font-size:12px;font-weight:600;color:var(--a4);margin:9px 0;}
+.warn::before{content:'⚠️ 유의 포인트 │ ';color:var(--mu);font-weight:400;}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px;}
+@media(max-width:580px){.g2{grid-template-columns:1fr;}}
+/* timeline */
+.timeline{display:flex;align-items:flex-end;gap:0;margin:12px 0;overflow-x:auto;padding-bottom:4px;}
+.tl-seg{display:flex;flex-direction:column;align-items:center;gap:0;flex:1;min-width:70px;}
+.tl-label{font-size:9.5px;color:var(--mu);margin-bottom:4px;text-align:center;line-height:1.3;}
+.tl-box{width:100%;height:32px;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;border-radius:4px;}
+.tl-time{font-size:9px;color:var(--mu);margin-top:4px;}
+/* log record visual */
+.log-entry{background:var(--s2);border:1px solid var(--bdr);border-radius:7px;padding:10px 13px;font-family:'JetBrains Mono',monospace;font-size:11px;margin:6px 0;display:flex;gap:10px;align-items:center;flex-wrap:wrap;}
+.log-field{display:flex;flex-direction:column;gap:2px;min-width:60px;}
+.log-label{font-size:9px;color:var(--mu);text-transform:uppercase;}
+.log-val{font-size:11px;font-weight:700;}
+/* acc */
+.acc{background:var(--s2);border:1px solid var(--bdr);border-radius:9px;margin-bottom:8px;overflow:hidden;}
+.acc-h{display:flex;justify-content:space-between;align-items:center;padding:10px 14px;cursor:pointer;user-select:none;}
+.acc-h:hover{background:rgba(255,255,255,.02);}
+.acc-title{font-size:12.5px;font-weight:800;flex:1;}
+.acc-tgl{color:var(--mu);transition:transform .2s;font-size:14px;flex-shrink:0;margin-left:8px;}
+.acc.open .acc-tgl{transform:rotate(180deg);}
+.acc-body{display:none;border-top:1px solid var(--bdr);padding:12px 14px;background:var(--s3);font-size:12px;line-height:1.65;}
+.acc.open .acc-body{display:block;}
+.acc-body strong{color:var(--a3);}
+.acc-body em{color:var(--a2);font-style:normal;}
+/* qa */
+.qa{background:var(--s1);border:1px solid var(--bdr);border-radius:9px;margin-bottom:10px;overflow:hidden;}
+.qa:hover{border-color:rgba(96,165,250,.25);}
+.qa-hd{padding:12px 16px;cursor:pointer;display:flex;justify-content:space-between;align-items:flex-start;gap:9px;user-select:none;}
+.qa-meta{display:flex;align-items:center;gap:5px;margin-bottom:4px;flex-wrap:wrap;}
+.qn{font-family:'JetBrains Mono',monospace;font-size:9.5px;font-weight:700;color:var(--mu);}
+.qq{font-size:12.5px;font-weight:600;line-height:1.5;}
+.tgl{color:var(--mu);font-size:15px;flex-shrink:0;transition:transform .2s;}
+.qa.open .tgl{transform:rotate(180deg);}
+.qa-bd{display:none;border-top:1px solid var(--bdr);padding:12px 16px;background:var(--s2);}
+.qa.open .qa-bd{display:block;}
+.chs{display:flex;flex-direction:column;gap:6px;margin-bottom:10px;}
+.ch{display:flex;align-items:flex-start;gap:9px;padding:8px 12px;border-radius:6px;border:1px solid var(--bdr);font-size:12px;cursor:pointer;background:var(--s1);line-height:1.45;transition:all .15s;}
+.ch:hover:not(.lk){border-color:rgba(96,165,250,.3);background:rgba(96,165,250,.04);}
+.ch.ok{border-color:var(--a2);background:rgba(52,211,153,.1);color:var(--a2);}
+.ch.ng{border-color:var(--a4);background:rgba(248,113,113,.08);color:var(--a4);opacity:.7;}
+.ch.lk{cursor:default;}
+.cnum{font-family:'JetBrains Mono',monospace;font-weight:700;font-size:10.5px;flex-shrink:0;margin-top:1px;color:var(--mu);}
+.ch.ok .cnum{color:var(--a2);}.ch.ng .cnum{color:var(--a4);}
+.exp{background:rgba(96,165,250,.05);border:1px solid rgba(96,165,250,.18);border-radius:7px;padding:11px 13px;font-size:12px;line-height:1.6;display:none;}
+.exp.show{display:block;}
+.exp-t{font-size:9.5px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--a1);margin-bottom:5px;}
+.exp strong{color:var(--a3);}
+.exp em{color:var(--a2);font-style:normal;}
+.ox-wr{display:flex;gap:8px;margin-bottom:10px;}
+.ox{flex:1;padding:10px;border-radius:7px;border:1px solid var(--bdr);font-size:18px;cursor:pointer;background:var(--s1);transition:all .15s;font-family:'Noto Sans KR',sans-serif;color:var(--txt);}
+.ox:hover:not(.lk){transform:scale(1.02);}
+.ox.so{border-color:var(--a2);background:rgba(52,211,153,.15);}
+.ox.sx{border-color:var(--a4);background:rgba(248,113,113,.1);}
+.ox.lk{cursor:default;}
+.diff{display:inline-block;padding:2px 6px;border-radius:9px;font-size:8.5px;font-weight:700;}
+.easy{background:rgba(52,211,153,.2);color:var(--a2);}
+.mid{background:rgba(251,191,36,.2);color:var(--a3);}
+.hard{background:rgba(248,113,113,.2);color:var(--a4);}
+.fb-wr{display:flex;gap:5px;flex-wrap:wrap;margin-bottom:12px;}
+.fb{padding:4px 11px;border-radius:18px;border:1px solid var(--bdr);font-size:10.5px;font-weight:600;cursor:pointer;background:var(--s2);color:var(--mu);transition:all .15s;font-family:'Noto Sans KR',sans-serif;}
+.fb.on{background:rgba(96,165,250,.15);color:var(--a1);border-color:var(--a1);}
+.sc-b{background:var(--s2);border:1px solid var(--bdr);border-radius:7px;padding:4px 12px;font-size:11.5px;color:var(--mu);}
+.sc-b span{color:var(--a1);font-weight:700;}
+</style>
+</head>
+<body>
+<div class="hdr">
+  <div class="hdr-r">
+    <span class="pill p1">Transaction Recovery</span>
+    <span class="pill p2">Log · Checkpoint · Shadow Page · ARIES</span>
+    <span class="pill p3">감리사 핵심 출제</span>
+  </div>
+  <h1><span class="h1g">트랜잭션 복구 완전 정리</span></h1>
+  <p>ACID · 로그 · 체크포인트 · 그림자 페이지 · UNDO/REDO · 즉시갱신·지연갱신 · ARIES · 미디어 복구</p>
+</div>
+<div class="tabs">
+  <button class="tab on" data-p="p1">⚙️ 트랜잭션·ACID</button>
+  <button class="tab" data-p="p2">📜 로그 기반 복구</button>
+  <button class="tab" data-p="p3">📌 체크포인트</button>
+  <button class="tab" data-p="p4">🌑 그림자 페이지·기타</button>
+  <button class="tab" data-p="p5">🔬 ARIES 알고리즘</button>
+  <button class="tab" data-p="p6">❓ 예상문제</button>
+</div>
+<div class="wrap">
+
+<!-- P1: 트랜잭션·ACID -->
+<div class="pnl on" id="p1">
+  <div class="card">
+    <div class="card-h"><div class="ico ib">⚙️</div><h3>트랜잭션 (Transaction) 정의 & ACID ⭐</h3></div>
+    <div style="background:var(--s2);border:1px solid rgba(96,165,250,.25);border-radius:9px;padding:12px;margin-bottom:11px;font-size:12.5px;line-height:1.8;">
+      <strong style="color:var(--a1)">트랜잭션</strong>: 데이터베이스에서 하나의 논리적 작업 단위를 구성하는 <em style="color:var(--a3);font-style:normal;">일련의 연산 집합</em> — 전부 실행(COMMIT)되거나 전혀 실행되지 않아야(ROLLBACK) 함
+    </div>
+    <table>
+      <thead><tr><th>속성</th><th>의미</th><th>보장 메커니즘</th><th>위반 시 문제</th></tr></thead>
+      <tbody>
+        <tr><td><strong>A — 원자성 (Atomicity) ⭐</strong></td><td>트랜잭션의 모든 연산은 전부 실행되거나 전혀 실행되지 않음</td><td>UNDO 로그 / ROLLBACK</td><td>부분 실행 → 불일치</td></tr>
+        <tr><td><strong>C — 일관성 (Consistency) ⭐</strong></td><td>트랜잭션 전후에 DB가 일관된 상태를 유지</td><td>무결성 제약조건 검사</td><td>비즈니스 규칙 위반</td></tr>
+        <tr><td><strong>I — 격리성 (Isolation) ⭐</strong></td><td>동시 실행되는 트랜잭션은 서로 간섭하지 않음</td><td>Lock / MVCC / 격리 수준</td><td>Dirty Read 등 이상 현상</td></tr>
+        <tr><td><strong>D — 지속성 (Durability) ⭐</strong></td><td>커밋된 트랜잭션은 장애 후에도 영구 반영됨</td><td>REDO 로그 / WAL</td><td>장애 후 데이터 소실</td></tr>
+      </tbody>
+    </table>
+    <div class="memo">ACID: Atomicity(원자성·UNDO)·Consistency(일관성·제약조건)·Isolation(격리성·Lock)·Durability(지속성·REDO)</div>
+  </div>
+
+  <div class="card">
+    <div class="card-h"><div class="ico iy">📊</div><h3>트랜잭션 상태 전이 ⭐</h3></div>
+    <div class="timeline">
+      <div class="tl-seg">
+        <div class="tl-label">시작</div>
+        <div class="tl-box" style="background:rgba(96,165,250,.15);border:1px solid rgba(96,165,250,.4);color:var(--a1);">활성<br>(Active)</div>
+        <div class="tl-time">BEGIN</div>
+      </div>
+      <div style="display:flex;align-items:center;font-size:18px;color:var(--mu);padding:0 3px;padding-bottom:20px;">→</div>
+      <div class="tl-seg">
+        <div class="tl-label">작업 완료</div>
+        <div class="tl-box" style="background:rgba(251,191,36,.15);border:1px solid rgba(251,191,36,.4);color:var(--a3);">부분완료<br>(Partially Committed)</div>
+        <div class="tl-time">마지막 연산</div>
+      </div>
+      <div style="display:flex;align-items:center;font-size:18px;color:var(--mu);padding:0 3px;padding-bottom:20px;">→</div>
+      <div class="tl-seg">
+        <div class="tl-label">COMMIT</div>
+        <div class="tl-box" style="background:rgba(52,211,153,.15);border:1px solid rgba(52,211,153,.4);color:var(--a2);">완료<br>(Committed)</div>
+        <div class="tl-time">영구 저장</div>
+      </div>
+    </div>
+    <div style="margin-top:8px;">
+      <table>
+        <thead><tr><th>상태</th><th>설명</th><th>가능한 전이</th></tr></thead>
+        <tbody>
+          <tr><td><strong>활성 (Active)</strong></td><td>트랜잭션이 실행 중인 상태</td><td>→ 부분완료 (정상) / → 실패 (오류)</td></tr>
+          <tr><td><strong>부분완료 (Partially Committed)</strong></td><td>마지막 연산이 실행된 직후, 아직 COMMIT 전</td><td>→ 완료 (COMMIT) / → 실패 (오류)</td></tr>
+          <tr><td><strong>완료 (Committed)</strong></td><td>COMMIT 완료 — 영구 반영됨</td><td>종료</td></tr>
+          <tr><td><strong>실패 (Failed)</strong></td><td>오류 발생 — 더 이상 진행 불가</td><td>→ 철회 (ROLLBACK)</td></tr>
+          <tr><td><strong>철회 (Aborted)</strong></td><td>ROLLBACK 완료 — 이전 상태로 복귀</td><td>종료 (재시작 가능)</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="memo">활성→부분완료→완료(COMMIT) / 활성·부분완료→실패→철회(ROLLBACK)</div>
+  </div>
+
+  <div class="card">
+    <div class="card-h"><div class="ico ir">⚠️</div><h3>장애 유형 & 복구 대상 ⭐</h3></div>
+    <table>
+      <thead><tr><th>장애 유형</th><th>원인</th><th>손실 범위</th><th>복구 방법</th></tr></thead>
+      <tbody>
+        <tr><td><strong>트랜잭션 장애</strong></td><td>논리 오류·사용자 취소·데드락</td><td>단일 트랜잭션</td><td>ROLLBACK (UNDO)</td></tr>
+        <tr><td><strong>시스템 장애</strong></td><td>정전·SW 오류·충돌 — 디스크 내용은 유지</td><td>버퍼 내 데이터</td><td>로그 기반 복구 (REDO+UNDO)</td></tr>
+        <tr><td><strong>미디어 장애</strong></td><td>디스크 물리 손상 — 디스크 내용 손실</td><td>디스크 전체</td><td>백업 + 로그 REDO</td></tr>
+      </tbody>
+    </table>
+    <div class="warn">시스템 장애는 메모리(버퍼) 손실이지 디스크 손실이 아님! 로그는 보통 디스크에 먼저 기록(WAL)되므로 복구 가능</div>
+  </div>
+</div>
+
+<!-- P2: 로그 기반 복구 -->
+<div class="pnl" id="p2">
+  <div class="card">
+    <div class="card-h"><div class="ico ip">📜</div><h3>로그 (Log) 구조 & WAL 원칙 ⭐</h3></div>
+    <div style="background:var(--s2);border:1px solid rgba(167,139,250,.25);border-radius:9px;padding:12px;margin-bottom:10px;font-size:12.5px;line-height:1.8;">
+      <strong style="color:var(--a5)">WAL (Write-Ahead Logging)</strong>: 데이터를 디스크에 쓰기 <em style="color:var(--a3);font-style:normal;">전에</em> 반드시 로그를 먼저 안정 저장소(디스크)에 기록 — 복구의 핵심 원칙
+    </div>
+
+    <p style="font-size:11.5px;font-weight:800;color:var(--a3);margin-bottom:8px;">로그 레코드 필드 구조</p>
+    <div class="log-entry">
+      <div class="log-field"><div class="log-label">LSN</div><div class="log-val" style="color:var(--a1);">로그순번</div></div>
+      <div style="color:var(--mu);">|</div>
+      <div class="log-field"><div class="log-label">Transaction ID</div><div class="log-val" style="color:var(--a3);">T1</div></div>
+      <div style="color:var(--mu);">|</div>
+      <div class="log-field"><div class="log-label">Page ID</div><div class="log-val" style="color:var(--a2);">P5</div></div>
+      <div style="color:var(--mu);">|</div>
+      <div class="log-field"><div class="log-label">Before Image</div><div class="log-val" style="color:var(--a4);">100 (UNDO용)</div></div>
+      <div style="color:var(--mu);">|</div>
+      <div class="log-field"><div class="log-label">After Image</div><div class="log-val" style="color:var(--a2);">200 (REDO용)</div></div>
+      <div style="color:var(--mu);">|</div>
+      <div class="log-field"><div class="log-label">Prev LSN</div><div class="log-val" style="color:var(--mu);">이전LSN</div></div>
+    </div>
+
+    <table style="margin-top:10px;">
+      <thead><tr><th>로그 레코드 타입</th><th>기록 시점</th><th>내용</th></tr></thead>
+      <tbody>
+        <tr><td><strong>&lt;T, START&gt;</strong></td><td>트랜잭션 시작</td><td>트랜잭션 T 시작</td></tr>
+        <tr><td><strong>&lt;T, X, old, new&gt;</strong></td><td>데이터 변경 전</td><td>항목 X의 이전값(old)·이후값(new)</td></tr>
+        <tr><td><strong>&lt;T, COMMIT&gt;</strong></td><td>COMMIT 전 로그 먼저</td><td>트랜잭션 T 완료 — <strong>로그 기록 후 COMMIT</strong></td></tr>
+        <tr><td><strong>&lt;T, ROLLBACK&gt;</strong></td><td>ROLLBACK 시</td><td>트랜잭션 T 철회</td></tr>
+        <tr><td><strong>&lt;CKPT&gt;</strong></td><td>체크포인트 시</td><td>체크포인트 시점 기록</td></tr>
+      </tbody>
+    </table>
+    <div class="memo">WAL=로그먼저쓰고 데이터 씀 / 로그=LSN·TID·PageID·Before(UNDO)·After(REDO)·PrevLSN</div>
+  </div>
+
+  <div class="card">
+    <div class="card-h"><div class="ico iy">↩️</div><h3>즉시 갱신 vs 지연 갱신 ⭐</h3></div>
+    <div class="g2">
+      <div style="background:var(--s2);border:1px solid rgba(248,113,113,.25);border-radius:8px;padding:12px;">
+        <p style="font-size:11.5px;font-weight:800;color:var(--a4);margin-bottom:7px;">즉시 갱신 (Immediate Update) ⭐</p>
+        <ul class="il">
+          <li><strong>정의:</strong> 트랜잭션 수행 중 변경사항을 <em>즉시 디스크에 반영</em> (COMMIT 전에도)</li>
+          <li><strong>로그:</strong> Before Image(UNDO용) + After Image(REDO용) 모두 필요</li>
+          <li><strong>복구:</strong> REDO + UNDO 모두 필요</li>
+          <li><strong>장애 시:</strong><br>- COMMIT 전 장애 → <strong>UNDO</strong> (이전값으로 되돌림)<br>- COMMIT 후 장애 → <strong>REDO</strong> (이후값으로 재적용)</li>
+          <li><strong>성능:</strong> 작업 중 디스크 I/O 발생</li>
+        </ul>
+      </div>
+      <div style="background:var(--s2);border:1px solid rgba(52,211,153,.25);border-radius:8px;padding:12px;">
+        <p style="font-size:11.5px;font-weight:800;color:var(--a2);margin-bottom:7px;">지연 갱신 (Deferred Update) ⭐</p>
+        <ul class="il">
+          <li><strong>정의:</strong> COMMIT 시점까지 변경사항을 <em>로그에만 기록</em>하고 디스크에는 COMMIT 후 반영</li>
+          <li><strong>로그:</strong> After Image(REDO용)만 필요 — Before 불필요</li>
+          <li><strong>복구:</strong> REDO만 필요 (UNDO 불필요)</li>
+          <li><strong>장애 시:</strong><br>- COMMIT 전 장애 → <strong>그냥 로그 버림</strong> (디스크 미반영)<br>- COMMIT 후 장애 → <strong>REDO</strong> (로그로 재적용)</li>
+          <li><strong>성능:</strong> COMMIT 시 한꺼번에 I/O</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="acc open" onclick="this.classList.toggle('open')">
+      <div class="acc-h"><div class="acc-title" style="color:var(--a3);">UNDO · REDO 동작 상세 ⭐</div><div class="acc-tgl">▾</div></div>
+      <div class="acc-body">
+        <table>
+          <thead><tr><th>연산</th><th>목적</th><th>방향</th><th>사용 데이터</th><th>적용 대상 트랜잭션</th></tr></thead>
+          <tbody>
+            <tr><td><strong>UNDO ⭐</strong></td><td>미완료 트랜잭션 <strong>취소</strong> — 원자성 보장</td><td>로그를 역순으로</td><td>Before Image (이전값)</td><td>장애 시 COMMIT되지 않은 트랜잭션</td></tr>
+            <tr><td><strong>REDO ⭐</strong></td><td>완료 트랜잭션 <strong>재실행</strong> — 지속성 보장</td><td>로그를 순방향으로</td><td>After Image (이후값)</td><td>장애 전 COMMIT된 트랜잭션</td></tr>
+          </tbody>
+        </table>
+        <div style="background:var(--s2);border:1px solid rgba(251,191,36,.2);border-radius:7px;padding:10px;margin-top:8px;font-family:'JetBrains Mono',monospace;font-size:10.5px;line-height:1.8;">
+<span style="color:var(--mu);">-- 시스템 장애 복구 시나리오</span><br>
+<span style="color:var(--a3);">T1: START → 작업 → COMMIT  ← REDO 필요 (커밋됐지만 디스크 미반영 가능)</span><br>
+<span style="color:var(--a4);">T2: START → 작업 → (장애)   ← UNDO 필요 (커밋 안 됨 → 원상복구)</span><br>
+<span style="color:var(--a4);">T3: START → (장애)           ← UNDO 필요 (커밋 안 됨)</span>
+        </div>
+      </div>
+    </div>
+    <div class="memo">즉시갱신=디스크즉시반영·UNDO+REDO / 지연갱신=COMMIT후반영·REDO만 / UNDO=미완료취소·역순 / REDO=완료재실행·순방향</div>
+  </div>
+</div>
+
+<!-- P3: 체크포인트 -->
+<div class="pnl" id="p3">
+  <div class="card">
+    <div class="card-h"><div class="ico iy">📌</div><h3>체크포인트 (Checkpoint) ⭐</h3></div>
+    <div style="background:var(--s2);border:1px solid rgba(251,191,36,.25);border-radius:9px;padding:12px;margin-bottom:11px;font-size:12.5px;line-height:1.8;">
+      <strong style="color:var(--a3)">체크포인트</strong>: 주기적으로 <em style="color:var(--a1);font-style:normal;">버퍼의 변경 내용을 디스크에 강제 기록</em>하고 로그에 체크포인트 레코드를 남기는 기법 — 복구 시 로그 탐색 범위를 줄여 복구 시간 단축
+    </div>
+
+    <div class="acc open" onclick="this.classList.toggle('open')">
+      <div class="acc-h"><div class="acc-title" style="color:var(--a3);">체크포인트 동작 & 복구 결정 로직 ⭐</div><div class="acc-tgl">▾</div></div>
+      <div class="acc-body">
+        <div style="background:var(--s3);border:1px solid var(--bdr);border-radius:7px;padding:10px;font-family:'JetBrains Mono',monospace;font-size:10.5px;line-height:1.7;overflow-x:auto;">
+<span style="color:var(--mu);">시간축 ──────────────────────────────────────────────►</span><br>
+<span style="color:var(--a3);">           [CKPT]                    [FAILURE]</span><br>
+<span style="color:var(--a2);">T1: ───────────────commit─────────────────</span><span style="color:var(--mu);"> → REDO 불필요 (CKPT때 이미 디스크 반영)</span><br>
+<span style="color:var(--a1);">T2:       ──────────────────commit─────</span><span style="color:var(--mu);">    → REDO 필요 (CKPT후 COMMIT, 디스크 미반영 가능)</span><br>
+<span style="color:var(--a4);">T3:               ─────────────────────</span><span style="color:var(--mu);">    → UNDO 필요 (COMMIT 안 됨)</span><br>
+<span style="color:var(--a4);">T4:                       ─────────────</span><span style="color:var(--mu);">    → UNDO 필요 (COMMIT 안 됨, 무시가능)</span>
+        </div>
+        <p style="font-size:11.5px;font-weight:800;color:var(--a3);margin:10px 0 6px;">체크포인트 기준 복구 결정 규칙</p>
+        <table>
+          <thead><tr><th>트랜잭션 상황</th><th>복구 연산</th><th>이유</th></tr></thead>
+          <tbody>
+            <tr><td>CKPT 전에 COMMIT</td><td><strong>없음</strong></td><td>CKPT 시 이미 디스크 반영됨</td></tr>
+            <tr><td>CKPT 후에 COMMIT (장애 전)</td><td><strong>REDO</strong></td><td>COMMIT됐지만 디스크 미반영 가능</td></tr>
+            <tr><td>COMMIT 없이 장애 (CKPT 전후 무관)</td><td><strong>UNDO</strong></td><td>미완료 트랜잭션 → 원상복구</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="acc" onclick="this.classList.toggle('open')">
+      <div class="acc-h"><div class="acc-title" style="color:var(--a1);">체크포인트 종류 ⭐</div><div class="acc-tgl">▾</div></div>
+      <div class="acc-body">
+        <table>
+          <thead><tr><th>종류</th><th>특징</th><th>장점</th><th>단점</th></tr></thead>
+          <tbody>
+            <tr><td><strong>Consistent (Sharp) Checkpoint</strong></td><td>체크포인트 시 모든 트랜잭션 일시 중단 → 버퍼 전체 플러시</td><td>복구 단순</td><td>서비스 중단 시간 발생</td></tr>
+            <tr><td><strong>Fuzzy Checkpoint ⭐</strong></td><td>트랜잭션 중단 없이 점진적 플러시 / 시작·끝 LSN 기록</td><td>서비스 무중단</td><td>복구 로직 복잡</td></tr>
+          </tbody>
+        </table>
+        <ul class="il" style="margin-top:8px;">
+          <li><strong>Fuzzy Checkpoint 처리:</strong> CKPT_BEGIN · CKPT_END 두 레코드를 로그에 기록하여 체크포인트 범위 표시</li>
+          <li><strong>ARIES의 Fuzzy Checkpoint:</strong> 진행 중인 트랜잭션 목록(ATT)과 더티 페이지 목록(DPT)을 로그에 기록</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="acc" onclick="this.classList.toggle('open')">
+      <div class="acc-h"><div class="acc-title" style="color:var(--a5);">LSN (Log Sequence Number) & 로그 관리 ⭐</div><div class="acc-tgl">▾</div></div>
+      <div class="acc-body">
+        <ul class="il">
+          <li><strong>LSN</strong>: 각 로그 레코드에 부여되는 단조증가 고유 번호 — 복구 시 순서·위치 식별</li>
+          <li><strong>Page LSN</strong>: 페이지에 마지막으로 적용된 로그의 LSN — 해당 페이지가 최신인지 확인</li>
+          <li><strong>Flushed LSN</strong>: 로그 버퍼에서 디스크로 플러시된 마지막 LSN</li>
+          <li><strong>WAL 강제 규칙:</strong> 데이터 페이지를 디스크에 쓰기 전 <em>Page LSN 이하의 모든 로그를 먼저 플러시</em></li>
+          <li><strong>COMMIT 규칙:</strong> COMMIT 로그가 안정 저장소에 기록된 후에만 COMMIT 완료 처리</li>
+        </ul>
+      </div>
+    </div>
+    <div class="memo">체크포인트=주기적 버퍼→디스크 강제기록·복구범위축소 / CKPT전COMMIT=복구불필요 / CKPT후COMMIT=REDO / 미COMMIT=UNDO</div>
+  </div>
+</div>
+
+<!-- P4: 그림자 페이지·기타 -->
+<div class="pnl" id="p4">
+  <div class="card">
+    <div class="card-h"><div class="ico ip">🌑</div><h3>그림자 페이지 (Shadow Paging) ⭐</h3></div>
+    <div style="background:var(--s2);border:1px solid rgba(167,139,250,.25);border-radius:9px;padding:12px;margin-bottom:11px;font-size:12.5px;line-height:1.8;">
+      <strong style="color:var(--a5)">Shadow Paging</strong>: 트랜잭션이 페이지를 수정할 때 <em style="color:var(--a3);font-style:normal;">원본 페이지는 그대로 두고 새로운 페이지(Shadow)에 수정된 내용</em>을 기록. COMMIT 시 포인터를 Shadow로 전환
+    </div>
+
+    <div class="acc open" onclick="this.classList.toggle('open')">
+      <div class="acc-h"><div class="acc-title" style="color:var(--a5);">Shadow Paging 동작 원리 ⭐</div><div class="acc-tgl">▾</div></div>
+      <div class="acc-body">
+        <div style="background:var(--s3);border:1px solid var(--bdr);border-radius:7px;padding:10px;font-family:'JetBrains Mono',monospace;font-size:10.5px;line-height:2;overflow-x:auto;">
+<span style="color:var(--mu);">[ 트랜잭션 시작 ]</span><br>
+<span style="color:var(--a5);">현재 디렉터리 (Current Page Table)</span>: Page1 → Block_A<br>
+<span style="color:var(--a3);">그림자 디렉터리 (Shadow Page Table)</span>: Page1 → Block_A  <span style="color:var(--mu);">(복사본 유지)</span><br><br>
+<span style="color:var(--mu);">[ 페이지 수정 ]</span><br>
+<span style="color:var(--a5);">현재 디렉터리</span>: Page1 → Block_B  <span style="color:var(--mu);">(새 블록에 수정 기록)</span><br>
+<span style="color:var(--a3);">그림자 디렉터리</span>: Page1 → Block_A  <span style="color:var(--mu);">(원본 유지)</span><br><br>
+<span style="color:var(--mu);">[ COMMIT ]</span>  : 그림자를 현재로 교체 → Block_A 해제<br>
+<span style="color:var(--mu);">[ ROLLBACK ]</span>: 현재를 그림자로 교체 → Block_B 해제 (즉시 복구)
+        </div>
+      </div>
+    </div>
+
+    <div class="g2">
+      <div style="background:var(--s2);border:1px solid rgba(52,211,153,.25);border-radius:8px;padding:12px;">
+        <p style="font-size:11.5px;font-weight:800;color:var(--a2);margin-bottom:7px;">Shadow Paging 장점</p>
+        <ul class="il">
+          <li><strong>로그 불필요:</strong> 별도의 UNDO 로그 없이 복구 가능</li>
+          <li><strong>빠른 복구:</strong> ROLLBACK 시 포인터만 교체 → 즉시 복구</li>
+          <li><strong>단순성:</strong> REDO도 불필요 (Shadow가 이미 안전)</li>
+        </ul>
+      </div>
+      <div style="background:var(--s2);border:1px solid rgba(248,113,113,.25);border-radius:8px;padding:12px;">
+        <p style="font-size:11.5px;font-weight:800;color:var(--a4);margin-bottom:7px;">Shadow Paging 단점</p>
+        <ul class="il">
+          <li><strong>저장 공간 낭비:</strong> 페이지 2개 유지 — 원본+Shadow</li>
+          <li><strong>단편화 발생:</strong> 포인터 교체로 연속 블록 배치 불가</li>
+          <li><strong>동시성 제한:</strong> 여러 트랜잭션 동시 처리 어려움</li>
+          <li><strong>가비지 컬렉션:</strong> 구 페이지 청소 필요</li>
+        </ul>
+      </div>
+    </div>
+    <div class="memo">Shadow Paging: 원본 유지+Shadow에 수정 / COMMIT=Shadow→현재 포인터 교체 / ROLLBACK=즉시 복구 / 단점: 공간낭비·단편화</div>
+  </div>
+
+  <div class="card">
+    <div class="card-h"><div class="ico ig">🔄</div><h3>기타 복구 기법 비교 ⭐</h3></div>
+    <table>
+      <thead><tr><th>기법</th><th>특징</th><th>복구 연산</th><th>장점</th><th>단점</th></tr></thead>
+      <tbody>
+        <tr><td><strong>즉시 갱신 + 로그</strong></td><td>수정 즉시 디스크 반영</td><td>UNDO + REDO</td><td>데이터 최신성</td><td>로그 복잡, 오버헤드</td></tr>
+        <tr><td><strong>지연 갱신 + 로그</strong></td><td>COMMIT 후 디스크 반영</td><td>REDO만</td><td>UNDO 불필요</td><td>COMMIT 시 지연</td></tr>
+        <tr><td><strong>Shadow Paging</strong></td><td>별도 Shadow 페이지 유지</td><td>포인터 교체만</td><td>로그 불필요·빠른 복구</td><td>공간 낭비·단편화</td></tr>
+        <tr><td><strong>ARIES (표준)</strong></td><td>즉시갱신+WAL+Fuzzy CKPT</td><td>REDO → UNDO</td><td>성능·정확성 균형</td><td>구현 복잡</td></tr>
+      </tbody>
+    </table>
+
+    <div class="card-h" style="margin-top:14px;margin-bottom:10px;"><div class="ico ir">💾</div><h3>미디어 복구 (Media Recovery)</h3></div>
+    <ul class="il">
+      <li><strong>대상:</strong> 디스크 물리 손상으로 데이터 파일 자체 손실된 경우</li>
+      <li><strong>방법:</strong> ①최근 풀 백업 복원 → ②아카이브 로그 REDO → ③온라인 로그 REDO</li>
+      <li><strong>아카이브 로그:</strong> 오래된 로그 파일을 별도 보관 — 미디어 복구에 필수</li>
+      <li><strong>Point-in-Time Recovery (PITR):</strong> 특정 시점으로 복구 — 실수 INSERT·DELETE 복구</li>
+      <li><strong>복제(Replication):</strong> Primary → Standby 실시간 복제로 빠른 페일오버</li>
+    </ul>
+    <div class="memo">미디어복구: 풀백업복원→아카이브로그REDO→온라인로그REDO / PITR=특정시점복구 / 아카이브로그=미디어복구 필수</div>
+  </div>
+</div>
+
+<!-- P5: ARIES -->
+<div class="pnl" id="p5">
+  <div class="card">
+    <div class="card-h"><div class="ico ib">🔬</div><h3>ARIES (Algorithm for Recovery and Isolation Exploiting Semantics) ⭐</h3></div>
+    <div style="background:var(--s2);border:1px solid rgba(96,165,250,.25);border-radius:9px;padding:12px;margin-bottom:11px;font-size:12.5px;line-height:1.8;">
+      <strong style="color:var(--a1)">ARIES</strong>: IBM이 개발한 <em style="color:var(--a3);font-style:normal;">WAL + Fuzzy Checkpoint + LSN 기반</em>의 실용적 복구 알고리즘 — 현재 대부분의 상업용 DBMS의 복구 표준
+    </div>
+
+    <div class="acc open" onclick="this.classList.toggle('open')">
+      <div class="acc-h"><div class="acc-title" style="color:var(--a1);">ARIES 3대 핵심 원칙 ⭐</div><div class="acc-tgl">▾</div></div>
+      <div class="acc-body">
+        <table>
+          <thead><tr><th>원칙</th><th>내용</th><th>의미</th></tr></thead>
+          <tbody>
+            <tr><td><strong>① WAL (Write-Ahead Logging)</strong></td><td>데이터를 디스크에 쓰기 전 로그를 반드시 먼저 안정 저장소에 기록</td><td>데이터 손실 방지 / UNDO 가능</td></tr>
+            <tr><td><strong>② Repeating History ⭐</strong></td><td>복구 시 장애 직전까지의 모든 작업을 그대로 재실행 (COMMIT·미완료 모두)</td><td>장애 시점 상태 정확히 재현</td></tr>
+            <tr><td><strong>③ Logging Changes During Undo ⭐</strong></td><td>UNDO 연산도 로그에 기록 (CLR — Compensation Log Record)</td><td>복구 중 재장애 시 UNDO 반복 방지</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="acc" onclick="this.classList.toggle('open')">
+      <div class="acc-h"><div class="acc-title" style="color:var(--a3);">ARIES 복구 3단계 ⭐</div><div class="acc-tgl">▾</div></div>
+      <div class="acc-body">
+        <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px;">
+          <div style="flex:1;min-width:180px;background:rgba(96,165,250,.08);border:1px solid rgba(96,165,250,.3);border-radius:7px;padding:10px;text-align:center;">
+            <div style="font-size:18px;margin-bottom:4px;">🔍</div>
+            <div style="font-size:12px;font-weight:900;color:var(--a1);margin-bottom:4px;">① Analysis (분석)</div>
+            <div style="font-size:10.5px;color:var(--mu);line-height:1.4;">마지막 CKPT부터 로그 순방향 스캔<br>→ ATT(활성 트랜잭션 목록)<br>→ DPT(더티 페이지 목록)<br>→ REDO 시작점 결정</div>
+          </div>
+          <div style="display:flex;align-items:center;color:var(--mu);font-size:20px;">→</div>
+          <div style="flex:1;min-width:180px;background:rgba(52,211,153,.08);border:1px solid rgba(52,211,153,.3);border-radius:7px;padding:10px;text-align:center;">
+            <div style="font-size:18px;margin-bottom:4px;">▶️</div>
+            <div style="font-size:12px;font-weight:900;color:var(--a2);margin-bottom:4px;">② REDO (재실행)</div>
+            <div style="font-size:10.5px;color:var(--mu);line-height:1.4;">DPT의 oldest LSN부터 순방향으로<br>모든 변경 재실행 (역사 반복)<br>COMMIT·미완료 모두 REDO<br>→ 장애 직전 상태 재현</div>
+          </div>
+          <div style="display:flex;align-items:center;color:var(--mu);font-size:20px;">→</div>
+          <div style="flex:1;min-width:180px;background:rgba(248,113,113,.08);border:1px solid rgba(248,113,113,.3);border-radius:7px;padding:10px;text-align:center;">
+            <div style="font-size:18px;margin-bottom:4px;">↩️</div>
+            <div style="font-size:12px;font-weight:900;color:var(--a4);margin-bottom:4px;">③ UNDO (취소)</div>
+            <div style="font-size:10.5px;color:var(--mu);line-height:1.4;">ATT에 남은 미완료 트랜잭션을<br>로그 역순으로 UNDO<br>CLR(보상 로그) 기록하며 진행<br>→ 원자성 복원</div>
+          </div>
+        </div>
+        <div class="warn">ARIES REDO 단계에서는 COMMIT 안 된 트랜잭션도 모두 재실행 (Repeating History 원칙) → 그 후 UNDO 단계에서 미완료 취소</div>
+      </div>
+    </div>
+
+    <div class="acc" onclick="this.classList.toggle('open')">
+      <div class="acc-h"><div class="acc-title" style="color:var(--a5);">ARIES 핵심 자료구조 ⭐</div><div class="acc-tgl">▾</div></div>
+      <div class="acc-body">
+        <table>
+          <thead><tr><th>자료구조</th><th>약어</th><th>내용</th><th>사용 단계</th></tr></thead>
+          <tbody>
+            <tr><td><strong>활성 트랜잭션 테이블</strong></td><td><strong>ATT</strong></td><td>현재 진행 중인 트랜잭션 목록 + 각 트랜잭션의 Last LSN</td><td>Analysis → UNDO</td></tr>
+            <tr><td><strong>더티 페이지 테이블</strong></td><td><strong>DPT</strong></td><td>디스크에 아직 반영되지 않은 수정 페이지 목록 + Rec LSN(첫 수정 LSN)</td><td>Analysis → REDO 시작점</td></tr>
+            <tr><td><strong>보상 로그 레코드</strong></td><td><strong>CLR</strong></td><td>UNDO 연산을 기록한 로그 — UndoNextLSN으로 다음 UNDO 위치 지시</td><td>UNDO</td></tr>
+          </tbody>
+        </table>
+        <ul class="il" style="margin-top:8px;">
+          <li><strong>REDO 시작점:</strong> DPT의 모든 RecLSN 중 최솟값 — 여기서부터 순방향 REDO</li>
+          <li><strong>CLR의 역할:</strong> UNDO 중 재장애 발생 시 이미 UNDO한 연산을 다시 UNDO하지 않도록 방지 → 멱등성 보장</li>
+          <li><strong>LSN 검사:</strong> REDO 시 Page LSN ≥ 로그 LSN이면 이미 반영된 것 → 해당 REDO 건너뜀</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="acc" onclick="this.classList.toggle('open')">
+      <div class="acc-h"><div class="acc-title" style="color:var(--a2);">ARIES vs 전통 복구 비교 ⭐</div><div class="acc-tgl">▾</div></div>
+      <div class="acc-body">
+        <table>
+          <thead><tr><th>비교 항목</th><th>전통 복구 (단순)</th><th>ARIES</th></tr></thead>
+          <tbody>
+            <tr><td><strong>체크포인트</strong></td><td>Sharp Checkpoint (서비스 중단)</td><td><strong>Fuzzy Checkpoint (무중단)</strong></td></tr>
+            <tr><td><strong>REDO 범위</strong></td><td>COMMIT된 트랜잭션만 REDO</td><td><strong>모든 변경 REDO (Repeating History)</strong></td></tr>
+            <tr><td><strong>UNDO 로그 기록</strong></td><td>UNDO 연산 기록 안 함</td><td><strong>CLR로 UNDO도 기록 (재장애 대비)</strong></td></tr>
+            <tr><td><strong>페이지 기반 복구</strong></td><td>파일 단위</td><td><strong>페이지 단위 세밀한 복구 (Page LSN)</strong></td></tr>
+            <tr><td><strong>동시성</strong></td><td>낮음</td><td><strong>높음 (Fuzzy CKPT로 중단 없음)</strong></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div class="memo">ARIES 3원칙: WAL + 역사반복(REDO) + UNDO도로그(CLR) / 3단계: Analysis→REDO→UNDO / ATT(활성TX)·DPT(더티페이지)·CLR(보상로그)</div>
+  </div>
+</div>
+
+<!-- P6: QA -->
+<div class="pnl" id="p6">
+  <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:7px;margin-bottom:12px;">
+    <div class="fb-wr" id="fbar" style="margin:0;">
+      <button class="fb on" data-f="all">전체</button>
+      <button class="fb" data-f="ACID">⚙️ ACID·장애</button>
+      <button class="fb" data-f="로그">📜 로그·갱신</button>
+      <button class="fb" data-f="체크포인트">📌 체크포인트</button>
+      <button class="fb" data-f="Shadow">🌑 Shadow</button>
+      <button class="fb" data-f="ARIES">🔬 ARIES</button>
+      <button class="fb" data-f="OX">⭕ OX</button>
+    </div>
+    <div class="sc-b">정답: <span id="sc">0</span>/<span id="st">0</span></div>
+  </div>
+  <div id="ql"></div>
+</div>
+
+</div>
+<script>
+document.querySelectorAll('.tab').forEach(t=>t.addEventListener('click',()=>{
+  document.querySelectorAll('.tab,.pnl').forEach(x=>x.classList.remove('on'));
+  t.classList.add('on');document.getElementById(t.dataset.p).classList.add('on');
+}));
+const QA=[
+  {cat:'ACID',diff:'easy',
+   q:'트랜잭션의 ACID 속성 중 "커밋된 트랜잭션의 결과는 시스템 장애 후에도 영구적으로 반영되어야 한다"는 속성은?',
+   cs:['원자성 (Atomicity)','일관성 (Consistency)','격리성 (Isolation)','지속성 (Durability)'],ans:3,
+   exp:'<strong>지속성(Durability)</strong>: COMMIT된 트랜잭션은 시스템 장애 후에도 영구 반영됩니다. 이를 보장하는 메커니즘이 <em>REDO 로그와 WAL</em>입니다. 원자성=전부or전무(UNDO), 일관성=제약조건 유지, 격리성=동시 트랜잭션 간섭 방지(Lock·MVCC).'},
+  {cat:'ACID',diff:'mid',
+   q:'트랜잭션 장애 유형 중 "시스템 장애(System Failure)"의 특징으로 가장 적절한 것은?',
+   cs:['디스크가 물리적으로 손상되어 데이터 파일 자체를 잃는 장애','정전이나 소프트웨어 오류로 메모리(버퍼)의 내용이 손실되지만 디스크 내용은 유지되는 장애','단일 트랜잭션의 논리 오류로 해당 트랜잭션만 실패하는 장애','네트워크 단절로 원격 데이터베이스 접근이 불가능한 장애'],ans:1,
+   exp:'<strong>시스템 장애</strong>: 정전·OS 충돌·SW 버그 등으로 <em>메모리(버퍼) 내용이 손실</em>되지만 <em>디스크 내용은 유지</em>됩니다. 로그는 WAL로 디스크에 먼저 기록되어 있어 로그 기반 복구(REDO+UNDO) 가능. 디스크 손상=미디어 장애(백업+아카이브로그 필요), 단일 트랜잭션 오류=트랜잭션 장애.'},
+  {cat:'로그',diff:'mid',
+   q:'WAL(Write-Ahead Logging) 원칙의 의미로 가장 적절한 것은?',
+   cs:['데이터를 먼저 디스크에 기록한 후 로그를 기록한다.','데이터를 디스크에 기록하기 전에 반드시 로그를 먼저 안정 저장소에 기록한다.','로그와 데이터를 동시에 기록한다.','COMMIT 이후에만 로그를 기록한다.'],ans:1,
+   exp:'<strong>WAL(Write-Ahead Logging)</strong>: 데이터 페이지를 디스크에 쓰기 <em>전에</em> 해당 변경에 대한 로그를 먼저 안정 저장소(디스크)에 기록해야 합니다. 이를 통해 장애 시 로그를 이용한 복구가 가능합니다. ARIES 알고리즘의 핵심 원칙이며, 현대 DBMS의 표준 로깅 방식입니다.'},
+  {cat:'로그',diff:'mid',
+   q:'즉시 갱신(Immediate Update)과 지연 갱신(Deferred Update)의 차이로 가장 적절한 것은?',
+   cs:['즉시 갱신은 COMMIT 후에, 지연 갱신은 COMMIT 전에 디스크에 반영한다.','즉시 갱신은 수정 즉시 디스크에 반영하여 UNDO+REDO가 모두 필요하고, 지연 갱신은 COMMIT 후 반영하여 REDO만 필요하다.','즉시 갱신과 지연 갱신 모두 UNDO와 REDO가 필요하다.','지연 갱신은 로그를 사용하지 않는다.'],ans:1,
+   exp:'<strong>즉시 갱신</strong>: 트랜잭션 수행 중 수정사항을 즉시 디스크 반영 → Before Image(UNDO용)+After Image(REDO용) 모두 필요 → <em>UNDO+REDO</em> 모두 사용. <strong>지연 갱신</strong>: COMMIT 전까지 로그에만 기록, COMMIT 후 디스크 반영 → After Image만 필요 → <em>REDO만</em> 필요(COMMIT 전 장애 시 로그 버리면 됨).'},
+  {cat:'체크포인트',diff:'mid',
+   q:'체크포인트(Checkpoint) 시점 이후 장애 발생 시, 다음 트랜잭션 중 REDO가 필요한 경우로 가장 적절한 것은?',
+   cs:['체크포인트 이전에 시작하고 이전에 COMMIT된 트랜잭션','체크포인트 이후에 COMMIT되었지만 아직 디스크에 반영되지 않았을 수 있는 트랜잭션','체크포인트 이후에 시작했지만 장애 시점까지 COMMIT되지 않은 트랜잭션','COMMIT 여부와 관계없이 체크포인트 이전에 시작한 모든 트랜잭션'],ans:1,
+   exp:'<strong>체크포인트 후 COMMIT된 트랜잭션</strong>: COMMIT은 완료됐지만 변경사항이 아직 디스크에 반영되지 않았을 수 있으므로 <em>REDO</em>가 필요합니다. CKPT 전 COMMIT=이미 디스크 반영(복구 불필요), COMMIT 없이 장애=UNDO 필요. 핵심 규칙: COMMIT+디스크미반영=REDO / 미COMMIT=UNDO.'},
+  {cat:'Shadow',diff:'mid',
+   q:'그림자 페이지(Shadow Paging) 기법의 특징으로 가장 적절하지 않은 것은?',
+   cs:['트랜잭션 수행 중 원본 페이지는 그대로 두고 새 페이지(Shadow)에 수정 내용을 기록한다.','ROLLBACK 시 포인터만 그림자 페이지로 교체하여 빠른 복구가 가능하다.','REDO 로그가 필요하므로 로그 기반 복구와 함께 사용해야 한다.','저장 공간 낭비와 단편화가 단점이다.'],ans:2,
+   exp:'<strong>Shadow Paging</strong>의 핵심 특징: 원본과 Shadow 두 버전 유지. COMMIT 시 Shadow를 현재로 전환, ROLLBACK 시 현재를 Shadow로 전환. 별도의 <em>REDO 로그가 불필요</em>합니다 — Shadow 자체가 안전한 상태를 보장하기 때문입니다. 로그 기반 복구와 병행하는 것이 Shadow Paging의 방식이 아닙니다.'},
+  {cat:'ARIES',diff:'mid',
+   q:'ARIES 알고리즘의 "Repeating History(역사 반복)" 원칙의 의미로 가장 적절한 것은?',
+   cs:['복구 시 COMMIT된 트랜잭션의 변경만 재실행한다.','복구 시 장애 직전까지의 모든 변경(COMMIT·미완료 포함)을 그대로 재실행하여 장애 직전 상태를 정확히 재현한다.','동일한 트랜잭션을 여러 번 반복 실행하여 오류를 검출한다.','UNDO 연산을 반복 실행하여 원자성을 보장한다.'],ans:1,
+   exp:'<strong>ARIES Repeating History</strong>: REDO 단계에서 COMMIT됐든 안 됐든 <em>모든 변경을 로그 순서대로 재실행</em>하여 장애 직전 상태를 정확히 재현합니다. COMMIT 안 된 변경도 재실행한 후, UNDO 단계에서 취소합니다. 이 접근법으로 정확한 복구 기반을 마련합니다.'},
+  {cat:'ARIES',diff:'hard',
+   q:'ARIES 복구 알고리즘의 3단계 수행 순서로 가장 적절한 것은?',
+   cs:['REDO → Analysis → UNDO','Analysis → UNDO → REDO','Analysis → REDO → UNDO','UNDO → REDO → Analysis'],ans:2,
+   exp:'<strong>ARIES 3단계</strong>: ①<em>Analysis(분석)</em>: 마지막 체크포인트부터 로그를 순방향 스캔하여 ATT(활성 트랜잭션 목록)와 DPT(더티 페이지 목록) 구성, REDO 시작점 결정 → ②<em>REDO(재실행)</em>: DPT의 oldest RecLSN부터 순방향으로 모든 변경 재실행(역사 반복) → ③<em>UNDO(취소)</em>: ATT에 남은 미완료 트랜잭션을 역순으로 UNDO, CLR 기록.'},
+  {cat:'ARIES',diff:'hard',
+   q:'ARIES에서 CLR(Compensation Log Record)의 역할로 가장 적절한 것은?',
+   cs:['체크포인트 시점의 더티 페이지 목록을 기록한다.','UNDO 연산을 로그에 기록하여 복구 중 재장애 발생 시 동일한 UNDO 연산이 반복되지 않도록 방지한다.','COMMIT된 트랜잭션의 after image를 기록한다.','활성 트랜잭션의 마지막 LSN을 추적한다.'],ans:1,
+   exp:'<strong>CLR(Compensation Log Record)</strong>: UNDO 연산을 수행할 때마다 로그에 CLR을 기록합니다. CLR은 <em>UndoNextLSN</em>을 포함하여 다음으로 UNDO해야 할 위치를 지시합니다. 복구 중 재장애 발생 시 CLR 덕분에 이미 UNDO된 연산을 <em>반복 UNDO하지 않아</em> 멱등성을 보장합니다. ATT=활성트랜잭션테이블, DPT=더티페이지테이블.'},
+  {cat:'로그',diff:'hard',
+   q:'로그 레코드에서 Before Image와 After Image의 사용 목적으로 가장 적절한 것은?',
+   cs:['Before Image는 감사 목적, After Image는 백업 목적','Before Image는 UNDO(취소)에, After Image는 REDO(재실행)에 사용된다.','Before Image와 After Image 모두 REDO에만 사용된다.','After Image는 UNDO에, Before Image는 REDO에 사용된다.'],ans:1,
+   exp:'<strong>Before/After Image</strong>: <em>Before Image(이전값)</em>: 변경 이전의 데이터값 → <strong>UNDO</strong>에 사용(미완료 트랜잭션 취소 시 이전 값으로 되돌림). <em>After Image(이후값)</em>: 변경 이후의 데이터값 → <strong>REDO</strong>에 사용(COMMIT된 트랜잭션 재적용 시 이후 값 적용). 지연 갱신은 After Image만 필요(UNDO 불필요).'},
+  {cat:'OX',diff:'easy',type:'ox',
+   q:'WAL(Write-Ahead Logging)은 데이터를 디스크에 기록하기 전에 반드시 로그를 먼저 안정 저장소에 기록하는 원칙이다.',ans:true,
+   exp:'<strong>○</strong> — WAL은 복구의 핵심 원칙입니다. 데이터 페이지를 디스크에 쓰기 전 해당 로그를 먼저 디스크(안정 저장소)에 기록합니다. 이를 통해 시스템 장애 시 로그를 기반으로 데이터를 복구할 수 있습니다. ARIES의 핵심 원칙이며, COMMIT 시에도 COMMIT 로그가 먼저 디스크에 기록된 후 COMMIT 완료 처리됩니다.'},
+  {cat:'체크포인트',diff:'mid',type:'ox',
+   q:'Fuzzy Checkpoint는 체크포인트 수행 중 모든 트랜잭션을 일시 중단하고 버퍼 전체를 디스크에 플러시하는 방식이다.',ans:false,
+   exp:'<strong>×</strong> — 설명은 <strong>Sharp(Consistent) Checkpoint</strong>입니다. <strong>Fuzzy Checkpoint</strong>는 트랜잭션을 <em>중단하지 않고</em> 점진적으로 버퍼를 플러시하며 CKPT_BEGIN·CKPT_END 두 로그를 기록합니다. 서비스 무중단으로 체크포인트를 수행하는 것이 Fuzzy의 핵심. ARIES는 Fuzzy Checkpoint를 사용합니다.'},
+  {cat:'Shadow',diff:'mid',type:'ox',
+   q:'그림자 페이지(Shadow Paging) 기법에서 ROLLBACK 시 별도의 UNDO 로그 없이 포인터를 그림자 페이지 테이블로 교체하는 것만으로 빠른 복구가 가능하다.',ans:true,
+   exp:'<strong>○</strong> — Shadow Paging에서 <em>원본 페이지(그림자 페이지 테이블)</em>는 수정 전 상태로 유지됩니다. ROLLBACK 시 현재 페이지 테이블을 그림자 페이지 테이블로 교체(포인터 변경)하는 것만으로 즉시 복구됩니다. UNDO 로그가 불필요한 것이 Shadow Paging의 장점이며, 단점은 저장 공간 낭비와 단편화입니다.'},
+  {cat:'ARIES',diff:'hard',type:'ox',
+   q:'ARIES 복구의 REDO 단계에서는 COMMIT된 트랜잭션의 변경만 재실행하고, COMMIT되지 않은 트랜잭션의 변경은 재실행하지 않는다.',ans:false,
+   exp:'<strong>×</strong> — ARIES의 <strong>Repeating History 원칙</strong>: REDO 단계에서는 COMMIT 여부와 관계없이 <em>모든 변경을 로그 순서대로 재실행</em>합니다. COMMIT 안 된 변경도 먼저 재실행하여 장애 직전 상태를 정확히 재현한 후, <em>UNDO 단계</em>에서 미완료 트랜잭션을 역순으로 취소합니다. 이것이 ARIES와 전통 복구의 핵심 차이입니다.'},
+  {cat:'ACID',diff:'mid',type:'ox',
+   q:'트랜잭션이 "부분완료(Partially Committed)" 상태에 있다는 것은 이미 COMMIT이 완료되어 영구 반영된 상태를 의미한다.',ans:false,
+   exp:'<strong>×</strong> — <strong>부분완료(Partially Committed)</strong>는 마지막 연산까지 실행됐지만 <em>아직 COMMIT이 완료되지 않은</em> 상태입니다. 이 상태에서도 오류가 발생하면 ROLLBACK(철회)으로 전이될 수 있습니다. COMMIT 로그가 안정 저장소에 기록되어야 비로소 <em>완료(Committed)</em> 상태가 됩니다.'},
+];
+let answered=0,correct=0;
+function renderQ(f){
+  const data=f==='all'?QA:QA.filter(q=>q.cat===f);
+  const list=document.getElementById('ql');list.innerHTML='';
+  answered=0;correct=0;upS();
+  const CATC={'ACID':'tb','로그':'tg','체크포인트':'ty','Shadow':'tp','ARIES':'tr','OX':'to'};
+  const DLC={'easy':'easy 쉬움','mid':'mid 보통','hard':'hard 어려움'};
+  const NL=['①','②','③','④'];
+  if(!data.length){list.innerHTML='<div style="text-align:center;padding:40px;color:var(--mu)">문제 없음</div>';return;}
+  data.forEach((q,i)=>{
+    const gi=QA.indexOf(q);
+    const el=document.createElement('div');el.className='qa';
+    const tc=CATC[q.cat]||'tb';
+    const [dc,dn]=(DLC[q.diff]||'mid 보통').split(' ');
+    if(q.type==='ox'){
+      el.innerHTML=`<div class="qa-hd" onclick="this.closest('.qa').classList.toggle('open')"><div><div class="qa-meta"><span class="qn">Q${String(i+1).padStart(2,'0')}</span><span class="tag ${tc}">${q.cat}</span><span class="diff ${dc}">${dn}</span><span class="tag tg">O/X</span></div><div class="qq">${q.q}</div></div><span class="tgl">▾</span></div>
+      <div class="qa-bd"><div class="ox-wr"><button class="ox" onclick="pickOX(this,true,${gi})">⭕ 옳다</button><button class="ox" onclick="pickOX(this,false,${gi})">❌ 틀리다</button></div><div class="exp" id="ex-${gi}"><div class="exp-t">💡 해설</div>${q.exp}</div></div>`;
+    } else {
+      el.innerHTML=`<div class="qa-hd" onclick="this.closest('.qa').classList.toggle('open')"><div><div class="qa-meta"><span class="qn">Q${String(i+1).padStart(2,'0')}</span><span class="tag ${tc}">${q.cat}</span><span class="diff ${dc}">${dn}</span></div><div class="qq">${q.q}</div></div><span class="tgl">▾</span></div>
+      <div class="qa-bd"><div class="chs">${q.cs.map((c,ci)=>`<div class="ch" data-ci="${ci}" onclick="pickCh(this,${gi})"><span class="cnum">${NL[ci]}</span><span>${c}</span></div>`).join('')}</div><div class="exp" id="ex-${gi}"><div class="exp-t">💡 해설</div>${q.exp}</div></div>`;
+    }
+    list.appendChild(el);
+  });
+}
+function pickCh(el,gi){
+  const bd=el.closest('.qa-bd');if(bd.querySelector('.ok,.ng'))return;
+  const q=QA[gi];
+  bd.querySelectorAll('.ch').forEach((c,i)=>{c.classList.add('lk');if(i===q.ans)c.classList.add('ok');else if(i===parseInt(el.dataset.ci))c.classList.add('ng');});
+  document.getElementById('ex-'+gi).classList.add('show');
+  answered++;if(parseInt(el.dataset.ci)===q.ans)correct++;upS();
+}
+function pickOX(btn,val,gi){
+  const bd=btn.closest('.qa-bd');if(bd.querySelector('.so,.sx'))return;
+  const q=QA[gi];
+  bd.querySelectorAll('.ox').forEach(b=>b.classList.add('lk'));
+  btn.classList.add(val?'so':'sx');
+  if(val!==q.ans){btn.style.opacity='.5';bd.querySelectorAll('.ox')[val?1:0].classList.add(q.ans?'so':'sx');}
+  document.getElementById('ex-'+gi).classList.add('show');
+  answered++;if(val===q.ans)correct++;upS();
+}
+function upS(){document.getElementById('sc').textContent=correct;document.getElementById('st').textContent=answered;}
+document.getElementById('fbar').addEventListener('click',e=>{
+  const b=e.target.closest('.fb');if(!b)return;
+  document.querySelectorAll('.fb').forEach(x=>x.classList.remove('on'));b.classList.add('on');renderQ(b.dataset.f);
+});
+renderQ('all');
+</script>
+</body>
+</html>

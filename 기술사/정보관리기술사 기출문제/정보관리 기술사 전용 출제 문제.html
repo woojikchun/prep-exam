@@ -1,0 +1,1191 @@
+<!DOCTYPE html>
+<!-- saved from url=(0155)file:///C:/Users/USER/Downloads/%EC%A0%95%EB%B3%B4%EA%B4%80%EB%A6%AC%EA%B8%B0%EC%88%A0%EC%82%AC_%EC%A0%84%EC%9A%A9%EC%B6%9C%EC%A0%9C%EB%AC%B8%EC%A0%9C.html -->
+<html lang="ko"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>정보관리 기술사 전용 출제 문제</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Noto Sans KR','Apple SD Gothic Neo','Malgun Gothic',sans-serif;font-size:14px;color:#1a1a18;background:#f0f4f0;padding:1.5rem}
+.wrap{max-width:980px;margin:0 auto;background:#fff;border-radius:14px;border:1px solid rgba(0,0,0,.1);padding:1.75rem 2.25rem 3rem}
+
+/* 헤더 */
+.top-bar{background:linear-gradient(135deg,#1a4d2e 0%,#2d8a52 100%);border-radius:12px;padding:1.1rem 1.5rem;margin-bottom:1.1rem;color:#fff}
+.top-bar h1{font-size:17px;font-weight:700;line-height:1.4;margin-bottom:.3rem}
+.top-bar p{font-size:12px;opacity:.85;line-height:1.5}
+.badge-row{display:flex;gap:.5rem;flex-wrap:wrap;margin-top:.6rem}
+.badge{font-size:11px;padding:3px 10px;border-radius:20px;font-weight:600;white-space:nowrap}
+.badge-grn{background:rgba(255,255,255,.2);color:#fff;border:1px solid rgba(255,255,255,.35)}
+.badge-red{background:#FCEBEB;color:#791F1F}
+.badge-ylw{background:#FFF0E0;color:#633806}
+
+/* 구분 안내 */
+.notice{background:#FFF9E6;border:1px solid #f0c060;border-radius:10px;padding:.75rem 1rem;margin-bottom:1.1rem;font-size:12px;line-height:1.75;color:#412402}
+.notice strong{color:#854F0B}
+
+/* 통계 */
+.stat-row{display:grid;grid-template-columns:repeat(5,1fr);gap:.5rem;margin-bottom:1.1rem}
+.stat{border-radius:10px;padding:.65rem .6rem;text-align:center;border:1px solid}
+.stat .n{font-size:20px;font-weight:700;line-height:1.2}
+.stat .l{font-size:10px;margin-top:2px;font-weight:500}
+.sg{background:#EAF3DE;border-color:#aad07a;color:#27500A}.sg .n{color:#3B6D11}
+.sb{background:#E6F1FB;border-color:#90bce8;color:#0C447C}.sb .n{color:#185FA5}
+.sr{background:#FCEBEB;border-color:#e8a8a8;color:#791F1F}.sr .n{color:#A32D2D}
+.so{background:#FFF0E0;border-color:#f0c070;color:#633806}.so .n{color:#854F0B}
+.sp{background:#EEEDFE;border-color:#b0aaee;color:#3C3489}.sp .n{color:#534AB7}
+
+/* 필터 */
+.filter-wrap{background:#f5f4ef;border-radius:10px;padding:.65rem .85rem;margin-bottom:1.1rem}
+.filter-label{font-size:10px;color:#73726c;font-weight:700;letter-spacing:.05em;margin-bottom:.4rem}
+.filter-row{display:flex;gap:5px;flex-wrap:wrap}
+.fb{font-size:11px;padding:4px 12px;border-radius:20px;border:1px solid #d3d1c7;background:#fff;cursor:pointer;color:#5f5e5a;transition:all .12s;font-weight:500}
+.fb:hover{background:#eaf3de;border-color:#5a9e5a;color:#1a4d2e}
+.fb.on{background:#2d8a52;border-color:#2d8a52;color:#fff;font-weight:700}
+
+/* 카드 */
+.topic-card{border:1px solid #e0ddd5;border-radius:12px;margin-bottom:.65rem;overflow:hidden;transition:box-shadow .15s}
+.topic-card:hover{box-shadow:0 2px 14px rgba(0,0,0,.09)}
+.tc-head{padding:.75rem 1rem;cursor:pointer;display:flex;align-items:flex-start;gap:.7rem;background:#fff}
+.tc-head:hover{background:#fafaf8}
+
+.tc-left{display:flex;flex-direction:column;gap:4px;flex-shrink:0;min-width:64px}
+.freq-badge{font-size:11px;padding:3px 9px;border-radius:20px;font-weight:700;text-align:center}
+.f7{background:#FCEBEB;color:#791F1F;border:1px solid #e8a8a8}
+.f6{background:#FFF0E0;color:#633806;border:1px solid #f0c070}
+.f5{background:#EAF3DE;color:#27500A;border:1px solid #aad07a}
+.f4{background:#E6F1FB;color:#0C447C;border:1px solid #90bce8}
+.f3{background:#EEEDFE;color:#3C3489;border:1px solid #b0aaee}
+.only-badge{font-size:9px;padding:2px 6px;border-radius:20px;background:#2d8a52;color:#fff;text-align:center;font-weight:700}
+.cat-pill{font-size:10px;padding:2px 7px;border-radius:20px;background:#f5f4ef;border:1px solid #d3d1c7;color:#73726c;text-align:center}
+
+.tc-main{flex:1;min-width:0}
+.tc-title{font-size:13px;font-weight:700;line-height:1.45;color:#1a1a18;margin-bottom:.2rem}
+.tc-sub{font-size:11px;color:#73726c;line-height:1.4}
+.tc-arrow{font-size:12px;color:#9e9c94;flex-shrink:0;padding-top:2px}
+
+/* 바디 */
+.tc-body{display:none;padding:.85rem 1rem 1.1rem;border-top:1px solid #e0ddd5;background:#fafaf8}
+.tc-body.open{display:block}
+.section-tag{font-size:10px;font-weight:700;color:#5f5e5a;letter-spacing:.06em;text-transform:uppercase;margin:.6rem 0 .3rem}
+
+/* 연도 칩 */
+.year-chips{display:flex;flex-wrap:wrap;gap:4px;margin-bottom:.6rem}
+.yc{font-size:10px;padding:2px 8px;border-radius:20px;background:#f0eee8;border:1px solid #d3d1c7;color:#73726c}
+.yc.r{background:#E6F1FB;border-color:#378ADD;color:#0C447C;font-weight:700}
+
+/* 핵심 개념 */
+.concept-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:.5rem;margin-bottom:.65rem}
+.concept-box{background:#fff;border:1px solid #e0ddd5;border-radius:8px;padding:.5rem .75rem}
+.concept-box .chead{font-size:11px;font-weight:700;color:#2d8a52;margin-bottom:.2rem}
+.concept-box .cbody{font-size:11px;color:#5f5e5a;line-height:1.6}
+
+/* 변형 문항 */
+.variants-box{background:#fff;border:1px solid #e0ddd5;border-radius:8px;padding:.6rem .85rem;margin-bottom:.65rem}
+.v-item{font-size:12px;line-height:1.75;color:#3a3936;padding:.2rem 0;border-bottom:1px dashed #e8e6df;display:flex;gap:.5rem}
+.v-item:last-child{border-bottom:none}
+.v-num{font-size:10px;font-weight:700;color:#2d8a52;flex-shrink:0;padding-top:3px}
+
+/* 전략 팁 */
+.tip-box{background:linear-gradient(135deg,#EAF3DE,#f2f9ee);border:1px solid #aad07a;border-radius:8px;padding:.65rem .9rem;font-size:12px;line-height:1.75;color:#1a1a18}
+.tip-box .tip-head{font-size:10px;font-weight:700;color:#2d8a52;letter-spacing:.05em;margin-bottom:.25rem}
+
+/* 키워드 태그 */
+.kw-row{display:flex;flex-wrap:wrap;gap:4px;margin-bottom:.65rem}
+.kw{font-size:10px;padding:2px 9px;border-radius:6px;font-weight:600}
+.kb{background:#E6F1FB;color:#0C447C}
+.kg{background:#EAF3DE;color:#27500A}
+.kr{background:#FCEBEB;color:#791F1F}
+.kp{background:#EEEDFE;color:#3C3489}
+.ka{background:#FFF0E0;color:#633806}
+
+/* 구분선 */
+.sec-div{font-size:11px;font-weight:700;color:#2d8a52;letter-spacing:.05em;text-transform:uppercase;margin:1.1rem 0 .45rem;padding:.35rem .75rem;background:#EAF3DE;border-radius:6px;display:flex;align-items:center;gap:.5rem;border:1px solid #aad07a}
+.sec-div::before{content:'';display:block;width:3px;height:14px;border-radius:2px;background:#2d8a52}
+
+.empty{text-align:center;padding:2.5rem;font-size:13px;color:#73726c}
+
+/* 비교 표 */
+.comp-table{width:100%;border-collapse:collapse;font-size:11px;margin:.4rem 0 .65rem}
+.comp-table th{background:#EAF3DE;padding:5px 8px;border:1px solid #c8e6b4;color:#1a4d2e;font-weight:700;text-align:left}
+.comp-table td{padding:5px 8px;border:1px solid #e0ddd5;vertical-align:top;line-height:1.5;color:#3a3936}
+.comp-table tr:nth-child(even) td{background:#f8fbf5}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<div class="top-bar">
+  <h1>정보관리 기술사 — 전용 출제 문제 정리</h1>
+  <p>컴퓨터시스템응용 기술사 시험에는 <strong style="color:#ffe08a">출제되지 않고</strong>, 정보관리 기술사 시험에만 반복 출제된 핵심 토픽</p>
+  <div class="badge-row">
+    <span class="badge badge-grn">✔ 정보관리 전용</span>
+    <span class="badge badge-red">✘ 컴시응 미출제</span>
+    <span class="badge badge-ylw">파란 연도칩 = 최근 5년</span>
+  </div>
+</div>
+
+<div class="notice">
+  <strong>선별 기준</strong> — 컴퓨터구조·운영체제·파이프라인·교착상태·암호 알고리즘 등 하드웨어·시스템 SW 위주의 컴시응 공통 영역은 제외하였습니다.<br>
+  아래 문제들은 <strong>경영·관리·제도·데이터 전략</strong> 관점에서 정보관리 기술사만이 요구하는 고유 역량 영역입니다.
+</div>
+
+<div class="stat-row">
+  <div class="stat sg"><div class="n" id="s7">6</div><div class="l">7회+ 출제</div></div>
+  <div class="stat sb"><div class="n" id="s6">7</div><div class="l">6회 출제</div></div>
+  <div class="stat so"><div class="n" id="s5">5</div><div class="l">5회 출제</div></div>
+  <div class="stat sr"><div class="n" id="s4">1</div><div class="l">4회 출제</div></div>
+  <div class="stat sp"><div class="n" id="stot">19</div><div class="l">총 토픽 수</div></div>
+</div>
+
+<div class="filter-wrap">
+  <div class="filter-label">▸ 도메인 필터</div>
+  <div class="filter-row" id="frow">
+    <button class="fb on" data-f="all">전체</button>
+    <button class="fb" data-f="audit">정보시스템 감리</button>
+    <button class="fb" data-f="mis">경영정보·IT전략</button>
+    <button class="fb" data-f="data">데이터 전략·거버넌스</button>
+    <button class="fb" data-f="law">법규·제도</button>
+    <button class="fb" data-f="pm">프로젝트·서비스 관리</button>
+    <button class="fb" data-f="biz">비즈니스 아키텍처</button>
+    <button class="fb" data-f="dw">DW·빅데이터 플랫폼</button>
+  </div>
+</div>
+
+<div id="list"><div class="sec-div">정보시스템 감리</div><div class="topic-card">
+        <div class="tc-head" onclick="tog(&#39;caudit0&#39;)">
+          <div class="tc-left">
+            <span class="freq-badge f7">8회 출제</span>
+            <span class="only-badge">정보관리 전용</span>
+            <span class="cat-pill">정보시스템 감리</span>
+          </div>
+          <div class="tc-main">
+            <div class="tc-title">정보시스템 감리 절차·점검 항목·결함 처리</div>
+            <div class="tc-sub">정보관리 기술사 핵심 고유 영역</div>
+          </div>
+          <span class="tc-arrow" id="arr-caudit0">▼</span>
+        </div>
+        <div class="tc-body" id="body-caudit0">
+          <div class="section-tag">출제 연도 <span style="font-weight:400;font-style:italic;color:#aaa">(파란색 = 최근 5년)</span></div>
+          <div class="year-chips"><span class="yc">97회</span><span class="yc">100회</span><span class="yc">103회</span><span class="yc">107회</span><span class="yc">111회</span><span class="yc">114회</span><span class="yc r">118회</span><span class="yc r">122회</span><span class="yc r">125회</span></div>
+          <div class="section-tag">키워드</div>
+          <div class="kw-row"><span class="kw kb">사전검토</span><span class="kw kb">착수감리</span><span class="kw kg">중간감리</span><span class="kw kg">완료감리</span><span class="kw ka">감리보고서</span><span class="kw kr">시정조치</span><span class="kw kr">전자정부법 57조</span></div>
+          <div class="section-tag">핵심 개념 요약</div>
+          <div class="concept-grid"><div class="concept-box"><div class="chead">감리 4단계</div><div class="cbody">사전검토 → 착수감리 → 중간감리 → 완료감리</div></div><div class="concept-box"><div class="chead">감리인 역할</div><div class="cbody">독립성·전문성·객관성 보장, 발주기관·사업자 중립</div></div><div class="concept-box"><div class="chead">의무 감리 대상</div><div class="cbody">전자정부법 57조: 20억 이상 정보화 사업</div></div><div class="concept-box"><div class="chead">결함 분류</div><div class="cbody">중결함·경결함 분류 후 시정조치·재감리 여부 결정</div></div></div>
+          <div class="section-tag">유사·변형 출제 문항</div>
+          <div class="variants-box"><div class="v-item"><span class="v-num">Q1</span><span>정보시스템 감리의 절차(사전검토·착수·중간·완료 감리)와 각 단계의 주요 점검 항목을 설명하시오</span></div><div class="v-item"><span class="v-num">Q2</span><span>소프트웨어 개발 사업 감리에서 요구사항·설계·구현·테스트·이행 단계별 감리 관점을 서술하시오</span></div><div class="v-item"><span class="v-num">Q3</span><span>감리 결과의 결함 분류(중결함·경결함) 기준과 시정 조치·재감리 절차를 설명하시오</span></div><div class="v-item"><span class="v-num">Q4</span><span>「전자정부법」 제57조에 따른 의무 감리 대상과 감리 법인 지정 기준을 서술하시오</span></div><div class="v-item"><span class="v-num">Q5</span><span>공공 정보화 사업의 감리인과 PMO(프로젝트 관리 전문 기관)의 역할 차이를 비교하시오</span></div><div class="v-item"><span class="v-num">Q6</span><span>데이터베이스 감리 시 무결성·보안·성능·백업 관점의 점검 체크리스트를 작성하시오</span></div><div class="v-item"><span class="v-num">Q7</span><span>클라우드 기반 공공 정보화 사업 감리 시 추가 고려 사항(보안·데이터 주권·SLA)을 논하시오</span></div></div>
+          <div class="tip-box">
+            <div class="tip-head">💡 수험 전략</div>
+            정보관리 기술사 시험의 가장 강력한 차별화 도메인—컴시응에는 존재하지 않음. 감리 4단계 표(단계·시기·점검 목적·산출물)를 반드시 구성. 의무 감리 대상(전자정부법 57조: 총사업비 20억 이상)은 암기 필수. 최근 클라우드·AI 시스템 감리 특수성 문항 증가.
+          </div>
+        </div>
+      </div><div class="topic-card">
+        <div class="tc-head" onclick="tog(&#39;caudit1&#39;)">
+          <div class="tc-left">
+            <span class="freq-badge f6">6회 출제</span>
+            <span class="only-badge">정보관리 전용</span>
+            <span class="cat-pill">정보시스템 감리</span>
+          </div>
+          <div class="tc-main">
+            <div class="tc-title">소프트웨어 사업 대가 기준 — 기능점수법·투입 공수법·분리 발주</div>
+            <div class="tc-sub">공공 IT 조달 감리</div>
+          </div>
+          <span class="tc-arrow" id="arr-caudit1">▼</span>
+        </div>
+        <div class="tc-body" id="body-caudit1">
+          <div class="section-tag">출제 연도 <span style="font-weight:400;font-style:italic;color:#aaa">(파란색 = 최근 5년)</span></div>
+          <div class="year-chips"><span class="yc">99회</span><span class="yc">103회</span><span class="yc">108회</span><span class="yc">113회</span><span class="yc r">118회</span><span class="yc r">122회</span></div>
+          <div class="section-tag">키워드</div>
+          <div class="kw-row"><span class="kw kb">기능점수법</span><span class="kw kb">투입공수법</span><span class="kw kg">보정계수</span><span class="kw kr">분리발주 의무</span><span class="kw ka">하도급 관리</span><span class="kw ka">SW 대가 기준</span></div>
+          <div class="section-tag">핵심 개념 요약</div>
+          <div class="concept-grid"><div class="concept-box"><div class="chead">기능점수법</div><div class="cbody">ILF·EIF·EI·EO·EQ 가중치 합산 × 보정계수</div></div><div class="concept-box"><div class="chead">투입공수법</div><div class="cbody">맨먼스 × 단가, 유지보수·운영 사업에 적합</div></div><div class="concept-box"><div class="chead">분리 발주</div><div class="cbody">HW·SW·유지보수를 별도 발주, 中企 참여 기회 보장</div></div><div class="concept-box"><div class="chead">감리 연계</div><div class="cbody">대가 기준 적정성 검토가 감리 항목에 포함</div></div></div>
+          <div class="section-tag">유사·변형 출제 문항</div>
+          <div class="variants-box"><div class="v-item"><span class="v-num">Q1</span><span>공공 소프트웨어 사업 대가 기준의 기능점수법과 투입공수법을 비교하고 사업 유형별 적용 기준을 설명하시오</span></div><div class="v-item"><span class="v-num">Q2</span><span>기능점수(FP) 산정에서 미조정 기능점수(UFP)에 기술 복잡도 조정 인수(TCF)를 적용하는 절차를 서술하시오</span></div><div class="v-item"><span class="v-num">Q3</span><span>소프트웨어 분리 발주 의무화의 목적과 「소프트웨어 진흥법」 상 대상 사업 기준을 설명하시오</span></div><div class="v-item"><span class="v-num">Q4</span><span>공공 SI 사업의 하도급 관리 적정성 감리 관점과 「하도급법」 적용 이슈를 논하시오</span></div></div>
+          <div class="tip-box">
+            <div class="tip-head">💡 수험 전략</div>
+            SW 진흥법 기반 대가 기준 고시(과기부)와 연계. 기능점수 계산 공식(UFP = Σ가중치합, AFP = UFP × (0.65 + 0.01×TCF))은 계산 문항으로 자주 출제.
+          </div>
+        </div>
+      </div><div class="sec-div">경영정보·IT전략</div><div class="topic-card">
+        <div class="tc-head" onclick="tog(&#39;cmis0&#39;)">
+          <div class="tc-left">
+            <span class="freq-badge f7">8회 출제</span>
+            <span class="only-badge">정보관리 전용</span>
+            <span class="cat-pill">경영정보·IT전략</span>
+          </div>
+          <div class="tc-main">
+            <div class="tc-title">IT 거버넌스 — COBIT·ITIL·ISO 38500·BSC</div>
+            <div class="tc-sub">IT 경영 프레임워크</div>
+          </div>
+          <span class="tc-arrow" id="arr-cmis0">▼</span>
+        </div>
+        <div class="tc-body" id="body-cmis0">
+          <div class="section-tag">출제 연도 <span style="font-weight:400;font-style:italic;color:#aaa">(파란색 = 최근 5년)</span></div>
+          <div class="year-chips"><span class="yc">96회</span><span class="yc">100회</span><span class="yc">104회</span><span class="yc">108회</span><span class="yc">112회</span><span class="yc">116회</span><span class="yc r">120회</span><span class="yc r">123회</span></div>
+          <div class="section-tag">키워드</div>
+          <div class="kw-row"><span class="kw kb">COBIT 2019</span><span class="kw kb">ITIL 4 SVS</span><span class="kw kg">ISO 38500</span><span class="kw ka">IT BSC</span><span class="kw kr">IT 투자 ROI</span><span class="kw kr">거버넌스 vs 관리</span></div>
+          <div class="section-tag">핵심 개념 요약</div>
+          <div class="concept-grid"><div class="concept-box"><div class="chead">COBIT 2019</div><div class="cbody">5대 영역: 평가·지시·모니터링(EDM) + 조정·계획·조직(APO) 등 40개 목표</div></div><div class="concept-box"><div class="chead">ITIL 4 SVS</div><div class="cbody">서비스 가치 시스템: 기회·수요→가치, 34개 실천(Practice)</div></div><div class="concept-box"><div class="chead">ISO 38500</div><div class="cbody">이사회 IT 거버넌스 6원칙: 책임·전략·인수·성과·준수·인간행동</div></div><div class="concept-box"><div class="chead">IT BSC</div><div class="cbody">재무·고객·내부프로세스·학습성장 4관점 KPI 연계</div></div></div>
+          <div class="section-tag">유사·변형 출제 문항</div>
+          <div class="variants-box"><div class="v-item"><span class="v-num">Q1</span><span>IT 거버넌스의 5가지 핵심 영역(책임·전략정렬·가치전달·위험관리·성과측정)과 COBIT 2019 설계 요소를 설명하시오</span></div><div class="v-item"><span class="v-num">Q2</span><span>ITIL 4 서비스 가치 시스템(SVS)의 구성 요소와 서비스 가치 체인(SVC) 6가지 활동을 서술하시오</span></div><div class="v-item"><span class="v-num">Q3</span><span>ISO/IEC 38500 IT 거버넌스의 6원칙과 이사회·경영진 역할 분담 모델을 설명하시오</span></div><div class="v-item"><span class="v-num">Q4</span><span>IT Balanced Scorecard의 4관점과 KPI 설정, IT 투자 포트폴리오 관리와의 연계를 논하시오</span></div><div class="v-item"><span class="v-num">Q5</span><span>IT 거버넌스와 기업 거버넌스(Corporate Governance)의 관계를 설명하고 CIO의 역할을 서술하시오</span></div><div class="v-item"><span class="v-num">Q6</span><span>COBIT과 ITIL의 차이(목적·대상·범위)를 비교하고 상호 보완 방안을 논하시오</span></div></div>
+          <div class="tip-box">
+            <div class="tip-head">💡 수험 전략</div>
+            COBIT(거버넌스 프레임워크) vs. ITIL(운영 모범 사례) 비교 표는 단골. ITIL 4의 "서비스 가치 체인(SVC)" 6활동(Plan·Improve·Engage·Design&amp;Transition·Obtain/Build·Deliver&amp;Support) 암기.
+          </div>
+        </div>
+      </div><div class="topic-card">
+        <div class="tc-head" onclick="tog(&#39;cmis1&#39;)">
+          <div class="tc-left">
+            <span class="freq-badge f7">7회 출제</span>
+            <span class="only-badge">정보관리 전용</span>
+            <span class="cat-pill">경영정보·IT전략</span>
+          </div>
+          <div class="tc-main">
+            <div class="tc-title">ERP·SCM·CRM·BPR — 기업 정보시스템 통합 전략</div>
+            <div class="tc-sub">경영정보시스템 핵심</div>
+          </div>
+          <span class="tc-arrow" id="arr-cmis1">▼</span>
+        </div>
+        <div class="tc-body" id="body-cmis1">
+          <div class="section-tag">출제 연도 <span style="font-weight:400;font-style:italic;color:#aaa">(파란색 = 최근 5년)</span></div>
+          <div class="year-chips"><span class="yc">95회</span><span class="yc">99회</span><span class="yc">104회</span><span class="yc">108회</span><span class="yc">113회</span><span class="yc r">117회</span><span class="yc r">121회</span></div>
+          <div class="section-tag">키워드</div>
+          <div class="kw-row"><span class="kw kb">ERP 도입 CSF</span><span class="kw kr">채찍 효과</span><span class="kw kg">CLV</span><span class="kw ka">BPR 선행</span><span class="kw ka">SaaS ERP</span><span class="kw kb">CRM 분석</span></div>
+          <div class="section-tag">핵심 개념 요약</div>
+          <div class="concept-grid"><div class="concept-box"><div class="chead">ERP CSF</div><div class="cbody">경영진 지원·BPR 선행·커스터마이징 최소화·변경 관리</div></div><div class="concept-box"><div class="chead">채찍 효과</div><div class="cbody">소비자 수요 변동이 공급망 상위로 갈수록 증폭</div></div><div class="concept-box"><div class="chead">CLV</div><div class="cbody">고객 생애 가치 = Σ(기간별 수익 × 유지율) - 획득 비용</div></div><div class="concept-box"><div class="chead">BPR 연계</div><div class="cbody">ERP 도입 전 프로세스 혁신 선행이 성공률 좌우</div></div></div>
+          <div class="section-tag">유사·변형 출제 문항</div>
+          <div class="variants-box"><div class="v-item"><span class="v-num">Q1</span><span>ERP 시스템의 구성 모듈과 BPR(업무 프로세스 재설계) 선행의 필요성을 설명하고 도입 실패 원인을 분석하시오</span></div><div class="v-item"><span class="v-num">Q2</span><span>SCM에서 채찍 효과(Bullwhip Effect)의 발생 메커니즘과 정보 공유·VMI·CPFR을 통한 해소 방안을 서술하시오</span></div><div class="v-item"><span class="v-num">Q3</span><span>CRM의 운영적·분석적·협업적 CRM을 구분하고 고객 생애 가치(CLV) 최대화 전략을 논하시오</span></div><div class="v-item"><span class="v-num">Q4</span><span>SaaS 기반 Cloud ERP와 온프레미스 ERP를 TCO·유연성·보안 관점에서 비교하시오</span></div><div class="v-item"><span class="v-num">Q5</span><span>ERP-SCM-CRM 시스템 통합 아키텍처와 ESB(Enterprise Service Bus) 역할을 설명하시오</span></div></div>
+          <div class="tip-box">
+            <div class="tip-head">💡 수험 전략</div>
+            채찍 효과 그래프(소비자→소매→도매→제조, 변동 증폭) 그리기. ERP 도입 단계(AS-IS 분석→TO-BE 설계→GAP 분석→커스터마이징→교육→Go-Live) 순서도 필수.
+          </div>
+        </div>
+      </div><div class="topic-card">
+        <div class="tc-head" onclick="tog(&#39;cmis2&#39;)">
+          <div class="tc-left">
+            <span class="freq-badge f6">6회 출제</span>
+            <span class="only-badge">정보관리 전용</span>
+            <span class="cat-pill">경영정보·IT전략</span>
+          </div>
+          <div class="tc-main">
+            <div class="tc-title">디지털 전환(DX) — 전략 수립·플랫폼·디지털 트윈</div>
+            <div class="tc-sub">IT 경영 혁신 전략</div>
+          </div>
+          <span class="tc-arrow" id="arr-cmis2">▼</span>
+        </div>
+        <div class="tc-body" id="body-cmis2">
+          <div class="section-tag">출제 연도 <span style="font-weight:400;font-style:italic;color:#aaa">(파란색 = 최근 5년)</span></div>
+          <div class="year-chips"><span class="yc">112회</span><span class="yc">115회</span><span class="yc">118회</span><span class="yc r">121회</span><span class="yc r">123회</span><span class="yc r">126회</span></div>
+          <div class="section-tag">키워드</div>
+          <div class="kw-row"><span class="kw kb">DX 3단계</span><span class="kw kg">디지털 트윈</span><span class="kw kr">플랫폼 전략</span><span class="kw ka">API Economy</span><span class="kw ka">데이터 경제</span><span class="kw kp">비즈니스 모델 혁신</span></div>
+          <div class="section-tag">핵심 개념 요약</div>
+          <div class="concept-grid"><div class="concept-box"><div class="chead">DX 3단계</div><div class="cbody">디지털화(Digitization) → 디지털라이제이션 → 디지털 전환(DX)</div></div><div class="concept-box"><div class="chead">디지털 트윈</div><div class="cbody">실물 자산의 가상 복제본: 물리→센서→모델→시뮬레이션→통찰</div></div><div class="concept-box"><div class="chead">플랫폼 전략</div><div class="cbody">네트워크 효과: 공급자·소비자 양면 시장, 임계점(Critical Mass)</div></div><div class="concept-box"><div class="chead">API Economy</div><div class="cbody">API를 통한 서비스 연결·수익화, Open Banking 사례</div></div></div>
+          <div class="section-tag">유사·변형 출제 문항</div>
+          <div class="variants-box"><div class="v-item"><span class="v-num">Q1</span><span>디지털 전환(DX)의 3단계(디지털화→디지털라이제이션→DX)를 구분하고 기업 전략 수립 프레임워크를 서술하시오</span></div><div class="v-item"><span class="v-num">Q2</span><span>디지털 트윈의 구성 요소(실물·데이터·모델·시뮬레이션)와 제조·인프라·스마트시티 적용 사례를 설명하시오</span></div><div class="v-item"><span class="v-num">Q3</span><span>플랫폼 비즈니스 모델의 네트워크 효과와 전통 파이프라인 비즈니스와의 차이, 임계 질량(Critical Mass) 전략을 논하시오</span></div><div class="v-item"><span class="v-num">Q4</span><span>API Economy 개념과 오픈 API 정책, 마이데이터·오픈 뱅킹 서비스 적용 사례를 설명하시오</span></div><div class="v-item"><span class="v-num">Q5</span><span>ChatGPT·생성형 AI의 기업 디지털 전환 활용 방안과 도입 시 리스크(환각·보안·편향)를 논하시오</span></div></div>
+          <div class="tip-box">
+            <div class="tip-head">💡 수험 전략</div>
+            DX 3단계 구분은 자주 혼용되어 출제. 디지털 트윈은 IoT센서-데이터-가상모델-피드백 루프 그림으로. 최근 GenAI와 DX 결합 문항 급증.
+          </div>
+        </div>
+      </div><div class="topic-card">
+        <div class="tc-head" onclick="tog(&#39;cmis3&#39;)">
+          <div class="tc-left">
+            <span class="freq-badge f5">5회 출제</span>
+            <span class="only-badge">정보관리 전용</span>
+            <span class="cat-pill">경영정보·IT전략</span>
+          </div>
+          <div class="tc-main">
+            <div class="tc-title">엔터프라이즈 아키텍처(EA) — TOGAF·Zachman·정부 EA</div>
+            <div class="tc-sub">조직 전체 IT 설계 체계</div>
+          </div>
+          <span class="tc-arrow" id="arr-cmis3">▼</span>
+        </div>
+        <div class="tc-body" id="body-cmis3">
+          <div class="section-tag">출제 연도 <span style="font-weight:400;font-style:italic;color:#aaa">(파란색 = 최근 5년)</span></div>
+          <div class="year-chips"><span class="yc">100회</span><span class="yc">106회</span><span class="yc">111회</span><span class="yc r">117회</span><span class="yc r">122회</span></div>
+          <div class="section-tag">키워드</div>
+          <div class="kw-row"><span class="kw kb">TOGAF ADM</span><span class="kw kg">비즈니스·데이터·애플리케이션·기술 아키텍처</span><span class="kw ka">Zachman 프레임워크</span><span class="kw kr">EA 성숙도</span><span class="kw kp">범정부 EA</span></div>
+          <div class="section-tag">핵심 개념 요약</div>
+          <div class="concept-grid"><div class="concept-box"><div class="chead">TOGAF ADM</div><div class="cbody">9개 단계: 예비→A(비전)→B(비즈니스)→C(정보시스템)→D(기술)→E~H(전환)→요구사항관리</div></div><div class="concept-box"><div class="chead">4개 아키텍처</div><div class="cbody">비즈니스 → 데이터 → 애플리케이션 → 기술 아키텍처</div></div><div class="concept-box"><div class="chead">Zachman</div><div class="cbody">6행(관점: 계획자~사용자) × 6열(무엇·어떻게·어디·누가·언제·왜)</div></div><div class="concept-box"><div class="chead">정부 EA</div><div class="cbody">범정부 EA(GEA): 행정기관 정보화 계획 수립의 법적 기반</div></div></div>
+          <div class="section-tag">유사·변형 출제 문항</div>
+          <div class="variants-box"><div class="v-item"><span class="v-num">Q1</span><span>TOGAF ADM의 9개 단계를 설명하고 아키텍처 변화 관리(H단계)의 역할을 서술하시오</span></div><div class="v-item"><span class="v-num">Q2</span><span>비즈니스·데이터·애플리케이션·기술 아키텍처의 관계와 각 계층의 산출물을 설명하시오</span></div><div class="v-item"><span class="v-num">Q3</span><span>Zachman 프레임워크의 6×6 매트릭스 구조와 TOGAF와의 차이를 비교하시오</span></div><div class="v-item"><span class="v-num">Q4</span><span>범정부 EA(GEA)의 법적 근거와 공공기관 정보화 계획 수립 시 활용 방법을 서술하시오</span></div></div>
+          <div class="tip-box">
+            <div class="tip-head">💡 수험 전략</div>
+            TOGAF ADM 단계는 알파벳 순(예비→A→B→C→D→E→F→G→H)으로 암기. 4개 아키텍처 도메인을 피라미드 그림으로 표현. 범정부 EA는 행정기관 정보화에 관한 법률 기반.
+          </div>
+        </div>
+      </div><div class="sec-div">데이터 전략·거버넌스</div><div class="topic-card">
+        <div class="tc-head" onclick="tog(&#39;cdata0&#39;)">
+          <div class="tc-left">
+            <span class="freq-badge f7">7회 출제</span>
+            <span class="only-badge">정보관리 전용</span>
+            <span class="cat-pill">데이터 전략·거버넌스</span>
+          </div>
+          <div class="tc-main">
+            <div class="tc-title">데이터 거버넌스 — DAMA-DMBOK·MDM·데이터 품질·카탈로그</div>
+            <div class="tc-sub">데이터 경영·관리 체계</div>
+          </div>
+          <span class="tc-arrow" id="arr-cdata0">▼</span>
+        </div>
+        <div class="tc-body" id="body-cdata0">
+          <div class="section-tag">출제 연도 <span style="font-weight:400;font-style:italic;color:#aaa">(파란색 = 최근 5년)</span></div>
+          <div class="year-chips"><span class="yc">101회</span><span class="yc">105회</span><span class="yc">109회</span><span class="yc">113회</span><span class="yc r">117회</span><span class="yc r">121회</span><span class="yc r">124회</span></div>
+          <div class="section-tag">키워드</div>
+          <div class="kw-row"><span class="kw kb">DAMA-DMBOK 11개</span><span class="kw kg">MDM 4유형</span><span class="kw kr">데이터 품질 6차원</span><span class="kw ka">데이터 카탈로그</span><span class="kw kp">데이터 리니지</span><span class="kw kb">데이터 스튜어드</span></div>
+          <div class="section-tag">핵심 개념 요약</div>
+          <div class="concept-grid"><div class="concept-box"><div class="chead">DAMA-DMBOK</div><div class="cbody">11개 지식 영역: 데이터 거버넌스·아키텍처·모델링·운영·보안·통합·문서·참조·웨어하우스·메타데이터·품질</div></div><div class="concept-box"><div class="chead">MDM 4유형</div><div class="cbody">Registry·Consolidation·Coexistence·Centralized 방식</div></div><div class="concept-box"><div class="chead">품질 6차원</div><div class="cbody">완전성·정확성·일관성·적시성·유일성·유효성</div></div><div class="concept-box"><div class="chead">데이터 리니지</div><div class="cbody">원천→변환→소비 흐름 추적, GDPR 감사 추적 요건</div></div></div>
+          <div class="section-tag">유사·변형 출제 문항</div>
+          <div class="variants-box"><div class="v-item"><span class="v-num">Q1</span><span>DAMA-DMBOK 데이터 관리 지식 영역 11가지와 데이터 거버넌스가 전 영역에 미치는 역할을 설명하시오</span></div><div class="v-item"><span class="v-num">Q2</span><span>MDM(마스터 데이터 관리) 구현 방식 4가지(Registry·Consolidation·Coexistence·Centralized)를 비교하시오</span></div><div class="v-item"><span class="v-num">Q3</span><span>데이터 품질 6차원(완전성·정확성·일관성·적시성·유일성·유효성)의 측정 방법과 개선 절차를 서술하시오</span></div><div class="v-item"><span class="v-num">Q4</span><span>데이터 카탈로그의 기술적·비즈니스 메타데이터 관리와 데이터 리니지 추적 기능을 설명하시오</span></div><div class="v-item"><span class="v-num">Q5</span><span>데이터 스튜어드십(Data Stewardship)의 역할과 데이터 오너·거버넌스 위원회 조직 구성을 논하시오</span></div><div class="v-item"><span class="v-num">Q6</span><span>데이터 메시(Data Mesh) 아키텍처의 4원칙과 중앙집중식 데이터 레이크 대비 장단점을 서술하시오</span></div></div>
+          <div class="tip-box">
+            <div class="tip-head">💡 수험 전략</div>
+            DAMA-DMBOK 11개 지식 영역은 전체 나열보다 "거버넌스가 중심에서 나머지 10개 영역을 지원" 구조로 허브-스포크 그림 활용. MDM 4유형은 데이터 중복 허용 여부 관점으로 비교표 작성.
+          </div>
+        </div>
+      </div><div class="topic-card">
+        <div class="tc-head" onclick="tog(&#39;cdata1&#39;)">
+          <div class="tc-left">
+            <span class="freq-badge f6">6회 출제</span>
+            <span class="only-badge">정보관리 전용</span>
+            <span class="cat-pill">데이터 전략·거버넌스</span>
+          </div>
+          <div class="tc-main">
+            <div class="tc-title">데이터 웨어하우스·OLAP — 스타 스키마·ETL·데이터 레이크하우스</div>
+            <div class="tc-sub">분석 데이터 아키텍처</div>
+          </div>
+          <span class="tc-arrow" id="arr-cdata1">▼</span>
+        </div>
+        <div class="tc-body" id="body-cdata1">
+          <div class="section-tag">출제 연도 <span style="font-weight:400;font-style:italic;color:#aaa">(파란색 = 최근 5년)</span></div>
+          <div class="year-chips"><span class="yc">97회</span><span class="yc">102회</span><span class="yc">108회</span><span class="yc">113회</span><span class="yc r">118회</span><span class="yc r">123회</span></div>
+          <div class="section-tag">키워드</div>
+          <div class="kw-row"><span class="kw kb">스타 스키마</span><span class="kw kb">눈송이 스키마</span><span class="kw kg">OLAP 큐브</span><span class="kw ka">ETL vs ELT</span><span class="kw kr">데이터 레이크</span><span class="kw kp">Lakehouse</span></div>
+          <div class="section-tag">핵심 개념 요약</div>
+          <div class="concept-grid"><div class="concept-box"><div class="chead">스타 스키마</div><div class="cbody">Fact 테이블(중앙) + Dimension 테이블(방사형), 조인 단순</div></div><div class="concept-box"><div class="chead">ETL vs ELT</div><div class="cbody">ETL: 변환 후 적재(전통 DW) / ELT: 적재 후 변환(클라우드 DW)</div></div><div class="concept-box"><div class="chead">OLAP 연산</div><div class="cbody">Drill-down·Roll-up·Slice·Dice·Pivot으로 다차원 분석</div></div><div class="concept-box"><div class="chead">Lakehouse</div><div class="cbody">Data Lake의 유연성 + DW의 ACID·스키마 = Delta Lake·Iceberg</div></div></div>
+          <div class="section-tag">유사·변형 출제 문항</div>
+          <div class="variants-box"><div class="v-item"><span class="v-num">Q1</span><span>OLTP와 OLAP의 차이를 트랜잭션 패턴·스키마·인덱스 전략 관점에서 비교하시오</span></div><div class="v-item"><span class="v-num">Q2</span><span>스타 스키마와 눈송이 스키마의 구조를 비교하고 Fact 테이블·Dimension 테이블 설계 기준을 설명하시오</span></div><div class="v-item"><span class="v-num">Q3</span><span>ETL과 ELT의 처리 과정을 비교하고 클라우드 데이터 웨어하우스 환경에서의 ELT 이점을 서술하시오</span></div><div class="v-item"><span class="v-num">Q4</span><span>OLAP의 5가지 연산(Drill-down·Roll-up·Slice·Dice·Pivot)을 예시와 함께 설명하시오</span></div><div class="v-item"><span class="v-num">Q5</span><span>데이터 레이크(Data Lake)의 데이터 늪(Data Swamp) 문제와 레이크하우스(Lakehouse) 아키텍처로의 전환을 논하시오</span></div><div class="v-item"><span class="v-num">Q6</span><span>데이터 가상화(Data Virtualization)와 데이터 패브릭(Data Fabric)의 개념과 기존 통합 방식과의 차이를 설명하시오</span></div></div>
+          <div class="tip-box">
+            <div class="tip-head">💡 수험 전략</div>
+            스타 스키마 그림(Fact 중심·Dimension 방사형)은 필수 작도 항목. 레이크하우스는 Delta Lake(Databricks)·Apache Iceberg·Apache Hudi 대표 기술로 언급.
+          </div>
+        </div>
+      </div><div class="topic-card">
+        <div class="tc-head" onclick="tog(&#39;cdata2&#39;)">
+          <div class="tc-left">
+            <span class="freq-badge f5">5회 출제</span>
+            <span class="only-badge">정보관리 전용</span>
+            <span class="cat-pill">데이터 전략·거버넌스</span>
+          </div>
+          <div class="tc-main">
+            <div class="tc-title">빅데이터 플랫폼 — Hadoop·Spark·Lambda·Kappa·데이터 메시</div>
+            <div class="tc-sub">대규모 데이터 처리 아키텍처</div>
+          </div>
+          <span class="tc-arrow" id="arr-cdata2">▼</span>
+        </div>
+        <div class="tc-body" id="body-cdata2">
+          <div class="section-tag">출제 연도 <span style="font-weight:400;font-style:italic;color:#aaa">(파란색 = 최근 5년)</span></div>
+          <div class="year-chips"><span class="yc">105회</span><span class="yc">109회</span><span class="yc">113회</span><span class="yc r">117회</span><span class="yc r">121회</span></div>
+          <div class="section-tag">키워드</div>
+          <div class="kw-row"><span class="kw kb">HDFS·MapReduce</span><span class="kw kr">Spark 인메모리</span><span class="kw kg">Lambda 아키텍처</span><span class="kw kg">Kappa 아키텍처</span><span class="kw kp">데이터 메시 4원칙</span><span class="kw ka">스트림 처리</span></div>
+          <div class="section-tag">핵심 개념 요약</div>
+          <div class="concept-grid"><div class="concept-box"><div class="chead">Hadoop 생태계</div><div class="cbody">HDFS(분산 저장) + MapReduce(분산 처리) + YARN(자원 관리)</div></div><div class="concept-box"><div class="chead">Spark 인메모리</div><div class="cbody">RDD·DataFrame·Dataset, MapReduce 대비 100배 속도, DAG 실행</div></div><div class="concept-box"><div class="chead">Lambda 아키텍처</div><div class="cbody">배치 레이어(정확) + 속도 레이어(실시간) + 서빙 레이어</div></div><div class="concept-box"><div class="chead">데이터 메시</div><div class="cbody">도메인 소유권·셀프서비스 인프라·연합 거버넌스·제품으로서의 데이터</div></div></div>
+          <div class="section-tag">유사·변형 출제 문항</div>
+          <div class="variants-box"><div class="v-item"><span class="v-num">Q1</span><span>Hadoop의 HDFS·MapReduce 동작 원리와 Apache Spark의 인메모리 처리(RDD·DAG) 방식을 비교하시오</span></div><div class="v-item"><span class="v-num">Q2</span><span>Lambda 아키텍처(배치·속도·서빙 레이어)와 Kappa 아키텍처의 구조와 장단점을 비교하시오</span></div><div class="v-item"><span class="v-num">Q3</span><span>데이터 메시(Data Mesh)의 4원칙(도메인 소유권·제품화·셀프서비스·연합 거버넌스)을 설명하고 중앙집중식 플랫폼과 비교하시오</span></div><div class="v-item"><span class="v-num">Q4</span><span>실시간 스트림 처리 플랫폼(Apache Kafka·Flink)과 배치 처리의 차이를 서술하시오</span></div></div>
+          <div class="tip-box">
+            <div class="tip-head">💡 수험 전략</div>
+            Lambda vs. Kappa 비교표(처리 방식·복잡도·지연·일관성)는 거의 매번 출제. 데이터 메시 4원칙은 각 원칙이 해결하는 문제(중앙 병목·사일로·품질·거버넌스)와 연결해서 서술.
+          </div>
+        </div>
+      </div><div class="sec-div">법규·제도</div><div class="topic-card">
+        <div class="tc-head" onclick="tog(&#39;claw0&#39;)">
+          <div class="tc-left">
+            <span class="freq-badge f7">7회 출제</span>
+            <span class="only-badge">정보관리 전용</span>
+            <span class="cat-pill">법규·제도</span>
+          </div>
+          <div class="tc-main">
+            <div class="tc-title">개인정보보호법(2023 개정)·GDPR — 법적 요건·정보주체 권리</div>
+            <div class="tc-sub">데이터 보호 법규</div>
+          </div>
+          <span class="tc-arrow" id="arr-claw0">▼</span>
+        </div>
+        <div class="tc-body" id="body-claw0">
+          <div class="section-tag">출제 연도 <span style="font-weight:400;font-style:italic;color:#aaa">(파란색 = 최근 5년)</span></div>
+          <div class="year-chips"><span class="yc">99회</span><span class="yc">103회</span><span class="yc">108회</span><span class="yc">113회</span><span class="yc r">117회</span><span class="yc r">121회</span><span class="yc r">124회</span></div>
+          <div class="section-tag">키워드</div>
+          <div class="kw-row"><span class="kw kb">개보법 6원칙</span><span class="kw kb">정보주체 권리</span><span class="kw kg">가명처리</span><span class="kw kr">GDPR 17조 삭제권</span><span class="kw ka">DPO 의무화</span><span class="kw ka">마이데이터</span><span class="kw kp">이동권(신설)</span></div>
+          <div class="section-tag">핵심 개념 요약</div>
+          <div class="concept-grid"><div class="concept-box"><div class="chead">개보법 6원칙</div><div class="cbody">목적 제한·최소 수집·처리 제한·정확성·보관 제한·책임</div></div><div class="concept-box"><div class="chead">정보주체 권리</div><div class="cbody">열람·정정·삭제·처리 정지·이동권(2023 신설)·자동화 결정 거부권</div></div><div class="concept-box"><div class="chead">가명처리</div><div class="cbody">가명정보: 재식별 위험 있음, 일부 통계·연구 활용 가능</div></div><div class="concept-box"><div class="chead">2023 개정</div><div class="cbody">이동권 신설·과징금 매출액 3%·개인정보위 독립성 강화</div></div></div>
+          <div class="section-tag">유사·변형 출제 문항</div>
+          <div class="variants-box"><div class="v-item"><span class="v-num">Q1</span><span>개인정보보호법의 개인정보 처리 6원칙과 정보주체 권리 6가지(이동권 포함)를 설명하시오</span></div><div class="v-item"><span class="v-num">Q2</span><span>GDPR의 핵심 원칙과 국내 개인정보보호법의 차이(적용 범위·동의 요건·DPO 의무화·역외 적용)를 비교하시오</span></div><div class="v-item"><span class="v-num">Q3</span><span>가명정보·익명정보의 법적 정의와 차이, 가명처리 절차 및 결합 전문 기관 활용을 서술하시오</span></div><div class="v-item"><span class="v-num">Q4</span><span>2023년 개정 개인정보보호법의 주요 변경 사항(이동권·자동화 결정 거부권·과징금 기준 상향)을 설명하시오</span></div><div class="v-item"><span class="v-num">Q5</span><span>마이데이터(본인신용정보관리업) 서비스의 법적 근거와 데이터 주권·정보주체 통제권 강화 방안을 논하시오</span></div><div class="v-item"><span class="v-num">Q6</span><span>개인정보 영향평가(PIA) 의무 대상과 수행 절차를 설명하시오</span></div><div class="v-item"><span class="v-num">Q7</span><span>가명정보의 결합 활용 절차(결합 전문 기관 지정·결합 신청·반출 승인)를 서술하시오</span></div></div>
+          <div class="tip-box">
+            <div class="tip-head">💡 수험 전략</div>
+            2023년 개정 내용(이동권·자동화 결정 거부권 신설, 과징금 매출액 3% 기준) 반드시 반영. 가명정보 결합 절차 플로우차트 그리기. GDPR vs. 개보법 비교 표(적용 범위·DPO·역외 적용·과징금)는 단골.
+          </div>
+        </div>
+      </div><div class="topic-card">
+        <div class="tc-head" onclick="tog(&#39;claw1&#39;)">
+          <div class="tc-left">
+            <span class="freq-badge f6">6회 출제</span>
+            <span class="only-badge">정보관리 전용</span>
+            <span class="cat-pill">법규·제도</span>
+          </div>
+          <div class="tc-main">
+            <div class="tc-title">전자정부법·SW진흥법·공공 클라우드 정책</div>
+            <div class="tc-sub">공공 IT 사업 법적 기반</div>
+          </div>
+          <span class="tc-arrow" id="arr-claw1">▼</span>
+        </div>
+        <div class="tc-body" id="body-claw1">
+          <div class="section-tag">출제 연도 <span style="font-weight:400;font-style:italic;color:#aaa">(파란색 = 최근 5년)</span></div>
+          <div class="year-chips"><span class="yc">97회</span><span class="yc">102회</span><span class="yc">107회</span><span class="yc">112회</span><span class="yc r">117회</span><span class="yc r">121회</span></div>
+          <div class="section-tag">키워드</div>
+          <div class="kw-row"><span class="kw kb">전자정부법</span><span class="kw kb">행정정보 공동이용</span><span class="kw kg">상호운용성</span><span class="kw kr">SW진흥법 분리발주</span><span class="kw ka">공공 CC인증</span><span class="kw kp">PIA 의무</span></div>
+          <div class="section-tag">핵심 개념 요약</div>
+          <div class="concept-grid"><div class="concept-box"><div class="chead">전자정부법</div><div class="cbody">57조: 20억 이상 감리 의무, 행정정보 공동이용 플랫폼(정부24)</div></div><div class="concept-box"><div class="chead">SW진흥법</div><div class="cbody">분리 발주 의무(50억 이상), SW 대가 기준 준수</div></div><div class="concept-box"><div class="chead">공공 클라우드</div><div class="cbody">CC(클라우드컴퓨팅) 서비스 보안인증 3등급(상·중·하)</div></div><div class="concept-box"><div class="chead">상호운용성</div><div class="cbody">행정기관 간 데이터·시스템 연계 표준 준수 의무</div></div></div>
+          <div class="section-tag">유사·변형 출제 문항</div>
+          <div class="variants-box"><div class="v-item"><span class="v-num">Q1</span><span>전자정부법 상 행정정보 공동이용의 원칙·범위와 정보 주체 동의 요건을 설명하시오</span></div><div class="v-item"><span class="v-num">Q2</span><span>소프트웨어 진흥법에 따른 분리 발주 의무 대상(50억 이상)과 SW 사업 대가 기준 적용을 서술하시오</span></div><div class="v-item"><span class="v-num">Q3</span><span>공공 클라우드 우선 정책의 법적 근거와 CC서비스 보안 인증(상·중·하 등급) 체계를 설명하시오</span></div><div class="v-item"><span class="v-num">Q4</span><span>행정기관 개인정보 영향평가(PIA) 의무 대상과 수행 절차를 서술하시오</span></div><div class="v-item"><span class="v-num">Q5</span><span>전자정부 서비스의 접근성 기준(WCAG 2.1)과 장애인 차별 금지법 상 의무를 설명하시오</span></div></div>
+          <div class="tip-box">
+            <div class="tip-head">💡 수험 전략</div>
+            공공 IT 법규는 정보관리 기술사 고유 출제 영역. 전자정부법 57조·SW진흥법 분리발주·CC보안인증 3등급 체계를 세트로 숙지. PIA 의무 대상(공공기관 10만 명 이상 처리 시스템) 암기.
+          </div>
+        </div>
+      </div><div class="topic-card">
+        <div class="tc-head" onclick="tog(&#39;claw2&#39;)">
+          <div class="tc-left">
+            <span class="freq-badge f5">5회 출제</span>
+            <span class="only-badge">정보관리 전용</span>
+            <span class="cat-pill">법규·제도</span>
+          </div>
+          <div class="tc-main">
+            <div class="tc-title">지식재산권·SW 저작권·오픈소스 라이선스</div>
+            <div class="tc-sub">IT 법적 분쟁 및 컴플라이언스</div>
+          </div>
+          <span class="tc-arrow" id="arr-claw2">▼</span>
+        </div>
+        <div class="tc-body" id="body-claw2">
+          <div class="section-tag">출제 연도 <span style="font-weight:400;font-style:italic;color:#aaa">(파란색 = 최근 5년)</span></div>
+          <div class="year-chips"><span class="yc">101회</span><span class="yc">106회</span><span class="yc">111회</span><span class="yc r">116회</span><span class="yc r">121회</span></div>
+          <div class="section-tag">키워드</div>
+          <div class="kw-row"><span class="kw kb">저작권법</span><span class="kw kg">프로그램 저작권</span><span class="kw kr">GPL·MIT·Apache</span><span class="kw ka">SBOM</span><span class="kw kp">영업비밀</span><span class="kw kb">특허 vs 저작권</span></div>
+          <div class="section-tag">핵심 개념 요약</div>
+          <div class="concept-grid"><div class="concept-box"><div class="chead">SW 저작권</div><div class="cbody">창작 즉시 발생, 등록 불필요, 보호 기간 사후 70년</div></div><div class="concept-box"><div class="chead">GPL 특성</div><div class="cbody">Copyleft: GPL SW 사용 시 소스 공개 의무(전염성)</div></div><div class="concept-box"><div class="chead">SBOM</div><div class="cbody">소프트웨어 자재 명세서: 오픈소스 성분 추적, 공급망 보안</div></div><div class="concept-box"><div class="chead">저작권 vs 특허</div><div class="cbody">저작권: 표현 보호, 특허: 아이디어·기능 보호, 심사 필요</div></div></div>
+          <div class="section-tag">유사·변형 출제 문항</div>
+          <div class="variants-box"><div class="v-item"><span class="v-num">Q1</span><span>소프트웨어 저작권의 발생 요건과 보호 범위, 프로그램 저작물의 특수성을 설명하시오</span></div><div class="v-item"><span class="v-num">Q2</span><span>오픈소스 라이선스(GPL·LGPL·MIT·Apache·BSD)의 특성을 비교하고 기업 활용 시 컴플라이언스 주의사항을 서술하시오</span></div><div class="v-item"><span class="v-num">Q3</span><span>SBOM(소프트웨어 자재 명세서)의 개념과 공급망 보안(Supply Chain Security)에의 활용을 설명하시오</span></div><div class="v-item"><span class="v-num">Q4</span><span>소프트웨어 특허와 저작권의 차이, AI 생성 창작물의 저작권 귀속 문제를 논하시오</span></div></div>
+          <div class="tip-box">
+            <div class="tip-head">💡 수험 전략</div>
+            GPL의 전염성(Copyleft) 개념과 LGPL·MIT·Apache 자유도 차이 비교표는 자주 출제. AI 생성물 저작권 귀속 문제는 최신 판례와 연계하면 가점.
+          </div>
+        </div>
+      </div><div class="sec-div">프로젝트·서비스 관리</div><div class="topic-card">
+        <div class="tc-head" onclick="tog(&#39;cpm0&#39;)">
+          <div class="tc-left">
+            <span class="freq-badge f7">7회 출제</span>
+            <span class="only-badge">정보관리 전용</span>
+            <span class="cat-pill">프로젝트·서비스 관리</span>
+          </div>
+          <div class="tc-main">
+            <div class="tc-title">프로젝트 관리 — PMBOK 7판·EVM·일정 관리·위험 관리</div>
+            <div class="tc-sub">IT 프로젝트 관리 체계</div>
+          </div>
+          <span class="tc-arrow" id="arr-cpm0">▼</span>
+        </div>
+        <div class="tc-body" id="body-cpm0">
+          <div class="section-tag">출제 연도 <span style="font-weight:400;font-style:italic;color:#aaa">(파란색 = 최근 5년)</span></div>
+          <div class="year-chips"><span class="yc">96회</span><span class="yc">100회</span><span class="yc">105회</span><span class="yc">109회</span><span class="yc">113회</span><span class="yc r">117회</span><span class="yc r">121회</span></div>
+          <div class="section-tag">키워드</div>
+          <div class="kw-row"><span class="kw kb">PMBOK 7판 12원칙</span><span class="kw kr">EVM·CPI·SPI</span><span class="kw kg">CPM 임계 경로</span><span class="kw ka">PERT</span><span class="kw ka">Monte Carlo</span><span class="kw kp">위험 대응 전략</span></div>
+          <div class="section-tag">핵심 개념 요약</div>
+          <div class="concept-grid"><div class="concept-box"><div class="chead">PMBOK 7판</div><div class="cbody">12원칙 + 8성과 영역, 6판 10지식영역·5프로세스그룹에서 전환</div></div><div class="concept-box"><div class="chead">EVM 공식</div><div class="cbody">SV=EV-PV, CV=EV-AC, SPI=EV/PV, CPI=EV/AC, EAC=BAC/CPI</div></div><div class="concept-box"><div class="chead">CPM</div><div class="cbody">임계 경로: 여유시간(Float)=0인 활동 연결, 프로젝트 최소 기간</div></div><div class="concept-box"><div class="chead">위험 대응</div><div class="cbody">회피(Avoid)·전가(Transfer)·완화(Mitigate)·수용(Accept)</div></div></div>
+          <div class="section-tag">유사·변형 출제 문항</div>
+          <div class="variants-box"><div class="v-item"><span class="v-num">Q1</span><span>PMBOK 7판의 12가지 원칙을 설명하고 6판의 10개 지식 영역·5개 프로세스 그룹과의 변화를 비교하시오</span></div><div class="v-item"><span class="v-num">Q2</span><span>EVM(획득 가치 관리)의 PV·EV·AC·SV·CV·SPI·CPI를 공식과 수치 예시로 설명하고 EAC를 산출하시오</span></div><div class="v-item"><span class="v-num">Q3</span><span>CPM(임계 경로법)으로 네트워크 다이어그램을 작성하고 임계 경로와 총 여유 시간(Total Float)을 계산하시오</span></div><div class="v-item"><span class="v-num">Q4</span><span>PERT 기법의 낙관·최가능·비관 시간 추정과 Monte Carlo 시뮬레이션을 활용한 일정 위험 분석을 서술하시오</span></div><div class="v-item"><span class="v-num">Q5</span><span>프로젝트 위험 관리 5단계(식별→정성 분석→정량 분석→계획→통제)와 대응 전략 4가지를 설명하시오</span></div><div class="v-item"><span class="v-num">Q6</span><span>애자일 프로젝트에서 번다운 차트·속도(Velocity)·스프린트 성과 지표와 EVM 적용 방안을 비교하시오</span></div></div>
+          <div class="tip-box">
+            <div class="tip-head">💡 수험 전략</div>
+            EVM 계산 문항 필수 준비: PV·EV·AC 값을 주고 CPI·SPI·EAC 계산. CPM은 네트워크 다이어그램 그려서 임계 경로 도출. PMBOK 7판 12원칙은 6판 영역과 매핑표로 암기.
+          </div>
+        </div>
+      </div><div class="topic-card">
+        <div class="tc-head" onclick="tog(&#39;cpm1&#39;)">
+          <div class="tc-left">
+            <span class="freq-badge f6">6회 출제</span>
+            <span class="only-badge">정보관리 전용</span>
+            <span class="cat-pill">프로젝트·서비스 관리</span>
+          </div>
+          <div class="tc-main">
+            <div class="tc-title">IT 서비스 관리·SLA·아웃소싱·벤더 관리</div>
+            <div class="tc-sub">IT 운영 및 조달 관리</div>
+          </div>
+          <span class="tc-arrow" id="arr-cpm1">▼</span>
+        </div>
+        <div class="tc-body" id="body-cpm1">
+          <div class="section-tag">출제 연도 <span style="font-weight:400;font-style:italic;color:#aaa">(파란색 = 최근 5년)</span></div>
+          <div class="year-chips"><span class="yc">99회</span><span class="yc">104회</span><span class="yc">109회</span><span class="yc">113회</span><span class="yc r">118회</span><span class="yc r">122회</span></div>
+          <div class="section-tag">키워드</div>
+          <div class="kw-row"><span class="kw kb">SLA·SLO·SLI</span><span class="kw kr">에러 버짓</span><span class="kw kg">아웃소싱 유형</span><span class="kw ka">벤더 평가 기준</span><span class="kw kp">XaaS 계약</span><span class="kw kb">거버넌스 모델</span></div>
+          <div class="section-tag">핵심 개념 요약</div>
+          <div class="concept-grid"><div class="concept-box"><div class="chead">SLI→SLO→SLA</div><div class="cbody">SLI(측정 지표) → SLO(목표값) → SLA(계약상 약속)</div></div><div class="concept-box"><div class="chead">에러 버짓</div><div class="cbody">Google SRE: 100%-SLO = 허용 다운타임, 소진 시 배포 중단</div></div><div class="concept-box"><div class="chead">아웃소싱 유형</div><div class="cbody">선택적(일부)·전체(Mega Deal)·공동 소싱·BPO</div></div><div class="concept-box"><div class="chead">총비용(TCO)</div><div class="cbody">초기 구축 + 운영·유지 + 전환 비용, 아웃소싱 의사결정 기준</div></div></div>
+          <div class="section-tag">유사·변형 출제 문항</div>
+          <div class="variants-box"><div class="v-item"><span class="v-num">Q1</span><span>SLA(서비스 수준 협약)의 구성 요소와 SLI→SLO→SLA 계층 구조, 위반 시 페널티 체계를 설명하시오</span></div><div class="v-item"><span class="v-num">Q2</span><span>Google SRE의 에러 버짓(Error Budget) 개념과 신뢰성·개발 속도 균형 관리 방법을 서술하시오</span></div><div class="v-item"><span class="v-num">Q3</span><span>IT 아웃소싱 유형(선택적·전체·공동 소싱·BPO)의 장단점과 아웃소싱 의사결정 기준을 비교하시오</span></div><div class="v-item"><span class="v-num">Q4</span><span>클라우드 서비스 SLA에서 가용성·보안·데이터 주권·포터빌리티 조항의 핵심 내용을 논하시오</span></div><div class="v-item"><span class="v-num">Q5</span><span>멀티 벤더 환경에서의 벤더 관리 거버넌스 모델과 주요 평가 기준(비용·품질·위험·혁신)을 서술하시오</span></div></div>
+          <div class="tip-box">
+            <div class="tip-head">💡 수험 전략</div>
+            SLI→SLO→SLA 3계층 구조는 반드시 암기. 에러 버짓 = 1 - SLO(예: 99.9%이면 월 43.2분 허용) 계산 예시 준비. 클라우드 SLA는 "데이터 주권"과 "포터빌리티(이동 가능성)"를 반드시 언급.
+          </div>
+        </div>
+      </div><div class="sec-div">비즈니스 아키텍처</div><div class="topic-card">
+        <div class="tc-head" onclick="tog(&#39;cbiz0&#39;)">
+          <div class="tc-left">
+            <span class="freq-badge f6">6회 출제</span>
+            <span class="only-badge">정보관리 전용</span>
+            <span class="cat-pill">비즈니스 아키텍처</span>
+          </div>
+          <div class="tc-main">
+            <div class="tc-title">정보전략계획(ISP)·BPR·BPM — IT 전략과 업무 혁신 연계</div>
+            <div class="tc-sub">IT 전략 수립 방법론</div>
+          </div>
+          <span class="tc-arrow" id="arr-cbiz0">▼</span>
+        </div>
+        <div class="tc-body" id="body-cbiz0">
+          <div class="section-tag">출제 연도 <span style="font-weight:400;font-style:italic;color:#aaa">(파란색 = 최근 5년)</span></div>
+          <div class="year-chips"><span class="yc">95회</span><span class="yc">100회</span><span class="yc">105회</span><span class="yc">110회</span><span class="yc r">115회</span><span class="yc r">120회</span></div>
+          <div class="section-tag">키워드</div>
+          <div class="kw-row"><span class="kw kb">ISP 수립 절차</span><span class="kw kg">AS-IS/TO-BE</span><span class="kw kr">BPR vs BPI</span><span class="kw ka">BPM·BPMN</span><span class="kw kp">Value Chain</span><span class="kw kb">전략 정렬</span></div>
+          <div class="section-tag">핵심 개념 요약</div>
+          <div class="concept-grid"><div class="concept-box"><div class="chead">ISP 절차</div><div class="cbody">현황 분석(AS-IS) → 목표 정의(TO-BE) → GAP 분석 → 이행 계획</div></div><div class="concept-box"><div class="chead">BPR vs BPI</div><div class="cbody">BPR: 급진적 혁신(100% 개선 목표) / BPI: 점진적 개선(TQM·6시그마)</div></div><div class="concept-box"><div class="chead">Value Chain</div><div class="cbody">Porter의 가치 사슬: 본원적 활동 5개 + 지원 활동 4개</div></div><div class="concept-box"><div class="chead">BPMN</div><div class="cbody">비즈니스 프로세스 모델링 표기법: 이벤트·활동·게이트웨이·흐름</div></div></div>
+          <div class="section-tag">유사·변형 출제 문항</div>
+          <div class="variants-box"><div class="v-item"><span class="v-num">Q1</span><span>정보전략계획(ISP)의 수립 절차(현황 분석→목표 정의→GAP 분석→이행 계획)와 산출물을 설명하시오</span></div><div class="v-item"><span class="v-num">Q2</span><span>BPR(업무 프로세스 재설계)과 BPI(점진적 개선)의 차이를 비교하고 ERP 도입과의 관계를 서술하시오</span></div><div class="v-item"><span class="v-num">Q3</span><span>Porter의 가치 사슬(Value Chain) 분석과 IT가 각 활동에 미치는 영향을 설명하시오</span></div><div class="v-item"><span class="v-num">Q4</span><span>BPMN(비즈니스 프로세스 모델링 표기법)의 주요 요소(이벤트·활동·게이트웨이·수영선)를 설명하시오</span></div><div class="v-item"><span class="v-num">Q5</span><span>디지털 전환 추진을 위한 현행 IT 아키텍처 진단과 목표 아키텍처 수립 방법론을 논하시오</span></div></div>
+          <div class="tip-box">
+            <div class="tip-head">💡 수험 전략</div>
+            ISP 수립 방법론(현황-목표-GAP-이행)은 도표로 정리. Value Chain은 본원적 활동(물류·운영·판매·서비스·마케팅) 5개를 먼저 나열. BPR vs. BPI 비교 표(목표 개선율·기간·위험도·방법론).
+          </div>
+        </div>
+      </div><div class="topic-card">
+        <div class="tc-head" onclick="tog(&#39;cbiz1&#39;)">
+          <div class="tc-left">
+            <span class="freq-badge f5">5회 출제</span>
+            <span class="only-badge">정보관리 전용</span>
+            <span class="cat-pill">비즈니스 아키텍처</span>
+          </div>
+          <div class="tc-main">
+            <div class="tc-title">스마트팩토리·제조 DX — IIoT·MES·CPS·인더스트리 4.0</div>
+            <div class="tc-sub">제조업 디지털 전환</div>
+          </div>
+          <span class="tc-arrow" id="arr-cbiz1">▼</span>
+        </div>
+        <div class="tc-body" id="body-cbiz1">
+          <div class="section-tag">출제 연도 <span style="font-weight:400;font-style:italic;color:#aaa">(파란색 = 최근 5년)</span></div>
+          <div class="year-chips"><span class="yc">113회</span><span class="yc">116회</span><span class="yc r">119회</span><span class="yc r">122회</span><span class="yc r">125회</span></div>
+          <div class="section-tag">키워드</div>
+          <div class="kw-row"><span class="kw kb">인더스트리 4.0</span><span class="kw kb">IIoT</span><span class="kw kg">MES·ERP·SCM 연계</span><span class="kw ka">CPS</span><span class="kw kp">디지털 트윈 제조</span><span class="kw kr">스마트팩토리 레벨</span></div>
+          <div class="section-tag">핵심 개념 요약</div>
+          <div class="concept-grid"><div class="concept-box"><div class="chead">인더스트리 4.0</div><div class="cbody">독일 스마트팩토리 이니셔티브: CPS·IoT·빅데이터·AI 결합</div></div><div class="concept-box"><div class="chead">스마트팩토리 레벨</div><div class="cbody">0(미구축)~5(자율 운영) 6단계 성숙도 모델</div></div><div class="concept-box"><div class="chead">MES</div><div class="cbody">제조실행시스템: ERP(계획)와 현장(PLC/SCADA) 중간 계층</div></div><div class="concept-box"><div class="chead">CPS</div><div class="cbody">사이버물리시스템: 물리 공정의 실시간 디지털 복제·제어</div></div></div>
+          <div class="section-tag">유사·변형 출제 문항</div>
+          <div class="variants-box"><div class="v-item"><span class="v-num">Q1</span><span>인더스트리 4.0(제조업 4차 산업혁명)의 핵심 기술(CPS·IIoT·빅데이터·AI)과 스마트팩토리 구현 방안을 설명하시오</span></div><div class="v-item"><span class="v-num">Q2</span><span>MES(제조실행시스템)의 역할과 ERP·SCM 시스템과의 데이터 연계 구조를 서술하시오</span></div><div class="v-item"><span class="v-num">Q3</span><span>스마트팩토리 성숙도 모델(0~5단계)과 단계별 핵심 구현 기술을 설명하시오</span></div><div class="v-item"><span class="v-num">Q4</span><span>제조 분야 디지털 트윈의 구성 요소(물리 자산·데이터·가상 모델·서비스)와 예지 정비 적용 사례를 논하시오</span></div></div>
+          <div class="tip-box">
+            <div class="tip-head">💡 수험 전략</div>
+            제조 DX는 최근 정보관리 기술사 신규 출제 영역. 스마트팩토리 6단계(0:미구축→5:자율)와 MES의 ISA-95 표준 계층(ERP-MES-현장) 구조도 그리기.
+          </div>
+        </div>
+      </div><div class="topic-card">
+        <div class="tc-head" onclick="tog(&#39;cbiz2&#39;)">
+          <div class="tc-left">
+            <span class="freq-badge f4">4회 출제</span>
+            <span class="only-badge">정보관리 전용</span>
+            <span class="cat-pill">비즈니스 아키텍처</span>
+          </div>
+          <div class="tc-main">
+            <div class="tc-title">정보보호 거버넌스·CISO·내부 통제 — 조직 보안 관리 체계</div>
+            <div class="tc-sub">보안 경영 및 조직 체계</div>
+          </div>
+          <span class="tc-arrow" id="arr-cbiz2">▼</span>
+        </div>
+        <div class="tc-body" id="body-cbiz2">
+          <div class="section-tag">출제 연도 <span style="font-weight:400;font-style:italic;color:#aaa">(파란색 = 최근 5년)</span></div>
+          <div class="year-chips"><span class="yc">107회</span><span class="yc">112회</span><span class="yc r">118회</span><span class="yc r">123회</span></div>
+          <div class="section-tag">키워드</div>
+          <div class="kw-row"><span class="kw kb">CISO 의무 지정</span><span class="kw kr">내부 통제</span><span class="kw kg">정보보호 공시</span><span class="kw ka">SIEM</span><span class="kw kp">SOC</span><span class="kw kb">보안 문화</span></div>
+          <div class="section-tag">핵심 개념 요약</div>
+          <div class="concept-grid"><div class="concept-box"><div class="chead">CISO 의무 지정</div><div class="cbody">정보통신망법: 일정 규모 이상 정보통신서비스 제공자</div></div><div class="concept-box"><div class="chead">정보보호 공시</div><div class="cbody">주요 정보통신기반시설 운영자 연간 보안 투자·조직 공시</div></div><div class="concept-box"><div class="chead">SIEM</div><div class="cbody">보안 이벤트 통합 관리: 로그 수집→상관 분석→경보→대응</div></div><div class="concept-box"><div class="chead">SOC</div><div class="cbody">보안관제센터: 24/7 모니터링·침해 대응·포렌식</div></div></div>
+          <div class="section-tag">유사·변형 출제 문항</div>
+          <div class="variants-box"><div class="v-item"><span class="v-num">Q1</span><span>CISO(정보보호 최고책임자) 의무 지정 기준과 역할, 이사회 보고 체계를 설명하시오</span></div><div class="v-item"><span class="v-num">Q2</span><span>정보보호 공시 제도의 도입 배경과 공시 항목(투자·인력·인증·사고이력)을 서술하시오</span></div><div class="v-item"><span class="v-num">Q3</span><span>SIEM(보안 정보·이벤트 관리) 시스템의 구성과 SOC(보안관제센터) 운영 절차를 설명하시오</span></div><div class="v-item"><span class="v-num">Q4</span><span>기업 내부 통제 프레임워크(COSO)와 IT 통제(COBIT)의 관계를 설명하시오</span></div></div>
+          <div class="tip-box">
+            <div class="tip-head">💡 수험 전략</div>
+            CISO 의무 지정: 정보통신망법 시행령(자산 5억 이상 정보통신서비스 사업자). 정보보호 공시는 2021년부터 의무화(주요 기반시설 운영자). SOC 운영 절차(모니터링→탐지→분석→대응→사후) 흐름도.
+          </div>
+        </div>
+      </div><div class="sec-div">DW·데이터 모델링</div><div class="topic-card">
+        <div class="tc-head" onclick="tog(&#39;cdw0&#39;)">
+          <div class="tc-left">
+            <span class="freq-badge f6">6회 출제</span>
+            <span class="only-badge">정보관리 전용</span>
+            <span class="cat-pill">DW·데이터 모델링</span>
+          </div>
+          <div class="tc-main">
+            <div class="tc-title">데이터 모델링 심화 — ERD·수퍼/서브타입·관계형 변환·UML</div>
+            <div class="tc-sub">논리·물리 데이터 모델 설계</div>
+          </div>
+          <span class="tc-arrow" id="arr-cdw0">▼</span>
+        </div>
+        <div class="tc-body" id="body-cdw0">
+          <div class="section-tag">출제 연도 <span style="font-weight:400;font-style:italic;color:#aaa">(파란색 = 최근 5년)</span></div>
+          <div class="year-chips"><span class="yc">96회</span><span class="yc">101회</span><span class="yc">106회</span><span class="yc">111회</span><span class="yc r">116회</span><span class="yc r">121회</span></div>
+          <div class="section-tag">키워드</div>
+          <div class="kw-row"><span class="kw kb">E-R 다이어그램</span><span class="kw kb">카디널리티</span><span class="kw kg">수퍼타입·서브타입</span><span class="kw kr">3가지 변환</span><span class="kw ka">식별/비식별 관계</span><span class="kw kp">물리 모델</span></div>
+          <div class="section-tag">핵심 개념 요약</div>
+          <div class="concept-grid"><div class="concept-box"><div class="chead">E-R 모델</div><div class="cbody">개체(Entity)·속성(Attribute)·관계(Relationship), 카디널리티(1:1·1:N·M:N)</div></div><div class="concept-box"><div class="chead">수퍼/서브타입 변환</div><div class="cbody">Single(1테이블)·Plus(수퍼+서브)·Separate(서브만)</div></div><div class="concept-box"><div class="chead">식별 vs 비식별</div><div class="cbody">식별: FK가 PK 포함(강한 의존) / 비식별: FK가 일반 속성</div></div><div class="concept-box"><div class="chead">물리 모델</div><div class="cbody">컬럼 데이터타입·인덱스·파티션·파일그룹 결정</div></div></div>
+          <div class="section-tag">유사·변형 출제 문항</div>
+          <div class="variants-box"><div class="v-item"><span class="v-num">Q1</span><span>E-R 다이어그램의 구성 요소와 1:1·1:N·M:N 관계를 관계형 테이블로 변환하는 규칙을 설명하시오</span></div><div class="v-item"><span class="v-num">Q2</span><span>수퍼타입·서브타입 모델링의 3가지 테이블 변환 방식(Single·Plus·Separate)을 비교하고 선택 기준을 서술하시오</span></div><div class="v-item"><span class="v-num">Q3</span><span>식별 관계와 비식별 관계의 차이와 물리 설계에서의 영향을 설명하시오</span></div><div class="v-item"><span class="v-num">Q4</span><span>논리 데이터 모델에서 물리 데이터 모델로의 변환 절차와 성능 고려 사항을 서술하시오</span></div><div class="v-item"><span class="v-num">Q5</span><span>UML 클래스 다이어그램의 연관·집합·합성·의존 관계를 ERD와 비교하여 설명하시오</span></div></div>
+          <div class="tip-box">
+            <div class="tip-head">💡 수험 전략</div>
+            수퍼/서브타입 3가지 변환은 성능(Single: 조인 없음, Separate: 조인 증가)과 NULL 발생 여부 관점으로 비교표 작성. 식별/비식별은 "데이터 생명주기" 관점으로 설명하면 깊이 있는 답변.
+          </div>
+        </div>
+      </div><div class="topic-card">
+        <div class="tc-head" onclick="tog(&#39;cdw1&#39;)">
+          <div class="tc-left">
+            <span class="freq-badge f5">5회 출제</span>
+            <span class="only-badge">정보관리 전용</span>
+            <span class="cat-pill">DW·데이터 모델링</span>
+          </div>
+          <div class="tc-main">
+            <div class="tc-title">정보시스템 구축 방법론 — CBD·MSA·애자일·RUP</div>
+            <div class="tc-sub">IT 시스템 개발 방법론</div>
+          </div>
+          <span class="tc-arrow" id="arr-cdw1">▼</span>
+        </div>
+        <div class="tc-body" id="body-cdw1">
+          <div class="section-tag">출제 연도 <span style="font-weight:400;font-style:italic;color:#aaa">(파란색 = 최근 5년)</span></div>
+          <div class="year-chips"><span class="yc">100회</span><span class="yc">105회</span><span class="yc">110회</span><span class="yc r">116회</span><span class="yc r">121회</span></div>
+          <div class="section-tag">키워드</div>
+          <div class="kw-row"><span class="kw kb">CBD 컴포넌트</span><span class="kw kg">MSA 전환</span><span class="kw kr">RUP 4단계</span><span class="kw ka">정보공학 방법론</span><span class="kw kp">방법론 테일러링</span><span class="kw kp">공공 표준 방법론</span></div>
+          <div class="section-tag">핵심 개념 요약</div>
+          <div class="concept-grid"><div class="concept-box"><div class="chead">CBD 방법론</div><div class="cbody">컴포넌트 기반 개발: 재사용 가능 컴포넌트 조립으로 시스템 구축</div></div><div class="concept-box"><div class="chead">RUP 4단계</div><div class="cbody">도입(Inception)→정교화(Elaboration)→구성(Construction)→전환(Transition)</div></div><div class="concept-box"><div class="chead">방법론 테일러링</div><div class="cbody">프로젝트 규모·복잡도에 따라 표준 방법론 적용 범위 조정</div></div><div class="concept-box"><div class="chead">공공 표준</div><div class="cbody">행정안전부 SW 개발 사업 방법론 가이드(MOIS 표준)</div></div></div>
+          <div class="section-tag">유사·변형 출제 문항</div>
+          <div class="variants-box"><div class="v-item"><span class="v-num">Q1</span><span>CBD(컴포넌트 기반 개발) 방법론의 개념과 전통적 구조적 방법론과의 차이를 설명하시오</span></div><div class="v-item"><span class="v-num">Q2</span><span>RUP(Rational Unified Process)의 4단계(도입·정교화·구성·전환)와 9개 워크플로우를 설명하시오</span></div><div class="v-item"><span class="v-num">Q3</span><span>공공 정보화 사업에서 방법론 테일러링(Tailoring)의 필요성과 적용 절차를 서술하시오</span></div><div class="v-item"><span class="v-num">Q4</span><span>정보공학 방법론(IE)과 객체지향 방법론(OOM)을 비교하고 각 방법론의 대표 산출물을 설명하시오</span></div></div>
+          <div class="tip-box">
+            <div class="tip-head">💡 수험 전략</div>
+            공공 정보화 사업에서 "방법론 테일러링" 문항은 정보관리 기술사 고유. 행안부 SW 개발 표준 방법론(ISP·정보화사업·유지보수 유형별) 구조 파악.
+          </div>
+        </div>
+      </div></div>
+</div>
+
+<script>
+const DATA = [
+
+/* ═══════════════════════════════
+   AUDIT — 정보시스템 감리
+══════════════════════════════════ */
+{cat:'audit', freq:8,
+ title:'정보시스템 감리 절차·점검 항목·결함 처리',
+ sub:'정보관리 기술사 핵심 고유 영역',
+ years:['97','100','103','107','111','114','118','122','125'],
+ recent:['118','122','125'],
+ kws:['사전검토','착수감리','중간감리','완료감리','감리보고서','시정조치','전자정부법 57조'],
+ kwt:['kb','kb','kg','kg','ka','kr','kr'],
+ concepts:[
+   {head:'감리 4단계', body:'사전검토 → 착수감리 → 중간감리 → 완료감리'},
+   {head:'감리인 역할', body:'독립성·전문성·객관성 보장, 발주기관·사업자 중립'},
+   {head:'의무 감리 대상', body:'전자정부법 57조: 20억 이상 정보화 사업'},
+   {head:'결함 분류', body:'중결함·경결함 분류 후 시정조치·재감리 여부 결정'}
+ ],
+ variants:[
+   '정보시스템 감리의 절차(사전검토·착수·중간·완료 감리)와 각 단계의 주요 점검 항목을 설명하시오',
+   '소프트웨어 개발 사업 감리에서 요구사항·설계·구현·테스트·이행 단계별 감리 관점을 서술하시오',
+   '감리 결과의 결함 분류(중결함·경결함) 기준과 시정 조치·재감리 절차를 설명하시오',
+   '「전자정부법」 제57조에 따른 의무 감리 대상과 감리 법인 지정 기준을 서술하시오',
+   '공공 정보화 사업의 감리인과 PMO(프로젝트 관리 전문 기관)의 역할 차이를 비교하시오',
+   '데이터베이스 감리 시 무결성·보안·성능·백업 관점의 점검 체크리스트를 작성하시오',
+   '클라우드 기반 공공 정보화 사업 감리 시 추가 고려 사항(보안·데이터 주권·SLA)을 논하시오'
+ ],
+ tip:'정보관리 기술사 시험의 가장 강력한 차별화 도메인—컴시응에는 존재하지 않음. 감리 4단계 표(단계·시기·점검 목적·산출물)를 반드시 구성. 의무 감리 대상(전자정부법 57조: 총사업비 20억 이상)은 암기 필수. 최근 클라우드·AI 시스템 감리 특수성 문항 증가.'},
+
+{cat:'audit', freq:6,
+ title:'소프트웨어 사업 대가 기준 — 기능점수법·투입 공수법·분리 발주',
+ sub:'공공 IT 조달 감리',
+ years:['99','103','108','113','118','122'],
+ recent:['118','122'],
+ kws:['기능점수법','투입공수법','보정계수','분리발주 의무','하도급 관리','SW 대가 기준'],
+ kwt:['kb','kb','kg','kr','ka','ka'],
+ concepts:[
+   {head:'기능점수법', body:'ILF·EIF·EI·EO·EQ 가중치 합산 × 보정계수'},
+   {head:'투입공수법', body:'맨먼스 × 단가, 유지보수·운영 사업에 적합'},
+   {head:'분리 발주', body:'HW·SW·유지보수를 별도 발주, 中企 참여 기회 보장'},
+   {head:'감리 연계', body:'대가 기준 적정성 검토가 감리 항목에 포함'}
+ ],
+ variants:[
+   '공공 소프트웨어 사업 대가 기준의 기능점수법과 투입공수법을 비교하고 사업 유형별 적용 기준을 설명하시오',
+   '기능점수(FP) 산정에서 미조정 기능점수(UFP)에 기술 복잡도 조정 인수(TCF)를 적용하는 절차를 서술하시오',
+   '소프트웨어 분리 발주 의무화의 목적과 「소프트웨어 진흥법」 상 대상 사업 기준을 설명하시오',
+   '공공 SI 사업의 하도급 관리 적정성 감리 관점과 「하도급법」 적용 이슈를 논하시오'
+ ],
+ tip:'SW 진흥법 기반 대가 기준 고시(과기부)와 연계. 기능점수 계산 공식(UFP = Σ가중치합, AFP = UFP × (0.65 + 0.01×TCF))은 계산 문항으로 자주 출제.'},
+
+/* ═══════════════════════════════
+   MIS — 경영정보·IT 전략
+══════════════════════════════════ */
+{cat:'mis', freq:8,
+ title:'IT 거버넌스 — COBIT·ITIL·ISO 38500·BSC',
+ sub:'IT 경영 프레임워크',
+ years:['96','100','104','108','112','116','120','123'],
+ recent:['120','123'],
+ kws:['COBIT 2019','ITIL 4 SVS','ISO 38500','IT BSC','IT 투자 ROI','거버넌스 vs 관리'],
+ kwt:['kb','kb','kg','ka','kr','kr'],
+ concepts:[
+   {head:'COBIT 2019', body:'5대 영역: 평가·지시·모니터링(EDM) + 조정·계획·조직(APO) 등 40개 목표'},
+   {head:'ITIL 4 SVS', body:'서비스 가치 시스템: 기회·수요→가치, 34개 실천(Practice)'},
+   {head:'ISO 38500', body:'이사회 IT 거버넌스 6원칙: 책임·전략·인수·성과·준수·인간행동'},
+   {head:'IT BSC', body:'재무·고객·내부프로세스·학습성장 4관점 KPI 연계'}
+ ],
+ variants:[
+   'IT 거버넌스의 5가지 핵심 영역(책임·전략정렬·가치전달·위험관리·성과측정)과 COBIT 2019 설계 요소를 설명하시오',
+   'ITIL 4 서비스 가치 시스템(SVS)의 구성 요소와 서비스 가치 체인(SVC) 6가지 활동을 서술하시오',
+   'ISO/IEC 38500 IT 거버넌스의 6원칙과 이사회·경영진 역할 분담 모델을 설명하시오',
+   'IT Balanced Scorecard의 4관점과 KPI 설정, IT 투자 포트폴리오 관리와의 연계를 논하시오',
+   'IT 거버넌스와 기업 거버넌스(Corporate Governance)의 관계를 설명하고 CIO의 역할을 서술하시오',
+   'COBIT과 ITIL의 차이(목적·대상·범위)를 비교하고 상호 보완 방안을 논하시오'
+ ],
+ tip:'COBIT(거버넌스 프레임워크) vs. ITIL(운영 모범 사례) 비교 표는 단골. ITIL 4의 "서비스 가치 체인(SVC)" 6활동(Plan·Improve·Engage·Design&Transition·Obtain/Build·Deliver&Support) 암기.'},
+
+{cat:'mis', freq:7,
+ title:'ERP·SCM·CRM·BPR — 기업 정보시스템 통합 전략',
+ sub:'경영정보시스템 핵심',
+ years:['95','99','104','108','113','117','121'],
+ recent:['117','121'],
+ kws:['ERP 도입 CSF','채찍 효과','CLV','BPR 선행','SaaS ERP','CRM 분석'],
+ kwt:['kb','kr','kg','ka','ka','kb'],
+ concepts:[
+   {head:'ERP CSF', body:'경영진 지원·BPR 선행·커스터마이징 최소화·변경 관리'},
+   {head:'채찍 효과', body:'소비자 수요 변동이 공급망 상위로 갈수록 증폭'},
+   {head:'CLV', body:'고객 생애 가치 = Σ(기간별 수익 × 유지율) - 획득 비용'},
+   {head:'BPR 연계', body:'ERP 도입 전 프로세스 혁신 선행이 성공률 좌우'}
+ ],
+ variants:[
+   'ERP 시스템의 구성 모듈과 BPR(업무 프로세스 재설계) 선행의 필요성을 설명하고 도입 실패 원인을 분석하시오',
+   'SCM에서 채찍 효과(Bullwhip Effect)의 발생 메커니즘과 정보 공유·VMI·CPFR을 통한 해소 방안을 서술하시오',
+   'CRM의 운영적·분석적·협업적 CRM을 구분하고 고객 생애 가치(CLV) 최대화 전략을 논하시오',
+   'SaaS 기반 Cloud ERP와 온프레미스 ERP를 TCO·유연성·보안 관점에서 비교하시오',
+   'ERP-SCM-CRM 시스템 통합 아키텍처와 ESB(Enterprise Service Bus) 역할을 설명하시오'
+ ],
+ tip:'채찍 효과 그래프(소비자→소매→도매→제조, 변동 증폭) 그리기. ERP 도입 단계(AS-IS 분석→TO-BE 설계→GAP 분석→커스터마이징→교육→Go-Live) 순서도 필수.'},
+
+{cat:'mis', freq:6,
+ title:'디지털 전환(DX) — 전략 수립·플랫폼·디지털 트윈',
+ sub:'IT 경영 혁신 전략',
+ years:['112','115','118','121','123','126'],
+ recent:['121','123','126'],
+ kws:['DX 3단계','디지털 트윈','플랫폼 전략','API Economy','데이터 경제','비즈니스 모델 혁신'],
+ kwt:['kb','kg','kr','ka','ka','kp'],
+ concepts:[
+   {head:'DX 3단계', body:'디지털화(Digitization) → 디지털라이제이션 → 디지털 전환(DX)'},
+   {head:'디지털 트윈', body:'실물 자산의 가상 복제본: 물리→센서→모델→시뮬레이션→통찰'},
+   {head:'플랫폼 전략', body:'네트워크 효과: 공급자·소비자 양면 시장, 임계점(Critical Mass)'},
+   {head:'API Economy', body:'API를 통한 서비스 연결·수익화, Open Banking 사례'}
+ ],
+ variants:[
+   '디지털 전환(DX)의 3단계(디지털화→디지털라이제이션→DX)를 구분하고 기업 전략 수립 프레임워크를 서술하시오',
+   '디지털 트윈의 구성 요소(실물·데이터·모델·시뮬레이션)와 제조·인프라·스마트시티 적용 사례를 설명하시오',
+   '플랫폼 비즈니스 모델의 네트워크 효과와 전통 파이프라인 비즈니스와의 차이, 임계 질량(Critical Mass) 전략을 논하시오',
+   'API Economy 개념과 오픈 API 정책, 마이데이터·오픈 뱅킹 서비스 적용 사례를 설명하시오',
+   'ChatGPT·생성형 AI의 기업 디지털 전환 활용 방안과 도입 시 리스크(환각·보안·편향)를 논하시오'
+ ],
+ tip:'DX 3단계 구분은 자주 혼용되어 출제. 디지털 트윈은 IoT센서-데이터-가상모델-피드백 루프 그림으로. 최근 GenAI와 DX 결합 문항 급증.'},
+
+{cat:'mis', freq:5,
+ title:'엔터프라이즈 아키텍처(EA) — TOGAF·Zachman·정부 EA',
+ sub:'조직 전체 IT 설계 체계',
+ years:['100','106','111','117','122'],
+ recent:['117','122'],
+ kws:['TOGAF ADM','비즈니스·데이터·애플리케이션·기술 아키텍처','Zachman 프레임워크','EA 성숙도','범정부 EA'],
+ kwt:['kb','kg','ka','kr','kp'],
+ concepts:[
+   {head:'TOGAF ADM', body:'9개 단계: 예비→A(비전)→B(비즈니스)→C(정보시스템)→D(기술)→E~H(전환)→요구사항관리'},
+   {head:'4개 아키텍처', body:'비즈니스 → 데이터 → 애플리케이션 → 기술 아키텍처'},
+   {head:'Zachman', body:'6행(관점: 계획자~사용자) × 6열(무엇·어떻게·어디·누가·언제·왜)'},
+   {head:'정부 EA', body:'범정부 EA(GEA): 행정기관 정보화 계획 수립의 법적 기반'}
+ ],
+ variants:[
+   'TOGAF ADM의 9개 단계를 설명하고 아키텍처 변화 관리(H단계)의 역할을 서술하시오',
+   '비즈니스·데이터·애플리케이션·기술 아키텍처의 관계와 각 계층의 산출물을 설명하시오',
+   'Zachman 프레임워크의 6×6 매트릭스 구조와 TOGAF와의 차이를 비교하시오',
+   '범정부 EA(GEA)의 법적 근거와 공공기관 정보화 계획 수립 시 활용 방법을 서술하시오'
+ ],
+ tip:'TOGAF ADM 단계는 알파벳 순(예비→A→B→C→D→E→F→G→H)으로 암기. 4개 아키텍처 도메인을 피라미드 그림으로 표현. 범정부 EA는 행정기관 정보화에 관한 법률 기반.'},
+
+/* ═══════════════════════════════
+   DATA — 데이터 전략·거버넌스
+══════════════════════════════════ */
+{cat:'data', freq:7,
+ title:'데이터 거버넌스 — DAMA-DMBOK·MDM·데이터 품질·카탈로그',
+ sub:'데이터 경영·관리 체계',
+ years:['101','105','109','113','117','121','124'],
+ recent:['117','121','124'],
+ kws:['DAMA-DMBOK 11개','MDM 4유형','데이터 품질 6차원','데이터 카탈로그','데이터 리니지','데이터 스튜어드'],
+ kwt:['kb','kg','kr','ka','kp','kb'],
+ concepts:[
+   {head:'DAMA-DMBOK', body:'11개 지식 영역: 데이터 거버넌스·아키텍처·모델링·운영·보안·통합·문서·참조·웨어하우스·메타데이터·품질'},
+   {head:'MDM 4유형', body:'Registry·Consolidation·Coexistence·Centralized 방식'},
+   {head:'품질 6차원', body:'완전성·정확성·일관성·적시성·유일성·유효성'},
+   {head:'데이터 리니지', body:'원천→변환→소비 흐름 추적, GDPR 감사 추적 요건'}
+ ],
+ variants:[
+   'DAMA-DMBOK 데이터 관리 지식 영역 11가지와 데이터 거버넌스가 전 영역에 미치는 역할을 설명하시오',
+   'MDM(마스터 데이터 관리) 구현 방식 4가지(Registry·Consolidation·Coexistence·Centralized)를 비교하시오',
+   '데이터 품질 6차원(완전성·정확성·일관성·적시성·유일성·유효성)의 측정 방법과 개선 절차를 서술하시오',
+   '데이터 카탈로그의 기술적·비즈니스 메타데이터 관리와 데이터 리니지 추적 기능을 설명하시오',
+   '데이터 스튜어드십(Data Stewardship)의 역할과 데이터 오너·거버넌스 위원회 조직 구성을 논하시오',
+   '데이터 메시(Data Mesh) 아키텍처의 4원칙과 중앙집중식 데이터 레이크 대비 장단점을 서술하시오'
+ ],
+ tip:'DAMA-DMBOK 11개 지식 영역은 전체 나열보다 "거버넌스가 중심에서 나머지 10개 영역을 지원" 구조로 허브-스포크 그림 활용. MDM 4유형은 데이터 중복 허용 여부 관점으로 비교표 작성.'},
+
+{cat:'data', freq:6,
+ title:'데이터 웨어하우스·OLAP — 스타 스키마·ETL·데이터 레이크하우스',
+ sub:'분석 데이터 아키텍처',
+ years:['97','102','108','113','118','123'],
+ recent:['118','123'],
+ kws:['스타 스키마','눈송이 스키마','OLAP 큐브','ETL vs ELT','데이터 레이크','Lakehouse'],
+ kwt:['kb','kb','kg','ka','kr','kp'],
+ concepts:[
+   {head:'스타 스키마', body:'Fact 테이블(중앙) + Dimension 테이블(방사형), 조인 단순'},
+   {head:'ETL vs ELT', body:'ETL: 변환 후 적재(전통 DW) / ELT: 적재 후 변환(클라우드 DW)'},
+   {head:'OLAP 연산', body:'Drill-down·Roll-up·Slice·Dice·Pivot으로 다차원 분석'},
+   {head:'Lakehouse', body:'Data Lake의 유연성 + DW의 ACID·스키마 = Delta Lake·Iceberg'}
+ ],
+ variants:[
+   'OLTP와 OLAP의 차이를 트랜잭션 패턴·스키마·인덱스 전략 관점에서 비교하시오',
+   '스타 스키마와 눈송이 스키마의 구조를 비교하고 Fact 테이블·Dimension 테이블 설계 기준을 설명하시오',
+   'ETL과 ELT의 처리 과정을 비교하고 클라우드 데이터 웨어하우스 환경에서의 ELT 이점을 서술하시오',
+   'OLAP의 5가지 연산(Drill-down·Roll-up·Slice·Dice·Pivot)을 예시와 함께 설명하시오',
+   '데이터 레이크(Data Lake)의 데이터 늪(Data Swamp) 문제와 레이크하우스(Lakehouse) 아키텍처로의 전환을 논하시오',
+   '데이터 가상화(Data Virtualization)와 데이터 패브릭(Data Fabric)의 개념과 기존 통합 방식과의 차이를 설명하시오'
+ ],
+ tip:'스타 스키마 그림(Fact 중심·Dimension 방사형)은 필수 작도 항목. 레이크하우스는 Delta Lake(Databricks)·Apache Iceberg·Apache Hudi 대표 기술로 언급.'},
+
+{cat:'data', freq:5,
+ title:'빅데이터 플랫폼 — Hadoop·Spark·Lambda·Kappa·데이터 메시',
+ sub:'대규모 데이터 처리 아키텍처',
+ years:['105','109','113','117','121'],
+ recent:['117','121'],
+ kws:['HDFS·MapReduce','Spark 인메모리','Lambda 아키텍처','Kappa 아키텍처','데이터 메시 4원칙','스트림 처리'],
+ kwt:['kb','kr','kg','kg','kp','ka'],
+ concepts:[
+   {head:'Hadoop 생태계', body:'HDFS(분산 저장) + MapReduce(분산 처리) + YARN(자원 관리)'},
+   {head:'Spark 인메모리', body:'RDD·DataFrame·Dataset, MapReduce 대비 100배 속도, DAG 실행'},
+   {head:'Lambda 아키텍처', body:'배치 레이어(정확) + 속도 레이어(실시간) + 서빙 레이어'},
+   {head:'데이터 메시', body:'도메인 소유권·셀프서비스 인프라·연합 거버넌스·제품으로서의 데이터'}
+ ],
+ variants:[
+   'Hadoop의 HDFS·MapReduce 동작 원리와 Apache Spark의 인메모리 처리(RDD·DAG) 방식을 비교하시오',
+   'Lambda 아키텍처(배치·속도·서빙 레이어)와 Kappa 아키텍처의 구조와 장단점을 비교하시오',
+   '데이터 메시(Data Mesh)의 4원칙(도메인 소유권·제품화·셀프서비스·연합 거버넌스)을 설명하고 중앙집중식 플랫폼과 비교하시오',
+   '실시간 스트림 처리 플랫폼(Apache Kafka·Flink)과 배치 처리의 차이를 서술하시오'
+ ],
+ tip:'Lambda vs. Kappa 비교표(처리 방식·복잡도·지연·일관성)는 거의 매번 출제. 데이터 메시 4원칙은 각 원칙이 해결하는 문제(중앙 병목·사일로·품질·거버넌스)와 연결해서 서술.'},
+
+/* ═══════════════════════════════
+   LAW — 법규·제도
+══════════════════════════════════ */
+{cat:'law', freq:7,
+ title:'개인정보보호법(2023 개정)·GDPR — 법적 요건·정보주체 권리',
+ sub:'데이터 보호 법규',
+ years:['99','103','108','113','117','121','124'],
+ recent:['117','121','124'],
+ kws:['개보법 6원칙','정보주체 권리','가명처리','GDPR 17조 삭제권','DPO 의무화','마이데이터','이동권(신설)'],
+ kwt:['kb','kb','kg','kr','ka','ka','kp'],
+ concepts:[
+   {head:'개보법 6원칙', body:'목적 제한·최소 수집·처리 제한·정확성·보관 제한·책임'},
+   {head:'정보주체 권리', body:'열람·정정·삭제·처리 정지·이동권(2023 신설)·자동화 결정 거부권'},
+   {head:'가명처리', body:'가명정보: 재식별 위험 있음, 일부 통계·연구 활용 가능'},
+   {head:'2023 개정', body:'이동권 신설·과징금 매출액 3%·개인정보위 독립성 강화'}
+ ],
+ variants:[
+   '개인정보보호법의 개인정보 처리 6원칙과 정보주체 권리 6가지(이동권 포함)를 설명하시오',
+   'GDPR의 핵심 원칙과 국내 개인정보보호법의 차이(적용 범위·동의 요건·DPO 의무화·역외 적용)를 비교하시오',
+   '가명정보·익명정보의 법적 정의와 차이, 가명처리 절차 및 결합 전문 기관 활용을 서술하시오',
+   '2023년 개정 개인정보보호법의 주요 변경 사항(이동권·자동화 결정 거부권·과징금 기준 상향)을 설명하시오',
+   '마이데이터(본인신용정보관리업) 서비스의 법적 근거와 데이터 주권·정보주체 통제권 강화 방안을 논하시오',
+   '개인정보 영향평가(PIA) 의무 대상과 수행 절차를 설명하시오',
+   '가명정보의 결합 활용 절차(결합 전문 기관 지정·결합 신청·반출 승인)를 서술하시오'
+ ],
+ tip:'2023년 개정 내용(이동권·자동화 결정 거부권 신설, 과징금 매출액 3% 기준) 반드시 반영. 가명정보 결합 절차 플로우차트 그리기. GDPR vs. 개보법 비교 표(적용 범위·DPO·역외 적용·과징금)는 단골.'},
+
+{cat:'law', freq:6,
+ title:'전자정부법·SW진흥법·공공 클라우드 정책',
+ sub:'공공 IT 사업 법적 기반',
+ years:['97','102','107','112','117','121'],
+ recent:['117','121'],
+ kws:['전자정부법','행정정보 공동이용','상호운용성','SW진흥법 분리발주','공공 CC인증','PIA 의무'],
+ kwt:['kb','kb','kg','kr','ka','kp'],
+ concepts:[
+   {head:'전자정부법', body:'57조: 20억 이상 감리 의무, 행정정보 공동이용 플랫폼(정부24)'},
+   {head:'SW진흥법', body:'분리 발주 의무(50억 이상), SW 대가 기준 준수'},
+   {head:'공공 클라우드', body:'CC(클라우드컴퓨팅) 서비스 보안인증 3등급(상·중·하)'},
+   {head:'상호운용성', body:'행정기관 간 데이터·시스템 연계 표준 준수 의무'}
+ ],
+ variants:[
+   '전자정부법 상 행정정보 공동이용의 원칙·범위와 정보 주체 동의 요건을 설명하시오',
+   '소프트웨어 진흥법에 따른 분리 발주 의무 대상(50억 이상)과 SW 사업 대가 기준 적용을 서술하시오',
+   '공공 클라우드 우선 정책의 법적 근거와 CC서비스 보안 인증(상·중·하 등급) 체계를 설명하시오',
+   '행정기관 개인정보 영향평가(PIA) 의무 대상과 수행 절차를 서술하시오',
+   '전자정부 서비스의 접근성 기준(WCAG 2.1)과 장애인 차별 금지법 상 의무를 설명하시오'
+ ],
+ tip:'공공 IT 법규는 정보관리 기술사 고유 출제 영역. 전자정부법 57조·SW진흥법 분리발주·CC보안인증 3등급 체계를 세트로 숙지. PIA 의무 대상(공공기관 10만 명 이상 처리 시스템) 암기.'},
+
+{cat:'law', freq:5,
+ title:'지식재산권·SW 저작권·오픈소스 라이선스',
+ sub:'IT 법적 분쟁 및 컴플라이언스',
+ years:['101','106','111','116','121'],
+ recent:['116','121'],
+ kws:['저작권법','프로그램 저작권','GPL·MIT·Apache','SBOM','영업비밀','특허 vs 저작권'],
+ kwt:['kb','kg','kr','ka','kp','kb'],
+ concepts:[
+   {head:'SW 저작권', body:'창작 즉시 발생, 등록 불필요, 보호 기간 사후 70년'},
+   {head:'GPL 특성', body:'Copyleft: GPL SW 사용 시 소스 공개 의무(전염성)'},
+   {head:'SBOM', body:'소프트웨어 자재 명세서: 오픈소스 성분 추적, 공급망 보안'},
+   {head:'저작권 vs 특허', body:'저작권: 표현 보호, 특허: 아이디어·기능 보호, 심사 필요'}
+ ],
+ variants:[
+   '소프트웨어 저작권의 발생 요건과 보호 범위, 프로그램 저작물의 특수성을 설명하시오',
+   '오픈소스 라이선스(GPL·LGPL·MIT·Apache·BSD)의 특성을 비교하고 기업 활용 시 컴플라이언스 주의사항을 서술하시오',
+   'SBOM(소프트웨어 자재 명세서)의 개념과 공급망 보안(Supply Chain Security)에의 활용을 설명하시오',
+   '소프트웨어 특허와 저작권의 차이, AI 생성 창작물의 저작권 귀속 문제를 논하시오'
+ ],
+ tip:'GPL의 전염성(Copyleft) 개념과 LGPL·MIT·Apache 자유도 차이 비교표는 자주 출제. AI 생성물 저작권 귀속 문제는 최신 판례와 연계하면 가점.'},
+
+/* ═══════════════════════════════
+   PM — 프로젝트·서비스 관리
+══════════════════════════════════ */
+{cat:'pm', freq:7,
+ title:'프로젝트 관리 — PMBOK 7판·EVM·일정 관리·위험 관리',
+ sub:'IT 프로젝트 관리 체계',
+ years:['96','100','105','109','113','117','121'],
+ recent:['117','121'],
+ kws:['PMBOK 7판 12원칙','EVM·CPI·SPI','CPM 임계 경로','PERT','Monte Carlo','위험 대응 전략'],
+ kwt:['kb','kr','kg','ka','ka','kp'],
+ concepts:[
+   {head:'PMBOK 7판', body:'12원칙 + 8성과 영역, 6판 10지식영역·5프로세스그룹에서 전환'},
+   {head:'EVM 공식', body:'SV=EV-PV, CV=EV-AC, SPI=EV/PV, CPI=EV/AC, EAC=BAC/CPI'},
+   {head:'CPM', body:'임계 경로: 여유시간(Float)=0인 활동 연결, 프로젝트 최소 기간'},
+   {head:'위험 대응', body:'회피(Avoid)·전가(Transfer)·완화(Mitigate)·수용(Accept)'}
+ ],
+ variants:[
+   'PMBOK 7판의 12가지 원칙을 설명하고 6판의 10개 지식 영역·5개 프로세스 그룹과의 변화를 비교하시오',
+   'EVM(획득 가치 관리)의 PV·EV·AC·SV·CV·SPI·CPI를 공식과 수치 예시로 설명하고 EAC를 산출하시오',
+   'CPM(임계 경로법)으로 네트워크 다이어그램을 작성하고 임계 경로와 총 여유 시간(Total Float)을 계산하시오',
+   'PERT 기법의 낙관·최가능·비관 시간 추정과 Monte Carlo 시뮬레이션을 활용한 일정 위험 분석을 서술하시오',
+   '프로젝트 위험 관리 5단계(식별→정성 분석→정량 분석→계획→통제)와 대응 전략 4가지를 설명하시오',
+   '애자일 프로젝트에서 번다운 차트·속도(Velocity)·스프린트 성과 지표와 EVM 적용 방안을 비교하시오'
+ ],
+ tip:'EVM 계산 문항 필수 준비: PV·EV·AC 값을 주고 CPI·SPI·EAC 계산. CPM은 네트워크 다이어그램 그려서 임계 경로 도출. PMBOK 7판 12원칙은 6판 영역과 매핑표로 암기.'},
+
+{cat:'pm', freq:6,
+ title:'IT 서비스 관리·SLA·아웃소싱·벤더 관리',
+ sub:'IT 운영 및 조달 관리',
+ years:['99','104','109','113','118','122'],
+ recent:['118','122'],
+ kws:['SLA·SLO·SLI','에러 버짓','아웃소싱 유형','벤더 평가 기준','XaaS 계약','거버넌스 모델'],
+ kwt:['kb','kr','kg','ka','kp','kb'],
+ concepts:[
+   {head:'SLI→SLO→SLA', body:'SLI(측정 지표) → SLO(목표값) → SLA(계약상 약속)'},
+   {head:'에러 버짓', body:'Google SRE: 100%-SLO = 허용 다운타임, 소진 시 배포 중단'},
+   {head:'아웃소싱 유형', body:'선택적(일부)·전체(Mega Deal)·공동 소싱·BPO'},
+   {head:'총비용(TCO)', body:'초기 구축 + 운영·유지 + 전환 비용, 아웃소싱 의사결정 기준'}
+ ],
+ variants:[
+   'SLA(서비스 수준 협약)의 구성 요소와 SLI→SLO→SLA 계층 구조, 위반 시 페널티 체계를 설명하시오',
+   'Google SRE의 에러 버짓(Error Budget) 개념과 신뢰성·개발 속도 균형 관리 방법을 서술하시오',
+   'IT 아웃소싱 유형(선택적·전체·공동 소싱·BPO)의 장단점과 아웃소싱 의사결정 기준을 비교하시오',
+   '클라우드 서비스 SLA에서 가용성·보안·데이터 주권·포터빌리티 조항의 핵심 내용을 논하시오',
+   '멀티 벤더 환경에서의 벤더 관리 거버넌스 모델과 주요 평가 기준(비용·품질·위험·혁신)을 서술하시오'
+ ],
+ tip:'SLI→SLO→SLA 3계층 구조는 반드시 암기. 에러 버짓 = 1 - SLO(예: 99.9%이면 월 43.2분 허용) 계산 예시 준비. 클라우드 SLA는 "데이터 주권"과 "포터빌리티(이동 가능성)"를 반드시 언급.'},
+
+/* ═══════════════════════════════
+   BIZ — 비즈니스 아키텍처·전략
+══════════════════════════════════ */
+{cat:'biz', freq:6,
+ title:'정보전략계획(ISP)·BPR·BPM — IT 전략과 업무 혁신 연계',
+ sub:'IT 전략 수립 방법론',
+ years:['95','100','105','110','115','120'],
+ recent:['115','120'],
+ kws:['ISP 수립 절차','AS-IS/TO-BE','BPR vs BPI','BPM·BPMN','Value Chain','전략 정렬'],
+ kwt:['kb','kg','kr','ka','kp','kb'],
+ concepts:[
+   {head:'ISP 절차', body:'현황 분석(AS-IS) → 목표 정의(TO-BE) → GAP 분석 → 이행 계획'},
+   {head:'BPR vs BPI', body:'BPR: 급진적 혁신(100% 개선 목표) / BPI: 점진적 개선(TQM·6시그마)'},
+   {head:'Value Chain', body:'Porter의 가치 사슬: 본원적 활동 5개 + 지원 활동 4개'},
+   {head:'BPMN', body:'비즈니스 프로세스 모델링 표기법: 이벤트·활동·게이트웨이·흐름'}
+ ],
+ variants:[
+   '정보전략계획(ISP)의 수립 절차(현황 분석→목표 정의→GAP 분석→이행 계획)와 산출물을 설명하시오',
+   'BPR(업무 프로세스 재설계)과 BPI(점진적 개선)의 차이를 비교하고 ERP 도입과의 관계를 서술하시오',
+   'Porter의 가치 사슬(Value Chain) 분석과 IT가 각 활동에 미치는 영향을 설명하시오',
+   'BPMN(비즈니스 프로세스 모델링 표기법)의 주요 요소(이벤트·활동·게이트웨이·수영선)를 설명하시오',
+   '디지털 전환 추진을 위한 현행 IT 아키텍처 진단과 목표 아키텍처 수립 방법론을 논하시오'
+ ],
+ tip:'ISP 수립 방법론(현황-목표-GAP-이행)은 도표로 정리. Value Chain은 본원적 활동(물류·운영·판매·서비스·마케팅) 5개를 먼저 나열. BPR vs. BPI 비교 표(목표 개선율·기간·위험도·방법론).'},
+
+{cat:'biz', freq:5,
+ title:'스마트팩토리·제조 DX — IIoT·MES·CPS·인더스트리 4.0',
+ sub:'제조업 디지털 전환',
+ years:['113','116','119','122','125'],
+ recent:['119','122','125'],
+ kws:['인더스트리 4.0','IIoT','MES·ERP·SCM 연계','CPS','디지털 트윈 제조','스마트팩토리 레벨'],
+ kwt:['kb','kb','kg','ka','kp','kr'],
+ concepts:[
+   {head:'인더스트리 4.0', body:'독일 스마트팩토리 이니셔티브: CPS·IoT·빅데이터·AI 결합'},
+   {head:'스마트팩토리 레벨', body:'0(미구축)~5(자율 운영) 6단계 성숙도 모델'},
+   {head:'MES', body:'제조실행시스템: ERP(계획)와 현장(PLC/SCADA) 중간 계층'},
+   {head:'CPS', body:'사이버물리시스템: 물리 공정의 실시간 디지털 복제·제어'}
+ ],
+ variants:[
+   '인더스트리 4.0(제조업 4차 산업혁명)의 핵심 기술(CPS·IIoT·빅데이터·AI)과 스마트팩토리 구현 방안을 설명하시오',
+   'MES(제조실행시스템)의 역할과 ERP·SCM 시스템과의 데이터 연계 구조를 서술하시오',
+   '스마트팩토리 성숙도 모델(0~5단계)과 단계별 핵심 구현 기술을 설명하시오',
+   '제조 분야 디지털 트윈의 구성 요소(물리 자산·데이터·가상 모델·서비스)와 예지 정비 적용 사례를 논하시오'
+ ],
+ tip:'제조 DX는 최근 정보관리 기술사 신규 출제 영역. 스마트팩토리 6단계(0:미구축→5:자율)와 MES의 ISA-95 표준 계층(ERP-MES-현장) 구조도 그리기.'},
+
+{cat:'biz', freq:4,
+ title:'정보보호 거버넌스·CISO·내부 통제 — 조직 보안 관리 체계',
+ sub:'보안 경영 및 조직 체계',
+ years:['107','112','118','123'],
+ recent:['118','123'],
+ kws:['CISO 의무 지정','내부 통제','정보보호 공시','SIEM','SOC','보안 문화'],
+ kwt:['kb','kr','kg','ka','kp','kb'],
+ concepts:[
+   {head:'CISO 의무 지정', body:'정보통신망법: 일정 규모 이상 정보통신서비스 제공자'},
+   {head:'정보보호 공시', body:'주요 정보통신기반시설 운영자 연간 보안 투자·조직 공시'},
+   {head:'SIEM', body:'보안 이벤트 통합 관리: 로그 수집→상관 분석→경보→대응'},
+   {head:'SOC', body:'보안관제센터: 24/7 모니터링·침해 대응·포렌식'}
+ ],
+ variants:[
+   'CISO(정보보호 최고책임자) 의무 지정 기준과 역할, 이사회 보고 체계를 설명하시오',
+   '정보보호 공시 제도의 도입 배경과 공시 항목(투자·인력·인증·사고이력)을 서술하시오',
+   'SIEM(보안 정보·이벤트 관리) 시스템의 구성과 SOC(보안관제센터) 운영 절차를 설명하시오',
+   '기업 내부 통제 프레임워크(COSO)와 IT 통제(COBIT)의 관계를 설명하시오'
+ ],
+ tip:'CISO 의무 지정: 정보통신망법 시행령(자산 5억 이상 정보통신서비스 사업자). 정보보호 공시는 2021년부터 의무화(주요 기반시설 운영자). SOC 운영 절차(모니터링→탐지→분석→대응→사후) 흐름도.'},
+
+/* ═══════════════════════════════
+   DW — DW·빅데이터 플랫폼 (추가 토픽)
+══════════════════════════════════ */
+{cat:'dw', freq:6,
+ title:'데이터 모델링 심화 — ERD·수퍼/서브타입·관계형 변환·UML',
+ sub:'논리·물리 데이터 모델 설계',
+ years:['96','101','106','111','116','121'],
+ recent:['116','121'],
+ kws:['E-R 다이어그램','카디널리티','수퍼타입·서브타입','3가지 변환','식별/비식별 관계','물리 모델'],
+ kwt:['kb','kb','kg','kr','ka','kp'],
+ concepts:[
+   {head:'E-R 모델', body:'개체(Entity)·속성(Attribute)·관계(Relationship), 카디널리티(1:1·1:N·M:N)'},
+   {head:'수퍼/서브타입 변환', body:'Single(1테이블)·Plus(수퍼+서브)·Separate(서브만)'},
+   {head:'식별 vs 비식별', body:'식별: FK가 PK 포함(강한 의존) / 비식별: FK가 일반 속성'},
+   {head:'물리 모델', body:'컬럼 데이터타입·인덱스·파티션·파일그룹 결정'}
+ ],
+ variants:[
+   'E-R 다이어그램의 구성 요소와 1:1·1:N·M:N 관계를 관계형 테이블로 변환하는 규칙을 설명하시오',
+   '수퍼타입·서브타입 모델링의 3가지 테이블 변환 방식(Single·Plus·Separate)을 비교하고 선택 기준을 서술하시오',
+   '식별 관계와 비식별 관계의 차이와 물리 설계에서의 영향을 설명하시오',
+   '논리 데이터 모델에서 물리 데이터 모델로의 변환 절차와 성능 고려 사항을 서술하시오',
+   'UML 클래스 다이어그램의 연관·집합·합성·의존 관계를 ERD와 비교하여 설명하시오'
+ ],
+ tip:'수퍼/서브타입 3가지 변환은 성능(Single: 조인 없음, Separate: 조인 증가)과 NULL 발생 여부 관점으로 비교표 작성. 식별/비식별은 "데이터 생명주기" 관점으로 설명하면 깊이 있는 답변.'},
+
+{cat:'dw', freq:5,
+ title:'정보시스템 구축 방법론 — CBD·MSA·애자일·RUP',
+ sub:'IT 시스템 개발 방법론',
+ years:['100','105','110','116','121'],
+ recent:['116','121'],
+ kws:['CBD 컴포넌트','MSA 전환','RUP 4단계','정보공학 방법론','방법론 테일러링','공공 표준 방법론'],
+ kwt:['kb','kg','kr','ka','kp','kp'],
+ concepts:[
+   {head:'CBD 방법론', body:'컴포넌트 기반 개발: 재사용 가능 컴포넌트 조립으로 시스템 구축'},
+   {head:'RUP 4단계', body:'도입(Inception)→정교화(Elaboration)→구성(Construction)→전환(Transition)'},
+   {head:'방법론 테일러링', body:'프로젝트 규모·복잡도에 따라 표준 방법론 적용 범위 조정'},
+   {head:'공공 표준', body:'행정안전부 SW 개발 사업 방법론 가이드(MOIS 표준)'}
+ ],
+ variants:[
+   'CBD(컴포넌트 기반 개발) 방법론의 개념과 전통적 구조적 방법론과의 차이를 설명하시오',
+   'RUP(Rational Unified Process)의 4단계(도입·정교화·구성·전환)와 9개 워크플로우를 설명하시오',
+   '공공 정보화 사업에서 방법론 테일러링(Tailoring)의 필요성과 적용 절차를 서술하시오',
+   '정보공학 방법론(IE)과 객체지향 방법론(OOM)을 비교하고 각 방법론의 대표 산출물을 설명하시오'
+ ],
+ tip:'공공 정보화 사업에서 "방법론 테일러링" 문항은 정보관리 기술사 고유. 행안부 SW 개발 표준 방법론(ISP·정보화사업·유지보수 유형별) 구조 파악.'},
+];
+
+const catLabel={all:'전체',audit:'정보시스템 감리',mis:'경영정보·IT전략',data:'데이터 전략·거버넌스',law:'법규·제도',pm:'프로젝트·서비스 관리',biz:'비즈니스 아키텍처',dw:'DW·데이터 모델링'};
+function fClass(f){return f>=7?'f7':f===6?'f6':f===5?'f5':f===4?'f4':'f3'}
+let cur='all';
+
+function render(){
+  const filtered=cur==='all'?DATA:DATA.filter(d=>d.cat===cur);
+  const list=document.getElementById('list');
+  if(!filtered.length){list.innerHTML='<div class="empty">해당 도메인의 데이터가 없습니다.</div>';return}
+  const byCat={};
+  filtered.forEach(d=>{if(!byCat[d.cat])byCat[d.cat]=[];byCat[d.cat].push(d)});
+  let html='';
+  for(const cat in byCat){
+    if(cur==='all') html+=`<div class="sec-div">${catLabel[cat]}</div>`;
+    byCat[cat].sort((a,b)=>b.freq-a.freq).forEach((d,i)=>{
+      const id='c'+cat+i;
+      const ychips=d.years.map(y=>`<span class="yc${d.recent.includes(y)?' r':''}">${y}회</span>`).join('');
+      const kws=d.kws.map((k,j)=>`<span class="kw ${d.kwt[j]||'kb'}">${k}</span>`).join('');
+      const vars=d.variants.map((v,j)=>`<div class="v-item"><span class="v-num">Q${j+1}</span><span>${v}</span></div>`).join('');
+      const concepts=d.concepts.map(c=>`<div class="concept-box"><div class="chead">${c.head}</div><div class="cbody">${c.body}</div></div>`).join('');
+      html+=`<div class="topic-card">
+        <div class="tc-head" onclick="tog('${id}')">
+          <div class="tc-left">
+            <span class="freq-badge ${fClass(d.freq)}">${d.freq}회 출제</span>
+            <span class="only-badge">정보관리 전용</span>
+            <span class="cat-pill">${catLabel[d.cat]}</span>
+          </div>
+          <div class="tc-main">
+            <div class="tc-title">${d.title}</div>
+            <div class="tc-sub">${d.sub}</div>
+          </div>
+          <span class="tc-arrow" id="arr-${id}">▼</span>
+        </div>
+        <div class="tc-body" id="body-${id}">
+          <div class="section-tag">출제 연도 <span style="font-weight:400;font-style:italic;color:#aaa">(파란색 = 최근 5년)</span></div>
+          <div class="year-chips">${ychips}</div>
+          <div class="section-tag">키워드</div>
+          <div class="kw-row">${kws}</div>
+          <div class="section-tag">핵심 개념 요약</div>
+          <div class="concept-grid">${concepts}</div>
+          <div class="section-tag">유사·변형 출제 문항</div>
+          <div class="variants-box">${vars}</div>
+          <div class="tip-box">
+            <div class="tip-head">💡 수험 전략</div>
+            ${d.tip}
+          </div>
+        </div>
+      </div>`;
+    });
+  }
+  list.innerHTML=html;
+}
+
+function tog(id){
+  const b=document.getElementById('body-'+id);
+  const a=document.getElementById('arr-'+id);
+  const o=b.classList.toggle('open');
+  a.textContent=o?'▲':'▼';
+}
+
+document.getElementById('frow').addEventListener('click',e=>{
+  const b=e.target.closest('.fb');
+  if(!b)return;
+  document.querySelectorAll('.fb').forEach(x=>x.classList.remove('on'));
+  b.classList.add('on');
+  cur=b.dataset.f;
+  render();
+});
+
+document.getElementById('s7').textContent=DATA.filter(d=>d.freq>=7).length;
+document.getElementById('s6').textContent=DATA.filter(d=>d.freq===6).length;
+document.getElementById('s5').textContent=DATA.filter(d=>d.freq===5).length;
+document.getElementById('s4').textContent=DATA.filter(d=>d.freq===4).length;
+document.getElementById('stot').textContent=DATA.length;
+render();
+</script>
+
+
+</body></html>

@@ -1,0 +1,556 @@
+
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:var(--font-sans)}
+.tabs{display:flex;gap:6px;flex-wrap:wrap;padding:1rem 0 0.5rem}
+.tab{padding:7px 14px;font-size:13px;border:0.5px solid var(--color-border-secondary);border-radius:var(--border-radius-md);cursor:pointer;background:var(--color-background-primary);color:var(--color-text-secondary)}
+.tab.on{background:var(--color-background-tertiary);color:var(--color-text-primary);font-weight:500;border-color:var(--color-border-primary)}
+.page{display:none}.page.on{display:block}
+.card{background:var(--color-background-primary);border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-lg);padding:1rem 1.25rem;margin-bottom:12px}
+.sec{font-size:12px;font-weight:500;color:var(--color-text-secondary);letter-spacing:.04em;margin:1.1rem 0 6px}
+.memo{background:var(--color-background-secondary);border-left:3px solid #7F77DD;border-radius:0 var(--border-radius-md) var(--border-radius-md) 0;padding:9px 13px;font-size:13px;color:var(--color-text-primary);margin-top:10px;line-height:1.75}
+.warn{background:var(--color-background-secondary);border-left:3px solid #E24B4A;border-radius:0 var(--border-radius-md) var(--border-radius-md) 0;padding:9px 13px;font-size:13px;color:var(--color-text-primary);margin-top:10px;line-height:1.75}
+table{width:100%;border-collapse:collapse;font-size:13px}
+th{background:var(--color-background-secondary);padding:7px 10px;text-align:left;font-weight:500;font-size:12px;color:var(--color-text-secondary);border-bottom:0.5px solid var(--color-border-tertiary)}
+td{padding:8px 10px;border-bottom:0.5px solid var(--color-border-tertiary);color:var(--color-text-primary);vertical-align:top;line-height:1.6}
+.badge{display:inline-block;font-size:11px;padding:2px 8px;border-radius:var(--border-radius-md);font-weight:500;white-space:nowrap;margin-right:3px}
+.bl{background:#E6F1FB;color:#0C447C}
+.bt{background:#E1F5EE;color:#085041}
+.ba{background:#FAEEDA;color:#633806}
+.bc{background:#FAECE7;color:#712B13}
+.bp{background:#EEEDFE;color:#3C3489}
+.bg{background:#EAF3DE;color:#27500A}
+.br{background:#FCEBEB;color:#791F1F}
+.bk{background:#F1EFE8;color:#2C2C2A}
+.row{display:flex;gap:10px;padding:8px 0;border-bottom:0.5px solid var(--color-border-tertiary);font-size:13px;align-items:flex-start}
+.row:last-child{border-bottom:none}
+.lbl{font-weight:500;min-width:110px;flex-shrink:0;color:var(--color-text-primary)}
+.val{color:var(--color-text-secondary);flex:1;line-height:1.65}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.hl{background:#EEEDFE;color:#3C3489;padding:2px 6px;border-radius:4px;font-weight:500;font-size:12px}
+.algo-card{border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-lg);padding:10px 12px;cursor:pointer;margin-bottom:8px}
+.algo-card:hover{background:var(--color-background-secondary)}
+.algo-card.open .algo-body{display:block}
+.algo-body{display:none;margin-top:8px;padding-top:8px;border-top:0.5px solid var(--color-border-tertiary);font-size:13px;color:var(--color-text-secondary);line-height:1.7}
+.opt{display:block;width:100%;text-align:left;padding:10px 14px;margin:6px 0;border:0.5px solid var(--color-border-secondary);border-radius:var(--border-radius-md);font-size:13px;background:var(--color-background-primary);color:var(--color-text-primary);cursor:pointer;line-height:1.5}
+.opt:hover{background:var(--color-background-secondary)}
+.opt.correct{background:#EAF3DE;border-color:#3B6D11;color:#173404}
+.opt.wrong{background:#FCEBEB;border-color:#A32D2D;color:#501313}
+.opt.reveal{background:#E6F1FB;border-color:#185FA5;color:#042C53}
+.opt:disabled{cursor:default}
+.expl{background:var(--color-background-secondary);border-left:3px solid #7F77DD;border-radius:0 var(--border-radius-md) var(--border-radius-md) 0;padding:10px 14px;font-size:13px;color:var(--color-text-primary);line-height:1.7;margin-top:10px;display:none}
+.expl.on{display:block}
+.prog-bar{height:4px;background:var(--color-background-secondary);border-radius:2px;margin:6px 0 10px}
+.prog-fill{height:4px;background:#534AB7;border-radius:2px;transition:width .3s}
+.dot{display:inline-block;width:9px;height:9px;border-radius:50%;margin:0 2px}
+.fbtn{padding:5px 11px;font-size:12px;border:0.5px solid var(--color-border-secondary);border-radius:var(--border-radius-md);background:var(--color-background-primary);color:var(--color-text-secondary);cursor:pointer}
+.fbtn.on{background:var(--color-background-tertiary);color:var(--color-text-primary);font-weight:500}
+.nav{display:flex;gap:8px;margin-top:12px;flex-wrap:wrap}
+.flow{display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin:8px 0}
+.flow-box{border-radius:var(--border-radius-md);padding:7px 12px;font-size:12px;font-weight:500;text-align:center}
+.flow-arr{color:var(--color-text-secondary);font-size:13px;flex-shrink:0}
+</style>
+
+<div style="padding:0 0 2rem">
+<div class="tabs">
+  <div class="tab on" onclick="show(0)">개요·분류</div>
+  <div class="tab" onclick="show(1)">대칭키 암호</div>
+  <div class="tab" onclick="show(2)">비대칭키 암호</div>
+  <div class="tab" onclick="show(3)">해시 함수</div>
+  <div class="tab" onclick="show(4)">전자서명·PKI</div>
+  <div class="tab" onclick="show(5)">운용 모드·기타</div>
+  <div class="tab" onclick="show(6)">예상 퀴즈 (18)</div>
+</div>
+
+<!-- 0: 개요 -->
+<div class="page on">
+  <p class="sec">암호 시스템의 목표 (CIA+NR)</p>
+  <div class="card">
+    <div class="grid2">
+      <div>
+        <div class="row"><div class="lbl">기밀성 (C)</div><div class="val">허가된 자만 정보 열람 — 암호화</div></div>
+        <div class="row"><div class="lbl">무결성 (I)</div><div class="val">정보가 변조되지 않음 — 해시·MAC</div></div>
+      </div>
+      <div>
+        <div class="row"><div class="lbl">가용성 (A)</div><div class="val">필요 시 접근 가능 — DDoS 방어</div></div>
+        <div class="row"><div class="lbl">부인방지 (NR)</div><div class="val">송신자가 전송 사실 부인 불가 — 전자서명</div></div>
+      </div>
+    </div>
+  </div>
+
+  <p class="sec">암호 알고리듬 전체 분류</p>
+  <div class="card">
+    <div style="display:flex;flex-direction:column;gap:8px">
+      <div style="background:#E6F1FB;border-radius:var(--border-radius-md);padding:10px 14px">
+        <div style="font-size:12px;font-weight:500;color:#0C447C;margin-bottom:6px">대칭키 암호 (Symmetric) — 같은 키로 암·복호화</div>
+        <div style="font-size:12px;color:#185FA5;line-height:1.8">
+          블록 암호: <span class="badge bl">DES</span><span class="badge bl">3DES</span><span class="badge bl">AES</span><span class="badge bl">ARIA</span><span class="badge bl">SEED</span><span class="badge bl">Blowfish</span><br>
+          스트림 암호: <span class="badge bl">RC4</span><span class="badge bl">ChaCha20</span>
+        </div>
+      </div>
+      <div style="background:#EEEDFE;border-radius:var(--border-radius-md);padding:10px 14px">
+        <div style="font-size:12px;font-weight:500;color:#3C3489;margin-bottom:6px">비대칭키 암호 (Asymmetric) — 공개키/개인키 쌍</div>
+        <div style="font-size:12px;color:#534AB7;line-height:1.8">
+          <span class="badge bp">RSA</span><span class="badge bp">ECC</span><span class="badge bp">ElGamal</span><span class="badge bp">DSA</span><span class="badge bp">DH (키 교환)</span>
+        </div>
+      </div>
+      <div style="background:#E1F5EE;border-radius:var(--border-radius-md);padding:10px 14px">
+        <div style="font-size:12px;font-weight:500;color:#085041;margin-bottom:6px">해시 함수 (Hash) — 단방향, 고정 길이 출력</div>
+        <div style="font-size:12px;color:#0F6E56;line-height:1.8">
+          <span class="badge bt">MD5</span><span class="badge bt">SHA-1</span><span class="badge bt">SHA-256</span><span class="badge bt">SHA-3</span><span class="badge bt">HAS-160 (국산)</span>
+        </div>
+      </div>
+      <div style="background:#FAEEDA;border-radius:var(--border-radius-md);padding:10px 14px">
+        <div style="font-size:12px;font-weight:500;color:#633806;margin-bottom:6px">메시지 인증 코드 (MAC) — 무결성 + 인증</div>
+        <div style="font-size:12px;color:#854F0B;line-height:1.8">
+          <span class="badge ba">HMAC</span><span class="badge ba">CMAC</span><span class="badge ba">GMAC</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <p class="sec">대칭키 vs 비대칭키 핵심 비교</p>
+  <div class="card">
+    <table>
+      <tr><th>구분</th><th>대칭키</th><th>비대칭키</th></tr>
+      <tr><td>키 수</td><td>1개 (동일 키)</td><td>2개 (공개키 + 개인키)</td></tr>
+      <tr><td>속도</td><td>빠름 (1,000배↑)</td><td>느림</td></tr>
+      <tr><td>키 배송 문제</td><td>있음 (사전 공유 필요)</td><td>없음 (공개키 공개 가능)</td></tr>
+      <tr><td>키 관리 수</td><td>n(n-1)/2 개</td><td>2n 개</td></tr>
+      <tr><td>주 용도</td><td>대용량 데이터 암호화</td><td>키 교환·전자서명·인증</td></tr>
+      <tr><td>대표 알고리듬</td><td>AES, ARIA, SEED</td><td>RSA, ECC, DH</td></tr>
+    </table>
+    <div class="memo">실무: 대칭키(빠름)로 데이터 암호화 + 비대칭키(안전)로 대칭키 전달 → 하이브리드 암호화</div>
+  </div>
+</div>
+
+<!-- 1: 대칭키 -->
+<div class="page">
+  <p class="sec">블록 암호 알고리듬 비교 (클릭해서 상세 보기)</p>
+  <div id="sym-list"></div>
+
+  <p class="sec">블록 암호 핵심 비교표</p>
+  <div class="card">
+    <table>
+      <tr><th>알고리듬</th><th>블록 크기</th><th>키 길이</th><th>상태</th><th>특징</th></tr>
+      <tr><td><span class="badge br">DES</span></td><td>64비트</td><td>56비트</td><td><span class="badge br">취약·폐기</span></td><td>Feistel 구조, 16라운드</td></tr>
+      <tr><td><span class="badge br">3DES</span></td><td>64비트</td><td>112/168비트</td><td><span class="badge ba">레거시</span></td><td>DES×3 적용, 느림</td></tr>
+      <tr><td><span class="badge bg">AES</span></td><td>128비트</td><td>128/192/256비트</td><td><span class="badge bg">현재 표준</span></td><td>SPN 구조, 미국 표준(NIST)</td></tr>
+      <tr><td><span class="badge bg">ARIA</span></td><td>128비트</td><td>128/192/256비트</td><td><span class="badge bg">국내 표준</span></td><td>AES 구조 유사, 한국 국가 표준</td></tr>
+      <tr><td><span class="badge bg">SEED</span></td><td>128비트</td><td>128비트</td><td><span class="badge bg">국내 표준</span></td><td>Feistel 구조, 한국 국가 표준</td></tr>
+      <tr><td><span class="badge bt">LEA</span></td><td>128비트</td><td>128/192/256비트</td><td><span class="badge bt">경량 표준</span></td><td>IoT·모바일 경량 암호</td></tr>
+      <tr><td><span class="badge bp">Blowfish</span></td><td>64비트</td><td>32~448비트</td><td><span class="badge bk">비권장</span></td><td>가변 키, 64비트 블록 취약</td></tr>
+    </table>
+  </div>
+
+  <p class="sec">스트림 암호</p>
+  <div class="card">
+    <table>
+      <tr><th>알고리듬</th><th>특징</th><th>상태</th></tr>
+      <tr><td><span class="badge br">RC4</span></td><td>비트 단위 XOR, SSL/WEP에서 사용</td><td><span class="badge br">취약·폐기 — WEP 해킹에 사용</span></td></tr>
+      <tr><td><span class="badge bg">ChaCha20</span></td><td>고성능 스트림, TLS 1.3·모바일에서 사용</td><td><span class="badge bg">권장 — RC4 대체</span></td></tr>
+    </table>
+    <div class="memo">블록 암호: 고정 크기 블록 단위 암호화 / 스트림 암호: 비트·바이트 단위 실시간 암호화<br>IoT·저전력 환경 → 경량 암호(LEA, ChaCha20) 사용</div>
+  </div>
+
+  <p class="sec">Feistel 구조 vs SPN 구조</p>
+  <div class="card">
+    <div class="grid2">
+      <div style="background:#E6F1FB;border-radius:var(--border-radius-md);padding:10px">
+        <div style="font-size:12px;font-weight:500;color:#0C447C;margin-bottom:6px">Feistel 구조</div>
+        <div style="font-size:12px;color:#185FA5;line-height:1.8">
+          블록을 L·R 절반으로 나눠 라운드 반복<br>
+          복호화 = 암호화 역순 (역함수 불필요)<br>
+          예: DES, 3DES, SEED, Blowfish
+        </div>
+      </div>
+      <div style="background:#EEEDFE;border-radius:var(--border-radius-md);padding:10px">
+        <div style="font-size:12px;font-weight:500;color:#3C3489;margin-bottom:6px">SPN 구조 (대입-치환)</div>
+        <div style="font-size:12px;color:#534AB7;line-height:1.8">
+          전체 블록에 S-box(대입)·P-box(치환) 동시 적용<br>
+          병렬 처리 가능 → 빠름<br>
+          예: AES, ARIA
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 2: 비대칭키 -->
+<div class="page">
+  <p class="sec">주요 비대칭키 알고리듬 (클릭해서 상세 보기)</p>
+  <div id="asym-list"></div>
+
+  <p class="sec">비대칭키 비교표</p>
+  <div class="card">
+    <table>
+      <tr><th>알고리듬</th><th>수학적 기반</th><th>키 길이(보안)</th><th>용도</th><th>특징</th></tr>
+      <tr><td><span class="badge bp">RSA</span></td><td>소인수 분해 어려움</td><td>2048비트 이상</td><td>암호화·서명·키 교환</td><td>가장 널리 사용, 키 길어짐</td></tr>
+      <tr><td><span class="badge bp">ECC</span></td><td>타원곡선 이산대수</td><td>256비트 (RSA 3072 수준)</td><td>암호화·서명·키 교환</td><td>짧은 키로 동등 보안, 모바일 최적</td></tr>
+      <tr><td><span class="badge bp">DH</span></td><td>이산대수 어려움</td><td>2048비트 이상</td><td>키 교환 전용</td><td>암호화·서명 불가, 키 협의만</td></tr>
+      <tr><td><span class="badge bp">ElGamal</span></td><td>이산대수 어려움</td><td>2048비트 이상</td><td>암호화·서명</td><td>암호문이 평문의 2배 크기</td></tr>
+      <tr><td><span class="badge bp">DSA</span></td><td>이산대수 어려움</td><td>1024~3072비트</td><td>전자서명 전용</td><td>암호화 불가, 서명만 가능</td></tr>
+      <tr><td><span class="badge bt">ECDSA</span></td><td>타원곡선 이산대수</td><td>256비트</td><td>전자서명 전용</td><td>DSA+ECC, 비트코인·TLS 사용</td></tr>
+    </table>
+    <div class="memo">DH: 키 교환만 / DSA: 서명만 / RSA: 암호화+서명+키교환 모두 가능<br>ECC = 짧은 키로 높은 보안 → 모바일·IoT·스마트카드에 최적</div>
+  </div>
+
+  <p class="sec">DH 키 교환 원리 (중간자 공격 취약)</p>
+  <div class="card">
+    <div class="flow">
+      <div class="flow-box" style="background:#E6F1FB;color:#0C447C">Alice<br>a 생성</div>
+      <div class="flow-arr">→ A=g^a mod p →</div>
+      <div class="flow-box" style="background:var(--color-background-secondary);color:var(--color-text-secondary)">공개<br>채널</div>
+      <div class="flow-arr">← B=g^b mod p ←</div>
+      <div class="flow-box" style="background:#EEEDFE;color:#3C3489">Bob<br>b 생성</div>
+    </div>
+    <div style="font-size:13px;color:var(--color-text-secondary);margin-top:6px;line-height:1.7">
+      Alice 계산: K = B^a mod p = g^(ab) mod p<br>
+      Bob 계산: K = A^b mod p = g^(ab) mod p<br>
+      → 같은 K(세션 키)를 키 없이 공유 성공
+    </div>
+    <div class="warn">DH 취약점: 중간자 공격(MITM) — 인증 기능 없음 → PKI·인증서로 보완 필요<br>ECDH: DH + 타원곡선 → 성능 개선 버전 (TLS 1.3 기본)</div>
+  </div>
+</div>
+
+<!-- 3: 해시 -->
+<div class="page">
+  <p class="sec">해시 함수의 3대 보안 성질</p>
+  <div class="card">
+    <div class="row"><div class="lbl">일방향성<br>(One-way)</div><div class="val">해시값 → 원문 역산 불가 (역함수 없음)</div></div>
+    <div class="row"><div class="lbl">충돌 저항성<br>(Collision Resistance)</div><div class="val">H(x) = H(y)인 x≠y를 찾기 어려움 — MD5·SHA-1은 충돌 발견됨</div></div>
+    <div class="row"><div class="lbl">역상 저항성<br>(Preimage Resistance)</div><div class="val">주어진 해시값 h에 대해 H(x)=h인 x 찾기 어려움</div></div>
+  </div>
+
+  <p class="sec">주요 해시 알고리듬 비교</p>
+  <div class="card">
+    <table>
+      <tr><th>알고리듬</th><th>출력 길이</th><th>내부 구조</th><th>상태</th><th>용도</th></tr>
+      <tr><td><span class="badge br">MD5</span></td><td>128비트</td><td>Merkle-Damgård</td><td><span class="badge br">충돌 발견·폐기</span></td><td>레거시 체크섬 (무결성 X)</td></tr>
+      <tr><td><span class="badge br">SHA-1</span></td><td>160비트</td><td>Merkle-Damgård</td><td><span class="badge br">충돌 발견·폐기</span></td><td>구형 TLS·Git (무결성 취약)</td></tr>
+      <tr><td><span class="badge bg">SHA-256</span></td><td>256비트</td><td>Merkle-Damgård</td><td><span class="badge bg">현재 표준</span></td><td>TLS, 비트코인, 인증서</td></tr>
+      <tr><td><span class="badge bg">SHA-384</span></td><td>384비트</td><td>Merkle-Damgård</td><td><span class="badge bg">표준</span></td><td>고보안 환경</td></tr>
+      <tr><td><span class="badge bg">SHA-512</span></td><td>512비트</td><td>Merkle-Damgård</td><td><span class="badge bg">표준</span></td><td>고보안 환경</td></tr>
+      <tr><td><span class="badge bt">SHA-3</span></td><td>224/256/384/512</td><td>Keccak (스펀지)</td><td><span class="badge bg">차세대 표준</span></td><td>SHA-2 대안, 구조 완전 다름</td></tr>
+      <tr><td><span class="badge bl">HAS-160</span></td><td>160비트</td><td>Merkle-Damgård</td><td><span class="badge bk">국내 표준</span></td><td>한국 전자서명법 기반</td></tr>
+    </table>
+    <div class="warn">MD5·SHA-1은 충돌(Collision)이 실제로 발견됨 → 보안 목적 사용 절대 금지<br>SHA-256 이상 사용 권장 (KISA·NIST 권고)</div>
+  </div>
+
+  <p class="sec">SHA-2 vs SHA-3 — 구조 차이</p>
+  <div class="card">
+    <div class="grid2">
+      <div style="background:#FAEEDA;border-radius:var(--border-radius-md);padding:10px">
+        <div style="font-size:12px;font-weight:500;color:#633806;margin-bottom:6px">SHA-2 계열</div>
+        <div style="font-size:12px;color:#854F0B;line-height:1.8">Merkle-Damgård 구조<br>SHA-256/384/512<br>SHA-1의 구조적 계승<br>가장 많이 사용 중</div>
+      </div>
+      <div style="background:#E1F5EE;border-radius:var(--border-radius-md);padding:10px">
+        <div style="font-size:12px;font-weight:500;color:#085041;margin-bottom:6px">SHA-3 (Keccak)</div>
+        <div style="font-size:12px;color:#0F6E56;line-height:1.8">스펀지(Sponge) 구조<br>SHA-2와 완전히 다른 설계<br>SHA-2 취약 시 대안<br>NIST 2015년 표준화</div>
+      </div>
+    </div>
+    <div class="memo">SHA-2가 취약해질 경우를 대비한 예비 표준 = SHA-3<br>현재는 SHA-2와 SHA-3 모두 안전, SHA-2가 실무 주류</div>
+  </div>
+
+  <p class="sec">HMAC (Hash-based MAC)</p>
+  <div class="card">
+    <div class="row"><div class="lbl">정의</div><div class="val">해시 함수 + 비밀 키 → 메시지 인증 코드 생성</div></div>
+    <div class="row"><div class="lbl">공식</div><div class="val">HMAC(K, m) = H((K⊕opad) ∥ H((K⊕ipad) ∥ m))</div></div>
+    <div class="row"><div class="lbl">용도</div><div class="val">무결성 + 인증 동시 제공 (전자서명 아님 — 부인방지 없음)</div></div>
+    <div class="row"><div class="lbl">해시 vs HMAC</div><div class="val">해시: 키 없음, 무결성만 / HMAC: 키 있음, 무결성+인증</div></div>
+  </div>
+</div>
+
+<!-- 4: 전자서명·PKI -->
+<div class="page">
+  <p class="sec">전자서명 메커니즘</p>
+  <div class="card">
+    <div style="margin-bottom:12px">
+      <div style="font-size:13px;font-weight:500;color:var(--color-text-primary);margin-bottom:8px">서명 생성 (송신자)</div>
+      <div class="flow">
+        <div class="flow-box" style="background:#E6F1FB;color:#0C447C">원문</div>
+        <div class="flow-arr">→ 해시 →</div>
+        <div class="flow-box" style="background:#FAEEDA;color:#633806">다이제스트</div>
+        <div class="flow-arr">→ 개인키 암호화 →</div>
+        <div class="flow-box" style="background:#EEEDFE;color:#3C3489">전자서명</div>
+      </div>
+    </div>
+    <div>
+      <div style="font-size:13px;font-weight:500;color:var(--color-text-primary);margin-bottom:8px">서명 검증 (수신자)</div>
+      <div class="flow" style="flex-wrap:wrap">
+        <div class="flow-box" style="background:#EEEDFE;color:#3C3489">전자서명</div>
+        <div class="flow-arr">→ 공개키 복호화 →</div>
+        <div class="flow-box" style="background:#FAEEDA;color:#633806">다이제스트 A</div>
+        <div class="flow-arr">비교</div>
+        <div class="flow-box" style="background:#FAEEDA;color:#633806">다이제스트 B</div>
+        <div class="flow-arr">← 해시 ←</div>
+        <div class="flow-box" style="background:#E6F1FB;color:#0C447C">수신 원문</div>
+      </div>
+      <div style="font-size:12px;color:var(--color-text-secondary);margin-top:6px">A = B → 서명 유효 (무결성 + 부인방지 확인)</div>
+    </div>
+    <div class="memo">전자서명 = 개인키로 서명, 공개키로 검증 (암호화와 반대 방향)<br>제공 보안: 무결성 + 인증 + 부인방지 (기밀성은 제공 안 함)</div>
+  </div>
+
+  <p class="sec">PKI (공개키 기반 구조) 구성 요소</p>
+  <div class="card">
+    <table>
+      <tr><th>구성 요소</th><th>역할</th><th>비고</th></tr>
+      <tr><td><span class="badge bp">CA (인증기관)</span></td><td>공개키 인증서 발급·서명·폐기</td><td>최상위 Root CA → 중간 CA 계층</td></tr>
+      <tr><td><span class="badge bl">RA (등록기관)</span></td><td>사용자 신원 확인 후 CA에 인증 요청</td><td>CA와 사용자 사이 중간 역할</td></tr>
+      <tr><td><span class="badge bt">공개키 인증서</span></td><td>공개키 + 소유자 정보 + CA 서명</td><td>X.509 표준</td></tr>
+      <tr><td><span class="badge ba">CRL (인증서 폐기 목록)</span></td><td>폐기된 인증서 목록 주기적 배포</td><td>실시간성 부족</td></tr>
+      <tr><td><span class="badge ba">OCSP</span></td><td>인증서 유효성 실시간 온라인 확인</td><td>CRL 대안, 실시간</td></tr>
+      <tr><td><span class="badge bk">저장소 (Repository)</span></td><td>인증서·CRL 공개 배포</td><td>LDAP·HTTP로 접근</td></tr>
+    </table>
+    <div class="warn">감리 포인트: CRL과 OCSP의 차이 — CRL은 주기적 업데이트(실시간 아님), OCSP는 실시간 확인<br>인증서 유효성 검증 절차 미비 → 감리 지적 대상</div>
+  </div>
+
+  <p class="sec">X.509 인증서 주요 필드</p>
+  <div class="card">
+    <div class="row"><div class="lbl">버전</div><div class="val">현재 V3 (확장 필드 지원)</div></div>
+    <div class="row"><div class="lbl">일련번호</div><div class="val">CA 내 고유 번호 — CRL 조회에 사용</div></div>
+    <div class="row"><div class="lbl">유효 기간</div><div class="val">Not Before / Not After</div></div>
+    <div class="row"><div class="lbl">주체 (Subject)</div><div class="val">공개키 소유자 정보 (DN: Distinguished Name)</div></div>
+    <div class="row"><div class="lbl">발급자 (Issuer)</div><div class="val">서명한 CA의 DN</div></div>
+    <div class="row"><div class="lbl">공개키 정보</div><div class="val">알고리듬 + 공개키 값</div></div>
+    <div class="row"><div class="lbl">CA 디지털 서명</div><td class="val">인증서 위변조 방지</td></div>
+  </div>
+</div>
+
+<!-- 5: 운용 모드·기타 -->
+<div class="page">
+  <p class="sec">블록 암호 운용 모드</p>
+  <div class="card">
+    <table>
+      <tr><th>모드</th><th>영문명</th><th>특징</th><th>권장 여부</th></tr>
+      <tr>
+        <td><span class="badge br">ECB</span></td>
+        <td>Electronic Codebook</td>
+        <td>블록 독립 암호화. 같은 평문 → 같은 암호문<br>패턴 노출 → 이미지 암호화 취약</td>
+        <td><span class="badge br">사용 금지</span></td>
+      </tr>
+      <tr>
+        <td><span class="badge bt">CBC</span></td>
+        <td>Cipher Block Chaining</td>
+        <td>이전 암호문과 XOR 후 암호화. IV 필요<br>직렬 처리(병렬 불가), 오류 전파</td>
+        <td><span class="badge ba">레거시</span></td>
+      </tr>
+      <tr>
+        <td><span class="badge bt">CTR</span></td>
+        <td>Counter</td>
+        <td>카운터 암호화 후 XOR. 병렬 처리 가능<br>스트림 암호처럼 동작</td>
+        <td><span class="badge bg">권장</span></td>
+      </tr>
+      <tr>
+        <td><span class="badge bg">GCM</span></td>
+        <td>Galois/Counter Mode</td>
+        <td>CTR + GMAC(인증태그). 기밀성+무결성 동시<br>TLS 1.3, SSH, IPSec에서 사용</td>
+        <td><span class="badge bg">강력 권장</span></td>
+      </tr>
+      <tr>
+        <td><span class="badge bt">CFB / OFB</span></td>
+        <td>Cipher/Output Feedback</td>
+        <td>스트림 모드 유사. 실시간 처리 가능</td>
+        <td><span class="badge ba">특수 용도</span></td>
+      </tr>
+    </table>
+    <div class="warn">ECB 모드: 같은 평문 블록 → 같은 암호문 → 패턴 분석 가능 → 절대 사용 금지<br>AES-GCM = 현재 가장 권장되는 조합 (기밀성 + 무결성 + 인증 동시)</div>
+  </div>
+
+  <p class="sec">주요 암호 프로토콜과 사용 알고리듬</p>
+  <div class="card">
+    <table>
+      <tr><th>프로토콜</th><th>사용 암호 알고리듬</th><th>용도</th></tr>
+      <tr><td><span class="badge bg">TLS 1.3</span></td><td>ECDH (키 교환) + AES-GCM (암호화) + SHA-256/384 (해시)</td><td>HTTPS, 웹 보안</td></tr>
+      <tr><td><span class="badge bt">TLS 1.2</span></td><td>RSA/DH + AES-CBC/GCM + SHA-256</td><td>구형 HTTPS</td></tr>
+      <tr><td><span class="badge ba">IPSec</span></td><td>AES + SHA-256 + DH/ECDH</td><td>VPN, 네트워크 계층</td></tr>
+      <tr><td><span class="badge bp">SSH</span></td><td>ECDH + AES-CTR/GCM + HMAC-SHA2</td><td>원격 접속</td></tr>
+      <tr><td><span class="badge bc">S/MIME</span></td><td>RSA/ECC + AES + SHA-256</td><td>이메일 암호화·서명</td></tr>
+      <tr><td><span class="badge bk">PGP</span></td><td>RSA/ECC + AES + SHA-256 (하이브리드)</td><td>이메일·파일 암호화</td></tr>
+    </table>
+  </div>
+
+  <p class="sec">패딩 (Padding) 방식</p>
+  <div class="card">
+    <div class="row"><div class="lbl">PKCS#7</div><div class="val">부족한 바이트 수만큼 그 값으로 채움 (예: 3바이트 부족 → 03 03 03)</div></div>
+    <div class="row"><div class="lbl">OAEP</div><div class="val">RSA 암호화에서 사용하는 랜덤 패딩 — RSA-PKCS#1 v1.5 대체</div></div>
+    <div class="row"><div class="lbl">Zero Padding</div><div class="val">0으로 채움 — 원문 길이 복원이 어려워 권장 안 함</div></div>
+    <div class="memo">패딩 오라클 공격: CBC 모드 + 패딩 검증 오류 메시지 → 평문 복호화 가능 → TLS POODLE 취약점 원인</div>
+  </div>
+</div>
+
+<!-- 6: 퀴즈 -->
+<div class="page">
+  <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px">
+    <span id="qc" style="font-size:13px;color:var(--color-text-secondary)">문제 1 / 18</span>
+    <div id="dots" style="display:flex;align-items:center;gap:3px;flex-wrap:wrap"></div>
+  </div>
+  <div class="prog-bar"><div class="prog-fill" id="prog" style="width:5.56%"></div></div>
+  <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px">
+    <span style="font-size:12px;color:var(--color-text-secondary);align-self:center">필터:</span>
+    <button class="fbtn on" onclick="sf('all',this)">전체 (18)</button>
+    <button class="fbtn" onclick="sf('hard',this)">고난도</button>
+    <button class="fbtn" onclick="sf('mid',this)">중급</button>
+    <button class="fbtn" onclick="sf('대칭',this)">대칭키</button>
+    <button class="fbtn" onclick="sf('비대칭',this)">비대칭키</button>
+    <button class="fbtn" onclick="sf('해시',this)">해시</button>
+    <button class="fbtn" onclick="sf('PKI',this)">PKI·서명</button>
+    <button class="fbtn" onclick="sf('모드',this)">운용모드</button>
+  </div>
+  <div class="card" id="qcard">
+    <div style="display:flex;gap:6px;margin-bottom:10px;flex-wrap:wrap">
+      <span class="badge bp" id="qt"></span>
+      <span class="badge" id="qd"></span>
+    </div>
+    <p id="qtxt" style="font-size:14px;font-weight:500;color:var(--color-text-primary);line-height:1.7;margin-bottom:12px"></p>
+    <div id="qopts"></div>
+    <div class="expl" id="qexpl"></div>
+  </div>
+  <div class="nav">
+    <button onclick="qprev()" style="font-size:13px">← 이전</button>
+    <button onclick="qskip()" id="bskip" style="font-size:13px">건너뛰기</button>
+    <button onclick="qnext()" id="bnext" style="font-size:13px;display:none">다음 →</button>
+    <button onclick="qresult()" id="bres" style="font-size:13px;display:none">결과 보기 →</button>
+  </div>
+  <div id="resbox" style="display:none;margin-top:12px">
+    <div class="card">
+      <p style="font-size:15px;font-weight:500;margin-bottom:12px;color:var(--color-text-primary)">최종 결과</p>
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:12px">
+        <div style="background:var(--color-background-secondary);border-radius:var(--border-radius-md);padding:10px;text-align:center"><div style="font-size:11px;color:var(--color-text-secondary)">정답</div><div style="font-size:22px;font-weight:500;color:var(--color-text-primary)" id="rc">0</div></div>
+        <div style="background:var(--color-background-secondary);border-radius:var(--border-radius-md);padding:10px;text-align:center"><div style="font-size:11px;color:var(--color-text-secondary)">오답</div><div style="font-size:22px;font-weight:500;color:var(--color-text-primary)" id="rw">0</div></div>
+        <div style="background:var(--color-background-secondary);border-radius:var(--border-radius-md);padding:10px;text-align:center"><div style="font-size:11px;color:var(--color-text-secondary)">정답률</div><div style="font-size:22px;font-weight:500;color:var(--color-text-primary)" id="rr">0%</div></div>
+      </div>
+      <div id="rcmt" style="font-size:13px;color:var(--color-text-secondary);margin-bottom:12px;line-height:1.6"></div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap">
+        <button onclick="qrestart()" style="font-size:13px">처음부터 다시</button>
+        <button onclick="sendPrompt('암호 알고리듬 틀린 개념 더 자세히 설명해줘')" style="font-size:13px">오답 복습 ↗</button>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+
+<script>
+var SYMS=[
+  {lc:"#FCEBEB",tc:"#791F1F",title:"DES (Data Encryption Standard)",sub:"블록 64비트 / 키 56비트 / Feistel 16라운드",body:"1977년 미국 NIST 표준 채택. 56비트 키 → 2^56 전수 조사 가능 → 1999년 22시간 만에 해독 성공. 현재 완전 폐기. Feistel 구조: 블록을 L·R 반으로 나눠 16라운드 반복."},
+  {lc:"#FAECE7",tc:"#712B13",title:"3DES (Triple DES)",sub:"블록 64비트 / 키 112 or 168비트 / DES×3",body:"DES를 3번 적용 (암호화-복호화-암호화, EDE 방식). 키 옵션1: K1≠K2≠K3(168비트), 키 옵션2: K1=K3≠K2(112비트). 속도 느림, 64비트 블록 취약(Sweet32 공격). 2023년 NIST 폐기 권고."},
+  {lc:"#EAF3DE",tc:"#27500A",title:"AES (Advanced Encryption Standard)",sub:"블록 128비트 / 키 128·192·256비트 / SPN 구조",body:"2001년 NIST 표준 (Rijndael 알고리듬 채택). SPN 구조: SubBytes → ShiftRows → MixColumns → AddRoundKey 반복. 128비트 키: 10라운드 / 192비트: 12라운드 / 256비트: 14라운드. 현재 전 세계 표준."},
+  {lc:"#EAF3DE",tc:"#27500A",title:"ARIA",sub:"블록 128비트 / 키 128·192·256비트 / 국내 표준",body:"2004년 국가정보원·KISA·학계 공동 개발. AES와 유사한 SPN 구조. IETF RFC 5794 표준. 전자정부·공공 정보시스템에서 AES 대신 의무 사용 가능. 국내 전자거래·전자서명에 활용."},
+  {lc:"#EAF3DE",tc:"#27500A",title:"SEED",sub:"블록 128비트 / 키 128비트 / Feistel 구조",body:"1998년 한국인터넷진흥원(KISA) 개발. Feistel 구조, 16라운드. ISO/IEC 18033-3 국제 표준 등록. 한국 인터넷 뱅킹·전자상거래에서 널리 사용. AES와 달리 키 길이 128비트 고정."},
+  {lc:"#E6F1FB",tc:"#0C447C",title:"LEA (Lightweight Encryption Algorithm)",sub:"블록 128비트 / 키 128·192·256비트 / 경량",body:"2013년 KISA 개발, 경량 암호 알고리듬. IoT·모바일·임베디드 환경 최적화. ARX 구조(덧셈·회전·XOR) → 하드웨어 효율. ISO/IEC 29192-2 경량 암호 표준."},
+];
+var ASYMS=[
+  {lc:"#EEEDFE",tc:"#3C3489",title:"RSA",sub:"소인수 분해 / 키 2048비트 이상 / 암호화·서명·키교환",body:"1977년 Rivest·Shamir·Adleman 개발. p·q 두 소수 곱 n=pq를 인수분해하기 어려움에 기반. 공개키: (e, n) / 개인키: (d, n). 암호화: C=M^e mod n / 복호화: M=C^d mod n. 서명: 개인키로 서명, 공개키로 검증. 4096비트 이상 권장 추세."},
+  {lc:"#EEEDFE",tc:"#3C3489",title:"ECC (Elliptic Curve Cryptography)",sub:"타원곡선 이산대수 / 256비트 = RSA 3072비트 보안",body:"타원곡선 y²=x³+ax+b 위의 점 연산. 이산대수 문제(ECDLP) 어려움에 기반. 짧은 키로 RSA 동등 보안 → 모바일·IoT·스마트카드 최적. ECDSA(서명), ECDH(키 교환), ECIES(암호화)로 파생."},
+  {lc:"#EEEDFE",tc:"#3C3489",title:"Diffie-Hellman (DH)",sub:"이산대수 / 키 교환 전용 / 중간자 공격 취약",body:"1976년 최초의 공개키 프로토콜. 키 교환만 가능, 암호화·서명 불가. g^a mod p와 g^b mod p를 교환해 g^(ab) mod p 공유. 중간자 공격(MITM)에 취약 → 인증 필요. ECDH: ECC 기반 DH → TLS 1.3 기본."},
+  {lc:"#EEEDFE",tc:"#3C3489",title:"DSA (Digital Signature Algorithm)",sub:"이산대수 / 전자서명 전용 / FIPS 186",body:"1991년 NIST 표준. 서명만 가능, 암호화·키 교환 불가. ElGamal 서명 방식을 기반으로 개선. 키 길이: 1024(구형)~3072비트. ECDSA: DSA + 타원곡선 → 비트코인·TLS에서 사용."},
+  {lc:"#EEEDFE",tc:"#3C3489",title:"ElGamal",sub:"이산대수 / 암호화·서명 가능 / 암호문 2배 크기",body:"1985년 Taher ElGamal 제안. DH 원리를 암호화·서명으로 확장. 단점: 암호문이 평문의 2배 크기. 난수 사용으로 같은 평문도 다른 암호문 생성(확률적 암호화). DSA의 이론적 기반."},
+];
+
+function mkList(id, arr){
+  var el=document.getElementById(id);
+  arr.forEach(function(a){
+    var d=document.createElement('div');
+    d.className='algo-card';
+    d.style.borderLeft='3px solid '+a.tc;
+    d.innerHTML='<div style="display:flex;justify-content:space-between;align-items:center"><div><div style="font-size:13px;font-weight:500;color:var(--color-text-primary)">'+a.title+'</div><div style="font-size:12px;color:var(--color-text-secondary);margin-top:2px">'+a.sub+'</div></div></div><div class="algo-body">'+a.body+'</div>';
+    d.onclick=function(){this.classList.toggle('open');};
+    el.appendChild(d);
+  });
+}
+mkList('sym-list', SYMS);
+mkList('asym-list', ASYMS);
+
+function show(i){
+  document.querySelectorAll('.tab').forEach(function(t,j){t.classList.toggle('on',i===j);});
+  document.querySelectorAll('.page').forEach(function(p,j){p.classList.toggle('on',i===j);});
+}
+
+var QQ=[
+  {t:"대칭",d:"mid",q:"현재 미국 NIST 표준 블록 암호이며 128비트 블록, SPN 구조를 사용하는 알고리듬은?",o:["DES","3DES","AES","SEED"],a:2,e:"AES(Advanced Encryption Standard): 2001년 NIST 표준. 128비트 블록, 키 128/192/256비트. SPN(대입-치환) 구조. 128비트 키는 10라운드. DES·3DES는 Feistel 구조이며 현재 폐기/레거시 상태."},
+  {t:"대칭",d:"mid",q:"한국 국가 표준 블록 암호 알고리듬이 아닌 것은?",o:["SEED","ARIA","LEA","Blowfish"],a:3,e:"국내 표준: SEED(1998, KISA), ARIA(2004, KISA+국정원), LEA(2013, KISA 경량 암호).\nBlowfish는 Bruce Schneier가 개발한 국제 알고리듬으로 국내 표준이 아님."},
+  {t:"대칭",d:"hard",q:"DES와 AES의 내부 구조 차이로 옳은 것은?",o:["DES: SPN 구조 / AES: Feistel 구조","DES: Feistel 구조 / AES: SPN 구조","DES와 AES 모두 Feistel 구조","DES와 AES 모두 SPN 구조"],a:1,e:"DES: Feistel 구조 — 블록을 L·R 반으로 나눠 16라운드 반복. 복호화 = 암호화 역순.\nAES: SPN 구조 — 전체 블록에 SubBytes·ShiftRows·MixColumns·AddRoundKey 적용. 병렬 처리 가능.\nSEED도 Feistel, ARIA도 SPN 구조."},
+  {t:"비대칭",d:"mid",q:"비대칭키 암호 알고리듬 중 '키 교환'만 가능하고 암호화·서명은 불가능한 것은?",o:["RSA","DSA","DH (Diffie-Hellman)","ElGamal"],a:2,e:"DH(Diffie-Hellman): 키 교환 전용 프로토콜. 두 당사자가 공개 채널에서 공유 비밀 키를 협의.\n• RSA: 암호화+서명+키교환 모두 가능\n• DSA: 서명만 가능 (암호화 불가)\n• ElGamal: 암호화+서명 가능"},
+  {t:"비대칭",d:"hard",q:"RSA와 비교하여 ECC(타원곡선 암호)의 장점으로 옳은 것은?",o:["더 긴 키를 사용하여 보안이 강하다","짧은 키로 동등한 보안을 제공하여 연산 효율이 높다","암호화·복호화 속도가 RSA보다 느리다","RSA와 달리 전자서명이 불가능하다"],a:1,e:"ECC: 256비트 키 = RSA 3072비트 수준의 보안. 짧은 키 → 빠른 연산, 적은 메모리 → 모바일·IoT·스마트카드 최적.\nECDSA(서명), ECDH(키교환), ECIES(암호화) 모두 가능."},
+  {t:"비대칭",d:"mid",q:"DH(Diffie-Hellman) 키 교환이 가진 보안 취약점으로 옳은 것은?",o:["키 길이가 너무 짧아 전수 조사 공격에 취약","인증 기능이 없어 중간자 공격(MITM)에 취약","해시 함수를 사용하지 않아 무결성 검증 불가","대칭키 암호보다 속도가 느려 DoS 공격에 취약"],a:1,e:"DH 취약점: 공개 채널에서 키를 교환하지만 상대방의 신원을 인증하지 못함 → 중간자(MITM)가 양쪽에 각각 키 협의 가능. 대응: PKI·인증서 기반 인증 또는 ECDH+서명 조합."},
+  {t:"해시",d:"mid",q:"해시 함수의 보안 성질 중 'H(x)=H(y)인 x≠y를 찾기 어렵다'는 성질은?",o:["일방향성 (One-way)","충돌 저항성 (Collision Resistance)","역상 저항성 (Preimage Resistance)","제2역상 저항성 (Second Preimage Resistance)"],a:1,e:"해시 3대 보안 성질:\n• 일방향성: 해시값 → 원문 역산 불가\n• 역상 저항성(Preimage): 주어진 h에서 H(x)=h인 x 찾기 어려움\n• 충돌 저항성(Collision): H(x)=H(y)인 서로 다른 x,y 쌍 찾기 어려움 ← 이것"},
+  {t:"해시",d:"mid",q:"현재 보안 목적으로 사용이 금지된 해시 알고리듬만 묶인 것은?",o:["SHA-256, SHA-3","MD5, SHA-1","SHA-384, SHA-512","HAS-160, SHA-256"],a:1,e:"MD5: 1996년 충돌 이론, 2004년 실용적 충돌 발견 → 폐기\nSHA-1: 2017년 Google SHAttered 프로젝트에서 충돌 실증 → 폐기\n보안 목적에 MD5·SHA-1 사용 절대 금지. SHA-256 이상 권장(NIST·KISA 지침)."},
+  {t:"해시",d:"hard",q:"SHA-2와 SHA-3의 내부 구조 차이로 옳은 것은?",o:["SHA-2: 스펀지(Sponge) 구조 / SHA-3: Merkle-Damgård 구조","SHA-2: Merkle-Damgård 구조 / SHA-3: 스펀지(Keccak) 구조","SHA-2와 SHA-3 모두 Merkle-Damgård 구조","SHA-2와 SHA-3 모두 스펀지 구조"],a:1,e:"SHA-2(SHA-256/384/512): Merkle-Damgård 구조 — SHA-1의 구조적 계승, 현재 실무 주류\nSHA-3: Keccak 알고리듬, 스펀지(Sponge) 구조 — SHA-2와 완전히 다른 설계 철학. SHA-2가 취약해질 경우를 대비한 예비 표준(2015년 NIST 표준화)."},
+  {t:"해시",d:"hard",q:"HMAC에 대한 설명으로 옳지 않은 것은?",o:["해시 함수와 비밀 키를 결합하여 메시지 인증 코드를 생성한다","무결성과 인증을 동시에 제공한다","전자서명과 동일하게 부인방지 기능을 제공한다","TLS·SSH에서 메시지 무결성 검증에 사용된다"],a:2,e:"HMAC은 공유 비밀 키를 사용하므로 송·수신 양쪽 모두 같은 키를 가짐 → 누가 보냈는지 제3자가 검증 불가 → 부인방지 제공 안 함.\n부인방지는 개인키(비대칭키)를 사용하는 전자서명만 가능. HMAC = 무결성 + 인증 (부인방지 X)"},
+  {t:"PKI",d:"mid",q:"전자서명의 생성·검증에 사용되는 키의 방향으로 옳은 것은?",o:["서명: 공개키 / 검증: 개인키","서명: 개인키 / 검증: 공개키","서명: 대칭키 / 검증: 대칭키","서명: 개인키 / 검증: 개인키"],a:1,e:"전자서명: 개인키로 서명 생성, 공개키로 검증 — 암호화와 반대 방향.\n(암호화는 공개키로 암호화, 개인키로 복호화)\n전자서명이 제공하는 보안 서비스: 무결성 + 인증 + 부인방지 (기밀성은 제공 안 함)."},
+  {t:"PKI",d:"hard",q:"PKI에서 CRL(인증서 폐기 목록)과 OCSP의 차이로 옳은 것은?",o:["CRL은 실시간 확인, OCSP는 주기적 업데이트","CRL은 주기적 배포(실시간 아님), OCSP는 실시간 온라인 확인","CRL과 OCSP는 동일한 기능을 제공한다","OCSP는 CRL보다 보안이 약하다"],a:1,e:"CRL(Certificate Revocation List): CA가 주기적으로 폐기된 인증서 목록을 배포 → 배포 주기 사이 폐기 인증서를 실시간으로 알 수 없음(실시간성 부족).\nOCSP(Online Certificate Status Protocol): 인증서 유효성을 실시간으로 CA에 질의하여 확인 → CRL의 실시간성 부족 문제 해결."},
+  {t:"PKI",d:"hard",q:"X.509 인증서에 반드시 포함되는 항목이 아닌 것은?",o:["주체(Subject)의 공개키","인증서 유효 기간 (Not Before / Not After)","CA의 디지털 서명","주체의 개인키"],a:3,e:"X.509 인증서 필수 항목: 버전, 일련번호, 서명 알고리듬, 발급자(CA), 유효 기간, 주체, 주체 공개키 정보, CA 디지털 서명.\n개인키(Private Key)는 절대 인증서에 포함되지 않음 — 개인키는 소유자만 보관. 인증서는 공개키를 인증하는 문서."},
+  {t:"모드",d:"mid",q:"블록 암호 운용 모드 중 같은 평문 블록이 같은 암호문 블록을 생성하여 패턴이 노출되는 취약한 모드는?",o:["CBC","ECB","CTR","GCM"],a:1,e:"ECB(Electronic Codebook): 각 블록을 독립적으로 암호화 → 같은 평문 → 같은 암호문 → 패턴 분석 가능.\n예: 펭귄 이미지를 ECB로 암호화하면 윤곽선이 그대로 보임.\n절대 보안 목적에 사용 금지. CBC·CTR·GCM 사용 권장."},
+  {t:"모드",d:"hard",q:"AES-GCM 모드가 다른 운용 모드 대비 가장 큰 장점은?",o:["병렬 처리 불가로 보안이 강화된다","기밀성과 무결성(인증)을 동시에 제공한다","블록 크기가 256비트로 늘어난다","패딩이 필요 없고 스트림 암호로만 동작한다"],a:1,e:"GCM(Galois/Counter Mode) = CTR(기밀성) + GMAC(무결성·인증태그) 결합.\n• 기밀성: CTR 모드로 암호화\n• 무결성+인증: GHASH 함수로 인증 태그(Authentication Tag) 생성\n→ 한 번의 패스로 암호화와 인증 동시 처리.\nTLS 1.3, SSH, IPSec, WPA3에서 기본 사용."},
+  {t:"모드",d:"hard",q:"CBC 모드에서 '패딩 오라클 공격'이 가능한 이유는?",o:["CBC가 병렬 처리를 지원하지 않기 때문","서버가 패딩 오류 여부를 오류 메시지로 알려주기 때문","CBC에서 IV(초기화 벡터)가 재사용되기 때문","CBC 모드에서 암호화 키가 짧기 때문"],a:1,e:"패딩 오라클 공격: 공격자가 조작된 암호문을 서버에 전송하고, 서버가 패딩 오류인지 아닌지 응답(타이밍 포함)을 이용해 평문을 블록 단위로 복호화.\nTLS POODLE(2014), BEAST 취약점의 근본 원인. 대응: AES-GCM 사용(패딩 불필요, 인증 태그로 변조 즉시 탐지)."},
+  {t:"대칭",d:"mid",q:"IoT·모바일 환경의 경량 암호로 KISA가 개발한 알고리듬은?",o:["SEED","AES","LEA","Blowfish"],a:2,e:"LEA(Lightweight Encryption Algorithm): 2013년 KISA 개발. ARX 구조(Add-Rotate-XOR)로 소프트웨어 구현 효율 극대화. IoT·임베디드·모바일 환경 최적화. ISO/IEC 29192-2 경량 암호 국제 표준."},
+  {t:"비대칭",d:"hard",q:"RSA 암호의 수학적 기반으로 옳은 것은?",o:["이산대수 문제의 어려움","타원곡선 위 이산대수 문제","큰 합성수의 소인수 분해 어려움","해시 함수의 일방향성"],a:2,e:"RSA: n=p×q (두 큰 소수의 곱)를 주어진 n만으로 p, q로 소인수분해하기 어려움에 기반.\n• DH·DSA·ElGamal: 이산대수 문제\n• ECC·ECDSA·ECDH: 타원곡선 이산대수 문제(ECDLP)\n• 해시: 일방향 함수 (암호화 목적 아님)"},
+];
+
+var FL=QQ.slice(),cur=0,ans=[],sc=[];
+function sf(f,el){
+  document.querySelectorAll('.fbtn').forEach(function(b){b.classList.remove('on');});
+  el.classList.add('on');
+  FL=f==='all'?QQ.slice():f==='hard'?QQ.filter(function(q){return q.d==='hard';}):f==='mid'?QQ.filter(function(q){return q.d==='mid';}):QQ.filter(function(q){return q.t===f;});
+  cur=0;ans=[];sc=[];qrender();qdots();
+}
+function qrender(){
+  if(cur>=FL.length){qresult();return;}
+  var q=FL[cur];
+  document.getElementById('qc').textContent='문제 '+(cur+1)+' / '+FL.length;
+  document.getElementById('prog').style.width=Math.round((cur/FL.length)*100)+'%';
+  document.getElementById('qt').textContent=q.t;
+  var db=document.getElementById('qd');
+  db.textContent=q.d==='hard'?'고난도':'중급';
+  db.className='badge '+(q.d==='hard'?'br':'ba');
+  document.getElementById('qtxt').textContent=q.q;
+  var od=document.getElementById('qopts');od.innerHTML='';
+  q.o.forEach(function(o,i){
+    var b=document.createElement('button');b.className='opt';
+    b.textContent=(i===0?'① ':i===1?'② ':i===2?'③ ':'④ ')+o;
+    b.onclick=function(){qanswer(i,b,q);};od.appendChild(b);
+  });
+  document.getElementById('qexpl').className='expl';
+  document.getElementById('qexpl').innerHTML='';
+  document.getElementById('bnext').style.display='none';
+  document.getElementById('bres').style.display='none';
+  document.getElementById('bskip').style.display='inline-block';
+  document.getElementById('resbox').style.display='none';
+}
+function qanswer(i,btn,q){
+  document.querySelectorAll('.opt').forEach(function(o){o.disabled=true;});
+  var ok=i===q.a;btn.classList.add(ok?'correct':'wrong');
+  document.querySelectorAll('.opt')[q.a].classList.add(ok?'correct':'reveal');
+  var ex=document.getElementById('qexpl');
+  ex.innerHTML=q.e.replace(/\n/g,'<br>');ex.className='expl on';
+  if(ans.indexOf(cur)<0){ans.push(cur);sc.push(ok?1:0);}
+  qdots();
+  document.getElementById('bskip').style.display='none';
+  if(cur<FL.length-1)document.getElementById('bnext').style.display='inline-block';
+  else document.getElementById('bres').style.display='inline-block';
+}
+function qskip(){if(ans.indexOf(cur)<0){ans.push(cur);sc.push(-1);}qdots();cur++;if(cur>=FL.length)qresult();else qrender();}
+function qprev(){if(cur>0){cur--;qrender();}}
+function qnext(){cur++;qrender();}
+function qdots(){
+  var d=document.getElementById('dots');d.innerHTML='';
+  FL.forEach(function(_,i){
+    var s=document.createElement('span');s.className='dot';
+    var idx=ans.indexOf(i);
+    s.style.background=idx<0?'var(--color-border-secondary)':sc[idx]===1?'#3B6D11':sc[idx]===-1?'#888780':'#A32D2D';
+    d.appendChild(s);
+  });
+}
+function qresult(){
+  document.getElementById('resbox').style.display='block';
+  var c=sc.filter(function(s){return s===1;}).length;
+  var w=sc.filter(function(s){return s===0;}).length;
+  var t=c+w,r=t>0?Math.round(c/t*100):0;
+  document.getElementById('rc').textContent=c;
+  document.getElementById('rw').textContent=w;
+  document.getElementById('rr').textContent=r+'%';
+  document.getElementById('rcmt').textContent=r>=80?'암호 알고리듬 전 영역을 완벽히 이해! 합격권입니다.':r>=60?'기본 개념은 잡혔습니다. 운용 모드·PKI 부분을 집중 복습하세요.':'대칭·비대칭 차이와 해시 성질부터 다시 정리를 권장합니다.';
+}
+function qrestart(){cur=0;ans=[];sc=[];document.getElementById('resbox').style.display='none';qrender();qdots();}
+qrender();qdots();
+</script>

@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>메모리 기술(HBM·PIM·CXL) — 컴퓨터시스템응용 기술사 모범 답안</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;500;700&family=Noto+Sans+KR:wght@400;500;700&display=swap');
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --ink:#1a1a1a;--ink2:#333;--ink3:#666;
+  --line:#c8c8c8;--line2:#e2e0da;--bg:#fdfcf8;
+  --accent:#1a3a6e;--accent2:#7a3010;--green:#2d6a4f;--purple:#4a3080;
+}
+body{background:#dddad2;font-family:'Noto Sans KR',sans-serif;color:var(--ink);padding:20px 0 40px}
+.doc{max-width:800px;margin:0 auto;background:var(--bg);box-shadow:0 4px 32px rgba(0,0,0,.22)}
+
+/* ── Header ── */
+.hdr{border-bottom:3px double var(--ink);padding:20px 36px 16px;display:flex;align-items:flex-start;gap:16px}
+.hdr-l{flex:1}
+.lbl{font-size:11px;letter-spacing:.14em;color:var(--ink3);font-family:'Noto Serif KR',serif}
+.ttl{font-size:20px;font-weight:700;font-family:'Noto Serif KR',serif;color:var(--accent);line-height:1.35;margin-top:5px}
+.pills{display:flex;gap:8px;margin-top:9px;flex-wrap:wrap}
+.pill{font-size:11px;padding:2px 10px;border:1px solid var(--line);border-radius:2px;color:var(--ink2);background:#fff}
+.score-box{border:1.5px solid var(--ink);padding:10px 16px;text-align:center;min-width:72px}
+.sc-lbl{font-size:10px;color:var(--ink3);letter-spacing:.06em}
+.sc-n{font-size:24px;font-weight:700;font-family:'Noto Serif KR',serif;color:var(--accent);line-height:1.1}
+
+/* ── Body ── */
+.body{padding:24px 40px 48px}
+
+/* Question */
+.qbox{background:#f0efea;border:1px solid #bbb;padding:14px 18px;border-radius:3px;margin-bottom:24px;font-size:12.5px;color:var(--ink2);line-height:1.85}
+.qbox strong{color:var(--ink);font-weight:700}
+
+/* Sections */
+.sh{font-size:14.5px;font-weight:700;font-family:'Noto Serif KR',serif;color:var(--accent);border-bottom:1.5px solid var(--accent);padding-bottom:5px;margin:0 0 13px}
+.sh2{font-size:13px;font-weight:700;color:var(--ink);margin:13px 0 5px;padding-left:8px;border-left:3px solid var(--accent2)}
+.sh3{font-size:12.5px;font-weight:700;color:var(--ink2);margin:9px 0 4px;padding-left:18px}
+.sec{margin-bottom:22px}
+.txt{font-size:12.5px;line-height:1.92;color:var(--ink2)}
+.txt p{margin-bottom:5px}
+.i1{padding-left:14px}
+.i2{padding-left:28px}
+.kw{font-weight:700;color:var(--ink)}
+
+/* Tables */
+.tw{margin:10px 0 14px;overflow-x:auto}
+table{width:100%;border-collapse:collapse;font-size:11.5px}
+th{background:var(--accent);color:#fff;padding:6px 9px;text-align:left;font-weight:500;border:1px solid var(--accent)}
+td{padding:6px 9px;border:1px solid var(--line);vertical-align:top;line-height:1.75;color:var(--ink2)}
+tr:nth-child(even) td{background:#f4f3ef}
+.kc{font-weight:700;color:var(--ink)}
+
+/* Figures */
+.fig{margin:13px 0 16px;background:#f8f7f3;border:1px solid var(--line2);border-radius:4px;padding:10px 8px}
+.fc{font-size:11px;color:var(--ink3);text-align:center;margin-top:7px;font-style:italic}
+
+/* Note */
+.note{margin:16px 0 0;padding:12px 16px;border:1px solid #8b6914;background:#fffbef;border-radius:3px}
+.nt{font-size:12px;font-weight:700;color:#6a4f00;margin-bottom:5px}
+.nb{font-size:12px;color:#4a3800;line-height:1.85}
+
+/* Page break marker */
+.pb{border:none;border-top:2px dashed #bbb;margin:24px 0;position:relative}
+.pb::after{content:"— 다음 페이지 —";position:absolute;top:-9px;left:50%;transform:translateX(-50%);background:var(--bg);padding:0 10px;font-size:10px;color:#bbb;white-space:nowrap}
+
+/* Footer */
+.ftr{border-top:2px solid var(--ink);margin:0 40px;padding:10px 0;display:flex;justify-content:space-between;font-size:10px;color:var(--ink3)}
+
+/* Tag badges */
+.tag{display:inline-block;font-size:10.5px;padding:1px 8px;border-radius:2px;margin:1px 2px;font-weight:500}
+.tag-b{background:#E6F1FB;color:#0C447C}
+.tag-g{background:#EAF3DE;color:#3B6D11}
+.tag-r{background:#FCEBEB;color:#A32D2D}
+.tag-o{background:#FAEEDA;color:#854F0B}
+.tag-p{background:#EEEDFE;color:#3C3489}
+</style>
+</head>
+<body>
+<div class="doc">
+
+<!-- ── Header ── -->
+<div class="hdr">
+  <div class="hdr-l">
+    <div class="lbl">컴퓨터시스템응용 기술사 · 예상 문제 및 모범 답안</div>
+    <div class="ttl">차세대 메모리 기술<br>HBM · PIM · CXL 및 기타 신기술</div>
+    <div class="pills">
+      <span class="pill">4교시 · 논술형</span>
+      <span class="pill">컴퓨터 구조 / 시스템 소프트웨어</span>
+      <span class="pill">키워드: 메모리 월 · 대역폭 · 근접연산 · 메모리 확장</span>
+    </div>
+  </div>
+  <div class="score-box">
+    <div class="sc-lbl">배점</div>
+    <div class="sc-n">25</div>
+    <div class="sc-lbl">점</div>
+  </div>
+</div>
+
+<!-- ── Body ── -->
+<div class="body">
+
+<!-- 문제 -->
+<div class="qbox">
+  <strong>【 문 제 】</strong><br><br>
+  AI·HPC 워크로드의 급증으로 프로세서와 메모리 간의 <strong>메모리 월(Memory Wall)</strong> 문제가 재부상하고 있다.
+  이를 극복하기 위한 차세대 메모리 기술에 대하여 다음을 설명하시오.<br><br>
+  &emsp;(1) 메모리 월의 개념 및 차세대 메모리 기술의 등장 배경 &nbsp;(4점)<br>
+  &emsp;(2) HBM(High Bandwidth Memory)의 구조 및 동작 원리 &nbsp;(7점)<br>
+  &emsp;(3) PIM(Processing-In-Memory)의 개념·유형 및 HBM과의 결합 &nbsp;(7점)<br>
+  &emsp;(4) CXL(Compute Express Link) 메모리 확장 기술 &nbsp;(4점)<br>
+  &emsp;(5) 기타 차세대 메모리 기술 비교 및 발전 방향 &nbsp;(3점)
+</div>
+
+<!-- ─── Ⅰ. 개요 ─── -->
+<div class="sec">
+  <div class="sh">Ⅰ. 메모리 월의 개념 및 차세대 메모리 기술의 등장 배경</div>
+
+  <div class="sh2">1. 메모리 월(Memory Wall)이란</div>
+  <div class="txt i1">
+    <p><span class="kw">메모리 월(Memory Wall)</span>이란 CPU/GPU 연산 속도(FLOPS) 향상 속도에 비해 메모리 접근 대역폭(Bandwidth) 및 레이턴시(Latency) 개선 속도가 현저히 느려, 연산 유닛이 데이터를 기다리는 병목 현상이다. 1995년 Wulf·McKee가 최초 제시하였으며, AI 시대에 재차 심화되고 있다.</p>
+    <p>대형 언어 모델(LLM) 추론 시 수천억 개의 파라미터를 반복 로드해야 하므로, 연산 능력이 아닌 <span class="kw">메모리 대역폭이 실질적인 성능 병목</span>으로 작용한다.</p>
+  </div>
+
+  <div class="fig">
+    <svg width="100%" viewBox="0 0 680 160" xmlns="http://www.w3.org/2000/svg" role="img">
+      <title>메모리 월 개념도</title>
+      <!-- 축 -->
+      <line x1="60" y1="130" x2="630" y2="130" stroke="#888" stroke-width="1" marker-end="url(#ax)"/>
+      <line x1="60" y1="130" x2="60" y2="20" stroke="#888" stroke-width="1" marker-end="url(#ax)"/>
+      <defs>
+        <marker id="ax" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+          <path d="M2 1L8 5L2 9" fill="none" stroke="#888" stroke-width="1.5"/>
+        </marker>
+      </defs>
+      <text font-size="11" fill="#666" x="340" y="148" text-anchor="middle" font-family="'Noto Sans KR',sans-serif">연도 (Year)</text>
+      <text font-size="11" fill="#666" x="18" y="80" text-anchor="middle" font-family="'Noto Sans KR',sans-serif" transform="rotate(-90,18,80)">성능 향상률</text>
+      <!-- CPU line (steep) -->
+      <polyline points="80,120 200,85 340,50 480,25 600,15" fill="none" stroke="#1a3a6e" stroke-width="2.2"/>
+      <text font-size="11" font-weight="700" fill="#1a3a6e" x="610" y="18" font-family="'Noto Sans KR',sans-serif">CPU/GPU 성능</text>
+      <!-- Memory line (gentle) -->
+      <polyline points="80,122 200,115 340,105 480,95 600,88" fill="none" stroke="#7a3010" stroke-width="2.2" stroke-dasharray="6 3"/>
+      <text font-size="11" font-weight="700" fill="#7a3010" x="610" y="91" font-family="'Noto Sans KR',sans-serif">DRAM 대역폭</text>
+      <!-- Gap annotation -->
+      <line x1="480" y1="27" x2="480" y2="93" stroke="#c00" stroke-width="1" stroke-dasharray="3 2"/>
+      <rect x="490" y="50" width="110" height="24" rx="3" fill="#FCEBEB" stroke="#A32D2D" stroke-width="0.8"/>
+      <text font-size="11" font-weight="700" fill="#A32D2D" x="545" y="66" text-anchor="middle" font-family="'Noto Sans KR',sans-serif">메모리 월 (격차)</text>
+    </svg>
+    <div class="fc">【그림 1】 메모리 월 — CPU/GPU 성능과 메모리 대역폭 간 증가 격차</div>
+  </div>
+
+  <div class="sh2">2. 등장 배경</div>
+  <div class="txt i1">
+    <p>① <span class="kw">AI·LLM 워크로드 폭증:</span> GPT-4 등 수천억 파라미터 모델의 추론 시 초당 수십 TB 메모리 대역폭 요구</p>
+    <p>② <span class="kw">DDR DRAM의 한계:</span> DDR5 최대 ~51 GB/s의 대역폭은 H100 GPU의 3.35 TFLOPS 연산 수요 대비 턱없이 부족</p>
+    <p>③ <span class="kw">데이터 이동 에너지 비용:</span> 메모리↔연산유닛 간 데이터 이동이 전체 시스템 전력의 60% 이상을 소비 → 근접 연산(Near-Memory Computing) 필요</p>
+    <p>④ <span class="kw">메모리 용량 확장 한계:</span> GPU HBM 온보드 메모리(80GB)는 대형 모델 전체 파라미터 탑재 불가 → CXL 기반 메모리 풀링 필요</p>
+  </div>
+</div>
+
+<hr class="pb">
+
+<!-- ─── Ⅱ. HBM ─── -->
+<div class="sec">
+  <div class="sh">Ⅱ. HBM(High Bandwidth Memory)의 구조 및 동작 원리</div>
+
+  <div class="sh2">1. 정의 및 표준</div>
+  <div class="txt i1">
+    <p><span class="kw">HBM(High Bandwidth Memory)</span>은 DRAM 다이(Die)를 수직으로 적층(3D Stacking)하고 TSV(Through-Silicon Via)로 연결한 후, GPU·AI 가속기와 동일한 인터포저(Interposer) 위에 패키징하는 고대역폭 메모리 표준이다. JEDEC(반도체 표준화 기구)에서 규정하며, 현재 HBM3E까지 상용화되어 있다.</p>
+  </div>
+
+  <div class="sh2">2. 핵심 구조</div>
+  <div class="fig">
+    <svg width="100%" viewBox="0 0 680 260" xmlns="http://www.w3.org/2000/svg" role="img">
+      <title>HBM 3D 적층 구조도</title>
+      <defs>
+        <marker id="ah" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse">
+          <path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </marker>
+      </defs>
+      <!-- Interposer -->
+      <rect x="30" y="210" width="580" height="28" rx="4" fill="#555" />
+      <text font-size="12" font-weight="700" fill="#fff" x="320" y="229" text-anchor="middle" font-family="'Noto Sans KR',sans-serif">Silicon Interposer (실리콘 인터포저)</text>
+
+      <!-- GPU/Processor die -->
+      <rect x="40" y="150" width="200" height="58" rx="5" fill="#1a3a6e"/>
+      <text font-size="12" font-weight="700" fill="#fff" x="140" y="176" text-anchor="middle" font-family="'Noto Sans KR',sans-serif">GPU / AI 가속기</text>
+      <text font-size="10.5" fill="#9dc4f0" x="140" y="196" text-anchor="middle" font-family="'Noto Sans KR',sans-serif">Logic Die (연산 유닛)</text>
+
+      <!-- HBM Stack -->
+      <!-- Base die -->
+      <rect x="310" y="150" width="340" height="22" rx="3" fill="#7a3010"/>
+      <text font-size="11" font-weight="700" fill="#fff" x="480" y="165" text-anchor="middle" font-family="'Noto Sans KR',sans-serif">Base Die (I/O 로직 · PHY · 버퍼)</text>
+      <!-- DRAM dies stack -->
+      <rect x="310" y="120" width="340" height="28" rx="3" fill="#2d6a4f"/>
+      <text font-size="11" fill="#fff" x="480" y="138" text-anchor="middle" font-family="'Noto Sans KR',sans-serif">DRAM Die 4 (최상단)</text>
+      <rect x="310" y="92" width="340" height="26" rx="3" fill="#3a8060"/>
+      <text font-size="11" fill="#fff" x="480" y="109" text-anchor="middle" font-family="'Noto Sans KR',sans-serif">DRAM Die 3</text>
+      <rect x="310" y="64" width="340" height="26" rx="3" fill="#4a9070"/>
+      <text font-size="11" fill="#fff" x="480" y="81" text-anchor="middle" font-family="'Noto Sans KR',sans-serif">DRAM Die 2</text>
+      <rect x="310" y="36" width="340" height="26" rx="3" fill="#5aa080"/>
+      <text font-size="11" fill="#fff" x="480" y="53" text-anchor="middle" font-family="'Noto Sans KR',sans-serif">DRAM Die 1 (최하단)</text>
+
+      <!-- TSV lines -->
+      <line x1="400" y1="36" x2="400" y2="172" stroke="#FFD700" stroke-width="1.5" stroke-dasharray="2 2"/>
+      <line x1="430" y1="36" x2="430" y2="172" stroke="#FFD700" stroke-width="1.5" stroke-dasharray="2 2"/>
+      <line x1="460" y1="36" x2="460" y2="172" stroke="#FFD700" stroke-width="1.5" stroke-dasharray="2 2"/>
+      <line x1="490" y1="36" x2="490" y2="172" stroke="#FFD700" stroke-width="1.5" stroke-dasharray="2 2"/>
+      <line x1="520" y1="36" x2="520" y2="172" stroke="#FFD700" stroke-width="1.5" stroke-dasharray="2 2"/>
+      <text font-size="10.5" font-weight="700" fill="#cc9900" x="580" y="100" font-family="'Noto Sans KR',sans-serif">TSV</text>
+      <text font-size="10" fill="#cc9900" x="580" y="114" font-family="'Noto Sans KR',sans-serif">(관통 전극)</text>
+
+      <!-- Wide bus between GPU and HBM -->
+      <rect x="242" y="176" width="66" height="16" rx="3" fill="#c04000"/>
+      <text font-size="10" font-weight="700" fill="#fff" x="275" y="188" text-anchor="middle" font-family="'Noto Sans KR',sans-serif">1024-bit 버스</text>
+
+      <!-- Microbumps -->
+      <text font-size="10" fill="#888" x="140" y="215" text-anchor="middle" font-family="'Noto Sans KR',sans-serif">▲ μBump</text>
+      <text font-size="10" fill="#888" x="480" y="215" text-anchor="middle" font-family="'Noto Sans KR',sans-serif">▲ μBump</text>
+
+      <!-- Labels right -->
+      <text font-size="10.5" fill="#555" x="20" y="42" font-family="'Noto Sans KR',sans-serif">적</text>
+      <text font-size="10.5" fill="#555" x="20" y="58" font-family="'Noto Sans KR',sans-serif">층</text>
+      <text font-size="10.5" fill="#555" x="20" y="72" font-family="'Noto Sans KR',sans-serif">방</text>
+      <text font-size="10.5" fill="#555" x="20" y="86" font-family="'Noto Sans KR',sans-serif">향</text>
+      <line x1="28" y1="36" x2="28" y2="170" stroke="#aaa" stroke-width="1" marker-end="url(#ah)"/>
+    </svg>
+    <div class="fc">【그림 2】 HBM 3D 적층 구조 — TSV·인터포저·광폭 버스</div>
+  </div>
+
+  <div class="sh2">3. HBM 세대별 진화</div>
+  <div class="tw">
+    <table>
+      <tr><th>세대</th><th>출시</th><th>핀당 속도</th><th>최대 대역폭</th><th>채널 수</th><th>버스 폭</th><th>주요 적용</th></tr>
+      <tr><td><span class="kc">HBM1</span></td><td>2013</td><td>1 Gbps</td><td>128 GB/s</td><td>8</td><td>1024-bit</td><td>AMD Fury GPU</td></tr>
+      <tr><td><span class="kc">HBM2</span></td><td>2016</td><td>2 Gbps</td><td>256 GB/s</td><td>8</td><td>1024-bit</td><td>NVIDIA V100</td></tr>
+      <tr><td><span class="kc">HBM2E</span></td><td>2019</td><td>3.6 Gbps</td><td>460 GB/s</td><td>8</td><td>1024-bit</td><td>NVIDIA A100</td></tr>
+      <tr><td><span class="kc">HBM3</span></td><td>2022</td><td>6.4 Gbps</td><td>819 GB/s</td><td>16</td><td>1024-bit</td><td>NVIDIA H100</td></tr>
+      <tr><td><span class="kc">HBM3E</span></td><td>2024</td><td>9.6 Gbps</td><td>1.2 TB/s</td><td>16</td><td>1024-bit</td><td>NVIDIA H200, MI300X</td></tr>
+      <tr><td><span class="kc">HBM4 (예정)</span></td><td>2025~</td><td>12+ Gbps</td><td>1.5+ TB/s</td><td>32</td><td>2048-bit</td><td>차세대 AI 가속기</td></tr>
+    </table>
+  </div>
+  <div class="fc" style="margin-top:-8px;margin-bottom:12px">【표 1】 HBM 세대별 사양 비교</div>
+
+  <div class="sh2">4. HBM의 핵심 특징</div>
+  <div class="tw">
+    <table>
+      <tr><th style="width:22%">특징</th><th style="width:38%">내용</th><th>vs DDR5 비교</th></tr>
+      <tr><td><span class="kc">초광폭 버스</span></td><td>1024-bit(HBM3) — DDR5(64-bit)의 16배</td><td>DDR5 대비 대역폭 20배 이상</td></tr>
+      <tr><td><span class="kc">3D 적층(TSV)</span></td><td>최대 12단 DRAM Die 수직 연결</td><td>풋프린트(면적) 대폭 절감</td></tr>
+      <tr><td><span class="kc">저전력</span></td><td>동작 전압 1.2V, 저클럭 다채널 방식</td><td>DDR5 대비 전력효율 3배+</td></tr>
+      <tr><td><span class="kc">인터포저 통합</span></td><td>GPU와 동일 패키지(2.5D/3D IC)</td><td>초단거리 신호로 레이턴시 최소화</td></tr>
+    </table>
+  </div>
+  <div class="fc" style="margin-top:-8px;margin-bottom:12px">【표 2】 HBM 핵심 특징</div>
+</div>
+
+<hr class="pb">
+
+<!-- ─── Ⅲ. PIM ─── -->
+<div class="sec">
+  <div class="sh">Ⅲ. PIM(Processing-In-Memory)의 개념·유형 및 HBM과의 결합</div>
+
+  <div class="sh2">1. PIM의 정의 및 필요성</div>
+  <div class="txt i1">
+    <p><span class="kw">PIM(Processing-In-Memory)</span>은 DRAM 내부 또는 인접부에 연산 로직을 내장하여, 프로세서–메모리 간 데이터 이동 없이 <span class="kw">메모리 내에서 직접 연산을 수행</span>하는 기술이다. '근접 메모리 처리(Near-Memory Processing, NMP)'라고도 불린다.</p>
+    <p>데이터 이동이 연산 비용의 수십 배에 달하는 AI 워크로드에서, PIM은 <span class="kw">대역폭·전력 효율을 동시에 개선</span>하는 패러다임 전환 기술이다.</p>
+  </div>
+
+  <div class="sh2">2. PIM 유형 분류</div>
+  <div class="tw">
+    <table>
+      <tr><th style="width:20%">유형</th><th style="width:28%">연산 위치</th><th style="width:28%">특징</th><th>대표 제품</th></tr>
+      <tr><td><span class="kc">PNM<br>(Processing Near Memory)</span></td><td>메모리 바로 인접<br>(Base Die 내부)</td><td>기존 DRAM 공정 활용 가능, 상대적 간단한 구현</td><td>SK하이닉스 AiMX, 삼성 AXDIMM</td></tr>
+      <tr><td><span class="kc">PIM<br>(Processing In Memory)</span></td><td>메모리 셀 어레이 내부</td><td>데이터 이동 Zero, 대규모 병렬 연산 가능</td><td>UPMEM PIM, Micron DRAM PIM</td></tr>
+      <tr><td><span class="kc">CIM<br>(Computing In Memory)</span></td><td>아날로그 메모리 셀 활용</td><td>행렬곱(MatMul) 아날로그 연산, 극저전력</td><td>ReRAM·PCM 기반 연구 단계</td></tr>
+    </table>
+  </div>
+  <div class="fc" style="margin-top:-8px;margin-bottom:12px">【표 3】 PIM 유형 분류 비교</div>
+
+  <div class="sh2">3. HBM-PIM 결합 구조 (HBM with PIM)</div>
+  <div class="txt i1">
+    <p>삼성·SK하이닉스는 HBM의 Base Die에 <span class="kw">GFPU(General-purpose Floating-Point Unit)</span> 또는 벡터 연산 유닛을 탑재한 <span class="kw">HBM-PIM(Aquabolt-X, AiMX)</span>을 개발하였다. HBM의 초고대역폭과 PIM의 근접 연산을 결합하여 AI 추론에서 최적 성능을 달성한다.</p>
+  </div>
+
+  <div class="fig">
+    <svg width="100%" viewBox="0 0 680 230" xmlns="http://www.w3.org/2000/svg" role="img">
+      <title>HBM-PIM 구조 비교</title>
+      <defs>
+        <marker id="ap" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse">
+          <path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </marker>
+      </defs>
+
+      <!-- 전통 방식 -->
+      <text font-size="12" font-weight="700" fill="#7a3010" x="160" y="20" text-anchor="middle" font-family="'Noto Sans KR',sans-serif">기존 방식 (데이터 이동)</text>
+      <rect x="40" y="30" width="120" height="44" rx="5" fill="#1a3a6e"/>
+      <text font-size="11" font-weight="700" fill="#fff" x="100" y="52" text-anchor="middle" font-family="'Noto Sans KR',sans-serif">GPU/CPU</text>
+      <text font-size="10" fill="#9dc4f0" x="100" y="67" text-anchor="middle" font-family="'Noto Sans KR',sans-serif">연산 유닛</text>
+      <!-- 양방향 화살표 (데이터 이동) -->
+      <path d="M162 52 L220 52" fill="none" stroke="#c00" stroke-width="2" marker-end="url(#ap)"/>
+      <path d="M220 62 L162 62" fill="none" stroke="#c00" stroke-width="2" marker-end="url(#ap)"/>
+      <text font-size="10" fill="#c00" x="191" y="46" text-anchor="middle" font-family="'Noto Sans KR',sans-serif">데이터 이동</text>
+      <text font-size="10" fill="#c00" x="191" y="82" text-anchor="middle" font-family="'Noto Sans KR',sans-serif">(병목·전력 소비)</text>
+      <rect x="222" y="30" width="120" height="44" rx="5" fill="#7a3010"/>
+      <text font-size="11" font-weight="700" fill="#fff" x="282" y="52" text-anchor="middle" font-family="'Noto Sans KR',sans-serif">DRAM</text>
+      <text font-size="10" fill="#f5c4a0" x="282" y="67" text-anchor="middle" font-family="'Noto Sans KR',sans-serif">메모리만 존재</text>
+
+      <!-- 구분선 -->
+      <line x1="360" y1="10" x2="360" y2="220" stroke="#ccc" stroke-width="1" stroke-dasharray="5 3"/>
+
+      <!-- PIM 방식 -->
+      <text font-size="12" font-weight="700" fill="#2d6a4f" x="530" y="20" text-anchor="middle" font-family="'Noto Sans KR',sans-serif">HBM-PIM (근접 연산)</text>
+      <!-- HBM Stack with PIM -->
+      <rect x="390" y="30" width="280" height="150" rx="8" fill="#1a3d2b" stroke="#2d6a4f" stroke-width="1.5"/>
+      <text font-size="11" font-weight="700" fill="#a8dfc9" x="530" y="50" text-anchor="middle" font-family="'Noto Sans KR',sans-serif">HBM-PIM 패키지</text>
+      <!-- DRAM Dies -->
+      <rect x="400" y="58" width="260" height="20" rx="3" fill="#5aa080"/>
+      <text font-size="10" fill="#fff" x="530" y="72" text-anchor="middle" font-family="'Noto Sans KR',sans-serif">DRAM Die × 4 (메모리 셀)</text>
+      <rect x="400" y="82" width="260" height="20" rx="3" fill="#5aa080"/>
+      <text font-size="10" fill="#fff" x="530" y="96" text-anchor="middle" font-family="'Noto Sans KR',sans-serif">DRAM Die × 4 (메모리 셀)</text>
+      <!-- Base Die with PIM logic -->
+      <rect x="400" y="106" width="260" height="36" rx="3" fill="#7a3010"/>
+      <text font-size="11" font-weight="700" fill="#fff" x="530" y="122" text-anchor="middle" font-family="'Noto Sans KR',sans-serif">Base Die + PIM Logic</text>
+      <text font-size="10" fill="#f5c4a0" x="530" y="136" text-anchor="middle" font-family="'Noto Sans KR',sans-serif">GFPU · 벡터 연산 · 누산기 내장</text>
+      <!-- Interposer -->
+      <rect x="400" y="146" width="260" height="20" rx="3" fill="#444"/>
+      <text font-size="10" fill="#ddd" x="530" y="160" text-anchor="middle" font-family="'Noto Sans KR',sans-serif">Silicon Interposer</text>
+      <!-- 연산 in-situ -->
+      <rect x="410" y="172" width="240" height="22" rx="4" fill="#2d6a4f"/>
+      <text font-size="11" font-weight="700" fill="#fff" x="530" y="187" text-anchor="middle" font-family="'Noto Sans KR',sans-serif">메모리 내 연산 → 결과만 전송</text>
+
+      <!-- 전력/성능 비교 labels -->
+      <text font-size="10.5" fill="#c00" x="160" y="120" text-anchor="middle" font-family="'Noto Sans KR',sans-serif">✕ 대역폭 병목</text>
+      <text font-size="10.5" fill="#c00" x="160" y="136" text-anchor="middle" font-family="'Noto Sans KR',sans-serif">✕ 고전력 소비</text>
+      <text font-size="10.5" fill="#2d6a4f" x="530" y="212" text-anchor="middle" font-family="'Noto Sans KR',sans-serif">◎ 대역폭 제약 해소 &nbsp;◎ 전력 효율 극대화</text>
+    </svg>
+    <div class="fc">【그림 3】 기존 방식 vs. HBM-PIM 근접 연산 방식 비교</div>
+  </div>
+
+  <div class="sh2">4. PIM 적용 효과</div>
+  <div class="tw">
+    <table>
+      <tr><th style="width:22%">평가 항목</th><th>기존 GPU + DRAM</th><th>HBM-PIM 적용 시</th></tr>
+      <tr><td><span class="kc">유효 대역폭</span></td><td>GPU↔메모리 버스 대역폭에 제한</td><td>메모리 내부 대역폭(TB/s 수준) 직접 활용</td></tr>
+      <tr><td><span class="kc">전력 소비</span></td><td>데이터 이동 에너지 지배적 (pJ/bit)</td><td>이동 최소화로 에너지 효율 2~5배 향상</td></tr>
+      <tr><td><span class="kc">LLM 추론 성능</span></td><td>메모리 바운드(Memory-Bound) 병목</td><td>행렬-벡터 연산 속도 최대 2.5배 향상</td></tr>
+      <tr><td><span class="kc">레이턴시</span></td><td>메모리 접근 지연 누적</td><td>연산 위치 근접으로 레이턴시 크게 감소</td></tr>
+    </table>
+  </div>
+  <div class="fc" style="margin-top:-8px;margin-bottom:12px">【표 4】 PIM 적용 효과</div>
+</div>
+
+<hr class="pb">
+
+<!-- ─── Ⅳ. CXL ─── -->
+<div class="sec">
+  <div class="sh">Ⅳ. CXL(Compute Express Link) 메모리 확장 기술</div>
+
+  <div class="sh2">1. CXL의 정의</div>
+  <div class="txt i1">
+    <p><span class="kw">CXL(Compute Express Link)</span>은 CPU·GPU·FPGA·가속기 간, 그리고 이들과 메모리·스토리지 장치 간의 <span class="kw">고속·저지연 캐시 코히런트(Cache Coherent) 인터커넥트 표준</span>이다. PCIe 5.0/6.0 물리 계층을 기반으로 하며, Intel·AMD·ARM·삼성·NVIDIA 등이 참여하는 CXL Consortium이 표준화를 주도한다.</p>
+    <p>핵심 가치는 <span class="kw">메모리 풀링(Memory Pooling)</span>: 여러 서버가 대용량 메모리를 공유하여, GPU 온보드 HBM 용량의 한계를 소프트웨어 투명하게 확장한다.</p>
+  </div>
+
+  <div class="sh2">2. CXL 프로토콜 세 가지</div>
+  <div class="tw">
+    <table>
+      <tr><th style="width:18%">프로토콜</th><th style="width:30%">목적</th><th style="width:28%">특징</th><th>적용 예</th></tr>
+      <tr><td><span class="kc">CXL.io</span></td><td>I/O 장치 접근 (PCIe 호환)</td><td>기존 PCIe 시맨틱 유지</td><td>스토리지, NIC 연결</td></tr>
+      <tr><td><span class="kc">CXL.cache</span></td><td>가속기↔호스트 캐시 코히런시</td><td>가속기가 호스트 DRAM 캐싱 가능</td><td>GPU·FPGA↔CPU 공유 메모리</td></tr>
+      <tr><td><span class="kc">CXL.mem</span></td><td>호스트↔메모리 장치 직접 접근</td><td>메모리 풀 확장, 대용량 메모리 어태치</td><td>CXL 메모리 모듈, DDR5 확장</td></tr>
+    </table>
+  </div>
+  <div class="fc" style="margin-top:-8px;margin-bottom:12px">【표 5】 CXL 세 가지 프로토콜</div>
+
+  <div class="sh2">3. CXL 메모리 확장 아키텍처</div>
+  <div class="fig">
+    <svg width="100%" viewBox="0 0 680 200" xmlns="http://www.w3.org/2000/svg" role="img">
+      <title>CXL 메모리 풀링 아키텍처</title>
+      <defs>
+        <marker id="ac" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse">
+          <path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </marker>
+      </defs>
+      <!-- Server 1 -->
+      <rect x="20" y="30" width="150" height="120" rx="6" fill="#E6F1FB" stroke="#1a3a6e" stroke-width="1"/>
+      <text font-size="11" font-weight="700" fill="#1a3a6e" x="95" y="52" text-anchor="middle" font-family="'Noto Sans KR',sans-serif">Server 1</text>
+      <rect x="35" y="60" width="120" height="28" rx="4" fill="#1a3a6e"/>
+      <text font-size="10.5" fill="#fff" x="95" y="78" text-anchor="middle" font-family="'Noto Sans KR',sans-serif">CPU + HBM (80GB)</text>
+      <rect x="35" y="96" width="120" height="22" rx="4" fill="#378ADD"/>
+      <text font-size="10" fill="#fff" x="95" y="111" text-anchor="middle" font-family="'Noto Sans KR',sans-serif">Local DDR5 (512GB)</text>
+      <text font-size="10" fill="#1a3a6e" x="95" y="140" text-anchor="middle" font-family="'Noto Sans KR',sans-serif">CXL Controller</text>
+
+      <!-- Server 2 -->
+      <rect x="265" y="30" width="150" height="120" rx="6" fill="#E6F1FB" stroke="#1a3a6e" stroke-width="1"/>
+      <text font-size="11" font-weight="700" fill="#1a3a6e" x="340" y="52" text-anchor="middle" font-family="'Noto Sans KR',sans-serif">Server 2</text>
+      <rect x="280" y="60" width="120" height="28" rx="4" fill="#1a3a6e"/>
+      <text font-size="10.5" fill="#fff" x="340" y="78" text-anchor="middle" font-family="'Noto Sans KR',sans-serif">CPU + HBM (80GB)</text>
+      <rect x="280" y="96" width="120" height="22" rx="4" fill="#378ADD"/>
+      <text font-size="10" fill="#fff" x="340" y="111" text-anchor="middle" font-family="'Noto Sans KR',sans-serif">Local DDR5 (512GB)</text>
+      <text font-size="10" fill="#1a3a6e" x="340" y="140" text-anchor="middle" font-family="'Noto Sans KR',sans-serif">CXL Controller</text>
+
+      <!-- CXL Memory Pool -->
+      <rect x="500" y="20" width="162" height="160" rx="8" fill="#d4edda" stroke="#2d6a4f" stroke-width="1.5"/>
+      <text font-size="11" font-weight="700" fill="#2d6a4f" x="581" y="44" text-anchor="middle" font-family="'Noto Sans KR',sans-serif">CXL Memory Pool</text>
+      <rect x="514" y="54" width="134" height="26" rx="4" fill="#2d6a4f"/>
+      <text font-size="10.5" fill="#fff" x="581" y="71" text-anchor="middle" font-family="'Noto Sans KR',sans-serif">CXL DIMM (4TB)</text>
+      <rect x="514" y="86" width="134" height="26" rx="4" fill="#3a8060"/>
+      <text font-size="10.5" fill="#fff" x="581" y="103" text-anchor="middle" font-family="'Noto Sans KR',sans-serif">CXL DIMM (4TB)</text>
+      <rect x="514" y="118" width="134" height="26" rx="4" fill="#4a9070"/>
+      <text font-size="10.5" fill="#fff" x="581" y="135" text-anchor="middle" font-family="'Noto Sans KR',sans-serif">CXL DIMM (4TB)</text>
+      <text font-size="10" fill="#2d6a4f" x="581" y="170" text-anchor="middle" font-family="'Noto Sans KR',sans-serif">총 12TB 공유 메모리</text>
+
+      <!-- CXL Switch -->
+      <rect x="210" y="80" width="48" height="40" rx="4" fill="#534AB7"/>
+      <text font-size="10" font-weight="700" fill="#fff" x="234" y="96" text-anchor="middle" font-family="'Noto Sans KR',sans-serif">CXL</text>
+      <text font-size="10" font-weight="700" fill="#fff" x="234" y="110" text-anchor="middle" font-family="'Noto Sans KR',sans-serif">Switch</text>
+
+      <!-- Connections -->
+      <line x1="170" y1="100" x2="208" y2="100" stroke="#534AB7" stroke-width="1.5" marker-end="url(#ac)" fill="none"/>
+      <line x1="258" y1="100" x2="263" y2="100" stroke="#534AB7" stroke-width="1.5" marker-end="url(#ac)" fill="none"/>
+      <line x1="415" y1="100" x2="497" y2="100" stroke="#2d6a4f" stroke-width="1.5" marker-end="url(#ac)" fill="none"/>
+      <line x1="497" y1="106" x2="415" y2="106" stroke="#2d6a4f" stroke-width="1.5" marker-end="url(#ac)" fill="none"/>
+      <text font-size="10" fill="#2d6a4f" x="456" y="94" text-anchor="middle" font-family="'Noto Sans KR',sans-serif">CXL.mem</text>
+    </svg>
+    <div class="fc">【그림 4】 CXL 메모리 풀링 아키텍처 — 여러 서버가 공유 메모리에 접근</div>
+  </div>
+
+  <div class="sh2">4. CXL 버전 진화</div>
+  <div class="tw">
+    <table>
+      <tr><th>버전</th><th>물리 계층</th><th>속도</th><th>핵심 추가 기능</th></tr>
+      <tr><td><span class="kc">CXL 1.1</span></td><td>PCIe 5.0</td><td>32 GT/s</td><td>CXL.io / CXL.cache / CXL.mem 기본 정의</td></tr>
+      <tr><td><span class="kc">CXL 2.0</span></td><td>PCIe 5.0</td><td>32 GT/s</td><td>메모리 풀링(Pooling) · 스위칭 지원</td></tr>
+      <tr><td><span class="kc">CXL 3.0</span></td><td>PCIe 6.0</td><td>64 GT/s</td><td>Fabric 기반 다중 호스트 공유, 패브릭 관리</td></tr>
+      <tr><td><span class="kc">CXL 3.1</span></td><td>PCIe 6.0</td><td>64 GT/s</td><td>메모리 보안 격리, 멀티-레벨 스위칭</td></tr>
+    </table>
+  </div>
+  <div class="fc" style="margin-top:-8px;margin-bottom:12px">【표 6】 CXL 버전별 진화</div>
+</div>
+
+<hr class="pb">
+
+<!-- ─── Ⅴ. 기타 및 비교 ─── -->
+<div class="sec">
+  <div class="sh">Ⅴ. 기타 차세대 메모리 기술 비교 및 발전 방향</div>
+
+  <div class="sh2">1. 차세대 메모리 기술 종합 비교</div>
+  <div class="tw">
+    <table>
+      <tr><th style="width:16%">기술</th><th style="width:22%">핵심 원리</th><th style="width:22%">강점</th><th style="width:20%">주요 한계</th><th>적용 분야</th></tr>
+      <tr><td><span class="kc">HBM3E</span></td><td>3D 적층 DRAM + TSV</td><td>초고대역폭(1.2 TB/s), 저전력</td><td>고비용, 용량 한계(최대 96GB)</td><td>AI 가속기(H200, MI300X)</td></tr>
+      <tr><td><span class="kc">HBM-PIM</span></td><td>HBM + 내장 연산 유닛</td><td>대역폭·연산 동시 최적화</td><td>프로그래밍 복잡성, 초기 생태계</td><td>LLM 추론, AI 추론 엣지</td></tr>
+      <tr><td><span class="kc">CXL Memory</span></td><td>PCIe 기반 코히런트 인터커넥트</td><td>메모리 풀링·용량 확장(TB급)</td><td>레이턴시 HBM 대비 높음</td><td>데이터센터 메모리 계층화</td></tr>
+      <tr><td><span class="kc">DDR5 RDIMM</span></td><td>병렬 채널 + 온다이 ECC</td><td>범용성, 저비용</td><td>대역폭 한계(~51 GB/s)</td><td>범용 서버, 워크스테이션</td></tr>
+      <tr><td><span class="kc">GDDR7</span></td><td>고속 직렬 DRAM</td><td>고대역폭(1.5 TB/s), 보드온 탑재</td><td>HBM 대비 전력 효율 낮음</td><td>소비자 GPU(RTX 5090 등)</td></tr>
+      <tr><td><span class="kc">MRAM / FeRAM</span></td><td>자성·강유전체 기반 비휘발성</td><td>비휘발성, 무한 내구성</td><td>용량·속도 한계, 양산 미성숙</td><td>엣지 AI, IoT 임베디드</td></tr>
+    </table>
+  </div>
+  <div class="fc" style="margin-top:-8px;margin-bottom:12px">【표 7】 차세대 메모리 기술 종합 비교</div>
+
+  <div class="sh2">2. 발전 방향</div>
+  <div class="txt i1">
+    <p>① <span class="kw">HBM4 / HBM4E (2025~2026):</span> 버스 폭 2048-bit, 1.5 TB/s 이상 대역폭, Logic Die를 TSMC N5 파운드리 공정으로 분리 제조하는 하이브리드 본딩 방식 도입</p>
+    <p>② <span class="kw">HBM-PIM 상용화 확대:</span> SK하이닉스 AiMX 2세대, 삼성 HBM3 PIM 탑재 AI 서버 확산. 소프트웨어 SDK 성숙으로 개발 복잡성 해소 예정</p>
+    <p>③ <span class="kw">CXL 3.x 기반 메모리 패브릭:</span> 수십 TB 메모리 풀을 여러 AI 서버가 공유하는 메모리 중심 컴퓨팅(Memory-Centric Computing) 데이터센터 아키텍처 실현</p>
+    <p>④ <span class="kw">3D IC 이종 집적(Heterogeneous Integration):</span> CPU·GPU·HBM·PIM·CXL 컨트롤러를 단일 패키지에 통합하는 SoC-on-Interposer 방식으로 시스템 전체 성능·전력 최적화</p>
+  </div>
+</div>
+
+<!-- ─── Ⅵ. 결론 ─── -->
+<div class="sec">
+  <div class="sh">Ⅵ. 결론</div>
+  <div class="txt">
+    <p>AI·HPC 워크로드의 메모리 집약성이 가속화되면서, <span class="kw">HBM(대역폭)·PIM(근접 연산)·CXL(용량 확장)</span>은 상호 보완적 역할을 수행하는 차세대 메모리 트리오로 부상하고 있다. 이들 기술의 융합은 단순한 메모리 성능 향상을 넘어 <span class="kw">메모리 중심 컴퓨팅(Memory-Centric Computing) 아키텍처</span>로의 패러다임 전환을 이끌 것이며, AI 반도체 설계 및 데이터센터 아키텍처의 핵심 경쟁력 요소가 될 것이다.</p>
+  </div>
+</div>
+
+<!-- Note -->
+<div class="note">
+  <div class="nt">★ 기술사 핵심 코멘트</div>
+  <div class="nb">
+    차세대 메모리 기술의 핵심은 <strong>대역폭(HBM) × 연산 효율(PIM) × 용량(CXL)의 삼각 최적화</strong>이며, 시스템 감리 시 다음을 중점 검토해야 한다.<br>
+    ① <strong>HBM 도입 시</strong> — TSV 수율에 따른 수급 리스크, 인터포저 설계의 열방출(Thermal) 관리 적정성<br>
+    ② <strong>PIM 적용 시</strong> — 기존 소프트웨어 스택(CUDA·ROCm) 호환성, PIM 프로그래밍 모델 표준화 여부<br>
+    ③ <strong>CXL 도입 시</strong> — 메모리 코히런시 보장 메커니즘, 공유 메모리 접근 시 보안·격리 정책(테넌트 분리) 구현 여부
+  </div>
+</div>
+
+</div><!-- /body -->
+
+<div class="ftr">
+  <span>컴퓨터시스템응용 기술사 · 모범 답안</span>
+  <span>HBM · PIM · CXL 차세대 메모리 기술</span>
+  <span>총 6개 항목 · 표 7개 · 그림 4개</span>
+</div>
+
+</div><!-- /doc -->
+</body>
+</html>

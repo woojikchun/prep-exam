@@ -1,0 +1,833 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;900&family=JetBrains+Mono:wght@400;700&display=swap');
+:root{--bg:#040a0d;--s1:#070f18;--s2:#0b1522;--s3:#101c2c;--bdr:#1a3850;--a1:#60a5fa;--a2:#34d399;--a3:#fbbf24;--a4:#f87171;--a5:#a78bfa;--a6:#fb923c;--a7:#f472b6;--txt:#e2e8f0;--mu:#64748b;}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Noto Sans KR',sans-serif;background:var(--bg);color:var(--txt);min-height:100vh;}
+.hdr{padding:20px 24px 14px;background:linear-gradient(150deg,#040a0d,#091520,#040a0d);border-bottom:1px solid var(--bdr);}
+.hdr-r{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:6px;}
+.pill{padding:3px 10px;border-radius:20px;font-size:10px;font-weight:700;}
+.p1{background:linear-gradient(135deg,#1e3a8a,var(--a1));color:#fff;}
+.p2{background:rgba(52,211,153,.15);color:var(--a2);border:1px solid rgba(52,211,153,.3);}
+.p3{background:rgba(251,191,36,.15);color:var(--a3);border:1px solid rgba(251,191,36,.3);}
+h1{font-size:18px;font-weight:900;}
+.h1g{background:linear-gradient(90deg,var(--a1),var(--a2),var(--a3),var(--a5));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.hdr p{color:var(--mu);font-size:11.5px;margin-top:3px;}
+.tabs{display:flex;padding:0 24px;background:var(--s1);border-bottom:1px solid var(--bdr);overflow-x:auto;scrollbar-width:none;}
+.tabs::-webkit-scrollbar{display:none;}
+.tab{padding:10px 13px;font-size:11.5px;font-weight:600;color:var(--mu);cursor:pointer;border-bottom:2px solid transparent;white-space:nowrap;transition:all .2s;background:none;border-top:none;border-left:none;border-right:none;font-family:'Noto Sans KR',sans-serif;}
+.tab.on{color:var(--a1);border-bottom-color:var(--a1);}
+.wrap{padding:18px 24px;max-width:960px;margin:0 auto;}
+.pnl{display:none;}.pnl.on{display:block;}
+.card{background:var(--s1);border:1px solid var(--bdr);border-radius:11px;padding:16px;margin-bottom:12px;}
+.card-h{display:flex;align-items:center;gap:9px;margin-bottom:11px;}
+.ico{width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0;}
+.ib{background:rgba(96,165,250,.15);}.ig{background:rgba(52,211,153,.15);}.iy{background:rgba(251,191,36,.15);}.ir{background:rgba(248,113,113,.15);}.ip{background:rgba(167,139,250,.15);}.io{background:rgba(251,146,60,.15);}
+.card h3{font-size:13.5px;font-weight:700;}
+.tag{display:inline-block;padding:2px 7px;border-radius:4px;font-size:9.5px;font-weight:600;margin:2px 2px 2px 0;}
+.tb{background:rgba(96,165,250,.12);color:var(--a1);border:1px solid rgba(96,165,250,.25);}
+.tg{background:rgba(52,211,153,.12);color:var(--a2);border:1px solid rgba(52,211,153,.25);}
+.ty{background:rgba(251,191,36,.12);color:var(--a3);border:1px solid rgba(251,191,36,.25);}
+.tr{background:rgba(248,113,113,.12);color:var(--a4);border:1px solid rgba(248,113,113,.25);}
+.tp{background:rgba(167,139,250,.12);color:var(--a5);border:1px solid rgba(167,139,250,.25);}
+.to{background:rgba(251,146,60,.12);color:var(--a6);border:1px solid rgba(251,146,60,.25);}
+table{width:100%;border-collapse:collapse;font-size:12px;}
+th{background:var(--s2);color:var(--mu);font-weight:700;padding:7px 10px;text-align:left;font-size:9.5px;text-transform:uppercase;letter-spacing:.5px;border-bottom:1px solid var(--bdr);}
+td{padding:7px 10px;border-bottom:1px solid rgba(26,56,80,.5);vertical-align:top;line-height:1.55;}
+tr:last-child td{border-bottom:none;}
+tr:hover td{background:rgba(255,255,255,.02);}
+td strong{color:var(--a3);}
+ul.il{list-style:none;display:flex;flex-direction:column;gap:6px;}
+ul.il li{font-size:12px;padding-left:15px;position:relative;line-height:1.5;}
+ul.il li::before{content:'▸';position:absolute;left:0;color:var(--a1);font-size:9.5px;top:3px;}
+ul.il li strong{color:var(--a3);}
+ul.il li em{color:var(--a2);font-style:normal;}
+.memo{background:linear-gradient(135deg,rgba(96,165,250,.07),rgba(52,211,153,.07));border:1px solid rgba(96,165,250,.22);border-left:3px solid var(--a1);border-radius:7px;padding:9px 13px;font-size:12px;font-weight:600;color:var(--a1);margin:9px 0;}
+.memo::before{content:'🎯 핵심 암기 │ ';color:var(--mu);font-weight:400;}
+.warn{background:rgba(248,113,113,.07);border:1px solid rgba(248,113,113,.25);border-left:3px solid var(--a4);border-radius:7px;padding:9px 13px;font-size:12px;font-weight:600;color:var(--a4);margin:9px 0;}
+.warn::before{content:'⚠️ 함정 포인트 │ ';color:var(--mu);font-weight:400;}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px;}
+@media(max-width:580px){.g2{grid-template-columns:1fr;}}
+.code{background:var(--s2);border:1px solid rgba(96,165,250,.18);border-radius:7px;padding:10px 13px;font-family:'JetBrains Mono',monospace;font-size:10.5px;margin:7px 0;line-height:1.8;overflow-x:auto;color:var(--a2);}
+/* acc */
+.acc{background:var(--s2);border:1px solid var(--bdr);border-radius:9px;margin-bottom:8px;overflow:hidden;}
+.acc-h{display:flex;justify-content:space-between;align-items:center;padding:10px 14px;cursor:pointer;user-select:none;}
+.acc-h:hover{background:rgba(255,255,255,.02);}
+.acc-title{font-size:12.5px;font-weight:800;flex:1;}
+.acc-tgl{color:var(--mu);transition:transform .2s;font-size:14px;flex-shrink:0;margin-left:8px;}
+.acc.open .acc-tgl{transform:rotate(180deg);}
+.acc-body{display:none;border-top:1px solid var(--bdr);padding:12px 14px;background:var(--s3);font-size:12px;line-height:1.65;}
+.acc.open .acc-body{display:block;}
+.acc-body strong{color:var(--a3);}
+.acc-body em{color:var(--a2);font-style:normal;}
+/* qa */
+.qa{background:var(--s1);border:1px solid var(--bdr);border-radius:9px;margin-bottom:10px;overflow:hidden;}
+.qa:hover{border-color:rgba(96,165,250,.25);}
+.qa-hd{padding:12px 16px;cursor:pointer;display:flex;justify-content:space-between;align-items:flex-start;gap:9px;user-select:none;}
+.qa-meta{display:flex;align-items:center;gap:5px;margin-bottom:4px;flex-wrap:wrap;}
+.qn{font-family:'JetBrains Mono',monospace;font-size:9.5px;font-weight:700;color:var(--mu);}
+.qq{font-size:12.5px;font-weight:600;line-height:1.5;}
+.tgl{color:var(--mu);font-size:15px;flex-shrink:0;transition:transform .2s;}
+.qa.open .tgl{transform:rotate(180deg);}
+.qa-bd{display:none;border-top:1px solid var(--bdr);padding:12px 16px;background:var(--s2);}
+.qa.open .qa-bd{display:block;}
+.chs{display:flex;flex-direction:column;gap:6px;margin-bottom:10px;}
+.ch{display:flex;align-items:flex-start;gap:9px;padding:8px 12px;border-radius:6px;border:1px solid var(--bdr);font-size:12px;cursor:pointer;background:var(--s1);line-height:1.45;transition:all .15s;}
+.ch:hover:not(.lk){border-color:rgba(96,165,250,.3);background:rgba(96,165,250,.04);}
+.ch.ok{border-color:var(--a2);background:rgba(52,211,153,.1);color:var(--a2);}
+.ch.ng{border-color:var(--a4);background:rgba(248,113,113,.08);color:var(--a4);opacity:.7;}
+.ch.lk{cursor:default;}
+.cnum{font-family:'JetBrains Mono',monospace;font-weight:700;font-size:10.5px;flex-shrink:0;margin-top:1px;color:var(--mu);}
+.ch.ok .cnum{color:var(--a2);}.ch.ng .cnum{color:var(--a4);}
+.exp{background:rgba(96,165,250,.05);border:1px solid rgba(96,165,250,.18);border-radius:7px;padding:11px 13px;font-size:12px;line-height:1.6;display:none;}
+.exp.show{display:block;}
+.exp-t{font-size:9.5px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--a1);margin-bottom:5px;}
+.exp strong{color:var(--a3);}
+.exp em{color:var(--a2);font-style:normal;}
+.ox-wr{display:flex;gap:8px;margin-bottom:10px;}
+.ox{flex:1;padding:10px;border-radius:7px;border:1px solid var(--bdr);font-size:18px;cursor:pointer;background:var(--s1);transition:all .15s;font-family:'Noto Sans KR',sans-serif;color:var(--txt);}
+.ox:hover:not(.lk){transform:scale(1.02);}
+.ox.so{border-color:var(--a2);background:rgba(52,211,153,.15);}
+.ox.sx{border-color:var(--a4);background:rgba(248,113,113,.1);}
+.ox.lk{cursor:default;}
+.diff{display:inline-block;padding:2px 6px;border-radius:9px;font-size:8.5px;font-weight:700;}
+.easy{background:rgba(52,211,153,.2);color:var(--a2);}
+.mid{background:rgba(251,191,36,.2);color:var(--a3);}
+.hard{background:rgba(248,113,113,.2);color:var(--a4);}
+.fb-wr{display:flex;gap:5px;flex-wrap:wrap;margin-bottom:12px;}
+.fb{padding:4px 11px;border-radius:18px;border:1px solid var(--bdr);font-size:10.5px;font-weight:600;cursor:pointer;background:var(--s2);color:var(--mu);transition:all .15s;font-family:'Noto Sans KR',sans-serif;}
+.fb.on{background:rgba(96,165,250,.15);color:var(--a1);border-color:var(--a1);}
+.sc-b{background:var(--s2);border:1px solid var(--bdr);border-radius:7px;padding:4px 12px;font-size:11.5px;color:var(--mu);}
+.sc-b span{color:var(--a1);font-weight:700;}
+/* quality card grid */
+.qc-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:8px;margin:10px 0;}
+.qc{background:var(--s2);border-radius:8px;padding:10px 12px;}
+.qc-name{font-size:12px;font-weight:800;margin-bottom:3px;}
+.qc-en{font-family:'JetBrains Mono',monospace;font-size:8.5px;color:var(--mu);margin-bottom:4px;}
+.qc-desc{font-size:10.5px;color:var(--txt);line-height:1.5;}
+</style>
+</head>
+<body>
+<div class="hdr">
+  <div class="hdr-r">
+    <span class="pill p1">SW 품질·척도·비용·표준</span>
+    <span class="pill p2">ISO/IEC 25010 · McCabe · COCOMO</span>
+    <span class="pill p3">기능점수 · CMM · 감리사 핵심</span>
+  </div>
+  <h1><span class="h1g">SW 품질·척도·비용·표준 완전 정리</span></h1>
+  <p>ISO/IEC 25010 품질모델 · McCabe 복잡도 · COCOMO · 기능점수(FP) · CMM/CMMI · ISO 9001 · SW 메트릭</p>
+</div>
+<div class="tabs">
+  <button class="tab on" data-p="p1">📊 SW 품질 개요</button>
+  <button class="tab" data-p="p2">🏆 ISO/IEC 25010</button>
+  <button class="tab" data-p="p3">📐 SW 메트릭·척도</button>
+  <button class="tab" data-p="p4">💰 비용 추정 모델</button>
+  <button class="tab" data-p="p5">📋 프로세스 표준</button>
+  <button class="tab" data-p="p6">⚖️ 비교·감리 포인트</button>
+  <button class="tab" data-p="p7">❓ 예상문제</button>
+</div>
+<div class="wrap">
+
+<!-- P1: 품질 개요 -->
+<div class="pnl on" id="p1">
+  <div class="card">
+    <div class="card-h"><div class="ico ib">📊</div><h3>SW 품질의 정의 & 분류 ⭐</h3></div>
+    <div style="background:var(--s2);border:1px solid rgba(96,165,250,.28);border-radius:9px;padding:13px;margin-bottom:12px;font-size:12.5px;line-height:1.85;">
+      <strong style="color:var(--a1)">소프트웨어 품질(SW Quality)</strong>: 명시된 요구사항과 묵시적 기대사항을 만족시키는 소프트웨어의 특성 — ISO/IEC 25010은 <em style="color:var(--a3);font-style:normal;">제품 품질 8특성</em>과 <em style="color:var(--a3);font-style:normal;">사용 품질 5특성</em>으로 체계화
+    </div>
+
+    <!-- 품질 관점 SVG -->
+    <svg viewBox="0 0 720 160" style="width:100%;background:var(--s2);border-radius:9px;border:1px solid var(--bdr);margin:10px 0;">
+      <!-- 3가지 관점 -->
+      <rect x="10"  y="15" width="218" height="130" fill="rgba(96,165,250,.06)"  stroke="#60a5fa" stroke-width="1.5" rx="7"/>
+      <text x="119" y="38" text-anchor="middle" font-family="Noto Sans KR" font-size="11" fill="#60a5fa" font-weight="bold">제품 품질 (Product Quality)</text>
+      <text x="119" y="55" text-anchor="middle" font-family="JetBrains Mono" font-size="8"  fill="#64748b">ISO/IEC 25010</text>
+      <text x="119" y="74" text-anchor="middle" font-family="Noto Sans KR" font-size="9"  fill="#60a5fa">기능성·신뢰성·보안성</text>
+      <text x="119" y="90" text-anchor="middle" font-family="Noto Sans KR" font-size="9"  fill="#60a5fa">유지보수성·이식성</text>
+      <text x="119" y="106" text-anchor="middle" font-family="Noto Sans KR" font-size="9"  fill="#60a5fa">성능효율성·사용성</text>
+      <text x="119" y="122" text-anchor="middle" font-family="Noto Sans KR" font-size="9"  fill="#60a5fa">호환성</text>
+      <text x="119" y="138" text-anchor="middle" font-family="Noto Sans KR" font-size="8"  fill="#64748b">코드/문서/설계 측면</text>
+
+      <rect x="250" y="15" width="218" height="130" fill="rgba(52,211,153,.05)"  stroke="#34d399" stroke-width="1.5" rx="7"/>
+      <text x="359" y="38" text-anchor="middle" font-family="Noto Sans KR" font-size="11" fill="#34d399" font-weight="bold">사용 품질 (Quality in Use)</text>
+      <text x="359" y="55" text-anchor="middle" font-family="JetBrains Mono" font-size="8"  fill="#64748b">ISO/IEC 25010</text>
+      <text x="359" y="74" text-anchor="middle" font-family="Noto Sans KR" font-size="9"  fill="#34d399">효과성·효율성</text>
+      <text x="359" y="90" text-anchor="middle" font-family="Noto Sans KR" font-size="9"  fill="#34d399">만족도·자유도(위험)</text>
+      <text x="359" y="106" text-anchor="middle" font-family="Noto Sans KR" font-size="9"  fill="#34d399">상황 범위</text>
+      <text x="359" y="138" text-anchor="middle" font-family="Noto Sans KR" font-size="8"  fill="#64748b">실제 사용 환경에서 측정</text>
+
+      <rect x="490" y="15" width="218" height="130" fill="rgba(251,191,36,.05)"  stroke="#fbbf24" stroke-width="1.5" rx="7"/>
+      <text x="599" y="38" text-anchor="middle" font-family="Noto Sans KR" font-size="11" fill="#fbbf24" font-weight="bold">프로세스 품질</text>
+      <text x="599" y="55" text-anchor="middle" font-family="JetBrains Mono" font-size="8"  fill="#64748b">CMM/CMMI · ISO 9001</text>
+      <text x="599" y="74" text-anchor="middle" font-family="Noto Sans KR" font-size="9"  fill="#fbbf24">개발 프로세스의 성숙도</text>
+      <text x="599" y="90" text-anchor="middle" font-family="Noto Sans KR" font-size="9"  fill="#fbbf24">CMMI 레벨 1~5</text>
+      <text x="599" y="106" text-anchor="middle" font-family="Noto Sans KR" font-size="9"  fill="#fbbf24">조직 역량 평가</text>
+      <text x="599" y="138" text-anchor="middle" font-family="Noto Sans KR" font-size="8"  fill="#64748b">조직·절차 측면</text>
+    </svg>
+
+    <div class="g2">
+      <div>
+        <p style="font-size:11.5px;font-weight:800;color:var(--a3);margin-bottom:7px;">품질 관련 주요 표준 체계 ⭐</p>
+        <table>
+          <thead><tr><th>표준</th><th>대상</th><th>핵심</th></tr></thead>
+          <tbody>
+            <tr><td><strong>ISO/IEC 25010 ⭐</strong></td><td>제품·사용 품질</td><td>8특성 30하위특성</td></tr>
+            <tr><td><strong>ISO/IEC 9126</strong></td><td>25010 전신</td><td>6특성 21하위특성 (구버전)</td></tr>
+            <tr><td><strong>CMMI ⭐</strong></td><td>프로세스 역량</td><td>5레벨 성숙도 모델</td></tr>
+            <tr><td><strong>ISO 9001</strong></td><td>품질 경영</td><td>QMS 요구사항</td></tr>
+            <tr><td><strong>IEEE 730</strong></td><td>SW 품질 보증</td><td>SQAP 계획서</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div>
+        <p style="font-size:11.5px;font-weight:800;color:var(--a2);margin-bottom:7px;">품질 보증 vs 품질 통제 ⭐</p>
+        <table>
+          <thead><tr><th>항목</th><th>QA (품질 보증)</th><th>QC (품질 통제)</th></tr></thead>
+          <tbody>
+            <tr><td><strong>목적</strong></td><td>결함 예방</td><td>결함 발견·수정</td></tr>
+            <tr><td><strong>시점</strong></td><td>개발 프로세스 전반</td><td>산출물 검사 시</td></tr>
+            <tr><td><strong>활동</strong></td><td>프로세스 감사·표준</td><td>테스트·검토·검사</td></tr>
+            <tr><td><strong>지향</strong></td><td>예방적·프로세스 중심</td><td>검출적·제품 중심</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div class="memo">SW품질=제품품질(ISO25010 8특성)·사용품질(5특성)·프로세스품질(CMMI) / QA=예방·프로세스 / QC=발견·제품</div>
+  </div>
+</div>
+
+<!-- P2: ISO/IEC 25010 -->
+<div class="pnl" id="p2">
+  <div class="card">
+    <div class="card-h"><div class="ico ig">🏆</div><h3>ISO/IEC 25010 — 제품 품질 8특성 ⭐⭐</h3></div>
+    <div style="background:var(--s2);border:1px solid rgba(52,211,153,.25);border-radius:9px;padding:12px;margin-bottom:10px;font-size:12.5px;line-height:1.8;">
+      ISO/IEC 25010(SQuaRE: Software product Quality Requirements and Evaluation)은 ISO/IEC 9126을 대체하는 현행 표준 — 제품 품질 8특성(30하위특성)과 사용 품질 5특성 정의
+    </div>
+
+    <!-- 8특성 그리드 -->
+    <p style="font-size:11.5px;font-weight:800;color:var(--a2);margin-bottom:8px;">제품 품질 8대 특성 ⭐⭐</p>
+    <div class="qc-grid">
+      <div class="qc" style="border:1px solid rgba(96,165,250,.3);">
+        <div class="qc-name" style="color:var(--a1);">① 기능 적합성</div>
+        <div class="qc-en">Functional Suitability</div>
+        <div class="qc-desc">기능 완전성·기능 정확성·기능 적절성<br><em style="color:var(--a3);">요구 기능을 올바르게 제공하는가</em></div>
+      </div>
+      <div class="qc" style="border:1px solid rgba(52,211,153,.3);">
+        <div class="qc-name" style="color:var(--a2);">② 성능 효율성</div>
+        <div class="qc-en">Performance Efficiency ⭐</div>
+        <div class="qc-desc">시간 반응성·자원 활용성·용량<br><em style="color:var(--a3);">자원 대비 성능 수준</em></div>
+      </div>
+      <div class="qc" style="border:1px solid rgba(251,191,36,.3);">
+        <div class="qc-name" style="color:var(--a3);">③ 호환성</div>
+        <div class="qc-en">Compatibility</div>
+        <div class="qc-desc">공존성·상호운용성<br><em style="color:var(--a3);">타 시스템과의 공유·교환</em></div>
+      </div>
+      <div class="qc" style="border:1px solid rgba(248,113,113,.3);">
+        <div class="qc-name" style="color:var(--a4);">④ 사용성</div>
+        <div class="qc-en">Usability ⭐</div>
+        <div class="qc-desc">적절인식성·학습성·운용성·사용자 오류방지·UI 미학·접근성<br><em style="color:var(--a3);">사용자가 쉽게 사용할 수 있는가</em></div>
+      </div>
+      <div class="qc" style="border:1px solid rgba(167,139,250,.3);">
+        <div class="qc-name" style="color:var(--a5);">⑤ 신뢰성</div>
+        <div class="qc-en">Reliability ⭐</div>
+        <div class="qc-desc">성숙성·가용성·결함허용성·복구성<br><em style="color:var(--a3);">지정 조건에서 지정 기간 동안 수행</em></div>
+      </div>
+      <div class="qc" style="border:1px solid rgba(251,146,60,.3);">
+        <div class="qc-name" style="color:var(--a6);">⑥ 보안성</div>
+        <div class="qc-en">Security ⭐</div>
+        <div class="qc-desc">기밀성·무결성·부인방지·책임추적성·인증성<br><em style="color:var(--a3);">무단 접근 방지·데이터 보호</em></div>
+      </div>
+      <div class="qc" style="border:1px solid rgba(244,114,182,.3);">
+        <div class="qc-name" style="color:var(--a7);">⑦ 유지보수성</div>
+        <div class="qc-en">Maintainability ⭐</div>
+        <div class="qc-desc">모듈성·재사용성·분석성·변경성·시험성<br><em style="color:var(--a3);">수정·개선의 용이성</em></div>
+      </div>
+      <div class="qc" style="border:1px solid rgba(96,165,250,.3);">
+        <div class="qc-name" style="color:var(--a1);">⑧ 이식성</div>
+        <div class="qc-en">Portability</div>
+        <div class="qc-desc">적응성·설치성·대체성<br><em style="color:var(--a3);">다른 환경으로 이전 용이성</em></div>
+      </div>
+    </div>
+
+    <div class="acc open" onclick="this.classList.toggle('open')">
+      <div class="acc-h"><div class="acc-title" style="color:var(--a3);">ISO 9126 vs ISO/IEC 25010 비교 & 사용 품질 5특성 ⭐</div><div class="acc-tgl">▾</div></div>
+      <div class="acc-body">
+        <div class="g2">
+          <div>
+            <p style="font-size:11px;font-weight:800;color:var(--a4);margin-bottom:5px;">ISO 9126 (구) vs ISO/IEC 25010 (현) ⭐</p>
+            <table>
+              <thead><tr><th>ISO 9126 (6특성)</th><th>ISO/IEC 25010 (8특성)</th></tr></thead>
+              <tbody>
+                <tr><td>기능성</td><td>→ <strong>기능 적합성</strong></td></tr>
+                <tr><td>신뢰성</td><td>→ <strong>신뢰성</strong> (유지)</td></tr>
+                <tr><td>사용성</td><td>→ <strong>사용성</strong> (확장)</td></tr>
+                <tr><td>효율성</td><td>→ <strong>성능 효율성</strong></td></tr>
+                <tr><td>유지보수성</td><td>→ <strong>유지보수성</strong> (유지)</td></tr>
+                <tr><td>이식성</td><td>→ <strong>이식성</strong> (유지)</td></tr>
+                <tr><td>(없음)</td><td>→ <strong>호환성</strong> (신규)</td></tr>
+                <tr><td>(없음)</td><td>→ <strong>보안성</strong> (신규)</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <div>
+            <p style="font-size:11px;font-weight:800;color:var(--a2);margin-bottom:5px;">사용 품질 5특성 ⭐</p>
+            <table>
+              <thead><tr><th>특성</th><th>의미</th></tr></thead>
+              <tbody>
+                <tr><td><strong>효과성</strong></td><td>사용자 목표 달성 정확도·완전성</td></tr>
+                <tr><td><strong>효율성</strong></td><td>목표 달성에 소요된 자원 대비 성과</td></tr>
+                <tr><td><strong>만족도</strong></td><td>유용성·신뢰성·쾌적성·편안함</td></tr>
+                <tr><td><strong>자유도(위험 회피)</strong></td><td>경제·건강·환경적 위험 감소</td></tr>
+                <tr><td><strong>상황 범위</strong></td><td>다양한 사용 맥락에서의 적용성</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="memo">ISO25010 제품품질 8특성: 기능적합성·성능효율성·호환성·사용성·신뢰성·보안성·유지보수성·이식성 / 9126 대비 호환성·보안성 신규추가</div>
+  </div>
+</div>
+
+<!-- P3: 메트릭·척도 -->
+<div class="pnl" id="p3">
+  <div class="card">
+    <div class="card-h"><div class="ico iy">📐</div><h3>SW 메트릭 (Metrics) & 척도 ⭐</h3></div>
+
+    <div class="acc open" onclick="this.classList.toggle('open')">
+      <div class="acc-h"><div class="acc-title" style="color:var(--a3);">① McCabe 순환 복잡도 (Cyclomatic Complexity) ⭐⭐</div><div class="acc-tgl">▾</div></div>
+      <div class="acc-body">
+        <div class="g2">
+          <div>
+            <ul class="il">
+              <li><strong>정의:</strong> Tom McCabe(1976) 제안 — 프로그램의 <em>독립적 실행 경로 수</em>를 측정하는 복잡도 지표</li>
+              <li><strong>계산 공식 ⭐:</strong> V(G) = E - N + 2P (그래프 기반)</li>
+              <li><strong>간편 공식 ⭐:</strong> V(G) = 분기문 수(if·while·for·case·&&·||·?) + 1</li>
+              <li><strong>권장 기준 ⭐:</strong> <em>10 이하 권장</em> / 20 이상 위험 / 50 이상 재설계</li>
+              <li><strong>테스트 수:</strong> V(G)는 최소 필요 테스트 케이스 수와 동일</li>
+              <li><strong>활용:</strong> 코드 품질 측정·리팩토링 우선순위·테스트 설계</li>
+            </ul>
+          </div>
+          <div>
+            <div class="code">V(G) = E - N + 2P
+  E = 간선(Edge) 수
+  N = 노드(Node) 수
+  P = 연결 컴포넌트 수 (보통 1)
+
+// 간편 계산 예시
+if (a > 0) {         // +1
+  if (b > 0) {       // +1
+    while (c > 0) {  // +1
+      c--;
+    }
+  }
+}
+// V(G) = 3 + 1 = 4
+
+// 해석: 최소 4개 테스트케이스로
+//       모든 경로 커버 가능</div>
+          </div>
+        </div>
+        <table style="margin-top:8px;">
+          <thead><tr><th>V(G) 범위</th><th>평가</th><th>권고사항</th></tr></thead>
+          <tbody>
+            <tr><td><strong>1 ~ 10</strong></td><td><span class="tag tg">낮음 ✅</span></td><td>권장 범위 — 간단하고 이해하기 쉬움</td></tr>
+            <tr><td><strong>11 ~ 20</strong></td><td><span class="tag ty">보통 ⚠️</span></td><td>주의 필요 — 테스트 강화</td></tr>
+            <tr><td><strong>21 ~ 50</strong></td><td><span class="tag tr">높음 ❌</span></td><td>위험 — 리팩토링 권장</td></tr>
+            <tr><td><strong>50 초과</strong></td><td><span class="tag tr">매우 높음 🚨</span></td><td>재설계 필요</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="acc" onclick="this.classList.toggle('open')">
+      <div class="acc-h"><div class="acc-title" style="color:var(--a2);">② Halstead 복잡도 메트릭 ⭐</div><div class="acc-tgl">▾</div></div>
+      <div class="acc-body">
+        <div class="g2">
+          <div>
+            <ul class="il">
+              <li><strong>정의:</strong> Maurice Halstead(1977) — 토큰 기반 복잡도 측정</li>
+              <li><strong>n1:</strong> 고유 연산자 수</li>
+              <li><strong>n2:</strong> 고유 피연산자 수</li>
+              <li><strong>N1:</strong> 연산자 총 출현 수</li>
+              <li><strong>N2:</strong> 피연산자 총 출현 수</li>
+            </ul>
+          </div>
+          <div class="code">// 주요 지표
+Program Length:    N = N1 + N2
+Program Vocab:     n = n1 + n2
+Volume:           V = N × log₂(n)
+Difficulty:       D = (n1/2) × (N2/n2)
+Effort:           E = D × V
+Time to Implement: T = E / 18
+Delivered Bugs:   B = V / 3000</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="acc" onclick="this.classList.toggle('open')">
+      <div class="acc-h"><div class="acc-title" style="color:var(--a1);">③ OO 메트릭 (객체지향 메트릭) ⭐</div><div class="acc-tgl">▾</div></div>
+      <div class="acc-body">
+        <p style="font-size:11px;font-weight:800;color:var(--a1);margin-bottom:6px;">Chidamber & Kemerer(CK) 메트릭 6가지 ⭐</p>
+        <table>
+          <thead><tr><th>메트릭</th><th>영문 약어</th><th>의미</th><th>권장</th></tr></thead>
+          <tbody>
+            <tr><td><strong>가중 메서드 수</strong></td><td>WMC</td><td>클래스의 메서드 수 × 복잡도 합계</td><td>낮을수록 좋음</td></tr>
+            <tr><td><strong>상속 트리 깊이</strong></td><td>DIT ⭐</td><td>상속 계층의 깊이 (루트까지 거리)</td><td>6 이하 권장</td></tr>
+            <tr><td><strong>자식 클래스 수</strong></td><td>NOC</td><td>직접 서브클래스 수</td><td>낮을수록 좋음</td></tr>
+            <tr><td><strong>객체 간 결합도</strong></td><td>CBO ⭐</td><td>다른 클래스와 결합된 클래스 수</td><td>낮을수록 좋음</td></tr>
+            <tr><td><strong>클래스 응답</strong></td><td>RFC</td><td>호출되는 메서드 총 수</td><td>낮을수록 좋음</td></tr>
+            <tr><td><strong>응집 결여도</strong></td><td>LCOM ⭐</td><td>메서드들이 공유하지 않는 속성 쌍 수</td><td>낮을수록 좋음(응집도↑)</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="acc" onclick="this.classList.toggle('open')">
+      <div class="acc-h"><div class="acc-title" style="color:var(--a5);">④ 기타 주요 품질 척도 ⭐</div><div class="acc-tgl">▾</div></div>
+      <div class="acc-body">
+        <table>
+          <thead><tr><th>척도</th><th>설명</th><th>계산/기준</th></tr></thead>
+          <tbody>
+            <tr><td><strong>결함 밀도 ⭐</strong></td><td>코드 단위당 결함 수</td><td>결함 수 / 1,000 LOC (KLOC당)</td></tr>
+            <tr><td><strong>테스트 커버리지 ⭐</strong></td><td>테스트로 실행된 코드 비율</td><td>구문/분기/경로 커버리지 / 80% 이상 권장</td></tr>
+            <tr><td><strong>MTBF ⭐</strong></td><td>평균 고장 간격 (신뢰성)</td><td>MTBF = MTTF + MTTR</td></tr>
+            <tr><td><strong>MTTF ⭐</strong></td><td>평균 고장 시간 (신뢰성)</td><td>정상 운영 평균 시간</td></tr>
+            <tr><td><strong>MTTR ⭐</strong></td><td>평균 수리 시간 (유지보수성)</td><td>고장 후 복구까지 평균 시간</td></tr>
+            <tr><td><strong>가용성 ⭐</strong></td><td>시스템 사용 가능 비율</td><td>MTTF / (MTTF + MTTR) × 100%</td></tr>
+            <tr><td><strong>LOC/KLOC</strong></td><td>코드 줄 수 / 천 줄 단위</td><td>생산성·결함 밀도 기준</td></tr>
+            <tr><td><strong>코드 중복도</strong></td><td>중복 코드 비율</td><td>5% 이하 권장</td></tr>
+          </tbody>
+        </table>
+        <div class="code">// 가용성 계산 예시
+MTTF = 480시간, MTTR = 20시간
+가용성 = 480 / (480 + 20) = 480/500 = 96%
+
+// MTBF = MTTF + MTTR = 500시간</div>
+      </div>
+    </div>
+    <div class="memo">McCabe V(G)=분기수+1·10이하권장·분기문당+1 / MTBF=MTTF+MTTR / 가용성=MTTF/(MTTF+MTTR) / CBO·LCOM·DIT=OO메트릭핵심</div>
+  </div>
+</div>
+
+<!-- P4: 비용 추정 -->
+<div class="pnl" id="p4">
+  <div class="card">
+    <div class="card-h"><div class="ico ir">💰</div><h3>SW 비용 추정 모델 ⭐⭐</h3></div>
+
+    <div class="acc open" onclick="this.classList.toggle('open')">
+      <div class="acc-h"><div class="acc-title" style="color:var(--a4);">① COCOMO (Constructive Cost Model) ⭐⭐</div><div class="acc-tgl">▾</div></div>
+      <div class="acc-body">
+        <p style="font-size:11px;font-weight:700;color:var(--mu);margin-bottom:7px;">Barry Boehm(1981) 제안 — LOC(소스코드 줄 수) 기반 비용 추정</p>
+        <div class="g2">
+          <div>
+            <p style="font-size:11px;font-weight:800;color:var(--a4);margin-bottom:5px;">COCOMO 기본 모델 공식 ⭐</p>
+            <div class="code">// 노력(인월) 계산
+MM = a × (KLOC)^b
+
+// 개발 기간 계산
+TDEV = c × (MM)^d
+
+// 인원 수
+P = MM / TDEV
+
+// 예시 (Organic 모드)
+// a=2.4, b=1.05, c=2.5, d=0.38
+MM = 2.4 × (50)^1.05 ≈ 140 인월</div>
+            <p style="font-size:11px;font-weight:800;color:var(--a3);margin-bottom:5px;margin-top:8px;">COCOMO 3가지 모드 ⭐</p>
+            <table>
+              <thead><tr><th>모드</th><th>a</th><th>b</th><th>특징</th></tr></thead>
+              <tbody>
+                <tr><td><strong>Organic ⭐</strong></td><td>2.4</td><td>1.05</td><td>소규모·친숙한 환경</td></tr>
+                <tr><td><strong>Semi-detached</strong></td><td>3.0</td><td>1.12</td><td>중간 규모·혼합</td></tr>
+                <tr><td><strong>Embedded ⭐</strong></td><td>3.6</td><td>1.20</td><td>대규모·엄격한 제약</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <div>
+            <p style="font-size:11px;font-weight:800;color:var(--a2);margin-bottom:5px;">COCOMO 발전 단계</p>
+            <table>
+              <thead><tr><th>단계</th><th>특징</th></tr></thead>
+              <tbody>
+                <tr><td><strong>COCOMO I ⭐</strong></td><td>LOC 기반·기본·중간·상세 모델</td></tr>
+                <tr><td><strong>COCOMO II ⭐</strong></td><td>재사용·객체점수·조기 설계 추가 / 현대적</td></tr>
+              </tbody>
+            </table>
+            <p style="font-size:11px;font-weight:800;color:var(--a5);margin-bottom:5px;margin-top:8px;">비용 추정 방법론 비교</p>
+            <table>
+              <thead><tr><th>방법</th><th>기반</th><th>특징</th></tr></thead>
+              <tbody>
+                <tr><td><strong>LOC ⭐</strong></td><td>코드 줄 수</td><td>직접적·언어 의존</td></tr>
+                <tr><td><strong>기능점수(FP) ⭐</strong></td><td>기능 단위</td><td>언어 독립적</td></tr>
+                <tr><td><strong>전문가 판단</strong></td><td>경험</td><td>델파이법</td></tr>
+                <tr><td><strong>유추</strong></td><td>유사 프로젝트</td><td>빠름·정확도 낮음</td></tr>
+                <tr><td><strong>Putnam</strong></td><td>Rayleigh 곡선</td><td>인력 투입 시간 곡선</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="acc" onclick="this.classList.toggle('open')">
+      <div class="acc-h"><div class="acc-title" style="color:var(--a2);">② 기능점수 (Function Point, FP) ⭐⭐</div><div class="acc-tgl">▾</div></div>
+      <div class="acc-body">
+        <p style="font-size:11px;font-weight:700;color:var(--mu);margin-bottom:7px;">Allan Albrecht(IBM, 1979) 제안 — 언어·기술 독립적 기능 규모 측정</p>
+        <div class="g2">
+          <div>
+            <p style="font-size:11px;font-weight:800;color:var(--a2);margin-bottom:5px;">5가지 기능 유형 ⭐</p>
+            <table>
+              <thead><tr><th>유형</th><th>약어</th><th>설명</th></tr></thead>
+              <tbody>
+                <tr><td><strong>외부 입력</strong></td><td>EI</td><td>사용자→시스템 데이터 입력</td></tr>
+                <tr><td><strong>외부 출력</strong></td><td>EO</td><td>시스템→사용자 처리 후 출력</td></tr>
+                <tr><td><strong>외부 조회</strong></td><td>EQ</td><td>단순 조회·출력 (처리 없음)</td></tr>
+                <tr><td><strong>내부 논리 파일</strong></td><td>ILF</td><td>시스템이 관리하는 내부 데이터</td></tr>
+                <tr><td><strong>외부 인터페이스 파일</strong></td><td>EIF</td><td>외부 시스템 참조 데이터</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <div>
+            <p style="font-size:11px;font-weight:800;color:var(--a3);margin-bottom:5px;">FP 계산 절차 ⭐</p>
+            <div class="code">// 1단계: 미조정 기능점수(UFP) 계산
+// 각 기능 × 복잡도 가중치(단순/보통/복잡)
+UFP = Σ (기능 유형별 가중치)
+
+// 2단계: 기술복잡도 인수(TCF)
+// 14개 일반시스템특성(GSC) 점수 합산
+TCF = 0.65 + (0.01 × Σ GSC)
+// TCF 범위: 0.65 ~ 1.35
+
+// 3단계: 조정 기능점수(AFP)
+AFP = UFP × TCF
+
+// FP → 비용 환산
+비용 = AFP × 단위비용/FP</div>
+          </div>
+        </div>
+        <table style="margin-top:8px;">
+          <thead><tr><th>항목</th><th>LOC 기반</th><th>기능점수(FP) 기반</th></tr></thead>
+          <tbody>
+            <tr><td><strong>측정 기준</strong></td><td>소스코드 줄 수</td><td>기능 단위</td></tr>
+            <tr><td><strong>언어 독립성</strong></td><td>언어마다 다름</td><td><strong>언어 독립적</strong></td></tr>
+            <tr><td><strong>측정 시점</strong></td><td>개발 후</td><td><strong>요구사항 분석 단계</strong>부터 가능</td></tr>
+            <tr><td><strong>주요 활용</strong></td><td>개발 완료 후 생산성 측정</td><td><strong>초기 규모 추정·계약</strong></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="acc" onclick="this.classList.toggle('open')">
+      <div class="acc-h"><div class="acc-title" style="color:var(--a5);">③ Putnam 모델 & 기타 추정 기법 ⭐</div><div class="acc-tgl">▾</div></div>
+      <div class="acc-body">
+        <div class="g2">
+          <ul class="il">
+            <li><strong>Putnam 모델 ⭐:</strong> Rayleigh 분포 곡선 기반 — 인력 투입이 프로젝트 중반에 최대가 되는 패턴 모델링</li>
+            <li><strong>LOC 공식:</strong> L = C_K × t_d^{4/3} × P^{1/3} (C_K: 기술 상수)</li>
+            <li><strong>SLIM(Software Lifecycle Management):</strong> Putnam 모델 자동화 도구</li>
+            <li><strong>Delphi 기법 ⭐:</strong> 전문가 합의 기반 추정 — 익명 토론·반복 수렴</li>
+            <li><strong>3점 추정 ⭐:</strong> (낙관·기대·비관) 평균 — (O+4M+P)/6 (PERT 분포)</li>
+          </ul>
+          <div>
+            <div class="code">// 3점 추정 (PERT)
+E = (O + 4M + P) / 6
+SD = (P - O) / 6
+
+O = 낙관치 (Optimistic)
+M = 기대치 (Most Likely)
+P = 비관치 (Pessimistic)
+
+// 예시
+O=3, M=5, P=10
+E = (3+20+10)/6 = 5.5 인월
+SD = (10-3)/6 = 1.17</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="memo">COCOMO=LOC기반·Organic(2.4·1.05)·Embedded(3.6·1.20) / FP=기능점수·언어독립·5유형(EI·EO·EQ·ILF·EIF) / 3점추정=(O+4M+P)/6</div>
+  </div>
+</div>
+
+<!-- P5: 프로세스 표준 -->
+<div class="pnl" id="p5">
+  <div class="card">
+    <div class="card-h"><div class="ico ip">📋</div><h3>SW 프로세스 표준 & 성숙도 모델 ⭐</h3></div>
+
+    <div class="acc open" onclick="this.classList.toggle('open')">
+      <div class="acc-h"><div class="acc-title" style="color:var(--a5);">① CMM / CMMI (능력 성숙도 모델) ⭐⭐</div><div class="acc-tgl">▾</div></div>
+      <div class="acc-body">
+        <p style="font-size:11px;font-weight:700;color:var(--mu);margin-bottom:7px;">CMM(Capability Maturity Model) → CMMI(CMM Integration) — SEI(미 소프트웨어공학연구소) 개발</p>
+        <!-- CMMI 레벨 SVG -->
+        <svg viewBox="0 0 680 180" style="width:100%;background:var(--s2);border-radius:8px;border:1px solid var(--bdr);margin-bottom:8px;">
+          <rect x="10"  y="140" width="116" height="30" fill="rgba(248,113,113,.15)" stroke="#f87171" stroke-width="1.5" rx="4"/>
+          <text x="68"  y="160" text-anchor="middle" font-family="Noto Sans KR" font-size="10" fill="#f87171" font-weight="bold">레벨 1: 초기 (Initial)</text>
+          <rect x="136" y="110" width="116" height="60" fill="rgba(251,146,60,.12)" stroke="#fb923c" stroke-width="1.5" rx="4"/>
+          <text x="194" y="137" text-anchor="middle" font-family="Noto Sans KR" font-size="10" fill="#fb923c" font-weight="bold">레벨 2</text>
+          <text x="194" y="153" text-anchor="middle" font-family="Noto Sans KR" font-size="9" fill="#fb923c">관리 (Managed)</text>
+          <rect x="262" y="80" width="116" height="90" fill="rgba(251,191,36,.1)" stroke="#fbbf24" stroke-width="1.5" rx="4"/>
+          <text x="320" y="122" text-anchor="middle" font-family="Noto Sans KR" font-size="10" fill="#fbbf24" font-weight="bold">레벨 3</text>
+          <text x="320" y="138" text-anchor="middle" font-family="Noto Sans KR" font-size="9" fill="#fbbf24">정의 (Defined)</text>
+          <rect x="388" y="50" width="116" height="120" fill="rgba(52,211,153,.1)" stroke="#34d399" stroke-width="1.5" rx="4"/>
+          <text x="446" y="107" text-anchor="middle" font-family="Noto Sans KR" font-size="10" fill="#34d399" font-weight="bold">레벨 4</text>
+          <text x="446" y="123" text-anchor="middle" font-family="Noto Sans KR" font-size="9" fill="#34d399">정량적 관리</text>
+          <text x="446" y="137" text-anchor="middle" font-family="Noto Sans KR" font-size="9" fill="#34d399">(Quantitatively)</text>
+          <rect x="514" y="15" width="155" height="155" fill="rgba(96,165,250,.1)" stroke="#60a5fa" stroke-width="2" rx="4"/>
+          <text x="591" y="85" text-anchor="middle" font-family="Noto Sans KR" font-size="10" fill="#60a5fa" font-weight="bold">레벨 5</text>
+          <text x="591" y="101" text-anchor="middle" font-family="Noto Sans KR" font-size="9" fill="#60a5fa">최적화</text>
+          <text x="591" y="115" text-anchor="middle" font-family="Noto Sans KR" font-size="9" fill="#60a5fa">(Optimizing)</text>
+        </svg>
+        <table>
+          <thead><tr><th>레벨</th><th>명칭</th><th>특징</th><th>핵심 프로세스</th></tr></thead>
+          <tbody>
+            <tr><td><strong>1 ⭐</strong></td><td>초기 (Initial)</td><td>예측 불가·영웅 의존·카오스</td><td>(없음) — 임시방편</td></tr>
+            <tr><td><strong>2 ⭐</strong></td><td>관리 (Managed)</td><td>프로젝트 계획·추적·기본 관리</td><td>요구사항·계획·형상·QA 관리</td></tr>
+            <tr><td><strong>3 ⭐</strong></td><td>정의 (Defined)</td><td>조직 표준 프로세스 정의·문서화</td><td>조직 프로세스 표준화</td></tr>
+            <tr><td><strong>4</strong></td><td>정량적 관리</td><td>통계적 제어·정량적 측정</td><td>정량적 프로세스 관리</td></tr>
+            <tr><td><strong>5</strong></td><td>최적화 (Optimizing)</td><td>지속적 프로세스 혁신·결함 예방</td><td>지속적 개선·혁신</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="acc" onclick="this.classList.toggle('open')">
+      <div class="acc-h"><div class="acc-title" style="color:var(--a3);">② ISO/IEC 12207 — SW 생명주기 프로세스 ⭐</div><div class="acc-tgl">▾</div></div>
+      <div class="acc-body">
+        <div class="g2">
+          <div>
+            <ul class="il">
+              <li><strong>목적:</strong> SW 획득·개발·운용·유지보수 전 생명주기의 프로세스 정의</li>
+              <li><strong>기본 프로세스 ⭐:</strong> 획득·공급·개발·운용·유지보수</li>
+              <li><strong>지원 프로세스 ⭐:</strong> 문서화·형상관리·품질보증·검증·확인·공동검토·감사·문제해결</li>
+              <li><strong>조직 프로세스 ⭐:</strong> 관리·기반구조·개선·훈련</li>
+              <li><strong>현행:</strong> ISO/IEC 12207:2017 (3rd ed.)</li>
+            </ul>
+          </div>
+          <div>
+            <p style="font-size:11px;font-weight:800;color:var(--a3);margin-bottom:5px;">ISO/IEC 15504 (SPICE) ⭐</p>
+            <ul class="il">
+              <li><strong>목적:</strong> SW 프로세스 능력 수준 평가 (6레벨)</li>
+              <li><strong>레벨 0:</strong> 불완전</li>
+              <li><strong>레벨 1:</strong> 수행 (Performed)</li>
+              <li><strong>레벨 2:</strong> 관리 (Managed)</li>
+              <li><strong>레벨 3:</strong> 확립 (Established)</li>
+              <li><strong>레벨 4:</strong> 예측 (Predictable)</li>
+              <li><strong>레벨 5:</strong> 혁신 (Innovating)</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="acc" onclick="this.classList.toggle('open')">
+      <div class="acc-h"><div class="acc-title" style="color:var(--a2);">③ ISO 9001 & IEEE SW 표준 ⭐</div><div class="acc-tgl">▾</div></div>
+      <div class="acc-body">
+        <div class="g2">
+          <div>
+            <p style="font-size:11px;font-weight:800;color:var(--a2);margin-bottom:5px;">ISO 9001 (품질 경영 시스템) ⭐</p>
+            <ul class="il">
+              <li><strong>목적:</strong> 품질경영시스템(QMS) 요구사항 — 모든 산업 적용</li>
+              <li><strong>PDCA 사이클:</strong> Plan → Do → Check → Act</li>
+              <li><strong>7대 품질 원칙:</strong> 고객 중심·리더십·인원 참여·프로세스 접근·개선·증거 기반 의사결정·관계 관리</li>
+              <li><strong>SW 적용:</strong> ISO/IEC 90003 — ISO 9001을 SW에 적용하는 가이드라인</li>
+            </ul>
+          </div>
+          <div>
+            <p style="font-size:11px;font-weight:800;color:var(--a6);margin-bottom:5px;">주요 IEEE SW 표준</p>
+            <table>
+              <thead><tr><th>표준</th><th>내용</th></tr></thead>
+              <tbody>
+                <tr><td><strong>IEEE 830</strong></td><td>SRS(소프트웨어 요구사항 명세) 권장 실무</td></tr>
+                <tr><td><strong>IEEE 730</strong></td><td>SQAP (SW 품질 보증 계획)</td></tr>
+                <tr><td><strong>IEEE 828</strong></td><td>SCMP (SW 형상 관리 계획)</td></tr>
+                <tr><td><strong>IEEE 1012</strong></td><td>SVVP (SW 검증·확인 계획)</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="memo">CMMI 5레벨: 초기→관리→정의→정량관리→최적화 / ISO12207=SW생명주기프로세스 / ISO9001=QMS·PDCA / SPICE(15504)=6레벨 프로세스능력</div>
+  </div>
+</div>
+
+<!-- P6: 비교·감리 -->
+<div class="pnl" id="p6">
+  <div class="card">
+    <div class="card-h"><div class="ico io">⚖️</div><h3>비교·종합 & 감리 체크포인트 ⭐</h3></div>
+    <table>
+      <thead><tr><th>모델/척도</th><th>기반</th><th>측정 대상</th><th>특징</th><th>감리사 중요도</th></tr></thead>
+      <tbody>
+        <tr><td><strong>ISO/IEC 25010</strong></td><td>표준</td><td>제품 품질 8특성</td><td>기능적합성·신뢰성·보안성·유지보수성 등</td><td><span class="tag ty">★★★</span></td></tr>
+        <tr><td><strong>McCabe V(G)</strong></td><td>제어흐름그래프</td><td>코드 복잡도</td><td>분기수+1 / 10이하 권장</td><td><span class="tag ty">★★★</span></td></tr>
+        <tr><td><strong>MTBF/MTTF/MTTR</strong></td><td>신뢰성</td><td>고장 간격·시간</td><td>MTBF=MTTF+MTTR / 가용성 계산</td><td><span class="tag ty">★★★</span></td></tr>
+        <tr><td><strong>COCOMO</strong></td><td>LOC</td><td>개발 노력·기간</td><td>Organic·Embedded 모드 / MM 계산</td><td><span class="tag ty">★★★</span></td></tr>
+        <tr><td><strong>기능점수(FP)</strong></td><td>기능 단위</td><td>소프트웨어 규모</td><td>언어독립·요구사항단계 가능 / 5유형</td><td><span class="tag ty">★★★</span></td></tr>
+        <tr><td><strong>CMMI</strong></td><td>성숙도</td><td>프로세스 역량</td><td>5레벨 / 레벨3=조직 표준화</td><td><span class="tag ty">★★★</span></td></tr>
+        <tr><td><strong>Halstead</strong></td><td>토큰</td><td>코드 복잡도</td><td>연산자·피연산자 기반</td><td><span class="tag tg">★★</span></td></tr>
+        <tr><td><strong>CK 메트릭</strong></td><td>OO</td><td>객체지향 품질</td><td>WMC·DIT·NOC·CBO·RFC·LCOM</td><td><span class="tag tg">★★</span></td></tr>
+        <tr><td><strong>ISO 9001</strong></td><td>QMS</td><td>조직 품질 경영</td><td>PDCA / 7대 원칙</td><td><span class="tag tg">★★</span></td></tr>
+        <tr><td><strong>3점 추정</strong></td><td>PERT</td><td>기간/비용 추정</td><td>(O+4M+P)/6</td><td><span class="tag tg">★★</span></td></tr>
+      </tbody>
+    </table>
+
+    <div class="acc open" onclick="this.classList.toggle('open')">
+      <div class="acc-h"><div class="acc-title" style="color:var(--a4);">감리 체크포인트 ⭐</div><div class="acc-tgl">▾</div></div>
+      <div class="acc-body">
+        <div class="g2">
+          <div>
+            <p style="font-size:11.5px;font-weight:800;color:var(--a4);margin-bottom:7px;">품질 계획·측정 감리</p>
+            <ul class="il">
+              <li><strong>품질 목표 수립:</strong> ISO 25010 특성별 품질 목표 정의 여부</li>
+              <li><strong>순환 복잡도:</strong> McCabe V(G) 10 초과 모듈 존재 여부</li>
+              <li><strong>테스트 커버리지:</strong> 80% 이상 달성 여부</li>
+              <li><strong>결함 밀도:</strong> KLOC당 결함 수 추적·관리 여부</li>
+              <li><strong>코드 중복도:</strong> 5% 이하 관리 여부</li>
+              <li><strong>신뢰성 지표:</strong> MTBF·MTTF·가용성 목표 설정 여부</li>
+            </ul>
+          </div>
+          <div>
+            <p style="font-size:11.5px;font-weight:800;color:var(--a2);margin-bottom:7px;">비용·규모 추정 감리</p>
+            <ul class="il">
+              <li><strong>추정 방법론:</strong> FP·COCOMO·전문가 판단 등 적절한 방법 적용 여부</li>
+              <li><strong>FP 측정 근거:</strong> 5가지 기능 유형 식별·가중치 적용 여부</li>
+              <li><strong>COCOMO 모드 선택:</strong> 프로젝트 특성에 맞는 모드 적용 여부</li>
+              <li><strong>추정 검증:</strong> 다수 방법론으로 교차 검증 여부</li>
+              <li><strong>위험 반영:</strong> 3점 추정 등 불확실성 반영 여부</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="memo">감리핵심: McCabe 10이하·커버리지 80%↑·KLOC당 결함밀도 / FP 5유형·COCOMO 모드 적절성 / CMMI 레벨별 프로세스 충족 여부</div>
+  </div>
+</div>
+
+<!-- P7: QA -->
+<div class="pnl" id="p7">
+  <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:7px;margin-bottom:12px;">
+    <div class="fb-wr" id="fbar" style="margin:0;">
+      <button class="fb on" data-f="all">전체</button>
+      <button class="fb" data-f="품질">📊 품질모델</button>
+      <button class="fb" data-f="척도">📐 척도·메트릭</button>
+      <button class="fb" data-f="비용">💰 비용추정</button>
+      <button class="fb" data-f="표준">📋 프로세스표준</button>
+      <button class="fb" data-f="OX">⭕ OX</button>
+    </div>
+    <div class="sc-b">정답: <span id="sc">0</span>/<span id="st">0</span></div>
+  </div>
+  <div id="ql"></div>
+</div>
+
+</div>
+<script>
+document.querySelectorAll('.tab').forEach(t=>t.addEventListener('click',()=>{
+  document.querySelectorAll('.tab,.pnl').forEach(x=>x.classList.remove('on'));
+  t.classList.add('on');document.getElementById(t.dataset.p).classList.add('on');
+}));
+const QA=[
+  {cat:'품질',diff:'easy',
+   q:'ISO/IEC 25010이 ISO/IEC 9126 대비 새롭게 추가한 제품 품질 특성 2가지로 가장 적절한 것은?',
+   cs:['신뢰성과 유지보수성','기능 적합성과 성능 효율성','호환성(Compatibility)과 보안성(Security)','이식성과 사용성'],ans:2,
+   exp:'<strong>ISO/IEC 25010 신규 추가 특성</strong>: ISO 9126의 6특성(기능성·신뢰성·사용성·효율성·유지보수성·이식성)에서 <em>호환성(Compatibility)</em>과 <em>보안성(Security)</em>이 새로 추가되어 8특성이 되었습니다. 보안성 하위특성: 기밀성·무결성·부인방지·책임추적성·인증성. 호환성 하위특성: 공존성·상호운용성.'},
+  {cat:'품질',diff:'mid',
+   q:'ISO/IEC 25010의 제품 품질 특성 중 "유지보수성(Maintainability)"의 하위 특성으로 가장 적절하지 않은 것은?',
+   cs:['모듈성 (Modularity)','재사용성 (Reusability)','분석성 (Analysability)','가용성 (Availability)'],ans:3,
+   exp:'<strong>유지보수성 하위특성</strong>: <em>모듈성·재사용성·분석성·변경성·시험성</em>의 5가지. <em>가용성(Availability)</em>은 <strong>신뢰성(Reliability)</strong>의 하위특성입니다. 신뢰성 하위특성: 성숙성·가용성·결함허용성·복구성. 유지보수성은 코드를 수정·개선하기 쉬운 정도를 측정하며 LCOM·복잡도와 관련됩니다.'},
+  {cat:'척도',diff:'mid',
+   q:'McCabe 순환 복잡도(Cyclomatic Complexity)를 계산하는 간편 방법으로 가장 적절한 것은?',
+   cs:['코드 줄 수를 10으로 나눈 값','분기문(if·while·for·case 등) 수에 1을 더한 값','클래스 수 × 메서드 수','연산자 수 + 피연산자 수'],ans:1,
+   exp:'<strong>McCabe 순환 복잡도 간편 공식</strong>: <em>V(G) = 분기문 수 + 1</em>. 분기문 포함: if·else if·while·for·do-while·case·catch·&&·||·?. 정식 공식: V(G)=E-N+2P (E=간선, N=노드, P=연결 컴포넌트). 권장 기준: <em>10 이하</em>. V(G)는 최소 필요 테스트 케이스 수와 동일하며, 높을수록 테스트·유지보수가 어렵습니다.'},
+  {cat:'척도',diff:'mid',
+   q:'신뢰성 지표에서 가용성(Availability)을 계산하는 공식으로 가장 적절한 것은?',
+   cs:['MTTR / (MTTF + MTTR)','MTTF / (MTTF + MTTR)','(MTTF + MTTR) / MTTR','MTBF / MTTF'],ans:1,
+   exp:'<strong>가용성 공식</strong>: <em>가용성 = MTTF / (MTTF + MTTR)</em>. 예) MTTF=480h, MTTR=20h → 가용성=480/500=96%. MTBF(평균 고장 간격)=MTTF+MTTR. <em>MTTF(Mean Time To Failure)</em>=고장까지 평균 운영 시간. <em>MTTR(Mean Time To Repair)</em>=고장 후 수리 완료까지 평균 시간. 가용성 향상=MTTF↑ 또는 MTTR↓.'},
+  {cat:'비용',diff:'mid',
+   q:'COCOMO 비용 추정 모델의 세 가지 유형(모드) 중 소규모 시스템·친숙한 개발 환경에 적용하는 모드는?',
+   cs:['Embedded 모드','Semi-detached 모드','Organic 모드','Incremental 모드'],ans:2,
+   exp:'<strong>COCOMO 3가지 모드</strong>: <em>Organic(유기적)</em>=소규모·5만 라인 이하·친숙한 환경·a=2.4·b=1.05. <em>Semi-detached(반결합)</em>=중간 규모·혼합 경험·a=3.0·b=1.12. <em>Embedded(내장형)</em>=대규모·엄격한 하드웨어/소프트웨어 제약·a=3.6·b=1.20. b값이 클수록 규모 증가에 따른 노력 증가율이 높습니다.'},
+  {cat:'비용',diff:'mid',
+   q:'기능점수(Function Point) 산출 시 포함하는 5가지 기능 유형으로 가장 적절한 것은?',
+   cs:['소스코드·주석·테스트·문서·설계','외부 입력(EI)·외부 출력(EO)·외부 조회(EQ)·내부 논리 파일(ILF)·외부 인터페이스 파일(EIF)','요구사항·설계·구현·테스트·배포','데이터베이스·UI·API·로직·배치'],ans:1,
+   exp:'<strong>기능점수 5가지 유형</strong>: <em>EI(외부 입력)</em>=사용자→시스템 데이터 입력. <em>EO(외부 출력)</em>=처리 후 출력. <em>EQ(외부 조회)</em>=단순 조회(처리 없음). <em>ILF(내부 논리 파일)</em>=시스템이 관리하는 내부 데이터. <em>EIF(외부 인터페이스 파일)</em>=외부 시스템 참조 데이터. FP는 언어·기술 독립적이며 요구사항 분석 단계부터 측정 가능한 것이 LOC 대비 장점.'},
+  {cat:'표준',diff:'mid',
+   q:'CMMI(Capability Maturity Model Integration) 레벨 3의 특징으로 가장 적절한 것은?',
+   cs:['개별 프로젝트만 관리되며 조직 표준 프로세스가 없다.','조직 전체의 표준 프로세스가 정의·문서화되어 모든 프로젝트에 적용된다.','통계적 통제와 정량적 측정으로 프로세스를 관리한다.','지속적인 프로세스 혁신과 결함 예방이 이루어진다.'],ans:1,
+   exp:'<strong>CMMI 레벨 3: 정의(Defined)</strong>: <em>조직 전체의 표준 프로세스를 정의·문서화</em>하고 모든 프로젝트에 적용합니다. 레벨2(관리)는 프로젝트별 개별 관리. 레벨4(정량적 관리)는 통계적 제어. 레벨5(최적화)는 지속적 혁신. 레벨1(초기)은 예측 불가·카오스. 레벨3이 "조직 표준화"의 핵심 달성 지점입니다.'},
+  {cat:'비용',diff:'hard',
+   q:'3점 추정(PERT 기반)에서 낙관치=4일, 기대치=7일, 비관치=16일일 때 기대 완료 기간으로 가장 적절한 것은?',
+   cs:['9일','8일','7.5일','8.5일'],ans:1,
+   exp:'<strong>3점 추정 공식</strong>: E = (O + 4M + P) / 6. E = (4 + 4×7 + 16) / 6 = (4 + 28 + 16) / 6 = 48 / 6 = <em>8일</em>. 표준편차: SD = (P-O)/6 = (16-4)/6 = 2. PERT에서는 최빈값(기대치)에 4배 가중치를 부여하여 낙관·비관 편향을 보정합니다. 9일은 단순평균(4+7+16)/3≈9.'},
+  {cat:'척도',diff:'hard',
+   q:'CK(Chidamber & Kemerer) 객체지향 메트릭 중 LCOM(Lack of Cohesion in Methods)에 대한 설명으로 가장 적절한 것은?',
+   cs:['LCOM이 높을수록 클래스 응집도가 높아서 좋은 설계이다.','LCOM은 메서드들이 공유하지 않는 속성 쌍의 수를 측정하며, 낮을수록 클래스 응집도가 높아 좋은 설계를 의미한다.','LCOM은 클래스 간 결합도를 측정하는 지표이다.','LCOM은 상속 트리의 깊이를 나타낸다.'],ans:1,
+   exp:'<strong>LCOM(응집 결여도)</strong>: 메서드들이 <em>공유하지 않는 속성 쌍의 수</em>를 측정. <em>낮을수록 응집도가 높은 좋은 설계</em>. LCOM=0이 이상적. 높으면 클래스를 분리해야 한다는 신호(God Class). CK 6가지 메트릭: WMC(가중메서드수)·DIT(상속트리깊이)·NOC(자식클래스수)·CBO(결합도)·RFC(클래스응답)·LCOM(응집결여도).'},
+  {cat:'품질',diff:'mid',
+   q:'소프트웨어 품질 보증(QA)과 품질 통제(QC)의 차이로 가장 적절한 것은?',
+   cs:['QA는 제품 검사에 집중하고, QC는 프로세스 개선에 집중한다.','QA는 프로세스 전반에서 결함을 예방하는 활동이고, QC는 산출물에서 결함을 검출·수정하는 활동이다.','QA와 QC는 동일한 개념이다.','QC는 개발 초기에, QA는 개발 완료 후에 수행한다.'],ans:1,
+   exp:'<strong>QA vs QC</strong>: <em>QA(품질 보증)</em>=예방적·프로세스 중심·프로세스 감사·표준 준수 확인·결함이 발생하지 않도록. <em>QC(품질 통제)</em>=검출적·제품 중심·테스트·검사·검토·발생한 결함 발견·수정. QA는 "올바른 방법으로 만들고 있는가"를, QC는 "올바르게 만들었는가"를 확인합니다.'},
+  {cat:'표준',diff:'mid',type:'ox',
+   q:'CMMI 레벨 2는 조직 전체 표준 프로세스가 정의되어 모든 프로젝트에 일관되게 적용되는 수준이다.',ans:false,
+   exp:'<strong>×</strong> — CMMI 레벨 2는 <strong>"관리(Managed)"</strong> 수준으로, 개별 프로젝트 수준에서 계획·추적이 이루어지는 단계입니다. 조직 전체 표준 프로세스 정의·적용은 <em>레벨 3(정의·Defined)</em>의 특징입니다. 레벨2에서는 요구사항 관리·계획·추적·형상 관리·QA 등 기본 프로젝트 관리 능력을 갖춥니다.'},
+  {cat:'비용',diff:'easy',type:'ox',
+   q:'기능점수(Function Point)는 소스코드 줄 수(LOC)를 기반으로 하므로 프로그래밍 언어에 종속적이다.',ans:false,
+   exp:'<strong>×</strong> — 기능점수(FP)는 <strong>프로그래밍 언어와 독립적</strong>입니다. FP는 소프트웨어가 제공하는 기능(외부 입력·출력·조회·내부 파일·외부 인터페이스)을 기반으로 측정하므로 어떤 언어로 구현하든 동일한 FP가 산출됩니다. LOC는 언어마다 다르게 측정됩니다. FP의 장점: 요구사항 단계에서 측정 가능·언어 독립적·비교 용이.'},
+  {cat:'척도',diff:'mid',type:'ox',
+   q:'MTTF(Mean Time To Failure)가 길수록, MTTR(Mean Time To Repair)이 짧을수록 시스템 가용성은 높아진다.',ans:true,
+   exp:'<strong>○</strong> — 가용성 = MTTF / (MTTF + MTTR). MTTF가 커지면(고장까지 오래 운영) 분자 증가 → 가용성↑. MTTR이 작아지면(빠른 수리) 분모 감소 → 가용성↑. 예) MTTF=900h·MTTR=100h → 90% 가용성. MTTF=990h·MTTR=10h → 99% 가용성. 고가용성 시스템: MTBF 최대화·MTTR 최소화가 목표.'},
+  {cat:'품질',diff:'mid',type:'ox',
+   q:'McCabe 순환 복잡도 V(G) = 15인 함수는 권장 기준(10 이하)을 초과하지만 위험 수준(20 이상)에는 해당하지 않으므로 즉각적인 리팩토링이 필요하지 않다.',ans:false,
+   exp:'<strong>×</strong> — V(G)=15는 <strong>주의 필요</strong> 수준입니다(11~20=주의). "즉각적인 리팩토링이 필요하지 않다"는 잘못된 판단입니다. 감리 관점에서는 권장 기준(10)을 초과하는 모든 경우를 모니터링하고, 11~20 범위도 테스트 강화·리팩토링 계획 수립을 권고합니다. 소프트웨어 품질 감리에서는 "10 이하 권장"을 기준으로 초과 여부를 보고합니다.'},
+];
+let answered=0,correct=0;
+function renderQ(f){
+  const data=f==='all'?QA:QA.filter(q=>q.cat===f);
+  const list=document.getElementById('ql');list.innerHTML='';
+  answered=0;correct=0;upS();
+  const CATC={'품질':'tg','척도':'tb','비용':'ty','표준':'tp','OX':'to'};
+  const DLC={'easy':'easy 쉬움','mid':'mid 보통','hard':'hard 어려움'};
+  const NL=['①','②','③','④'];
+  if(!data.length){list.innerHTML='<div style="text-align:center;padding:40px;color:var(--mu)">문제 없음</div>';return;}
+  data.forEach((q,i)=>{
+    const gi=QA.indexOf(q);
+    const el=document.createElement('div');el.className='qa';
+    const tc=CATC[q.cat]||'tb';
+    const [dc,dn]=(DLC[q.diff]||'mid 보통').split(' ');
+    if(q.type==='ox'){
+      el.innerHTML=`<div class="qa-hd" onclick="this.closest('.qa').classList.toggle('open')"><div><div class="qa-meta"><span class="qn">Q${String(i+1).padStart(2,'0')}</span><span class="tag ${tc}">${q.cat}</span><span class="diff ${dc}">${dn}</span><span class="tag tg">O/X</span></div><div class="qq">${q.q}</div></div><span class="tgl">▾</span></div>
+      <div class="qa-bd"><div class="ox-wr"><button class="ox" onclick="pickOX(this,true,${gi})">⭕ 옳다</button><button class="ox" onclick="pickOX(this,false,${gi})">❌ 틀리다</button></div><div class="exp" id="ex-${gi}"><div class="exp-t">💡 해설</div>${q.exp}</div></div>`;
+    } else {
+      el.innerHTML=`<div class="qa-hd" onclick="this.closest('.qa').classList.toggle('open')"><div><div class="qa-meta"><span class="qn">Q${String(i+1).padStart(2,'0')}</span><span class="tag ${tc}">${q.cat}</span><span class="diff ${dc}">${dn}</span></div><div class="qq">${q.q}</div></div><span class="tgl">▾</span></div>
+      <div class="qa-bd"><div class="chs">${q.cs.map((c,ci)=>`<div class="ch" data-ci="${ci}" onclick="pickCh(this,${gi})"><span class="cnum">${NL[ci]}</span><span>${c}</span></div>`).join('')}</div><div class="exp" id="ex-${gi}"><div class="exp-t">💡 해설</div>${q.exp}</div></div>`;
+    }
+    list.appendChild(el);
+  });
+}
+function pickCh(el,gi){
+  const bd=el.closest('.qa-bd');if(bd.querySelector('.ok,.ng'))return;
+  const q=QA[gi];
+  bd.querySelectorAll('.ch').forEach((c,i)=>{c.classList.add('lk');if(i===q.ans)c.classList.add('ok');else if(i===parseInt(el.dataset.ci))c.classList.add('ng');});
+  document.getElementById('ex-'+gi).classList.add('show');
+  answered++;if(parseInt(el.dataset.ci)===q.ans)correct++;upS();
+}
+function pickOX(btn,val,gi){
+  const bd=btn.closest('.qa-bd');if(bd.querySelector('.so,.sx'))return;
+  const q=QA[gi];
+  bd.querySelectorAll('.ox').forEach(b=>b.classList.add('lk'));
+  btn.classList.add(val?'so':'sx');
+  if(val!==q.ans){btn.style.opacity='.5';bd.querySelectorAll('.ox')[val?1:0].classList.add(q.ans?'so':'sx');}
+  document.getElementById('ex-'+gi).classList.add('show');
+  answered++;if(val===q.ans)correct++;upS();
+}
+function upS(){document.getElementById('sc').textContent=correct;document.getElementById('st').textContent=answered;}
+document.getElementById('fbar').addEventListener('click',e=>{
+  const b=e.target.closest('.fb');if(!b)return;
+  document.querySelectorAll('.fb').forEach(x=>x.classList.remove('on'));b.classList.add('on');renderQ(b.dataset.f);
+});
+renderQ('all');
+</script>
+</body>
+</html>

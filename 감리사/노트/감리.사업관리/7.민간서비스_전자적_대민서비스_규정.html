@@ -1,0 +1,749 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&family=JetBrains+Mono:wght@400;700&display=swap');
+:root{
+  --bg:#07111f;--s1:#0c1a2e;--s2:#102040;--s3:#162952;
+  --bdr:#1a3460;--a1:#60a5fa;--a2:#a78bfa;--a3:#34d399;
+  --a4:#fbbf24;--a5:#f87171;--a6:#fb923c;
+  --txt:#e2e8f0;--mu:#64748b;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Noto Sans KR',sans-serif;background:var(--bg);color:var(--txt);min-height:100vh;}
+
+.hdr{padding:22px 24px 16px;background:linear-gradient(150deg,#07111f 0%,#0f1e3a 50%,#07111f 100%);border-bottom:1px solid var(--bdr);position:relative;overflow:hidden;}
+.hdr::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 70% 90% at 85% 40%,rgba(96,165,250,.07),transparent 65%),radial-gradient(ellipse 50% 70% at 15% 80%,rgba(167,139,250,.06),transparent 60%);pointer-events:none;}
+.hdr-r{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:6px;}
+.pill{padding:3px 10px;border-radius:20px;font-size:10px;font-weight:700;letter-spacing:.8px;}
+.p1{background:linear-gradient(135deg,#1e3a8a,var(--a1));color:#fff;}
+.p2{background:rgba(251,191,36,.15);color:var(--a4);border:1px solid rgba(251,191,36,.3);}
+.p3{background:rgba(167,139,250,.15);color:var(--a2);border:1px solid rgba(167,139,250,.3);}
+h1{font-size:18px;font-weight:900;}
+.h1g{background:linear-gradient(90deg,var(--a1),var(--a2),var(--a3));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.hdr p{color:var(--mu);font-size:12px;margin-top:3px;}
+
+.tabs{display:flex;padding:0 24px;background:var(--s1);border-bottom:1px solid var(--bdr);overflow-x:auto;scrollbar-width:none;gap:0;}
+.tabs::-webkit-scrollbar{display:none;}
+.tab{padding:11px 14px;font-size:12px;font-weight:600;color:var(--mu);cursor:pointer;border-bottom:2px solid transparent;white-space:nowrap;transition:all .2s;background:none;border-top:none;border-left:none;border-right:none;font-family:'Noto Sans KR',sans-serif;}
+.tab:hover{color:var(--txt);}.tab.on{color:var(--a1);border-bottom-color:var(--a1);}
+
+.wrap{padding:20px 24px;max-width:960px;margin:0 auto;}
+.pnl{display:none;}.pnl.on{display:block;}
+
+.card{background:var(--s1);border:1px solid var(--bdr);border-radius:12px;padding:18px;margin-bottom:14px;}
+.card-h{display:flex;align-items:center;gap:10px;margin-bottom:14px;}
+.ico{width:34px;height:34px;border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:17px;flex-shrink:0;}
+.ib{background:rgba(96,165,250,.15);}.ip{background:rgba(167,139,250,.15);}.ig{background:rgba(52,211,153,.15);}.iy{background:rgba(251,191,36,.15);}.ir{background:rgba(248,113,113,.15);}.io{background:rgba(251,146,60,.15);}
+.card h3{font-size:14px;font-weight:700;}
+
+.tag{display:inline-block;padding:2px 8px;border-radius:4px;font-size:10px;font-weight:600;margin:2px 2px 2px 0;}
+.tb{background:rgba(96,165,250,.12);color:var(--a1);border:1px solid rgba(96,165,250,.25);}
+.tp{background:rgba(167,139,250,.12);color:var(--a2);border:1px solid rgba(167,139,250,.25);}
+.tg{background:rgba(52,211,153,.12);color:var(--a3);border:1px solid rgba(52,211,153,.25);}
+.ty{background:rgba(251,191,36,.12);color:var(--a4);border:1px solid rgba(251,191,36,.25);}
+.tr{background:rgba(248,113,113,.12);color:var(--a5);border:1px solid rgba(248,113,113,.25);}
+.to{background:rgba(251,146,60,.12);color:var(--a6);border:1px solid rgba(251,146,60,.25);}
+
+table{width:100%;border-collapse:collapse;font-size:12.5px;}
+th{background:var(--s2);color:var(--mu);font-weight:700;padding:8px 12px;text-align:left;font-size:10px;text-transform:uppercase;letter-spacing:.5px;border-bottom:1px solid var(--bdr);}
+td{padding:9px 12px;border-bottom:1px solid rgba(26,52,96,.6);vertical-align:top;line-height:1.6;}
+tr:last-child td{border-bottom:none;}
+tr:hover td{background:rgba(255,255,255,.02);}
+td strong{color:var(--a4);}
+
+ul.il{list-style:none;display:flex;flex-direction:column;gap:7px;}
+ul.il li{font-size:12.5px;padding-left:16px;position:relative;line-height:1.55;}
+ul.il li::before{content:'▸';position:absolute;left:0;color:var(--a1);font-size:10px;top:3px;}
+ul.il li strong{color:var(--a4);}
+ul.il li em{color:var(--a3);font-style:normal;}
+
+.memo{background:linear-gradient(135deg,rgba(96,165,250,.07),rgba(167,139,250,.07));border:1px solid rgba(96,165,250,.22);border-left:3px solid var(--a1);border-radius:8px;padding:10px 14px;font-size:12.5px;font-weight:600;color:var(--a1);margin:10px 0;}
+.memo::before{content:'🎯 한 줄 암기 │ ';color:var(--mu);font-weight:400;}
+
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:14px;}
+.g3{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:10px 0;}
+@media(max-width:600px){.g2,.g3{grid-template-columns:1fr;}}
+
+.flow{display:flex;align-items:stretch;gap:4px;flex-wrap:wrap;margin:12px 0;}
+.fn{background:var(--s2);border:1px solid var(--bdr);border-radius:8px;padding:8px 10px;font-size:11px;font-weight:600;text-align:center;flex:1;min-width:70px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;line-height:1.3;}
+.fn small{font-size:9px;font-weight:400;color:var(--mu);}
+.farr{color:var(--a1);font-size:16px;display:flex;align-items:center;flex-shrink:0;}
+
+.step-wrap{display:flex;flex-direction:column;gap:8px;margin:10px 0;}
+.step{background:var(--s2);border:1px solid var(--bdr);border-radius:9px;overflow:hidden;cursor:pointer;transition:border-color .2s;}
+.step:hover{border-color:rgba(96,165,250,.3);}
+.step-hd{display:flex;align-items:center;gap:10px;padding:11px 14px;}
+.step-num{width:26px;height:26px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;flex-shrink:0;}
+.step-title{font-size:13px;font-weight:700;flex:1;}
+.step-arr{color:var(--mu);transition:transform .2s;font-size:14px;}
+.step.open .step-arr{transform:rotate(180deg);}
+.step-body{display:none;border-top:1px solid var(--bdr);padding:12px 14px 14px;}
+.step.open .step-body{display:block;}
+.out-chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px;}
+.chip{background:var(--s1);border:1px solid var(--bdr);border-radius:6px;padding:4px 10px;font-size:11px;}
+.chip::before{content:'📄 ';}
+
+.role-card{background:var(--s2);border:1px solid var(--bdr);border-radius:10px;padding:14px;}
+.role-title{font-size:12px;font-weight:800;margin-bottom:10px;padding-bottom:8px;border-bottom:1px solid var(--bdr);}
+
+.svc-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:10px 0;}
+@media(max-width:600px){.svc-grid{grid-template-columns:1fr 1fr;}}
+.svc-card{background:var(--s2);border:1px solid var(--bdr);border-radius:9px;padding:12px;text-align:center;}
+.svc-ico{font-size:22px;margin-bottom:5px;}
+.svc-name{font-size:11.5px;font-weight:700;margin-bottom:3px;}
+.svc-desc{font-size:10.5px;color:var(--mu);line-height:1.4;}
+
+.qa{background:var(--s1);border:1px solid var(--bdr);border-radius:10px;margin-bottom:11px;overflow:hidden;transition:border-color .2s;}
+.qa:hover{border-color:rgba(96,165,250,.25);}
+.qa-hd{padding:14px 18px;cursor:pointer;display:flex;justify-content:space-between;align-items:flex-start;gap:10px;user-select:none;}
+.qa-meta{display:flex;align-items:center;gap:6px;margin-bottom:5px;flex-wrap:wrap;}
+.qn{font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:700;color:var(--mu);}
+.qq{font-size:13px;font-weight:600;line-height:1.55;}
+.tgl{color:var(--mu);font-size:16px;flex-shrink:0;transition:transform .2s;}
+.qa.open .tgl{transform:rotate(180deg);}
+.qa-bd{display:none;border-top:1px solid var(--bdr);padding:14px 18px;background:var(--s2);}
+.qa.open .qa-bd{display:block;}
+.chs{display:flex;flex-direction:column;gap:7px;margin-bottom:12px;}
+.ch{display:flex;align-items:flex-start;gap:10px;padding:9px 13px;border-radius:7px;border:1px solid var(--bdr);font-size:12.5px;cursor:pointer;background:var(--s1);line-height:1.5;transition:all .15s;}
+.ch:hover:not(.lk){border-color:rgba(96,165,250,.3);background:rgba(96,165,250,.04);}
+.ch.ok{border-color:var(--a3);background:rgba(52,211,153,.1);color:var(--a3);}
+.ch.ng{border-color:var(--a5);background:rgba(248,113,113,.08);color:var(--a5);opacity:.7;}
+.ch.lk{cursor:default;}
+.cnum{font-family:'JetBrains Mono',monospace;font-weight:700;font-size:11px;flex-shrink:0;margin-top:1px;color:var(--mu);}
+.ch.ok .cnum{color:var(--a3);}.ch.ng .cnum{color:var(--a5);}
+.exp{background:rgba(96,165,250,.05);border:1px solid rgba(96,165,250,.18);border-radius:8px;padding:12px 14px;font-size:12.5px;line-height:1.65;display:none;}
+.exp.show{display:block;}
+.exp-t{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--a1);margin-bottom:6px;}
+.exp strong{color:var(--a4);}
+.exp em{color:var(--a3);font-style:normal;}
+.ox-wr{display:flex;gap:10px;margin-bottom:12px;}
+.ox{flex:1;padding:11px;border-radius:8px;border:1px solid var(--bdr);font-size:20px;cursor:pointer;background:var(--s1);transition:all .15s;font-family:'Noto Sans KR',sans-serif;color:var(--txt);}
+.ox:hover:not(.lk){transform:scale(1.02);}
+.ox.so{border-color:var(--a3);background:rgba(52,211,153,.15);}
+.ox.sx{border-color:var(--a5);background:rgba(248,113,113,.1);}
+.ox.lk{cursor:default;}
+.diff{display:inline-block;padding:2px 7px;border-radius:10px;font-size:9px;font-weight:700;}
+.easy{background:rgba(52,211,153,.2);color:var(--a3);}
+.mid{background:rgba(251,191,36,.2);color:var(--a4);}
+.hard{background:rgba(248,113,113,.2);color:var(--a5);}
+.fb-wr{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:14px;}
+.fb{padding:5px 12px;border-radius:20px;border:1px solid var(--bdr);font-size:11px;font-weight:600;cursor:pointer;background:var(--s2);color:var(--mu);transition:all .15s;font-family:'Noto Sans KR',sans-serif;}
+.fb.on{background:rgba(96,165,250,.15);color:var(--a1);border-color:var(--a1);}
+.sc-b{background:var(--s2);border:1px solid var(--bdr);border-radius:8px;padding:5px 14px;font-size:12px;color:var(--mu);}
+.sc-b span{color:var(--a1);font-weight:700;}
+.sep{display:flex;align-items:center;gap:10px;margin:18px 0 14px;color:var(--mu);font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1px;}
+.sep::before,.sep::after{content:'';flex:1;height:1px;background:var(--bdr);}
+
+.law-box{background:var(--s2);border:1px solid rgba(96,165,250,.3);border-left:4px solid var(--a1);border-radius:8px;padding:12px 16px;margin:10px 0;}
+.law-title{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:var(--a1);margin-bottom:6px;}
+.law-text{font-size:12.5px;line-height:1.65;color:var(--txt);}
+</style>
+</head>
+<body>
+
+<div class="hdr">
+  <div class="hdr-r">
+    <span class="pill p1">행정안전부 고시</span>
+    <span class="pill p2">제2023-26호</span>
+    <span class="pill p3">디지털플랫폼정부</span>
+  </div>
+  <h1><span class="h1g">민간서비스 활용을 통한 전자적 대국민서비스 제공에 관한 규정</span></h1>
+  <p>시행 2023.4.18 · 행정안전부 고시 제2023-26호 · 최초 제정 · 전자정부법 제12조의2 근거</p>
+</div>
+
+<div class="tabs">
+  <button class="tab on" data-p="p1">📌 개요·배경</button>
+  <button class="tab" data-p="p2">🏛️ 주요 내용</button>
+  <button class="tab" data-p="p3">🔄 추진 절차</button>
+  <button class="tab" data-p="p4">🛡️ 보안·관리</button>
+  <button class="tab" data-p="p5">🔗 관계기관</button>
+  <button class="tab" data-p="p6">❓ 예상문제</button>
+</div>
+
+<div class="wrap">
+
+<!-- ===== P1: 개요 ===== -->
+<div class="pnl on" id="p1">
+  <div class="card">
+    <div class="card-h"><div class="ico ib">📌</div><h3>규정 제정 개요</h3></div>
+    <div class="law-box">
+      <div class="law-title">📜 법적 근거</div>
+      <div class="law-text"><strong style="color:var(--a1)">전자정부법 제12조의2</strong> (전자적 대민서비스 제공을 위한 민간서비스 활용) 및 같은 법 시행령에 근거하여 행정안전부장관이 제정·고시</div>
+    </div>
+    <table style="margin-top:12px;">
+      <thead><tr><th>구분</th><th>내용</th></tr></thead>
+      <tbody>
+        <tr><td><strong>고시명</strong></td><td>민간서비스 활용을 통한 전자적 대민서비스 제공 등에 관한 규정</td></tr>
+        <tr><td><strong>발행</strong></td><td>행정안전부 고시 제2023-26호</td></tr>
+        <tr><td><strong>시행</strong></td><td>2023년 4월 18일 (최초 제정)</td></tr>
+        <tr><td><strong>소관 부처</strong></td><td>행정안전부 (디지털정부국)</td></tr>
+        <tr><td><strong>적용 대상</strong></td><td>행정기관·공공기관(개방기관·수요기관) 및 민간기업(수요기관)</td></tr>
+      </tbody>
+    </table>
+    <div class="memo">제정 목적 = 민관 융합서비스 창출 + 공공서비스 개방 절차 표준화 + 안정성 확보</div>
+  </div>
+
+  <div class="g2">
+    <div class="card">
+      <div class="card-h"><div class="ico iy">⚡</div><h3>제정 배경 및 필요성</h3></div>
+      <ul class="il">
+        <li><strong>문제:</strong> 민간기업이 개방된 공공서비스를 자사 서비스와 결합하려 해도 <em>표준화된 절차·방법 부재</em></li>
+        <li><strong>현황:</strong> 카카오·네이버 등 민간 플랫폼을 통해 공공서비스 이용 수요 급증</li>
+        <li><strong>목적:</strong> 디지털플랫폼정부 구현 — <em>원사이트토털서비스</em> 제공 기반 마련</li>
+        <li><strong>기대효과:</strong> 민관 융합서비스 창출, 대국민 안정성·신뢰성 향상</li>
+      </ul>
+    </div>
+    <div class="card">
+      <div class="card-h"><div class="ico ig">🎯</div><h3>주요 제정 내용 (3가지 축)</h3></div>
+      <ul class="il">
+        <li><strong style="color:var(--a1)">① 원칙·체계:</strong> 디지털서비스 개방 기본 원칙·추진체계·참여절차 규정</li>
+        <li><strong style="color:var(--a3)">② 개방 절차:</strong> 수요조사→서비스 발굴→공개 공모→민간 참여 지원</li>
+        <li><strong style="color:var(--a4)">③ 안전 관리:</strong> 사업 단계별 보안성 점검, <em>복수 민간서비스 선정 의무화</em>, 운영 품질 관리</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-h"><div class="ico ip">🏗️</div><h3>디지털서비스플랫폼 개념</h3></div>
+    <div style="display:flex;flex-direction:column;gap:8px;margin:10px 0;">
+      <div style="background:var(--s2);border:1px solid rgba(96,165,250,.3);border-radius:9px;padding:12px 16px;text-align:center;">
+        <div style="font-size:12px;color:var(--mu);margin-bottom:4px;">국민 (서비스 이용자)</div>
+        <div style="font-size:20px;margin-bottom:4px;">👤 👤 👤</div>
+      </div>
+      <div style="text-align:center;color:var(--a1);font-size:18px;">↕</div>
+      <div style="background:rgba(167,139,250,.1);border:1px solid rgba(167,139,250,.4);border-radius:9px;padding:12px 16px;text-align:center;">
+        <div style="font-size:12.5px;font-weight:800;color:var(--a2);margin-bottom:4px;">민간 서비스 플랫폼 (카카오·네이버 등)</div>
+        <div style="font-size:11px;color:var(--mu)">공공서비스를 자사 서비스와 결합 → 민관 융합서비스 제공</div>
+      </div>
+      <div style="text-align:center;color:var(--a1);font-size:18px;">↕ 디지털서비스플랫폼 (API 연계)</div>
+      <div style="background:rgba(96,165,250,.1);border:1px solid rgba(96,165,250,.4);border-radius:9px;padding:12px 16px;text-align:center;">
+        <div style="font-size:12.5px;font-weight:800;color:var(--a1);margin-bottom:4px;">개방기관 (공공서비스 제공)</div>
+        <div style="font-size:11px;color:var(--mu)">SRT·자동차검사·수목원·자연휴양림·문화누리카드 등</div>
+      </div>
+    </div>
+    <div class="memo">디지털서비스플랫폼 = 공공서비스와 민간 연계의 중계 기반 (원사이트토털서비스)</div>
+  </div>
+
+  <div class="card">
+    <div class="card-h"><div class="ico io">🚀</div><h3>시범 서비스 6개 (2023년 첫 개통)</h3></div>
+    <div class="svc-grid">
+      <div class="svc-card"><div class="svc-ico">🚄</div><div class="svc-name">SRT 기차승차권 예매</div><div class="svc-desc">민간 앱에서 직접 SRT 예매</div></div>
+      <div class="svc-card"><div class="svc-ico">🚗</div><div class="svc-name">자동차 검사 예약</div><div class="svc-desc">민간 플랫폼 통한 검사 예약</div></div>
+      <div class="svc-card"><div class="svc-ico">🌳</div><div class="svc-name">수목원 예약</div><div class="svc-desc">국립수목원 입장 예약</div></div>
+      <div class="svc-card"><div class="svc-ico">🏕️</div><div class="svc-name">국립자연휴양림 예약</div><div class="svc-desc">휴양림 숙소·시설 예약</div></div>
+      <div class="svc-card"><div class="svc-ico">🎫</div><div class="svc-name">문화누리카드 발급·이용</div><div class="svc-desc">저소득층 문화이용권</div></div>
+      <div class="svc-card"><div class="svc-ico">✈️</div><div class="svc-name">인천공항 소요시간 안내</div><div class="svc-desc">실시간 공항 혼잡도 정보</div></div>
+    </div>
+    <p style="font-size:11px;color:var(--mu);margin-top:8px;">※ 2023년 6월 순차 개통 — 디지털플랫폼정부 구현 첫 시범 사례</p>
+  </div>
+</div>
+
+<!-- ===== P2: 주요 내용 ===== -->
+<div class="pnl" id="p2">
+  <div class="card">
+    <div class="card-h"><div class="ico ib">📋</div><h3>규정의 핵심 구성 (4개 영역)</h3></div>
+    <table>
+      <thead><tr><th>영역</th><th>주요 규정 내용</th><th>핵심 키워드</th></tr></thead>
+      <tbody>
+        <tr>
+          <td><span class="tag tb">기본 원칙</span></td>
+          <td>행정안전부·개방기관·수요기관 등 관계기관의 <strong>책무 명시</strong><br>디지털서비스플랫폼 구축·민간 연계 근거 마련</td>
+          <td>책무, 원사이트토털서비스</td>
+        </tr>
+        <tr>
+          <td><span class="tag tg">서비스 개방</span></td>
+          <td>수요조사를 통한 <strong>개방 서비스 발굴</strong><br>공개 공모 방식으로 민간기업에 참여 기회 부여</td>
+          <td>수요조사, 공개 공모</td>
+        </tr>
+        <tr>
+          <td><span class="tag ty">사업 추진</span></td>
+          <td>단계별 필요 조치 명시 (계획→구축→완료)<br><strong>구축 단계: 복수 민간서비스 선정 의무화</strong></td>
+          <td>복수 선정 의무, 단계별 조치</td>
+        </tr>
+        <tr>
+          <td><span class="tag tr">품질·보안</span></td>
+          <td>운영 <strong>안전성·품질 점검</strong> 근거 마련<br>정보화사업 추진 단계별 보안성 점검</td>
+          <td>운영 안전성, 보안성 검토</td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="memo">4대 축: 기본원칙(책무) + 서비스개방(공모) + 사업추진(복수의무) + 품질보안(점검)</div>
+  </div>
+
+  <div class="card">
+    <div class="card-h"><div class="ico iy">⚙️</div><h3>정보화사업 단계별 의무 사항</h3></div>
+    <table>
+      <thead><tr><th>단계</th><th>의무 사항</th><th>핵심</th></tr></thead>
+      <tbody>
+        <tr>
+          <td><span class="tag tb">①사업계획<br>수립 단계</span></td>
+          <td>민간서비스 도입 시 <strong>안정성·보안성 등 선정기준</strong> 검토·제시<br>민간서비스 도입 필요성 및 타당성 검토</td>
+          <td>선정기준 명시</td>
+        </tr>
+        <tr>
+          <td><span class="tag ty">②구축 단계</span></td>
+          <td><strong>복수의 민간서비스 선정 의무화</strong><br>(단일 민간서비스에 대한 종속성·장애 위험 방지)</td>
+          <td>⭐복수 선정 의무</td>
+        </tr>
+        <tr>
+          <td><span class="tag tg">③구축·완료<br>단계</span></td>
+          <td>민간서비스 활용 관련 현황을 <strong>정보자원 항목으로 관리</strong><br>현황 등록 및 최신화 의무</td>
+          <td>정보자원 관리</td>
+        </tr>
+        <tr>
+          <td><span class="tag ip">④운영 단계</span></td>
+          <td>운영 <strong>안전성·서비스 품질</strong> 등 점검·관리<br>민간서비스 장애 시 대응 체계 마련</td>
+          <td>운영 점검·품질관리</td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="memo">⭐ 구축 단계 = 복수의 민간서비스 선정 의무화 — 시험 출제 핵심!</div>
+  </div>
+
+  <div class="g2">
+    <div class="card">
+      <div class="card-h"><div class="ico ig">🔓</div><h3>디지털서비스 개방 원칙</h3></div>
+      <ul class="il">
+        <li><strong>개방성:</strong> 다양한 민간기업에 공공서비스 연계 참여 기회 부여</li>
+        <li><strong>안전성:</strong> 민간서비스 적용 후 공공서비스 안정성 확보</li>
+        <li><strong>중립성:</strong> 특정 민간 플랫폼에 대한 독점적 지위 방지</li>
+        <li><strong>공익성:</strong> 국민 편의 증진 및 대국민 서비스 품질 향상</li>
+        <li><strong>투명성:</strong> 공개 공모 방식으로 투명한 참여 절차 보장</li>
+      </ul>
+    </div>
+    <div class="card">
+      <div class="card-h"><div class="ico ip">📊</div><h3>민간서비스 선정 기준</h3></div>
+      <ul class="il">
+        <li><strong>안정성:</strong> 서비스 가용성 및 장애 복구 능력</li>
+        <li><strong>보안성:</strong> 개인정보 보호, 암호화, 보안 취약점 관리</li>
+        <li><strong>호환성:</strong> 공공시스템과의 API 연계 가능 여부</li>
+        <li><strong>대중성:</strong> 국민 이용 편의성 및 접근성</li>
+        <li><strong>복수 선정:</strong> <em>동일 기능에 복수의 민간서비스 선정</em> (단일 의존 방지)</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-h"><div class="ico io">🔑</div><h3>주요 용어 정의</h3></div>
+    <table>
+      <thead><tr><th>용어</th><th>정의</th></tr></thead>
+      <tbody>
+        <tr><td><strong style="color:var(--a1)">전자적 대민서비스</strong></td><td>행정기관등이 전자적 방법으로 국민·기업 등에게 제공하는 공공서비스</td></tr>
+        <tr><td><strong style="color:var(--a3)">민간서비스</strong></td><td>민간기업이 운영하는 플랫폼·앱 등을 통해 제공되는 서비스 (카카오·네이버 등)</td></tr>
+        <tr><td><strong style="color:var(--a2)">개방기관</strong></td><td>공공서비스를 민간에 개방하는 행정기관 또는 공공기관</td></tr>
+        <tr><td><strong style="color:var(--a4)">수요기관</strong></td><td>민간에 개방된 공공서비스를 연계·활용하여 대민서비스를 제공하는 기관 또는 민간기업</td></tr>
+        <tr><td><strong style="color:var(--a6)">디지털서비스플랫폼</strong></td><td>공공서비스와 민간 등을 연계하는 중계 기반 플랫폼 (원사이트토털서비스 구현 핵심)</td></tr>
+        <tr><td><strong style="color:var(--a1)">원사이트토털서비스</strong></td><td>국민이 하나의 플랫폼에서 필요한 모든 공공·민간 서비스를 이용할 수 있는 개념</td></tr>
+        <tr><td><strong style="color:var(--a3)">민관 융합서비스</strong></td><td>공공서비스와 민간서비스가 결합되어 새롭게 창출되는 융합 서비스</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- ===== P3: 추진 절차 ===== -->
+<div class="pnl" id="p3">
+  <div class="card">
+    <div class="card-h"><div class="ico ib">🔄</div><h3>디지털서비스 개방 추진 절차</h3></div>
+    <div class="flow">
+      <div class="fn" style="border-color:rgba(96,165,250,.4)"><span style="color:var(--a1)">①수요조사</span><small>개방 서비스 수요 파악</small></div>
+      <div class="farr">→</div>
+      <div class="fn" style="border-color:rgba(167,139,250,.4)"><span style="color:var(--a2)">②서비스 발굴</span><small>개방 대상 확정</small></div>
+      <div class="farr">→</div>
+      <div class="fn" style="border-color:rgba(52,211,153,.4)"><span style="color:var(--a3)">③공개 공모</span><small>민간기업 참여 모집</small></div>
+      <div class="farr">→</div>
+      <div class="fn" style="border-color:rgba(251,191,36,.4)"><span style="color:var(--a4)">④참여기업 선정</span><small>복수 선정 의무</small></div>
+      <div class="farr">→</div>
+      <div class="fn" style="border-color:rgba(251,146,60,.4)"><span style="color:var(--a6)">⑤연계·개발</span><small>API 연계 구축</small></div>
+      <div class="farr">→</div>
+      <div class="fn" style="border-color:rgba(248,113,113,.4)"><span style="color:var(--a5)">⑥운영·점검</span><small>품질·보안 관리</small></div>
+    </div>
+    <div class="memo">수요조사→발굴→공모→선정(복수)→연계구축→운영점검 6단계</div>
+  </div>
+
+  <div class="step-wrap">
+    <div class="step" onclick="this.classList.toggle('open')">
+      <div class="step-hd">
+        <div class="step-num" style="background:rgba(96,165,250,.2);color:var(--a1)">①</div>
+        <div class="step-title">수요조사 및 서비스 발굴</div>
+        <span class="step-arr">▾</span>
+      </div>
+      <div class="step-body">
+        <ul class="il">
+          <li><strong>행정안전부:</strong> 개방기관 대상 공공서비스 개방 수요조사 실시</li>
+          <li><strong>개방기관:</strong> 개방 가능한 공공서비스 목록 검토 및 제출</li>
+          <li><strong>기준:</strong> 국민 수요, 서비스 활용성, 개방 가능성 종합 고려</li>
+          <li><strong>결과:</strong> 당해 연도 개방 공공서비스 목록 확정·공고</li>
+        </ul>
+        <div class="out-chips"><span class="chip">개방 서비스 목록</span><span class="chip">수요조사 결과서</span></div>
+      </div>
+    </div>
+    <div class="step" onclick="this.classList.toggle('open')">
+      <div class="step-hd">
+        <div class="step-num" style="background:rgba(52,211,153,.2);color:var(--a3)">②</div>
+        <div class="step-title">공개 공모 및 민간기업 선정</div>
+        <span class="step-arr">▾</span>
+      </div>
+      <div class="step-body">
+        <ul class="il">
+          <li><strong>공모 방식:</strong> 공개 공모를 통해 다양한 민간기업에 참여 기회 부여</li>
+          <li><strong>선정 기준:</strong> 안정성·보안성·호환성·대중성 등 종합 평가</li>
+          <li><strong>복수 선정 의무:</strong> 동일 공공서비스에 <em>2개 이상의 민간서비스 의무 선정</em></li>
+          <li><strong>목적:</strong> 특정 민간 플랫폼 독점 방지, 장애 시 대체 서비스 확보</li>
+        </ul>
+        <div class="out-chips"><span class="chip">공모 공고</span><span class="chip">선정 결과 공고</span><span class="chip">참여협약서</span></div>
+      </div>
+    </div>
+    <div class="step" onclick="this.classList.toggle('open')">
+      <div class="step-hd">
+        <div class="step-num" style="background:rgba(251,191,36,.2);color:var(--a4)">③</div>
+        <div class="step-title">API 연계 및 서비스 구축</div>
+        <span class="step-arr">▾</span>
+      </div>
+      <div class="step-body">
+        <ul class="il">
+          <li><strong>디지털서비스플랫폼:</strong> API 기반 공공서비스와 민간 플랫폼 연계</li>
+          <li><strong>개방기관:</strong> API 표준 규격 제공, 연계 기술 지원</li>
+          <li><strong>수요기관(민간):</strong> 공공서비스 API를 자사 서비스에 통합 개발</li>
+          <li><strong>보안 검토:</strong> API 보안 취약점 점검, 개인정보 처리방침 확인</li>
+          <li><strong>현황 관리:</strong> 구축 완료 후 <em>정보자원 항목으로 현황 등록</em></li>
+        </ul>
+        <div class="out-chips"><span class="chip">API 연계 명세서</span><span class="chip">보안 검토 결과</span><span class="chip">정보자원 등록</span></div>
+      </div>
+    </div>
+    <div class="step" onclick="this.classList.toggle('open')">
+      <div class="step-hd">
+        <div class="step-num" style="background:rgba(248,113,113,.2);color:var(--a5)">④</div>
+        <div class="step-title">운영 및 품질·보안 점검</div>
+        <span class="step-arr">▾</span>
+      </div>
+      <div class="step-body">
+        <ul class="il">
+          <li><strong>정기 점검:</strong> 민간서비스 활용 공공서비스의 운영 안전성 주기적 점검</li>
+          <li><strong>품질 관리:</strong> 서비스 응답시간, 오류율, 사용자 만족도 등 품질지표 관리</li>
+          <li><strong>장애 대응:</strong> 민간서비스 장애 시 대체 서비스로 자동 전환 또는 수동 조치</li>
+          <li><strong>계약 관리:</strong> 민간기업과의 서비스 수준 협약(SLA) 이행 여부 확인</li>
+        </ul>
+        <div class="out-chips"><span class="chip">운영 점검 보고서</span><span class="chip">품질 측정 결과</span><span class="chip">SLA 이행 보고</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== P4: 보안·관리 ===== -->
+<div class="pnl" id="p4">
+  <div class="card">
+    <div class="card-h"><div class="ico ir">🛡️</div><h3>민간서비스 활용 시 보안 요건</h3></div>
+    <table>
+      <thead><tr><th>보안 영역</th><th>요건</th><th>점검 방법</th></tr></thead>
+      <tbody>
+        <tr>
+          <td><span class="tag tr">개인정보 보호</span></td>
+          <td>개인정보 처리방침 적정성, 수집·이용 목적 명확화, 정보주체 동의 절차</td>
+          <td>개인정보 영향평가, 개인정보보호법 준수 여부</td>
+        </tr>
+        <tr>
+          <td><span class="tag ty">API 보안</span></td>
+          <td>API 인증(OAuth 등) 적용, 전송 구간 암호화(HTTPS), API 키 관리</td>
+          <td>API 보안 취약점 점검, 침투 테스트</td>
+        </tr>
+        <tr>
+          <td><span class="tag tb">가용성</span></td>
+          <td>서비스 가용률 SLA(예: 99.9%), 장애 발생 시 복구 목표시간(RTO/RPO)</td>
+          <td>가용성 모니터링, 장애 대응 훈련</td>
+        </tr>
+        <tr>
+          <td><span class="tag tg">복수 서비스</span></td>
+          <td>동일 기능에 2개 이상 민간서비스 선정 — <strong>특정 서비스 의존 위험 분산</strong></td>
+          <td>장애 시 자동/수동 전환 테스트</td>
+        </tr>
+        <tr>
+          <td><span class="tag tp">정보자원 관리</span></td>
+          <td>민간서비스 활용 현황을 정보자원 목록에 등록·최신화</td>
+          <td>ITA 시스템 등록 현황 확인</td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="memo">보안 핵심: 개인정보보호 + API 보안 + 가용성(SLA) + 복수선정(리스크 분산) + 정보자원 등록</div>
+  </div>
+
+  <div class="g2">
+    <div class="card">
+      <div class="card-h"><div class="ico iy">⚠️</div><h3>복수 민간서비스 선정 의무 이유</h3></div>
+      <ul class="il">
+        <li><strong>단일 장애점(SPOF) 방지:</strong> 특정 민간 플랫폼 장애 시 공공서비스 중단 위험</li>
+        <li><strong>독점 방지:</strong> 특정 민간 플랫폼의 공공서비스 독점 구조 차단</li>
+        <li><strong>국민 선택권 보장:</strong> 다양한 민간 플랫폼에서 동일 서비스 이용 가능</li>
+        <li><strong>경쟁 촉진:</strong> 복수 참여로 서비스 품질 경쟁 유도</li>
+        <li><strong>협상력 확보:</strong> 개방기관이 민간에 대한 협상력 유지</li>
+      </ul>
+    </div>
+    <div class="card">
+      <div class="card-h"><div class="ico ig">📊</div><h3>감리 관점 점검 포인트</h3></div>
+      <ul class="il">
+        <li><strong>사업계획:</strong> 민간서비스 선정기준(안정성·보안성) 명시 여부</li>
+        <li><strong>구축 단계:</strong> <em>복수 민간서비스 선정 의무 이행 여부</em></li>
+        <li><strong>완료 단계:</strong> 정보자원 항목 등록·현행화 여부</li>
+        <li><strong>운영 단계:</strong> 안전성·품질 정기 점검 수행 여부</li>
+        <li><strong>보안:</strong> API 보안·개인정보 처리 적정성</li>
+        <li><strong>SLA:</strong> 민간기업과 서비스 수준 협약 체결 여부</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<!-- ===== P5: 관계기관 ===== -->
+<div class="pnl" id="p5">
+  <div class="card">
+    <div class="card-h"><div class="ico ib">🔗</div><h3>관계기관 역할 및 책무</h3></div>
+    <div class="g3">
+      <div class="role-card">
+        <div class="role-title" style="color:var(--a1)">🏛️ 행정안전부</div>
+        <ul class="il">
+          <li>규정 총괄 관리</li>
+          <li>디지털서비스플랫폼 구축·운영</li>
+          <li>수요조사 및 개방 서비스 확정</li>
+          <li>공개 공모 절차 주관</li>
+          <li>운영 안전성·품질 점검 총괄</li>
+        </ul>
+      </div>
+      <div class="role-card">
+        <div class="role-title" style="color:var(--a3)">🏢 개방기관</div>
+        <ul class="il">
+          <li>공공서비스 개방 결정·실행</li>
+          <li>API 표준 규격 제공</li>
+          <li>민간 연계 기술 지원</li>
+          <li>개방 서비스 품질 유지 책임</li>
+          <li>개인정보 안전 조치 이행</li>
+        </ul>
+      </div>
+      <div class="role-card">
+        <div class="role-title" style="color:var(--a4)">🏢 수요기관(민간)</div>
+        <ul class="il">
+          <li>공모 참여 및 서비스 연계</li>
+          <li>민관 융합서비스 개발·제공</li>
+          <li>안정적 서비스 운영 책임</li>
+          <li>개인정보 보호 법령 준수</li>
+          <li>SLA 이행 및 장애 대응</li>
+        </ul>
+      </div>
+    </div>
+    <div class="memo">책무 3주체: 행안부(총괄) - 개방기관(서비스 제공) - 수요기관/민간(연계·운영)</div>
+  </div>
+
+  <div class="card">
+    <div class="card-h"><div class="ico ip">🗺️</div><h3>전자정부법과의 관계</h3></div>
+    <div class="step-wrap">
+      <div style="background:rgba(251,191,36,.1);border:1px solid rgba(251,191,36,.3);border-radius:9px;padding:12px 16px;">
+        <div style="font-size:12px;font-weight:800;color:var(--a4);margin-bottom:6px;">📜 전자정부법 (모법)</div>
+        <ul class="il">
+          <li>제12조의2: 전자적 대민서비스 제공을 위한 민간서비스 활용 근거</li>
+          <li>제2조: 전자정부서비스 정의</li>
+          <li>시행령: 세부 절차 위임</li>
+        </ul>
+      </div>
+      <div style="text-align:center;color:var(--a1);font-size:14px;padding:4px 0;">↓ 위임</div>
+      <div style="background:rgba(96,165,250,.1);border:1px solid rgba(96,165,250,.3);border-radius:9px;padding:12px 16px;">
+        <div style="font-size:12px;font-weight:800;color:var(--a1);margin-bottom:6px;">📋 민간서비스 활용 전자적 대민서비스 규정 (행정안전부 고시)</div>
+        <ul class="il">
+          <li>개방 원칙·추진체계·절차 규정</li>
+          <li>복수 민간서비스 선정 의무 등 세부 기준</li>
+          <li>운영 안전성·품질 점검 근거</li>
+        </ul>
+      </div>
+    </div>
+    <div class="memo">전자정부법 제12조의2 → 행안부 고시(본 규정) 위임 체계</div>
+  </div>
+
+  <div class="card">
+    <div class="card-h"><div class="ico ig">🔀</div><h3>관련 법령 및 지침 체계</h3></div>
+    <table>
+      <thead><tr><th>법령·지침</th><th>관계</th><th>주요 내용</th></tr></thead>
+      <tbody>
+        <tr><td><strong>전자정부법</strong></td><td>상위법 (근거)</td><td>전자정부서비스 민간 활용 근거 조항</td></tr>
+        <tr><td><strong>개인정보 보호법</strong></td><td>준수 의무</td><td>민간 플랫폼 통한 개인정보 처리 시 적용</td></tr>
+        <tr><td><strong>ISP·ISMP 공통가이드</strong></td><td>연계 활용</td><td>클라우드 네이티브·민간서비스 도입 여부 검토</td></tr>
+        <tr><td><strong>정보시스템 감리기준</strong></td><td>감리 점검</td><td>민간서비스 활용 공공서비스 감리 점검 기준</td></tr>
+        <tr><td><strong>행정기관 정보시스템 구축·운영 지침</strong></td><td>상위 지침</td><td>정보자원 항목 관리 기준</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- ===== P6: 예상문제 ===== -->
+<div class="pnl" id="p6">
+  <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;margin-bottom:14px;">
+    <div class="fb-wr" id="fbar" style="margin:0;">
+      <button class="fb on" data-f="all">전체</button>
+      <button class="fb" data-f="개요">📌 개요</button>
+      <button class="fb" data-f="내용">📋 주요내용</button>
+      <button class="fb" data-f="절차">🔄 절차</button>
+      <button class="fb" data-f="보안">🛡️ 보안</button>
+      <button class="fb" data-f="OX">⭕ OX</button>
+    </div>
+    <div class="sc-b">정답: <span id="sc">0</span>/<span id="st">0</span></div>
+  </div>
+  <div id="ql"></div>
+</div>
+
+</div>
+
+<script>
+document.querySelectorAll('.tab').forEach(t=>t.addEventListener('click',()=>{
+  document.querySelectorAll('.tab,.pnl').forEach(x=>x.classList.remove('on'));
+  t.classList.add('on');document.getElementById(t.dataset.p).classList.add('on');
+}));
+
+const QA=[
+  {cat:'개요',diff:'easy',
+   q:'「민간서비스 활용을 통한 전자적 대민서비스 제공 등에 관한 규정」의 시행일과 발행 기관으로 가장 적절한 것은?',
+   cs:['2022년 1월 행정안전부 훈령','2023년 4월 18일 행정안전부 고시','2023년 4월 18일 과학기술정보통신부 고시','2022년 7월 행정안전부 예규'],
+   ans:1,
+   exp:'본 규정은 <strong>행정안전부 고시 제2023-26호</strong>로, <em>2023년 4월 18일</em> 시행되었습니다. 전자정부법 제12조의2를 근거로 최초 제정되었으며, 디지털플랫폼정부 구현을 위해 민간서비스 활용 절차를 표준화했습니다.'},
+  {cat:'개요',diff:'mid',
+   q:'이 규정의 제정 배경으로 가장 적절한 것은?',
+   cs:['민간기업의 공공서비스 무단 복제를 막기 위한 규제 강화',
+       '민간기업이 개방된 공공서비스를 활용해 융합서비스를 개발하려 해도 표준화된 절차·방법이 없었기 때문',
+       '공공기관이 민간 플랫폼을 이용하는 것을 전면 금지하기 위해',
+       '모바일 전자정부 앱 개발 가이드라인을 대체하기 위해'],
+   ans:1,
+   exp:'그동안 민간기업이 <strong>개방된 공공서비스를 자사 서비스와 결합해 새로운 융합서비스를 제공하려 해도 표준화된 절차·방법 등이 없어</strong> 제도화 필요성이 제기되었습니다. 이 규정은 민관 융합서비스 창출과 공공서비스 안정성 확보를 위해 제정되었습니다.'},
+  {cat:'개요',diff:'mid',
+   q:'이 규정에서 원사이트토털서비스 구현을 위한 중계 기반으로 구축하도록 한 것은?',
+   cs:['정부24 포털','디지털서비스플랫폼','행정정보 공동이용 시스템','범정부 ITA 지원시스템'],
+   ans:1,
+   exp:'규정에서는 원사이트토털서비스 구현을 위한 중계 기반으로서 <strong>디지털서비스플랫폼</strong>을 구축하고 이를 민간 등과 연계하도록 했습니다. 디지털서비스플랫폼은 공공서비스와 민간 플랫폼을 API로 연결하는 핵심 인프라입니다.'},
+  {cat:'개요',diff:'hard',
+   q:'이 규정에서 "개방기관"의 정의로 가장 적절한 것은?',
+   cs:['민간에 개방된 공공서비스를 연계·활용하여 대민서비스를 제공하는 민간기업',
+       '공공서비스를 민간에 개방하는 행정기관 또는 공공기관',
+       '행정안전부가 지정한 디지털서비스플랫폼 운영기관',
+       '민관 융합서비스를 심사·승인하는 독립위원회'],
+   ans:1,
+   exp:'<strong>개방기관</strong>은 <em>공공서비스를 민간에 개방하는 행정기관 또는 공공기관</em>을 말합니다. 반면 <strong>수요기관</strong>은 민간에 개방된 공공서비스를 연계·활용하여 대민서비스를 제공하는 기관 또는 민간기업입니다. 두 개념의 구분이 중요합니다.'},
+  {cat:'내용',diff:'hard',
+   q:'이 규정에서 정보화사업 구축 단계에서 반드시 이행해야 하는 의무로 가장 적절한 것은?',
+   cs:['단일 최우수 민간서비스를 선정하여 집중 투자',
+       '복수의 민간서비스 선정 의무화',
+       '행정안전부 장관의 사전 승인 후 민간서비스 도입',
+       '국내 민간서비스만을 선정하여 활용'],
+   ans:1,
+   exp:'구축 단계에서는 <strong>복수의 민간서비스 선정이 의무화</strong>되어 있습니다. 이는 특정 민간 플랫폼에 대한 단일 의존(SPOF) 위험을 방지하고, 장애 시 대체 서비스 전환을 가능하게 하며, 특정 민간기업의 독점적 지위를 방지하기 위한 핵심 규정입니다.'},
+  {cat:'내용',diff:'mid',
+   q:'이 규정에서 구축·완료 단계에서 관리하도록 명시한 것은?',
+   cs:['민간서비스 이용자 통계를 대국민 공개',
+       '민간서비스 활용 관련 현황을 정보자원 항목으로 등록·관리',
+       '민간기업의 재무 상태를 주기적으로 점검',
+       '민간서비스 도입 효과를 국회에 보고'],
+   ans:1,
+   exp:'구축·완료 단계에서는 민간서비스 활용 관련 현황을 <strong>정보자원 항목으로 등록·관리</strong>하도록 했습니다. 이는 행정기관의 정보자원 현황 파악과 효율적 관리를 위한 것으로, ITA 지원시스템 등에 등록하고 최신화를 유지해야 합니다.'},
+  {cat:'내용',diff:'mid',
+   q:'민간서비스 선정 단계(사업계획 수립)에서 제시해야 하는 기준으로 가장 거리가 먼 것은?',
+   cs:['안정성','보안성','민간기업의 주식 시가총액','호환성'],
+   ans:2,
+   exp:'사업계획 수립 단계에서는 <strong>안정성·보안성·호환성·대중성</strong> 등 선정기준을 제시해야 합니다. 민간기업의 주식 시가총액은 규정에서 정한 선정기준이 아닙니다. 선정기준은 서비스의 기술적·운영적 적합성을 중심으로 구성됩니다.'},
+  {cat:'절차',diff:'mid',
+   q:'이 규정에 따른 디지털서비스 개방 추진 절차를 올바른 순서로 나열한 것은?',
+   cs:['공개 공모 → 수요조사 → 서비스 발굴 → 참여기업 선정 → 연계·구축 → 운영·점검',
+       '수요조사 → 서비스 발굴 → 공개 공모 → 참여기업 선정 → 연계·구축 → 운영·점검',
+       '수요조사 → 공개 공모 → 서비스 발굴 → 보안 검토 → 연계·구축 → 운영·점검',
+       '서비스 발굴 → 수요조사 → 공개 공모 → 연계·구축 → 참여기업 선정 → 운영·점검'],
+   ans:1,
+   exp:'올바른 순서: <strong>① 수요조사</strong>(개방 수요 파악) → <strong>② 서비스 발굴</strong>(개방 대상 확정) → <strong>③ 공개 공모</strong>(민간 참여 모집) → <strong>④ 참여기업 선정</strong>(복수 의무) → <strong>⑤ 연계·구축</strong>(API 개발) → <strong>⑥ 운영·점검</strong>(품질·보안 관리)'},
+  {cat:'절차',diff:'hard',
+   q:'이 규정의 추진 절차에서 "공개 공모" 방식을 채택한 핵심 이유로 가장 적절한 것은?',
+   cs:['행정안전부의 업무 부담을 줄이기 위해 민간에 공모를 위임',
+       '다양한 민간기업에 개방된 공공서비스 연계 참여 기회를 공평하게 부여하기 위해',
+       '가장 저렴한 비용으로 서비스를 제공하는 기업을 선발하기 위해',
+       '국내 대기업에게 우선적으로 참여 기회를 제공하기 위해'],
+   ans:1,
+   exp:'공개 공모 방식은 <strong>다양한 민간기업에게 개방된 공공서비스 연계 및 활용에 참여할 기회를 공평하게 부여</strong>하기 위한 것입니다. 이를 통해 특정 대기업 편중을 방지하고, 혁신적인 스타트업·중소기업도 참여할 수 있는 생태계를 조성합니다.'},
+  {cat:'보안',diff:'mid',
+   q:'이 규정에서 구축 단계에서 복수의 민간서비스 선정을 의무화한 주된 이유로 가장 거리가 먼 것은?',
+   cs:['특정 민간 플랫폼 장애 시 공공서비스 중단 위험 방지',
+       '특정 민간기업의 독점적 지위 방지',
+       '복수 서비스 간 경쟁을 통한 품질 향상 유도',
+       '개인정보 처리를 여러 기업에 분산하여 보안 강화'],
+   ans:3,
+   exp:'복수 민간서비스 선정 의무화의 주된 이유는 <em>단일 장애점(SPOF) 방지, 독점 방지, 서비스 품질 경쟁 촉진</em>입니다. <strong>개인정보를 여러 기업에 분산</strong>하는 것은 오히려 개인정보 보호 측면에서 위험을 증가시킬 수 있으므로, 복수 선정의 주된 이유가 아닙니다.'},
+  {cat:'보안',diff:'hard',
+   q:'민간서비스 활용 시 감리 점검 관점에서 구축 단계의 핵심 점검 사항으로 가장 적절한 것은?',
+   cs:['민간기업의 대표이사 경력 및 자격 확인',
+       '복수 민간서비스 선정 의무 이행 여부 및 API 보안 취약점 점검 수행 여부',
+       '민간 플랫폼의 월간 활성 사용자 수(MAU) 적정성',
+       '민간기업 직원의 개인정보 교육 이수 여부'],
+   ans:1,
+   exp:'감리 시 구축 단계에서 핵심 점검 사항은 <strong>① 복수 민간서비스 선정 의무 이행 여부</strong>와 <em>② API 보안 취약점 점검 수행 여부</em>입니다. 복수 선정은 규정의 핵심 의무 사항이며, API 보안은 공공서비스와 민간 연계 시 가장 중요한 보안 요소입니다.'},
+  // OX
+  {cat:'OX',diff:'easy',type:'ox',
+   q:'이 규정에서는 구축 단계에서 단일 최우수 민간서비스를 선정하여 집중 운영하도록 의무화하고 있다.',
+   ans:false,
+   exp:'<strong>×</strong> — 규정에서는 구축 단계에서 <em>복수의 민간서비스 선정을 의무화</em>하고 있습니다. 단일 서비스 선정은 특정 민간 플랫폼에 대한 종속성과 장애 위험을 초래하므로, 복수 선정을 통해 이를 방지합니다.'},
+  {cat:'OX',diff:'mid',type:'ox',
+   q:'이 규정은 전자정부법 제12조의2를 근거로 행정안전부가 제정한 고시이다.',
+   ans:true,
+   exp:'<strong>○</strong> — 본 규정은 <em>전자정부법 제12조의2</em>(전자적 대민서비스 제공을 위한 민간서비스 활용)를 법적 근거로, <strong>행정안전부 고시 제2023-26호</strong>로 2023년 4월 18일 최초 제정·시행되었습니다.'},
+  {cat:'OX',diff:'mid',type:'ox',
+   q:'이 규정에서 "수요기관"은 공공서비스를 민간에 개방하는 행정기관만을 의미한다.',
+   ans:false,
+   exp:'<strong>×</strong> — <strong>수요기관</strong>은 민간에 개방된 공공서비스를 연계·활용하여 대민서비스를 제공하는 <em>기관 또는 민간기업</em>을 말합니다. 공공서비스를 민간에 개방하는 기관은 <strong>개방기관</strong>입니다. 두 용어를 명확히 구분해야 합니다.'},
+  {cat:'OX',diff:'hard',type:'ox',
+   q:'구축·완료 단계에서는 민간서비스 활용 현황을 정보자원 항목으로 등록·관리해야 한다.',
+   ans:true,
+   exp:'<strong>○</strong> — 규정에서는 구축·완료 단계에서 민간서비스 활용 관련 현황을 <em>정보자원 항목으로 등록·관리</em>하도록 명시하고 있습니다. 이를 통해 행정기관의 민간서비스 활용 현황을 체계적으로 파악하고 관리합니다.'},
+  {cat:'OX',diff:'mid',type:'ox',
+   q:'이 규정에서 민간서비스 개방은 수의 계약 방식으로 특정 민간기업과 직접 협약하도록 규정하고 있다.',
+   ans:false,
+   exp:'<strong>×</strong> — 이 규정은 <em>공개 공모 방식</em>을 채택하여 다양한 민간기업에게 개방된 공공서비스 연계·활용에 <strong>공평하게 참여할 기회를 부여</strong>하도록 했습니다. 수의 계약처럼 특정 기업을 직접 선정하는 방식은 규정 취지에 반합니다.'},
+];
+
+let answered=0,correct=0;
+function renderQ(f){
+  const data=f==='all'?QA:QA.filter(q=>q.cat===f);
+  const list=document.getElementById('ql');list.innerHTML='';
+  answered=0;correct=0;upS();
+  const CATC={'개요':'tb','내용':'ty','절차':'tg','보안':'tr','OX':'tp'};
+  const DLC={'easy':'easy 쉬움','mid':'mid 보통','hard':'hard 어려움'};
+  const NL=['①','②','③','④'];
+  if(!data.length){list.innerHTML='<div style="text-align:center;padding:40px;color:var(--mu)">해당 카테고리 문제 없음</div>';return;}
+  data.forEach((q,i)=>{
+    const gi=QA.indexOf(q);
+    const el=document.createElement('div');el.className='qa';
+    const tc=CATC[q.cat]||'tb';
+    const [dc,dn]=(DLC[q.diff]||'mid 보통').split(' ');
+    if(q.type==='ox'){
+      el.innerHTML=`<div class="qa-hd" onclick="this.closest('.qa').classList.toggle('open')"><div><div class="qa-meta"><span class="qn">Q${String(i+1).padStart(2,'0')}</span><span class="tag ${tc}">${q.cat}</span><span class="diff ${dc}">${dn}</span><span class="tag tp">O/X</span></div><div class="qq">${q.q}</div></div><span class="tgl">▾</span></div>
+      <div class="qa-bd"><div class="ox-wr"><button class="ox" onclick="pickOX(this,true,${gi})">⭕ 옳다</button><button class="ox" onclick="pickOX(this,false,${gi})">❌ 틀리다</button></div><div class="exp" id="ex-${gi}"><div class="exp-t">💡 해설</div>${q.exp}</div></div>`;
+    } else {
+      el.innerHTML=`<div class="qa-hd" onclick="this.closest('.qa').classList.toggle('open')"><div><div class="qa-meta"><span class="qn">Q${String(i+1).padStart(2,'0')}</span><span class="tag ${tc}">${q.cat}</span><span class="diff ${dc}">${dn}</span></div><div class="qq">${q.q}</div></div><span class="tgl">▾</span></div>
+      <div class="qa-bd"><div class="chs">${q.cs.map((c,ci)=>`<div class="ch" data-ci="${ci}" onclick="pickCh(this,${gi})"><span class="cnum">${NL[ci]}</span><span>${c}</span></div>`).join('')}</div><div class="exp" id="ex-${gi}"><div class="exp-t">💡 해설</div>${q.exp}</div></div>`;
+    }
+    list.appendChild(el);
+  });
+}
+function pickCh(el,gi){
+  const bd=el.closest('.qa-bd');if(bd.querySelector('.ok,.ng'))return;
+  const q=QA[gi];
+  bd.querySelectorAll('.ch').forEach((c,i)=>{c.classList.add('lk');if(i===q.ans)c.classList.add('ok');else if(i===parseInt(el.dataset.ci))c.classList.add('ng');});
+  document.getElementById('ex-'+gi).classList.add('show');
+  answered++;if(parseInt(el.dataset.ci)===q.ans)correct++;upS();
+}
+function pickOX(btn,val,gi){
+  const bd=btn.closest('.qa-bd');if(bd.querySelector('.so,.sx'))return;
+  const q=QA[gi];
+  bd.querySelectorAll('.ox').forEach(b=>b.classList.add('lk'));
+  btn.classList.add(val?'so':'sx');
+  if(val!==q.ans){btn.style.opacity='.5';bd.querySelectorAll('.ox')[val?1:0].classList.add(q.ans?'so':'sx');}
+  document.getElementById('ex-'+gi).classList.add('show');
+  answered++;if(val===q.ans)correct++;upS();
+}
+function upS(){document.getElementById('sc').textContent=correct;document.getElementById('st').textContent=answered;}
+document.getElementById('fbar').addEventListener('click',e=>{
+  const b=e.target.closest('.fb');if(!b)return;
+  document.querySelectorAll('.fb').forEach(x=>x.classList.remove('on'));b.classList.add('on');renderQ(b.dataset.f);
+});
+renderQ('all');
+</script>
+</body>
+</html>

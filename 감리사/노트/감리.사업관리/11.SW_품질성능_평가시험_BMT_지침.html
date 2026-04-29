@@ -1,0 +1,655 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&family=JetBrains+Mono:wght@400;700&display=swap');
+:root{
+  --bg:#06101e;--s1:#0b1828;--s2:#10203a;--s3:#162a4c;
+  --bdr:#1c3460;--a1:#38bdf8;--a2:#a78bfa;--a3:#34d399;
+  --a4:#fbbf24;--a5:#f87171;--a6:#fb923c;
+  --txt:#e2e8f0;--mu:#64748b;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Noto Sans KR',sans-serif;background:var(--bg);color:var(--txt);min-height:100vh;}
+.hdr{padding:22px 24px 16px;background:linear-gradient(150deg,#06101e 0%,#0d1e3a 50%,#06101e 100%);border-bottom:1px solid var(--bdr);position:relative;overflow:hidden;}
+.hdr::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 65% 85% at 80% 30%,rgba(56,189,248,.09),transparent 65%),radial-gradient(ellipse 45% 65% at 20% 80%,rgba(167,139,250,.07),transparent 60%);pointer-events:none;}
+.hdr-r{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:6px;align-items:center;}
+.pill{padding:3px 10px;border-radius:20px;font-size:10px;font-weight:700;letter-spacing:.8px;}
+.p1{background:linear-gradient(135deg,#1e3a8a,var(--a1));color:#fff;}
+.p2{background:rgba(251,191,36,.15);color:var(--a4);border:1px solid rgba(251,191,36,.3);}
+.p3{background:rgba(167,139,250,.15);color:var(--a2);border:1px solid rgba(167,139,250,.3);}
+h1{font-size:19px;font-weight:900;}
+.h1g{background:linear-gradient(90deg,var(--a1),var(--a2),var(--a3));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.hdr p{color:var(--mu);font-size:12px;margin-top:3px;}
+.tabs{display:flex;padding:0 24px;background:var(--s1);border-bottom:1px solid var(--bdr);overflow-x:auto;scrollbar-width:none;}
+.tabs::-webkit-scrollbar{display:none;}
+.tab{padding:11px 14px;font-size:12px;font-weight:600;color:var(--mu);cursor:pointer;border-bottom:2px solid transparent;white-space:nowrap;transition:all .2s;background:none;border-top:none;border-left:none;border-right:none;font-family:'Noto Sans KR',sans-serif;}
+.tab:hover{color:var(--txt);}.tab.on{color:var(--a1);border-bottom-color:var(--a1);}
+.wrap{padding:20px 24px;max-width:960px;margin:0 auto;}
+.pnl{display:none;}.pnl.on{display:block;}
+.card{background:var(--s1);border:1px solid var(--bdr);border-radius:12px;padding:18px;margin-bottom:14px;}
+.card-h{display:flex;align-items:center;gap:10px;margin-bottom:14px;}
+.ico{width:34px;height:34px;border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:17px;flex-shrink:0;}
+.ib{background:rgba(56,189,248,.15);}.ip{background:rgba(167,139,250,.15);}.ig{background:rgba(52,211,153,.15);}.iy{background:rgba(251,191,36,.15);}.ir{background:rgba(248,113,113,.15);}.io{background:rgba(251,146,60,.15);}
+.card h3{font-size:14px;font-weight:700;}
+.tag{display:inline-block;padding:2px 8px;border-radius:4px;font-size:10px;font-weight:600;margin:2px 2px 2px 0;}
+.tb{background:rgba(56,189,248,.12);color:var(--a1);border:1px solid rgba(56,189,248,.25);}
+.tp{background:rgba(167,139,250,.12);color:var(--a2);border:1px solid rgba(167,139,250,.25);}
+.tg{background:rgba(52,211,153,.12);color:var(--a3);border:1px solid rgba(52,211,153,.25);}
+.ty{background:rgba(251,191,36,.12);color:var(--a4);border:1px solid rgba(251,191,36,.25);}
+.tr{background:rgba(248,113,113,.12);color:var(--a5);border:1px solid rgba(248,113,113,.25);}
+.to{background:rgba(251,146,60,.12);color:var(--a6);border:1px solid rgba(251,146,60,.25);}
+table{width:100%;border-collapse:collapse;font-size:12.5px;}
+th{background:var(--s2);color:var(--mu);font-weight:700;padding:8px 12px;text-align:left;font-size:10px;text-transform:uppercase;letter-spacing:.5px;border-bottom:1px solid var(--bdr);}
+td{padding:9px 12px;border-bottom:1px solid rgba(28,52,96,.45);vertical-align:top;line-height:1.6;}
+tr:last-child td{border-bottom:none;}
+tr:hover td{background:rgba(255,255,255,.02);}
+td strong{color:var(--a4);}
+ul.il{list-style:none;display:flex;flex-direction:column;gap:7px;}
+ul.il li{font-size:12.5px;padding-left:16px;position:relative;line-height:1.55;}
+ul.il li::before{content:'▸';position:absolute;left:0;color:var(--a1);font-size:10px;top:3px;}
+ul.il li strong{color:var(--a4);}
+ul.il li em{color:var(--a3);font-style:normal;}
+.memo{background:linear-gradient(135deg,rgba(56,189,248,.07),rgba(167,139,250,.07));border:1px solid rgba(56,189,248,.22);border-left:3px solid var(--a1);border-radius:8px;padding:10px 14px;font-size:12.5px;font-weight:600;color:var(--a1);margin:10px 0;}
+.memo::before{content:'🎯 한 줄 암기 │ ';color:var(--mu);font-weight:400;}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:14px;}
+@media(max-width:600px){.g2{grid-template-columns:1fr;}}
+.law-ref{background:rgba(251,191,36,.08);border:1px solid rgba(251,191,36,.25);border-radius:8px;padding:10px 14px;font-size:12px;line-height:1.6;color:var(--a4);margin:8px 0;}
+.law-ref::before{content:'⚖️ 법령 │ ';color:var(--mu);}
+
+/* 절차 흐름 */
+.flow-v{display:flex;flex-direction:column;gap:0;}
+.fv-step{display:flex;gap:12px;align-items:stretch;}
+.fv-line{display:flex;flex-direction:column;align-items:center;width:32px;flex-shrink:0;}
+.fv-dot{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;flex-shrink:0;z-index:1;}
+.fv-vl{flex:1;width:2px;background:var(--bdr);margin:3px 0;}
+.fv-step:last-child .fv-vl{display:none;}
+.fv-content{background:var(--s2);border:1px solid var(--bdr);border-radius:9px;padding:11px 14px;margin-bottom:7px;flex:1;cursor:pointer;transition:border-color .2s;}
+.fv-content:hover{border-color:rgba(56,189,248,.35);}
+.fv-title{font-size:13px;font-weight:700;margin-bottom:2px;}
+.fv-sub{font-size:11px;color:var(--mu);}
+.fv-detail{display:none;border-top:1px solid var(--bdr);margin-top:9px;padding-top:9px;}
+.fv-content.open .fv-detail{display:block;}
+
+/* 대상분야 grid */
+.cat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin:10px 0;}
+@media(max-width:580px){.cat-grid{grid-template-columns:1fr 1fr;}}
+.cat-item{background:var(--s2);border:1px solid var(--bdr);border-radius:7px;padding:8px 10px;font-size:11px;text-align:center;line-height:1.4;}
+.cat-item strong{display:block;font-size:13px;margin-bottom:2px;}
+
+/* 비교표 */
+.cmp3{display:grid;grid-template-columns:110px 1fr 1fr;font-size:12px;border:1px solid var(--bdr);border-radius:10px;overflow:hidden;}
+.cmp3 .ch{background:var(--s2);font-weight:700;padding:8px 12px;border-bottom:1px solid var(--bdr);}
+.cmp3 .ch:nth-child(2){color:var(--a1);}
+.cmp3 .ch:nth-child(3){color:var(--a3);}
+.cmp3 .cr{display:contents;}
+.cmp3 .cd{padding:8px 12px;border-bottom:1px solid rgba(28,52,96,.4);line-height:1.5;}
+.cmp3 .cd:nth-child(3n+1){background:rgba(56,189,248,.03);color:var(--mu);font-size:11px;font-weight:600;}
+.cmp3 .cd:nth-child(3n+2){color:var(--a1);}
+.cmp3 .cd:nth-child(3n){color:var(--a3);}
+.cmp3 .cr:last-child .cd{border-bottom:none;}
+
+/* QA */
+.qa{background:var(--s1);border:1px solid var(--bdr);border-radius:10px;margin-bottom:11px;overflow:hidden;transition:border-color .2s;}
+.qa:hover{border-color:rgba(56,189,248,.25);}
+.qa-hd{padding:14px 18px;cursor:pointer;display:flex;justify-content:space-between;align-items:flex-start;gap:10px;user-select:none;}
+.qa-meta{display:flex;align-items:center;gap:6px;margin-bottom:5px;flex-wrap:wrap;}
+.qn{font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:700;color:var(--mu);}
+.qq{font-size:13px;font-weight:600;line-height:1.55;}
+.tgl{color:var(--mu);font-size:16px;flex-shrink:0;transition:transform .2s;}
+.qa.open .tgl{transform:rotate(180deg);}
+.qa-bd{display:none;border-top:1px solid var(--bdr);padding:14px 18px;background:var(--s2);}
+.qa.open .qa-bd{display:block;}
+.chs{display:flex;flex-direction:column;gap:7px;margin-bottom:12px;}
+.ch{display:flex;align-items:flex-start;gap:10px;padding:9px 13px;border-radius:7px;border:1px solid var(--bdr);font-size:12.5px;cursor:pointer;background:var(--s1);line-height:1.5;transition:all .15s;}
+.ch:hover:not(.lk){border-color:rgba(56,189,248,.3);background:rgba(56,189,248,.04);}
+.ch.ok{border-color:var(--a3);background:rgba(52,211,153,.1);color:var(--a3);}
+.ch.ng{border-color:var(--a5);background:rgba(248,113,113,.08);color:var(--a5);opacity:.7;}
+.ch.lk{cursor:default;}
+.cnum{font-family:'JetBrains Mono',monospace;font-weight:700;font-size:11px;flex-shrink:0;margin-top:1px;color:var(--mu);}
+.ch.ok .cnum{color:var(--a3);}.ch.ng .cnum{color:var(--a5);}
+.exp{background:rgba(56,189,248,.05);border:1px solid rgba(56,189,248,.18);border-radius:8px;padding:12px 14px;font-size:12.5px;line-height:1.65;display:none;}
+.exp.show{display:block;}
+.exp-t{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--a1);margin-bottom:6px;}
+.exp strong{color:var(--a4);}
+.exp em{color:var(--a3);font-style:normal;}
+.ox-wr{display:flex;gap:10px;margin-bottom:12px;}
+.ox{flex:1;padding:11px;border-radius:8px;border:1px solid var(--bdr);font-size:20px;cursor:pointer;background:var(--s1);transition:all .15s;font-family:'Noto Sans KR',sans-serif;color:var(--txt);}
+.ox:hover:not(.lk){transform:scale(1.02);}
+.ox.so{border-color:var(--a3);background:rgba(52,211,153,.15);}
+.ox.sx{border-color:var(--a5);background:rgba(248,113,113,.1);}
+.ox.lk{cursor:default;}
+.diff{display:inline-block;padding:2px 7px;border-radius:10px;font-size:9px;font-weight:700;}
+.easy{background:rgba(52,211,153,.2);color:var(--a3);}
+.mid{background:rgba(251,191,36,.2);color:var(--a4);}
+.hard{background:rgba(248,113,113,.2);color:var(--a5);}
+.fb-wr{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:14px;}
+.fb{padding:5px 12px;border-radius:20px;border:1px solid var(--bdr);font-size:11px;font-weight:600;cursor:pointer;background:var(--s2);color:var(--mu);transition:all .15s;font-family:'Noto Sans KR',sans-serif;}
+.fb.on{background:rgba(56,189,248,.15);color:var(--a1);border-color:var(--a1);}
+.sc-b{background:var(--s2);border:1px solid var(--bdr);border-radius:8px;padding:5px 14px;font-size:12px;color:var(--mu);}
+.sc-b span{color:var(--a1);font-weight:700;}
+.alert-box{background:rgba(248,113,113,.08);border:1px solid rgba(248,113,113,.3);border-left:4px solid var(--a5);border-radius:8px;padding:12px 16px;margin:10px 0;}
+.alert-title{font-size:10px;font-weight:700;color:var(--a5);margin-bottom:5px;letter-spacing:.8px;text-transform:uppercase;}
+.alert-text{font-size:12.5px;line-height:1.65;}
+.alert-text strong{color:var(--a5);}
+</style>
+</head>
+<body>
+
+<div class="hdr">
+  <div class="hdr-r">
+    <span class="pill p1">과기부 고시 제2020-89호</span>
+    <span class="pill p2">소프트웨어진흥법 §54조</span>
+    <span class="pill p3">BMT 의무화 규정</span>
+  </div>
+  <h1><span class="h1g">소프트웨어 품질성능 평가시험 운영에 관한 지침</span></h1>
+  <p>과학기술정보통신부 고시 제2020-89호 · 2020.12.24. 시행 · 공공 상용SW 구매 시 BMT 의무 규정</p>
+</div>
+
+<div class="tabs">
+  <button class="tab on" data-p="p1">📌 개요·정의</button>
+  <button class="tab" data-p="p2">🎯 의무 대상</button>
+  <button class="tab" data-p="p3">🔄 평가 절차</button>
+  <button class="tab" data-p="p4">💰 비용·결과반영</button>
+  <button class="tab" data-p="p5">⚖️ 관련지침 비교</button>
+  <button class="tab" data-p="p6">❓ 예상문제</button>
+</div>
+
+<div class="wrap">
+
+<!-- ===== P1: 개요 ===== -->
+<div class="pnl on" id="p1">
+  <div class="card">
+    <div class="card-h"><div class="ico ib">📌</div><h3>소프트웨어 품질성능 평가시험(BMT) 개요</h3></div>
+    <div class="law-ref">소프트웨어진흥법 제54조(소프트웨어 품질성능 평가시험) · 과기부 고시 제2020-89호 (2020.12.24. 시행)</div>
+    <div style="background:var(--s2);border:1px solid rgba(56,189,248,.25);border-radius:10px;padding:14px;margin:12px 0;">
+      <p style="font-size:13px;line-height:1.75;font-weight:500;"><strong style="color:var(--a1)">BMT(Benchmark Test)</strong> = 공공기관이 상용 소프트웨어를 구매할 때, <em style="color:var(--a3);font-style:normal;">동종 경쟁 제품 간 기능·성능을 비교 평가</em>하여 품질이 우수한 제품을 선택하도록 하는 <strong style="color:var(--a4)">의무 시험 제도</strong></p>
+    </div>
+    <table style="margin-top:12px;">
+      <thead><tr><th>구분</th><th>내용</th></tr></thead>
+      <tbody>
+        <tr><td><strong>지침명</strong></td><td>소프트웨어 품질성능 평가시험 운영에 관한 지침</td></tr>
+        <tr><td><strong>발행</strong></td><td>과학기술정보통신부 고시 제2020-89호 (2020.12.24. 시행)</td></tr>
+        <tr><td><strong>법적 근거</strong></td><td>소프트웨어진흥법 제54조, 동법 시행령 제50조</td></tr>
+        <tr><td><strong>지정 시험기관</strong></td><td><strong>한국정보통신기술협회(TTA)</strong> — 과기부장관 지정</td></tr>
+        <tr><td><strong>평가시스템</strong></td><td>소프트웨어 품질성능 평가시험 종합정보시스템 (www.swbmt.or.kr)</td></tr>
+      </tbody>
+    </table>
+    <div class="memo">BMT = 공공기관 상용SW 구매 시 의무 비교평가 / 지정시험기관 = TTA</div>
+  </div>
+
+  <div class="g2">
+    <div class="card">
+      <div class="card-h"><div class="ico iy">⚡</div><h3>BMT 도입 목적</h3></div>
+      <ul class="il">
+        <li><strong>구매자:</strong> 가격·인지도·영업력이 아닌 <em>품질 기반 SW 선택</em> 기회 제공</li>
+        <li><strong>개발자:</strong> 자사 제품의 강점 파악 및 취약점 보완 기회 제공</li>
+        <li><strong>공공시장:</strong> 기술력 있는 국산 SW의 공공시장 진출 확대</li>
+        <li><strong>객관성:</strong> 제3자 시험으로 제품 선정의 공정성·투명성 확보</li>
+        <li><strong>부담 경감:</strong> 평가시험 결과 → 기술성 평가에 우선 반영</li>
+      </ul>
+    </div>
+    <div class="card">
+      <div class="card-h"><div class="ico ig">🔗</div><h3>관련 법령 체계</h3></div>
+      <ul class="il">
+        <li><strong style="color:var(--a1)">소프트웨어진흥법 §54:</strong> BMT 의무화 근거, 시험기관 지정 권한</li>
+        <li><strong style="color:var(--a3)">동법 시행령 §50:</strong> 평가시험 대상 범위 세부 규정</li>
+        <li><strong style="color:var(--a4)">과기부 고시 제2020-89호:</strong> 대상·절차·비용·결과반영 운영기준</li>
+        <li><em>SW기술성 평가기준 지침:</em> 기술성 평가에 BMT 결과 우선 반영 의무</li>
+        <li><em>SW사업 계약 및 관리감독 지침:</em> 특수 사업 2억원↑ 기준 적용</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-h"><div class="ico ip">🏛️</div><h3>소프트웨어진흥법 제54조 핵심 내용</h3></div>
+    <table>
+      <thead><tr><th>항</th><th>내용</th></tr></thead>
+      <tbody>
+        <tr><td>제1항</td><td>국가기관 등의 장은 상용SW를 직접 구매 시 품질성능 평가시험을 직접 하거나 <strong>지정시험기관에 대행</strong>하게 할 수 있고, 그 결과를 제품구매에 <strong>반영하여야</strong> 한다</td></tr>
+        <tr><td>제2항</td><td>시험기관은 <strong>국가기관 등 및 SW 공급자 의견</strong>을 들어 평가기준을 정하고, 그 기준에 따라 시험 실시</td></tr>
+        <tr><td>제3항</td><td>시험 비용의 일부를 <strong>SW 공급자에게 부담</strong>하게 할 수 있음 (비용 분담 가능)</td></tr>
+      </tbody>
+    </table>
+    <div class="memo">소프트웨어진흥법 §54 = BMT 근거 / 결과 반영 의무 / 비용 일부 공급자 부담 가능</div>
+  </div>
+</div>
+
+<!-- ===== P2: 의무 대상 ===== -->
+<div class="pnl" id="p2">
+  <div class="card">
+    <div class="card-h"><div class="ico iy">🎯</div><h3>BMT 의무 실시 대상 (2가지 조건 모두 충족)</h3></div>
+    <p style="font-size:12px;color:var(--mu);margin-bottom:12px;">소프트웨어 품질성능 평가시험 운영에 관한 지침 제7조</p>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:10px 0;">
+      <div style="background:rgba(56,189,248,.08);border:1px solid rgba(56,189,248,.3);border-left:4px solid var(--a1);border-radius:9px;padding:14px;">
+        <div style="font-size:10px;font-weight:700;color:var(--a1);margin-bottom:8px;text-transform:uppercase;letter-spacing:.5px;">조건 ① 구매 방식</div>
+        <div style="font-size:13px;font-weight:700;margin-bottom:6px;color:var(--txt);">경쟁입찰을 통한 직접구매</div>
+        <div style="font-size:11.5px;color:var(--mu);line-height:1.5;">조달청 <strong style="color:var(--a5)">종합쇼핑몰 구매 제외</strong><br>직접구매 대상 제외 SW도 해당 없음</div>
+      </div>
+      <div style="background:rgba(52,211,153,.08);border:1px solid rgba(52,211,153,.3);border-left:4px solid var(--a3);border-radius:9px;padding:14px;">
+        <div style="font-size:10px;font-weight:700;color:var(--a3);margin-bottom:8px;text-transform:uppercase;letter-spacing:.5px;">조건 ② 구매 금액</div>
+        <div style="font-size:13px;font-weight:700;margin-bottom:6px;color:var(--txt);">1억원 이상 (부가세 포함)</div>
+        <div style="font-size:11.5px;color:var(--mu);line-height:1.5;">SW사업 계약·관리감독 지침 §8③<br>해당 사업은 <strong style="color:var(--a4)">2억원 이상</strong></div>
+      </div>
+    </div>
+    <div style="background:rgba(251,191,36,.08);border:1px solid rgba(251,191,36,.3);border-left:4px solid var(--a4);border-radius:9px;padding:12px 16px;margin-top:8px;">
+      <div style="font-size:11px;font-weight:700;color:var(--a4);margin-bottom:6px;">+ 조건 ③ BMT 대상 분야</div>
+      <div style="font-size:12.5px;font-weight:600;">별표3에 해당하는 소프트웨어 제품 <span style="color:var(--a4);font-family:JetBrains Mono,monospace;">(34종)</span></div>
+      <div style="font-size:11px;color:var(--mu);margin-top:4px;">DBMS, 그룹웨어, 보안SW, ERP, 협업도구, 문서관리, 네트워크관리, 스토리지 등 34개 분야</div>
+    </div>
+    <div class="memo">BMT 의무 = 경쟁입찰 직접구매 + 1억원↑(특수사업 2억↑) + BMT 34종 분야 — 3조건 모두 충족</div>
+  </div>
+
+  <div class="card">
+    <div class="card-h"><div class="ico ir">🚫</div><h3>BMT 제외 대상</h3></div>
+    <table>
+      <thead><tr><th>제외 사유</th><th>내용</th></tr></thead>
+      <tbody>
+        <tr><td><span class="tag tr">쇼핑몰 구매</span></td><td><strong>조달청 종합쇼핑몰</strong>을 통해 구매하는 SW — 이미 검증된 제품 목록에서 구매</td></tr>
+        <tr><td><span class="tag tr">직접구매 제외</span></td><td>직접구매 대상에서 제외된 SW 제품</td></tr>
+        <tr><td><span class="tag ty">1억원 미만</span></td><td>구매금액 1억원(부가세 포함) 미만인 상용SW</td></tr>
+        <tr><td><span class="tag ty">특수사업 2억 미만</span></td><td>SW사업 계약·관리감독 지침 §8③ 해당 사업에서 2억원 미만</td></tr>
+        <tr><td><span class="tag tp">소규모 협의</span></td><td>소규모 사업으로 시험비용 대비 효과가 낮다고 국가기관 등이 판단, 지정시험기관과 <strong>사전협의</strong>로 제외 가능</td></tr>
+      </tbody>
+    </table>
+    <div class="memo">제외: 조달청 종합쇼핑몰 구매 / 1억원 미만 / 소규모(사전협의) — 3가지 주요 제외 사유</div>
+  </div>
+
+  <div class="card">
+    <div class="card-h"><div class="ico ig">📋</div><h3>BMT 대상 34종 분야 (별표3 요약)</h3></div>
+    <div class="cat-grid">
+      <div class="cat-item"><strong>DBMS</strong>데이터베이스관리</div>
+      <div class="cat-item"><strong>그룹웨어</strong>협업·전자결재</div>
+      <div class="cat-item"><strong>ERP</strong>전사자원관리</div>
+      <div class="cat-item"><strong>보안SW</strong>방화벽·백신 등</div>
+      <div class="cat-item"><strong>문서관리</strong>EDM·DRM</div>
+      <div class="cat-item"><strong>네트워크관리</strong>NMS</div>
+      <div class="cat-item"><strong>스토리지</strong>SAN/NAS SW</div>
+      <div class="cat-item"><strong>협업도구</strong>영상회의 등</div>
+      <div class="cat-item"><strong>OS</strong>서버운영체제</div>
+      <div class="cat-item"><strong>WAS</strong>웹애플리케이션서버</div>
+      <div class="cat-item"><strong>검색엔진</strong>기업내 검색</div>
+      <div class="cat-item" style="color:var(--mu);font-size:10.5px;"><strong>+23종</strong>별표3 기타 분야</div>
+    </div>
+    <p style="font-size:11px;color:var(--mu);margin-top:6px;">※ 총 34종 분야 — 별표3에 명시된 SW 분야만 BMT 의무 적용</p>
+  </div>
+</div>
+
+<!-- ===== P3: 평가 절차 ===== -->
+<div class="pnl" id="p3">
+  <div class="card">
+    <div class="card-h"><div class="ico ib">🔄</div><h3>BMT 추진 절차 (전체 흐름)</h3></div>
+    <div style="display:flex;align-items:center;gap:4px;flex-wrap:wrap;margin:12px 0;">
+      <div style="background:rgba(56,189,248,.1);border:1px solid rgba(56,189,248,.3);border-radius:7px;padding:7px 12px;font-size:11.5px;font-weight:700;color:var(--a1);">①대상 판단</div>
+      <div style="color:var(--mu);font-size:16px;">→</div>
+      <div style="background:rgba(52,211,153,.1);border:1px solid rgba(52,211,153,.3);border-radius:7px;padding:7px 12px;font-size:11.5px;font-weight:700;color:var(--a3);">②사전협의</div>
+      <div style="color:var(--mu);font-size:16px;">→</div>
+      <div style="background:rgba(251,191,36,.1);border:1px solid rgba(251,191,36,.3);border-radius:7px;padding:7px 12px;font-size:11.5px;font-weight:700;color:var(--a4);">③평가기준 수립</div>
+      <div style="color:var(--mu);font-size:16px;">→</div>
+      <div style="background:rgba(167,139,250,.1);border:1px solid rgba(167,139,250,.3);border-radius:7px;padding:7px 12px;font-size:11.5px;font-weight:700;color:var(--a2);">④BMT 실시</div>
+      <div style="color:var(--mu);font-size:16px;">→</div>
+      <div style="background:rgba(251,146,60,.1);border:1px solid rgba(251,146,60,.3);border-radius:7px;padding:7px 12px;font-size:11.5px;font-weight:700;color:var(--a6);">⑤결과 반영</div>
+    </div>
+    <div class="memo">대상 판단→사전협의→평가기준 수립(국기관+공급자 의견)→BMT 실시→기술성평가 우선 반영</div>
+  </div>
+
+  <div class="flow-v">
+    <div class="fv-step">
+      <div class="fv-line"><div class="fv-dot" style="background:rgba(56,189,248,.2);color:var(--a1);">1</div><div class="fv-vl"></div></div>
+      <div class="fv-content" onclick="this.classList.toggle('open')">
+        <div class="fv-title" style="color:var(--a1)">BMT 대상 여부 판단</div>
+        <div class="fv-sub">경쟁입찰 직접구매 + 1억원↑ + 34종 분야 해당 여부 확인</div>
+        <div class="fv-detail">
+          <ul class="il">
+            <li>조달청 종합쇼핑몰 구매인지 확인 (해당 시 BMT 제외)</li>
+            <li>구매금액 1억원(부가세 포함) 이상 여부 확인</li>
+            <li>별표3 BMT 대상 34종 분야에 해당하는지 확인</li>
+            <li>SW사업 계약·관리감독 지침 §8③ 사업 해당 시 2억원 기준 적용</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="fv-step">
+      <div class="fv-line"><div class="fv-dot" style="background:rgba(52,211,153,.2);color:var(--a3);">2</div><div class="fv-vl"></div></div>
+      <div class="fv-content" onclick="this.classList.toggle('open')">
+        <div class="fv-title" style="color:var(--a3)">지정시험기관(TTA)과 사전협의</div>
+        <div class="fv-sub">BMT 실시 또는 제외 여부 협의 · 사전협의 요청공문·RFP·제외사유서 제출</div>
+        <div class="fv-detail">
+          <ul class="il">
+            <li><strong>BMT 실시 협의:</strong> 국가기관 → TTA에 사전협의 요청, 평가 일정·방법 협의</li>
+            <li><strong>BMT 제외 협의:</strong> 소규모 사업 등 제외 사유서 제출 → TTA 검토·회신</li>
+            <li>제안요청서(RFP) 및 사전협의 요청공문 함께 제출</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="fv-step">
+      <div class="fv-line"><div class="fv-dot" style="background:rgba(251,191,36,.2);color:var(--a4);">3</div><div class="fv-vl"></div></div>
+      <div class="fv-content" onclick="this.classList.toggle('open')">
+        <div class="fv-title" style="color:var(--a4)">평가기준 수립</div>
+        <div class="fv-sub">국가기관 등 + SW 공급자 의견 수렴 → TTA가 평가기준 확정</div>
+        <div class="fv-detail">
+          <ul class="il">
+            <li><strong>의견 수렴 의무:</strong> TTA는 국가기관 등 및 SW 공급자 의견을 반드시 들어야 함 (법 §54②)</li>
+            <li><strong>기술성 평가점수:</strong> BMT 점수와 제안평가 점수 비율을 구매자가 결정</li>
+            <li>평가기준 확정 후 공고 → 입찰 참가 업체 제품 등록</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="fv-step">
+      <div class="fv-line"><div class="fv-dot" style="background:rgba(167,139,250,.2);color:var(--a2);">4</div><div class="fv-vl"></div></div>
+      <div class="fv-content" onclick="this.classList.toggle('open')">
+        <div class="fv-title" style="color:var(--a2)">BMT 실시 (TTA)</div>
+        <div class="fv-sub">동종 경쟁 제품 간 기능·성능 비교 평가 수행</div>
+        <div class="fv-detail">
+          <ul class="il">
+            <li><strong>직접 또는 대행:</strong> 국가기관이 직접 실시하거나 TTA에 대행</li>
+            <li><strong>평가 방법:</strong> 확정된 평가기준에 따라 기능·성능·호환성 등 비교</li>
+            <li><strong>비용:</strong> 국가기관 부담 원칙 / 일부 SW 공급자 부담 가능 (수행비용 내)</li>
+            <li>참여 업체 수에 따라 평가 기간 상이 (평균 수일 ~ 수주)</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="fv-step">
+      <div class="fv-line"><div class="fv-dot" style="background:rgba(251,146,60,.2);color:var(--a6);">5</div></div>
+      <div class="fv-content" onclick="this.classList.toggle('open')">
+        <div class="fv-title" style="color:var(--a6)">평가 결과 기술성 평가에 우선 반영</div>
+        <div class="fv-sub">BMT 결과 → SW 기술성 평가에 의무 반영 → 낙찰자 결정</div>
+        <div class="fv-detail">
+          <ul class="il">
+            <li><strong>법적 의무:</strong> BMT 실시하여 구매 시 결과를 기술성 평가에 <em>우선 반영하여야</em> 함</li>
+            <li><strong>점수 구성:</strong> 기술성 평가 = BMT 점수 + 제안평가 점수 (비율은 발주기관 결정)</li>
+            <li>낙찰자 결정 시 BMT 결과가 핵심 평가요소로 반영</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== P4: 비용·결과반영 ===== -->
+<div class="pnl" id="p4">
+  <div class="card">
+    <div class="card-h"><div class="ico iy">💰</div><h3>BMT 비용 부담 원칙</h3></div>
+    <table>
+      <thead><tr><th>구분</th><th>내용</th></tr></thead>
+      <tbody>
+        <tr><td><strong>원칙</strong></td><td><strong>국가기관 등의 장이 부담</strong> — 공공기관이 BMT 비용을 지불</td></tr>
+        <tr><td><strong>예외</strong></td><td>비용 분담이 필요한 경우, SW 공급자에게 <strong>일부 부담 가능</strong> (단, 수행비용 범위 내)</td></tr>
+        <tr><td><strong>분담 절차</strong></td><td>국가기관 등이 분담 비율을 정하고 지정시험기관(TTA)에 통지</td></tr>
+        <tr><td><strong>목적</strong></td><td>SW 공급자가 BMT를 자사 제품 테스트 수단으로 <strong>남용하는 것 방지</strong></td></tr>
+      </tbody>
+    </table>
+    <div class="memo">비용 = 국가기관 부담 원칙 / 필요시 공급자에게 일부 부담 가능 (남용 방지 목적)</div>
+  </div>
+
+  <div class="card">
+    <div class="card-h"><div class="ico ig">📊</div><h3>BMT 결과의 기술성 평가 반영 의무</h3></div>
+    <div class="alert-box">
+      <div class="alert-title">⭐ SW 기술성 평가기준 지침 핵심 규정</div>
+      <div class="alert-text"><strong>소프트웨어진흥법 제54조에 따라 품질성능 평가시험을 실시하여 구매하려는 경우</strong>, 그 결과를 기술성 평가에 <strong>우선 반영하여야 한다</strong> (의무)</div>
+    </div>
+    <ul class="il" style="margin-top:12px;">
+      <li><strong>우선 반영 의무:</strong> BMT 결과는 기술성 평가에서 우선적으로 반영해야 함 — 임의 무시 불가</li>
+      <li><strong>기술성 평가 구성:</strong> BMT 점수 + 제안평가 점수를 합산하여 기술성 평가 점수 결정</li>
+      <li><strong>비율 결정:</strong> BMT 점수와 제안평가 점수의 비율은 <em>구매기관(발주기관)이 결정</em></li>
+      <li><strong>GS인증과의 관계:</strong> GS인증서는 기술성 평가에 <em>우선 반영 가능</em> (선택) — BMT와 차이</li>
+    </ul>
+    <div class="memo">BMT 결과 → 기술성 평가 우선 반영 '의무' / GS인증 → 우선 반영 '가능' (임의)</div>
+  </div>
+
+  <div class="card">
+    <div class="card-h"><div class="ico ip">🏆</div><h3>BMT 효과 및 장점</h3></div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:10px 0;">
+      <div style="background:var(--s2);border:1px solid var(--bdr);border-radius:8px;padding:12px;">
+        <div style="font-size:11.5px;font-weight:800;color:var(--a1);margin-bottom:8px;">구매자(공공기관)</div>
+        <ul class="il">
+          <li>품질 기반 SW 선택 가능</li>
+          <li>객관적 비교 정보 제공</li>
+          <li>제품 선정 부담 경감</li>
+          <li>공정성 시비 해소</li>
+        </ul>
+      </div>
+      <div style="background:var(--s2);border:1px solid var(--bdr);border-radius:8px;padding:12px;">
+        <div style="font-size:11.5px;font-weight:800;color:var(--a3);margin-bottom:8px;">SW 공급자(기업)</div>
+        <ul class="il">
+          <li>공공시장 진출 기회 확대</li>
+          <li>자사 제품 강점 파악</li>
+          <li>취약점 보완 기회</li>
+          <li>국산 SW 경쟁력 강화</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== P5: 관련지침 비교 ===== -->
+<div class="pnl" id="p5">
+  <div class="card">
+    <div class="card-h"><div class="ico ip">⚖️</div><h3>SW 품질 관련 지침 비교</h3></div>
+    <div class="cmp3">
+      <div class="ch">구분</div><div class="ch">SW 품질성능 평가시험 (BMT)</div><div class="ch">SW 품질인증 (GS인증)</div>
+      <div class="cr"><div class="cd">법적 근거</div><div class="cd">소프트웨어진흥법 §54</div><div class="cd">소프트웨어진흥법 §20</div></div>
+      <div class="cr"><div class="cd">근거 지침</div><div class="cd">과기부 고시 제2020-89호</div><div class="cd">과기부 고시 제2021-101호</div></div>
+      <div class="cr"><div class="cd">시험기관</div><div class="cd">TTA (과기부 지정)</div><div class="cd">TTA, KTL, KTC 등 (복수)</div></div>
+      <div class="cr"><div class="cd">평가 방식</div><div class="cd">동종 경쟁 제품 <em>비교</em> 평가</div><div class="cd">단일 제품 절대 품질 평가</div></div>
+      <div class="cr"><div class="cd">의무 여부</div><div class="cd">공공 직접구매 1억↑ <em>의무</em></div><div class="cd">자율(기업 신청)</div></div>
+      <div class="cr"><div class="cd">기술성 평가</div><div class="cd">결과 <em>우선 반영 의무</em></div><div class="cd">우선 반영 <em>가능</em> (임의)</div></div>
+      <div class="cr"><div class="cd">평가 표준</div><div class="cd">국가기관+공급자 의견 기반</div><div class="cd">ISO/IEC 25010 기반</div></div>
+      <div class="cr"><div class="cd">적용 시점</div><div class="cd">구매 결정 과정</div><div class="cd">제품 개발 완료 후 신청</div></div>
+    </div>
+    <div class="memo">BMT = 경쟁비교·의무·기술성반영필수 / GS인증 = 절대평가·자율·기술성반영가능</div>
+  </div>
+
+  <div class="card">
+    <div class="card-h"><div class="ico ib">🗺️</div><h3>SW 품질 관련 지침 체계도</h3></div>
+    <table>
+      <thead><tr><th>지침</th><th>고시</th><th>핵심 내용</th></tr></thead>
+      <tbody>
+        <tr><td><strong>SW 품질성능 평가시험 운영</strong><br><span style="color:var(--mu);font-size:11px;">(본 지침)</span></td><td>과기부 제2020-89호</td><td>공공구매 상용SW BMT 의무화, TTA 지정시험기관</td></tr>
+        <tr><td><strong>SW 품질인증 운영</strong><br><span style="color:var(--mu);font-size:11px;">(GS인증)</span></td><td>과기부 제2021-101호</td><td>GS인증 절차·기준, ISO 25010 기반 품질평가</td></tr>
+        <tr><td><strong>SW 기술성 평가기준</strong></td><td>과기부 제2020-100호</td><td>공공 SW 구매 기술성 평가 기준, BMT 결과 우선 반영 의무</td></tr>
+        <tr><td><strong>SW 사업 계약 및 관리감독</strong></td><td>과기부</td><td>§8③ 사업 = 2억원 이상 BMT 적용, 분리발주 기준</td></tr>
+        <tr><td><strong>소프트웨어프로세스 품질인증</strong><br><span style="color:var(--mu);font-size:11px;">(SPICE)</span></td><td>과기부</td><td>SW 개발 프로세스(역량) 품질인증 — 제품 아닌 조직 대상</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="g2">
+    <div class="card">
+      <div class="card-h"><div class="ico ig">✅</div><h3>GS인증 우선 활용 효과</h3></div>
+      <ul class="il">
+        <li><strong>공공기관 우선구매:</strong> GS인증 제품은 공공기관 우선구매 대상</li>
+        <li><strong>행정·공공 정보화사업:</strong> 구축·운영 시 우선 도입 대상 제품</li>
+        <li><strong>수의계약:</strong> 제3자단가계약 신청 시 필수 요건</li>
+        <li><strong>직접구매 대상:</strong> 상용SW 직접구매 대상으로 지정</li>
+        <li><strong>가점:</strong> SW사업 하도급 계약의 적정성 판단 시 2점 가점</li>
+      </ul>
+    </div>
+    <div class="card">
+      <div class="card-h"><div class="ico io">⚠️</div><h3>BMT와 GS인증 구분 포인트</h3></div>
+      <ul class="il">
+        <li>BMT = <strong>경쟁입찰 구매 과정</strong>에서 비교 평가</li>
+        <li>GS인증 = <strong>제품 개발 완료 후</strong> 자율 신청 인증</li>
+        <li>BMT 결과 반영 = <strong>의무</strong> (반드시 우선 반영)</li>
+        <li>GS인증 반영 = <strong>임의</strong> (우선 반영 가능)</li>
+        <li>BMT 비용 = <strong>국기관 부담</strong> (일부 공급자 가능)</li>
+        <li>GS인증 비용 = <strong>신청 기업 부담</strong></li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<!-- ===== P6: 예상문제 ===== -->
+<div class="pnl" id="p6">
+  <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;margin-bottom:14px;">
+    <div class="fb-wr" id="fbar" style="margin:0;">
+      <button class="fb on" data-f="all">전체</button>
+      <button class="fb" data-f="개요">📌 개요</button>
+      <button class="fb" data-f="대상">🎯 의무대상</button>
+      <button class="fb" data-f="절차">🔄 절차·비용</button>
+      <button class="fb" data-f="비교">⚖️ GS비교</button>
+      <button class="fb" data-f="OX">⭕ OX</button>
+    </div>
+    <div class="sc-b">정답: <span id="sc">0</span>/<span id="st">0</span></div>
+  </div>
+  <div id="ql"></div>
+</div>
+
+</div>
+
+<script>
+document.querySelectorAll('.tab').forEach(t=>t.addEventListener('click',()=>{
+  document.querySelectorAll('.tab,.pnl').forEach(x=>x.classList.remove('on'));
+  t.classList.add('on');document.getElementById(t.dataset.p).classList.add('on');
+}));
+
+const QA=[
+  {cat:'개요',diff:'easy',
+   q:'소프트웨어 품질성능 평가시험(BMT)의 법적 근거와 관할 부처로 가장 적절한 것은?',
+   cs:['전자정부법 · 행정안전부','소프트웨어진흥법 · 과학기술정보통신부','정보통신망법 · 방송통신위원회','국가정보화 기본법 · 행정안전부'],
+   ans:1,
+   exp:'BMT의 법적 근거는 <strong>소프트웨어진흥법 제54조</strong>이며, 관할 부처는 <em>과학기술정보통신부</em>입니다. 과기부 고시 제2020-89호(소프트웨어 품질성능 평가시험 운영에 관한 지침)에서 세부 사항을 규정합니다.'},
+  {cat:'개요',diff:'mid',
+   q:'소프트웨어 품질성능 평가시험의 지정시험기관으로 과기부장관이 지정한 기관은?',
+   cs:['한국인터넷진흥원(KISA)','한국정보통신기술협회(TTA)','한국지능정보사회진흥원(NIA)','한국산업기술시험원(KTL)'],
+   ans:1,
+   exp:'과학기술정보통신부장관이 지정한 BMT 지정시험기관은 <strong>한국정보통신기술협회(TTA)</strong>입니다. TTA는 국내 최초 국가공인 SW시험인증기관(2000년~)으로, 소프트웨어 시험인증을 전문으로 수행합니다.'},
+  {cat:'개요',diff:'mid',
+   q:'소프트웨어진흥법 제54조에서 규정한 내용으로 가장 적절하지 않은 것은?',
+   cs:['국가기관 등의 장은 상용SW 직접 구매 시 BMT를 직접 하거나 지정시험기관에 대행하게 할 수 있다.',
+       '시험기관은 국가기관 등과 SW 공급자 의견을 들어 평가기준을 정해야 한다.',
+       'BMT 비용은 항상 SW 공급자가 전액 부담해야 한다.',
+       'BMT 결과를 제품 구매에 반영하여야 한다.'],
+   ans:2,
+   exp:'BMT 비용은 <strong>국가기관 등의 장이 부담하는 것이 원칙</strong>이며, 필요한 경우 SW 공급자에게 일부를 부담하게 할 수 있습니다. SW 공급자가 전액 부담하는 것이 아닙니다. 비용 일부 공급자 부담은 BMT를 테스트 수단으로 남용하는 것을 방지하기 위한 장치입니다.'},
+  {cat:'대상',diff:'mid',
+   q:'소프트웨어 품질성능 평가시험 운영에 관한 지침에 따른 BMT 의무 실시 대상의 구매금액 기준으로 가장 적절한 것은?',
+   cs:['경쟁입찰 직접구매 상용SW 중 5천만원 이상','경쟁입찰 직접구매 상용SW 중 1억원 이상(부가세 포함)','조달청 종합쇼핑몰을 포함한 모든 방식으로 구매하는 1억원 이상 상용SW','경쟁입찰 직접구매 상용SW 중 2억원 이상'],
+   ans:1,
+   exp:'BMT 의무 대상: <strong>경쟁입찰을 통한 직접구매</strong> 상용SW 중 구매금액 <strong>1억원(부가세 포함) 이상</strong>이고 별표3 34종 분야에 해당하는 SW. 조달청 종합쇼핑몰 구매는 제외됩니다. 단, SW사업 계약·관리감독 지침 §8③ 해당 사업은 2억원 이상 기준 적용.'},
+  {cat:'대상',diff:'hard',
+   q:'"소프트웨어사업 계약 및 관리감독에 관한 지침" 제8조제3항에 해당하는 사업의 BMT 적용 구매금액 기준으로 옳은 것은?',
+   cs:['5천만원 이상','1억원 이상','2억원 이상','3억원 이상'],
+   ans:2,
+   exp:'일반 경쟁입찰 직접구매는 1억원 이상이 BMT 의무이나, <strong>SW사업 계약·관리감독에 관한 지침 제8조제3항에 해당하는 사업</strong>의 경우에는 구매금액 <strong>2억원(부가세 포함) 이상</strong>인 경우에만 BMT 의무가 적용됩니다.'},
+  {cat:'대상',diff:'mid',
+   q:'다음 중 BMT 의무 대상에서 제외되는 경우로 가장 적절한 것은?',
+   cs:['경쟁입찰을 통해 1억5천만원 어치의 DBMS를 직접 구매하는 경우',
+       '조달청 종합쇼핑몰을 통해 2억원 어치의 그룹웨어를 구매하는 경우',
+       '경쟁입찰을 통해 1억원 이상의 ERP를 직접 구매하는 경우',
+       '경쟁입찰을 통해 2억원 어치의 보안SW를 직접 구매하는 경우'],
+   ans:1,
+   exp:'<strong>조달청 종합쇼핑몰을 통한 구매</strong>는 금액에 관계없이 BMT 의무 대상에서 제외됩니다. 종합쇼핑몰 구매는 이미 검증된 제품 목록에서 구매하므로 별도 BMT가 불필요합니다. 나머지 선택지는 모두 BMT 의무 대상입니다.'},
+  {cat:'절차',diff:'mid',
+   q:'BMT 평가기준을 수립할 때 시험기관이 반드시 의견을 들어야 하는 당사자로 가장 적절한 것은?',
+   cs:['국가기관 등의 장만','SW 공급자만','국가기관 등의 장과 SW 공급자 모두','과학기술정보통신부장관만'],
+   ans:2,
+   exp:'소프트웨어진흥법 제54조 제2항: 품질성능 평가시험을 대행하는 시험기관은 <strong>국가기관 등의 장 및 상용SW 제품을 공급하려는 자(SW 공급자) 양측의 의견</strong>을 들어 평가기준을 정하고, 그 기준에 따라 평가시험을 실시해야 합니다.'},
+  {cat:'절차',diff:'mid',
+   q:'BMT 비용 부담에 관한 설명으로 가장 적절한 것은?',
+   cs:['BMT 비용은 전액 SW 공급자가 부담해야 한다.',
+       'BMT 비용은 국가기관 등의 장이 부담하되, 필요시 SW 공급자에게 일부를 부담하게 할 수 있다.',
+       'BMT 비용은 과학기술정보통신부가 전액 지원한다.',
+       'BMT 비용은 국가기관과 SW 공급자가 반드시 50:50으로 분담해야 한다.'],
+   ans:1,
+   exp:'BMT 비용은 <strong>국가기관 등의 장이 부담하는 것이 원칙</strong>입니다(소프트웨어진흥법 §54③). 단, 비용 분담이 필요한 경우 SW 공급자에게 일부(수행비용 범위 내)를 부담하게 할 수 있으며, 분담 비율은 국가기관이 결정하여 TTA에 통지합니다.'},
+  {cat:'비교',diff:'hard',
+   q:'소프트웨어 품질성능 평가시험(BMT) 결과와 소프트웨어 품질인증(GS인증)의 기술성 평가 반영에 관한 설명으로 가장 적절한 것은?',
+   cs:['BMT 결과와 GS인증 모두 기술성 평가에 우선 반영 의무가 있다.',
+       'BMT 결과는 기술성 평가에 우선 반영 의무가 있고, GS인증은 우선 반영 가능(임의)이다.',
+       'GS인증은 기술성 평가에 우선 반영 의무가 있고, BMT 결과는 우선 반영 가능(임의)이다.',
+       'BMT 결과와 GS인증 모두 기술성 평가에 임의로 반영한다.'],
+   ans:1,
+   exp:'SW 기술성 평가기준 지침에 따라: <strong>BMT를 실시하여 구매하는 경우 그 결과를 기술성 평가에 우선 반영하여야</strong> 합니다(의무). 반면 <em>GS인증</em>은 품질인증서 등 객관적 시험인증 결과를 기술성 평가에 <em>우선 반영할 수 있다</em>(임의·가능).'},
+  {cat:'비교',diff:'mid',
+   q:'BMT와 GS인증의 차이점으로 가장 적절하지 않은 것은?',
+   cs:['BMT는 동종 경쟁 제품 간 비교 평가이고, GS인증은 단일 제품의 절대 품질 평가이다.',
+       'BMT 지정시험기관은 TTA 단독이고, GS인증은 TTA·KTL·KTC 등 복수의 기관이 수행한다.',
+       'BMT는 기업이 자율적으로 신청하는 제도이고, GS인증은 공공구매 시 의무이다.',
+       'BMT는 구매 결정 과정에서 실시하고, GS인증은 제품 개발 완료 후 기업이 신청한다.'],
+   ans:2,
+   exp:'BMT와 GS인증의 의무성이 반대입니다. <strong>BMT</strong>는 공공기관이 경쟁입찰로 1억원 이상 상용SW를 직접 구매 시 <em>의무 실시</em>이며, <strong>GS인증</strong>은 기업이 자율적으로 신청하는 <em>선택적 인증</em>제도입니다.'},
+  {cat:'비교',diff:'hard',
+   q:'소프트웨어 품질성능 평가시험(BMT) 제도의 시행 목적으로 가장 거리가 먼 것은?',
+   cs:['가격·인지도·영업력 등 품질 이외의 요소로 제품을 평가하는 것을 방지한다.',
+       '기술경쟁력 있는 우수 국산 SW의 공공시장 진출 기회를 확대한다.',
+       '모든 SW 제품에 대해 동일한 품질 인증서를 발급하여 공신력을 부여한다.',
+       '제3자 시험을 통해 제품 선정에 대한 객관성과 공정성을 확보한다.'],
+   ans:2,
+   exp:'BMT는 비교 평가를 통해 구매에 참고하는 제도이며, <strong>품질 인증서를 발급하는 제도가 아닙니다</strong>. 인증서를 발급하는 것은 GS인증(소프트웨어 품질인증)입니다. BMT의 목적은 공정한 경쟁 제품 비교를 통한 우수 제품 선택 지원입니다.'},
+  // OX
+  {cat:'OX',diff:'easy',type:'ox',
+   q:'소프트웨어 품질성능 평가시험(BMT)은 조달청 종합쇼핑몰을 통해 SW를 구매하는 경우에도 의무 실시해야 한다.',
+   ans:false,
+   exp:'<strong>×</strong> — <em>조달청 종합쇼핑몰을 통한 구매</em>는 BMT 의무 대상에서 <strong>제외</strong>됩니다. BMT 의무는 경쟁입찰을 통한 직접구매 방식에만 적용됩니다. 종합쇼핑몰은 이미 검증된 제품 목록에서 구매하므로 별도 BMT가 불필요합니다.'},
+  {cat:'OX',diff:'mid',type:'ox',
+   q:'BMT 실시 시 평가기준은 지정시험기관(TTA)이 단독으로 정할 수 있다.',
+   ans:false,
+   exp:'<strong>×</strong> — 시험기관은 평가기준을 정할 때 <em>국가기관 등의 장 및 상용SW 제품을 공급하려는 자(SW 공급자) 양측의 의견을 들어</em> 평가기준을 정해야 합니다(소프트웨어진흥법 §54②). 단독으로 정하는 것은 위법입니다.'},
+  {cat:'OX',diff:'mid',type:'ox',
+   q:'소프트웨어 품질성능 평가시험을 실시하여 구매하는 경우, 그 결과를 기술성 평가에 우선 반영하는 것은 선택사항이다.',
+   ans:false,
+   exp:'<strong>×</strong> — 소프트웨어진흥법 제54조 및 SW 기술성 평가기준 지침에 따라, BMT를 실시하여 구매하려는 경우 그 결과를 기술성 평가에 <strong>우선 반영하여야 한다</strong>(의무). 선택사항이 아니라 법령상 의무 사항입니다.'},
+  {cat:'OX',diff:'hard',type:'ox',
+   q:'일반 직접구매의 경우 BMT 의무 기준은 1억원 이상이지만, 소프트웨어사업 계약·관리감독에 관한 지침 제8조제3항의 사업은 2억원 이상이다.',
+   ans:true,
+   exp:'<strong>○</strong> — BMT 의무 기준: <em>일반 경쟁입찰 직접구매는 1억원(부가세 포함) 이상</em>이며, <strong>소프트웨어사업 계약·관리감독에 관한 지침 제8조제3항에 해당하는 사업</strong>의 경우에는 <strong>2억원(부가세 포함) 이상</strong>으로 기준이 높습니다.'},
+  {cat:'OX',diff:'mid',type:'ox',
+   q:'GS인증 결과는 BMT 결과와 동일하게 기술성 평가에 우선 반영할 의무가 있다.',
+   ans:false,
+   exp:'<strong>×</strong> — <strong>BMT 결과</strong>: 기술성 평가에 <em>우선 반영하여야 한다</em>(의무). <strong>GS인증</strong>: 기술성 평가에 <em>우선 반영할 수 있다</em>(가능·임의). 두 제도의 기술성 평가 반영 강도가 다릅니다. BMT는 의무, GS인증은 선택입니다.'},
+];
+
+let answered=0,correct=0;
+function renderQ(f){
+  const data=f==='all'?QA:QA.filter(q=>q.cat===f);
+  const list=document.getElementById('ql');list.innerHTML='';
+  answered=0;correct=0;upS();
+  const CATC={'개요':'tb','대상':'ty','절차':'tg','비교':'tp','OX':'tr'};
+  const DLC={'easy':'easy 쉬움','mid':'mid 보통','hard':'hard 어려움'};
+  const NL=['①','②','③','④'];
+  if(!data.length){list.innerHTML='<div style="text-align:center;padding:40px;color:var(--mu)">문제 없음</div>';return;}
+  data.forEach((q,i)=>{
+    const gi=QA.indexOf(q);
+    const el=document.createElement('div');el.className='qa';
+    const tc=CATC[q.cat]||'tb';
+    const [dc,dn]=(DLC[q.diff]||'mid 보통').split(' ');
+    if(q.type==='ox'){
+      el.innerHTML=`<div class="qa-hd" onclick="this.closest('.qa').classList.toggle('open')"><div><div class="qa-meta"><span class="qn">Q${String(i+1).padStart(2,'0')}</span><span class="tag ${tc}">${q.cat}</span><span class="diff ${dc}">${dn}</span><span class="tag tp">O/X</span></div><div class="qq">${q.q}</div></div><span class="tgl">▾</span></div>
+      <div class="qa-bd"><div class="ox-wr"><button class="ox" onclick="pickOX(this,true,${gi})">⭕ 옳다</button><button class="ox" onclick="pickOX(this,false,${gi})">❌ 틀리다</button></div><div class="exp" id="ex-${gi}"><div class="exp-t">💡 해설</div>${q.exp}</div></div>`;
+    } else {
+      el.innerHTML=`<div class="qa-hd" onclick="this.closest('.qa').classList.toggle('open')"><div><div class="qa-meta"><span class="qn">Q${String(i+1).padStart(2,'0')}</span><span class="tag ${tc}">${q.cat}</span><span class="diff ${dc}">${dn}</span></div><div class="qq">${q.q}</div></div><span class="tgl">▾</span></div>
+      <div class="qa-bd"><div class="chs">${q.cs.map((c,ci)=>`<div class="ch" data-ci="${ci}" onclick="pickCh(this,${gi})"><span class="cnum">${NL[ci]}</span><span>${c}</span></div>`).join('')}</div><div class="exp" id="ex-${gi}"><div class="exp-t">💡 해설</div>${q.exp}</div></div>`;
+    }
+    list.appendChild(el);
+  });
+}
+function pickCh(el,gi){
+  const bd=el.closest('.qa-bd');if(bd.querySelector('.ok,.ng'))return;
+  const q=QA[gi];
+  bd.querySelectorAll('.ch').forEach((c,i)=>{c.classList.add('lk');if(i===q.ans)c.classList.add('ok');else if(i===parseInt(el.dataset.ci))c.classList.add('ng');});
+  document.getElementById('ex-'+gi).classList.add('show');
+  answered++;if(parseInt(el.dataset.ci)===q.ans)correct++;upS();
+}
+function pickOX(btn,val,gi){
+  const bd=btn.closest('.qa-bd');if(bd.querySelector('.so,.sx'))return;
+  const q=QA[gi];
+  bd.querySelectorAll('.ox').forEach(b=>b.classList.add('lk'));
+  btn.classList.add(val?'so':'sx');
+  if(val!==q.ans){btn.style.opacity='.5';bd.querySelectorAll('.ox')[val?1:0].classList.add(q.ans?'so':'sx');}
+  document.getElementById('ex-'+gi).classList.add('show');
+  answered++;if(val===q.ans)correct++;upS();
+}
+function upS(){document.getElementById('sc').textContent=correct;document.getElementById('st').textContent=answered;}
+document.getElementById('fbar').addEventListener('click',e=>{
+  const b=e.target.closest('.fb');if(!b)return;
+  document.querySelectorAll('.fb').forEach(x=>x.classList.remove('on'));b.classList.add('on');renderQ(b.dataset.f);
+});
+renderQ('all');
+</script>
+</body>
+</html>

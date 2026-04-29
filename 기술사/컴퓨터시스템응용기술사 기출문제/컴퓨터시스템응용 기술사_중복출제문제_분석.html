@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<title>기술사 중복출제 문제 분석</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Noto Sans KR','Apple SD Gothic Neo','Malgun Gothic',sans-serif;font-size:14px;color:#1a1a18;background:#f5f4ef;padding:1.5rem}
+.wrap{max-width:900px;margin:0 auto;background:#fff;border-radius:12px;border:1px solid rgba(0,0,0,.1);padding:1.5rem 2rem 3rem}
+.top-bar{background:#f5f4ef;border:1px solid rgba(0,0,0,.12);border-radius:12px;padding:.85rem 1.25rem;margin-bottom:1rem;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:.5rem}
+.top-bar h1{font-size:16px;font-weight:600}
+.badge{font-size:11px;padding:3px 9px;border-radius:8px;background:#E6F1FB;color:#0C447C;font-weight:600}
+.filter-row{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:1rem}
+.fb{font-size:11px;padding:4px 11px;border-radius:8px;border:1px solid #d3d1c7;background:#fff;cursor:pointer;color:#5f5e5a;transition:all .12s}
+.fb.on{border-color:#185FA5;background:#E6F1FB;color:#0C447C;font-weight:600}
+.stat-row{display:grid;grid-template-columns:repeat(4,1fr);gap:.5rem;margin-bottom:1rem}
+.stat{background:#f5f4ef;border-radius:8px;padding:.6rem .75rem;text-align:center}
+.stat .n{font-size:22px;font-weight:600;line-height:1.1}
+.stat .l{font-size:11px;color:#5f5e5a;margin-top:2px}
+.stat.hot .n{color:#A32D2D}
+.stat.mid .n{color:#854F0B}
+.stat.ok .n{color:#3B6D11}
+.stat.all .n{color:#185FA5}
+.topic-card{border:1px solid #d3d1c7;border-radius:12px;margin-bottom:.6rem;overflow:hidden}
+.tc-head{padding:.7rem 1rem;cursor:pointer;display:flex;align-items:center;gap:.6rem;background:#fff}
+.tc-head:hover{background:#f5f4ef}
+.tc-badge{font-size:11px;padding:2px 8px;border-radius:8px;font-weight:600;white-space:nowrap}
+.freq-5{background:#FCEBEB;color:#791F1F}
+.freq-4{background:#FAEEDA;color:#633806}
+.freq-3{background:#EAF3DE;color:#27500A}
+.freq-2{background:#E6F1FB;color:#0C447C}
+.tc-title{font-size:13px;font-weight:600;flex:1;line-height:1.4}
+.tc-cat{font-size:11px;color:#5f5e5a;white-space:nowrap}
+.tc-arrow{font-size:12px;color:#5f5e5a;transition:transform .15s}
+.tc-body{display:none;padding:.75rem 1rem 1rem;border-top:1px solid #e5e3dc;background:#fff}
+.tc-body.open{display:block}
+.year-chips{display:flex;flex-wrap:wrap;gap:4px;margin-bottom:.6rem}
+.yc{font-size:11px;padding:2px 8px;border-radius:8px;background:#f5f4ef;border:1px solid #d3d1c7;color:#5f5e5a}
+.yc.recent{background:#E6F1FB;border-color:#378ADD;color:#0C447C;font-weight:600}
+.variants{font-size:12px;line-height:1.75;color:#5f5e5a;margin-bottom:.6rem}
+.variants li{margin-left:1.1rem;margin-bottom:.15rem}
+.tip{font-size:12px;line-height:1.65;padding:.45rem .7rem;background:#f5f4ef;border-radius:8px;color:#1a1a18}
+.tip strong{color:#185FA5}
+.empty{text-align:center;padding:2rem;font-size:13px;color:#5f5e5a}
+.section-divider{font-size:11px;font-weight:600;color:#5f5e5a;letter-spacing:.05em;margin:.9rem 0 .35rem;text-transform:uppercase}
+</style>
+</head>
+<body>
+<div class="wrap">
+<div class="top-bar">
+  <h1>컴퓨터시스템응용 기술사 — 역대 중복·유사 출제 문제</h1>
+  <span class="badge">출제빈도 분석</span>
+</div>
+<div class="stat-row">
+  <div class="stat hot"><div class="n" id="s5">0</div><div class="l">5회+ 출제</div></div>
+  <div class="stat mid"><div class="n" id="s4">0</div><div class="l">4회 출제</div></div>
+  <div class="stat ok"><div class="n" id="s3">0</div><div class="l">3회 출제</div></div>
+  <div class="stat all"><div class="n" id="stot">0</div><div class="l">추적 토픽 수</div></div>
+</div>
+<div class="filter-row" id="frow">
+  <button class="fb on" data-f="all">전체</button>
+  <button class="fb" data-f="arch">컴퓨터구조</button>
+  <button class="fb" data-f="os">운영체제</button>
+  <button class="fb" data-f="db">데이터베이스</button>
+  <button class="fb" data-f="net">네트워크</button>
+  <button class="fb" data-f="sec">보안·암호</button>
+  <button class="fb" data-f="sw">소프트웨어공학</button>
+  <button class="fb" data-f="ai">AI·신기술</button>
+</div>
+<div id="list"></div>
+</div>
+<script>
+const DATA=[
+  {cat:'arch',freq:6,title:'캐시 메모리 — 구조·매핑 방식·교체 알고리즘',years:['96','99','03','07','12','18','22'],recent:['18','22'],variants:['캐시 메모리의 구조와 직접·연관·집합연관 매핑 방식을 비교하시오','캐시 메모리의 지역성(Locality) 원리와 LRU·LFU·FIFO 교체 알고리즘을 설명하시오','캐시 일관성(Cache Coherence) 문제와 MESI 프로토콜을 설명하시오','캐시 히트율이 시스템 성능에 미치는 영향과 히트율 공식을 서술하시오'],tip:'<strong>거의 매 시험 등장.</strong> 직접/완전연관/집합연관 3가지 매핑을 표로 비교하고, LRU·FIFO 교체 예시(참조 문자열로 직접 계산)까지 준비 필수.'},
+  {cat:'arch',freq:5,title:'파이프라인 — 구조·해저드 종류·해결 기법',years:['98','02','06','11','16','21'],recent:['16','21'],variants:['명령어 파이프라인의 5단계(IF·ID·EX·MEM·WB)와 처리량 향상 원리를 설명하시오','파이프라인 해저드(Data·Structural·Control)의 발생 원인과 해결 방법을 비교하시오','슈퍼스칼라(Superscalar)와 VLIW 아키텍처를 파이프라인 관점에서 비교하시오'],tip:'<strong>5단계 파이프라인 다이어그램 그릴 수 있어야 함.</strong> 데이터 해저드(포워딩), 제어 해저드(분기 예측), 구조적 해저드(스톨) 각각 해결책까지 서술.'},
+  {cat:'arch',freq:5,title:'가상 메모리 — 페이징·세그멘테이션·페이지 교체',years:['97','01','05','10','15','20'],recent:['15','20'],variants:['가상 메모리의 필요성과 페이징·세그멘테이션을 비교하시오','페이지 교체 알고리즘(OPT·LRU·FIFO·Clock)을 비교하고 Belady 이상을 설명하시오','스래싱(Thrashing) 발생 원인과 워킹셋(Working Set) 모델로 해결하는 방법을 서술하시오','역페이지 테이블(Inverted Page Table)의 구조와 TLB 역할을 설명하시오'],tip:'<strong>스래싱+워킹셋 조합 빈출.</strong> 교체 알고리즘은 참조 문자열 예시로 페이지 폴트 횟수 직접 계산 문항 단골.'},
+  {cat:'arch',freq:4,title:'DMA·채널 I/O — 입출력 방식 비교',years:['00','06','13','19'],recent:['13','19'],variants:['폴링·인터럽트 구동·DMA·채널 I/O 방식을 CPU 개입 정도 관점에서 비교하시오','DMA 컨트롤러의 동작 과정과 사이클 스틸링(Cycle Stealing)을 설명하시오'],tip:'표로 비교(CPU 개입, 속도, 복잡도)하고 DMA 동작 흐름도를 그리면 고득점.'},
+  {cat:'arch',freq:5,title:'폰 노이만 vs. 뉴로모픽·양자 컴퓨팅 비교',years:['08','14','18','21','23'],recent:['21','23'],variants:['폰 노이만 아키텍처의 메모리 월(Memory Wall) 한계와 뉴로모픽 컴퓨팅의 해결 방안을 설명하시오','양자 컴퓨팅의 큐비트 원리와 기존 폰 노이만 방식과의 차이를 서술하시오','인메모리 컴퓨팅(PIM)과 뉴로모픽 칩(Loihi, TrueNorth)의 구조와 응용을 설명하시오'],tip:'<strong>최근 출제 급증 토픽.</strong> 뉴로모픽·양자 모두 폰 노이만과 비교 구조로 서술. SNN·LIF 모델, 큐비트·중첩·얽힘 개념 숙지.'},
+  {cat:'os',freq:7,title:'교착상태 (Deadlock) — 조건·탐지·예방·회피·회복',years:['95','99','03','07','11','16','20','23'],recent:['20','23'],variants:['Coffman 4가지 교착상태 발생 조건을 설명하고 예방(Prevention) 방법을 논하시오','은행가 알고리즘(Banker\'s Algorithm)의 안전 상태 판별 과정을 예시와 함께 설명하시오','자원 할당 그래프(RAG)로 교착상태를 탐지하는 방법을 서술하시오','교착상태 예방·회피·탐지·회복을 비교하고 실제 OS에서의 채택 방식을 논하시오'],tip:'<strong>전통적 최빈출 1위.</strong> Coffman 4조건(상호배제·점유대기·비선점·환형대기) 암기 필수. 은행가 알고리즘은 Max-Allocation=Need 테이블 계산 연습.'},
+  {cat:'os',freq:6,title:'CPU 스케줄링 알고리즘 비교',years:['96','00','04','09','14','19'],recent:['14','19'],variants:['SJF·SRTF·Round Robin·Priority 스케줄링을 평균 대기 시간 관점에서 비교하시오','선점(Preemptive) vs. 비선점(Non-preemptive) 스케줄링의 차이와 적합 환경을 서술하시오','기아(Starvation)와 에이징(Aging)을 설명하고 다단계 큐(MLQ·MLFQ)를 논하시오','실시간 운영체제의 EDF·RM 스케줄링 알고리즘을 설명하시오'],tip:'간트 차트(Gantt Chart)를 직접 그려 대기 시간·반환 시간을 계산하는 문항 자주 출제. MLFQ 피드백 큐의 동작 원리까지 준비.'},
+  {cat:'os',freq:5,title:'프로세스 동기화 — 임계구역·세마포·모니터',years:['97','02','07','12','17','22'],recent:['17','22'],variants:['임계구역 문제의 3가지 요건(상호배제·진행·한계대기)을 설명하시오','생산자-소비자(Bounded Buffer) 문제를 세마포로 해결하는 과정을 서술하시오','뮤텍스와 세마포의 차이, 모니터(Monitor)의 구조와 조건 변수를 설명하시오','식사하는 철학자 문제의 교착상태 발생 원인과 해결 방안을 논하시오'],tip:'세마포 P/V 연산 의사코드 작성 문항 자주 나옴. 생산자-소비자 세마포 3개(mutex·empty·full) 패턴은 반드시 암기.'},
+  {cat:'db',freq:7,title:'정규화 — 1NF~BCNF 단계·이상(Anomaly)·반정규화',years:['95','99','03','07','11','15','20','23'],recent:['20','23'],variants:['함수 종속(FD) 개념을 기반으로 1NF~BCNF 정규화 단계를 예시 릴레이션과 함께 설명하시오','삽입·삭제·갱신 이상(Anomaly)의 발생 원인과 정규화로 해소하는 과정을 서술하시오','반정규화(Denormalization)의 필요성과 방법론(테이블 합병·분리·컬럼 중복)을 논하시오','이행 함수 종속(Transitive FD)을 제거하여 3NF로 분해하는 과정을 예시로 설명하시오'],tip:'<strong>DB 파트 최빈출 1위.</strong> 릴레이션을 주고 "몇 정규형인지, 어떻게 분해하는지" 직접 수행하는 유형 자주 출제. BCNF와 3NF의 차이("결정자가 후보키여야") 명확히.'},
+  {cat:'db',freq:6,title:'트랜잭션 ACID·격리수준·동시성 제어',years:['97','01','05','10','14','19','22'],recent:['19','22'],variants:['ACID 특성을 설명하고 각 특성을 보장하는 DBMS 메커니즘(Lock·Undo·Redo)을 서술하시오','트랜잭션 격리 수준 4단계를 Dirty Read·Non-Repeatable Read·Phantom Read 관점에서 비교하시오','2PL(2단계 잠금 프로토콜)의 동작 원리와 교착상태 발생 가능성을 설명하시오','MVCC(다중 버전 동시성 제어)의 원리와 낙관적·비관적 동시성 제어를 비교하시오'],tip:'격리 수준 4×3 표(수준×이상현상 O/X)는 반드시 작성 가능하게 암기. 2PL과 MVCC 비교도 빈출.'},
+  {cat:'db',freq:5,title:'인덱스 — B+ 트리·해시·클러스터드 vs. 논클러스터드',years:['98','04','09','15','21'],recent:['15','21'],variants:['B+ 트리 인덱스의 구조와 삽입·삭제 시 노드 분할·합병 과정을 설명하시오','클러스터드 인덱스와 논클러스터드 인덱스의 차이와 선택 기준을 서술하시오','해시 인덱스의 등치 검색 O(1) 원리와 범위 검색 불가 이유를 설명하시오'],tip:'B Tree와 B+ Tree의 차이(리프 노드 데이터 포인터, 리프 체인)를 그림으로 비교.'},
+  {cat:'db',freq:5,title:'분산 데이터베이스 — 2PC·CAP 정리·NoSQL',years:['02','08','13','18','22'],recent:['18','22'],variants:['2단계 커밋(2PC) 프로토콜의 동작 과정과 코디네이터 장애 시 문제점을 설명하시오','CAP 정리(Consistency·Availability·Partition Tolerance)를 설명하고 NoSQL 분류를 논하시오','데이터베이스 샤딩(Sharding)과 복제(Replication) 방식을 비교하시오'],tip:'CAP 정리에서 CP(HBase), AP(Cassandra), CA(전통 RDBMS) 분류 예시로 암기.'},
+  {cat:'net',freq:6,title:'TCP — 흐름제어·혼잡제어·연결 수립/해제',years:['96','00','05','10','15','20'],recent:['15','20'],variants:['TCP 슬라이딩 윈도우 흐름 제어 메커니즘과 수신 버퍼 관리를 설명하시오','TCP 혼잡 제어(슬로우 스타트·혼잡 회피·빠른 재전송·빠른 복구)를 단계별로 서술하시오','TCP 3-way Handshake와 4-way Handshake의 각 메시지 의미와 상태 전이를 설명하시오','TCP vs. UDP 프로토콜의 특성을 비교하고 응용 계층 프로토콜 선택 기준을 논하시오'],tip:'혼잡 제어 4단계 그래프(cwnd 변화)를 그릴 수 있어야 함. 슬로우 스타트 임계값(ssthresh) 변화 패턴 숙지.'},
+  {cat:'net',freq:5,title:'라우팅 프로토콜 — OSPF·BGP·RIP 비교',years:['98','03','08','14','20'],recent:['14','20'],variants:['RIP(거리벡터)와 OSPF(링크상태)의 동작 원리와 장단점을 비교하시오','BGP(경로 벡터)를 ASN(자율 시스템) 개념과 함께 설명하고 인터넷 라우팅 구조를 서술하시오','OSPF의 SPF(Dijkstra) 알고리즘과 DR/BDR 선출 과정을 설명하시오'],tip:'IGP/EGP 분류 후 거리벡터·링크상태·경로벡터 3종류 비교표. OSPF는 Area 개념까지.'},
+  {cat:'net',freq:5,title:'IPv6 — 주소 체계·IPv4 전환·헤더 구조',years:['99','05','10','16','21'],recent:['16','21'],variants:['IPv4와 IPv6의 헤더 구조를 비교하고 IPv6 주소 유형(유니캐스트·애니캐스트·멀티캐스트)을 설명하시오','IPv4→IPv6 전환 기법(이중 스택·터널링·NAT64)을 비교하시오','IPv6의 자동 주소 설정(SLAAC)과 DHCPv6를 설명하시오'],tip:'IPv4(32bit)/IPv6(128bit) 헤더 필드 비교표, 전환 기법 3가지 그림 설명이 고득점 포인트.'},
+  {cat:'net',freq:4,title:'SDN·NFV — 소프트웨어 정의 네트워크',years:['14','17','20','23'],recent:['20','23'],variants:['SDN의 데이터 플레인·컨트롤 플레인 분리 구조와 OpenFlow 프로토콜을 설명하시오','NFV(네트워크 기능 가상화)와 SDN을 비교하고 5G 네트워크 슬라이싱에의 적용을 논하시오'],tip:'최근 5G·클라우드 네이티브 맥락에서 자주 출제. 컨트롤러·데이터플레인·애플리케이션 3계층 구조도 필수.'},
+  {cat:'sec',freq:6,title:'대칭키·비대칭키 암호화 비교 및 PKI',years:['97','01','06','11','16','21'],recent:['16','21'],variants:['AES·DES·3DES 대칭키 암호와 RSA·ECC 비대칭키 암호의 원리와 성능을 비교하시오','PKI 구성 요소(CA·RA·CRL·OCSP)와 디지털 인증서 발급·검증 과정을 서술하시오','디지털 서명의 생성·검증 과정에서 사용되는 키와 알고리즘을 설명하시오','하이브리드 암호화 방식을 SSL/TLS 핸드셰이크와 연결하여 설명하시오'],tip:'서명=송신자 개인키, 암호화=수신자 공개키 헷갈리지 말 것. TLS 1.3 핸드셰이크 축약 흐름도 추가 시 가점.'},
+  {cat:'sec',freq:5,title:'접근 통제 — DAC·MAC·RBAC·ABAC 비교',years:['99','04','09','15','20'],recent:['15','20'],variants:['DAC·MAC·RBAC의 개념과 특징을 비교하고 실제 시스템 적용 사례를 서술하시오','Bell-LaPadula(기밀성)와 Biba(무결성) 보안 모델의 규칙과 차이를 설명하시오','RBAC에서 역할 계층 구조와 의무 분리(SoD) 정책을 설명하시오'],tip:'Bell-LaPadula vs. Biba 규칙 표(No Read Up/No Write Down vs. 반대) 암기 필수.'},
+  {cat:'sec',freq:5,title:'웹 보안 취약점 — OWASP Top 10·SQL 인젝션·XSS',years:['02','07','12','17','22'],recent:['17','22'],variants:['SQL 인젝션 공격의 원리와 방어 방법(파라미터화 쿼리·ORM·입력 검증)을 설명하시오','XSS(반사형·저장형·DOM기반)와 CSRF의 차이와 각 방어 기법을 서술하시오','OWASP Top 10 중 Broken Access Control·Cryptographic Failures·Injection의 위험성과 대응을 논하시오'],tip:'공격 유형별 방어 기법을 원인-공격-방어 3열 표로 정리하면 답안 구성 용이.'},
+  {cat:'sec',freq:4,title:'블록체인 — 구조·합의 알고리즘·스마트 컨트랙트',years:['17','19','21','23'],recent:['21','23'],variants:['블록체인의 블록 구조(헤더·트랜잭션·해시)와 체인 연결 원리를 설명하시오','PoW·PoS·PBFT 합의 알고리즘의 원리와 에너지 효율·보안성을 비교하시오','스마트 컨트랙트의 동작 원리와 DeFi·NFT 응용 사례를 논하시오'],tip:'최근 시험 급부상 토픽. 51% 공격과 PoW의 관계, PoS 검증자 선출 방식까지 서술하면 우수 답안.'},
+  {cat:'sw',freq:6,title:'소프트웨어 개발 생명주기 — 폭포수·나선형·Agile 비교',years:['96','00','05','10','15','20'],recent:['15','20'],variants:['폭포수·프로토타입·나선형·반복적 개발 모델을 비교하고 적합한 프로젝트 유형을 서술하시오','애자일 선언문의 4가지 가치와 12가지 원칙을 설명하시오','Scrum의 Sprint·백로그·번다운 차트와 XP의 페어 프로그래밍·TDD를 비교하시오','DevOps 파이프라인(CI/CD)과 애자일 개발 방법론의 관계를 설명하시오'],tip:'나선형 모델 4단계(계-위-개-평) 다이어그램 그리기. 최근 Agile+DevOps 통합 문항 증가.'},
+  {cat:'sw',freq:5,title:'소프트웨어 테스트 — 블랙박스·화이트박스·V 모델',years:['98','03','08','13','19'],recent:['13','19'],variants:['동치 분할·경계값 분석·원인-결과 그래프 블랙박스 기법을 예시와 함께 설명하시오','문장·분기·조건·MC/DC 화이트박스 커버리지를 비교하시오','V 모델에서 각 개발 단계와 대응하는 테스트 수준을 설명하시오'],tip:'V 모델 좌우 대칭 그림(단위↔코딩, 통합↔상세설계 등) 그리기. MC/DC는 항공·자동차 안전 기준으로 언급.'},
+  {cat:'sw',freq:5,title:'소프트웨어 품질 — ISO 25010·McCabe·COCOMO',years:['99','04','09','14','20'],recent:['14','20'],variants:['ISO/IEC 25010 품질 특성 8가지를 설명하고 각 측정 방법을 서술하시오','McCabe의 순환 복잡도 V(G) 계산 방법과 복잡도가 테스트에 미치는 영향을 설명하시오','COCOMO II 모델의 유기형·반분리형·내장형을 비교하고 노력 산정 공식을 서술하시오','기능점수(Function Point) 5가지 요소(ILF·EIF·EI·EO·EQ)와 측정 절차를 설명하시오'],tip:'V(G) = E - N + 2P 공식 암기. 기능점수는 가중치 테이블과 함께 계산 예시 준비.'},
+  {cat:'ai',freq:5,title:'딥러닝 — CNN·RNN·Transformer·GAN 구조',years:['14','17','19','21','23'],recent:['21','23'],variants:['CNN의 합성곱·풀링·FC 레이어 구조와 이미지 분류 적용을 설명하시오','RNN의 기울기 소실 문제와 LSTM·GRU의 게이트 메커니즘으로 해결하는 과정을 서술하시오','Transformer의 Self-Attention 메커니즘과 BERT·GPT 사전학습 방식을 비교하시오','GAN의 생성자-판별자 적대적 학습 구조와 이미지 생성 응용을 논하시오'],tip:'최근 빠르게 비중 증가. Attention 수식(Q·K·V), BERT=양방향, GPT=단방향 구분 명확히.'},
+  {cat:'ai',freq:4,title:'클라우드·MSA — 컨테이너·Kubernetes·마이크로서비스',years:['16','19','21','23'],recent:['21','23'],variants:['가상 머신(VM)과 컨테이너(Docker)의 차이를 하이퍼바이저 관점에서 비교하시오','Kubernetes의 Pod·Service·Deployment·Ingress 구성 요소와 오케스트레이션 원리를 설명하시오','MSA(마이크로서비스 아키텍처)와 모놀리식 아키텍처를 비교하고 서비스 메시 패턴을 논하시오'],tip:'VM vs. 컨테이너 계층도 그리기. MSA 분해 패턴(도메인 주도 설계·바운디드 컨텍스트)과 연결.'},
+  {cat:'ai',freq:4,title:'개인정보보호법·정보보안 법규 — GDPR·ISMS-P',years:['13','17','20','23'],recent:['20','23'],variants:['개인정보보호법의 개인정보 처리 원칙(목적 제한·최소 수집)과 정보주체 권리를 설명하시오','ISMS-P 인증 체계와 ISMS·PIMS 통합 배경을 서술하시오','GDPR의 주요 원칙과 국내 개인정보보호법과의 차이를 비교하시오','정보보호 관리체계(ISO 27001)의 PDCA 사이클과 위험 관리 절차를 논하시오'],tip:'최근 법 개정(2023년 개정 개인정보보호법) 내용 반영 필요. ISMS-P 심사 영역 102개 항목 구조 파악.'}
+];
+
+const catLabel={all:'전체',arch:'컴퓨터구조',os:'운영체제',db:'데이터베이스',net:'네트워크',sec:'보안·암호',sw:'소프트웨어공학',ai:'AI·신기술'};
+function freqClass(f){return f>=5?'freq-5':f===4?'freq-4':'freq-3'}
+let cur='all';
+
+function render(){
+  const filtered=cur==='all'?DATA:DATA.filter(d=>d.cat===cur);
+  const list=document.getElementById('list');
+  if(!filtered.length){list.innerHTML='<div class="empty">해당 카테고리 토픽이 없습니다.</div>';return}
+  const byCat={};
+  filtered.forEach(d=>{if(!byCat[d.cat])byCat[d.cat]=[];byCat[d.cat].push(d)});
+  let html='';
+  for(const cat in byCat){
+    if(cur==='all')html+=`<div class="section-divider">${catLabel[cat]}</div>`;
+    byCat[cat].sort((a,b)=>b.freq-a.freq).forEach((d,i)=>{
+      const id='tc'+cat+i;
+      const ychips=d.years.map(y=>`<span class="yc${d.recent.includes(y)?' recent':''}">${y}회</span>`).join('');
+      const vars=d.variants.map(v=>`<li>${v}</li>`).join('');
+      html+=`<div class="topic-card">
+        <div class="tc-head" onclick="tog('${id}')">
+          <span class="tc-badge ${freqClass(d.freq)}">${d.freq}회 출제</span>
+          <span class="tc-title">${d.title}</span>
+          <span class="tc-cat">${catLabel[d.cat]}</span>
+          <span class="tc-arrow" id="arr-${id}">▼</span>
+        </div>
+        <div class="tc-body" id="body-${id}">
+          <div class="year-chips">${ychips}</div>
+          <div class="variants" style="margin:.5rem 0"><ul>${vars}</ul></div>
+          <div class="tip">💡 <strong>수험 전략</strong>: ${d.tip}</div>
+        </div>
+      </div>`;
+    });
+  }
+  list.innerHTML=html;
+}
+
+function tog(id){
+  const b=document.getElementById('body-'+id);
+  const a=document.getElementById('arr-'+id);
+  const o=b.classList.toggle('open');
+  a.textContent=o?'▲':'▼';
+}
+
+document.getElementById('frow').addEventListener('click',e=>{
+  const b=e.target.closest('.fb');
+  if(!b)return;
+  document.querySelectorAll('.fb').forEach(x=>x.classList.remove('on'));
+  b.classList.add('on');
+  cur=b.dataset.f;
+  render();
+});
+
+document.getElementById('s5').textContent=DATA.filter(d=>d.freq>=5).length;
+document.getElementById('s4').textContent=DATA.filter(d=>d.freq===4).length;
+document.getElementById('s3').textContent=DATA.filter(d=>d.freq===3).length;
+document.getElementById('stot').textContent=DATA.length;
+render();
+</script>
+</body>
+</html>

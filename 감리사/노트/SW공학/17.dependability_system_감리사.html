@@ -1,0 +1,351 @@
+
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+.wrap{padding:1rem 0;font-family:var(--font-sans)}
+.tabs{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:1.25rem;border-bottom:0.5px solid var(--color-border-tertiary);padding-bottom:.75rem}
+.tab{padding:5px 14px;border-radius:var(--border-radius-md);border:0.5px solid var(--color-border-tertiary);font-size:13px;cursor:pointer;background:transparent;color:var(--color-text-secondary);transition:all .15s}
+.tab.on{background:var(--color-background-secondary);color:var(--color-text-primary);border-color:var(--color-border-secondary);font-weight:500}
+.panel{display:none}.panel.on{display:block}
+.sec{font-size:13px;font-weight:500;color:var(--color-text-secondary);text-transform:uppercase;letter-spacing:.04em;margin:1.25rem 0 .75rem}
+.sec:first-child{margin-top:0}
+.grid2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin-bottom:1.25rem}
+.grid3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin-bottom:1.25rem}
+.grid4{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin-bottom:1.25rem}
+.card{background:var(--color-background-primary);border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-lg);padding:14px}
+.card-t{font-size:13px;font-weight:500;margin-bottom:6px}
+.card-s{font-size:12px;color:var(--color-text-secondary);line-height:1.55}
+.badge{display:inline-block;font-size:11px;padding:2px 8px;border-radius:var(--border-radius-md);margin-bottom:8px}
+.b-blue{background:#E6F1FB;color:#0C447C}
+.b-teal{background:#E1F5EE;color:#085041}
+.b-amber{background:#FAEEDA;color:#633806}
+.b-coral{background:#FAECE7;color:#712B13}
+.b-purple{background:#EEEDFE;color:#3C3489}
+.b-green{background:#EAF3DE;color:#27500A}
+.b-pink{background:#FBEAF0;color:#72243E}
+.b-gray{background:#F1EFE8;color:#444441}
+.tw{border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-lg);overflow:hidden;margin-bottom:1.25rem}
+table{width:100%;border-collapse:collapse;font-size:13px}
+th{background:var(--color-background-secondary);font-weight:500;padding:8px 12px;text-align:left;border-bottom:0.5px solid var(--color-border-tertiary)}
+td{padding:8px 12px;border-bottom:0.5px solid var(--color-border-tertiary);color:var(--color-text-secondary);vertical-align:top;line-height:1.5}
+tr:last-child td{border-bottom:none}
+td:first-child{color:var(--color-text-primary);font-weight:500}
+.tip{background:var(--color-background-secondary);border-left:3px solid #1D9E75;border-radius:0 var(--border-radius-md) var(--border-radius-md) 0;padding:10px 14px;font-size:13px;margin-bottom:1rem;line-height:1.6}
+.warn{background:var(--color-background-secondary);border-left:3px solid #BA7517;border-radius:0 var(--border-radius-md) var(--border-radius-md) 0;padding:10px 14px;font-size:13px;margin-bottom:1rem;line-height:1.6}
+.one{background:var(--color-background-secondary);border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-lg);padding:12px 16px;font-size:13px;margin-top:1rem}
+.one span{color:var(--color-text-secondary);font-size:12px;display:block;margin-bottom:4px}
+.chain{display:flex;align-items:stretch;gap:0;margin-bottom:1.25rem;border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-lg);overflow:hidden}
+.ch-item{flex:1;padding:12px 10px;text-align:center;border-right:0.5px solid var(--color-border-tertiary)}
+.ch-item:last-child{border-right:none}
+.ch-lbl{font-size:11px;color:var(--color-text-secondary);margin-bottom:4px}
+.ch-val{font-size:13px;font-weight:500}
+.arr{display:flex;align-items:center;justify-content:center;font-size:18px;color:var(--color-text-tertiary);padding:0 2px;align-self:center}
+.flow{display:flex;align-items:center;flex-wrap:wrap;gap:6px;margin-bottom:1.25rem}
+.fb{background:var(--color-background-primary);border:0.5px solid var(--color-border-secondary);border-radius:var(--border-radius-md);padding:6px 12px;font-size:12px;font-weight:500}
+.qa-item{border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-lg);margin-bottom:8px;overflow:hidden}
+.qa-q{padding:11px 14px;font-size:13px;cursor:pointer;font-weight:500;display:flex;justify-content:space-between;align-items:center;background:var(--color-background-primary)}
+.qa-a{display:none;padding:10px 14px;font-size:13px;color:var(--color-text-secondary);border-top:0.5px solid var(--color-border-tertiary);line-height:1.6;background:var(--color-background-secondary)}
+.qa-a.open{display:block}
+.icon{font-size:12px;color:var(--color-text-tertiary)}
+.formula{background:var(--color-background-secondary);border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-md);padding:8px 14px;font-size:13px;font-family:var(--font-mono);margin-bottom:10px;color:var(--color-text-primary)}
+</style>
+<div class="wrap">
+<div class="tabs">
+  <button class="tab on" onclick="sw(0)">개요·정의</button>
+  <button class="tab" onclick="sw(1)">결함·오류·장애</button>
+  <button class="tab" onclick="sw(2)">속성 (RAMAS)</button>
+  <button class="tab" onclick="sw(3)">수단 (Means)</button>
+  <button class="tab" onclick="sw(4)">측정지표</button>
+  <button class="tab" onclick="sw(5)">위협 분류</button>
+  <button class="tab" onclick="sw(6)">기출 Q&A</button>
+</div>
+
+<div class="panel on" id="p0">
+  <p class="sec">Dependability란?</p>
+  <div class="card" style="margin-bottom:1.25rem">
+    <div class="card-s" style="font-size:13px;line-height:1.7">
+      시스템이 <b style="color:var(--color-text-primary)">믿을 수 있는 서비스</b>를 제공할 수 있는 능력의 총체적 개념.<br>
+      Avizienis 등이 정의한 신뢰성 공학의 핵심 프레임워크로, 단일 지표가 아닌<br>
+      <b style="color:var(--color-text-primary)">속성(Attributes) + 위협(Threats) + 수단(Means)</b> 3축 구조로 체계화됨.
+    </div>
+  </div>
+
+  <p class="sec">3축 구조 전체 맵</p>
+  <div class="grid3">
+    <div class="card">
+      <span class="badge b-blue">속성 (Attributes)</span>
+      <div class="card-t">시스템이 가져야 할 특성</div>
+      <div class="card-s">Availability, Reliability, Safety, Integrity, Maintainability (+ Security, Performability)</div>
+    </div>
+    <div class="card">
+      <span class="badge b-coral">위협 (Threats)</span>
+      <div class="card-t">Dependability를 해치는 요인</div>
+      <div class="card-s">Fault(결함) → Error(오류) → Failure(장애) 인과 체인</div>
+    </div>
+    <div class="card">
+      <span class="badge b-teal">수단 (Means)</span>
+      <div class="card-t">Dependability 달성 방법</div>
+      <div class="card-s">Fault Prevention, Tolerance, Removal, Forecasting (예방·허용·제거·예측)</div>
+    </div>
+  </div>
+
+  <div class="tip">Dependability는 <b>결과(outcome)</b>가 아닌 <b>능력(capability)</b> 개념. "서비스가 얼마나 믿을 수 있는가"를 다면적으로 측정하는 종합 프레임워크</div>
+  <div class="one"><span>한 줄 암기</span>Dependability = 속성(RAMAS) + 위협(결함→오류→장애) + 수단(예방·허용·제거·예측) 3축 구조</div>
+</div>
+
+<div class="panel" id="p1">
+  <p class="sec">Fault → Error → Failure 인과 체인</p>
+  <div class="chain">
+    <div class="ch-item" style="background:#FAECE7">
+      <div class="ch-lbl" style="color:#993C1D">Fault (결함)</div>
+      <div class="ch-val" style="color:#712B13">원인</div>
+      <div style="font-size:11px;color:#993C1D;margin-top:4px">소프트웨어·하드웨어의<br>잠재적 결점</div>
+    </div>
+    <div class="arr">→</div>
+    <div class="ch-item" style="background:#FAEEDA">
+      <div class="ch-lbl" style="color:#854F0B">Error (오류)</div>
+      <div class="ch-val" style="color:#633806">중간 상태</div>
+      <div style="font-size:11px;color:#854F0B;margin-top:4px">결함이 활성화된<br>잘못된 내부 상태</div>
+    </div>
+    <div class="arr">→</div>
+    <div class="ch-item" style="background:#E1F5EE">
+      <div class="ch-lbl" style="color:#0F6E56">Failure (장애)</div>
+      <div class="ch-val" style="color:#085041">결과</div>
+      <div style="font-size:11px;color:#0F6E56;margin-top:4px">시스템이 요구 서비스를<br>제공하지 못하는 사건</div>
+    </div>
+  </div>
+
+  <p class="sec">세부 개념 비교</p>
+  <div class="tw">
+    <table>
+      <tr><th>개념</th><th>영문</th><th>정의</th><th>예시</th></tr>
+      <tr><td>결함</td><td>Fault</td><td>오류를 유발할 수 있는 잠재적 원인. 활성화 전에는 휴면(Dormant) 상태</td><td>코딩 버그, 하드웨어 불량 부품</td></tr>
+      <tr><td>오류</td><td>Error</td><td>결함이 활성화돼 시스템 내부 상태가 올바르지 않은 상태</td><td>메모리의 잘못된 값, 잘못 계산된 변수</td></tr>
+      <tr><td>장애</td><td>Failure</td><td>오류가 서비스 경계를 넘어 외부에서 관찰 가능한 이상 동작</td><td>시스템 다운, 잘못된 출력 전달</td></tr>
+    </table>
+  </div>
+
+  <p class="sec">Failure 분류</p>
+  <div class="grid2">
+    <div class="card">
+      <span class="badge b-coral">도메인(Domain) 기준</span>
+      <div class="card-s" style="font-size:12px;line-height:1.7">
+        <b style="color:var(--color-text-primary)">Content failure</b> — 값이 틀림<br>
+        <b style="color:var(--color-text-primary)">Timing failure</b> — 시간이 어긋남<br>
+        <b style="color:var(--color-text-primary)">Commission failure</b> — 해선 안 될 일 수행<br>
+        <b style="color:var(--color-text-primary)">Omission failure</b> — 해야 할 일 미수행
+      </div>
+    </div>
+    <div class="card">
+      <span class="badge b-blue">감지 가능성 기준</span>
+      <div class="card-s" style="font-size:12px;line-height:1.7">
+        <b style="color:var(--color-text-primary)">Consistent failure</b> — 동일 조건에서 항상 같은 장애<br>
+        <b style="color:var(--color-text-primary)">Inconsistent failure</b> — 환경·타이밍에 따라 다름 (비잔틴 장애 포함)<br>
+        <b style="color:var(--color-text-primary)">Byzantine failure</b> — 가장 다루기 어려운 임의적 장애
+      </div>
+    </div>
+  </div>
+
+  <div class="warn">비잔틴 장애(Byzantine Failure): 시스템이 잘못된 정보를 다른 구성요소에 보내는 최악의 장애 유형. 분산 시스템에서 합의(Consensus) 알고리즘으로 대응</div>
+  <div class="one"><span>한 줄 암기</span>Fault(잠재) → Error(내부 상태 이상) → Failure(외부 관찰 가능 이상) — 결함이 활성화돼야 오류, 오류가 경계 넘어야 장애</div>
+</div>
+
+<div class="panel" id="p2">
+  <p class="sec">속성 (Attributes) — RAMAS + α</p>
+  <div class="tw">
+    <table>
+      <tr><th>속성</th><th>영문</th><th>정의</th><th>측정 방식</th></tr>
+      <tr><td>가용성</td><td>Availability</td><td>요청 시 서비스를 즉시 제공할 준비가 된 정도</td><td>MTBF/(MTBF+MTTR)</td></tr>
+      <tr><td>신뢰성</td><td>Reliability</td><td>주어진 기간 동안 명세대로 서비스를 유지하는 확률</td><td>MTBF, 신뢰도 함수 R(t)</td></tr>
+      <tr><td>안전성</td><td>Safety</td><td>파국적(catastrophic) 결과 없이 운영되는 능력</td><td>위험 발생률, HAZOP</td></tr>
+      <tr><td>무결성</td><td>Integrity</td><td>비인가 변경 없이 데이터·서비스를 유지하는 능력</td><td>무결성 위반 건수</td></tr>
+      <tr><td>유지보수성</td><td>Maintainability</td><td>장애 후 규정 시간 내 복구·수정 가능한 능력</td><td>MTTR</td></tr>
+      <tr><td>보안성</td><td>Security</td><td>기밀성·무결성·가용성을 동시에 보장하는 능력 (CIA)</td><td>취약점 수, 침해 빈도</td></tr>
+      <tr><td>성능보장성</td><td>Performability</td><td>일부 장애 상태에서도 성능을 유지하는 능력</td><td>부분 장애 시 성능 지표</td></tr>
+    </table>
+  </div>
+
+  <p class="sec">가용성 vs 신뢰성 구분 (빈출 혼동 주의)</p>
+  <div class="grid2">
+    <div class="card">
+      <span class="badge b-teal">가용성 (Availability)</span>
+      <div class="card-t">순간적 준비 상태</div>
+      <div class="card-s">특정 시점에 서비스가 작동하고 있을 확률.<br>다운 → 복구를 반복해도 평균 가동률이 높으면 가용성 높음</div>
+    </div>
+    <div class="card">
+      <span class="badge b-blue">신뢰성 (Reliability)</span>
+      <div class="card-t">연속 운영 능력</div>
+      <div class="card-s">t=0부터 중단 없이 동작하는 확률.<br>잦은 재시작이 있으면 가용성은 높아도 신뢰성은 낮을 수 있음</div>
+    </div>
+  </div>
+
+  <div class="tip">안전성(Safety) vs 보안성(Security): Safety = 시스템이 사람·환경에 해를 끼치지 않는 것 (물리적 위험), Security = 외부 공격·비인가 접근 방어 (논리적 위험)</div>
+  <div class="one"><span>한 줄 암기">한 줄 암기</span>속성 암기: <b>A</b>vailability · <b>R</b>eliability · <b>S</b>afety · <b>I</b>ntegrity · <b>M</b>aintainability → <b>ARSIM</b> (+ Security, Performability)</div>
+</div>
+
+<div class="panel" id="p3">
+  <p class="sec">수단 (Means) — 4가지 달성 방법</p>
+  <div class="grid2">
+    <div class="card">
+      <span class="badge b-teal">Fault Prevention (결함 예방)</span>
+      <div class="card-t">결함이 생기지 않도록 사전 차단</div>
+      <div class="card-s">정형 명세(Formal Specification), 정적 분석, 코드 리뷰, 엄격한 개발 방법론 적용</div>
+    </div>
+    <div class="card">
+      <span class="badge b-blue">Fault Tolerance (결함 허용)</span>
+      <div class="card-t">결함이 있어도 서비스 계속 제공</div>
+      <div class="card-s">이중화(Redundancy), 체크포인트·롤백, 예외 처리, N-버전 프로그래밍, 페일오버</div>
+    </div>
+    <div class="card">
+      <span class="badge b-amber">Fault Removal (결함 제거)</span>
+      <div class="card-t">존재하는 결함을 찾아 제거</div>
+      <div class="card-s">검증(Verification), 유효성확인(Validation), 테스팅, 디버깅, 소프트웨어 검사</div>
+    </div>
+    <div class="card">
+      <span class="badge b-purple">Fault Forecasting (결함 예측)</span>
+      <div class="card-t">결함 발생 가능성·영향 예측</div>
+      <div class="card-s">정성적: FMEA, FTA, HAZOP<br>정량적: 신뢰도 모델, 마르코프 체인, 결함 예측 모델</div>
+    </div>
+  </div>
+
+  <p class="sec">Fault Tolerance 핵심 기법</p>
+  <div class="tw">
+    <table>
+      <tr><th>기법</th><th>설명</th><th>적용 사례</th></tr>
+      <tr><td>N-버전 프로그래밍</td><td>N개의 독립 버전 동시 실행 → 투표로 결과 선택</td><td>항공 제어, 원전</td></tr>
+      <tr><td>Recovery Block</td><td>주 블록 실패 시 대체 블록 실행 (순차적)</td><td>실시간 시스템</td></tr>
+      <tr><td>체크포인트·롤백</td><td>주기적 상태 저장 → 오류 시 복원</td><td>DB 트랜잭션, 배치</td></tr>
+      <tr><td>예외 처리</td><td>오류 상태를 잡아 정상 흐름으로 복원</td><td>일반 SW 전반</td></tr>
+      <tr><td>이중화(Redundancy)</td><td>HW/SW 복제로 단일 장애점(SPOF) 제거</td><td>HA 클러스터, RAID</td></tr>
+    </table>
+  </div>
+
+  <p class="sec">결함 예측 기법</p>
+  <div class="grid3">
+    <div class="card">
+      <span class="badge b-coral">FMEA</span>
+      <div class="card-t">고장 유형 및 영향 분석</div>
+      <div class="card-s">구성요소별 고장 유형 → 시스템 영향 분석. 위험우선순위(RPN) 산출</div>
+    </div>
+    <div class="card">
+      <span class="badge b-purple">FTA</span>
+      <div class="card-t">결함 트리 분석</div>
+      <div class="card-s">Top-Down. 최상위 장애를 AND/OR 게이트로 원인 분해. 정량 확률 계산 가능</div>
+    </div>
+    <div class="card">
+      <span class="badge b-amber">HAZOP</span>
+      <div class="card-t">위험 및 운용성 연구</div>
+      <div class="card-s">이탈어(Guide Words: No, More, Less 등) 사용해 위험 시나리오 도출</div>
+    </div>
+  </div>
+
+  <div class="one"><span>한 줄 암기</span>수단 4가지: <b>예</b>방(Prevention) · <b>허</b>용(Tolerance) · <b>제</b>거(Removal) · <b>예</b>측(Forecasting) — 예허제예</div>
+</div>
+
+<div class="panel" id="p4">
+  <p class="sec">신뢰성 측정 핵심 공식</p>
+  <div class="formula">가용성(A) = MTBF / (MTBF + MTTR)</div>
+  <div class="formula">신뢰도 함수 R(t) = e^(-λt)  [지수분포, λ = 고장률]</div>
+  <div class="formula">고장률(λ) = 1 / MTBF</div>
+  <div class="formula">MTBF = 총 운영시간 / 고장 횟수</div>
+  <div class="formula">MTTR = 총 복구시간 / 고장 횟수</div>
+
+  <p class="sec">직렬·병렬 시스템 신뢰도</p>
+  <div class="grid2">
+    <div class="card">
+      <span class="badge b-coral">직렬 시스템</span>
+      <div class="card-t">모두 정상이어야 작동</div>
+      <div class="card-s" style="font-family:var(--font-mono);margin-bottom:6px">Rs = R1 × R2 × ... × Rn</div>
+      <div class="card-s">구성요소 중 하나라도 실패하면 전체 장애. 개수 늘수록 신뢰도 감소</div>
+    </div>
+    <div class="card">
+      <span class="badge b-teal">병렬(이중화) 시스템</span>
+      <div class="card-t">하나만 정상이면 작동</div>
+      <div class="card-s" style="font-family:var(--font-mono);margin-bottom:6px">Rp = 1 - (1-R1)(1-R2)...(1-Rn)</div>
+      <div class="card-s">모두 실패해야 전체 장애. 개수 늘수록 신뢰도 증가</div>
+    </div>
+  </div>
+
+  <p class="sec">욕조 곡선 (Bathtub Curve) — 고장률 시간 변화</p>
+  <div class="tw">
+    <table>
+      <tr><th>구간</th><th>명칭</th><th>고장률</th><th>원인 및 대응</th></tr>
+      <tr><td>초기</td><td>유아 사망기 (Burn-in)</td><td>감소 (DFR)</td><td>초기 불량·설계 결함. 번인 테스트·초기 검수로 조기 제거</td></tr>
+      <tr><td>중기</td><td>정상 운영기 (Useful Life)</td><td>일정 (CFR)</td><td>우발 고장. MTBF로 예측 가능. 지수분포 적합</td></tr>
+      <tr><td>말기</td><td>노화기 (Wear-out)</td><td>증가 (IFR)</td><td>마모·노후화. 예방 교체·리엔지니어링 필요</td></tr>
+    </table>
+  </div>
+
+  <div class="tip">지수분포(Exponential Distribution)는 정상 운영기(CFR)에서 고장률이 일정할 때 적용. 메모리리스(Memoryless) 특성으로 감리사 시험 단골 출제</div>
+  <div class="one"><span>한 줄 암기</span>욕조곡선: 초기 DFR(유아사망) → 중기 CFR(지수분포·메모리리스) → 말기 IFR(노화·교체)</div>
+</div>
+
+<div class="panel" id="p5">
+  <p class="sec">위협(Threats) 분류 체계</p>
+  <div class="tw">
+    <table>
+      <tr><th>위협 유형</th><th>분류 기준</th><th>세부 분류</th></tr>
+      <tr><td rowspan="3">Fault 분류</td><td>발생 원인</td><td>설계 결함(Design fault), 물리적 결함(Physical fault), 상호작용 결함(Interaction fault)</td></tr>
+      <tr><td>발생 위치</td><td>내부 결함(Internal), 외부 결함(External)</td></tr>
+      <tr><td>영속성</td><td>영구 결함(Permanent), 간헐적 결함(Intermittent), 일시 결함(Transient)</td></tr>
+      <tr><td>Error 전파</td><td>에러 전파</td><td>에러가 시스템 내부에서 전파되다 서비스 경계를 넘어 Failure가 됨</td></tr>
+      <tr><td rowspan="2">Failure 심각도</td><td>영향 범위</td><td>Minor / Significant / Critical / Catastrophic</td></tr>
+      <tr><td>감지 가능성</td><td>Consistent / Inconsistent / Byzantine</td></tr>
+    </table>
+  </div>
+
+  <p class="sec">간헐적 결함 vs 일시 결함 (빈출 혼동)</p>
+  <div class="grid2">
+    <div class="card">
+      <span class="badge b-amber">간헐적 결함 (Intermittent)</span>
+      <div class="card-t">불규칙 반복 발생</div>
+      <div class="card-s">특정 조건에서 반복적으로 나타남. 재현이 어려워 디버깅 난도 높음. 예: 레이스 컨디션</div>
+    </div>
+    <div class="card">
+      <span class="badge b-purple">일시 결함 (Transient)</span>
+      <div class="card-t">한 번 발생 후 사라짐</div>
+      <div class="card-s">외부 환경(전자기 간섭, 우주선) 등 일시 요인. 재현 불가. 예: 소프트 에러(soft error)</div>
+    </div>
+  </div>
+
+  <p class="sec">위협에 대한 방어 전략 매핑</p>
+  <div class="tw">
+    <table>
+      <tr><th>위협</th><th>주요 수단</th></tr>
+      <tr><td>설계 결함 (Design Fault)</td><td>정형 명세, 코드 리뷰, 정적 분석 (Fault Prevention)</td></tr>
+      <tr><td>물리적 결함 (Physical Fault)</td><td>이중화, 하드웨어 내결함성 설계 (Fault Tolerance)</td></tr>
+      <tr><td>일시·간헐 결함</td><td>체크포인트·롤백, 재시도 로직 (Fault Tolerance)</td></tr>
+      <tr><td>비잔틴 장애</td><td>N-버전 프로그래밍, 합의 알고리즘 (Fault Tolerance)</td></tr>
+      <tr><td>노화·마모</td><td>예방 유지보수, 교체 계획 (Fault Forecasting)</td></tr>
+    </table>
+  </div>
+  <div class="one"><span>한 줄 암기</span>Fault 영속성: <b>영</b>구(Permanent) · <b>간</b>헐(Intermittent) · <b>일</b>시(Transient) — 영간일. 비잔틴 = 가장 다루기 어려운 임의 장애</div>
+</div>
+
+<div class="panel" id="p6">
+  <p class="sec">기출 예상 Q&A</p>
+  <div class="qa-item"><div class="qa-q" onclick="tog(this)">Fault, Error, Failure의 차이를 설명하시오 <span class="icon">▾</span></div><div class="qa-a">Fault(결함)는 오류를 유발할 수 있는 잠재적 원인으로, 활성화 전에는 휴면 상태. Error(오류)는 결함이 활성화돼 시스템 내부 상태가 올바르지 않은 상태. Failure(장애)는 오류가 서비스 경계를 넘어 외부에서 관찰 가능한 이상 동작으로 나타난 것. Fault → Error → Failure 인과 체인으로 연결됨.</div></div>
+
+  <div class="qa-item"><div class="qa-q" onclick="tog(this)">Dependability의 4가지 수단(Means)을 설명하시오 <span class="icon">▾</span></div><div class="qa-a">① Fault Prevention(결함 예방): 정형명세·코드 리뷰로 결함이 생기지 않게 차단. ② Fault Tolerance(결함 허용): 결함이 있어도 이중화·N-버전·체크포인트로 서비스 유지. ③ Fault Removal(결함 제거): 테스팅·검증·디버깅으로 존재하는 결함 제거. ④ Fault Forecasting(결함 예측): FMEA·FTA·신뢰도 모델로 결함 발생 가능성·영향 예측.</div></div>
+
+  <div class="qa-item"><div class="qa-q" onclick="tog(this)">가용성(Availability)과 신뢰성(Reliability)의 차이는? <span class="icon">▾</span></div><div class="qa-a">가용성은 특정 시점에 서비스가 작동하고 있을 확률(MTBF/(MTBF+MTTR))로, 다운→복구를 반복해도 평균 가동률이 높으면 가용성이 높음. 신뢰성은 연속적으로 중단 없이 동작하는 확률(R(t)=e^(-λt))로, 자주 재시작하는 시스템은 가용성이 높아도 신뢰성은 낮을 수 있음.</div></div>
+
+  <div class="qa-item"><div class="qa-q" onclick="tog(this)">N-버전 프로그래밍과 Recovery Block의 차이는? <span class="icon">▾</span></div><div class="qa-a">N-버전 프로그래밍은 N개의 독립적으로 개발된 버전을 동시에 실행하고 투표(Voting)로 결과를 선택하는 병렬 방식. Recovery Block은 주 블록 실행 후 수용 테스트 실패 시 대체 블록으로 순차 전환하는 방식. 전자는 높은 신뢰성, 후자는 낮은 오버헤드가 장점.</div></div>
+
+  <div class="qa-item"><div class="qa-q" onclick="tog(this)">욕조 곡선(Bathtub Curve)의 3구간을 설명하시오 <span class="icon">▾</span></div><div class="qa-a">① 유아 사망기(Burn-in): 초기 고장률 감소(DFR), 설계·제조 결함. 번인 테스트로 조기 제거. ② 정상 운영기(Useful Life): 고장률 일정(CFR), 우발 고장, 지수분포 적용·MTBF 예측 가능. ③ 노화기(Wear-out): 고장률 증가(IFR), 마모·노후화. 예방 교체 및 리엔지니어링 필요.</div></div>
+
+  <div class="qa-item"><div class="qa-q" onclick="tog(this)">비잔틴 장애(Byzantine Failure)란 무엇인가? <span class="icon">▾</span></div><div class="qa-a">시스템 구성요소가 단순히 동작을 중단하는 것이 아니라, 잘못된 정보를 다른 구성요소에 임의로 전송하는 최악의 장애 유형. 장애 감지 자체가 어려움. 분산 시스템에서 비잔틴 내결함성 합의 알고리즘(PBFT 등)이나 N-버전 프로그래밍으로 대응.</div></div>
+
+  <div class="qa-item"><div class="qa-q" onclick="tog(this)">직렬 vs 병렬 시스템 신뢰도 차이 및 계산 방식은? <span class="icon">▾</span></div><div class="qa-a">직렬: Rs = R1 × R2 × ... × Rn. 모든 구성요소가 정상이어야 시스템 정상. 요소 추가 시 신뢰도 감소. 병렬(이중화): Rp = 1-(1-R1)(1-R2)...(1-Rn). 모든 요소가 동시에 실패해야 시스템 장애. 요소 추가 시 신뢰도 증가. 예: R=0.9인 요소 2개 병렬 → 1-(0.1×0.1)=0.99.</div></div>
+</div>
+</div>
+<script>
+function sw(i){
+  document.querySelectorAll('.tab').forEach((t,j)=>t.classList.toggle('on',i===j));
+  document.querySelectorAll('.panel').forEach((p,j)=>p.classList.toggle('on',i===j));
+}
+function tog(el){
+  const a=el.nextElementSibling;
+  a.classList.toggle('open');
+  el.querySelector('.icon').textContent=a.classList.contains('open')?'▴':'▾';
+}
+</script>

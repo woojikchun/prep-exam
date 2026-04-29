@@ -1,0 +1,734 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;900&family=JetBrains+Mono:wght@400;700&display=swap');
+:root{--bg:#070510;--s1:#0c0818;--s2:#110c22;--s3:#16102c;--bdr:#2d1a5a;--a1:#c084fc;--a2:#34d399;--a3:#fbbf24;--a4:#f87171;--a5:#60a5fa;--a6:#fb923c;--txt:#e2e8f0;--mu:#64748b;}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Noto Sans KR',sans-serif;background:var(--bg);color:var(--txt);min-height:100vh;}
+.hdr{padding:20px 24px 14px;background:linear-gradient(150deg,#070510,#100820,#070510);border-bottom:1px solid var(--bdr);}
+.hdr-r{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:6px;}
+.pill{padding:3px 10px;border-radius:20px;font-size:10px;font-weight:700;}
+.p1{background:linear-gradient(135deg,#3b0764,var(--a1));color:#fff;}
+.p2{background:rgba(52,211,153,.15);color:var(--a2);border:1px solid rgba(52,211,153,.3);}
+.p3{background:rgba(251,191,36,.15);color:var(--a3);border:1px solid rgba(251,191,36,.3);}
+h1{font-size:18px;font-weight:900;}
+.h1g{background:linear-gradient(90deg,var(--a1),var(--a2),var(--a5));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.hdr p{color:var(--mu);font-size:11.5px;margin-top:3px;}
+.tabs{display:flex;padding:0 24px;background:var(--s1);border-bottom:1px solid var(--bdr);overflow-x:auto;scrollbar-width:none;}
+.tabs::-webkit-scrollbar{display:none;}
+.tab{padding:10px 13px;font-size:11.5px;font-weight:600;color:var(--mu);cursor:pointer;border-bottom:2px solid transparent;white-space:nowrap;transition:all .2s;background:none;border-top:none;border-left:none;border-right:none;font-family:'Noto Sans KR',sans-serif;}
+.tab.on{color:var(--a1);border-bottom-color:var(--a1);}
+.wrap{padding:18px 24px;max-width:960px;margin:0 auto;}
+.pnl{display:none;}.pnl.on{display:block;}
+.card{background:var(--s1);border:1px solid var(--bdr);border-radius:11px;padding:16px;margin-bottom:12px;}
+.card-h{display:flex;align-items:center;gap:9px;margin-bottom:12px;}
+.ico{width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0;}
+.ip{background:rgba(192,132,252,.15);}.ig{background:rgba(52,211,153,.15);}.iy{background:rgba(251,191,36,.15);}.ir{background:rgba(248,113,113,.15);}.ib{background:rgba(96,165,250,.15);}
+.card h3{font-size:13.5px;font-weight:700;}
+.tag{display:inline-block;padding:2px 7px;border-radius:4px;font-size:9.5px;font-weight:600;margin:2px 2px 2px 0;}
+.tp{background:rgba(192,132,252,.12);color:var(--a1);border:1px solid rgba(192,132,252,.25);}
+.tg{background:rgba(52,211,153,.12);color:var(--a2);border:1px solid rgba(52,211,153,.25);}
+.ty{background:rgba(251,191,36,.12);color:var(--a3);border:1px solid rgba(251,191,36,.25);}
+.tr{background:rgba(248,113,113,.12);color:var(--a4);border:1px solid rgba(248,113,113,.25);}
+.tb{background:rgba(96,165,250,.12);color:var(--a5);border:1px solid rgba(96,165,250,.25);}
+.to{background:rgba(251,146,60,.12);color:var(--a6);border:1px solid rgba(251,146,60,.25);}
+table{width:100%;border-collapse:collapse;font-size:12px;}
+th{background:var(--s2);color:var(--mu);font-weight:700;padding:7px 11px;text-align:left;font-size:9.5px;text-transform:uppercase;letter-spacing:.5px;border-bottom:1px solid var(--bdr);}
+td{padding:8px 11px;border-bottom:1px solid rgba(45,26,90,.5);vertical-align:top;line-height:1.55;}
+tr:last-child td{border-bottom:none;}
+tr:hover td{background:rgba(255,255,255,.02);}
+td strong{color:var(--a3);}
+ul.il{list-style:none;display:flex;flex-direction:column;gap:6px;}
+ul.il li{font-size:12px;padding-left:15px;position:relative;line-height:1.5;}
+ul.il li::before{content:'▸';position:absolute;left:0;color:var(--a1);font-size:9.5px;top:3px;}
+ul.il li strong{color:var(--a3);}
+ul.il li em{color:var(--a2);font-style:normal;}
+.memo{background:linear-gradient(135deg,rgba(192,132,252,.07),rgba(52,211,153,.07));border:1px solid rgba(192,132,252,.22);border-left:3px solid var(--a1);border-radius:7px;padding:9px 13px;font-size:12px;font-weight:600;color:var(--a1);margin:9px 0;}
+.memo::before{content:'🎯 한 줄 암기 │ ';color:var(--mu);font-weight:400;}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px;}
+@media(max-width:580px){.g2{grid-template-columns:1fr;}}
+.formula{background:var(--s2);border:1px solid rgba(192,132,252,.2);border-radius:7px;padding:10px 13px;font-family:'JetBrains Mono',monospace;font-size:11px;margin:8px 0;line-height:1.7;color:var(--a2);}
+.formula .cm{color:var(--mu);}
+.formula .kw{color:var(--a1);}
+.formula .val{color:var(--a3);}
+/* acc */
+.acc{background:var(--s2);border:1px solid var(--bdr);border-radius:9px;margin-bottom:8px;overflow:hidden;}
+.acc-h{display:flex;justify-content:space-between;align-items:center;padding:10px 14px;cursor:pointer;user-select:none;}
+.acc-h:hover{background:rgba(255,255,255,.02);}
+.acc-title{font-size:12.5px;font-weight:800;flex:1;}
+.acc-tgl{color:var(--mu);transition:transform .2s;font-size:14px;flex-shrink:0;margin-left:8px;}
+.acc.open .acc-tgl{transform:rotate(180deg);}
+.acc-body{display:none;border-top:1px solid var(--bdr);padding:12px 14px;background:var(--s3);font-size:12px;}
+.acc.open .acc-body{display:block;}
+.acc-body strong{color:var(--a3);}
+.acc-body em{color:var(--a2);font-style:normal;}
+/* confusion matrix */
+.cm-grid{display:grid;grid-template-columns:auto 1fr 1fr;gap:2px;margin:10px 0;font-size:11.5px;}
+.cm-cell{padding:9px;text-align:center;border-radius:5px;}
+/* qa */
+.qa{background:var(--s1);border:1px solid var(--bdr);border-radius:9px;margin-bottom:10px;overflow:hidden;}
+.qa:hover{border-color:rgba(192,132,252,.25);}
+.qa-hd{padding:12px 16px;cursor:pointer;display:flex;justify-content:space-between;align-items:flex-start;gap:9px;user-select:none;}
+.qa-meta{display:flex;align-items:center;gap:5px;margin-bottom:4px;flex-wrap:wrap;}
+.qn{font-family:'JetBrains Mono',monospace;font-size:9.5px;font-weight:700;color:var(--mu);}
+.qq{font-size:12.5px;font-weight:600;line-height:1.5;}
+.tgl{color:var(--mu);font-size:15px;flex-shrink:0;transition:transform .2s;}
+.qa.open .tgl{transform:rotate(180deg);}
+.qa-bd{display:none;border-top:1px solid var(--bdr);padding:12px 16px;background:var(--s2);}
+.qa.open .qa-bd{display:block;}
+.chs{display:flex;flex-direction:column;gap:6px;margin-bottom:10px;}
+.ch{display:flex;align-items:flex-start;gap:9px;padding:8px 12px;border-radius:6px;border:1px solid var(--bdr);font-size:12px;cursor:pointer;background:var(--s1);line-height:1.45;transition:all .15s;}
+.ch:hover:not(.lk){border-color:rgba(192,132,252,.3);background:rgba(192,132,252,.04);}
+.ch.ok{border-color:var(--a2);background:rgba(52,211,153,.1);color:var(--a2);}
+.ch.ng{border-color:var(--a4);background:rgba(248,113,113,.08);color:var(--a4);opacity:.7;}
+.ch.lk{cursor:default;}
+.cnum{font-family:'JetBrains Mono',monospace;font-weight:700;font-size:10.5px;flex-shrink:0;margin-top:1px;color:var(--mu);}
+.ch.ok .cnum{color:var(--a2);}.ch.ng .cnum{color:var(--a4);}
+.exp{background:rgba(192,132,252,.05);border:1px solid rgba(192,132,252,.18);border-radius:7px;padding:11px 13px;font-size:12px;line-height:1.6;display:none;}
+.exp.show{display:block;}
+.exp-t{font-size:9.5px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--a1);margin-bottom:5px;}
+.exp strong{color:var(--a3);}
+.exp em{color:var(--a2);font-style:normal;}
+.ox-wr{display:flex;gap:8px;margin-bottom:10px;}
+.ox{flex:1;padding:10px;border-radius:7px;border:1px solid var(--bdr);font-size:18px;cursor:pointer;background:var(--s1);transition:all .15s;font-family:'Noto Sans KR',sans-serif;color:var(--txt);}
+.ox:hover:not(.lk){transform:scale(1.02);}
+.ox.so{border-color:var(--a2);background:rgba(52,211,153,.15);}
+.ox.sx{border-color:var(--a4);background:rgba(248,113,113,.1);}
+.ox.lk{cursor:default;}
+.diff{display:inline-block;padding:2px 6px;border-radius:9px;font-size:8.5px;font-weight:700;}
+.easy{background:rgba(52,211,153,.2);color:var(--a2);}
+.mid{background:rgba(251,191,36,.2);color:var(--a3);}
+.hard{background:rgba(248,113,113,.2);color:var(--a4);}
+.fb-wr{display:flex;gap:5px;flex-wrap:wrap;margin-bottom:12px;}
+.fb{padding:4px 11px;border-radius:18px;border:1px solid var(--bdr);font-size:10.5px;font-weight:600;cursor:pointer;background:var(--s2);color:var(--mu);transition:all .15s;font-family:'Noto Sans KR',sans-serif;}
+.fb.on{background:rgba(192,132,252,.15);color:var(--a1);border-color:var(--a1);}
+.sc-b{background:var(--s2);border:1px solid var(--bdr);border-radius:7px;padding:4px 12px;font-size:11.5px;color:var(--mu);}
+.sc-b span{color:var(--a1);font-weight:700;}
+</style>
+</head>
+<body>
+<div class="hdr">
+  <div class="hdr-r">
+    <span class="pill p1">Machine Learning (딥러닝 제외)</span>
+    <span class="pill p2">지도·비지도·강화학습</span>
+    <span class="pill p3">감리사 핵심 출제</span>
+  </div>
+  <h1><span class="h1g">머신러닝 기술 완전 정리</span></h1>
+  <p>ML 개요·분류 · 지도학습 알고리즘 · 비지도학습 · 평가지표 · 과적합·정규화 · 특성공학 · 앙상블</p>
+</div>
+<div class="tabs">
+  <button class="tab on" data-p="p1">🧠 ML 개요·분류</button>
+  <button class="tab" data-p="p2">📈 지도학습 알고리즘</button>
+  <button class="tab" data-p="p3">🔍 비지도·강화학습</button>
+  <button class="tab" data-p="p4">📊 모델 평가지표</button>
+  <button class="tab" data-p="p5">⚖️ 과적합·정규화·검증</button>
+  <button class="tab" data-p="p6">🌲 앙상블·특성공학</button>
+  <button class="tab" data-p="p7">❓ 예상문제</button>
+</div>
+<div class="wrap">
+
+<!-- P1: ML 개요 -->
+<div class="pnl on" id="p1">
+  <div class="card">
+    <div class="card-h"><div class="ico ip">🧠</div><h3>머신러닝 (Machine Learning) 정의 및 분류</h3></div>
+    <div style="background:var(--s2);border:1px solid rgba(192,132,252,.28);border-radius:9px;padding:12px;margin-bottom:11px;font-size:12.5px;line-height:1.8;">
+      <strong style="color:var(--a1)">머신러닝</strong>: 명시적으로 프로그래밍하지 않고 <em style="color:var(--a3);font-style:normal;">데이터로부터 패턴을 학습</em>하여 예측·분류·군집화 등의 작업을 수행하는 AI 기법 (Arthur Samuel, 1959)
+    </div>
+    <table>
+      <thead><tr><th>학습 유형</th><th>특징</th><th>대표 알고리즘</th><th>대표 문제</th></tr></thead>
+      <tbody>
+        <tr><td><span class="tag tp">지도학습 (Supervised)</span></td><td>입력(X)과 정답(y) 쌍으로 학습 / 레이블 데이터 필요</td><td>선형회귀·로지스틱회귀·SVM·결정트리·KNN·나이브베이즈</td><td>분류·회귀</td></tr>
+        <tr><td><span class="tag tg">비지도학습 (Unsupervised)</span></td><td>정답 레이블 없이 데이터 구조·패턴 발견</td><td>K-Means·DBSCAN·PCA·t-SNE·연관 규칙</td><td>군집화·차원축소·이상탐지</td></tr>
+        <tr><td><span class="tag ty">준지도학습 (Semi-supervised)</span></td><td>소량 레이블 + 대량 비레이블 데이터 함께 활용</td><td>자기 훈련(Self-training), 그래프 기반</td><td>레이블 비용 절감</td></tr>
+        <tr><td><span class="tag to">강화학습 (Reinforcement)</span></td><td>에이전트가 환경과 상호작용하며 보상 최대화</td><td>Q-Learning·SARSA·Policy Gradient</td><td>게임AI·로봇·자율주행</td></tr>
+        <tr><td><span class="tag tb">자기지도학습 (Self-supervised)</span></td><td>데이터 자체에서 레이블 생성하여 학습</td><td>Contrastive Learning, BERT 사전학습</td><td>표현 학습</td></tr>
+      </tbody>
+    </table>
+    <div class="memo">ML 학습 유형: 지도(레이블O·분류·회귀) / 비지도(레이블X·군집·차원축소) / 강화(보상최대화·환경상호작용)</div>
+  </div>
+
+  <div class="card">
+    <div class="card-h"><div class="ico ig">📋</div><h3>ML 파이프라인 (CRISP-DM)</h3></div>
+    <div style="display:flex;gap:0;overflow-x:auto;margin:8px 0;">
+      <div style="flex:1;min-width:90px;background:rgba(192,132,252,.08);border:1px solid rgba(192,132,252,.3);border-radius:7px 0 0 7px;padding:10px 8px;text-align:center;">
+        <div style="font-size:16px;margin-bottom:3px;">🎯</div>
+        <div style="font-size:10.5px;font-weight:800;color:var(--a1);">비즈니스<br>이해</div>
+      </div>
+      <div style="flex:1;min-width:90px;background:rgba(52,211,153,.08);border:1px solid rgba(52,211,153,.3);border:1px solid rgba(52,211,153,.3);border-left:none;padding:10px 8px;text-align:center;">
+        <div style="font-size:16px;margin-bottom:3px;">📊</div>
+        <div style="font-size:10.5px;font-weight:800;color:var(--a2);">데이터<br>이해</div>
+      </div>
+      <div style="flex:1;min-width:90px;background:rgba(251,191,36,.08);border:1px solid rgba(251,191,36,.3);border-left:none;padding:10px 8px;text-align:center;">
+        <div style="font-size:16px;margin-bottom:3px;">🔧</div>
+        <div style="font-size:10.5px;font-weight:800;color:var(--a3);">데이터<br>준비</div>
+      </div>
+      <div style="flex:1;min-width:90px;background:rgba(96,165,250,.08);border:1px solid rgba(96,165,250,.3);border-left:none;padding:10px 8px;text-align:center;">
+        <div style="font-size:16px;margin-bottom:3px;">🤖</div>
+        <div style="font-size:10.5px;font-weight:800;color:var(--a5);">모델링</div>
+      </div>
+      <div style="flex:1;min-width:90px;background:rgba(248,113,113,.08);border:1px solid rgba(248,113,113,.3);border-left:none;padding:10px 8px;text-align:center;">
+        <div style="font-size:16px;margin-bottom:3px;">📏</div>
+        <div style="font-size:10.5px;font-weight:800;color:var(--a4);">평가</div>
+      </div>
+      <div style="flex:1;min-width:90px;background:rgba(251,146,60,.08);border:1px solid rgba(251,146,60,.3);border-left:none;border-radius:0 7px 7px 0;padding:10px 8px;text-align:center;">
+        <div style="font-size:16px;margin-bottom:3px;">🚀</div>
+        <div style="font-size:10.5px;font-weight:800;color:var(--a6);">배포</div>
+      </div>
+    </div>
+    <div class="g2">
+      <div>
+        <p style="font-size:11.5px;font-weight:800;color:var(--a3);margin-bottom:7px;">ML 핵심 용어</p>
+        <ul class="il">
+          <li><strong>특성(Feature):</strong> 입력 변수 X — 모델 학습에 사용</li>
+          <li><strong>레이블(Label·타깃):</strong> 예측해야 할 정답 y</li>
+          <li><strong>파라미터:</strong> 학습을 통해 결정되는 모델 내부 값</li>
+          <li><strong>하이퍼파라미터:</strong> 사람이 설정하는 학습 설정값 (학습률·깊이 등)</li>
+          <li><strong>손실 함수(Loss):</strong> 예측값과 실제값 차이를 측정</li>
+          <li><strong>경사 하강법:</strong> 손실 함수를 최소화하는 최적화 알고리즘</li>
+        </ul>
+      </div>
+      <div>
+        <p style="font-size:11.5px;font-weight:800;color:var(--a2);margin-bottom:7px;">데이터 분할</p>
+        <ul class="il">
+          <li><strong>훈련 세트(Train):</strong> 모델 학습에 사용 (보통 60~80%)</li>
+          <li><strong>검증 세트(Validation):</strong> 하이퍼파라미터 튜닝 (10~20%)</li>
+          <li><strong>테스트 세트(Test):</strong> 최종 성능 평가 (10~20%)</li>
+          <li><strong>k-겹 교차검증:</strong> k개로 나눠 k회 학습·검증 반복</li>
+          <li><strong>홀드아웃:</strong> 단순 훈련·테스트 2분할</li>
+        </ul>
+      </div>
+    </div>
+    <div class="memo">ML 파이프라인: 비즈니스이해→데이터이해→데이터준비→모델링→평가→배포 (CRISP-DM 6단계)</div>
+  </div>
+</div>
+
+<!-- P2: 지도학습 -->
+<div class="pnl" id="p2">
+  <div class="card">
+    <div class="card-h"><div class="ico iy">📈</div><h3>지도학습 주요 알고리즘</h3></div>
+
+    <div class="acc open" onclick="this.classList.toggle('open')">
+      <div class="acc-h"><div class="acc-title" style="color:var(--a1);">선형 회귀 (Linear Regression) <span class="tag tp">회귀</span></div><div class="acc-tgl">▾</div></div>
+      <div class="acc-body">
+        <ul class="il">
+          <li><strong>원리:</strong> 입력 특성의 <em>선형 결합</em>으로 연속형 값 예측 — ŷ = w₁x₁ + w₂x₂ + ... + b</li>
+          <li><strong>손실 함수:</strong> MSE (평균 제곱 오차) — 예측값과 실제값 차이의 제곱 평균</li>
+          <li><strong>가정:</strong> 선형성·독립성·등분산성·정규성 (선형 관계 없으면 부적합)</li>
+          <li><strong>규제:</strong> Ridge(L2)·Lasso(L1)·ElasticNet으로 과적합 방지</li>
+          <li><strong>Ridge vs Lasso:</strong> Ridge=모든 특성 유지·계수 축소 / Lasso=불필요 특성 계수를 0으로(특성 선택)</li>
+        </ul>
+        <div class="formula"><span class="kw">MSE</span> = (1/n) Σ(yᵢ - ŷᵢ)²
+<span class="kw">Ridge</span>: MSE + λΣwⱼ²  <span class="cm">(L2 패널티)</span>
+<span class="kw">Lasso</span>: MSE + λΣ|wⱼ|  <span class="cm">(L1 패널티 → 희소 모델)</span></div>
+      </div>
+    </div>
+
+    <div class="acc" onclick="this.classList.toggle('open')">
+      <div class="acc-h"><div class="acc-title" style="color:var(--a2);">로지스틱 회귀 (Logistic Regression) <span class="tag tg">분류</span></div><div class="acc-tgl">▾</div></div>
+      <div class="acc-body">
+        <ul class="il">
+          <li><strong>원리:</strong> 선형 결합의 결과를 <em>시그모이드(σ) 함수</em>로 0~1 확률로 변환 → 이진 분류</li>
+          <li><strong>결정 경계:</strong> P(y=1|x) ≥ 0.5 이면 클래스 1로 분류</li>
+          <li><strong>손실 함수:</strong> Binary Cross-Entropy (로그 손실)</li>
+          <li><strong>다중 분류:</strong> Softmax 함수 사용 (Multinomial Logistic Regression)</li>
+          <li><strong>특징:</strong> 확률 출력 / 선형 결정 경계 / 해석 용이 / 이상치에 강인</li>
+        </ul>
+        <div class="formula"><span class="kw">σ(z)</span> = 1 / (1 + e<sup>-z</sup>)   <span class="cm"># 시그모이드 함수</span>
+<span class="kw">Binary CE</span> = -[y·log(ŷ) + (1-y)·log(1-ŷ)]</div>
+      </div>
+    </div>
+
+    <div class="acc" onclick="this.classList.toggle('open')">
+      <div class="acc-h"><div class="acc-title" style="color:var(--a3);">서포트 벡터 머신 (SVM) <span class="tag ty">⭐핵심</span></div><div class="acc-tgl">▾</div></div>
+      <div class="acc-body">
+        <ul class="il">
+          <li><strong>원리:</strong> 클래스 간 <em>마진(Margin)을 최대화</em>하는 결정 경계(초평면) 찾기</li>
+          <li><strong>서포트 벡터:</strong> 결정 경계에 가장 가까운 데이터 포인트 — 이것들이 경계를 결정</li>
+          <li><strong>커널 트릭(Kernel Trick):</strong> 선형 분리 불가 데이터를 고차원으로 변환하여 분리</li>
+          <li><strong>주요 커널:</strong> 선형(Linear)·다항식(Polynomial)·RBF(가우시안·가장 많이 사용)</li>
+          <li><strong>C 하이퍼파라미터:</strong> 마진과 오분류 트레이드오프 / C 크면 과적합, 작으면 과소적합</li>
+          <li><strong>장점:</strong> 고차원 효과적 / 메모리 효율 / 강력한 일반화</li>
+          <li><strong>단점:</strong> 대용량 데이터에 느림 / 확률 출력 없음</li>
+        </ul>
+        <div class="formula"><span class="cm"># 마진 = 결정 경계로부터 서포트 벡터까지 거리의 2배</span>
+<span class="kw">하드마진:</span> 완벽한 분리 요구 (이상치 허용 안함)
+<span class="kw">소프트마진:</span> C 파라미터로 오분류 허용 정도 조절</div>
+      </div>
+    </div>
+
+    <div class="acc" onclick="this.classList.toggle('open')">
+      <div class="acc-h"><div class="acc-title" style="color:var(--a5);">결정 트리 (Decision Tree) <span class="tag tb">⭐핵심</span></div><div class="acc-tgl">▾</div></div>
+      <div class="acc-body">
+        <ul class="il">
+          <li><strong>원리:</strong> 데이터를 특성 기준으로 <em>트리 구조로 재귀 분할</em> — 조건 분기로 결과 예측</li>
+          <li><strong>분할 기준:</strong> 지니 불순도(Gini Impurity)·엔트로피(정보 이득)·분산 축소(회귀)</li>
+          <li><strong>지니 불순도:</strong> G = 1 - Σpᵢ² / 값이 0에 가까울수록 순수한 노드</li>
+          <li><strong>엔트로피:</strong> H = -Σpᵢ·log₂(pᵢ) / 정보 이득 = 분할 전 엔트로피 - 분할 후 엔트로피</li>
+          <li><strong>장점:</strong> 해석 용이(화이트박스) / 전처리 불필요 / 비선형 패턴 포착</li>
+          <li><strong>단점:</strong> 과적합 취약 (깊이 제한·가지치기로 대응) / 불안정(데이터 변화에 민감)</li>
+          <li><strong>가지치기(Pruning):</strong> 사전(Pre-pruning: max_depth·min_samples) / 사후(Post-pruning)</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="acc" onclick="this.classList.toggle('open')">
+      <div class="acc-h"><div class="acc-title" style="color:var(--a4);">K-최근접 이웃 (KNN) <span class="tag tr">인스턴스 기반</span></div><div class="acc-tgl">▾</div></div>
+      <div class="acc-body">
+        <ul class="il">
+          <li><strong>원리:</strong> 새 데이터와 <em>가장 가까운 K개 이웃의 클래스(다수결)·값(평균)</em>으로 예측</li>
+          <li><strong>게으른 학습(Lazy Learning):</strong> 모델을 따로 구축하지 않고 전체 훈련 데이터를 저장</li>
+          <li><strong>K 선택:</strong> K 너무 작으면 과적합 / K 너무 크면 과소적합 (홀수 권장 — 동점 방지)</li>
+          <li><strong>거리 척도:</strong> 유클리드·맨해튼·민코프스키 거리</li>
+          <li><strong>특성 스케일링 필수:</strong> 거리 기반이므로 표준화·정규화 필요</li>
+          <li><strong>단점:</strong> 예측 느림(O(n)) / 고차원에서 성능 저하(차원의 저주)</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="acc" onclick="this.classList.toggle('open')">
+      <div class="acc-h"><div class="acc-title" style="color:var(--a6);">나이브 베이즈 (Naïve Bayes) <span class="tag to">확률적 분류</span></div><div class="acc-tgl">▾</div></div>
+      <div class="acc-body">
+        <ul class="il">
+          <li><strong>원리:</strong> 베이즈 정리를 기반으로 클래스 사후 확률 계산 — 특성 간 <em>조건부 독립</em> 가정(Naïve)</li>
+          <li><strong>베이즈 정리:</strong> P(y|X) ∝ P(X|y)·P(y) — 사후확률 ∝ 우도 × 사전확률</li>
+          <li><strong>종류:</strong> 가우시안(연속 특성)·다항식(단어 빈도)·베르누이(이진 특성)</li>
+          <li><strong>장점:</strong> 빠른 학습·예측 / 소규모 데이터 효과적 / 텍스트 분류에 강력</li>
+          <li><strong>단점:</strong> 조건부 독립 가정이 현실에서 위배됨</li>
+        </ul>
+        <div class="formula"><span class="kw">P(y|X)</span> = P(X|y)·P(y) / P(X)
+<span class="cm"># 스팸 필터: P(스팸|단어들) ∝ P(단어들|스팸)·P(스팸)</span></div>
+      </div>
+    </div>
+    <div class="memo">지도학습: 선형회귀(MSE)·로지스틱(시그모이드·분류)·SVM(마진최대화·커널)·결정트리(지니·엔트로피)·KNN(K이웃)·나이브베이즈(베이즈정리)</div>
+  </div>
+</div>
+
+<!-- P3: 비지도·강화 -->
+<div class="pnl" id="p3">
+  <div class="card">
+    <div class="card-h"><div class="ico ig">🔍</div><h3>비지도학습 — 군집화</h3></div>
+
+    <div class="acc open" onclick="this.classList.toggle('open')">
+      <div class="acc-h"><div class="acc-title" style="color:var(--a2);">K-Means 군집화 <span class="tag tg">⭐핵심</span></div><div class="acc-tgl">▾</div></div>
+      <div class="acc-body">
+        <ul class="il">
+          <li><strong>원리:</strong> 데이터를 K개 군집으로 나누어 각 군집의 <em>중심(centroid)까지 거리 합 최소화</em></li>
+          <li><strong>알고리즘:</strong> ①K개 중심 초기화 → ②각 점을 가장 가까운 중심에 할당 → ③중심 재계산 → ④수렴까지 반복</li>
+          <li><strong>K 선택 방법:</strong> 엘보우 방법(Elbow Method) — 이너셔(Within-cluster SSE) 감소율이 급격히 줄어드는 K 선택</li>
+          <li><strong>단점:</strong> K 사전 지정 필요 / 원형 군집만 / 이상치에 민감 / 초기값 의존</li>
+          <li><strong>K-Means++ :</strong> 초기 중심을 더 분산되게 선택하여 수렴 개선</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="acc" onclick="this.classList.toggle('open')">
+      <div class="acc-h"><div class="acc-title" style="color:var(--a5);">DBSCAN <span class="tag tb">밀도 기반 군집화</span></div><div class="acc-tgl">▾</div></div>
+      <div class="acc-body">
+        <ul class="il">
+          <li><strong>원리:</strong> 밀도가 높은 영역을 군집으로 정의 — ε(엡실론·반경)과 MinPts(최소 포인트 수) 기반</li>
+          <li><strong>포인트 분류:</strong> 핵심(Core)·경계(Border)·잡음(Noise·이상치)</li>
+          <li><strong>장점:</strong> K 사전 지정 불필요 / 임의 형태 군집 / <em>이상치 자동 탐지</em></li>
+          <li><strong>단점:</strong> 밀도 차이 큰 군집에 취약 / ε·MinPts 선택 어려움 / 고차원에서 성능 저하</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="acc" onclick="this.classList.toggle('open')">
+      <div class="acc-h"><div class="acc-title" style="color:var(--a1);">계층적 군집화 (Hierarchical Clustering)</div><div class="acc-tgl">▾</div></div>
+      <div class="acc-body">
+        <ul class="il">
+          <li><strong>응집형(Agglomerative):</strong> 각 점을 개별 군집으로 시작 → 가장 가까운 군집끼리 병합 (Bottom-up)</li>
+          <li><strong>분리형(Divisive):</strong> 전체를 하나의 군집으로 시작 → 재귀적으로 분리 (Top-down)</li>
+          <li><strong>덴드로그램:</strong> 군집화 과정을 트리로 시각화 — 적절한 K 파악에 활용</li>
+          <li><strong>링키지:</strong> 단순(최소거리)·완전(최대거리)·평균·와드(분산 최소화)</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-h"><div class="ico iy">📉</div><h3>차원 축소 (Dimensionality Reduction)</h3></div>
+    <table>
+      <thead><tr><th>기법</th><th>원리</th><th>특징</th></tr></thead>
+      <tbody>
+        <tr><td><strong>PCA ⭐</strong><br>(주성분 분석)</td><td>분산이 최대가 되는 방향(주성분)으로 데이터를 투영하여 차원 축소</td><td>선형 변환 / 비지도 / 압축·시각화·노이즈 제거 / 분산 설명 비율로 주성분 수 결정</td></tr>
+        <tr><td><strong>t-SNE</strong></td><td>고차원 데이터의 이웃 관계를 저차원에서 보존 — 확률적 임베딩</td><td>비선형 / <strong>시각화 전용</strong> (2~3차원) / 군집 구조 파악 탁월 / 재현성 없음</td></tr>
+        <tr><td><strong>UMAP</strong></td><td>t-SNE의 개선판 — 위상 구조 보존·빠른 속도</td><td>t-SNE보다 빠름 / 글로벌 구조도 보존 / 새 데이터 변환 가능</td></tr>
+        <tr><td><strong>LDA</strong><br>(선형 판별 분석)</td><td>클래스 간 분산 최대화·클래스 내 분산 최소화하는 방향으로 투영</td><td><strong>지도 학습 차원 축소</strong> / 분류 목적 / 클래스-1개 주성분 생성</td></tr>
+      </tbody>
+    </table>
+    <div class="memo">PCA=분산최대방향 투영·비지도 / t-SNE=시각화전용·군집구조 / LDA=지도학습·클래스분리 차원축소</div>
+  </div>
+
+  <div class="card">
+    <div class="card-h"><div class="ico ip">🎮</div><h3>강화학습 (Reinforcement Learning)</h3></div>
+    <table>
+      <thead><tr><th>구성요소</th><th>설명</th></tr></thead>
+      <tbody>
+        <tr><td><strong>에이전트 (Agent)</strong></td><td>환경과 상호작용하며 행동을 선택하는 학습 주체</td></tr>
+        <tr><td><strong>환경 (Environment)</strong></td><td>에이전트가 행동하는 세계 — 상태와 보상을 제공</td></tr>
+        <tr><td><strong>상태 (State, S)</strong></td><td>현재 환경의 상황을 나타내는 표현</td></tr>
+        <tr><td><strong>행동 (Action, A)</strong></td><td>에이전트가 선택할 수 있는 행동 집합</td></tr>
+        <tr><td><strong>보상 (Reward, R)</strong></td><td>행동에 대한 환경의 피드백 (+ 또는 -)</td></tr>
+        <tr><td><strong>정책 (Policy, π)</strong></td><td>상태 → 행동 매핑 함수 — 에이전트의 행동 전략</td></tr>
+        <tr><td><strong>Q-Learning</strong></td><td>행동-가치 함수 Q(s,a) 학습 — 모델 프리 / 오프 정책 / Bellman 방정식</td></tr>
+        <tr><td><strong>탐험-활용 트레이드오프</strong></td><td>ε-greedy: ε 확률로 랜덤 탐험, 1-ε 확률로 최선 행동 선택</td></tr>
+      </tbody>
+    </table>
+    <div class="memo">강화학습: 에이전트·환경·상태·행동·보상·정책 / Q-Learning=행동가치함수 / ε-greedy=탐험·활용 균형</div>
+  </div>
+</div>
+
+<!-- P4: 평가지표 -->
+<div class="pnl" id="p4">
+  <div class="card">
+    <div class="card-h"><div class="ico iy">📊</div><h3>혼동 행렬 (Confusion Matrix) ⭐</h3></div>
+    <div class="cm-grid">
+      <div class="cm-cell" style="background:transparent;"></div>
+      <div class="cm-cell" style="background:rgba(52,211,153,.15);border:1px solid rgba(52,211,153,.3);font-weight:800;font-size:11px;color:var(--a2);">예측 Positive</div>
+      <div class="cm-cell" style="background:rgba(248,113,113,.15);border:1px solid rgba(248,113,113,.3);font-weight:800;font-size:11px;color:var(--a4);">예측 Negative</div>
+      <div class="cm-cell" style="background:rgba(52,211,153,.15);border:1px solid rgba(52,211,153,.3);font-weight:800;font-size:11px;color:var(--a2);">실제 Positive</div>
+      <div class="cm-cell" style="background:rgba(52,211,153,.1);border:1px solid rgba(52,211,153,.3);">
+        <div style="font-size:13px;font-weight:900;color:var(--a2);">TP</div>
+        <div style="font-size:10px;color:var(--mu);">진양성</div>
+      </div>
+      <div class="cm-cell" style="background:rgba(248,113,113,.08);border:1px solid rgba(248,113,113,.25);">
+        <div style="font-size:13px;font-weight:900;color:var(--a4);">FN</div>
+        <div style="font-size:10px;color:var(--mu);">미탐지 (2종오류)</div>
+      </div>
+      <div class="cm-cell" style="background:rgba(248,113,113,.15);border:1px solid rgba(248,113,113,.3);font-weight:800;font-size:11px;color:var(--a4);">실제 Negative</div>
+      <div class="cm-cell" style="background:rgba(248,113,113,.08);border:1px solid rgba(248,113,113,.25);">
+        <div style="font-size:13px;font-weight:900;color:var(--a4);">FP</div>
+        <div style="font-size:10px;color:var(--mu);">오탐지 (1종오류)</div>
+      </div>
+      <div class="cm-cell" style="background:rgba(52,211,153,.1);border:1px solid rgba(52,211,153,.3);">
+        <div style="font-size:13px;font-weight:900;color:var(--a2);">TN</div>
+        <div style="font-size:10px;color:var(--mu);">진음성</div>
+      </div>
+    </div>
+    <div class="formula"><span class="kw">정확도(Accuracy)</span>   = (TP+TN) / (TP+TN+FP+FN)     <span class="cm"># 전체 중 맞은 비율</span>
+<span class="kw">정밀도(Precision)</span>  = TP / (TP+FP)               <span class="cm"># Positive 예측 중 실제 Positive</span>
+<span class="kw">재현율(Recall)</span>     = TP / (TP+FN)               <span class="cm"># 실제 Positive 중 탐지된 비율</span>
+<span class="kw">F1-Score</span>          = 2 × (Precision×Recall) / (Precision+Recall)  <span class="cm"># 조화평균</span>
+<span class="kw">특이도(Specificity)</span>= TN / (TN+FP)               <span class="cm"># 실제 Negative 중 정확히 음성 판정</span></div>
+    <div class="memo">TP=맞게 양성 / TN=맞게 음성 / FP=오탐(1종오류) / FN=미탐(2종오류) / 재현율=민감도=TP/(TP+FN)</div>
+  </div>
+
+  <div class="card">
+    <div class="card-h"><div class="ico ip">📈</div><h3>ROC 곡선 · AUC · 기타 평가지표 ⭐</h3></div>
+    <div class="g2">
+      <div>
+        <p style="font-size:11.5px;font-weight:800;color:var(--a1);margin-bottom:7px;">ROC 곡선 & AUC</p>
+        <ul class="il">
+          <li><strong>ROC 곡선:</strong> 임계값 변화에 따른 TPR(재현율) vs FPR 그래프</li>
+          <li><strong>AUC:</strong> ROC 곡선 아래 면적 — 1에 가까울수록 우수 / 0.5=무작위</li>
+          <li><strong>FPR:</strong> FP/(FP+TN) = 1-특이도</li>
+          <li><strong>임계값 조정:</strong> 낮추면 재현율↑·정밀도↓ / 높이면 반대</li>
+          <li><strong>불균형 데이터:</strong> AUC보다 PR(정밀도-재현율) 곡선 권장</li>
+        </ul>
+      </div>
+      <div>
+        <p style="font-size:11.5px;font-weight:800;color:var(--a3);margin-bottom:7px;">회귀 평가지표</p>
+        <ul class="il">
+          <li><strong>MAE:</strong> 평균 절대 오차 — 이상치에 덜 민감</li>
+          <li><strong>MSE:</strong> 평균 제곱 오차 — 큰 오차에 더 민감(제곱)</li>
+          <li><strong>RMSE:</strong> MSE의 제곱근 — 원래 단위와 동일</li>
+          <li><strong>R²(결정계수):</strong> 0~1 / 1에 가까울수록 모델이 분산 잘 설명 / 음수 가능(매우 나쁨)</li>
+          <li><strong>MAPE:</strong> 평균 절대 백분율 오차 — 0에 가까울수록 좋음</li>
+        </ul>
+      </div>
+    </div>
+    <table>
+      <thead><tr><th>상황</th><th>권장 지표</th><th>이유</th></tr></thead>
+      <tbody>
+        <tr><td>클래스 불균형</td><td>F1-Score, AUC-PR, MCC</td><td>정확도는 다수 클래스에 편향</td></tr>
+        <tr><td>의료 진단(암 탐지)</td><td><strong>재현율(Recall·민감도)</strong></td><td>FN(놓친 환자) 최소화가 중요</td></tr>
+        <tr><td>스팸 필터</td><td><strong>정밀도(Precision)</strong></td><td>FP(정상→스팸 처리) 최소화가 중요</td></tr>
+        <tr><td>이진 분류 종합</td><td>F1-Score, AUC-ROC</td><td>정밀도·재현율 균형 / 임계값 무관</td></tr>
+        <tr><td>다중 클래스 불균형</td><td>Macro·Weighted F1</td><td>각 클래스 균등·가중 평균</td></tr>
+      </tbody>
+    </table>
+    <div class="memo">의료=재현율(FN 최소화) / 스팸=정밀도(FP 최소화) / 불균형=F1+AUC / AUC=1에 가까울수록 좋음·0.5=무작위</div>
+  </div>
+</div>
+
+<!-- P5: 과적합·정규화 -->
+<div class="pnl" id="p5">
+  <div class="card">
+    <div class="card-h"><div class="ico ir">⚖️</div><h3>편향-분산 트레이드오프 (Bias-Variance Tradeoff) ⭐</h3></div>
+    <div class="g2">
+      <div style="background:var(--s2);border:1px solid rgba(248,113,113,.25);border-radius:8px;padding:12px;">
+        <p style="font-size:11.5px;font-weight:800;color:var(--a4);margin-bottom:7px;">과적합 (Overfitting)</p>
+        <ul class="il">
+          <li>훈련 데이터에 너무 잘 맞음 → 새 데이터(테스트)에서 성능 저하</li>
+          <li><strong>고분산(High Variance)</strong>, 저편향</li>
+          <li>복잡한 모델 (깊은 트리·많은 파라미터)</li>
+          <li>대응: 정규화·드롭아웃·더 많은 데이터·교차검증</li>
+        </ul>
+      </div>
+      <div style="background:var(--s2);border:1px solid rgba(96,165,250,.25);border-radius:8px;padding:12px;">
+        <p style="font-size:11.5px;font-weight:800;color:var(--a5);margin-bottom:7px;">과소적합 (Underfitting)</p>
+        <ul class="il">
+          <li>훈련·테스트 모두 성능 낮음 — 패턴을 충분히 학습 못함</li>
+          <li><strong>고편향(High Bias)</strong>, 저분산</li>
+          <li>지나치게 단순한 모델</li>
+          <li>대응: 복잡도 증가·더 많은 특성·규제 감소</li>
+        </ul>
+      </div>
+    </div>
+    <div class="formula"><span class="kw">총 오류</span> = 편향² + 분산 + 불가피한 노이즈
+<span class="cm"># 편향 ↑ → 분산 ↓ (단순 모델)</span>
+<span class="cm"># 편향 ↓ → 분산 ↑ (복잡 모델) → 최적점 찾는 것이 핵심</span></div>
+    <div class="memo">편향↑=과소적합(단순모델) / 분산↑=과적합(복잡모델) / 총오류=편향²+분산+노이즈 → 최적 균형 찾기</div>
+  </div>
+
+  <div class="card">
+    <div class="card-h"><div class="ico ig">🛡️</div><h3>정규화 (Regularization) · 검증 방법</h3></div>
+    <table>
+      <thead><tr><th>기법</th><th>설명</th><th>효과</th></tr></thead>
+      <tbody>
+        <tr><td><strong>L2 정규화 (Ridge)</strong></td><td>손실 함수에 가중치 제곱합(λΣw²) 패널티 추가</td><td>모든 특성 유지 / 계수 축소 / 과적합 방지</td></tr>
+        <tr><td><strong>L1 정규화 (Lasso)</strong></td><td>손실 함수에 가중치 절댓값 합(λΣ|w|) 패널티 추가</td><td>일부 계수를 정확히 0으로 → <strong>자동 특성 선택</strong></td></tr>
+        <tr><td><strong>ElasticNet</strong></td><td>L1 + L2 결합</td><td>특성 선택 + 안정적 계수 / 다중공선성에 유리</td></tr>
+        <tr><td><strong>k-겹 교차검증 (k-fold CV)</strong></td><td>데이터를 k개로 분할, k회 순환하며 학습·검증</td><td>편향 없는 성능 추정 / k=5 또는 10 일반적</td></tr>
+        <tr><td><strong>계층적 k-겹 (Stratified)</strong></td><td>각 폴드에서 클래스 비율 유지</td><td>불균형 데이터에서 안정적 평가</td></tr>
+        <tr><td><strong>조기 종료 (Early Stopping)</strong></td><td>검증 손실이 증가하기 시작하면 학습 중단</td><td>과적합 방지 / 최적 에포크 자동 결정</td></tr>
+      </tbody>
+    </table>
+    <div class="memo">Ridge=L2·계수축소·특성유지 / Lasso=L1·계수0화·특성선택 / k-fold=편향없는 성능추정 / 조기종료=검증손실 증가시 중단</div>
+  </div>
+
+  <div class="card">
+    <div class="card-h"><div class="ico iy">⚙️</div><h3>하이퍼파라미터 튜닝</h3></div>
+    <table>
+      <thead><tr><th>방법</th><th>설명</th><th>장단점</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Grid Search</strong></td><td>지정된 하이퍼파라미터 모든 조합을 시도</td><td>완전 탐색·느림 / 계산 비용 높음</td></tr>
+        <tr><td><strong>Random Search</strong></td><td>하이퍼파라미터 공간에서 무작위 샘플링</td><td>Grid보다 효율적 / 넓은 공간 탐색</td></tr>
+        <tr><td><strong>Bayesian Optimization</strong></td><td>이전 평가 결과를 이용해 다음 탐색 지점을 지능적으로 선택</td><td>적은 시도로 최적값 근사 / 구현 복잡</td></tr>
+        <tr><td><strong>AutoML</strong></td><td>알고리즘 선택·하이퍼파라미터 튜닝을 자동화</td><td>Auto-sklearn, H2O, Google AutoML</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- P6: 앙상블·특성공학 -->
+<div class="pnl" id="p6">
+  <div class="card">
+    <div class="card-h"><div class="ico ip">🌲</div><h3>앙상블 학습 (Ensemble Learning) ⭐</h3></div>
+    <table>
+      <thead><tr><th>방법</th><th>원리</th><th>대표 알고리즘</th><th>특징</th></tr></thead>
+      <tbody>
+        <tr><td><strong>배깅 (Bagging)</strong></td><td>부트스트랩 샘플로 여러 모델 병렬 학습 → 집계(평균·다수결)</td><td><strong>랜덤 포레스트 ⭐</strong></td><td>분산 감소 / 과적합 방지 / 병렬 학습</td></tr>
+        <tr><td><strong>부스팅 (Boosting)</strong></td><td>이전 모델이 틀린 샘플에 가중치를 높여 순차적으로 학습</td><td><strong>XGBoost·LightGBM·AdaBoost</strong></td><td>편향 감소 / 높은 성능 / 과적합 주의</td></tr>
+        <tr><td><strong>스태킹 (Stacking)</strong></td><td>여러 기본 모델(Level-0)의 예측을 메타 모델(Level-1)의 입력으로 사용</td><td>Blending</td><td>복잡도↑ / 다양한 모델 결합</td></tr>
+        <tr><td><strong>보팅 (Voting)</strong></td><td>여러 모델의 예측을 다수결(Hard) 또는 확률 평균(Soft)으로 결합</td><td>VotingClassifier</td><td>구현 단순 / 다양한 모델 혼합</td></tr>
+      </tbody>
+    </table>
+
+    <div class="acc" onclick="this.classList.toggle('open')">
+      <div class="acc-h"><div class="acc-title" style="color:var(--a2);">랜덤 포레스트 (Random Forest) — 배깅의 대표 <span class="tag tg">⭐최중요</span></div><div class="acc-tgl">▾</div></div>
+      <div class="acc-body">
+        <ul class="il">
+          <li><strong>원리:</strong> 부트스트랩 샘플 + <em>무작위 특성 부분집합</em>으로 다수의 결정 트리를 학습 → 앙상블</li>
+          <li><strong>두 가지 무작위성:</strong> ①부트스트랩 샘플링 ②각 분할 시 무작위 특성 부분집합 사용</li>
+          <li><strong>OOB(Out-of-Bag):</strong> 부트스트랩에 포함되지 않은 샘플로 자체 검증 가능</li>
+          <li><strong>특성 중요도:</strong> 각 특성이 불순도 감소에 기여한 정도로 특성 중요도 산출</li>
+          <li><strong>장점:</strong> 과적합 방지 / 높은 정확도 / 결측값 처리 / 특성 중요도 제공</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="acc" onclick="this.classList.toggle('open')">
+      <div class="acc-h"><div class="acc-title" style="color:var(--a3);">XGBoost · LightGBM — 부스팅의 대표 <span class="tag ty">⭐최중요</span></div><div class="acc-tgl">▾</div></div>
+      <div class="acc-body">
+        <ul class="il">
+          <li><strong>Gradient Boosting:</strong> 이전 모델의 <em>잔차(Residual)를 예측</em>하는 새 트리를 순차적으로 추가</li>
+          <li><strong>XGBoost:</strong> eXtreme Gradient Boosting / L1·L2 정규화 내장 / 병렬 처리 / 결측값 자체 처리</li>
+          <li><strong>LightGBM:</strong> 리프 중심 트리 성장(Leaf-wise, XGB는 깊이 우선) → 더 빠름·더 정확</li>
+          <li><strong>CatBoost:</strong> 범주형 특성 자동 처리 / 순서 부스팅</li>
+          <li><strong>주요 하이퍼파라미터:</strong> n_estimators(트리 수)·learning_rate·max_depth·subsample·colsample_bytree</li>
+        </ul>
+      </div>
+    </div>
+    <div class="memo">배깅=병렬·분산감소(랜덤포레스트) / 부스팅=순차·편향감소(XGBoost·LightGBM) / 스태킹=메타모델 결합</div>
+  </div>
+
+  <div class="card">
+    <div class="card-h"><div class="ico ig">🔧</div><h3>특성 공학 (Feature Engineering)</h3></div>
+    <div class="g2">
+      <div>
+        <p style="font-size:11.5px;font-weight:800;color:var(--a2);margin-bottom:7px;">특성 전처리</p>
+        <ul class="il">
+          <li><strong>표준화(Standardization):</strong> (x-μ)/σ → 평균 0·표준편차 1 (Z-score)</li>
+          <li><strong>정규화(Normalization·MinMax):</strong> (x-min)/(max-min) → 0~1 범위</li>
+          <li><strong>로그 변환:</strong> 왜도 있는 분포 → 정규화</li>
+          <li><strong>결측값 처리:</strong> 평균·중위수·최빈값 대체 / KNN Imputer</li>
+          <li><strong>이상치 처리:</strong> IQR·Z-score로 탐지 후 제거·변환</li>
+        </ul>
+      </div>
+      <div>
+        <p style="font-size:11.5px;font-weight:800;color:var(--a3);margin-bottom:7px;">범주형 특성 인코딩</p>
+        <ul class="il">
+          <li><strong>원-핫 인코딩:</strong> 각 범주를 이진 열로 변환 — 순서 없는 명목 변수</li>
+          <li><strong>레이블 인코딩:</strong> 범주를 정수로 변환 — 순서 있는 변수</li>
+          <li><strong>타깃 인코딩:</strong> 범주별 타깃 평균으로 대체 — 고차원 범주에 효과적</li>
+          <li><strong>특성 선택:</strong> 분산 임계값·상관계수·RFE(재귀적 특성 제거)·특성 중요도</li>
+          <tr><li><strong>특성 생성:</strong> 다항 특성·날짜 분해·상호작용 특성</li></tr>
+        </ul>
+      </div>
+    </div>
+
+    <p style="font-size:11.5px;font-weight:800;color:var(--a5);margin-bottom:7px;">클래스 불균형 처리</p>
+    <table>
+      <thead><tr><th>방법</th><th>설명</th></tr></thead>
+      <tbody>
+        <tr><td><strong>오버샘플링 (SMOTE)</strong></td><td>소수 클래스를 합성하여 새 샘플 생성 / SMOTE=k이웃 보간으로 생성</td></tr>
+        <tr><td><strong>언더샘플링</strong></td><td>다수 클래스 샘플 제거 — 정보 손실 위험</td></tr>
+        <tr><td><strong>클래스 가중치</strong></td><td>손실 함수에서 소수 클래스에 높은 가중치 부여 (class_weight='balanced')</td></tr>
+        <tr><td><strong>앙상블 방법</strong></td><td>BalancedBaggingClassifier·EasyEnsemble 등 불균형 특화 앙상블</td></tr>
+      </tbody>
+    </table>
+    <div class="memo">표준화=(x-μ)/σ / 정규화=(x-min)/(max-min) / 원핫=명목변수 / SMOTE=소수클래스 합성 오버샘플링</div>
+  </div>
+</div>
+
+<!-- P7: 예상문제 -->
+<div class="pnl" id="p7">
+  <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:7px;margin-bottom:12px;">
+    <div class="fb-wr" id="fbar" style="margin:0;">
+      <button class="fb on" data-f="all">전체</button>
+      <button class="fb" data-f="알고리즘">📈 알고리즘</button>
+      <button class="fb" data-f="평가">📊 평가지표</button>
+      <button class="fb" data-f="과적합">⚖️ 과적합</button>
+      <button class="fb" data-f="앙상블">🌲 앙상블</button>
+      <button class="fb" data-f="비지도">🔍 비지도</button>
+      <button class="fb" data-f="OX">⭕ OX</button>
+    </div>
+    <div class="sc-b">정답: <span id="sc">0</span>/<span id="st">0</span></div>
+  </div>
+  <div id="ql"></div>
+</div>
+
+</div>
+<script>
+document.querySelectorAll('.tab').forEach(t=>t.addEventListener('click',()=>{
+  document.querySelectorAll('.tab,.pnl').forEach(x=>x.classList.remove('on'));
+  t.classList.add('on');document.getElementById(t.dataset.p).classList.add('on');
+}));
+const QA=[
+  {cat:'알고리즘',diff:'easy',
+   q:'로지스틱 회귀에서 선형 결합 결과를 0~1 확률로 변환하는 함수는?',
+   cs:['ReLU 함수','소프트맥스(Softmax) 함수','시그모이드(Sigmoid) 함수','하이퍼볼릭 탄젠트(tanh) 함수'],ans:2,
+   exp:'<strong>시그모이드(Sigmoid) 함수</strong>: σ(z) = 1/(1+e<sup>-z</sup>). 선형 결합 결과(z)를 0~1 사이의 확률로 변환합니다. 0.5 임계값으로 이진 분류. 다중 분류에는 <em>Softmax</em> 사용. ReLU는 딥러닝 활성화 함수.'},
+  {cat:'알고리즘',diff:'mid',
+   q:'SVM(서포트 벡터 머신)에서 선형 분리가 불가능한 데이터를 고차원으로 변환하여 분리하는 기법은?',
+   cs:['배깅(Bagging)','커널 트릭(Kernel Trick)','부스팅(Boosting)','드롭아웃(Dropout)'],ans:1,
+   exp:'<strong>커널 트릭(Kernel Trick)</strong>: 데이터를 실제로 고차원 변환하지 않고 <em>내적 계산만으로 고차원에서의 분리를 수행</em>합니다. 주요 커널: 선형(Linear)·다항식(Polynomial)·<strong>RBF(가우시안, 가장 많이 사용)</strong>. 원래 저차원에서 선형 분리가 불가능한 데이터에 적용합니다.'},
+  {cat:'알고리즘',diff:'mid',
+   q:'결정 트리에서 노드를 분할할 때 사용하는 불순도 측정 지표로 가장 적절한 것은?',
+   cs:['MSE와 RMSE','지니 불순도(Gini Impurity)와 엔트로피(Entropy)','AUC와 ROC','L1과 L2 정규화'],ans:1,
+   exp:'결정 트리 분할 기준: <strong>지니 불순도</strong>(G = 1-Σpᵢ², 값이 0에 가까울수록 순수)와 <strong>엔트로피</strong>(H = -Σpᵢ·log₂(pᵢ), 정보이득=분할전-분할후 엔트로피). 회귀 트리는 분산 감소를 기준으로 사용합니다. MSE·RMSE는 회귀 평가지표, AUC·ROC는 분류 평가지표.'},
+  {cat:'알고리즘',diff:'hard',
+   q:'Ridge 회귀(L2 정규화)와 Lasso 회귀(L1 정규화)의 차이로 가장 적절한 것은?',
+   cs:['Ridge는 일부 계수를 정확히 0으로 만들어 특성을 선택하고, Lasso는 모든 계수를 동등하게 축소한다.','Ridge는 모든 특성의 계수를 축소(0으로 되지 않음)하고, Lasso는 일부 계수를 정확히 0으로 만들어 자동 특성 선택이 가능하다.','Ridge와 Lasso는 동일하며 λ 값만 다르다.','Lasso는 과적합에 더 취약하고, Ridge는 과소적합에 더 취약하다.'],ans:1,
+   exp:'<strong>Ridge(L2)</strong>: 패널티=λΣwⱼ² → 모든 계수를 0에 가깝게 축소하지만 <em>정확히 0으로 만들지 않음</em> → 모든 특성 유지. <strong>Lasso(L1)</strong>: 패널티=λΣ|wⱼ| → 일부 계수를 <em>정확히 0으로 만들어</em> 자동 특성 선택 효과 → 희소(sparse) 모델. ElasticNet=L1+L2 결합.'},
+  {cat:'평가',diff:'mid',
+   q:'암 진단 모델에서 가장 중요하게 최대화해야 할 평가지표로 가장 적절한 것은?',
+   cs:['정밀도(Precision)','재현율(Recall·민감도)','정확도(Accuracy)','특이도(Specificity)'],ans:1,
+   exp:'암 진단에서 <strong>재현율(Recall=TP/(TP+FN))</strong>을 최대화해야 합니다. FN(실제 암인데 음성으로 판정)은 치명적이기 때문입니다. 반면 스팸 필터에서는 FP(정상→스팸)를 줄이기 위해 <em>정밀도(Precision)</em>를 높여야 합니다. 재현율=민감도=TPR(True Positive Rate).'},
+  {cat:'평가',diff:'mid',
+   q:'ROC 곡선의 AUC 값이 0.5에 가까울 때의 의미로 가장 적절한 것은?',
+   cs:['완벽한 분류기로 AUC가 최대값에 도달했다.','모델이 무작위 분류기와 성능이 비슷하며 예측력이 없다.','클래스 불균형이 심한 상태를 나타낸다.','과적합이 심각하여 테스트 성능이 훈련 성능보다 높다.'],ans:1,
+   exp:'<strong>AUC(Area Under ROC Curve)</strong>: 1.0=완벽한 분류기, <strong>0.5=무작위 분류기(동전 던지기)와 같은 예측력 없음</strong>, 0.0=완전히 반대로 예측. 0.5 미만이면 예측을 반전시키면 오히려 나음. 일반적으로 0.7↑이면 적당한 성능, 0.9↑이면 우수한 성능으로 봅니다.'},
+  {cat:'평가',diff:'hard',
+   q:'클래스 불균형 데이터(양성 1% : 음성 99%)에서 가장 주의해야 할 평가지표는?',
+   cs:['정확도(Accuracy)가 가장 신뢰할 수 있는 지표다.','정확도는 편향될 수 있으며 F1-Score, AUC-PR이 더 적합하다.','재현율(Recall)만 높이면 항상 좋은 모델이다.','특이도(Specificity)를 최소화해야 한다.'],ans:1,
+   exp:'불균형 데이터에서 <strong>정확도의 함정</strong>: 모든 샘플을 음성으로 예측해도 정확도 99%가 나옵니다. 따라서 <em>F1-Score</em>(정밀도·재현율 조화평균), <em>AUC-PR</em>(정밀도-재현율 곡선 아래 면적), <em>MCC</em>(Matthews Correlation Coefficient), <em>Balanced Accuracy</em>가 더 적합합니다.'},
+  {cat:'과적합',diff:'mid',
+   q:'머신러닝에서 편향-분산 트레이드오프(Bias-Variance Tradeoff)에서 과적합 상태는?',
+   cs:['고편향(High Bias)·저분산 — 단순한 모델','저편향·고분산(High Variance) — 복잡한 모델로 훈련 데이터에 너무 맞춤','고편향·고분산 — 모든 면에서 나쁜 모델','저편향·저분산 — 이상적인 모델'],ans:1,
+   exp:'<strong>과적합(Overfitting)</strong>: 저편향·<strong>고분산</strong> 상태. 복잡한 모델이 훈련 데이터의 노이즈까지 학습하여 새 데이터에서 성능 저하. 대응: 정규화·교차검증·더 많은 데이터·모델 단순화. <strong>과소적합(Underfitting)</strong>: <em>고편향</em>·저분산. 단순한 모델로 패턴 학습 부족.'},
+  {cat:'앙상블',diff:'mid',
+   q:'랜덤 포레스트(Random Forest)가 단일 결정 트리보다 과적합에 강한 주된 이유는?',
+   cs:['더 깊은 트리를 사용하기 때문에','부트스트랩 샘플링과 무작위 특성 부분집합으로 다수의 트리를 학습하고 앙상블하여 분산을 감소시키기 때문에','L1 정규화를 자동으로 적용하기 때문에','단일 특성만 사용하기 때문에'],ans:1,
+   exp:'<strong>랜덤 포레스트</strong>: ①<em>부트스트랩 샘플링</em>(부트스트랩된 서로 다른 훈련 세트) + ②각 분할 시 <em>무작위 특성 부분집합</em> 사용 → 서로 상관없는(다양한) 트리 다수 생성 → 앙상블(다수결·평균)로 <em>분산 감소</em>. 배깅의 대표 알고리즘으로 과적합 방지 효과 탁월.'},
+  {cat:'앙상블',diff:'hard',
+   q:'배깅(Bagging)과 부스팅(Boosting)의 차이로 가장 적절한 것은?',
+   cs:['배깅은 모델을 순차적으로 학습하고, 부스팅은 병렬로 학습한다.','배깅은 병렬로 학습하여 분산을 줄이고, 부스팅은 이전 모델의 오류에 집중하며 순차 학습하여 편향을 줄인다.','배깅과 부스팅은 동일한 방법으로 결과만 다르다.','부스팅은 항상 배깅보다 성능이 낮다.'],ans:1,
+   exp:'<strong>배깅(Bagging)</strong>: <em>병렬 학습</em>, 부트스트랩 샘플 → 독립적 모델 → 앙상블(분산 감소). 대표: <strong>랜덤 포레스트</strong>. <strong>부스팅(Boosting)</strong>: <em>순차 학습</em>, 이전 모델이 틀린 샘플에 가중치↑ → 편향 감소. 대표: <strong>XGBoost·LightGBM·AdaBoost</strong>. 부스팅이 일반적으로 더 높은 성능이지만 과적합 위험도 높음.'},
+  {cat:'비지도',diff:'mid',
+   q:'K-Means 군집화에서 최적의 K를 결정하는 방법으로 가장 적절한 것은?',
+   cs:['모든 가능한 K를 시도하여 가장 높은 정확도를 선택한다.','엘보우 방법(Elbow Method) — 이너셔(Within-cluster SSE) 감소율이 급격히 줄어드는 K를 선택한다.','K는 항상 데이터 크기의 제곱근으로 설정한다.','K-Means는 K를 자동으로 결정한다.'],ans:1,
+   exp:'<strong>엘보우 방법(Elbow Method)</strong>: K를 증가시키면서 이너셔(Within-cluster Sum of Squared Errors, 군집 내 분산)를 측정. 이너셔가 급격히 감소하다가 완만해지는 "엘보우(꺾이는 지점)"의 K가 최적입니다. 또는 <em>실루엣 점수</em>로도 최적 K 판단 가능.'},
+  {cat:'비지도',diff:'mid',
+   q:'PCA(주성분 분석)의 원리로 가장 적절한 것은?',
+   cs:['클래스 간 분산을 최대화하고 클래스 내 분산을 최소화하는 방향을 찾는다.','데이터의 분산이 최대가 되는 방향(주성분)으로 투영하여 차원을 축소한다.','데이터를 군집화하여 각 군집의 중심으로 차원을 축소한다.','데이터의 이웃 관계를 저차원에서 보존하는 비선형 변환이다.'],ans:1,
+   exp:'<strong>PCA(주성분 분석)</strong>: 데이터의 <em>분산이 최대가 되는 방향(주성분·고유벡터)</em>으로 데이터를 투영하여 차원을 축소하는 <strong>비지도 선형 변환</strong> 기법. 분산 설명 비율(Explained Variance Ratio)로 주성분 수 결정. ①LDA=지도·클래스 분리 ②t-SNE=비선형·시각화 전용 ③K-Means=군집화.'},
+  {cat:'OX',diff:'easy',type:'ox',
+   q:'로지스틱 회귀(Logistic Regression)는 회귀 알고리즘으로 연속형 값을 예측하는 데 사용된다.',ans:false,
+   exp:'<strong>×</strong> — 이름에 "회귀"가 있지만 로지스틱 회귀는 <strong>분류(Classification) 알고리즘</strong>입니다. 시그모이드 함수로 0~1 확률을 출력하여 이진 분류(0 또는 1)에 사용됩니다. 연속형 값 예측에는 선형 회귀(Linear Regression)를 사용합니다.'},
+  {cat:'OX',diff:'mid',type:'ox',
+   q:'K-Means 군집화는 사전에 군집 수(K)를 지정하지 않아도 자동으로 최적 군집 수를 결정한다.',ans:false,
+   exp:'<strong>×</strong> — K-Means는 사용자가 <strong>K(군집 수)를 사전에 지정</strong>해야 합니다. 최적 K 결정을 위해 <em>엘보우 방법</em>이나 실루엣 분석을 별도로 수행합니다. 군집 수 자동 결정이 가능한 알고리즘은 <em>DBSCAN</em>(밀도 기반, K 불필요)이나 계층적 군집화+덴드로그램입니다.'},
+  {cat:'과적합',diff:'mid',type:'ox',
+   q:'Lasso(L1) 정규화는 일부 특성의 계수를 정확히 0으로 만들어 자동으로 특성 선택 효과를 제공한다.',ans:true,
+   exp:'<strong>○</strong> — <strong>Lasso(L1 정규화)</strong>: 패널티 = λΣ|wⱼ|. L1 패널티의 특성으로 일부 계수를 <em>정확히 0</em>으로 만듭니다(희소(sparse) 모델). → 자동 특성 선택 효과. Ridge(L2)는 계수를 0에 가깝게 축소하지만 정확히 0으로 만들지 않아 모든 특성이 유지됩니다.'},
+  {cat:'앙상블',diff:'mid',type:'ox',
+   q:'랜덤 포레스트는 부스팅(Boosting) 방법의 대표적인 알고리즘이다.',ans:false,
+   exp:'<strong>×</strong> — 랜덤 포레스트는 <strong>배깅(Bagging)</strong>의 대표 알고리즘입니다. 배깅=병렬 학습·분산 감소. <em>부스팅</em>의 대표 알고리즘은 <strong>XGBoost·LightGBM·AdaBoost·Gradient Boosting</strong>입니다. 부스팅은 이전 모델이 틀린 샘플에 집중하며 순차적으로 학습하여 편향을 줄입니다.'},
+  {cat:'평가',diff:'hard',type:'ox',
+   q:'재현율(Recall)과 민감도(Sensitivity)는 동일한 개념으로 TP/(TP+FN)으로 계산된다.',ans:true,
+   exp:'<strong>○</strong> — <strong>재현율 = 민감도 = TPR(True Positive Rate)</strong> = TP/(TP+FN). "실제 양성 중 얼마나 양성으로 정확히 탐지했는가"를 측정합니다. 암 진단·사기 탐지처럼 <em>FN(놓친 것)을 최소화</em>해야 할 때 중요합니다. 특이도(Specificity) = TN/(TN+FP) = 1-FPR과 구분 필요.'},
+];
+let answered=0,correct=0;
+function renderQ(f){
+  const data=f==='all'?QA:QA.filter(q=>q.cat===f);
+  const list=document.getElementById('ql');list.innerHTML='';
+  answered=0;correct=0;upS();
+  const CATC={'알고리즘':'tp','평가':'tg','과적합':'ty','앙상블':'tb','비지도':'to','OX':'tr'};
+  const DLC={'easy':'easy 쉬움','mid':'mid 보통','hard':'hard 어려움'};
+  const NL=['①','②','③','④'];
+  if(!data.length){list.innerHTML='<div style="text-align:center;padding:40px;color:var(--mu)">문제 없음</div>';return;}
+  data.forEach((q,i)=>{
+    const gi=QA.indexOf(q);
+    const el=document.createElement('div');el.className='qa';
+    const tc=CATC[q.cat]||'tp';
+    const [dc,dn]=(DLC[q.diff]||'mid 보통').split(' ');
+    if(q.type==='ox'){
+      el.innerHTML=`<div class="qa-hd" onclick="this.closest('.qa').classList.toggle('open')"><div><div class="qa-meta"><span class="qn">Q${String(i+1).padStart(2,'0')}</span><span class="tag ${tc}">${q.cat}</span><span class="diff ${dc}">${dn}</span><span class="tag tg">O/X</span></div><div class="qq">${q.q}</div></div><span class="tgl">▾</span></div>
+      <div class="qa-bd"><div class="ox-wr"><button class="ox" onclick="pickOX(this,true,${gi})">⭕ 옳다</button><button class="ox" onclick="pickOX(this,false,${gi})">❌ 틀리다</button></div><div class="exp" id="ex-${gi}"><div class="exp-t">💡 해설</div>${q.exp}</div></div>`;
+    } else {
+      el.innerHTML=`<div class="qa-hd" onclick="this.closest('.qa').classList.toggle('open')"><div><div class="qa-meta"><span class="qn">Q${String(i+1).padStart(2,'0')}</span><span class="tag ${tc}">${q.cat}</span><span class="diff ${dc}">${dn}</span></div><div class="qq">${q.q}</div></div><span class="tgl">▾</span></div>
+      <div class="qa-bd"><div class="chs">${q.cs.map((c,ci)=>`<div class="ch" data-ci="${ci}" onclick="pickCh(this,${gi})"><span class="cnum">${NL[ci]}</span><span>${c}</span></div>`).join('')}</div><div class="exp" id="ex-${gi}"><div class="exp-t">💡 해설</div>${q.exp}</div></div>`;
+    }
+    list.appendChild(el);
+  });
+}
+function pickCh(el,gi){
+  const bd=el.closest('.qa-bd');if(bd.querySelector('.ok,.ng'))return;
+  const q=QA[gi];
+  bd.querySelectorAll('.ch').forEach((c,i)=>{c.classList.add('lk');if(i===q.ans)c.classList.add('ok');else if(i===parseInt(el.dataset.ci))c.classList.add('ng');});
+  document.getElementById('ex-'+gi).classList.add('show');
+  answered++;if(parseInt(el.dataset.ci)===q.ans)correct++;upS();
+}
+function pickOX(btn,val,gi){
+  const bd=btn.closest('.qa-bd');if(bd.querySelector('.so,.sx'))return;
+  const q=QA[gi];
+  bd.querySelectorAll('.ox').forEach(b=>b.classList.add('lk'));
+  btn.classList.add(val?'so':'sx');
+  if(val!==q.ans){btn.style.opacity='.5';bd.querySelectorAll('.ox')[val?1:0].classList.add(q.ans?'so':'sx');}
+  document.getElementById('ex-'+gi).classList.add('show');
+  answered++;if(val===q.ans)correct++;upS();
+}
+function upS(){document.getElementById('sc').textContent=correct;document.getElementById('st').textContent=answered;}
+document.getElementById('fbar').addEventListener('click',e=>{
+  const b=e.target.closest('.fb');if(!b)return;
+  document.querySelectorAll('.fb').forEach(x=>x.classList.remove('on'));b.classList.add('on');renderQ(b.dataset.f);
+});
+renderQ('all');
+</script>
+</body>
+</html>

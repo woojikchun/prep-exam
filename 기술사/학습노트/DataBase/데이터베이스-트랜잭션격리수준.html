@@ -1,0 +1,578 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>트랜잭션 격리 수준 — 컴퓨터시스템응용 기술사 모범 답안</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;500;700&family=Noto+Sans+KR:wght@400;500;700&family=JetBrains+Mono:wght@400;600&display=swap');
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --ink:#1a1a1a;--ink2:#333;--ink3:#666;
+  --line:#c8c8c8;--line2:#e2e0da;--bg:#fdfcf8;
+  --accent:#1a3a6e;--accent2:#7a3010;--green:#2d6a4f;--purple:#4a3080;
+}
+body{background:#dddad2;font-family:'Noto Sans KR',sans-serif;color:var(--ink);padding:20px 0 40px}
+.doc{max-width:800px;margin:0 auto;background:var(--bg);box-shadow:0 4px 32px rgba(0,0,0,.22)}
+
+.hdr{border-bottom:3px double var(--ink);padding:20px 36px 16px;display:flex;align-items:flex-start;gap:16px}
+.hdr-l{flex:1}
+.lbl{font-size:11px;letter-spacing:.14em;color:var(--ink3);font-family:'Noto Serif KR',serif}
+.ttl{font-size:20px;font-weight:700;font-family:'Noto Serif KR',serif;color:var(--accent);line-height:1.35;margin-top:5px}
+.pills{display:flex;gap:8px;margin-top:9px;flex-wrap:wrap}
+.pill{font-size:11px;padding:2px 10px;border:1px solid var(--line);border-radius:2px;color:var(--ink2);background:#fff}
+.score-box{border:1.5px solid var(--ink);padding:10px 16px;text-align:center;min-width:72px}
+.sc-lbl{font-size:10px;color:var(--ink3);letter-spacing:.06em}
+.sc-n{font-size:24px;font-weight:700;font-family:'Noto Serif KR',serif;color:var(--accent);line-height:1.1}
+
+.body{padding:24px 40px 48px}
+.qbox{background:#f0efea;border:1px solid #bbb;padding:14px 18px;border-radius:3px;margin-bottom:24px;font-size:12.5px;color:var(--ink2);line-height:1.85}
+.qbox strong{color:var(--ink);font-weight:700}
+
+.sh {font-size:14.5px;font-weight:700;font-family:'Noto Serif KR',serif;color:var(--accent);border-bottom:1.5px solid var(--accent);padding-bottom:5px;margin:0 0 13px}
+.sh2{font-size:13px;font-weight:700;color:var(--ink);margin:13px 0 5px;padding-left:8px;border-left:3px solid var(--accent2)}
+.sh3{font-size:12.5px;font-weight:700;color:var(--ink2);margin:9px 0 4px;padding-left:18px}
+.sec{margin-bottom:22px}
+.txt{font-size:12.5px;line-height:1.92;color:var(--ink2)}
+.txt p{margin-bottom:5px}
+.i1{padding-left:14px}
+.i2{padding-left:28px}
+.kw{font-weight:700;color:var(--ink)}
+
+.tw{margin:10px 0 14px;overflow-x:auto}
+table{width:100%;border-collapse:collapse;font-size:11.5px}
+th{background:var(--accent);color:#fff;padding:6px 9px;text-align:left;font-weight:500;border:1px solid var(--accent)}
+td{padding:6px 9px;border:1px solid var(--line);vertical-align:top;line-height:1.75;color:var(--ink2)}
+tr:nth-child(even) td{background:#f4f3ef}
+.kc{font-weight:700;color:var(--ink)}
+.tc{text-align:center}
+
+.fig{margin:13px 0 16px;background:#f8f7f3;border:1px solid var(--line2);border-radius:4px;padding:10px 8px}
+.fc{font-size:11px;color:var(--ink3);text-align:center;margin-top:7px;font-style:italic}
+
+/* 이상 현상 발생/방지 셀 */
+.iso-y  {background:#EAF3DE;color:#2d6a4f;font-weight:700;text-align:center}
+.iso-n  {background:#FCEBEB;color:#A32D2D;font-weight:700;text-align:center}
+.iso-p  {background:#FAEEDA;color:#7a3010;font-weight:700;text-align:center}
+.iso-lvl{background:#1a3a6e;color:#fff;font-weight:700;text-align:center}
+.iso-db {background:#E6F1FB;color:#0C447C;text-align:center}
+
+/* 타임라인 박스 */
+.tl-wrap{overflow-x:auto;margin:10px 0 14px}
+.tl-table{border-collapse:collapse;font-size:11px;min-width:560px;width:100%}
+.tl-table th{padding:5px 8px;text-align:center;border:1px solid var(--line);font-weight:600}
+.tl-table td{padding:5px 8px;border:1px solid var(--line);text-align:center;white-space:nowrap}
+.tl-t1 {background:#E6F1FB;color:#0C447C;font-weight:700}
+.tl-t2 {background:#FAEEDA;color:#7a3010;font-weight:700}
+.tl-rd {background:#FCEBEB;color:#A32D2D;font-weight:700}
+.tl-ok {background:#EAF3DE;color:#2d6a4f;font-weight:700}
+.tl-cm {font-size:10px;color:#888;font-style:italic}
+.tl-head-t1{background:#1a3a6e;color:#fff}
+.tl-head-t2{background:#7a3010;color:#fff}
+
+/* 격리 수준 카드 */
+.iso-card{border-radius:6px;overflow:hidden;margin:8px 0 12px;border:1.5px solid var(--line2)}
+.iso-card-head{padding:9px 14px;display:flex;align-items:center;gap:12px}
+.iso-lv-num{font-size:22px;font-weight:700;font-family:'Noto Serif KR',serif;min-width:28px}
+.iso-lv-name{font-size:13px;font-weight:700}
+.iso-lv-sub{font-size:11px;opacity:.85;margin-top:2px}
+.iso-card-body{padding:8px 14px 12px;font-size:12px;line-height:1.82;color:var(--ink2)}
+.iso-card-body .mech{font-weight:700;color:var(--ink)}
+
+.iso-lv1 .iso-card-head{background:#A32D2D;color:#fff}
+.iso-lv1{border-color:#A32D2D}
+.iso-lv2 .iso-card-head{background:#7a3010;color:#fff}
+.iso-lv2{border-color:#7a3010}
+.iso-lv3 .iso-card-head{background:#1a3a6e;color:#fff}
+.iso-lv3{border-color:#1a3a6e}
+.iso-lv4 .iso-card-head{background:#2d6a4f;color:#fff}
+.iso-lv4{border-color:#2d6a4f}
+
+.code-wrap{margin:6px 0 10px;background:#1e1e2e;border-radius:5px;overflow:auto;padding:11px 14px}
+.code-wrap pre{font-family:'JetBrains Mono','Courier New',monospace;font-size:11px;line-height:1.7;color:#cdd6f4}
+.c-kw{color:#cba6f7}
+.c-cm{color:#6c7086}
+.c-st{color:#a6e3a1}
+.c-nm{color:#fab387}
+.c-rd{color:#f38ba8}
+
+.note{margin:16px 0 0;padding:12px 16px;border:1px solid #8b6914;background:#fffbef;border-radius:3px}
+.nt{font-size:12px;font-weight:700;color:#6a4f00;margin-bottom:5px}
+.nb{font-size:12px;color:#4a3800;line-height:1.85}
+
+.pb{border:none;border-top:2px dashed #bbb;margin:24px 0;position:relative}
+.pb::after{content:"— 다음 페이지 —";position:absolute;top:-9px;left:50%;transform:translateX(-50%);background:var(--bg);padding:0 10px;font-size:10px;color:#bbb;white-space:nowrap}
+
+.ftr{border-top:2px solid var(--ink);margin:0 40px;padding:10px 0;display:flex;justify-content:space-between;font-size:10px;color:var(--ink3)}
+
+.badge{display:inline-block;font-size:10.5px;padding:1px 8px;border-radius:2px;font-weight:600;margin:1px 2px}
+.badge-r{background:#FCEBEB;color:#A32D2D;border:1px solid #f0b8b8}
+.badge-g{background:#EAF3DE;color:#2d6a4f;border:1px solid #b0d89a}
+.badge-b{background:#E6F1FB;color:#0C447C;border:1px solid #9dc4f0}
+.badge-o{background:#FAEEDA;color:#7a3010;border:1px solid #f0c88a}
+
+.formula{display:inline-block;font-family:'JetBrains Mono',monospace;font-size:11.5px;background:#f0efea;border:1px solid var(--line2);border-radius:3px;padding:2px 8px;color:#1a3a6e;font-weight:700;margin:2px 0}
+</style>
+</head>
+<body>
+<div class="doc">
+
+<!-- ── Header ── -->
+<div class="hdr">
+  <div class="hdr-l">
+    <div class="lbl">컴퓨터시스템응용 기술사 · 예상 문제 및 모범 답안</div>
+    <div class="ttl">트랜잭션 격리 수준 4단계와<br>이상 현상(Concurrency Anomalies)</div>
+    <div class="pills">
+      <span class="pill">4교시 · 논술형</span>
+      <span class="pill">데이터베이스 / 트랜잭션 관리</span>
+      <span class="pill">키워드: Read Uncommitted · Read Committed · Repeatable Read · Serializable · Dirty/Phantom Read</span>
+    </div>
+  </div>
+  <div class="score-box">
+    <div class="sc-lbl">배점</div>
+    <div class="sc-n">25</div>
+    <div class="sc-lbl">점</div>
+  </div>
+</div>
+
+<div class="body">
+
+<!-- 문제 -->
+<div class="qbox">
+  <strong>【 문 제 】</strong><br><br>
+  관계형 데이터베이스의 동시성 제어와 관련하여 <strong>트랜잭션 격리 수준(Transaction Isolation Level)</strong>에 대하여 다음을 설명하시오.<br><br>
+  &emsp;(1) 격리성(Isolation)의 필요성과 발생 가능한 이상 현상의 종류 및 원인 &nbsp;(7점)<br>
+  &emsp;(2) SQL 표준 격리 수준 4단계의 정의, 허용 이상 현상 및 구현 메커니즘 &nbsp;(12점)<br>
+  &emsp;(3) 격리 수준별 이상 현상 발생 관계 요약 및 실무 선택 기준 &nbsp;(6점)
+</div>
+
+<!-- ─── Ⅰ. 이상 현상 ─── -->
+<div class="sec">
+  <div class="sh">Ⅰ. 격리성의 필요성과 이상 현상의 종류 및 원인</div>
+
+  <div class="sh2">1. 격리성(Isolation)의 필요성</div>
+  <div class="txt i1">
+    <p>다수의 트랜잭션이 동시에 실행될 때 각 트랜잭션은 <span class="kw">다른 트랜잭션의 중간 상태에 영향을 받지 않고 독립적으로 실행</span>된 것처럼 보여야 한다. 이를 보장하지 않으면 데이터 일관성이 훼손되는 다양한 이상 현상이 발생한다. 완전한 격리(SERIALIZABLE)는 직렬 실행과 동일한 결과를 보장하지만, <span class="kw">동시성(Concurrency) ↓ — 성능 저하</span>를 초래하므로 실무에서는 이상 현상 허용 범위에 따라 격리 수준을 선택한다.</p>
+  </div>
+
+  <!-- 이상 현상 상세 -->
+  <div class="sh2">2. 이상 현상(Concurrency Anomalies)의 종류</div>
+
+  <!-- Dirty Read -->
+  <div class="iso-card iso-lv1">
+    <div class="iso-card-head">
+      <div class="iso-lv-num">①</div>
+      <div>
+        <div class="iso-lv-name">Dirty Read (더티 읽기)</div>
+        <div class="iso-lv-sub">커밋되지 않은 데이터 읽기</div>
+      </div>
+    </div>
+    <div class="iso-card-body">
+      <span class="mech">정의:</span> T1이 아직 COMMIT하지 않은 변경 데이터를 T2가 읽고, 이후 T1이 ROLLBACK될 경우 T2는 <span class="kw">실제로 존재하지 않는 데이터</span>를 기반으로 처리를 완료한 상태가 된다.
+      <div class="tl-wrap" style="margin-top:8px">
+        <table class="tl-table">
+          <tr>
+            <th class="tl-head-t1" style="width:8%">시각</th>
+            <th class="tl-head-t1" style="width:38%">T1 (잔액 갱신)</th>
+            <th class="tl-head-t2" style="width:38%">T2 (잔액 조회)</th>
+            <th style="width:16%;background:#555;color:#fff">잔액 값</th>
+          </tr>
+          <tr><td class="tc">t1</td><td class="tl-t1">BEGIN</td><td></td><td class="tc">100만</td></tr>
+          <tr><td class="tc">t2</td><td class="tl-t1">UPDATE 잔액 = 50만 (미커밋)</td><td></td><td class="tc">50만*</td></tr>
+          <tr><td class="tc">t3</td><td></td><td class="tl-t2">SELECT 잔액 → <span class="tl-rd">50만 읽음</span></td><td class="tc">50만*</td></tr>
+          <tr><td class="tc">t4</td><td class="tl-t1 c-rd">ROLLBACK (50만→100만 복원)</td><td></td><td class="tc">100만</td></tr>
+          <tr><td class="tc">t5</td><td></td><td class="tl-rd">T2는 존재하지 않는 50만 기준으로 처리 완료 → <strong>오류</strong></td><td class="tc c-rd">불일치!</td></tr>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- Non-Repeatable Read -->
+  <div class="iso-card iso-lv2">
+    <div class="iso-card-head">
+      <div class="iso-lv-num">②</div>
+      <div>
+        <div class="iso-lv-name">Non-Repeatable Read (반복 불가 읽기)</div>
+        <div class="iso-lv-sub">동일 행(Row) 재조회 시 값이 달라짐</div>
+      </div>
+    </div>
+    <div class="iso-card-body">
+      <span class="mech">정의:</span> T1이 동일 행을 두 번 조회하는 사이에 T2가 해당 행을 <span class="kw">UPDATE 후 COMMIT</span>하여, T1의 두 번째 조회 결과가 첫 번째와 다른 값을 반환한다.
+      <div class="tl-wrap" style="margin-top:8px">
+        <table class="tl-table">
+          <tr>
+            <th class="tl-head-t1" style="width:8%">시각</th>
+            <th class="tl-head-t1" style="width:38%">T1 (두 번 조회)</th>
+            <th class="tl-head-t2" style="width:38%">T2 (잔액 수정)</th>
+            <th style="width:16%;background:#555;color:#fff">잔액 값</th>
+          </tr>
+          <tr><td class="tc">t1</td><td class="tl-t1">SELECT 잔액 → <span class="tl-ok">100만</span></td><td></td><td class="tc">100만</td></tr>
+          <tr><td class="tc">t2</td><td></td><td class="tl-t2">UPDATE 잔액 = 80만</td><td class="tc">80만</td></tr>
+          <tr><td class="tc">t3</td><td></td><td class="tl-t2">COMMIT</td><td class="tc">80만 ✔</td></tr>
+          <tr><td class="tc">t4</td><td class="tl-rd">SELECT 잔액 → <span class="tl-rd">80만</span> ← 첫 조회(100만)와 다름!</td><td></td><td class="tc c-rd">불일치!</td></tr>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- Phantom Read -->
+  <div class="iso-card iso-lv3">
+    <div class="iso-card-head">
+      <div class="iso-lv-num">③</div>
+      <div>
+        <div class="iso-lv-name">Phantom Read (유령 읽기)</div>
+        <div class="iso-lv-sub">동일 조건 재조회 시 행(Row) 집합이 달라짐</div>
+      </div>
+    </div>
+    <div class="iso-card-body">
+      <span class="mech">정의:</span> T1이 동일 조건(WHERE절)의 쿼리를 두 번 실행하는 사이에 T2가 해당 조건을 만족하는 행을 <span class="kw">INSERT 또는 DELETE 후 COMMIT</span>하여, 결과 행 집합의 수가 달라지는 현상이다.
+      <div class="tl-wrap" style="margin-top:8px">
+        <table class="tl-table">
+          <tr>
+            <th class="tl-head-t1" style="width:8%">시각</th>
+            <th class="tl-head-t1" style="width:40%">T1 (집합 조회)</th>
+            <th class="tl-head-t2" style="width:36%">T2 (행 삽입)</th>
+            <th style="width:16%;background:#555;color:#fff">결과 행 수</th>
+          </tr>
+          <tr><td class="tc">t1</td><td class="tl-t1">SELECT * WHERE 잔액&gt;50만 → <span class="tl-ok">3건</span></td><td></td><td class="tc">3건</td></tr>
+          <tr><td class="tc">t2</td><td></td><td class="tl-t2">INSERT 잔액=70만 행 추가</td><td class="tc">4건</td></tr>
+          <tr><td class="tc">t3</td><td></td><td class="tl-t2">COMMIT</td><td class="tc">4건 ✔</td></tr>
+          <tr><td class="tc">t4</td><td class="tl-rd">SELECT * WHERE 잔액&gt;50만 → <span class="tl-rd">4건</span> ← 유령 행 출현!</td><td></td><td class="tc c-rd">불일치!</td></tr>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- Lost Update -->
+  <div class="iso-card iso-lv4">
+    <div class="iso-card-head">
+      <div class="iso-lv-num">④</div>
+      <div>
+        <div class="iso-lv-name">Lost Update (갱신 손실)</div>
+        <div class="iso-lv-sub">두 트랜잭션의 동시 갱신 시 한쪽 갱신 소실</div>
+      </div>
+    </div>
+    <div class="iso-card-body">
+      <span class="mech">정의:</span> T1과 T2가 동일 데이터를 동시에 읽은 후 각각 갱신하면, <span class="kw">나중에 커밋된 트랜잭션의 갱신이 앞선 트랜잭션의 갱신을 덮어씌워</span> 앞선 변경이 소실된다.
+      <div class="tl-wrap" style="margin-top:8px">
+        <table class="tl-table">
+          <tr>
+            <th class="tl-head-t1" style="width:8%">시각</th>
+            <th class="tl-head-t1" style="width:38%">T1 (재고 -5)</th>
+            <th class="tl-head-t2" style="width:38%">T2 (재고 -3)</th>
+            <th style="width:16%;background:#555;color:#fff">재고 값</th>
+          </tr>
+          <tr><td class="tc">t1</td><td class="tl-t1">SELECT 재고 → 100</td><td></td><td class="tc">100</td></tr>
+          <tr><td class="tc">t2</td><td></td><td class="tl-t2">SELECT 재고 → 100</td><td class="tc">100</td></tr>
+          <tr><td class="tc">t3</td><td class="tl-t1">UPDATE 재고 = 100-5 = 95 → COMMIT</td><td></td><td class="tc">95</td></tr>
+          <tr><td class="tc">t4</td><td></td><td class="tl-rd">UPDATE 재고 = 100-3 = 97 → COMMIT<br>(T1 갱신 무시, 97로 덮어씀)</td><td class="tc c-rd">97 (정상: 92)</td></tr>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <div class="sh2">3. 이상 현상 발생 원인 요약</div>
+  <div class="tw">
+    <table>
+      <tr><th style="width:22%">이상 현상</th><th style="width:36%">근본 원인</th><th>피해 유형</th></tr>
+      <tr><td><span class="kc">Dirty Read</span></td><td>미커밋 데이터를 잠금 없이 읽기 허용</td><td>데이터 정합성 오류</td></tr>
+      <tr><td><span class="kc">Non-Repeatable Read</span></td><td>트랜잭션 내 같은 행 재조회 시 잠금 해제</td><td>동일 쿼리 결과 불일치</td></tr>
+      <tr><td><span class="kc">Phantom Read</span></td><td>범위 조건(Range)에 대한 잠금 미보유</td><td>집계·통계 쿼리 오류</td></tr>
+      <tr><td><span class="kc">Lost Update</span></td><td>Read-Modify-Write 경쟁 조건(Race Condition)</td><td>갱신 데이터 소실</td></tr>
+    </table>
+  </div>
+  <div class="fc" style="margin-top:-8px;margin-bottom:12px">【표 1】 이상 현상 원인 요약</div>
+</div>
+
+<hr class="pb">
+
+<!-- ─── Ⅱ. 격리 수준 4단계 ─── -->
+<div class="sec">
+  <div class="sh">Ⅱ. SQL 표준 격리 수준 4단계 — 정의, 허용 이상 현상 및 구현 메커니즘</div>
+
+  <div class="txt i1" style="margin-bottom:12px">
+    <p>SQL-92 표준은 격리 수준을 4단계로 정의하며, 낮을수록 동시성↑·일관성↓, 높을수록 일관성↑·동시성↓의 트레이드오프를 갖는다.</p>
+  </div>
+
+  <!-- Level 1: READ UNCOMMITTED -->
+  <div class="sh2">① READ UNCOMMITTED — 격리 수준 최저</div>
+  <div class="txt i1">
+    <p><span class="kw">정의:</span> 다른 트랜잭션이 커밋하지 않은 변경 데이터도 읽을 수 있다. 사실상 잠금 없이 데이터를 조회하므로 <span class="kw">Dirty Read를 허용</span>한다.</p>
+    <p><span class="kw">구현:</span> 읽기 시 공유 잠금(Shared Lock) 미획득. 쓰기 시 배타 잠금(Exclusive Lock)만 적용.</p>
+    <p><span class="kw">허용 이상 현상:</span> <span class="badge badge-r">Dirty Read</span> <span class="badge badge-r">Non-Repeatable Read</span> <span class="badge badge-r">Phantom Read</span></p>
+    <p><span class="kw">적합 상황:</span> 데이터 정확도보다 속도가 절대 우선인 대용량 집계·근사치 보고(허용 오차 있음). 실무에서 거의 미사용.</p>
+  </div>
+  <div class="code-wrap"><pre><span class="c-cm">-- Oracle / PostgreSQL에서 설정</span>
+<span class="c-kw">SET</span> TRANSACTION ISOLATION LEVEL READ UNCOMMITTED;
+<span class="c-cm">-- T2가 미커밋 데이터도 읽음 → Dirty Read 발생 가능</span>
+<span class="c-kw">SELECT</span> balance <span class="c-kw">FROM</span> account <span class="c-kw">WHERE</span> id = <span class="c-nm">1</span>; <span class="c-cm">-- T1 ROLLBACK 전 값 반환 가능</span></pre></div>
+
+  <!-- Level 2: READ COMMITTED -->
+  <div class="sh2">② READ COMMITTED — 대부분 DBMS 기본값</div>
+  <div class="txt i1">
+    <p><span class="kw">정의:</span> 커밋된 데이터만 읽을 수 있다. 읽기 완료 직후 공유 잠금을 해제하므로 동일 트랜잭션 내에서 같은 행을 두 번 읽으면 다른 값이 반환될 수 있다.</p>
+    <p><span class="kw">구현(Lock 방식):</span> 읽기 시 공유 잠금 획득 → 읽기 완료 즉시 해제 (Short Duration Lock).<br>
+    <span class="kw">구현(MVCC 방식):</span> 문장(Statement) 실행 시점의 스냅샷을 사용하여 커밋된 최신 버전만 반환. Oracle·PostgreSQL 기본.</p>
+    <p><span class="kw">방지:</span> <span class="badge badge-g">Dirty Read ✔</span> &nbsp;
+       <span class="kw">허용:</span> <span class="badge badge-r">Non-Repeatable Read</span> <span class="badge badge-r">Phantom Read</span></p>
+    <p><span class="kw">적합 상황:</span> 일반 OLTP 서비스 — Oracle, PostgreSQL, SQL Server의 기본값. 대부분의 웹 애플리케이션이 이 수준 사용.</p>
+  </div>
+  <div class="code-wrap"><pre><span class="c-kw">SET</span> TRANSACTION ISOLATION LEVEL READ COMMITTED;
+<span class="c-cm">-- T1 내 두 번 조회 사이 T2가 커밋하면 두 번째 조회 결과가 달라질 수 있음</span>
+<span class="c-kw">SELECT</span> balance <span class="c-kw">FROM</span> account <span class="c-kw">WHERE</span> id = <span class="c-nm">1</span>; <span class="c-cm">-- 100만 반환</span>
+<span class="c-cm">-- (T2가 80만으로 UPDATE + COMMIT)</span>
+<span class="c-kw">SELECT</span> balance <span class="c-kw">FROM</span> account <span class="c-kw">WHERE</span> id = <span class="c-nm">1</span>; <span class="c-cm">-- 80만 반환 ← Non-Repeatable Read</span></pre></div>
+
+  <!-- Level 3: REPEATABLE READ -->
+  <div class="sh2">③ REPEATABLE READ — 행 수준 반복 읽기 보장</div>
+  <div class="txt i1">
+    <p><span class="kw">정의:</span> 트랜잭션 내에서 한 번 읽은 행은 트랜잭션이 끝날 때까지 동일한 값을 반환한다. 단, 범위 조건(Range Query)에 의한 신규 행 삽입은 막지 못한다.</p>
+    <p><span class="kw">구현(Lock 방식):</span> 읽기 시 공유 잠금을 트랜잭션 종료 시까지 유지 (Long Duration Shared Lock).<br>
+    <span class="kw">구현(MVCC 방식):</span> 트랜잭션 시작 시점의 스냅샷을 고정하여 전체 트랜잭션 동안 동일 버전 반환. MySQL InnoDB 기본.</p>
+    <p><span class="kw">방지:</span> <span class="badge badge-g">Dirty Read ✔</span> <span class="badge badge-g">Non-Repeatable Read ✔</span> &nbsp;
+       <span class="kw">허용:</span> <span class="badge badge-r">Phantom Read</span></p>
+    <p><span class="kw">특이사항 — MySQL InnoDB:</span> MVCC + Next-Key Lock(Gap Lock)으로 Phantom Read도 실질적으로 방지. SQL 표준보다 강한 보장을 제공.</p>
+  </div>
+  <div class="code-wrap"><pre><span class="c-kw">SET</span> TRANSACTION ISOLATION LEVEL REPEATABLE READ;
+<span class="c-cm">-- 동일 행 재조회 결과 동일 보장 (Non-Repeatable Read 방지)</span>
+<span class="c-kw">SELECT</span> balance <span class="c-kw">FROM</span> account <span class="c-kw">WHERE</span> id = <span class="c-nm">1</span>; <span class="c-cm">-- 100만</span>
+<span class="c-cm">-- (T2가 80만으로 UPDATE + COMMIT)</span>
+<span class="c-kw">SELECT</span> balance <span class="c-kw">FROM</span> account <span class="c-kw">WHERE</span> id = <span class="c-nm">1</span>; <span class="c-cm">-- 여전히 100만 ← 반복 읽기 보장</span>
+<span class="c-cm">-- 단, 범위 재조회 시 Phantom Read는 발생 가능 (Lock 방식의 경우)</span></pre></div>
+
+  <!-- Level 4: SERIALIZABLE -->
+  <div class="sh2">④ SERIALIZABLE — 최고 격리, 완전한 직렬성 보장</div>
+  <div class="txt i1">
+    <p><span class="kw">정의:</span> 동시 실행되는 모든 트랜잭션의 결과가 어떤 순서로 직렬 실행한 결과와 동일함을 보장한다. 모든 이상 현상이 방지된다.</p>
+    <p><span class="kw">구현(Lock 방식):</span> 범위 잠금(Range Lock) 또는 서술 잠금(Predicate Lock)으로 Phantom 방지. SELECT 범위에 공유 잠금 적용.<br>
+    <span class="kw">구현(SSI 방식):</span> Serializable Snapshot Isolation — MVCC + 충돌 탐지(Conflict Detection)로 성능 개선. PostgreSQL 9.1+, CockroachDB 지원.</p>
+    <p><span class="kw">방지:</span> <span class="badge badge-g">Dirty Read ✔</span> <span class="badge badge-g">Non-Repeatable Read ✔</span> <span class="badge badge-g">Phantom Read ✔</span></p>
+    <p><span class="kw">단점:</span> 동시성 최저, 교착상태 빈발 → 처리량 급감. 금융 원장, 의료 기록 등 정합성 최우선 시스템에만 선택적 사용.</p>
+  </div>
+  <div class="code-wrap"><pre><span class="c-kw">SET</span> TRANSACTION ISOLATION LEVEL SERIALIZABLE;
+<span class="c-cm">-- 범위 쿼리에도 잠금 적용 → Phantom Read 방지</span>
+<span class="c-kw">SELECT</span> * <span class="c-kw">FROM</span> account <span class="c-kw">WHERE</span> balance > <span class="c-nm">500000</span>;
+<span class="c-cm">-- 다른 T2가 balance=700000 행 INSERT를 시도하면 잠금 대기 발생</span>
+<span class="c-cm">-- → T1 COMMIT 전까지 T2 대기 → 완전한 직렬 실행 보장</span></pre></div>
+</div>
+
+<hr class="pb">
+
+<!-- ─── Ⅲ. 요약 및 실무 선택 ─── -->
+<div class="sec">
+  <div class="sh">Ⅲ. 격리 수준별 이상 현상 발생 관계 요약 및 실무 선택 기준</div>
+
+  <div class="sh2">1. 격리 수준 × 이상 현상 매트릭스</div>
+
+  <div class="fig">
+    <svg width="100%" viewBox="0 0 700 230" xmlns="http://www.w3.org/2000/svg" role="img">
+      <title>격리 수준 × 이상 현상 매트릭스</title>
+      <!-- 격리 수준 축 (Y) -->
+      <text font-size="11" font-weight="700" fill="#555" x="16" y="64"  font-family="'Noto Sans KR',sans-serif">낮음↑</text>
+      <text font-size="11" font-weight="700" fill="#555" x="10" y="190" font-family="'Noto Sans KR',sans-serif">높음↓</text>
+      <line x1="34" y1="50" x2="34" y2="200" stroke="#bbb" stroke-width="1"/>
+
+      <!-- Row backgrounds by level -->
+      <rect x="38" y="50"  width="648" height="35" rx="3" fill="#FCEBEB" stroke="#f0b8b8" stroke-width="0.5"/>
+      <rect x="38" y="88"  width="648" height="35" rx="3" fill="#FAEEDA" stroke="#f0c88a" stroke-width="0.5"/>
+      <rect x="38" y="126" width="648" height="35" rx="3" fill="#E6F1FB" stroke="#9dc4f0" stroke-width="0.5"/>
+      <rect x="38" y="164" width="648" height="35" rx="3" fill="#EAF3DE" stroke="#b0d89a" stroke-width="0.5"/>
+
+      <!-- Level labels -->
+      <text font-size="11" font-weight="700" fill="#A32D2D" x="52" y="72"  font-family="'Noto Sans KR',sans-serif">①  READ UNCOMMITTED</text>
+      <text font-size="11" font-weight="700" fill="#7a3010" x="52" y="110" font-family="'Noto Sans KR',sans-serif">②  READ COMMITTED</text>
+      <text font-size="11" font-weight="700" fill="#0C447C" x="52" y="148" font-family="'Noto Sans KR',sans-serif">③  REPEATABLE READ</text>
+      <text font-size="11" font-weight="700" fill="#2d6a4f" x="52" y="186" font-family="'Noto Sans KR',sans-serif">④  SERIALIZABLE</text>
+
+      <!-- Column headers -->
+      <text font-size="10.5" font-weight="700" fill="#555" x="310" y="35" text-anchor="middle" font-family="'Noto Sans KR',sans-serif">Dirty Read</text>
+      <text font-size="10.5" font-weight="700" fill="#555" x="452" y="35" text-anchor="middle" font-family="'Noto Sans KR',sans-serif">Non-Repeatable Read</text>
+      <text font-size="10.5" font-weight="700" fill="#555" x="594" y="35" text-anchor="middle" font-family="'Noto Sans KR',sans-serif">Phantom Read</text>
+
+      <!-- Cell separators -->
+      <line x1="262" y1="28" x2="262" y2="202" stroke="#ccc" stroke-width="0.8"/>
+      <line x1="402" y1="28" x2="402" y2="202" stroke="#ccc" stroke-width="0.8"/>
+      <line x1="542" y1="28" x2="542" y2="202" stroke="#ccc" stroke-width="0.8"/>
+
+      <!-- READ UNCOMMITTED: 모두 발생 -->
+      <rect x="268" y="55"  width="128" height="25" rx="3" fill="#A32D2D"/>
+      <text font-size="11" font-weight="700" fill="#fff" x="332" y="72" text-anchor="middle" font-family="'Noto Sans KR',sans-serif">발생 ✗</text>
+      <rect x="408" y="55"  width="128" height="25" rx="3" fill="#A32D2D"/>
+      <text font-size="11" font-weight="700" fill="#fff" x="472" y="72" text-anchor="middle" font-family="'Noto Sans KR',sans-serif">발생 ✗</text>
+      <rect x="548" y="55"  width="128" height="25" rx="3" fill="#A32D2D"/>
+      <text font-size="11" font-weight="700" fill="#fff" x="612" y="72" text-anchor="middle" font-family="'Noto Sans KR',sans-serif">발생 ✗</text>
+
+      <!-- READ COMMITTED -->
+      <rect x="268" y="93"  width="128" height="25" rx="3" fill="#2d6a4f"/>
+      <text font-size="11" font-weight="700" fill="#fff" x="332" y="110" text-anchor="middle" font-family="'Noto Sans KR',sans-serif">방지 ✔</text>
+      <rect x="408" y="93"  width="128" height="25" rx="3" fill="#A32D2D"/>
+      <text font-size="11" font-weight="700" fill="#fff" x="472" y="110" text-anchor="middle" font-family="'Noto Sans KR',sans-serif">발생 ✗</text>
+      <rect x="548" y="93"  width="128" height="25" rx="3" fill="#A32D2D"/>
+      <text font-size="11" font-weight="700" fill="#fff" x="612" y="110" text-anchor="middle" font-family="'Noto Sans KR',sans-serif">발생 ✗</text>
+
+      <!-- REPEATABLE READ -->
+      <rect x="268" y="131" width="128" height="25" rx="3" fill="#2d6a4f"/>
+      <text font-size="11" font-weight="700" fill="#fff" x="332" y="148" text-anchor="middle" font-family="'Noto Sans KR',sans-serif">방지 ✔</text>
+      <rect x="408" y="131" width="128" height="25" rx="3" fill="#2d6a4f"/>
+      <text font-size="11" font-weight="700" fill="#fff" x="472" y="148" text-anchor="middle" font-family="'Noto Sans KR',sans-serif">방지 ✔</text>
+      <rect x="548" y="131" width="128" height="25" rx="3" fill="#7a3010"/>
+      <text font-size="11" font-weight="700" fill="#fff" x="612" y="148" text-anchor="middle" font-family="'Noto Sans KR',sans-serif">발생 ✗*</text>
+
+      <!-- SERIALIZABLE -->
+      <rect x="268" y="169" width="128" height="25" rx="3" fill="#2d6a4f"/>
+      <text font-size="11" font-weight="700" fill="#fff" x="332" y="186" text-anchor="middle" font-family="'Noto Sans KR',sans-serif">방지 ✔</text>
+      <rect x="408" y="169" width="128" height="25" rx="3" fill="#2d6a4f"/>
+      <text font-size="11" font-weight="700" fill="#fff" x="472" y="186" text-anchor="middle" font-family="'Noto Sans KR',sans-serif">방지 ✔</text>
+      <rect x="548" y="169" width="128" height="25" rx="3" fill="#2d6a4f"/>
+      <text font-size="11" font-weight="700" fill="#fff" x="612" y="186" text-anchor="middle" font-family="'Noto Sans KR',sans-serif">방지 ✔</text>
+
+      <text font-size="9.5" fill="#555" x="550" y="215" font-family="'Noto Sans KR',sans-serif">* MySQL InnoDB는 REPEATABLE READ에서도 Next-Key Lock으로 Phantom 방지</text>
+    </svg>
+    <div class="fc">【그림 1】 격리 수준 × 이상 현상 매트릭스 — 초록: 방지, 빨강: 발생, 주황: DBMS 구현 의존</div>
+  </div>
+
+  <div class="sh2">2. 격리 수준 × 구현 메커니즘 × 성능 비교</div>
+  <div class="tw">
+    <table>
+      <tr><th style="width:20%">격리 수준</th><th style="width:22%">Lock 구현</th><th style="width:22%">MVCC 구현</th><th style="width:18%">동시성</th><th>대표 DBMS 기본값</th></tr>
+      <tr>
+        <td><span class="kc" style="color:#A32D2D">Read Uncommitted</span></td>
+        <td>읽기 잠금 없음</td>
+        <td>지원 드묾</td>
+        <td class="tc">★★★★★</td>
+        <td>— (거의 미사용)</td>
+      </tr>
+      <tr>
+        <td><span class="kc" style="color:#7a3010">Read Committed</span></td>
+        <td>Short-duration S-Lock</td>
+        <td>문장 레벨 스냅샷</td>
+        <td class="tc">★★★★</td>
+        <td>Oracle, PostgreSQL, SQL Server</td>
+      </tr>
+      <tr>
+        <td><span class="kc" style="color:#0C447C">Repeatable Read</span></td>
+        <td>Long-duration S-Lock</td>
+        <td>트랜잭션 레벨 스냅샷</td>
+        <td class="tc">★★★</td>
+        <td>MySQL InnoDB</td>
+      </tr>
+      <tr>
+        <td><span class="kc" style="color:#2d6a4f">Serializable</span></td>
+        <td>Range Lock / Predicate Lock</td>
+        <td>SSI (충돌 탐지)</td>
+        <td class="tc">★★</td>
+        <td>금융·의료 특수 설정</td>
+      </tr>
+    </table>
+  </div>
+  <div class="fc" style="margin-top:-8px;margin-bottom:12px">【표 2】 격리 수준별 구현 메커니즘 및 동시성 비교</div>
+
+  <div class="sh2">3. 실무 격리 수준 선택 기준</div>
+  <div class="tw">
+    <table>
+      <tr><th style="width:28%">시스템 유형</th><th style="width:28%">권장 격리 수준</th><th>선택 근거</th></tr>
+      <tr>
+        <td>일반 웹 서비스 OLTP<br>(쇼핑몰·SNS 등)</td>
+        <td><span class="badge badge-o">READ COMMITTED</span></td>
+        <td>Dirty Read만 방지하면 충분, 높은 동시성 요구. Oracle·PostgreSQL 기본값 그대로 사용</td>
+      </tr>
+      <tr>
+        <td>재고·좌석 예약 시스템<br>(Lost Update 방지 필요)</td>
+        <td><span class="badge badge-b">REPEATABLE READ</span> + 비관적 잠금</td>
+        <td>동일 행 반복 읽기 일관성 필요. SELECT … FOR UPDATE로 추가 보완</td>
+      </tr>
+      <tr>
+        <td>보고서·집계 쿼리<br>(장시간 트랜잭션)</td>
+        <td><span class="badge badge-b">REPEATABLE READ</span> (MVCC)</td>
+        <td>트랜잭션 시작 시점 스냅샷 고정으로 일관된 집계 보장, 쓰기 차단 없음</td>
+      </tr>
+      <tr>
+        <td>금융 원장·이중 장부<br>(완전한 정합성 요구)</td>
+        <td><span class="badge badge-g">SERIALIZABLE</span></td>
+        <td>모든 이상 현상 방지 필수. 처리량 저하를 감수하거나 SSI로 성능 보완</td>
+      </tr>
+      <tr>
+        <td>대용량 분석·DW<br>(읽기 전용 집계)</td>
+        <td><span class="badge badge-o">READ COMMITTED</span> 또는 스냅샷</td>
+        <td>갱신 없는 분석 쿼리 — 높은 동시성 유지. MVCC 스냅샷 격리 활용</td>
+      </tr>
+    </table>
+  </div>
+  <div class="fc" style="margin-top:-8px;margin-bottom:12px">【표 3】 시스템 유형별 격리 수준 선택 가이드</div>
+
+  <div class="sh2">4. 동시성 vs. 일관성 트레이드오프 다이어그램</div>
+  <div class="fig">
+    <svg width="100%" viewBox="0 0 680 160" xmlns="http://www.w3.org/2000/svg" role="img">
+      <title>격리 수준 트레이드오프 스펙트럼</title>
+      <!-- 화살표 축 -->
+      <line x1="40"  y1="80" x2="640" y2="80" stroke="#ccc" stroke-width="1.5"/>
+      <!-- 동시성 방향 -->
+      <line x1="640" y1="80" x2="40" y2="80" stroke="#1a3a6e" stroke-width="2.5"
+            marker-end="url(#sp1)"/>
+      <defs>
+        <marker id="sp1" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+          <path d="M2 1L8 5L2 9" fill="none" stroke="#1a3a6e" stroke-width="1.5"/>
+        </marker>
+        <marker id="sp2" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+          <path d="M2 1L8 5L2 9" fill="none" stroke="#2d6a4f" stroke-width="1.5"/>
+        </marker>
+      </defs>
+      <line x1="40" y1="80" x2="640" y2="80" stroke="#2d6a4f" stroke-width="2.5"
+            marker-end="url(#sp2)"/>
+      <text font-size="11" font-weight="700" fill="#1a3a6e" x="36" y="70" text-anchor="middle" font-family="'Noto Sans KR',sans-serif">동시성↑</text>
+      <text font-size="11" font-weight="700" fill="#2d6a4f" x="645" y="70" text-anchor="middle" font-family="'Noto Sans KR',sans-serif">일관성↑</text>
+
+      <!-- 4단계 마커 -->
+      <circle cx="120" cy="80" r="18" fill="#A32D2D"/>
+      <text font-size="10" font-weight="700" fill="#fff" x="120" y="84" text-anchor="middle" font-family="'Noto Sans KR',sans-serif">READ U.</text>
+      <circle cx="280" cy="80" r="18" fill="#7a3010"/>
+      <text font-size="10" font-weight="700" fill="#fff" x="280" y="84" text-anchor="middle" font-family="'Noto Sans KR',sans-serif">READ C.</text>
+      <circle cx="440" cy="80" r="18" fill="#1a3a6e"/>
+      <text font-size="10" font-weight="700" fill="#fff" x="440" y="84" text-anchor="middle" font-family="'Noto Sans KR',sans-serif">REP. R.</text>
+      <circle cx="580" cy="80" r="18" fill="#2d6a4f"/>
+      <text font-size="10" font-weight="700" fill="#fff" x="580" y="84" text-anchor="middle" font-family="'Noto Sans KR',sans-serif">SERIAL.</text>
+
+      <!-- 허용 이상 현상 라벨 -->
+      <text font-size="9.5" fill="#A32D2D" x="120" y="110" text-anchor="middle" font-family="'Noto Sans KR',sans-serif">Dirty+NRR+Phantom</text>
+      <text font-size="9.5" fill="#7a3010" x="280" y="110" text-anchor="middle" font-family="'Noto Sans KR',sans-serif">NRR+Phantom</text>
+      <text font-size="9.5" fill="#1a3a6e" x="440" y="110" text-anchor="middle" font-family="'Noto Sans KR',sans-serif">Phantom(*)</text>
+      <text font-size="9.5" fill="#2d6a4f" x="580" y="110" text-anchor="middle" font-family="'Noto Sans KR',sans-serif">없음</text>
+
+      <!-- 기본값 표시 -->
+      <text font-size="9.5" fill="#7a3010" x="280" y="128" text-anchor="middle" font-family="'Noto Sans KR',sans-serif">Oracle·PG·MSSQL 기본</text>
+      <text font-size="9.5" fill="#1a3a6e" x="440" y="128" text-anchor="middle" font-family="'Noto Sans KR',sans-serif">MySQL 기본</text>
+    </svg>
+    <div class="fc">【그림 2】 격리 수준 스펙트럼 — 좌(동시성↑ 낮은 격리) ↔ 우(일관성↑ 높은 격리)</div>
+  </div>
+</div>
+
+<!-- ─── Ⅳ. 결론 ─── -->
+<div class="sec">
+  <div class="sh">Ⅳ. 결론</div>
+  <div class="txt">
+    <p>트랜잭션 격리 수준은 <span class="kw">이상 현상 허용 범위와 동시성 성능 간의 정책적 트레이드오프</span>를 결정한다. 실무에서는 대부분의 시스템이 <span class="kw">READ COMMITTED</span>를 기반으로 애플리케이션 레이어의 낙관적/비관적 잠금 전략을 조합하여 특정 이상 현상을 추가 방지하는 방식을 택한다. 완전한 직렬성이 요구되는 시스템에는 <span class="kw">Serializable Snapshot Isolation(SSI)</span> 방식이 전통적인 잠금보다 높은 성능을 제공하는 현실적 대안이다.</p>
+  </div>
+</div>
+
+<div class="note">
+  <div class="nt">★ 기술사 핵심 코멘트</div>
+  <div class="nb">
+    격리 수준 설계의 핵심은 <strong>허용 가능한 이상 현상의 범위를 업무 요건에 맞게 명확히 정의</strong>하는 것이며, DB 시스템 감리 시 다음을 중점 검토해야 한다.<br>
+    ① <strong>격리 수준 설정 근거 문서화:</strong> 기본값(READ COMMITTED)에서 상향·하향 조정 시 반드시 업무 위험도 분석 결과와 설정 근거를 설계 문서에 명시<br>
+    ② <strong>Lost Update 방지 누락:</strong> READ COMMITTED에서 선점적 잠금(SELECT … FOR UPDATE) 없이 Read-Modify-Write 패턴 사용 시 갱신 손실 발생 가능 — 코드 레벨 감리 필수<br>
+    ③ <strong>장시간 트랜잭션과 MVCC 공간 낭비:</strong> REPEATABLE READ + 장시간 트랜잭션은 구버전 데이터(Undo 레코드) 과다 누적 → PostgreSQL Autovacuum 정책, MySQL InnoDB Purge 스레드 설정 적정성 확인<br>
+    ④ <strong>SERIALIZABLE 선택 시 교착상태 대응:</strong> 범위 잠금에 의한 교착상태 빈발 가능 — 탐지 주기, 희생자 선택 정책, 재시도(Retry) 로직 구현 여부 점검
+  </div>
+</div>
+
+</div><!-- /body -->
+
+<div class="ftr">
+  <span>컴퓨터시스템응용 기술사 · 모범 답안</span>
+  <span>트랜잭션 격리 수준 4단계 — Dirty Read · NRR · Phantom · Lost Update</span>
+  <span>총 4개 항목 · 표 3개 · 그림 2개 · 타임라인 4종 · 격리 수준 카드 포함</span>
+</div>
+
+</div><!-- /doc -->
+</body>
+</html>

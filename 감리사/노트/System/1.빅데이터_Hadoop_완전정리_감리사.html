@@ -1,0 +1,678 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;900&family=JetBrains+Mono:wght@400;700&display=swap');
+:root{--bg:#040a0f;--s1:#071018;--s2:#0b1622;--s3:#10202e;--bdr:#1a3a52;--a1:#f97316;--a2:#34d399;--a3:#fbbf24;--a4:#f87171;--a5:#60a5fa;--a6:#a78bfa;--txt:#e2e8f0;--mu:#64748b;}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Noto Sans KR',sans-serif;background:var(--bg);color:var(--txt);min-height:100vh;}
+.hdr{padding:20px 24px 14px;background:linear-gradient(150deg,#040a0f,#081520,#040a0f);border-bottom:1px solid var(--bdr);}
+.hdr-r{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:6px;}
+.pill{padding:3px 10px;border-radius:20px;font-size:10px;font-weight:700;}
+.p1{background:linear-gradient(135deg,#7c2d12,var(--a1));color:#fff;}
+.p2{background:rgba(52,211,153,.15);color:var(--a2);border:1px solid rgba(52,211,153,.3);}
+.p3{background:rgba(251,191,36,.15);color:var(--a3);border:1px solid rgba(251,191,36,.3);}
+h1{font-size:18px;font-weight:900;}
+.h1g{background:linear-gradient(90deg,var(--a1),var(--a3),var(--a2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.hdr p{color:var(--mu);font-size:11.5px;margin-top:3px;}
+.tabs{display:flex;padding:0 24px;background:var(--s1);border-bottom:1px solid var(--bdr);overflow-x:auto;scrollbar-width:none;}
+.tabs::-webkit-scrollbar{display:none;}
+.tab{padding:10px 13px;font-size:11.5px;font-weight:600;color:var(--mu);cursor:pointer;border-bottom:2px solid transparent;white-space:nowrap;transition:all .2s;background:none;border-top:none;border-left:none;border-right:none;font-family:'Noto Sans KR',sans-serif;}
+.tab.on{color:var(--a1);border-bottom-color:var(--a1);}
+.wrap{padding:18px 24px;max-width:960px;margin:0 auto;}
+.pnl{display:none;}.pnl.on{display:block;}
+.card{background:var(--s1);border:1px solid var(--bdr);border-radius:11px;padding:16px;margin-bottom:12px;}
+.card-h{display:flex;align-items:center;gap:9px;margin-bottom:12px;}
+.ico{width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0;}
+.io{background:rgba(249,115,22,.15);}.ig{background:rgba(52,211,153,.15);}.iy{background:rgba(251,191,36,.15);}.ir{background:rgba(248,113,113,.15);}.ib{background:rgba(96,165,250,.15);}.ip{background:rgba(167,139,250,.15);}
+.card h3{font-size:13.5px;font-weight:700;}
+.tag{display:inline-block;padding:2px 7px;border-radius:4px;font-size:9.5px;font-weight:600;margin:2px 2px 2px 0;}
+.to{background:rgba(249,115,22,.12);color:var(--a1);border:1px solid rgba(249,115,22,.25);}
+.tg{background:rgba(52,211,153,.12);color:var(--a2);border:1px solid rgba(52,211,153,.25);}
+.ty{background:rgba(251,191,36,.12);color:var(--a3);border:1px solid rgba(251,191,36,.25);}
+.tr{background:rgba(248,113,113,.12);color:var(--a4);border:1px solid rgba(248,113,113,.25);}
+.tb{background:rgba(96,165,250,.12);color:var(--a5);border:1px solid rgba(96,165,250,.25);}
+.tp{background:rgba(167,139,250,.12);color:var(--a6);border:1px solid rgba(167,139,250,.25);}
+table{width:100%;border-collapse:collapse;font-size:12px;}
+th{background:var(--s2);color:var(--mu);font-weight:700;padding:7px 11px;text-align:left;font-size:9.5px;text-transform:uppercase;letter-spacing:.5px;border-bottom:1px solid var(--bdr);}
+td{padding:8px 11px;border-bottom:1px solid rgba(26,58,82,.5);vertical-align:top;line-height:1.55;}
+tr:last-child td{border-bottom:none;}
+tr:hover td{background:rgba(255,255,255,.02);}
+td strong{color:var(--a3);}
+ul.il{list-style:none;display:flex;flex-direction:column;gap:6px;}
+ul.il li{font-size:12px;padding-left:15px;position:relative;line-height:1.5;}
+ul.il li::before{content:'▸';position:absolute;left:0;color:var(--a1);font-size:9.5px;top:3px;}
+ul.il li strong{color:var(--a3);}
+ul.il li em{color:var(--a2);font-style:normal;}
+.memo{background:linear-gradient(135deg,rgba(249,115,22,.07),rgba(52,211,153,.07));border:1px solid rgba(249,115,22,.22);border-left:3px solid var(--a1);border-radius:7px;padding:9px 13px;font-size:12px;font-weight:600;color:var(--a1);margin:9px 0;}
+.memo::before{content:'🎯 한 줄 암기 │ ';color:var(--mu);font-weight:400;}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px;}
+@media(max-width:580px){.g2{grid-template-columns:1fr;}}
+.code{background:var(--s2);border:1px solid rgba(249,115,22,.18);border-radius:6px;padding:10px 12px;font-family:'JetBrains Mono',monospace;font-size:10.5px;margin:8px 0;line-height:1.7;color:var(--a2);overflow-x:auto;}
+.code .cm{color:var(--mu);}.code .kw{color:var(--a1);}.code .val{color:var(--a3);}
+/* flow diagram */
+.flow{display:flex;align-items:center;gap:4px;flex-wrap:wrap;margin:10px 0;}
+.fbox{border-radius:7px;padding:8px 12px;font-size:11px;font-weight:700;text-align:center;border:1px solid;min-width:80px;}
+.farr{color:var(--mu);font-size:18px;flex-shrink:0;}
+/* acc */
+.acc{background:var(--s2);border:1px solid var(--bdr);border-radius:9px;margin-bottom:8px;overflow:hidden;}
+.acc-h{display:flex;justify-content:space-between;align-items:center;padding:10px 14px;cursor:pointer;user-select:none;}
+.acc-h:hover{background:rgba(255,255,255,.02);}
+.acc-title{font-size:12.5px;font-weight:800;flex:1;}
+.acc-tgl{color:var(--mu);transition:transform .2s;font-size:14px;flex-shrink:0;margin-left:8px;}
+.acc.open .acc-tgl{transform:rotate(180deg);}
+.acc-body{display:none;border-top:1px solid var(--bdr);padding:12px 14px;background:var(--s3);font-size:12px;line-height:1.65;}
+.acc.open .acc-body{display:block;}
+.acc-body strong{color:var(--a3);}
+.acc-body em{color:var(--a2);font-style:normal;}
+/* qa */
+.qa{background:var(--s1);border:1px solid var(--bdr);border-radius:9px;margin-bottom:10px;overflow:hidden;}
+.qa:hover{border-color:rgba(249,115,22,.25);}
+.qa-hd{padding:12px 16px;cursor:pointer;display:flex;justify-content:space-between;align-items:flex-start;gap:9px;user-select:none;}
+.qa-meta{display:flex;align-items:center;gap:5px;margin-bottom:4px;flex-wrap:wrap;}
+.qn{font-family:'JetBrains Mono',monospace;font-size:9.5px;font-weight:700;color:var(--mu);}
+.qq{font-size:12.5px;font-weight:600;line-height:1.5;}
+.tgl{color:var(--mu);font-size:15px;flex-shrink:0;transition:transform .2s;}
+.qa.open .tgl{transform:rotate(180deg);}
+.qa-bd{display:none;border-top:1px solid var(--bdr);padding:12px 16px;background:var(--s2);}
+.qa.open .qa-bd{display:block;}
+.chs{display:flex;flex-direction:column;gap:6px;margin-bottom:10px;}
+.ch{display:flex;align-items:flex-start;gap:9px;padding:8px 12px;border-radius:6px;border:1px solid var(--bdr);font-size:12px;cursor:pointer;background:var(--s1);line-height:1.45;transition:all .15s;}
+.ch:hover:not(.lk){border-color:rgba(249,115,22,.3);background:rgba(249,115,22,.04);}
+.ch.ok{border-color:var(--a2);background:rgba(52,211,153,.1);color:var(--a2);}
+.ch.ng{border-color:var(--a4);background:rgba(248,113,113,.08);color:var(--a4);opacity:.7;}
+.ch.lk{cursor:default;}
+.cnum{font-family:'JetBrains Mono',monospace;font-weight:700;font-size:10.5px;flex-shrink:0;margin-top:1px;color:var(--mu);}
+.ch.ok .cnum{color:var(--a2);}.ch.ng .cnum{color:var(--a4);}
+.exp{background:rgba(249,115,22,.05);border:1px solid rgba(249,115,22,.18);border-radius:7px;padding:11px 13px;font-size:12px;line-height:1.6;display:none;}
+.exp.show{display:block;}
+.exp-t{font-size:9.5px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--a1);margin-bottom:5px;}
+.exp strong{color:var(--a3);}
+.exp em{color:var(--a2);font-style:normal;}
+.ox-wr{display:flex;gap:8px;margin-bottom:10px;}
+.ox{flex:1;padding:10px;border-radius:7px;border:1px solid var(--bdr);font-size:18px;cursor:pointer;background:var(--s1);transition:all .15s;font-family:'Noto Sans KR',sans-serif;color:var(--txt);}
+.ox:hover:not(.lk){transform:scale(1.02);}
+.ox.so{border-color:var(--a2);background:rgba(52,211,153,.15);}
+.ox.sx{border-color:var(--a4);background:rgba(248,113,113,.1);}
+.ox.lk{cursor:default;}
+.diff{display:inline-block;padding:2px 6px;border-radius:9px;font-size:8.5px;font-weight:700;}
+.easy{background:rgba(52,211,153,.2);color:var(--a2);}
+.mid{background:rgba(251,191,36,.2);color:var(--a3);}
+.hard{background:rgba(248,113,113,.2);color:var(--a4);}
+.fb-wr{display:flex;gap:5px;flex-wrap:wrap;margin-bottom:12px;}
+.fb{padding:4px 11px;border-radius:18px;border:1px solid var(--bdr);font-size:10.5px;font-weight:600;cursor:pointer;background:var(--s2);color:var(--mu);transition:all .15s;font-family:'Noto Sans KR',sans-serif;}
+.fb.on{background:rgba(249,115,22,.15);color:var(--a1);border-color:var(--a1);}
+.sc-b{background:var(--s2);border:1px solid var(--bdr);border-radius:7px;padding:4px 12px;font-size:11.5px;color:var(--mu);}
+.sc-b span{color:var(--a1);font-weight:700;}
+</style>
+</head>
+<body>
+<div class="hdr">
+  <div class="hdr-r">
+    <span class="pill p1">BigData & Hadoop</span>
+    <span class="pill p2">HDFS · MapReduce · Spark · NoSQL</span>
+    <span class="pill p3">감리사 핵심 출제</span>
+  </div>
+  <h1><span class="h1g">빅데이터 기술 & Hadoop 완전 정리</span></h1>
+  <p>빅데이터 5V · Hadoop 에코시스템 · HDFS · MapReduce · Spark · NoSQL · 데이터 레이크·웨어하우스</p>
+</div>
+<div class="tabs">
+  <button class="tab on" data-p="p1">📊 빅데이터 개요</button>
+  <button class="tab" data-p="p2">🐘 Hadoop·HDFS</button>
+  <button class="tab" data-p="p3">⚙️ MapReduce·YARN</button>
+  <button class="tab" data-p="p4">⚡ Spark·스트리밍</button>
+  <button class="tab" data-p="p5">🗄️ NoSQL·데이터저장</button>
+  <button class="tab" data-p="p6">🏭 데이터 파이프라인</button>
+  <button class="tab" data-p="p7">❓ 예상문제</button>
+</div>
+<div class="wrap">
+
+<!-- P1: 빅데이터 개요 -->
+<div class="pnl on" id="p1">
+  <div class="card">
+    <div class="card-h"><div class="ico io">📊</div><h3>빅데이터 정의 & 5V 특성 ⭐</h3></div>
+    <div style="background:var(--s2);border:1px solid rgba(249,115,22,.28);border-radius:9px;padding:12px;margin-bottom:11px;font-size:12.5px;line-height:1.8;">
+      <strong style="color:var(--a1)">빅데이터</strong>: 기존 데이터 처리 기술로는 수집·저장·관리·분석이 어려운 <em style="color:var(--a3);font-style:normal;">대규모 데이터</em>를 처리하여 가치를 추출하는 기술·방법론
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:6px;margin-bottom:12px;">
+      <div style="background:rgba(249,115,22,.08);border:1px solid rgba(249,115,22,.3);border-radius:8px;padding:10px;text-align:center;">
+        <div style="font-size:18px;margin-bottom:4px;">📦</div>
+        <div style="font-size:12px;font-weight:900;color:var(--a1);">Volume</div>
+        <div style="font-size:10px;color:var(--mu);margin-top:2px;">규모 / 데이터 양<br>페타바이트↑</div>
+      </div>
+      <div style="background:rgba(52,211,153,.08);border:1px solid rgba(52,211,153,.3);border-radius:8px;padding:10px;text-align:center;">
+        <div style="font-size:18px;margin-bottom:4px;">⚡</div>
+        <div style="font-size:12px;font-weight:900;color:var(--a2);">Velocity</div>
+        <div style="font-size:10px;color:var(--mu);margin-top:2px;">속도 / 생성·처리<br>실시간 스트리밍</div>
+      </div>
+      <div style="background:rgba(251,191,36,.08);border:1px solid rgba(251,191,36,.3);border-radius:8px;padding:10px;text-align:center;">
+        <div style="font-size:18px;margin-bottom:4px;">🌊</div>
+        <div style="font-size:12px;font-weight:900;color:var(--a3);">Variety</div>
+        <div style="font-size:10px;color:var(--mu);margin-top:2px;">다양성 / 정형·비정형<br>반정형 데이터</div>
+      </div>
+      <div style="background:rgba(96,165,250,.08);border:1px solid rgba(96,165,250,.3);border-radius:8px;padding:10px;text-align:center;">
+        <div style="font-size:18px;margin-bottom:4px;">✅</div>
+        <div style="font-size:12px;font-weight:900;color:var(--a5);">Veracity</div>
+        <div style="font-size:10px;color:var(--mu);margin-top:2px;">정확성 / 신뢰성<br>데이터 품질</div>
+      </div>
+      <div style="background:rgba(167,139,250,.08);border:1px solid rgba(167,139,250,.3);border-radius:8px;padding:10px;text-align:center;">
+        <div style="font-size:18px;margin-bottom:4px;">💎</div>
+        <div style="font-size:12px;font-weight:900;color:var(--a6);">Value</div>
+        <div style="font-size:10px;color:var(--mu);margin-top:2px;">가치 / 비즈니스<br>인사이트 창출</div>
+      </div>
+    </div>
+    <table>
+      <thead><tr><th>데이터 유형</th><th>특징</th><th>예시</th></tr></thead>
+      <tbody>
+        <tr><td><span class="tag tg">정형(Structured)</span></td><td>스키마 정의된 행·열 구조 / 관계형 DB에 저장</td><td>RDB 테이블, 스프레드시트</td></tr>
+        <tr><td><span class="tag ty">반정형(Semi-structured)</span></td><td>스키마가 완전하지 않지만 태그·구분자 포함</td><td>JSON, XML, CSV, 로그파일</td></tr>
+        <tr><td><span class="tag tr">비정형(Unstructured)</span></td><td>스키마 없음 / 텍스트·이미지·동영상·음성 등</td><td>SNS 게시글, 이미지, 동영상, 이메일</td></tr>
+      </tbody>
+    </table>
+    <div class="memo">빅데이터 5V: Volume(규모)·Velocity(속도)·Variety(다양성)·Veracity(정확성)·Value(가치)</div>
+  </div>
+
+  <div class="card">
+    <div class="card-h"><div class="ico iy">🔄</div><h3>빅데이터 처리 아키텍처 — Lambda vs Kappa</h3></div>
+    <div class="g2">
+      <div style="background:var(--s2);border:1px solid rgba(249,115,22,.25);border-radius:8px;padding:12px;">
+        <p style="font-size:11.5px;font-weight:800;color:var(--a1);margin-bottom:7px;">Lambda 아키텍처 ⭐</p>
+        <ul class="il">
+          <li><strong>배치 레이어:</strong> 전체 데이터 배치 처리 (정확성)</li>
+          <li><strong>스피드 레이어:</strong> 실시간 데이터 처리 (최신성)</li>
+          <li><strong>서빙 레이어:</strong> 두 결과를 병합하여 쿼리 응답</li>
+          <li><strong>장점:</strong> 정확성+실시간 모두 보장</li>
+          <li><strong>단점:</strong> 두 레이어 유지 복잡·코드 중복</li>
+        </ul>
+      </div>
+      <div style="background:var(--s2);border:1px solid rgba(52,211,153,.25);border-radius:8px;padding:12px;">
+        <p style="font-size:11.5px;font-weight:800;color:var(--a2);margin-bottom:7px;">Kappa 아키텍처</p>
+        <ul class="il">
+          <li><strong>단일 스트림 처리:</strong> 배치 레이어 제거 / 모든 처리를 실시간 스트림으로</li>
+          <li><strong>재처리:</strong> 필요 시 스트림 처음부터 재처리</li>
+          <li><strong>장점:</strong> Lambda보다 단순 / 코드 재사용</li>
+          <li><strong>단점:</strong> 스트림 처리 부하 高 / 재처리 비용</li>
+          <li><strong>적합:</strong> Kafka·Flink 기반 환경</li>
+        </ul>
+      </div>
+    </div>
+    <div class="memo">Lambda=배치+스피드+서빙 3레이어·정확성+실시간 / Kappa=단일스트림 처리·단순화</div>
+  </div>
+</div>
+
+<!-- P2: Hadoop·HDFS -->
+<div class="pnl" id="p2">
+  <div class="card">
+    <div class="card-h"><div class="ico io">🐘</div><h3>Hadoop 에코시스템 개요 ⭐</h3></div>
+    <div style="background:var(--s2);border:1px solid rgba(249,115,22,.28);border-radius:9px;padding:12px;margin-bottom:11px;font-size:12.5px;line-height:1.8;">
+      <strong style="color:var(--a1)">Apache Hadoop</strong>: 대용량 데이터를 <em style="color:var(--a3);font-style:normal;">상용 서버 클러스터(저가 하드웨어)에 분산 저장·처리</em>하는 오픈소스 프레임워크 (Google GFS·MapReduce 논문 기반, 2006년 Doug Cutting)
+    </div>
+    <table>
+      <thead><tr><th>핵심 구성요소</th><th>역할</th></tr></thead>
+      <tbody>
+        <tr><td><strong>HDFS ⭐</strong></td><td>분산 파일 시스템 — 대용량 파일을 블록 단위로 분산 저장 + 복제</td></tr>
+        <tr><td><strong>MapReduce ⭐</strong></td><td>분산 데이터 처리 패러다임 — Map(분할처리)+Reduce(집계)</td></tr>
+        <tr><td><strong>YARN ⭐</strong></td><td>클러스터 자원 관리자 (Yet Another Resource Negotiator) — CPU·메모리 할당</td></tr>
+        <tr><td><strong>Hive</strong></td><td>SQL-like 쿼리(HiveQL)로 HDFS 데이터 처리 — DW 쿼리 도구</td></tr>
+        <tr><td><strong>HBase</strong></td><td>HDFS 위의 NoSQL 컬럼 패밀리 DB — 실시간 읽기·쓰기</td></tr>
+        <tr><td><strong>Pig</strong></td><td>데이터 흐름 스크립트 언어(Pig Latin) — MapReduce 추상화</td></tr>
+        <tr><td><strong>Sqoop</strong></td><td>RDB ↔ HDFS 데이터 임포트·익스포트</td></tr>
+        <tr><td><strong>Flume</strong></td><td>로그·이벤트 데이터를 HDFS로 실시간 수집</td></tr>
+        <tr><td><strong>Oozie</strong></td><td>Hadoop 워크플로우 스케줄러</td></tr>
+        <tr><td><strong>ZooKeeper</strong></td><td>분산 코디네이션 서비스 — 분산 시스템 동기화·리더 선출</td></tr>
+      </tbody>
+    </table>
+    <div class="memo">Hadoop 핵심 3요소: HDFS(저장)·MapReduce(처리)·YARN(자원관리) / Hive=SQL쿼리 / HBase=실시간NoSQL</div>
+  </div>
+
+  <div class="card">
+    <div class="card-h"><div class="ico ig">💾</div><h3>HDFS (Hadoop Distributed File System) ⭐</h3></div>
+
+    <div class="acc open" onclick="this.classList.toggle('open')">
+      <div class="acc-h"><div class="acc-title" style="color:var(--a1);">HDFS 구조 — NameNode & DataNode ⭐</div><div class="acc-tgl">▾</div></div>
+      <div class="acc-body">
+        <div class="g2">
+          <div>
+            <p style="font-size:11.5px;font-weight:800;color:var(--a3);margin-bottom:7px;">NameNode (마스터) ⭐</p>
+            <ul class="il">
+              <li><strong>역할:</strong> 파일 시스템 <em>메타데이터 관리</em> (파일 이름·블록 위치·권한)</li>
+              <li>실제 데이터는 저장하지 않음</li>
+              <li><strong>FsImage:</strong> 네임스페이스 스냅샷 (디스크)</li>
+              <li><strong>EditLog:</strong> 변경 트랜잭션 로그 (디스크)</li>
+              <li><strong>SPOF 위험:</strong> NameNode 장애 = 전체 클러스터 중단</li>
+              <li><strong>HA 구성:</strong> Active NameNode + Standby NameNode (Quorum JournalManager)</li>
+              <li><strong>Secondary NameNode:</strong> HA가 아님! FsImage+EditLog 병합 보조</li>
+            </ul>
+          </div>
+          <div>
+            <p style="font-size:11.5px;font-weight:800;color:var(--a2);margin-bottom:7px;">DataNode (슬레이브)</p>
+            <ul class="il">
+              <li><strong>역할:</strong> 실제 <em>데이터 블록 저장·처리</em></li>
+              <li>NameNode에 주기적으로 Heartbeat 전송</li>
+              <li><strong>Block Report:</strong> 보유 블록 목록을 NameNode에 보고</li>
+              <li><strong>복제(Replication):</strong> 기본 복제 계수 = <strong>3</strong> (같은 랙 2개 + 다른 랙 1개)</li>
+              <li>DataNode 장애 시 다른 노드에서 자동 복제 복구</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="acc" onclick="this.classList.toggle('open')">
+      <div class="acc-h"><div class="acc-title" style="color:var(--a3);">HDFS 블록(Block) & 데이터 특성 ⭐</div><div class="acc-tgl">▾</div></div>
+      <div class="acc-body">
+        <ul class="il">
+          <li><strong>블록 크기:</strong> 기본 <strong>128MB</strong> (Hadoop 2.x~) / Hadoop 1.x=64MB — 대용량 파일에 최적화</li>
+          <li><strong>Write-Once-Read-Many (WORM):</strong> 파일 한 번 쓰면 수정 불가 (Append 제한적 지원) — 불변성</li>
+          <li><strong>랙 인식(Rack Awareness):</strong> 블록 복제 시 <em>다른 랙에 분산</em>하여 랙 장애에도 데이터 보호</li>
+          <li><strong>스트리밍 데이터 접근:</strong> 순차적 대용량 읽기에 최적화 / 임의 접근(Random Access) 성능 낮음</li>
+          <li><strong>작은 파일 문제(Small Files Problem):</strong> 작은 파일 다수 = NameNode 메모리 부하↑ → 합쳐서 저장 권장</li>
+          <li><strong>적합:</strong> 로그 분석·배치 처리·대용량 ETL / 부적합: 실시간 처리·임의 쓰기</li>
+        </ul>
+      </div>
+    </div>
+    <div class="memo">NameNode=메타데이터·SPOF위험·HA필요 / DataNode=실제블록저장·Heartbeat / 블록=128MB·복제계수3·WORM</div>
+  </div>
+</div>
+
+<!-- P3: MapReduce·YARN -->
+<div class="pnl" id="p3">
+  <div class="card">
+    <div class="card-h"><div class="ico iy">⚙️</div><h3>MapReduce 처리 모델 ⭐</h3></div>
+    <div style="background:var(--s2);border:1px solid rgba(251,191,36,.25);border-radius:9px;padding:12px;margin-bottom:11px;font-size:12px;line-height:1.75;">
+      <strong style="color:var(--a3)">MapReduce</strong>: 대용량 데이터를 <em style="color:var(--a1);font-style:normal;">Map 단계(병렬 분산 처리)</em>와 <em style="color:var(--a2);font-style:normal;">Reduce 단계(집계)</em>로 처리하는 Google 기반 분산 컴퓨팅 패러다임
+    </div>
+
+    <div class="flow">
+      <div class="fbox" style="background:rgba(249,115,22,.1);border-color:rgba(249,115,22,.35);color:var(--a1);">Input<br><span style="font-size:9px;color:var(--mu);">HDFS 파일</span></div>
+      <div class="farr">→</div>
+      <div class="fbox" style="background:rgba(251,191,36,.1);border-color:rgba(251,191,36,.35);color:var(--a3);">Splitting<br><span style="font-size:9px;color:var(--mu);">데이터 분할</span></div>
+      <div class="farr">→</div>
+      <div class="fbox" style="background:rgba(52,211,153,.1);border-color:rgba(52,211,153,.35);color:var(--a2);">Mapping<br><span style="font-size:9px;color:var(--mu);">key-value 변환</span></div>
+      <div class="farr">→</div>
+      <div class="fbox" style="background:rgba(96,165,250,.1);border-color:rgba(96,165,250,.35);color:var(--a5);">Shuffling<br><span style="font-size:9px;color:var(--mu);">정렬·그루핑</span></div>
+      <div class="farr">→</div>
+      <div class="fbox" style="background:rgba(167,139,250,.1);border-color:rgba(167,139,250,.35);color:var(--a6);">Reducing<br><span style="font-size:9px;color:var(--mu);">집계·요약</span></div>
+      <div class="farr">→</div>
+      <div class="fbox" style="background:rgba(249,115,22,.1);border-color:rgba(249,115,22,.35);color:var(--a1);">Output<br><span style="font-size:9px;color:var(--mu);">HDFS 결과</span></div>
+    </div>
+
+    <table style="margin-top:12px;">
+      <thead><tr><th>단계</th><th>역할</th><th>입출력</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Input Splits</strong></td><td>HDFS 파일을 InputSplit 단위로 분할 — 각 Mapper에 할당</td><td>HDFS 블록 기반 분할</td></tr>
+        <tr><td><strong>Map ⭐</strong></td><td>각 레코드를 읽어 중간 키-값 쌍(Key-Value) 생성 — 병렬 실행</td><td>입력: (key, value) → 출력: (key, value)* </td></tr>
+        <tr><td><strong>Combiner</strong></td><td>로컬 Reduce — Map 출력을 로컬에서 먼저 집계하여 네트워크 트래픽 절감 (선택)</td><td>Reduce 함수와 동일한 로직</td></tr>
+        <tr><td><strong>Shuffle & Sort ⭐</strong></td><td>Map 출력을 키 기준으로 <strong>정렬·그루핑</strong>하여 Reducer로 전달 — 가장 비용이 큰 단계</td><td>네트워크 전송 포함</td></tr>
+        <tr><td><strong>Reduce ⭐</strong></td><td>같은 키의 값들을 집계·요약하여 최종 결과 생성</td><td>입력: (key, [v1,v2,...]) → 출력: (key, value)</td></tr>
+      </tbody>
+    </table>
+
+    <div class="acc" onclick="this.classList.toggle('open')">
+      <div class="acc-h"><div class="acc-title" style="color:var(--a2);">Word Count 예제 — MapReduce 동작 이해</div><div class="acc-tgl">▾</div></div>
+      <div class="acc-body">
+        <div class="code"><span class="cm"># 입력 텍스트: "hello world hello hadoop"</span>
+
+<span class="kw">Map 단계:</span>
+("hello world")  → ("hello",1), ("world",1)
+("hello hadoop") → ("hello",1), ("hadoop",1)
+
+<span class="kw">Shuffle & Sort:</span>
+"hadoop" → [1]
+"hello"  → [1, 1]
+"world"  → [1]
+
+<span class="kw">Reduce 단계:</span>
+("hadoop", [1])    → ("hadoop", 1)
+("hello",  [1,1])  → ("hello",  2)
+("world",  [1])    → ("world",  1)</div>
+      </div>
+    </div>
+    <div class="memo">MapReduce: 입력→분할→Map(키-값)→Shuffle&Sort(정렬·그루핑)→Reduce(집계)→출력 / Shuffle이 가장 비용 큰 단계</div>
+  </div>
+
+  <div class="card">
+    <div class="card-h"><div class="ico ib">🎛️</div><h3>YARN (Yet Another Resource Negotiator) ⭐</h3></div>
+    <div style="background:var(--s2);border:1px solid rgba(96,165,250,.22);border-radius:9px;padding:12px;margin-bottom:10px;font-size:12px;line-height:1.75;">
+      <strong style="color:var(--a5)">YARN</strong>: Hadoop 2.x에서 도입된 <em style="color:var(--a3);font-style:normal;">클러스터 자원 관리 레이어</em> — MapReduce 외에 Spark·Hive 등 다양한 처리 엔진을 동일 클러스터에서 실행 가능
+    </div>
+    <table>
+      <thead><tr><th>구성요소</th><th>역할</th></tr></thead>
+      <tbody>
+        <tr><td><strong>ResourceManager (RM) ⭐</strong></td><td>클러스터 전체 자원(CPU·메모리) 관리·할당 — 마스터 역할 / Scheduler + ApplicationsManager</td></tr>
+        <tr><td><strong>NodeManager (NM)</strong></td><td>각 노드의 자원 모니터링 및 컨테이너 실행 — RM에게 자원 상태 보고</td></tr>
+        <tr><td><strong>ApplicationMaster (AM)</strong></td><td>애플리케이션별 실행 관리 — RM에서 자원 요청 / NM에서 컨테이너 실행·모니터링</td></tr>
+        <tr><td><strong>Container</strong></td><td>CPU·메모리를 할당받은 실행 단위 — Task(Mapper·Reducer)가 실행되는 환경</td></tr>
+      </tbody>
+    </table>
+    <div class="memo">YARN: ResourceManager(전체자원관리)·NodeManager(노드자원)·ApplicationMaster(앱관리)·Container(실행단위)</div>
+  </div>
+</div>
+
+<!-- P4: Spark -->
+<div class="pnl" id="p4">
+  <div class="card">
+    <div class="card-h"><div class="ico iy">⚡</div><h3>Apache Spark ⭐ — 인메모리 분산 처리 엔진</h3></div>
+    <div style="background:var(--s2);border:1px solid rgba(251,191,36,.25);border-radius:9px;padding:12px;margin-bottom:11px;font-size:12px;line-height:1.75;">
+      <strong style="color:var(--a3)">Apache Spark</strong>: 데이터를 <em style="color:var(--a2);font-style:normal;">메모리(RAM)에 캐싱하여 반복 처리</em>하는 분산 처리 엔진 — MapReduce 대비 <strong>최대 100배 빠름</strong> (메모리), 10배 (디스크)
+    </div>
+    <table>
+      <thead><tr><th>MapReduce vs Spark ⭐</th><th>MapReduce</th><th>Spark</th></tr></thead>
+      <tbody>
+        <tr><td><strong>처리 방식</strong></td><td>디스크 기반 배치 처리</td><td><strong>메모리(in-memory) 기반</strong></td></tr>
+        <tr><td><strong>속도</strong></td><td>기준</td><td><strong>최대 100배 빠름(메모리)</strong></td></tr>
+        <tr><td><strong>반복 처리</strong></td><td>매번 디스크 I/O → 느림</td><td>메모리 캐싱 → 빠름 (ML·그래프)</td></tr>
+        <tr><td><strong>실시간 처리</strong></td><td>지원 안 함</td><td><strong>Spark Streaming / Structured Streaming</strong></td></tr>
+        <tr><td><strong>언어</strong></td><td>Java (주)</td><td><strong>Scala, Python(PySpark), Java, R</strong></td></tr>
+        <tr><td><strong>API</strong></td><td>저수준 API</td><td>고수준 API (DataFrame·Dataset·SQL)</td></tr>
+      </tbody>
+    </table>
+    <div class="memo">Spark vs MapReduce: Spark=인메모리·최대100배빠름·ML·스트리밍 / MapReduce=디스크기반·배치 전용</div>
+  </div>
+
+  <div class="card">
+    <div class="card-h"><div class="ico ig">📦</div><h3>Spark 핵심 개념 — RDD · DataFrame · 변환·액션</h3></div>
+
+    <div class="acc open" onclick="this.classList.toggle('open')">
+      <div class="acc-h"><div class="acc-title" style="color:var(--a3);">RDD (Resilient Distributed Dataset) ⭐</div><div class="acc-tgl">▾</div></div>
+      <div class="acc-body">
+        <ul class="il">
+          <li><strong>정의:</strong> Spark의 기본 추상화 — <em>불변(Immutable)·분산·내결함성</em>을 가진 데이터 컬렉션</li>
+          <li><strong>불변성:</strong> RDD는 변경 불가 → 변환(Transformation)으로 새 RDD 생성</li>
+          <li><strong>지연 평가(Lazy Evaluation) ⭐:</strong> 변환 연산은 즉시 실행되지 않고 <em>액션 호출 시에만</em> 실제 실행 — DAG 최적화</li>
+          <li><strong>내결함성(Fault Tolerance):</strong> 리니지(Lineage) 그래프로 장애 시 해당 파티션만 재계산</li>
+          <li><strong>파티션:</strong> RDD는 여러 파티션으로 분할되어 병렬 처리</li>
+        </ul>
+        <table style="margin-top:8px;">
+          <thead><tr><th>연산 종류</th><th>특징</th><th>예시</th></tr></thead>
+          <tbody>
+            <tr><td><strong>변환(Transformation)</strong></td><td>새 RDD 반환 / <strong>지연 실행</strong></td><td>map, filter, flatMap, groupByKey, reduceByKey</td></tr>
+            <tr><td><strong>액션(Action)</strong></td><td>결과 반환 / <strong>즉시 실행 트리거</strong></td><td>collect, count, reduce, saveAsTextFile, take</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="acc" onclick="this.classList.toggle('open')">
+      <div class="acc-h"><div class="acc-title" style="color:var(--a2);">Spark 컴포넌트 생태계</div><div class="acc-tgl">▾</div></div>
+      <div class="acc-body">
+        <table>
+          <thead><tr><th>컴포넌트</th><th>용도</th></tr></thead>
+          <tbody>
+            <tr><td><strong>Spark Core</strong></td><td>기본 실행 엔진 — RDD, 스케줄링, 메모리 관리</td></tr>
+            <tr><td><strong>Spark SQL ⭐</strong></td><td>SQL 쿼리로 DataFrame·Dataset 처리 / Hive 메타스토어 호환</td></tr>
+            <tr><td><strong>Spark Streaming ⭐</strong></td><td>마이크로 배치(micro-batch) 방식 실시간 처리 / DStream</td></tr>
+            <tr><td><strong>Structured Streaming</strong></td><td>DataFrame API 기반 스트리밍 / Spark 2.0↑ / 연속 처리 지원</td></tr>
+            <tr><td><strong>MLlib</strong></td><td>분산 머신러닝 라이브러리 — 분류·회귀·클러스터링·추천</td></tr>
+            <tr><td><strong>GraphX</strong></td><td>그래프 처리 라이브러리 — PageRank·연결 컴포넌트</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="card-h" style="margin-top:14px;margin-bottom:10px;"><div class="ico ir">🌊</div><h3>스트리밍 처리 — Kafka & Flink</h3></div>
+    <table>
+      <thead><tr><th>기술</th><th>특징</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Apache Kafka ⭐</strong></td><td>분산 메시지 스트리밍 플랫폼 / Pub-Sub / 높은 처리량·내구성 / 실시간 데이터 파이프라인 표준 / 토픽·파티션·오프셋 구조</td></tr>
+        <tr><td><strong>Apache Flink</strong></td><td>진정한 실시간(Native Streaming) 처리 / 정확히 한 번(Exactly-Once) / 이벤트 타임 처리 / 낮은 지연</td></tr>
+        <tr><td><strong>Spark Streaming</strong></td><td>마이크로 배치(Micro-batch) — 짧은 배치로 준실시간 처리 / Spark 에코시스템 통합 용이</td></tr>
+      </tbody>
+    </table>
+    <div class="memo">Spark=인메모리·지연평가·RDD(불변·내결함성) / Kafka=실시간 메시지 스트리밍 표준 / Flink=네이티브 실시간·Exactly-Once</div>
+  </div>
+</div>
+
+<!-- P5: NoSQL -->
+<div class="pnl" id="p5">
+  <div class="card">
+    <div class="card-h"><div class="ico iy">🗄️</div><h3>NoSQL 데이터베이스 분류 ⭐</h3></div>
+    <div style="background:var(--s2);border:1px solid rgba(251,191,36,.25);border-radius:9px;padding:12px;margin-bottom:11px;font-size:12px;line-height:1.75;">
+      <strong style="color:var(--a3)">NoSQL</strong>: "Not Only SQL" — 비정형·반정형 빅데이터를 위해 <em style="color:var(--a1);font-style:normal;">스키마 유연성·수평 확장</em>을 제공하는 비관계형 데이터베이스
+    </div>
+    <table>
+      <thead><tr><th>유형</th><th>저장 방식</th><th>특징</th><th>대표 DB</th></tr></thead>
+      <tbody>
+        <tr><td><strong>키-값 (Key-Value) ⭐</strong></td><td>단순 키→값 쌍 저장</td><td>최고 속도 / 단순 조회 / 캐싱·세션</td><td><strong>Redis, DynamoDB, Memcached</strong></td></tr>
+        <tr><td><strong>문서 (Document) ⭐</strong></td><td>JSON/BSON 문서 저장 / 중첩 구조</td><td>유연한 스키마 / 복잡한 쿼리 / 범용적</td><td><strong>MongoDB, CouchDB, Firestore</strong></td></tr>
+        <tr><td><strong>컬럼 패밀리 (Wide Column) ⭐</strong></td><td>행+컬럼 패밀리 / 희소 컬럼</td><td>대용량 쓰기 최적화 / 집계 분석</td><td><strong>HBase, Cassandra, BigTable</strong></td></tr>
+        <tr><td><strong>그래프 (Graph)</strong></td><td>노드·엣지·속성으로 관계 표현</td><td>관계 탐색 최적 / SNS·추천</td><td><strong>Neo4j, Amazon Neptune</strong></td></tr>
+      </tbody>
+    </table>
+
+    <div class="acc" onclick="this.classList.toggle('open')">
+      <div class="acc-h"><div class="acc-title" style="color:var(--a5);">CAP 정리 (CAP Theorem) ⭐ — 브루어의 정리</div><div class="acc-tgl">▾</div></div>
+      <div class="acc-body">
+        <p style="font-size:12px;margin-bottom:8px;">분산 시스템은 다음 3가지 중 <strong style="color:var(--a4);">최대 2가지만</strong> 동시 보장 가능</p>
+        <table>
+          <thead><tr><th>속성</th><th>의미</th><th>포기 시</th></tr></thead>
+          <tbody>
+            <tr><td><strong>C (Consistency·일관성)</strong></td><td>모든 노드가 동시에 같은 데이터를 봄</td><td>AP 시스템 → 일시적 불일치 허용</td></tr>
+            <tr><td><strong>A (Availability·가용성)</strong></td><td>모든 요청에 응답 반환 (오류 없이)</td><td>CP 시스템 → 일부 요청 거부 가능</td></tr>
+            <tr><td><strong>P (Partition Tolerance·분할 허용성)</strong></td><td>네트워크 분할 시에도 동작</td><td>CA 시스템 → 단일 노드(분산 불가)</td></tr>
+          </tbody>
+        </table>
+        <p style="font-size:11.5px;margin-top:8px;"><span class="tag ty">CP</span> HBase, MongoDB(기본), Zookeeper — 일관성+분할허용 / <span class="tag tg">AP</span> Cassandra, DynamoDB, CouchDB — 가용성+분할허용</p>
+      </div>
+    </div>
+
+    <div class="acc" onclick="this.classList.toggle('open')">
+      <div class="acc-h"><div class="acc-title" style="color:var(--a2);">BASE vs ACID ⭐</div><div class="acc-tgl">▾</div></div>
+      <div class="acc-body">
+        <div class="g2">
+          <div>
+            <p style="font-size:11.5px;font-weight:800;color:var(--a5);margin-bottom:6px;">ACID (관계형 DB)</p>
+            <ul class="il">
+              <li><strong>A</strong>tomicity — 원자성 (전부 or 전무)</li>
+              <li><strong>C</strong>onsistency — 일관성 (규칙 보장)</li>
+              <li><strong>I</strong>solation — 격리성 (독립 실행)</li>
+              <li><strong>D</strong>urability — 지속성 (영구 저장)</li>
+            </ul>
+          </div>
+          <div>
+            <p style="font-size:11.5px;font-weight:800;color:var(--a2);margin-bottom:6px;">BASE (NoSQL)</p>
+            <ul class="il">
+              <li><strong>BA</strong>sically Available — 기본적 가용성</li>
+              <li><strong>S</strong>oft state — 유동적 상태 (일시적 불일치)</li>
+              <li><strong>E</strong>ventually consistent — <strong>최종 일관성</strong></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="memo">NoSQL 4종: 키-값(Redis)·문서(MongoDB)·컬럼패밀리(HBase·Cassandra)·그래프(Neo4j) / CAP=3가지 중 2가지만 / BASE=최종일관성</div>
+  </div>
+</div>
+
+<!-- P6: 데이터 파이프라인 -->
+<div class="pnl" id="p6">
+  <div class="card">
+    <div class="card-h"><div class="ico ip">🏭</div><h3>데이터 웨어하우스 vs 데이터 레이크 vs 데이터 레이크하우스 ⭐</h3></div>
+    <table>
+      <thead><tr><th>항목</th><th style="color:var(--a5)">데이터 웨어하우스 (DW)</th><th style="color:var(--a2)">데이터 레이크 (DL)</th><th style="color:var(--a3)">데이터 레이크하우스</th></tr></thead>
+      <tbody>
+        <tr><td><strong>데이터 형태</strong></td><td>정형(Structured)</td><td><strong>정형+비정형+반정형 모두</strong></td><td>정형+비정형 (통합)</td></tr>
+        <tr><td><strong>스키마</strong></td><td>Schema-on-Write (미리 정의)</td><td><strong>Schema-on-Read</strong> (읽을 때 적용)</td><td>Schema-on-Read + ACID</td></tr>
+        <tr><td><strong>처리 목적</strong></td><td>BI·리포팅·의사결정</td><td>데이터 탐색·ML·원시 분석</td><td>BI + ML + 실시간 분석</td></tr>
+        <tr><td><strong>비용</strong></td><td>높음</td><td>낮음 (저렴한 스토리지)</td><td>중간</td></tr>
+        <tr><td><strong>데이터 품질</strong></td><td>높음 (ETL 후 저장)</td><td>가변적 (원시 데이터)</td><td>높음 (Delta Lake 등)</td></tr>
+        <tr><td><strong>대표 제품</strong></td><td>Redshift, Snowflake, BigQuery</td><td>AWS S3+Glue, Azure Data Lake</td><td>Databricks, Delta Lake, Apache Iceberg</td></tr>
+      </tbody>
+    </table>
+    <div class="memo">DW=정형·Schema-on-Write·BI / DL=모든형태·Schema-on-Read·원시저장 / 레이크하우스=DW+DL 통합</div>
+  </div>
+
+  <div class="card">
+    <div class="card-h"><div class="ico ig">🔄</div><h3>ETL & 데이터 파이프라인</h3></div>
+    <div class="g2">
+      <div>
+        <p style="font-size:11.5px;font-weight:800;color:var(--a2);margin-bottom:7px;">ETL vs ELT ⭐</p>
+        <table>
+          <thead><tr><th></th><th>ETL</th><th>ELT</th></tr></thead>
+          <tbody>
+            <tr><td><strong>순서</strong></td><td>Extract→<strong>Transform</strong>→Load</td><td>Extract→Load→<strong>Transform</strong></td></tr>
+            <tr><td><strong>변환 위치</strong></td><td>중간 스테이징 서버</td><td>목적지(DW·DL) 내부</td></tr>
+            <tr><td><strong>적합 환경</strong></td><td>전통적 DW</td><td>클라우드 DW·대용량</td></tr>
+            <tr><td><strong>대표</strong></td><td>Informatica, SSIS</td><td>dbt, Spark</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div>
+        <p style="font-size:11.5px;font-weight:800;color:var(--a3);margin-bottom:7px;">데이터 파이프라인 주요 도구</p>
+        <ul class="il">
+          <li><strong>Apache Kafka:</strong> 실시간 이벤트 스트리밍·메시지 큐</li>
+          <li><strong>Apache Airflow:</strong> 워크플로우 오케스트레이션·DAG 스케줄링</li>
+          <li><strong>Spark:</strong> 배치·스트리밍 데이터 처리·변환</li>
+          <li><strong>dbt (data build tool):</strong> SQL 기반 데이터 변환 (ELT)</li>
+          <li><strong>Apache NiFi:</strong> 데이터 흐름 자동화·시각화</li>
+          <li><strong>Debezium:</strong> CDC(Change Data Capture) — DB 변경 이벤트 캡처</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="card-h" style="margin-top:14px;margin-bottom:10px;"><div class="ico io">📊</div><h3>OLTP vs OLAP ⭐</h3></div>
+    <table>
+      <thead><tr><th>항목</th><th style="color:var(--a2)">OLTP (트랜잭션)</th><th style="color:var(--a3)">OLAP (분석)</th></tr></thead>
+      <tbody>
+        <tr><td><strong>목적</strong></td><td>일상 트랜잭션 처리 (삽입·수정·삭제)</td><td>대용량 데이터 분석·집계 쿼리</td></tr>
+        <tr><td><strong>데이터 최신성</strong></td><td>실시간 최신 데이터</td><td>히스토리·스냅샷 데이터</td></tr>
+        <tr><td><strong>쿼리</strong></td><td>단순·짧은 쿼리 / 소수 행</td><td>복잡·긴 쿼리 / 대용량 스캔</td></tr>
+        <tr><td><strong>정규화</strong></td><td>높음 (중복 최소화)</td><td>낮음 (스타·스노우플레이크 스키마)</td></tr>
+        <tr><td><strong>응답 시간</strong></td><td>밀리초 단위</td><td>초~분 단위</td></tr>
+        <tr><td><strong>대표 시스템</strong></td><td>MySQL, PostgreSQL, Oracle</td><td>Redshift, Snowflake, BigQuery, Hive</td></tr>
+      </tbody>
+    </table>
+    <div class="memo">OLTP=트랜잭션·실시간·정규화·ms응답 / OLAP=분석·히스토리·비정규화·대용량스캔 / ETL vs ELT=변환위치 차이</div>
+  </div>
+</div>
+
+<!-- P7: QA -->
+<div class="pnl" id="p7">
+  <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:7px;margin-bottom:12px;">
+    <div class="fb-wr" id="fbar" style="margin:0;">
+      <button class="fb on" data-f="all">전체</button>
+      <button class="fb" data-f="개요">📊 빅데이터</button>
+      <button class="fb" data-f="HDFS">🐘 Hadoop·HDFS</button>
+      <button class="fb" data-f="MapReduce">⚙️ MapReduce</button>
+      <button class="fb" data-f="Spark">⚡ Spark</button>
+      <button class="fb" data-f="NoSQL">🗄️ NoSQL</button>
+      <button class="fb" data-f="OX">⭕ OX</button>
+    </div>
+    <div class="sc-b">정답: <span id="sc">0</span>/<span id="st">0</span></div>
+  </div>
+  <div id="ql"></div>
+</div>
+
+</div>
+<script>
+document.querySelectorAll('.tab').forEach(t=>t.addEventListener('click',()=>{
+  document.querySelectorAll('.tab,.pnl').forEach(x=>x.classList.remove('on'));
+  t.classList.add('on');document.getElementById(t.dataset.p).classList.add('on');
+}));
+const QA=[
+  {cat:'개요',diff:'easy',
+   q:'빅데이터의 3V(기본 특성)에 해당하지 않는 것은?',
+   cs:['Volume (규모)','Velocity (속도)','Variety (다양성)','Veracity (정확성)'],ans:3,
+   exp:'빅데이터의 <strong>기본 3V</strong>: Volume(규모)·Velocity(속도)·Variety(다양성). 이후 <em>Veracity(정확성)</em>와 <em>Value(가치)</em>가 추가되어 5V가 되었습니다. 감리사 시험에서는 3V→5V 확장 과정과 각 V의 의미를 구분할 수 있어야 합니다.'},
+  {cat:'HDFS',diff:'mid',
+   q:'HDFS의 NameNode와 DataNode의 역할로 가장 적절한 것은?',
+   cs:['NameNode는 실제 데이터 블록을 저장하고, DataNode는 메타데이터를 관리한다.','NameNode는 파일 메타데이터(이름·블록 위치·권한)를 관리하고, DataNode는 실제 데이터 블록을 저장한다.','NameNode와 DataNode 모두 데이터를 저장한다.','DataNode는 메타데이터와 데이터를 모두 저장한다.'],ans:1,
+   exp:'<strong>NameNode</strong>: 파일 메타데이터(파일명·블록 위치·권한·소유자)를 관리하는 <em>마스터 노드</em>. 실제 데이터는 저장하지 않음. FsImage+EditLog로 메타데이터 유지. SPOF(단일 장애점) 위험 → HA 구성 필수. <strong>DataNode</strong>: 실제 데이터 블록을 저장하고 NameNode에 Heartbeat·Block Report 전송.'},
+  {cat:'HDFS',diff:'mid',
+   q:'HDFS의 기본 블록 크기와 복제 계수로 가장 적절한 것은?',
+   cs:['블록 크기 4KB, 복제 계수 5','블록 크기 64MB, 복제 계수 2','블록 크기 128MB, 복제 계수 3','블록 크기 1GB, 복제 계수 1'],ans:2,
+   exp:'HDFS 기본값: <strong>블록 크기 128MB</strong> (Hadoop 2.x↑, Hadoop 1.x=64MB) / <strong>복제 계수 3</strong> (같은 랙 2개 + 다른 랙 1개). 128MB 대용량 블록은 NameNode의 메타데이터 부하를 줄이고 대용량 파일 처리에 최적화됩니다. 복제 계수 3은 랙 인식(Rack Awareness)으로 랙 장애 시에도 데이터 보호.'},
+  {cat:'HDFS',diff:'hard',
+   q:'HDFS의 Secondary NameNode의 역할로 가장 적절한 것은?',
+   cs:['Active NameNode 장애 시 즉시 서비스를 이어받는 Hot Standby 노드','FsImage와 EditLog를 주기적으로 병합(Checkpoint)하여 NameNode의 부담을 줄이는 보조 노드','데이터 블록의 복제를 관리하는 노드','클러스터 전체 자원을 관리하는 YARN의 마스터 노드'],ans:1,
+   exp:'<strong>Secondary NameNode</strong>: Hot Standby(HA)가 <strong>아님!</strong> FsImage(스냅샷)와 EditLog(변경 로그)를 주기적으로 병합(Checkpoint)하여 EditLog가 무한히 커지지 않도록 보조합니다. NameNode 장애 시 즉시 인계하는 것은 <em>Standby NameNode</em>(HDFS HA 구성에서 사용). 감리사 시험의 단골 함정!'},
+  {cat:'MapReduce',diff:'mid',
+   q:'MapReduce의 처리 단계 중 가장 많은 네트워크 I/O가 발생하여 성능에 가장 큰 영향을 미치는 단계는?',
+   cs:['Map 단계','Combine 단계','Shuffle & Sort 단계','Reduce 단계'],ans:2,
+   exp:'<strong>Shuffle & Sort 단계</strong>: Map 출력 결과를 키 기준으로 정렬하고 해당 Reducer로 전송하는 과정. 모든 Map 노드의 결과가 네트워크를 통해 Reducer 노드로 이동하므로 <em>가장 많은 네트워크 I/O</em>가 발생합니다. <strong>Combiner</strong>(로컬 Reduce)를 사용하면 Map 출력을 사전 집계하여 Shuffle 데이터 양을 줄일 수 있습니다.'},
+  {cat:'MapReduce',diff:'mid',
+   q:'YARN(Yet Another Resource Negotiator)의 ResourceManager의 역할로 가장 적절한 것은?',
+   cs:['각 노드에서 컨테이너를 실행하고 모니터링한다.','클러스터 전체의 CPU·메모리 자원을 관리하고 애플리케이션에 할당한다.','개별 애플리케이션의 실행을 관리하고 자원을 요청한다.','파일 시스템의 메타데이터를 관리한다.'],ans:1,
+   exp:'<strong>YARN ResourceManager</strong>: 클러스터 전체의 CPU·메모리 자원을 관리하는 <em>마스터 컴포넌트</em>. Scheduler(자원 할당 정책)와 ApplicationsManager(애플리케이션 수명주기 관리)로 구성. <em>NodeManager</em>는 각 노드의 자원 모니터링·컨테이너 실행, <em>ApplicationMaster</em>는 앱별 실행 관리·자원 요청.'},
+  {cat:'Spark',diff:'mid',
+   q:'Apache Spark가 Hadoop MapReduce보다 빠른 주된 이유로 가장 적절한 것은?',
+   cs:['더 많은 서버를 사용하기 때문에','데이터를 메모리(RAM)에 캐싱하여 반복 처리 시 디스크 I/O를 최소화하기 때문에','더 강력한 CPU 알고리즘을 사용하기 때문에','네트워크 대역폭이 더 넓기 때문에'],ans:1,
+   exp:'<strong>Spark의 핵심 장점</strong>: 중간 결과를 <em>메모리(RAM)에 캐싱(in-memory)</em>하여 반복 처리 시 디스크 I/O를 최소화합니다. MapReduce는 매 Map·Reduce 단계마다 HDFS 디스크에 중간 결과를 쓰고 읽지만, Spark는 메모리에서 연속 처리합니다. 메모리 기준 최대 100배, 디스크 기준 10배 빠름.'},
+  {cat:'Spark',diff:'hard',
+   q:'Spark RDD의 지연 평가(Lazy Evaluation)의 의미로 가장 적절한 것은?',
+   cs:['RDD 생성 즉시 실행되어 결과를 즉시 반환한다.','변환(Transformation) 연산은 DAG로 기록만 하고, 액션(Action) 호출 시에만 실제 실행된다.','메모리가 부족할 때만 연산을 실행한다.','Reducer가 완료될 때까지 Mapper가 대기한다.'],ans:1,
+   exp:'<strong>지연 평가(Lazy Evaluation)</strong>: map·filter·groupByKey 등 <em>변환(Transformation)</em>은 즉시 실행되지 않고 DAG(Directed Acyclic Graph)에 기록만 됩니다. <em>액션(Action)</em>(collect·count·save 등)이 호출될 때만 실제로 실행됩니다. 효과: ①불필요한 연산 최소화 ②전체 실행 계획을 최적화한 후 실행 ③파이프라인 최적화.'},
+  {cat:'NoSQL',diff:'mid',
+   q:'CAP 정리(Brewer\'s Theorem)에 대한 설명으로 가장 적절한 것은?',
+   cs:['분산 시스템은 일관성·가용성·분할허용성 3가지를 모두 동시에 보장할 수 있다.','분산 시스템은 일관성(C)·가용성(A)·분할허용성(P) 중 최대 2가지만 동시에 보장 가능하다.','NoSQL 데이터베이스는 항상 가용성과 분할허용성(AP)을 선택한다.','CAP 정리는 단일 서버 데이터베이스에만 적용된다.'],ans:1,
+   exp:'<strong>CAP 정리</strong>: 분산 시스템에서 <em>일관성(C)·가용성(A)·분할허용성(P)</em> 3가지를 동시에 보장할 수 없으며 최대 2가지만 선택 가능. 네트워크 분할(P)은 피할 수 없으므로 실질적으로 CP 또는 AP 선택. <em>CP</em>: HBase·MongoDB·ZooKeeper(일관성 우선). <em>AP</em>: Cassandra·DynamoDB·CouchDB(가용성 우선).'},
+  {cat:'NoSQL',diff:'mid',
+   q:'데이터 웨어하우스(DW)와 데이터 레이크(DL)의 차이로 가장 적절한 것은?',
+   cs:['데이터 레이크는 정형 데이터만 저장하고, 데이터 웨어하우스는 비정형도 저장한다.','데이터 웨어하우스는 Schema-on-Write(미리 스키마 정의), 데이터 레이크는 Schema-on-Read(읽을 때 스키마 적용)로 모든 형태의 원시 데이터를 저장한다.','둘 다 동일한 방식으로 데이터를 저장하며 단지 크기만 다르다.','데이터 레이크는 실시간 트랜잭션 처리에 최적화되어 있다.'],ans:1,
+   exp:'<strong>DW(데이터 웨어하우스)</strong>: Schema-on-Write, 정형 데이터, ETL 후 저장, BI·리포팅 목적, Redshift·Snowflake. <strong>데이터 레이크</strong>: <em>Schema-on-Read</em>, 정형+비정형+반정형 모두, 원시 데이터 저장(변환 없이), ML·탐색적 분석 목적, S3·Azure Data Lake. 레이크하우스=DW+DL 장점 통합(Delta Lake·Databricks).'},
+  {cat:'OX',diff:'easy',type:'ox',
+   q:'HDFS의 Secondary NameNode는 Active NameNode 장애 시 즉시 서비스를 이어받는 Hot Standby 노드이다.',ans:false,
+   exp:'<strong>×</strong> — Secondary NameNode는 Hot Standby가 <strong>아닙니다</strong>. FsImage와 EditLog를 주기적으로 병합(Checkpoint)하여 EditLog가 너무 커지지 않도록 보조하는 역할입니다. NameNode 장애 시 즉시 서비스를 이어받는 것은 <em>Standby NameNode</em>(HDFS HA 구성)입니다. 감리사 시험 단골 함정 문제입니다.'},
+  {cat:'MapReduce',diff:'mid',type:'ox',
+   q:'Apache Spark는 MapReduce와 달리 데이터를 메모리에 캐싱하여 반복 학습이 필요한 머신러닝 작업에서 훨씬 빠른 성능을 보인다.',ans:true,
+   exp:'<strong>○</strong> — Spark는 중간 결과를 <strong>메모리(in-memory)에 캐싱</strong>하여 반복 처리 시 디스크 I/O를 최소화합니다. 머신러닝은 동일 데이터를 수백~수천 번 반복 처리하므로, 매번 HDFS 디스크를 읽어야 하는 MapReduce 대비 메모리 기준 <em>최대 100배 빠른</em> 성능을 발휘합니다.'},
+  {cat:'NoSQL',diff:'mid',type:'ox',
+   q:'Cassandra는 CAP 정리에서 CP(일관성+분할허용성)를 선택한 NoSQL DB이다.',ans:false,
+   exp:'<strong>×</strong> — Cassandra는 <strong>AP(Availability+Partition Tolerance)</strong>를 선택한 NoSQL DB입니다. 즉, 가용성을 최우선으로 하고 최종 일관성(Eventual Consistency)을 허용합니다. <em>CP</em>를 선택한 대표 DB는 HBase, MongoDB(기본 설정), ZooKeeper입니다.'},
+  {cat:'Spark',diff:'hard',type:'ox',
+   q:'Lambda 아키텍처는 배치 레이어·스피드 레이어·서빙 레이어로 구성되며, 정확성과 실시간성을 동시에 보장하지만 두 레이어 유지로 복잡도가 높다.',ans:true,
+   exp:'<strong>○</strong> — Lambda 아키텍처: ①<em>배치 레이어</em>(전체 데이터 정확한 배치 처리) + ②<em>스피드 레이어</em>(실시간 스트리밍 처리) + ③<em>서빙 레이어</em>(두 결과 병합·쿼리 응답). 장점: 정확성+실시간성 모두 보장. 단점: 두 레이어 코드 중복·유지 복잡성. Kappa 아키텍처는 배치 레이어를 제거하고 단일 스트림으로 단순화합니다.'},
+  {cat:'HDFS',diff:'mid',type:'ox',
+   q:'HDFS는 Write-Once-Read-Many(WORM) 특성으로 한 번 저장된 파일은 수정이 불가능하며, 실시간 임의 쓰기(Random Write)에 최적화되어 있다.',ans:false,
+   exp:'<strong>×</strong> — HDFS의 WORM 특성: 한 번 쓰면 <strong>수정 불가</strong>(Append 제한적 지원). 임의 접근(Random Access)·실시간 쓰기는 HDFS에 부적합합니다. HDFS는 <em>대용량 파일의 순차적 읽기(Sequential Read)</em>에 최적화되어 있습니다. 실시간 임의 읽기·쓰기가 필요하면 HDFS 위의 <em>HBase</em>(NoSQL)를 사용합니다.'},
+];
+let answered=0,correct=0;
+function renderQ(f){
+  const data=f==='all'?QA:QA.filter(q=>q.cat===f);
+  const list=document.getElementById('ql');list.innerHTML='';
+  answered=0;correct=0;upS();
+  const CATC={'개요':'to','HDFS':'tg','MapReduce':'ty','Spark':'tb','NoSQL':'tp','OX':'tr'};
+  const DLC={'easy':'easy 쉬움','mid':'mid 보통','hard':'hard 어려움'};
+  const NL=['①','②','③','④'];
+  if(!data.length){list.innerHTML='<div style="text-align:center;padding:40px;color:var(--mu)">문제 없음</div>';return;}
+  data.forEach((q,i)=>{
+    const gi=QA.indexOf(q);
+    const el=document.createElement('div');el.className='qa';
+    const tc=CATC[q.cat]||'to';
+    const [dc,dn]=(DLC[q.diff]||'mid 보통').split(' ');
+    if(q.type==='ox'){
+      el.innerHTML=`<div class="qa-hd" onclick="this.closest('.qa').classList.toggle('open')"><div><div class="qa-meta"><span class="qn">Q${String(i+1).padStart(2,'0')}</span><span class="tag ${tc}">${q.cat}</span><span class="diff ${dc}">${dn}</span><span class="tag tg">O/X</span></div><div class="qq">${q.q}</div></div><span class="tgl">▾</span></div>
+      <div class="qa-bd"><div class="ox-wr"><button class="ox" onclick="pickOX(this,true,${gi})">⭕ 옳다</button><button class="ox" onclick="pickOX(this,false,${gi})">❌ 틀리다</button></div><div class="exp" id="ex-${gi}"><div class="exp-t">💡 해설</div>${q.exp}</div></div>`;
+    } else {
+      el.innerHTML=`<div class="qa-hd" onclick="this.closest('.qa').classList.toggle('open')"><div><div class="qa-meta"><span class="qn">Q${String(i+1).padStart(2,'0')}</span><span class="tag ${tc}">${q.cat}</span><span class="diff ${dc}">${dn}</span></div><div class="qq">${q.q}</div></div><span class="tgl">▾</span></div>
+      <div class="qa-bd"><div class="chs">${q.cs.map((c,ci)=>`<div class="ch" data-ci="${ci}" onclick="pickCh(this,${gi})"><span class="cnum">${NL[ci]}</span><span>${c}</span></div>`).join('')}</div><div class="exp" id="ex-${gi}"><div class="exp-t">💡 해설</div>${q.exp}</div></div>`;
+    }
+    list.appendChild(el);
+  });
+}
+function pickCh(el,gi){
+  const bd=el.closest('.qa-bd');if(bd.querySelector('.ok,.ng'))return;
+  const q=QA[gi];
+  bd.querySelectorAll('.ch').forEach((c,i)=>{c.classList.add('lk');if(i===q.ans)c.classList.add('ok');else if(i===parseInt(el.dataset.ci))c.classList.add('ng');});
+  document.getElementById('ex-'+gi).classList.add('show');
+  answered++;if(parseInt(el.dataset.ci)===q.ans)correct++;upS();
+}
+function pickOX(btn,val,gi){
+  const bd=btn.closest('.qa-bd');if(bd.querySelector('.so,.sx'))return;
+  const q=QA[gi];
+  bd.querySelectorAll('.ox').forEach(b=>b.classList.add('lk'));
+  btn.classList.add(val?'so':'sx');
+  if(val!==q.ans){btn.style.opacity='.5';bd.querySelectorAll('.ox')[val?1:0].classList.add(q.ans?'so':'sx');}
+  document.getElementById('ex-'+gi).classList.add('show');
+  answered++;if(val===q.ans)correct++;upS();
+}
+function upS(){document.getElementById('sc').textContent=correct;document.getElementById('st').textContent=answered;}
+document.getElementById('fbar').addEventListener('click',e=>{
+  const b=e.target.closest('.fb');if(!b)return;
+  document.querySelectorAll('.fb').forEach(x=>x.classList.remove('on'));b.classList.add('on');renderQ(b.dataset.f);
+});
+renderQ('all');
+</script>
+</body>
+</html>

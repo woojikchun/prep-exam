@@ -1,0 +1,559 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>프로세스 스케줄링 — 컴퓨터시스템응용 기술사 모범 답안</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;500;700&family=Noto+Sans+KR:wght@400;500;700&family=JetBrains+Mono:wght@400;600&display=swap');
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --ink:#1a1a1a;--ink2:#333;--ink3:#666;
+  --line:#c8c8c8;--line2:#e2e0da;--bg:#fdfcf8;
+  --accent:#1a3a6e;--accent2:#7a3010;--green:#2d6a4f;--purple:#4a3080;
+}
+body{background:#dddad2;font-family:'Noto Sans KR',sans-serif;color:var(--ink);padding:20px 0 40px}
+.doc{max-width:800px;margin:0 auto;background:var(--bg);box-shadow:0 4px 32px rgba(0,0,0,.22)}
+
+.hdr{border-bottom:3px double var(--ink);padding:20px 36px 16px;display:flex;align-items:flex-start;gap:16px}
+.hdr-l{flex:1}
+.lbl{font-size:11px;letter-spacing:.14em;color:var(--ink3);font-family:'Noto Serif KR',serif}
+.ttl{font-size:20px;font-weight:700;font-family:'Noto Serif KR',serif;color:var(--accent);line-height:1.35;margin-top:5px}
+.pills{display:flex;gap:8px;margin-top:9px;flex-wrap:wrap}
+.pill{font-size:11px;padding:2px 10px;border:1px solid var(--line);border-radius:2px;color:var(--ink2);background:#fff}
+.score-box{border:1.5px solid var(--ink);padding:10px 16px;text-align:center;min-width:72px}
+.sc-lbl{font-size:10px;color:var(--ink3);letter-spacing:.06em}
+.sc-n{font-size:24px;font-weight:700;font-family:'Noto Serif KR',serif;color:var(--accent);line-height:1.1}
+
+.body{padding:24px 40px 48px}
+.qbox{background:#f0efea;border:1px solid #bbb;padding:14px 18px;border-radius:3px;margin-bottom:24px;font-size:12.5px;color:var(--ink2);line-height:1.85}
+.qbox strong{color:var(--ink);font-weight:700}
+
+.sh {font-size:14.5px;font-weight:700;font-family:'Noto Serif KR',serif;color:var(--accent);border-bottom:1.5px solid var(--accent);padding-bottom:5px;margin:0 0 13px}
+.sh2{font-size:13px;font-weight:700;color:var(--ink);margin:13px 0 5px;padding-left:8px;border-left:3px solid var(--accent2)}
+.sh3{font-size:12.5px;font-weight:700;color:var(--ink2);margin:9px 0 4px;padding-left:18px}
+.sec{margin-bottom:22px}
+.txt{font-size:12.5px;line-height:1.92;color:var(--ink2)}
+.txt p{margin-bottom:5px}
+.i1{padding-left:14px}
+.i2{padding-left:28px}
+.kw{font-weight:700;color:var(--ink)}
+
+.tw{margin:10px 0 14px;overflow-x:auto}
+table{width:100%;border-collapse:collapse;font-size:11.5px}
+th{background:var(--accent);color:#fff;padding:6px 9px;text-align:left;font-weight:500;border:1px solid var(--accent)}
+td{padding:6px 9px;border:1px solid var(--line);vertical-align:top;line-height:1.75;color:var(--ink2)}
+tr:nth-child(even) td{background:#f4f3ef}
+.kc{font-weight:700;color:var(--ink)}
+.tc{text-align:center}
+
+.fig{margin:13px 0 16px;background:#f8f7f3;border:1px solid var(--line2);border-radius:4px;padding:10px 8px}
+.fc{font-size:11px;color:var(--ink3);text-align:center;margin-top:7px;font-style:italic}
+
+/* Gantt chart */
+.gantt-wrap{margin:10px 0;overflow-x:auto}
+.gantt-label{font-size:11.5px;font-weight:700;color:var(--accent2);margin-bottom:5px}
+.gantt-row{display:flex;align-items:center;margin-bottom:4px;gap:0}
+.gantt-name{font-size:11px;font-weight:700;color:var(--ink2);width:52px;flex-shrink:0;text-align:right;padding-right:6px}
+.gantt-bar{height:22px;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:#fff;border-right:1px solid rgba(255,255,255,.3);white-space:nowrap;flex-shrink:0}
+.gantt-idle{background:#ddd!important;color:#999!important}
+.gantt-tick{display:flex;padding-left:52px;margin-top:2px}
+.gantt-tick span{font-size:9.5px;color:#999;flex-shrink:0;text-align:center}
+
+/* Process state diagram */
+.state-box{display:inline-block;border:1.5px solid var(--accent);border-radius:6px;padding:5px 12px;font-size:11px;font-weight:700;color:var(--accent);background:#fff;white-space:nowrap}
+.state-row{display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin:6px 0}
+.sarr{font-size:12px;color:var(--ink3)}
+
+.note{margin:16px 0 0;padding:12px 16px;border:1px solid #8b6914;background:#fffbef;border-radius:3px}
+.nt{font-size:12px;font-weight:700;color:#6a4f00;margin-bottom:5px}
+.nb{font-size:12px;color:#4a3800;line-height:1.85}
+
+.pb{border:none;border-top:2px dashed #bbb;margin:24px 0;position:relative}
+.pb::after{content:"— 다음 페이지 —";position:absolute;top:-9px;left:50%;transform:translateX(-50%);background:var(--bg);padding:0 10px;font-size:10px;color:#bbb;white-space:nowrap}
+
+.ftr{border-top:2px solid var(--ink);margin:0 40px;padding:10px 0;display:flex;justify-content:space-between;font-size:10px;color:var(--ink3)}
+
+.badge{display:inline-block;font-size:10.5px;padding:1px 8px;border-radius:2px;font-weight:600;margin:1px 2px}
+.badge-r{background:#FCEBEB;color:#A32D2D;border:1px solid #f0b8b8}
+.badge-g{background:#EAF3DE;color:#2d6a4f;border:1px solid #b0d89a}
+.badge-b{background:#E6F1FB;color:#0C447C;border:1px solid #9dc4f0}
+.badge-o{background:#FAEEDA;color:#7a3010;border:1px solid #f0c88a}
+
+/* 성능 지표 */
+.formula{display:inline-block;font-family:'JetBrains Mono',monospace;font-size:11.5px;background:#f0efea;border:1px solid var(--line2);border-radius:3px;padding:2px 8px;color:#1a3a6e;font-weight:700;margin:2px 0}
+</style>
+</head>
+<body>
+<div class="doc">
+
+<!-- ── Header ── -->
+<div class="hdr">
+  <div class="hdr-l">
+    <div class="lbl">컴퓨터시스템응용 기술사 · 예상 문제 및 모범 답안</div>
+    <div class="ttl">프로세스 스케줄링<br>(Process Scheduling)</div>
+    <div class="pills">
+      <span class="pill">4교시 · 논술형</span>
+      <span class="pill">운영체제 / 시스템 소프트웨어</span>
+      <span class="pill">키워드: 스케줄링 큐 · 선점/비선점 · 간트차트 · 평균 대기시간</span>
+    </div>
+  </div>
+  <div class="score-box">
+    <div class="sc-lbl">배점</div>
+    <div class="sc-n">25</div>
+    <div class="sc-lbl">점</div>
+  </div>
+</div>
+
+<div class="body">
+
+<!-- 문제 -->
+<div class="qbox">
+  <strong>【 문 제 】</strong><br><br>
+  운영체제의 핵심 자원 관리 메커니즘인 <strong>프로세스 스케줄링(Process Scheduling)</strong>에 대하여 다음을 설명하시오.<br><br>
+  &emsp;(1) 프로세스 상태 전이(State Transition)와 스케줄링의 개념 및 목표 &nbsp;(5점)<br>
+  &emsp;(2) 스케줄링 알고리즘의 분류 기준과 선점형·비선점형 비교 &nbsp;(5점)<br>
+  &emsp;(3) 주요 스케줄링 알고리즘의 동작 원리 및 간트 차트 비교 &nbsp;(10점)<br>
+  &emsp;(4) 현대 운영체제의 고급 스케줄링 기법 및 실무 고려사항 &nbsp;(5점)
+</div>
+
+<!-- ─── Ⅰ. 개요 ─── -->
+<div class="sec">
+  <div class="sh">Ⅰ. 프로세스 상태 전이와 스케줄링의 개념 및 목표</div>
+
+  <div class="sh2">1. 프로세스 상태 전이(Process State Transition)</div>
+  <div class="txt i1">
+    <p>프로세스는 생성부터 소멸까지 아래 5가지 상태를 전이하며, 스케줄러는 이 전이를 제어하여 CPU 활용률을 최대화한다.</p>
+  </div>
+
+  <div class="fig">
+    <svg width="100%" viewBox="0 0 720 200" xmlns="http://www.w3.org/2000/svg" role="img">
+      <title>프로세스 5상태 전이도</title>
+      <defs>
+        <marker id="ma" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse">
+          <path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </marker>
+      </defs>
+
+      <!-- New -->
+      <rect x="10" y="80" width="90" height="40" rx="20" fill="#2d6a4f" stroke="#1a3d2b" stroke-width="1"/>
+      <text font-size="12" font-weight="700" fill="#fff" x="55" y="104" text-anchor="middle" font-family="'Noto Sans KR',sans-serif">신규(New)</text>
+
+      <!-- Ready -->
+      <rect x="170" y="80" width="100" height="40" rx="20" fill="#1a3a6e" stroke="#0d2347" stroke-width="1"/>
+      <text font-size="12" font-weight="700" fill="#fff" x="220" y="104" text-anchor="middle" font-family="'Noto Sans KR',sans-serif">준비(Ready)</text>
+
+      <!-- Running -->
+      <rect x="350" y="80" width="110" height="40" rx="20" fill="#7a3010" stroke="#4a1a00" stroke-width="1"/>
+      <text font-size="12" font-weight="700" fill="#fff" x="405" y="104" text-anchor="middle" font-family="'Noto Sans KR',sans-serif">실행(Running)</text>
+
+      <!-- Waiting -->
+      <rect x="350" y="158" width="110" height="36" rx="18" fill="#4a3080" stroke="#2d1a60" stroke-width="1"/>
+      <text font-size="12" font-weight="700" fill="#fff" x="405" y="180" text-anchor="middle" font-family="'Noto Sans KR',sans-serif">대기(Waiting)</text>
+
+      <!-- Terminated -->
+      <rect x="580" y="80" width="120" height="40" rx="20" fill="#555" stroke="#333" stroke-width="1"/>
+      <text font-size="12" font-weight="700" fill="#fff" x="640" y="104" text-anchor="middle" font-family="'Noto Sans KR',sans-serif">종료(Terminated)</text>
+
+      <!-- Arrows -->
+      <!-- New → Ready -->
+      <line x1="100" y1="100" x2="168" y2="100" stroke="#2d6a4f" stroke-width="1.5" marker-end="url(#ma)" fill="none"/>
+      <text font-size="9.5" fill="#2d6a4f" x="134" y="93" text-anchor="middle" font-family="'Noto Sans KR',sans-serif">admitted</text>
+
+      <!-- Ready → Running -->
+      <line x1="270" y1="95" x2="348" y2="95" stroke="#1a3a6e" stroke-width="1.5" marker-end="url(#ma)" fill="none"/>
+      <text font-size="9.5" fill="#1a3a6e" x="309" y="88" text-anchor="middle" font-family="'Noto Sans KR',sans-serif">dispatcher</text>
+
+      <!-- Running → Ready (선점) -->
+      <path d="M350 105 Q309 130 270 105" fill="none" stroke="#b8860b" stroke-width="1.5" marker-end="url(#ma)"/>
+      <text font-size="9.5" fill="#b8860b" x="309" y="130" text-anchor="middle" font-family="'Noto Sans KR',sans-serif">time-out/선점</text>
+
+      <!-- Running → Waiting -->
+      <line x1="405" y1="120" x2="405" y2="156" stroke="#4a3080" stroke-width="1.5" marker-end="url(#ma)" fill="none"/>
+      <text font-size="9.5" fill="#4a3080" x="440" y="142" font-family="'Noto Sans KR',sans-serif">I/O 요청</text>
+
+      <!-- Waiting → Ready -->
+      <path d="M350 170 Q220 200 220 122" fill="none" stroke="#4a3080" stroke-width="1.5" marker-end="url(#ma)"/>
+      <text font-size="9.5" fill="#4a3080" x="240" y="195" text-anchor="middle" font-family="'Noto Sans KR',sans-serif">I/O 완료</text>
+
+      <!-- Running → Terminated -->
+      <line x1="460" y1="100" x2="578" y2="100" stroke="#555" stroke-width="1.5" marker-end="url(#ma)" fill="none"/>
+      <text font-size="9.5" fill="#555" x="519" y="93" text-anchor="middle" font-family="'Noto Sans KR',sans-serif">exit</text>
+
+      <!-- 스케줄러 label -->
+      <rect x="270" y="14" width="80" height="20" rx="3" fill="#1a3a6e" fill-opacity=".12" stroke="#1a3a6e" stroke-width="0.8"/>
+      <text font-size="10" fill="#1a3a6e" font-weight="700" x="310" y="28" text-anchor="middle" font-family="'Noto Sans KR',sans-serif">CPU 스케줄러</text>
+    </svg>
+    <div class="fc">【그림 1】 프로세스 5상태 전이도 — 스케줄러가 Ready→Running 전이를 제어</div>
+  </div>
+
+  <div class="sh2">2. 스케줄링의 계층 구조</div>
+  <div class="tw">
+    <table>
+      <tr><th style="width:22%">스케줄러</th><th style="width:28%">동작 시점</th><th style="width:26%">역할</th><th>속도</th></tr>
+      <tr><td><span class="kc">장기 스케줄러<br>(Long-term)</span></td><td>프로세스 생성 시</td><td>New→Ready 승인, 다중 프로그래밍 정도(Degree) 결정</td><td>느림 (분 단위)</td></tr>
+      <tr><td><span class="kc">중기 스케줄러<br>(Medium-term)</span></td><td>메모리 부족 시</td><td>프로세스를 디스크로 스왑아웃(Swap-out)·스왑인</td><td>중간</td></tr>
+      <tr><td><span class="kc">단기 스케줄러<br>(Short-term)</span></td><td>CPU 할당 시</td><td>Ready→Running 선택 (CPU 스케줄러), 수 ms 주기</td><td>매우 빠름</td></tr>
+    </table>
+  </div>
+  <div class="fc" style="margin-top:-8px;margin-bottom:12px">【표 1】 스케줄러의 3계층 구조</div>
+
+  <div class="sh2">3. 스케줄링 성능 지표</div>
+  <div class="tw">
+    <table>
+      <tr><th style="width:26%">지표</th><th style="width:36%">정의</th><th>최적 방향</th></tr>
+      <tr><td><span class="kc">CPU 이용률 (Utilization)</span></td><td>단위 시간당 CPU가 유휴 없이 작업한 비율</td><td>↑ 최대화</td></tr>
+      <tr><td><span class="kc">처리율 (Throughput)</span></td><td>단위 시간당 완료된 프로세스 수</td><td>↑ 최대화</td></tr>
+      <tr><td><span class="kc">반환 시간 (Turnaround)</span></td><td>제출~완료까지 총 소요 시간</td><td>↓ 최소화</td></tr>
+      <tr><td><span class="kc">대기 시간 (Waiting)</span></td><td>Ready 큐에서 CPU를 기다린 총 시간</td><td>↓ 최소화</td></tr>
+      <tr><td><span class="kc">응답 시간 (Response)</span></td><td>요청 후 첫 번째 응답까지 걸린 시간</td><td>↓ 최소화 (대화형)</td></tr>
+    </table>
+  </div>
+  <div class="fc" style="margin-top:-8px;margin-bottom:12px">【표 2】 스케줄링 성능 평가 지표</div>
+</div>
+
+<hr class="pb">
+
+<!-- ─── Ⅱ. 분류 및 선점/비선점 ─── -->
+<div class="sec">
+  <div class="sh">Ⅱ. 스케줄링 알고리즘 분류 기준과 선점형·비선점형 비교</div>
+
+  <div class="sh2">1. 선점형 vs. 비선점형</div>
+  <div class="tw">
+    <table>
+      <tr><th style="width:22%">비교 항목</th><th>비선점형 (Non-preemptive)</th><th>선점형 (Preemptive)</th></tr>
+      <tr><td><span class="kc">CPU 반환 시점</span></td><td>프로세스가 자발적으로 반환(종료·I/O 요청)</td><td>OS가 강제로 회수 (타임아웃·높은 우선순위)</td></tr>
+      <tr><td><span class="kc">문맥 교환 비용</span></td><td>낮음 — 전환 빈도 적음</td><td>높음 — 잦은 문맥 교환 오버헤드</td></tr>
+      <tr><td><span class="kc">응답성</span></td><td>낮음 — 긴 프로세스가 CPU 독점 가능</td><td>높음 — 대화형·실시간 시스템에 적합</td></tr>
+      <tr><td><span class="kc">기아(Starvation)</span></td><td>우선순위 방식에서 발생 가능</td><td>에이징(Aging)으로 해결 가능</td></tr>
+      <tr><td><span class="kc">대표 알고리즘</span></td><td>FCFS, SJF(비선점), 우선순위(비선점)</td><td>Round Robin, SRTF, 다단계 큐</td></tr>
+      <tr><td><span class="kc">적합 환경</span></td><td>배치 처리(Batch) 시스템</td><td>대화형·범용·실시간 OS</td></tr>
+    </table>
+  </div>
+  <div class="fc" style="margin-top:-8px;margin-bottom:12px">【표 3】 선점형 vs. 비선점형 스케줄링 비교</div>
+
+  <div class="sh2">2. 스케줄링 알고리즘 분류 체계</div>
+  <div class="fig">
+    <svg width="100%" viewBox="0 0 700 220" xmlns="http://www.w3.org/2000/svg" role="img">
+      <title>스케줄링 알고리즘 분류</title>
+      <!-- Root -->
+      <rect x="265" y="10" width="170" height="34" rx="5" fill="#1a3a6e"/>
+      <text font-size="12" font-weight="700" fill="#fff" x="350" y="31" text-anchor="middle" font-family="'Noto Sans KR',sans-serif">스케줄링 알고리즘</text>
+
+      <!-- Branch lines -->
+      <line x1="350" y1="44" x2="350" y2="62" stroke="#888" stroke-width="1"/>
+      <line x1="155" y1="62" x2="545" y2="62" stroke="#888" stroke-width="1"/>
+      <line x1="155" y1="62" x2="155" y2="78" stroke="#888" stroke-width="1"/>
+      <line x1="350" y1="62" x2="350" y2="78" stroke="#888" stroke-width="1"/>
+      <line x1="545" y1="62" x2="545" y2="78" stroke="#888" stroke-width="1"/>
+
+      <!-- 비선점 -->
+      <rect x="60" y="78" width="190" height="30" rx="5" fill="#7a3010"/>
+      <text font-size="11.5" font-weight="700" fill="#fff" x="155" y="97" text-anchor="middle" font-family="'Noto Sans KR',sans-serif">비선점형 (Non-preemptive)</text>
+      <!-- 선점 -->
+      <rect x="258" y="78" width="184" height="30" rx="5" fill="#2d6a4f"/>
+      <text font-size="11.5" font-weight="700" fill="#fff" x="350" y="97" text-anchor="middle" font-family="'Noto Sans KR',sans-serif">선점형 (Preemptive)</text>
+      <!-- 혼합 -->
+      <rect x="460" y="78" width="170" height="30" rx="5" fill="#4a3080"/>
+      <text font-size="11.5" font-weight="700" fill="#fff" x="545" y="97" text-anchor="middle" font-family="'Noto Sans KR',sans-serif">혼합 / 계층형</text>
+
+      <!-- 비선점 하위 -->
+      <line x1="155" y1="108" x2="155" y2="120" stroke="#888" stroke-width="0.8"/>
+      <line x1="60" y1="120" x2="250" y2="120" stroke="#888" stroke-width="0.8"/>
+      <line x1="60" y1="120" x2="60" y2="132" stroke="#888" stroke-width="0.8"/>
+      <line x1="155" y1="120" x2="155" y2="132" stroke="#888" stroke-width="0.8"/>
+      <line x1="250" y1="120" x2="250" y2="132" stroke="#888" stroke-width="0.8"/>
+      <rect x="10" y="132" width="100" height="26" rx="4" fill="#f5ddd5" stroke="#7a3010" stroke-width="0.8"/>
+      <text font-size="10.5" fill="#7a3010" font-weight="700" x="60" y="148" text-anchor="middle" font-family="'Noto Sans KR',sans-serif">FCFS</text>
+      <rect x="108" y="132" width="90" height="26" rx="4" fill="#f5ddd5" stroke="#7a3010" stroke-width="0.8"/>
+      <text font-size="10.5" fill="#7a3010" font-weight="700" x="153" y="148" text-anchor="middle" font-family="'Noto Sans KR',sans-serif">SJF</text>
+      <rect x="206" y="132" width="92" height="26" rx="4" fill="#f5ddd5" stroke="#7a3010" stroke-width="0.8"/>
+      <text font-size="10.5" fill="#7a3010" font-weight="700" x="252" y="148" text-anchor="middle" font-family="'Noto Sans KR',sans-serif">Priority(NP)</text>
+
+      <!-- 선점 하위 -->
+      <line x1="350" y1="108" x2="350" y2="120" stroke="#888" stroke-width="0.8"/>
+      <line x1="290" y1="120" x2="410" y2="120" stroke="#888" stroke-width="0.8"/>
+      <line x1="290" y1="120" x2="290" y2="132" stroke="#888" stroke-width="0.8"/>
+      <line x1="350" y1="120" x2="350" y2="132" stroke="#888" stroke-width="0.8"/>
+      <line x1="410" y1="120" x2="410" y2="132" stroke="#888" stroke-width="0.8"/>
+      <rect x="255" y="132" width="72" height="26" rx="4" fill="#d4edda" stroke="#2d6a4f" stroke-width="0.8"/>
+      <text font-size="10.5" fill="#2d6a4f" font-weight="700" x="291" y="148" text-anchor="middle" font-family="'Noto Sans KR',sans-serif">RR</text>
+      <rect x="330" y="132" width="42" height="26" rx="4" fill="#d4edda" stroke="#2d6a4f" stroke-width="0.8"/>
+      <text font-size="10.5" fill="#2d6a4f" font-weight="700" x="351" y="148" text-anchor="middle" font-family="'Noto Sans KR',sans-serif">SRTF</text>
+      <rect x="376" y="132" width="74" height="26" rx="4" fill="#d4edda" stroke="#2d6a4f" stroke-width="0.8"/>
+      <text font-size="10.5" fill="#2d6a4f" font-weight="700" x="413" y="148" text-anchor="middle" font-family="'Noto Sans KR',sans-serif">Priority(P)</text>
+
+      <!-- 혼합 하위 -->
+      <line x1="545" y1="108" x2="545" y2="120" stroke="#888" stroke-width="0.8"/>
+      <line x1="482" y1="120" x2="608" y2="120" stroke="#888" stroke-width="0.8"/>
+      <line x1="482" y1="120" x2="482" y2="132" stroke="#888" stroke-width="0.8"/>
+      <line x1="608" y1="120" x2="608" y2="132" stroke="#888" stroke-width="0.8"/>
+      <rect x="440" y="132" width="88" height="26" rx="4" fill="#eeedfe" stroke="#4a3080" stroke-width="0.8"/>
+      <text font-size="10" fill="#4a3080" font-weight="700" x="484" y="148" text-anchor="middle" font-family="'Noto Sans KR',sans-serif">다단계 큐</text>
+      <rect x="534" y="132" width="100" height="26" rx="4" fill="#eeedfe" stroke="#4a3080" stroke-width="0.8"/>
+      <text font-size="10" fill="#4a3080" font-weight="700" x="584" y="148" text-anchor="middle" font-family="'Noto Sans KR',sans-serif">다단계 피드백</text>
+
+      <!-- 공정성 -->
+      <text font-size="10" fill="#888" x="350" y="195" text-anchor="middle" font-family="'Noto Sans KR',sans-serif">* 공정성 기준: 에이징(Aging), 균등 분배(Fair-share Scheduling)</text>
+    </svg>
+    <div class="fc">【그림 2】 스케줄링 알고리즘 분류 체계</div>
+  </div>
+</div>
+
+<hr class="pb">
+
+<!-- ─── Ⅲ. 알고리즘 상세 ─── -->
+<div class="sec">
+  <div class="sh">Ⅲ. 주요 스케줄링 알고리즘의 동작 원리 및 간트 차트 비교</div>
+
+  <div class="sh2">1. 공통 입력 데이터</div>
+  <div class="tw">
+    <table style="max-width:460px">
+      <tr><th>프로세스</th><th class="tc">도착 시간</th><th class="tc">CPU 버스트 시간</th><th class="tc">우선순위 (낮을수록 높음)</th></tr>
+      <tr><td><span class="kc">P1</span></td><td class="tc">0</td><td class="tc">6</td><td class="tc">3</td></tr>
+      <tr><td><span class="kc">P2</span></td><td class="tc">1</td><td class="tc">4</td><td class="tc">1</td></tr>
+      <tr><td><span class="kc">P3</span></td><td class="tc">2</td><td class="tc">2</td><td class="tc">2</td></tr>
+      <tr><td><span class="kc">P4</span></td><td class="tc">3</td><td class="tc">1</td><td class="tc">4</td></tr>
+    </table>
+  </div>
+  <div class="fc" style="margin-top:-8px;margin-bottom:14px">【표 4】 스케줄링 예제 입력 데이터 (RR 타임 퀀텀 q=2)</div>
+
+  <!-- ① FCFS -->
+  <div class="sh2">① FCFS (First-Come First-Served) — 비선점</div>
+  <div class="txt i1">
+    <p><span class="kw">동작:</span> 도착 순서대로 CPU를 배정. 가장 단순하나 긴 프로세스 뒤에 짧은 프로세스가 오래 기다리는 <span class="kw">호위 효과(Convoy Effect)</span> 발생 가능.</p>
+  </div>
+  <div class="gantt-wrap">
+    <div class="gantt-label">FCFS 간트 차트</div>
+    <div class="gantt-row">
+      <div class="gantt-name"></div>
+      <div class="gantt-bar" style="background:#1a3a6e;width:156px">P1 (0→6)</div>
+      <div class="gantt-bar" style="background:#7a3010;width:104px">P2 (6→10)</div>
+      <div class="gantt-bar" style="background:#2d6a4f;width:52px">P3 (10→12)</div>
+      <div class="gantt-bar" style="background:#4a3080;width:26px">P4</div>
+    </div>
+    <div class="gantt-tick" style="padding-left:0px">
+      <span style="width:0px">0</span>
+      <span style="width:156px;text-align:right">6</span>
+      <span style="width:104px;text-align:right">10</span>
+      <span style="width:52px;text-align:right">12</span>
+      <span style="width:26px;text-align:right">13</span>
+    </div>
+  </div>
+  <div class="txt i1" style="margin-top:6px;font-size:11.5px">
+    대기 시간: P1=0, P2=5, P3=8, P4=9 &nbsp;|&nbsp; <span class="kw">평균 대기 시간 = (0+5+8+9)/4 = 5.5</span>
+  </div>
+
+  <!-- ② SJF -->
+  <div class="sh2">② SJF (Shortest Job First) — 비선점</div>
+  <div class="txt i1">
+    <p><span class="kw">동작:</span> 현재 Ready 큐에서 버스트 시간이 가장 짧은 프로세스를 먼저 선택. <span class="kw">평균 대기 시간 최소화 (이론적 최적)</span>. 단, 버스트 시간 사전 예측 어려움, 긴 프로세스의 <span class="kw">기아(Starvation)</span> 위험.</p>
+  </div>
+  <div class="gantt-wrap">
+    <div class="gantt-label">SJF 간트 차트 (비선점)</div>
+    <div class="gantt-row">
+      <div class="gantt-name"></div>
+      <div class="gantt-bar" style="background:#1a3a6e;width:156px">P1 (0→6)</div>
+      <div class="gantt-bar" style="background:#4a3080;width:26px">P4</div>
+      <div class="gantt-bar" style="background:#2d6a4f;width:52px">P3 (7→9)</div>
+      <div class="gantt-bar" style="background:#7a3010;width:104px">P2 (9→13)</div>
+    </div>
+    <div class="gantt-tick" style="padding-left:0px">
+      <span style="width:0px">0</span>
+      <span style="width:156px;text-align:right">6</span>
+      <span style="width:26px;text-align:right">7</span>
+      <span style="width:52px;text-align:right">9</span>
+      <span style="width:104px;text-align:right">13</span>
+    </div>
+  </div>
+  <div class="txt i1" style="margin-top:6px;font-size:11.5px">
+    대기 시간: P1=0, P2=8, P3=5, P4=3 &nbsp;|&nbsp; <span class="kw">평균 대기 시간 = (0+8+5+3)/4 = 4.0</span>
+  </div>
+
+  <!-- ③ SRTF -->
+  <div class="sh2">③ SRTF (Shortest Remaining Time First) — 선점형 SJF</div>
+  <div class="txt i1">
+    <p><span class="kw">동작:</span> 새 프로세스 도착 시마다 잔여 버스트 시간이 가장 짧은 프로세스를 선점. 선점형 SJF로 <span class="kw">이론적 최소 평균 대기 시간</span>을 보장하나 문맥 교환 오버헤드 높음.</p>
+  </div>
+  <div class="gantt-wrap">
+    <div class="gantt-label">SRTF 간트 차트 (선점)</div>
+    <div class="gantt-row">
+      <div class="gantt-name"></div>
+      <div class="gantt-bar" style="background:#1a3a6e;width:26px">P1</div>
+      <div class="gantt-bar" style="background:#7a3010;width:26px">P2</div>
+      <div class="gantt-bar" style="background:#2d6a4f;width:52px">P3 (2→4)</div>
+      <div class="gantt-bar" style="background:#4a3080;width:26px">P4</div>
+      <div class="gantt-bar" style="background:#7a3010;width:78px">P2 (cont)</div>
+      <div class="gantt-bar" style="background:#1a3a6e;width:130px">P1 (cont→13)</div>
+    </div>
+    <div class="gantt-tick" style="padding-left:0px">
+      <span style="width:0px">0</span>
+      <span style="width:26px;text-align:right">1</span>
+      <span style="width:26px;text-align:right">2</span>
+      <span style="width:52px;text-align:right">4</span>
+      <span style="width:26px;text-align:right">5</span>
+      <span style="width:78px;text-align:right">8</span>
+      <span style="width:130px;text-align:right">13</span>
+    </div>
+  </div>
+  <div class="txt i1" style="margin-top:6px;font-size:11.5px">
+    대기 시간: P1=7, P2=3, P3=0, P4=2 &nbsp;|&nbsp; <span class="kw">평균 대기 시간 = (7+3+0+2)/4 = 3.0</span>
+  </div>
+
+  <!-- ④ RR -->
+  <div class="sh2">④ Round Robin (RR) — 선점형, q = 2</div>
+  <div class="txt i1">
+    <p><span class="kw">동작:</span> 각 프로세스에 동일한 타임 퀀텀(q)을 순환 배정. <span class="kw">공정성 보장·응답 시간 예측 가능</span>으로 대화형 OS의 기본 방식. 퀀텀 크기가 성능을 결정하며, 너무 작으면 문맥 교환 오버헤드↑, 너무 크면 FCFS에 근접.</p>
+  </div>
+  <div class="gantt-wrap">
+    <div class="gantt-label">Round Robin 간트 차트 (q=2)</div>
+    <div class="gantt-row">
+      <div class="gantt-name"></div>
+      <div class="gantt-bar" style="background:#1a3a6e;width:52px">P1(0-2)</div>
+      <div class="gantt-bar" style="background:#7a3010;width:52px">P2(2-4)</div>
+      <div class="gantt-bar" style="background:#2d6a4f;width:52px">P3(4-6)</div>
+      <div class="gantt-bar" style="background:#1a3a6e;width:52px">P1(6-8)</div>
+      <div class="gantt-bar" style="background:#4a3080;width:26px">P4(8-9)</div>
+      <div class="gantt-bar" style="background:#7a3010;width:52px">P2(9-11)</div>
+      <div class="gantt-bar" style="background:#1a3a6e;width:52px">P1(11-13)</div>
+    </div>
+    <div class="gantt-tick" style="padding-left:0px">
+      <span style="width:0px">0</span>
+      <span style="width:52px;text-align:right">2</span>
+      <span style="width:52px;text-align:right">4</span>
+      <span style="width:52px;text-align:right">6</span>
+      <span style="width:52px;text-align:right">8</span>
+      <span style="width:26px;text-align:right">9</span>
+      <span style="width:52px;text-align:right">11</span>
+      <span style="width:52px;text-align:right">13</span>
+    </div>
+  </div>
+  <div class="txt i1" style="margin-top:6px;font-size:11.5px">
+    대기 시간: P1=7, P2=5, P3=4, P4=5 &nbsp;|&nbsp; <span class="kw">평균 대기 시간 = (7+5+4+5)/4 = 5.25</span>
+  </div>
+
+  <!-- 알고리즘 비교표 -->
+  <div class="sh2">5. 알고리즘 성능 종합 비교</div>
+  <div class="tw">
+    <table>
+      <tr><th style="width:14%">알고리즘</th><th style="width:10%">유형</th><th style="width:14%">평균 대기</th><th style="width:20%">장점</th><th style="width:22%">단점</th><th>적합 환경</th></tr>
+      <tr><td><span class="kc">FCFS</span></td><td class="tc"><span class="badge badge-o">비선점</span></td><td class="tc">5.5</td><td>구현 단순</td><td>호위 효과, 낮은 응답성</td><td>배치 처리</td></tr>
+      <tr><td><span class="kc">SJF</span></td><td class="tc"><span class="badge badge-o">비선점</span></td><td class="tc">4.0</td><td>평균 대기 최소</td><td>버스트 예측 불가, 기아</td><td>배치 처리</td></tr>
+      <tr><td><span class="kc">SRTF</span></td><td class="tc"><span class="badge badge-g">선점</span></td><td class="tc"><span class="kw">3.0 ★</span></td><td>이론적 최적</td><td>예측 불가, 높은 오버헤드</td><td>이론/참조</td></tr>
+      <tr><td><span class="kc">Priority</span></td><td class="tc"><span class="badge badge-g">선점</span></td><td class="tc">가변</td><td>중요 작업 우선</td><td>기아 → 에이징 필요</td><td>실시간</td></tr>
+      <tr><td><span class="kc">RR</span></td><td class="tc"><span class="badge badge-g">선점</span></td><td class="tc">5.25</td><td>공정성·응답성</td><td>퀀텀 설정 의존적</td><td>대화형·범용</td></tr>
+    </table>
+  </div>
+  <div class="fc" style="margin-top:-8px;margin-bottom:12px">【표 5】 스케줄링 알고리즘 성능 종합 비교</div>
+</div>
+
+<hr class="pb">
+
+<!-- ─── Ⅳ. 고급 기법 ─── -->
+<div class="sec">
+  <div class="sh">Ⅳ. 현대 운영체제의 고급 스케줄링 기법 및 실무 고려사항</div>
+
+  <div class="sh2">1. 다단계 큐 스케줄링 (Multilevel Queue)</div>
+  <div class="txt i1">
+    <p>Ready 큐를 <span class="kw">여러 개의 별도 큐로 분리</span>하고 각 큐에 서로 다른 알고리즘을 적용한다. 프로세스는 영구적으로 특정 큐에 배정되며 큐 간 이동이 없다.</p>
+  </div>
+  <div class="fig">
+    <svg width="100%" viewBox="0 0 680 200" xmlns="http://www.w3.org/2000/svg" role="img">
+      <title>다단계 큐 구조</title>
+      <defs>
+        <marker id="mb" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse">
+          <path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </marker>
+      </defs>
+      <!-- Queue boxes -->
+      <rect x="20" y="16" width="460" height="30" rx="5" fill="#7a3010"/>
+      <text font-size="11.5" font-weight="700" fill="#fff" x="250" y="35" text-anchor="middle" font-family="'Noto Sans KR',sans-serif">Q1: 실시간(Real-Time) — 최고 우선순위</text>
+      <rect x="20" y="56" width="420" height="30" rx="5" fill="#1a3a6e"/>
+      <text font-size="11.5" font-weight="700" fill="#fff" x="230" y="75" text-anchor="middle" font-family="'Noto Sans KR',sans-serif">Q2: 시스템(System) — Priority NP</text>
+      <rect x="20" y="96" width="360" height="30" rx="5" fill="#2d6a4f"/>
+      <text font-size="11.5" font-weight="700" fill="#fff" x="200" y="115" text-anchor="middle" font-family="'Noto Sans KR',sans-serif">Q3: 대화형(Interactive) — RR</text>
+      <rect x="20" y="136" width="300" height="30" rx="5" fill="#4a3080"/>
+      <text font-size="11.5" font-weight="700" fill="#fff" x="170" y="155" text-anchor="middle" font-family="'Noto Sans KR',sans-serif">Q4: 배치(Batch) — FCFS</text>
+
+      <!-- Priority arrows (우선순위 방향) -->
+      <text font-size="11" fill="#888" x="505" y="32" font-family="'Noto Sans KR',sans-serif">↑ 우선순위</text>
+      <text font-size="11" fill="#888" x="505" y="155" font-family="'Noto Sans KR',sans-serif">↓ 낮음</text>
+
+      <!-- CPU -->
+      <rect x="580" y="76" width="80" height="64" rx="8" fill="#555"/>
+      <text font-size="12" font-weight="700" fill="#fff" x="620" y="108" text-anchor="middle" font-family="'Noto Sans KR',sans-serif">CPU</text>
+
+      <!-- Arrow from Q1 to CPU -->
+      <line x1="482" y1="31" x2="578" y2="100" stroke="#7a3010" stroke-width="1.5" marker-end="url(#mb)" fill="none"/>
+      <!-- Arrow from Q2 to CPU -->
+      <line x1="442" y1="71" x2="578" y2="108" stroke="#1a3a6e" stroke-width="1" marker-end="url(#mb)" fill="none" stroke-dasharray="4 2"/>
+    </svg>
+    <div class="fc">【그림 3】 다단계 큐 스케줄링 구조 — 큐 간 우선순위 고정</div>
+  </div>
+
+  <div class="sh2">2. 다단계 피드백 큐 (Multilevel Feedback Queue, MLFQ)</div>
+  <div class="txt i1">
+    <p>다단계 큐와 달리 프로세스가 <span class="kw">큐 간 이동(Feedback)</span>을 허용한다. CPU를 많이 사용한 프로세스(CPU-Bound)는 하위 큐로 강등, I/O 위주 프로세스(I/O-Bound)는 상위 큐로 승격하는 <span class="kw">자동 우선순위 조정</span> 메커니즘이다. Linux CFS, Windows Thread Scheduler 등 현대 범용 OS의 기반 방식.</p>
+  </div>
+  <div class="tw">
+    <table>
+      <tr><th style="width:24%">큐 계층</th><th style="width:24%">타임 퀀텀</th><th style="width:26%">알고리즘</th><th>대상 프로세스</th></tr>
+      <tr><td><span class="kc">Q0 (최상위)</span></td><td class="tc">q = 8ms</td><td>RR</td><td>짧은 CPU 버스트, I/O-Bound</td></tr>
+      <tr><td><span class="kc">Q1</span></td><td class="tc">q = 16ms</td><td>RR</td><td>중간 버스트</td></tr>
+      <tr><td><span class="kc">Q2 (최하위)</span></td><td class="tc">무제한</td><td>FCFS</td><td>긴 CPU 버스트, Batch</td></tr>
+    </table>
+  </div>
+  <div class="fc" style="margin-top:-8px;margin-bottom:12px">【표 6】 MLFQ 3-레벨 구성 예시</div>
+
+  <div class="sh2">3. 현대 OS 스케줄링 사례</div>
+  <div class="tw">
+    <table>
+      <tr><th style="width:18%">OS</th><th style="width:26%">스케줄러</th><th>핵심 특징</th></tr>
+      <tr><td><span class="kc">Linux</span></td><td>CFS (Completely Fair Scheduler)</td><td>가상 실행 시간(vruntime) 기반 적색-흑색 트리(Red-Black Tree)로 O(log n) 공정 배분. SCHED_FIFO·SCHED_RR(실시간) 병행 지원</td></tr>
+      <tr><td><span class="kc">Windows</span></td><td>Priority-based Preemptive</td><td>32단계 우선순위, MLFQ 방식의 동적 우선순위 조정. 포그라운드 스레드 퀀텀 부스팅</td></tr>
+      <tr><td><span class="kc">RTOS<br>(VxWorks 등)</span></td><td>Priority-based 선점 + 라운드 로빈</td><td>결정론적 응답 시간(Deterministic Response) 보장, 우선순위 역전(Priority Inversion) → 우선순위 상속(Priority Inheritance) 프로토콜</td></tr>
+      <tr><td><span class="kc">멀티코어 OS</span></td><td>Load Balancing + CPU Affinity</td><td>런큐(Run Queue) 간 부하 분산, NUMA 토폴로지 인식, 캐시 친화적 배정(CPU Affinity)</td></tr>
+    </table>
+  </div>
+  <div class="fc" style="margin-top:-8px;margin-bottom:12px">【표 7】 현대 OS 스케줄링 구현 사례</div>
+
+  <div class="sh2">4. 실무 설계 시 고려사항</div>
+  <div class="txt i1">
+    <p>① <span class="kw">기아(Starvation) 방지:</span> 우선순위 스케줄링 사용 시 반드시 <span class="kw">에이징(Aging)</span> 메커니즘 구현 — 오래 대기한 프로세스의 우선순위를 점진적으로 상향 조정</p>
+    <p>② <span class="kw">우선순위 역전(Priority Inversion) 방지:</span> RTOS 환경에서 낮은 우선순위 프로세스가 공유 자원을 보유해 높은 우선순위를 블록하는 문제 → 우선순위 상속(Priority Inheritance) 또는 우선순위 천장(Priority Ceiling) 프로토콜 적용</p>
+    <p>③ <span class="kw">타임 퀀텀 튜닝:</span> RR 퀀텀은 문맥 교환 비용의 약 10배로 설정하는 것이 경험적 최적값. 워크로드 특성(Interactive vs Batch)에 따라 동적 조정 가능</p>
+    <p>④ <span class="kw">멀티코어 확장성:</span> 코어별 런큐(Per-core Run Queue) 구성으로 락 경쟁 최소화, NUMA 아키텍처에서는 메모리 지역성(Locality) 고려한 스케줄링 필수</p>
+    <p>⑤ <span class="kw">에너지 효율(Green Scheduling):</span> 모바일·IoT 환경에서 유휴 CPU 코어 파워 게이팅(Power Gating), 빅-리틀(big.LITTLE) 아키텍처의 이기종 코어 배분 전략 고려</p>
+  </div>
+</div>
+
+<!-- ─── Ⅴ. 결론 ─── -->
+<div class="sec">
+  <div class="sh">Ⅴ. 결론</div>
+  <div class="txt">
+    <p>프로세스 스케줄링은 <span class="kw">CPU 이용률·공정성·응답성 간의 트레이드오프를 최적 균형으로 조정</span>하는 운영체제의 핵심 정책이다. 단일 최적 알고리즘은 존재하지 않으며, 시스템의 워크로드 특성(배치·대화형·실시간)에 맞는 알고리즘 선택과 파라미터 튜닝이 중요하다. 현대 OS는 <span class="kw">MLFQ 기반의 동적 우선순위 조정</span>과 <span class="kw">멀티코어 부하 분산</span>을 결합하여 다양한 워크로드에 적응적으로 대응한다.</p>
+  </div>
+</div>
+
+<div class="note">
+  <div class="nt">★ 기술사 핵심 코멘트</div>
+  <div class="nb">
+    스케줄링의 본질은 <strong>CPU 이용률과 공정성·응답성 간 트레이드오프의 정책적 결정</strong>이며, 시스템 감리 시 다음을 중점 검토해야 한다.<br>
+    ① <strong>기아 방지 메커니즘:</strong> 우선순위 기반 시스템에서 에이징 정책 구현 여부 및 에이징 증가율의 적정성 확인<br>
+    ② <strong>실시간 시스템 결정론적 응답 보장:</strong> RTOS에서 최악 실행 시간(WCET) 분석 및 우선순위 역전 방지 프로토콜 적용 여부<br>
+    ③ <strong>멀티코어 부하 불균형:</strong> 코어 간 런큐 길이 모니터링, 주기적 부하 분산(Load Balancing) 정책 설계 적정성<br>
+    ④ <strong>퀀텀 크기 설계:</strong> RR 퀀텀 크기가 문맥 교환 오버헤드 대비 적정 비율인지, 워크로드 변화 시 동적 조정 가능 여부 점검
+  </div>
+</div>
+
+</div><!-- /body -->
+
+<div class="ftr">
+  <span>컴퓨터시스템응용 기술사 · 모범 답안</span>
+  <span>Process Scheduling — FCFS·SJF·SRTF·RR·MLFQ</span>
+  <span>총 5개 항목 · 표 7개 · 그림 3개 · 간트 차트 4종</span>
+</div>
+
+</div><!-- /doc -->
+</body>
+</html>

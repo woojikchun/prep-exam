@@ -1,0 +1,684 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;900&family=JetBrains+Mono:wght@400;700&display=swap');
+:root{--bg:#030b10;--s1:#060f18;--s2:#0a1520;--s3:#0e1c2a;--bdr:#1a3a52;--a1:#38bdf8;--a2:#34d399;--a3:#fbbf24;--a4:#f87171;--a5:#a78bfa;--a6:#fb923c;--txt:#e2e8f0;--mu:#64748b;}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Noto Sans KR',sans-serif;background:var(--bg);color:var(--txt);min-height:100vh;}
+.hdr{padding:20px 24px 14px;background:linear-gradient(150deg,#030b10,#071520,#030b10);border-bottom:1px solid var(--bdr);}
+.hdr-r{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:6px;}
+.pill{padding:3px 10px;border-radius:20px;font-size:10px;font-weight:700;}
+.p1{background:linear-gradient(135deg,#0c4a6e,var(--a1));color:#fff;}
+.p2{background:rgba(52,211,153,.15);color:var(--a2);border:1px solid rgba(52,211,153,.3);}
+.p3{background:rgba(251,191,36,.15);color:var(--a3);border:1px solid rgba(251,191,36,.3);}
+h1{font-size:18px;font-weight:900;}
+.h1g{background:linear-gradient(90deg,var(--a1),var(--a2),var(--a5));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.hdr p{color:var(--mu);font-size:11.5px;margin-top:3px;}
+.tabs{display:flex;padding:0 24px;background:var(--s1);border-bottom:1px solid var(--bdr);overflow-x:auto;scrollbar-width:none;}
+.tabs::-webkit-scrollbar{display:none;}
+.tab{padding:10px 13px;font-size:11.5px;font-weight:600;color:var(--mu);cursor:pointer;border-bottom:2px solid transparent;white-space:nowrap;transition:all .2s;background:none;border-top:none;border-left:none;border-right:none;font-family:'Noto Sans KR',sans-serif;}
+.tab.on{color:var(--a1);border-bottom-color:var(--a1);}
+.wrap{padding:18px 24px;max-width:960px;margin:0 auto;}
+.pnl{display:none;}.pnl.on{display:block;}
+.card{background:var(--s1);border:1px solid var(--bdr);border-radius:11px;padding:16px;margin-bottom:12px;}
+.card-h{display:flex;align-items:center;gap:9px;margin-bottom:12px;}
+.ico{width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0;}
+.ib{background:rgba(56,189,248,.15);}.ig{background:rgba(52,211,153,.15);}.iy{background:rgba(251,191,36,.15);}.ir{background:rgba(248,113,113,.15);}.ip{background:rgba(167,139,250,.15);}
+.card h3{font-size:13.5px;font-weight:700;}
+.tag{display:inline-block;padding:2px 7px;border-radius:4px;font-size:9.5px;font-weight:600;margin:2px 2px 2px 0;}
+.tb{background:rgba(56,189,248,.12);color:var(--a1);border:1px solid rgba(56,189,248,.25);}
+.tg{background:rgba(52,211,153,.12);color:var(--a2);border:1px solid rgba(52,211,153,.25);}
+.ty{background:rgba(251,191,36,.12);color:var(--a3);border:1px solid rgba(251,191,36,.25);}
+.tr{background:rgba(248,113,113,.12);color:var(--a4);border:1px solid rgba(248,113,113,.25);}
+.tp{background:rgba(167,139,250,.12);color:var(--a5);border:1px solid rgba(167,139,250,.25);}
+.to{background:rgba(251,146,60,.12);color:var(--a6);border:1px solid rgba(251,146,60,.25);}
+table{width:100%;border-collapse:collapse;font-size:12px;}
+th{background:var(--s2);color:var(--mu);font-weight:700;padding:7px 11px;text-align:left;font-size:9.5px;text-transform:uppercase;letter-spacing:.5px;border-bottom:1px solid var(--bdr);}
+td{padding:8px 11px;border-bottom:1px solid rgba(26,58,82,.5);vertical-align:top;line-height:1.55;}
+tr:last-child td{border-bottom:none;}
+tr:hover td{background:rgba(255,255,255,.02);}
+td strong{color:var(--a3);}
+ul.il{list-style:none;display:flex;flex-direction:column;gap:6px;}
+ul.il li{font-size:12px;padding-left:15px;position:relative;line-height:1.5;}
+ul.il li::before{content:'▸';position:absolute;left:0;color:var(--a1);font-size:9.5px;top:3px;}
+ul.il li strong{color:var(--a3);}
+ul.il li em{color:var(--a2);font-style:normal;}
+.memo{background:linear-gradient(135deg,rgba(56,189,248,.07),rgba(52,211,153,.07));border:1px solid rgba(56,189,248,.22);border-left:3px solid var(--a1);border-radius:7px;padding:9px 13px;font-size:12px;font-weight:600;color:var(--a1);margin:9px 0;}
+.memo::before{content:'🎯 한 줄 암기 │ ';color:var(--mu);font-weight:400;}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px;}
+@media(max-width:580px){.g2{grid-template-columns:1fr;}}
+/* cluster diagram */
+.cluster-box{background:var(--s2);border:2px solid rgba(56,189,248,.3);border-radius:10px;padding:14px;margin:10px 0;}
+.cluster-title{font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:1px;margin-bottom:10px;}
+.cp-box{background:rgba(56,189,248,.07);border:1px solid rgba(56,189,248,.3);border-radius:8px;padding:12px;margin-bottom:8px;}
+.node-row{display:flex;gap:8px;flex-wrap:wrap;}
+.node-box{background:rgba(52,211,153,.07);border:1px solid rgba(52,211,153,.25);border-radius:7px;padding:10px;flex:1;min-width:120px;}
+.pod-row{display:flex;gap:5px;flex-wrap:wrap;margin-top:7px;}
+.pod-badge{background:rgba(251,191,36,.15);border:1px solid rgba(251,191,36,.3);border-radius:5px;padding:4px 8px;font-size:10px;font-weight:700;color:var(--a3);}
+/* accordion */
+.acc{background:var(--s2);border:1px solid var(--bdr);border-radius:9px;margin-bottom:8px;overflow:hidden;}
+.acc-h{display:flex;justify-content:space-between;align-items:center;padding:10px 14px;cursor:pointer;user-select:none;}
+.acc-h:hover{background:rgba(255,255,255,.02);}
+.acc-title{font-size:12.5px;font-weight:800;flex:1;}
+.acc-tgl{color:var(--mu);transition:transform .2s;font-size:14px;flex-shrink:0;margin-left:8px;}
+.acc.open .acc-tgl{transform:rotate(180deg);}
+.acc-body{display:none;border-top:1px solid var(--bdr);padding:12px 14px;background:var(--s3);font-size:12px;line-height:1.65;}
+.acc.open .acc-body{display:block;}
+.acc-body strong{color:var(--a3);}
+.acc-body em{color:var(--a2);font-style:normal;}
+.code{background:var(--s3);border:1px solid rgba(56,189,248,.18);border-radius:6px;padding:10px 12px;font-family:'JetBrains Mono',monospace;font-size:10.5px;margin:8px 0;line-height:1.6;overflow-x:auto;color:var(--a2);}
+.code .cm{color:var(--mu);}
+.code .kw{color:var(--a1);}
+.code .val{color:var(--a3);}
+/* qa */
+.qa{background:var(--s1);border:1px solid var(--bdr);border-radius:9px;margin-bottom:10px;overflow:hidden;}
+.qa:hover{border-color:rgba(56,189,248,.25);}
+.qa-hd{padding:12px 16px;cursor:pointer;display:flex;justify-content:space-between;align-items:flex-start;gap:9px;user-select:none;}
+.qa-meta{display:flex;align-items:center;gap:5px;margin-bottom:4px;flex-wrap:wrap;}
+.qn{font-family:'JetBrains Mono',monospace;font-size:9.5px;font-weight:700;color:var(--mu);}
+.qq{font-size:12.5px;font-weight:600;line-height:1.5;}
+.tgl{color:var(--mu);font-size:15px;flex-shrink:0;transition:transform .2s;}
+.qa.open .tgl{transform:rotate(180deg);}
+.qa-bd{display:none;border-top:1px solid var(--bdr);padding:12px 16px;background:var(--s2);}
+.qa.open .qa-bd{display:block;}
+.chs{display:flex;flex-direction:column;gap:6px;margin-bottom:10px;}
+.ch{display:flex;align-items:flex-start;gap:9px;padding:8px 12px;border-radius:6px;border:1px solid var(--bdr);font-size:12px;cursor:pointer;background:var(--s1);line-height:1.45;transition:all .15s;}
+.ch:hover:not(.lk){border-color:rgba(56,189,248,.3);background:rgba(56,189,248,.04);}
+.ch.ok{border-color:var(--a2);background:rgba(52,211,153,.1);color:var(--a2);}
+.ch.ng{border-color:var(--a4);background:rgba(248,113,113,.08);color:var(--a4);opacity:.7;}
+.ch.lk{cursor:default;}
+.cnum{font-family:'JetBrains Mono',monospace;font-weight:700;font-size:10.5px;flex-shrink:0;margin-top:1px;color:var(--mu);}
+.ch.ok .cnum{color:var(--a2);}.ch.ng .cnum{color:var(--a4);}
+.exp{background:rgba(56,189,248,.05);border:1px solid rgba(56,189,248,.18);border-radius:7px;padding:11px 13px;font-size:12px;line-height:1.6;display:none;}
+.exp.show{display:block;}
+.exp-t{font-size:9.5px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--a1);margin-bottom:5px;}
+.exp strong{color:var(--a3);}
+.exp em{color:var(--a2);font-style:normal;}
+.ox-wr{display:flex;gap:8px;margin-bottom:10px;}
+.ox{flex:1;padding:10px;border-radius:7px;border:1px solid var(--bdr);font-size:18px;cursor:pointer;background:var(--s1);transition:all .15s;font-family:'Noto Sans KR',sans-serif;color:var(--txt);}
+.ox:hover:not(.lk){transform:scale(1.02);}
+.ox.so{border-color:var(--a2);background:rgba(52,211,153,.15);}
+.ox.sx{border-color:var(--a4);background:rgba(248,113,113,.1);}
+.ox.lk{cursor:default;}
+.diff{display:inline-block;padding:2px 6px;border-radius:9px;font-size:8.5px;font-weight:700;}
+.easy{background:rgba(52,211,153,.2);color:var(--a2);}
+.mid{background:rgba(251,191,36,.2);color:var(--a3);}
+.hard{background:rgba(248,113,113,.2);color:var(--a4);}
+.fb-wr{display:flex;gap:5px;flex-wrap:wrap;margin-bottom:12px;}
+.fb{padding:4px 11px;border-radius:18px;border:1px solid var(--bdr);font-size:10.5px;font-weight:600;cursor:pointer;background:var(--s2);color:var(--mu);transition:all .15s;font-family:'Noto Sans KR',sans-serif;}
+.fb.on{background:rgba(56,189,248,.15);color:var(--a1);border-color:var(--a1);}
+.sc-b{background:var(--s2);border:1px solid var(--bdr);border-radius:7px;padding:4px 12px;font-size:11.5px;color:var(--mu);}
+.sc-b span{color:var(--a1);font-weight:700;}
+</style>
+</head>
+<body>
+<div class="hdr">
+  <div class="hdr-r">
+    <span class="pill p1">☸️ Kubernetes (K8s)</span>
+    <span class="pill p2">컨테이너 오케스트레이션</span>
+    <span class="pill p3">감리사 핵심 출제</span>
+  </div>
+  <h1><span class="h1g">Kubernetes 완전 정리</span></h1>
+  <p>클러스터 구조 · 핵심 오브젝트 · 네트워킹 · 스토리지 · 스케일링 · 배포 전략 · 보안 · YAML</p>
+</div>
+<div class="tabs">
+  <button class="tab on" data-p="p1">🏛️ 클러스터 구조</button>
+  <button class="tab" data-p="p2">📦 핵심 오브젝트</button>
+  <button class="tab" data-p="p3">🌐 네트워킹·서비스</button>
+  <button class="tab" data-p="p4">💾 스토리지·설정</button>
+  <button class="tab" data-p="p5">⚡ 스케일링·배포</button>
+  <button class="tab" data-p="p6">🔒 보안·거버넌스</button>
+  <button class="tab" data-p="p7">❓ 예상문제</button>
+</div>
+<div class="wrap">
+
+<!-- P1: 클러스터 구조 -->
+<div class="pnl on" id="p1">
+  <div class="card">
+    <div class="card-h"><div class="ico ib">🏛️</div><h3>Kubernetes 클러스터 전체 구조 ⭐</h3></div>
+    <div class="cluster-box">
+      <div class="cluster-title" style="color:var(--a1);">☸️ Kubernetes Cluster</div>
+      <div class="cp-box">
+        <p style="font-size:11px;font-weight:800;color:var(--a1);margin-bottom:8px;">Control Plane (마스터 노드)</p>
+        <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:6px;flex-wrap:wrap;">
+          <div style="background:rgba(56,189,248,.1);border:1px solid rgba(56,189,248,.3);border-radius:6px;padding:7px;text-align:center;">
+            <div style="font-size:10px;font-weight:800;color:var(--a1);">kube-apiserver</div>
+            <div style="font-size:9.5px;color:var(--mu);margin-top:2px;">API 진입점</div>
+          </div>
+          <div style="background:rgba(56,189,248,.1);border:1px solid rgba(56,189,248,.3);border-radius:6px;padding:7px;text-align:center;">
+            <div style="font-size:10px;font-weight:800;color:var(--a3);">etcd</div>
+            <div style="font-size:9.5px;color:var(--mu);margin-top:2px;">상태 저장소</div>
+          </div>
+          <div style="background:rgba(56,189,248,.1);border:1px solid rgba(56,189,248,.3);border-radius:6px;padding:7px;text-align:center;">
+            <div style="font-size:10px;font-weight:800;color:var(--a1);">kube-scheduler</div>
+            <div style="font-size:9.5px;color:var(--mu);margin-top:2px;">Pod 배치</div>
+          </div>
+          <div style="background:rgba(56,189,248,.1);border:1px solid rgba(56,189,248,.3);border-radius:6px;padding:7px;text-align:center;">
+            <div style="font-size:10px;font-weight:800;color:var(--a1);">controller-manager</div>
+            <div style="font-size:9.5px;color:var(--mu);margin-top:2px;">자가 치유</div>
+          </div>
+        </div>
+      </div>
+      <div class="node-row">
+        <div class="node-box">
+          <p style="font-size:10.5px;font-weight:800;color:var(--a2);">Worker Node 1</p>
+          <p style="font-size:9.5px;color:var(--mu);margin:3px 0;">kubelet · kube-proxy</p>
+          <div class="pod-row">
+            <div class="pod-badge">Pod A</div>
+            <div class="pod-badge">Pod B</div>
+          </div>
+        </div>
+        <div class="node-box">
+          <p style="font-size:10.5px;font-weight:800;color:var(--a2);">Worker Node 2</p>
+          <p style="font-size:9.5px;color:var(--mu);margin:3px 0;">kubelet · kube-proxy</p>
+          <div class="pod-row">
+            <div class="pod-badge">Pod C</div>
+            <div class="pod-badge">Pod D</div>
+            <div class="pod-badge">Pod E</div>
+          </div>
+        </div>
+        <div class="node-box">
+          <p style="font-size:10.5px;font-weight:800;color:var(--a2);">Worker Node 3</p>
+          <p style="font-size:9.5px;color:var(--mu);margin:3px 0;">kubelet · kube-proxy</p>
+          <div class="pod-row">
+            <div class="pod-badge">Pod F</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="memo">Control Plane: kube-apiserver·etcd·kube-scheduler·controller-manager / Worker Node: kubelet·kube-proxy·컨테이너런타임</div>
+  </div>
+
+  <div class="card">
+    <div class="card-h"><div class="ico ib">⚙️</div><h3>Control Plane 구성 요소 상세 ⭐</h3></div>
+    <table>
+      <thead><tr><th>구성요소</th><th>역할</th><th>핵심 특징</th></tr></thead>
+      <tbody>
+        <tr><td><strong>kube-apiserver ⭐</strong></td><td>K8s의 모든 API 요청을 처리하는 <strong>진입점</strong></td><td>REST API / 모든 컴포넌트가 apiserver를 통해 통신 / 인증·인가·허가 처리</td></tr>
+        <tr><td><strong>etcd ⭐</strong></td><td>클러스터의 모든 상태를 저장하는 <strong>분산 키-값 저장소</strong></td><td>RAFT 합의 알고리즘 / 고가용성 / 백업 필수 / etcd 장애 = 클러스터 관리 불가</td></tr>
+        <tr><td><strong>kube-scheduler ⭐</strong></td><td>새로운 Pod를 어느 Worker Node에 배치할지 결정</td><td>리소스 요구사항·노드 상태·Affinity 고려 / Pod 배치 전담</td></tr>
+        <tr><td><strong>kube-controller-manager</strong></td><td>다양한 컨트롤러를 실행하여 클러스터 상태를 원하는 상태로 유지</td><td>Replication·Node·Job·Endpoint 컨트롤러 등 실행 / 자가 치유 핵심</td></tr>
+        <tr><td><strong>cloud-controller-manager</strong></td><td>클라우드 제공자(AWS·Azure·GCP) API와 통합</td><td>로드밸런서·스토리지·노드 프로비저닝 자동화</td></tr>
+      </tbody>
+    </table>
+
+    <div class="card-h" style="margin-top:14px;margin-bottom:10px;"><div class="ico ig">🖥️</div><h3>Worker Node 구성 요소</h3></div>
+    <table>
+      <thead><tr><th>구성요소</th><th>역할</th></tr></thead>
+      <tbody>
+        <tr><td><strong>kubelet ⭐</strong></td><td>노드의 K8s 에이전트 — apiserver로부터 PodSpec 수신 → 컨테이너 생명주기 관리 (시작·종료·상태 보고)</td></tr>
+        <tr><td><strong>kube-proxy</strong></td><td>노드의 네트워크 규칙 관리 — Service → Pod 트래픽 라우팅 (iptables·IPVS 규칙)</td></tr>
+        <tr><td><strong>컨테이너 런타임</strong></td><td>실제 컨테이너 실행 엔진 — containerd (기본), CRI-O, Docker (deprecated)</td></tr>
+      </tbody>
+    </table>
+    <div class="memo">etcd=클러스터 상태 저장(가장 중요) / kube-scheduler=Pod 노드 배치 / kubelet=노드 에이전트·컨테이너 생애주기</div>
+  </div>
+</div>
+
+<!-- P2: 핵심 오브젝트 -->
+<div class="pnl" id="p2">
+  <div class="card">
+    <div class="card-h"><div class="ico iy">📦</div><h3>K8s 핵심 오브젝트 계층</h3></div>
+
+    <div class="acc open" onclick="this.classList.toggle('open')">
+      <div class="acc-h">
+        <div class="acc-title" style="color:var(--a3);">Pod ⭐ — 최소 배포 단위 <span class="tag ty">K8s 원자 단위</span></div>
+        <div class="acc-tgl">▾</div>
+      </div>
+      <div class="acc-body">
+        <ul class="il">
+          <li><strong>정의:</strong> K8s에서 배포·관리하는 가장 작은 단위. <em>1개 이상의 컨테이너</em>를 포함</li>
+          <li><strong>공유 자원:</strong> 같은 Pod 내 컨테이너는 <em>네트워크 네임스페이스(localhost 통신)와 볼륨(Volume)</em>을 공유</li>
+          <li><strong>임시성:</strong> Pod는 일회성 — 삭제·재시작 시 IP 변경 / 영속적 관리는 Deployment 사용</li>
+          <li><strong>사이드카 패턴:</strong> 주 컨테이너 + 보조 컨테이너(로그 수집·프록시·설정 주입) 함께 실행</li>
+          <li><strong>Pod 상태:</strong> Pending → Running → Succeeded/Failed/Unknown</li>
+        </ul>
+        <div class="code"><span class="cm"># Pod YAML 예시</span>
+<span class="kw">apiVersion:</span> <span class="val">v1</span>
+<span class="kw">kind:</span> <span class="val">Pod</span>
+<span class="kw">metadata:</span>
+  <span class="kw">name:</span> <span class="val">my-pod</span>
+<span class="kw">spec:</span>
+  <span class="kw">containers:</span>
+  - <span class="kw">name:</span> <span class="val">nginx</span>
+    <span class="kw">image:</span> <span class="val">nginx:1.25</span>
+    <span class="kw">ports:</span>
+    - <span class="kw">containerPort:</span> <span class="val">80</span></div>
+      </div>
+    </div>
+
+    <div class="acc" onclick="this.classList.toggle('open')">
+      <div class="acc-h">
+        <div class="acc-title" style="color:var(--a1);">Deployment ⭐ — Pod 복제·배포 관리 <span class="tag tb">가장 중요</span></div>
+        <div class="acc-tgl">▾</div>
+      </div>
+      <div class="acc-body">
+        <ul class="il">
+          <li><strong>역할:</strong> 원하는 수(Replica)의 Pod 유지 / 롤링 업데이트 / 롤백 / 자가 치유</li>
+          <li><strong>자가 치유:</strong> Pod 장애 시 Controller Manager가 새 Pod를 자동 생성</li>
+          <li><strong>ReplicaSet:</strong> Deployment가 내부적으로 ReplicaSet을 생성하여 Pod 수 관리 (직접 생성 비권장)</li>
+          <li><strong>롤링 업데이트:</strong> maxSurge(추가 허용 Pod 수)·maxUnavailable(최대 불가 Pod 수) 설정으로 무중단 배포</li>
+          <li><strong>롤백:</strong> kubectl rollout undo deployment/my-app 명령으로 이전 버전으로 즉시 복구</li>
+        </ul>
+        <div class="code"><span class="kw">spec:</span>
+  <span class="kw">replicas:</span> <span class="val">3</span>           <span class="cm"># Pod 복제본 3개 유지</span>
+  <span class="kw">strategy:</span>
+    <span class="kw">type:</span> <span class="val">RollingUpdate</span>
+    <span class="kw">rollingUpdate:</span>
+      <span class="kw">maxSurge:</span> <span class="val">1</span>       <span class="cm"># 동시에 최대 1개 추가</span>
+      <span class="kw">maxUnavailable:</span> <span class="val">0</span>  <span class="cm"># 동시에 0개 불가 (무중단)</span></div>
+      </div>
+    </div>
+
+    <div class="acc" onclick="this.classList.toggle('open')">
+      <div class="acc-h">
+        <div class="acc-title" style="color:var(--a2);">StatefulSet — 상태를 가진 앱 관리 <span class="tag tg">DB·메시지큐</span></div>
+        <div class="acc-tgl">▾</div>
+      </div>
+      <div class="acc-body">
+        <ul class="il">
+          <li><strong>vs Deployment:</strong> 각 Pod에 <em>고정 이름(stable hostname)과 순서가 보장</em>됨 — pod-0, pod-1, pod-2</li>
+          <li><strong>PVC 연결:</strong> 각 Pod가 독립적인 PersistentVolumeClaim을 가짐 → Pod 재시작 후도 같은 데이터</li>
+          <li><strong>순서 보장:</strong> 순서대로 시작·종료 (pod-0 → pod-1 → pod-2) / 역순 종료</li>
+          <li><strong>용도:</strong> MySQL·PostgreSQL·Kafka·ZooKeeper·Elasticsearch 등 상태 있는 앱</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="acc" onclick="this.classList.toggle('open')">
+      <div class="acc-h">
+        <div class="acc-title" style="color:var(--a5);">DaemonSet · Job · CronJob <span class="tag tp">특수 워크로드</span></div>
+        <div class="acc-tgl">▾</div>
+      </div>
+      <div class="acc-body">
+        <table>
+          <thead><tr><th>종류</th><th>설명</th><th>용도</th></tr></thead>
+          <tbody>
+            <tr><td><strong>DaemonSet</strong></td><td>모든 노드(또는 선택 노드)에 정확히 <strong>1개씩</strong> Pod 실행 / 노드 추가 시 자동 배포</td><td>로그 수집(Fluentd), 모니터링(Prometheus Node Exporter), 네트워크 플러그인</td></tr>
+            <tr><td><strong>Job</strong></td><td>완료 후 종료되는 <strong>일회성 작업</strong> / 지정 횟수 성공 시 완료</td><td>배치 처리, 데이터 마이그레이션, 백업</td></tr>
+            <tr><td><strong>CronJob</strong></td><td>Job을 <strong>스케줄(cron 표현식)로 반복</strong> 실행</td><td>정기 보고서 생성, 정기 백업, 캐시 워밍업</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div class="memo">Pod=최소단위(1개↑컨테이너) / Deployment=복제·롤링업데이트·자가치유 / StatefulSet=고정이름·순서·상태앱 / DaemonSet=모든노드1개씩</div>
+  </div>
+</div>
+
+<!-- P3: 네트워킹 -->
+<div class="pnl" id="p3">
+  <div class="card">
+    <div class="card-h"><div class="ico ib">🌐</div><h3>Service — Pod에 안정된 네트워크 엔드포인트 ⭐</h3></div>
+    <div style="background:var(--s2);border:1px solid rgba(56,189,248,.22);border-radius:9px;padding:12px;margin-bottom:11px;font-size:12px;line-height:1.75;"><strong style="color:var(--a1)">Service</strong>: Pod의 IP는 재시작 시 변경되므로, Service가 <em style="color:var(--a3);font-style:normal;">안정된 DNS 이름과 IP(ClusterIP)로 Pod 집합에 접근</em>할 수 있게 해줌. kube-proxy가 실제 라우팅 처리.</div>
+    <table>
+      <thead><tr><th>타입</th><th>접근 범위</th><th>용도</th><th>비고</th></tr></thead>
+      <tbody>
+        <tr><td><strong>ClusterIP ⭐</strong></td><td>클러스터 내부만</td><td>서비스 간 내부 통신</td><td>기본값 / 외부 접근 불가</td></tr>
+        <tr><td><strong>NodePort</strong></td><td>노드 IP + 지정 포트</td><td>개발·테스트 외부 접근</td><td>30000~32767 포트 범위</td></tr>
+        <tr><td><strong>LoadBalancer ⭐</strong></td><td>외부 인터넷</td><td>운영 환경 외부 노출</td><td>클라우드 제공 LB 프로비저닝</td></tr>
+        <tr><td><strong>ExternalName</strong></td><td>외부 DNS 이름</td><td>외부 서비스 내부 이름으로 접근</td><td>CNAME 레코드 반환</td></tr>
+      </tbody>
+    </table>
+    <div class="memo">Service 4종: ClusterIP(내부기본) / NodePort(노드포트) / LoadBalancer(클라우드LB·운영) / ExternalName(CNAME)</div>
+  </div>
+
+  <div class="card">
+    <div class="card-h"><div class="ico ig">🚪</div><h3>Ingress — 외부 HTTP/HTTPS 라우팅 ⭐</h3></div>
+    <div style="background:var(--s2);border:1px solid rgba(56,189,248,.18);border-radius:9px;padding:12px;margin-bottom:10px;font-size:12px;line-height:1.7;">
+      <strong style="color:var(--a1)">Ingress</strong>: 외부 HTTP/HTTPS 요청을 <em style="color:var(--a3);font-style:normal;">URL 경로·호스트 기반으로 내부 Service로 라우팅</em>하는 규칙 집합. 실제 처리는 Ingress Controller(nginx·traefik 등)가 담당
+    </div>
+    <div class="code"><span class="cm"># Ingress 라우팅 예시</span>
+<span class="val">http://myapp.com/api</span>    → <span class="kw">api-service:8080</span>
+<span class="val">http://myapp.com/web</span>    → <span class="kw">web-service:80</span>
+<span class="val">http://admin.myapp.com</span>  → <span class="kw">admin-service:9090</span>
+<span class="cm"># TLS 종단 처리 가능 (인증서 관리)</span></div>
+    <ul class="il">
+      <li><strong>vs LoadBalancer:</strong> Ingress=여러 서비스를 하나의 진입점으로 통합(L7) / LoadBalancer=서비스마다 별도 LB(L4) → 비용 절감</li>
+      <li><strong>Ingress Controller:</strong> nginx Ingress Controller, AWS ALB Controller, Traefik, Istio Gateway</li>
+      <li><strong>TLS/SSL 처리:</strong> Secret에 TLS 인증서 저장 후 Ingress에서 참조 → HTTPS 종단</li>
+    </ul>
+    <div class="memo">Ingress = L7 HTTP/HTTPS 라우팅 / URL·호스트 기반 / 여러 Service를 단일 진입점으로 통합 / Ingress Controller 필요</div>
+  </div>
+
+  <div class="card">
+    <div class="card-h"><div class="ico ip">🔗</div><h3>K8s 네트워킹 모델 & CNI</h3></div>
+    <div class="g2">
+      <div>
+        <p style="font-size:11.5px;font-weight:800;color:var(--a1);margin-bottom:7px;">K8s 네트워킹 4원칙</p>
+        <ul class="il">
+          <li>Pod는 NAT 없이 <strong>다른 Pod와 직접 통신</strong> 가능</li>
+          <li>노드는 NAT 없이 <strong>모든 Pod와 통신</strong> 가능</li>
+          <li>Pod는 자신의 IP를 인식 (= 외부에서 보이는 IP)</li>
+          <li>각 Pod는 <strong>고유한 IP</strong> 보유</li>
+        </ul>
+      </div>
+      <div>
+        <p style="font-size:11.5px;font-weight:800;color:var(--a3);margin-bottom:7px;">CNI (Container Network Interface)</p>
+        <ul class="il">
+          <li><strong>Calico:</strong> BGP 기반 / 네트워크 정책 강력 지원</li>
+          <li><strong>Flannel:</strong> 단순 오버레이 네트워크 / 소규모</li>
+          <li><strong>Weave:</strong> 암호화 오버레이 네트워크</li>
+          <li><strong>Cilium:</strong> eBPF 기반 고성능 / 보안 정책 우수</li>
+        </ul>
+      </div>
+    </div>
+    <div class="memo">K8s 네트워크: 각 Pod는 고유 IP·NAT 없이 직접 통신 / CNI 플러그인이 구현 / Calico·Cilium이 보안정책 지원</div>
+  </div>
+</div>
+
+<!-- P4: 스토리지·설정 -->
+<div class="pnl" id="p4">
+  <div class="card">
+    <div class="card-h"><div class="ico iy">💾</div><h3>K8s 스토리지 — PV · PVC · StorageClass ⭐</h3></div>
+    <table>
+      <thead><tr><th>개념</th><th>역할</th><th>핵심 포인트</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Volume</strong></td><td>Pod 내 컨테이너가 공유하는 저장소 / Pod 삭제 시 함께 삭제</td><td>emptyDir(임시), hostPath(노드디스크), configMap, secret</td></tr>
+        <tr><td><strong>PersistentVolume (PV) ⭐</strong></td><td>관리자가 사전에 프로비저닝한 <strong>클러스터 스토리지 리소스</strong></td><td>Pod 생명주기와 독립 / NFS·EBS·Ceph 등 백엔드</td></tr>
+        <tr><td><strong>PersistentVolumeClaim (PVC) ⭐</strong></td><td>사용자가 PV에 대한 <strong>스토리지 요청</strong> — 용량·접근 모드 지정</td><td>PVC → PV 바인딩 / Pod에서 PVC 참조</td></tr>
+        <tr><td><strong>StorageClass ⭐</strong></td><td>PV를 <strong>동적으로 프로비저닝</strong>하는 템플릿 — 스토리지 유형 정의</td><td>Dynamic Provisioning / AWS gp3, Azure Premium SSD 등</td></tr>
+        <tr><td><strong>접근 모드</strong></td><td>ReadWriteOnce(RWO) / ReadOnlyMany(ROX) / ReadWriteMany(RWX)</td><td>RWX: 여러 Pod에서 동시 읽기·쓰기 — NFS 필요</td></tr>
+      </tbody>
+    </table>
+    <div class="code"><span class="cm"># PVC 예시 — 10Gi 스토리지 요청</span>
+<span class="kw">kind:</span> <span class="val">PersistentVolumeClaim</span>
+<span class="kw">spec:</span>
+  <span class="kw">accessModes:</span> [<span class="val">ReadWriteOnce</span>]
+  <span class="kw">storageClassName:</span> <span class="val">gp3</span>   <span class="cm"># StorageClass 참조</span>
+  <span class="kw">resources:</span>
+    <span class="kw">requests:</span>
+      <span class="kw">storage:</span> <span class="val">10Gi</span></div>
+    <div class="memo">PV=관리자가 스토리지 준비 / PVC=사용자가 스토리지 요청 / StorageClass=동적 프로비저닝 / RWX=여러Pod 동시쓰기(NFS)</div>
+  </div>
+
+  <div class="card">
+    <div class="card-h"><div class="ico ig">⚙️</div><h3>ConfigMap & Secret — 설정·민감정보 분리 ⭐</h3></div>
+    <div class="g2">
+      <div>
+        <p style="font-size:11.5px;font-weight:800;color:var(--a2);margin-bottom:7px;">ConfigMap — 일반 설정</p>
+        <ul class="il">
+          <li>환경변수·설정 파일을 <strong>컨테이너 이미지와 분리</strong></li>
+          <li>키-값 쌍 또는 파일 형태로 저장</li>
+          <li>Pod에서 환경변수·볼륨 마운트로 사용</li>
+          <li>예: DB 호스트명, API 엔드포인트, 설정값</li>
+          <li>데이터는 <strong>평문 저장</strong> — 민감 정보 금지</li>
+        </ul>
+      </div>
+      <div>
+        <p style="font-size:11.5px;font-weight:800;color:var(--a4);margin-bottom:7px;">Secret — 민감 정보 ⭐</p>
+        <ul class="il">
+          <li>비밀번호·API 키·TLS 인증서 등 <strong>민감 정보 저장</strong></li>
+          <li>Base64 인코딩 저장 (암호화 아님 — etcd 암호화 별도)</li>
+          <li>Pod에서 환경변수·볼륨·imagePullSecrets으로 사용</li>
+          <li>Secret 타입: Opaque(범용), kubernetes.io/tls, kubernetes.io/dockerconfigjson</li>
+          <li><strong>RBAC + etcd 암호화로 보안 강화</strong> 필수</li>
+        </ul>
+      </div>
+    </div>
+    <div class="memo">ConfigMap=일반설정·평문 / Secret=민감정보·Base64(암호화아님) / 둘 다 컨테이너 이미지와 설정 분리가 핵심 목적</div>
+  </div>
+</div>
+
+<!-- P5: 스케일링·배포 -->
+<div class="pnl" id="p5">
+  <div class="card">
+    <div class="card-h"><div class="ico ib">⚡</div><h3>K8s 오토스케일링 3종 ⭐</h3></div>
+    <table>
+      <thead><tr><th>종류</th><th>정의</th><th>조정 대상</th><th>트리거</th></tr></thead>
+      <tbody>
+        <tr><td><strong>HPA ⭐</strong><br><span style="font-size:10px;color:var(--mu);">Horizontal Pod Autoscaler</span></td><td>Pod 수를 <strong>수평으로 자동 조정</strong></td><td>Deployment·StatefulSet의 replicas</td><td>CPU·메모리 사용률 / Custom Metrics</td></tr>
+        <tr><td><strong>VPA</strong><br><span style="font-size:10px;color:var(--mu);">Vertical Pod Autoscaler</span></td><td>Pod의 <strong>CPU·메모리 리소스를 수직으로 자동 조정</strong></td><td>Pod의 requests·limits 값</td><td>실제 리소스 사용 패턴 분석 (Pod 재시작 필요)</td></tr>
+        <tr><td><strong>CA</strong><br><span style="font-size:10px;color:var(--mu);">Cluster Autoscaler</span></td><td>Pod 스케줄링 불가 시 <strong>Worker Node를 자동 추가·제거</strong></td><td>클러스터의 Node 수</td><td>Pending Pod 존재 (노드 부족) / 노드 리소스 유휴</td></tr>
+      </tbody>
+    </table>
+    <div class="code"><span class="cm"># HPA 예시 — CPU 70% 초과 시 Pod 증가</span>
+<span class="kw">kind:</span> <span class="val">HorizontalPodAutoscaler</span>
+<span class="kw">spec:</span>
+  <span class="kw">scaleTargetRef:</span>
+    <span class="kw">name:</span> <span class="val">my-deployment</span>
+  <span class="kw">minReplicas:</span> <span class="val">2</span>
+  <span class="kw">maxReplicas:</span> <span class="val">10</span>
+  <span class="kw">targetCPUUtilizationPercentage:</span> <span class="val">70</span></div>
+    <div class="memo">HPA=Pod수 수평조정(CPU·메모리) / VPA=Pod리소스 수직조정(재시작필요) / CA=Node수 자동조정(클라우드)</div>
+  </div>
+
+  <div class="card">
+    <div class="card-h"><div class="ico ig">🚀</div><h3>배포 전략 ⭐</h3></div>
+    <table>
+      <thead><tr><th>전략</th><th>방식</th><th>장점</th><th>단점</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Recreate</strong></td><td>기존 Pod 전부 삭제 → 새 Pod 생성</td><td>단순 / 구버전 완전 제거</td><td><strong>서비스 다운타임 발생</strong></td></tr>
+        <tr><td><strong>RollingUpdate ⭐</strong></td><td>구 Pod를 점진적으로 새 Pod로 교체 (기본 전략)</td><td><strong>무중단 배포</strong> / 자원 효율</td><td>일시적으로 두 버전 공존</td></tr>
+        <tr><td><strong>Blue-Green</strong></td><td>동일 환경 두 벌(Blue=현재·Green=신규) 동시 운영 → 트래픽 순간 전환</td><td><strong>즉시 롤백</strong> / 충분한 테스트</td><td>리소스 2배 필요</td></tr>
+        <tr><td><strong>Canary</strong></td><td>일부 사용자에게만 신규 버전 트래픽 전송 → 점진적 비율 증가</td><td>실제 트래픽으로 검증 / 위험 최소화</td><td>라우팅 설정 복잡</td></tr>
+        <tr><td><strong>A/B 테스트</strong></td><td>두 버전에 특정 사용자 그룹을 각각 라우팅 → 성과 비교</td><td>사용자 행동 기반 의사결정</td><td>Istio 등 서비스 메시 필요</td></tr>
+      </tbody>
+    </table>
+    <div class="memo">Recreate=다운타임O / RollingUpdate=기본·무중단 / Blue-Green=즉시롤백·리소스2배 / Canary=점진적트래픽·위험최소화</div>
+  </div>
+
+  <div class="card">
+    <div class="card-h"><div class="ico iy">🎯</div><h3>Pod 스케줄링 제어 — Affinity · Taint · Toleration</h3></div>
+    <table>
+      <thead><tr><th>개념</th><th>설명</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Node Selector</strong></td><td>특정 레이블이 있는 노드에만 Pod 배치 (단순 방식)</td></tr>
+        <tr><td><strong>Node Affinity</strong></td><td>Node Selector의 확장 — required(필수)/preferred(선호) 조건으로 노드 선택</td></tr>
+        <tr><td><strong>Pod Affinity</strong></td><td>특정 Pod와 <strong>같은 노드(또는 근처)</strong>에 배치 — 성능 최적화</td></tr>
+        <tr><td><strong>Pod Anti-Affinity</strong></td><td>특정 Pod와 <strong>다른 노드</strong>에 배치 — 고가용성(같은 앱의 Pod를 여러 노드에 분산)</td></tr>
+        <tr><td><strong>Taint</strong></td><td>노드에 "이 노드는 일반 Pod 배치 거부" 표시 — kubectl taint nodes</td></tr>
+        <tr><td><strong>Toleration</strong></td><td>Pod가 Taint를 "용인"하여 해당 노드에 배치 가능하게 함</td></tr>
+        <tr><td><strong>ResourceQuota</strong></td><td>Namespace 내 리소스(CPU·메모리·Pod 수) 사용 한도 설정</td></tr>
+        <tr><td><strong>LimitRange</strong></td><td>Namespace 내 Pod·컨테이너의 기본 requests·limits 설정</td></tr>
+      </tbody>
+    </table>
+    <div class="memo">Affinity=원하는 노드에 배치 / Anti-Affinity=다른 노드에 분산(고가용성) / Taint·Toleration=노드 격리·허용</div>
+  </div>
+</div>
+
+<!-- P6: 보안 -->
+<div class="pnl" id="p6">
+  <div class="card">
+    <div class="card-h"><div class="ico ir">🔒</div><h3>K8s 보안 아키텍처 ⭐</h3></div>
+    <table>
+      <thead><tr><th>보안 계층</th><th>기술</th><th>설명</th></tr></thead>
+      <tbody>
+        <tr><td><strong>인증 (AuthN)</strong></td><td>X.509 인증서 / ServiceAccount 토큰 / OIDC / 웹훅</td><td>kube-apiserver에 접근하는 주체 식별 — 사람(X.509) vs 서비스(ServiceAccount)</td></tr>
+        <tr><td><strong>인가 (AuthZ)</strong></td><td><strong>RBAC ⭐</strong> (Role-Based Access Control)</td><td>누가(Subject) 무엇을(Resource) 어떻게(Verb) 할 수 있는지 정의</td></tr>
+        <tr><td><strong>RBAC 구성</strong></td><td>Role·ClusterRole + RoleBinding·ClusterRoleBinding</td><td>Role=Namespace 범위 / ClusterRole=클러스터 전체 범위</td></tr>
+        <tr><td><strong>허가 제어 (Admission)</strong></td><td>LimitRanger, ResourceQuota, PodSecurity</td><td>요청 유효성 검사·변환 — apiserver 처리 전 최종 게이트키퍼</td></tr>
+        <tr><td><strong>네트워크 정책</strong></td><td><strong>NetworkPolicy ⭐</strong></td><td>Pod 간 / Pod↔외부 트래픽 허용·차단 — 화이트리스트 방식 / CNI 지원 필요</td></tr>
+        <tr><td><strong>Pod 보안</strong></td><td>Pod Security Standards (Baseline/Restricted/Privileged)</td><td>privileged·hostNetwork 등 위험한 설정 차단</td></tr>
+        <tr><td><strong>이미지 보안</strong></td><td>ImagePullPolicy: Always / 이미지 서명(Cosign) / 취약점 스캔(Trivy)</td><td>검증된 레지스트리 사용·이미지 불변성 보장</td></tr>
+        <tr><td><strong>etcd 암호화</strong></td><td>EncryptionConfiguration으로 etcd의 Secret 암호화</td><td>etcd에 저장된 Secret은 기본적으로 평문 — 별도 암호화 설정 필요</td></tr>
+      </tbody>
+    </table>
+    <div class="memo">K8s 보안: 인증(X.509·SA)→인가(RBAC)→허가제어(Admission) / NetworkPolicy=Pod간 트래픽제어 / etcd 암호화=Secret보호</div>
+  </div>
+
+  <div class="card">
+    <div class="card-h"><div class="ico ig">🏷️</div><h3>Namespace & RBAC 구조</h3></div>
+    <div class="g2">
+      <div>
+        <p style="font-size:11.5px;font-weight:800;color:var(--a2);margin-bottom:7px;">Namespace — 논리적 분리</p>
+        <ul class="il">
+          <li>클러스터 내 <strong>논리적 격리 공간</strong> — 리소스·정책·쿼터 분리</li>
+          <li><strong>default 네임스페이스:</strong> 명시 없으면 기본 사용</li>
+          <li><strong>kube-system:</strong> K8s 핵심 컴포넌트 (DNS·프록시)</li>
+          <li><strong>kube-public:</strong> 클러스터 공개 정보</li>
+          <li>개발(dev)·스테이징(staging)·운영(prod) 환경 분리에 활용</li>
+        </ul>
+      </div>
+      <div>
+        <p style="font-size:11.5px;font-weight:800;color:var(--a4);margin-bottom:7px;">RBAC 구성 요소</p>
+        <ul class="il">
+          <li><strong>Subject:</strong> User·Group·ServiceAccount</li>
+          <li><strong>Role:</strong> Namespace 범위 권한 정의 (verbs: get·list·create·delete)</li>
+          <li><strong>ClusterRole:</strong> 클러스터 전체 범위 권한</li>
+          <li><strong>RoleBinding:</strong> Subject ↔ Role 연결 (Namespace 내)</li>
+          <li><strong>ClusterRoleBinding:</strong> Subject ↔ ClusterRole 연결 (전체)</li>
+        </ul>
+        <div class="code" style="margin-top:8px;font-size:10px;"><span class="cm"># Role: dev 네임스페이스에서 Pod 조회만</span>
+<span class="kw">rules:</span>
+- <span class="kw">apiGroups:</span> [<span class="val">""</span>]
+  <span class="kw">resources:</span> [<span class="val">pods</span>]
+  <span class="kw">verbs:</span> [<span class="val">get</span>, <span class="val">list</span>]</div>
+      </div>
+    </div>
+    <div class="memo">RBAC: Role(Namespace범위)+ClusterRole(전체범위) / RoleBinding으로 Subject와 연결 / 최소권한 원칙 적용</div>
+  </div>
+
+  <div class="card">
+    <div class="card-h"><div class="ico iy">🛡️</div><h3>관리형 Kubernetes (Managed K8s) 서비스</h3></div>
+    <table>
+      <thead><tr><th>서비스</th><th>제공사</th><th>특징</th></tr></thead>
+      <tbody>
+        <tr><td><strong>EKS</strong></td><td>AWS</td><td>Elastic Kubernetes Service / AWS 생태계 통합(IAM·ELB·EBS) / Fargate(서버리스 노드)</td></tr>
+        <tr><td><strong>AKS</strong></td><td>Azure</td><td>Azure Kubernetes Service / Azure AD 통합 / Virtual Nodes</td></tr>
+        <tr><td><strong>GKE</strong></td><td>Google Cloud</td><td>Google Kubernetes Engine / K8s 원조·자동 업그레이드 / Autopilot 모드</td></tr>
+        <tr><td><strong>OKE</strong></td><td>Oracle Cloud</td><td>Oracle Container Engine for Kubernetes</td></tr>
+      </tbody>
+    </table>
+    <div class="memo">관리형 K8s: EKS(AWS)·AKS(Azure)·GKE(Google) / Control Plane은 클라우드가 관리 / Worker Node만 운영자 관리</div>
+  </div>
+</div>
+
+<!-- P7: QA -->
+<div class="pnl" id="p7">
+  <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:7px;margin-bottom:12px;">
+    <div class="fb-wr" id="fbar" style="margin:0;">
+      <button class="fb on" data-f="all">전체</button>
+      <button class="fb" data-f="구조">🏛️ 구조</button>
+      <button class="fb" data-f="오브젝트">📦 오브젝트</button>
+      <button class="fb" data-f="네트워크">🌐 네트워크</button>
+      <button class="fb" data-f="스케일">⚡ 스케일·배포</button>
+      <button class="fb" data-f="보안">🔒 보안</button>
+      <button class="fb" data-f="OX">⭕ OX</button>
+    </div>
+    <div class="sc-b">정답: <span id="sc">0</span>/<span id="st">0</span></div>
+  </div>
+  <div id="ql"></div>
+</div>
+
+</div>
+<script>
+document.querySelectorAll('.tab').forEach(t=>t.addEventListener('click',()=>{
+  document.querySelectorAll('.tab,.pnl').forEach(x=>x.classList.remove('on'));
+  t.classList.add('on');document.getElementById(t.dataset.p).classList.add('on');
+}));
+const QA=[
+  {cat:'구조',diff:'easy',
+   q:'Kubernetes Control Plane에서 클러스터의 모든 상태를 저장하는 컴포넌트는?',
+   cs:['kube-apiserver','kube-scheduler','etcd','kubelet'],ans:2,
+   exp:'<strong>etcd</strong>: 분산 키-값 저장소로 K8s 클러스터의 모든 상태(Pod 정보, 노드 상태, 설정 등)를 저장하는 핵심 컴포넌트. RAFT 합의 알고리즘으로 고가용성. etcd 장애 시 클러스터 전체 관리 불가 → 정기 백업 필수. kube-apiserver=API 진입점, kube-scheduler=Pod 노드 배치, kubelet=워커 노드 에이전트.'},
+  {cat:'구조',diff:'mid',
+   q:'Kubernetes kube-scheduler의 역할로 가장 적절한 것은?',
+   cs:['모든 K8s API 요청을 처리하는 진입점 역할','새로운 Pod를 어느 Worker Node에 배치할지 결정','클러스터 상태를 저장하는 분산 키-값 저장소','노드의 컨테이너 생명주기를 관리하는 에이전트'],ans:1,
+   exp:'<strong>kube-scheduler</strong>: 새로 생성된 Pod(아직 노드 배정 안 됨)를 적절한 Worker Node에 배치. 리소스 요구사항(CPU·메모리), 노드 상태, Affinity·Anti-Affinity, Taint·Toleration을 고려하여 최적 노드 선택. kube-apiserver=API 진입점, etcd=상태 저장, kubelet=노드 에이전트.'},
+  {cat:'구조',diff:'mid',
+   q:'Worker Node에서 kubelet의 역할로 가장 적절한 것은?',
+   cs:['클러스터 전체의 네트워크 트래픽을 라우팅한다.','kube-apiserver로부터 PodSpec을 받아 컨테이너 생명주기를 관리하는 노드 에이전트다.','Pod를 적절한 노드에 배치 결정한다.','클러스터 상태 정보를 etcd에 저장한다.'],ans:1,
+   exp:'<strong>kubelet</strong>: Worker Node의 K8s 에이전트. kube-apiserver로부터 PodSpec(Pod 정의)을 수신하여 컨테이너 런타임(containerd 등)을 통해 컨테이너를 시작·종료하고 상태를 apiserver에 보고합니다. <em>kube-proxy</em>는 노드의 네트워크 규칙(Service→Pod 라우팅) 담당.'},
+  {cat:'오브젝트',diff:'easy',
+   q:'Kubernetes에서 배포의 최소 단위로 1개 이상의 컨테이너를 포함하며 같은 네트워크와 볼륨을 공유하는 객체는?',
+   cs:['Deployment','ReplicaSet','Pod','Service'],ans:2,
+   exp:'<strong>Pod</strong>: K8s 최소 배포 단위. 1개 이상의 컨테이너를 포함하며, 같은 Pod 내 컨테이너는 <em>네트워크 네임스페이스(localhost 통신)</em>와 <em>볼륨</em>을 공유합니다. Pod는 임시적 — 재시작 시 IP 변경 → 영속적 관리는 Deployment 사용. 사이드카 패턴(주 컨테이너 + 보조 컨테이너)에서 멀티 컨테이너 Pod 사용.'},
+  {cat:'오브젝트',diff:'mid',
+   q:'Kubernetes Deployment와 StatefulSet의 차이로 가장 적절한 것은?',
+   cs:['Deployment는 상태 저장 앱에, StatefulSet은 무상태 앱에 적합하다.','StatefulSet은 각 Pod에 고정 이름(stable hostname)과 순서를 보장하고 독립적인 PVC를 가지므로 DB 등 상태 있는 앱에 적합하다.','Deployment는 Pod 복제본을 지원하지 않는다.','StatefulSet은 자가 치유 기능이 없다.'],ans:1,
+   exp:'<strong>StatefulSet</strong>: ①각 Pod에 고정 이름(pod-0, pod-1) ②순서 보장(순서대로 시작·종료) ③독립적 PVC(Pod 재시작 후도 같은 데이터). MySQL·Kafka·ZooKeeper 등 상태 있는 앱에 사용. <strong>Deployment</strong>: 무상태(Stateless) 앱, Pod 이름 임의, 복제·롤링업데이트·자가치유.'},
+  {cat:'오브젝트',diff:'mid',
+   q:'모든 Worker Node에 정확히 1개씩 Pod를 실행하는 K8s 오브젝트는?',
+   cs:['Deployment','ReplicaSet','StatefulSet','DaemonSet'],ans:3,
+   exp:'<strong>DaemonSet</strong>: 클러스터의 모든 노드(또는 선택된 노드)에 <em>정확히 1개씩</em> Pod를 실행합니다. 노드가 추가되면 자동으로 해당 노드에 Pod 배포, 노드 삭제 시 Pod도 삭제. 용도: 로그 수집(Fluentd), 모니터링(Prometheus Node Exporter), 네트워크 플러그인, 보안 에이전트.'},
+  {cat:'네트워크',diff:'mid',
+   q:'Kubernetes Service 타입 중 클라우드 환경에서 외부 인터넷에 서비스를 노출할 때 가장 적합한 것은?',
+   cs:['ClusterIP','NodePort','LoadBalancer','ExternalName'],ans:2,
+   exp:'<strong>LoadBalancer</strong>: 클라우드 제공자의 로드밸런서를 자동으로 프로비저닝하여 외부 인터넷에 서비스를 노출합니다. AWS ELB, Azure Load Balancer, GCP Cloud Load Balancing을 자동 연동. <em>ClusterIP</em>=클러스터 내부만, <em>NodePort</em>=노드 포트(개발용), <em>ExternalName</em>=CNAME(외부 DNS 접근).'},
+  {cat:'네트워크',diff:'mid',
+   q:'Kubernetes Ingress의 역할로 가장 적절한 것은?',
+   cs:['Pod의 CPU·메모리 리소스를 수직으로 자동 조정한다.','외부 HTTP/HTTPS 요청을 URL 경로·호스트 기반으로 내부 Service로 라우팅하는 L7 규칙이다.','클러스터 내 모든 Pod의 IP를 고정으로 유지한다.','노드 간 네트워크 트래픽을 암호화한다.'],ans:1,
+   exp:'<strong>Ingress</strong>: 외부 HTTP/HTTPS 요청을 URL 경로나 호스트 이름 기반으로 내부 Service로 라우팅합니다(L7 라우팅). 실제 처리는 Ingress Controller(nginx 등)가 담당. LoadBalancer=서비스마다 별도 LB(비용 증가), Ingress=여러 서비스를 하나의 진입점으로 통합(비용 절감) + TLS 종단 처리.'},
+  {cat:'스케일',diff:'mid',
+   q:'K8s HPA와 VPA의 차이로 가장 적절한 것은?',
+   cs:['HPA는 노드 수를 조정하고, VPA는 Pod 수를 조정한다.','HPA는 Pod 수를 수평으로 자동 조정하고, VPA는 Pod의 CPU·메모리 리소스를 수직으로 자동 조정한다.','HPA와 VPA는 동일하며 이름만 다르다.','VPA는 Pod 수를 조정하고 HPA는 노드 수를 조정한다.'],ans:1,
+   exp:'<strong>HPA(Horizontal Pod Autoscaler)</strong>: CPU·메모리 사용률 기반으로 Deployment의 <em>Pod 수를 수평으로 자동 조정</em>. Scale-out/Scale-in. <strong>VPA(Vertical Pod Autoscaler)</strong>: 실제 리소스 사용 패턴 분석으로 Pod의 <em>CPU·메모리 requests·limits를 수직으로 자동 조정</em>(Pod 재시작 필요). <em>CA(Cluster Autoscaler)</em>=Node 수 자동 조정.'},
+  {cat:'스케일',diff:'hard',
+   q:'Blue-Green 배포 전략의 가장 큰 단점으로 적절한 것은?',
+   cs:['배포 중 서비스 다운타임이 발생한다.','롤백이 불가능하다.','운영 환경을 두 벌 유지해야 하므로 리소스(서버·비용)가 2배 필요하다.','실제 트래픽으로 신버전을 검증하기 어렵다.'],ans:2,
+   exp:'<strong>Blue-Green 배포</strong>: Blue(현재 운영)와 Green(신규 버전) 두 환경을 동시에 운영하다가 트래픽을 순간 전환. 장점: 즉시 롤백(트래픽을 Blue로 되돌림), 다운타임 없음. 단점: <em>동일한 인프라를 두 벌 유지해야 해 리소스·비용이 2배</em>. Canary는 일부 트래픽만 신버전으로 점진적 전환.'},
+  {cat:'보안',diff:'mid',
+   q:'Kubernetes RBAC에서 Role과 ClusterRole의 차이로 가장 적절한 것은?',
+   cs:['Role은 클러스터 전체에, ClusterRole은 특정 Namespace에 적용된다.','Role은 특정 Namespace 범위, ClusterRole은 클러스터 전체 범위에 적용된다.','Role과 ClusterRole은 동일하며 이름만 다르다.','ClusterRole은 Node에만 적용 가능하다.'],ans:1,
+   exp:'<strong>Role</strong>: 특정 <em>Namespace 범위</em>에서만 유효한 권한 정의. <strong>ClusterRole</strong>: <em>클러스터 전체 범위</em> 권한 정의 — Namespace에 관계없이 적용. <em>RoleBinding</em>: Subject ↔ Role 연결(Namespace 내), <em>ClusterRoleBinding</em>: Subject ↔ ClusterRole 연결(전체). 최소 권한 원칙으로 필요한 최소 권한만 부여.'},
+  {cat:'보안',diff:'hard',
+   q:'Kubernetes에서 Secret에 저장된 데이터의 기본 저장 형태로 가장 적절한 것은?',
+   cs:['AES-256으로 암호화되어 저장된다.','Base64 인코딩으로 저장되며, etcd에 별도 암호화 설정이 없으면 평문에 가깝다.','SHA-256 해시로 저장된다.','TLS로 암호화되어 저장된다.'],ans:1,
+   exp:'K8s <strong>Secret</strong>: 기본적으로 <em>Base64 인코딩</em>으로 저장됩니다. Base64는 암호화가 아닌 단순 인코딩이므로 etcd에 대한 접근 권한이 있으면 쉽게 복호화 가능합니다. 따라서 <em>etcd EncryptionConfiguration</em>으로 etcd에 저장되는 Secret을 AES-GCM 등으로 암호화하고, RBAC로 Secret 접근 권한을 최소화해야 합니다.'},
+  {cat:'OX',diff:'easy',type:'ox',
+   q:'Kubernetes Pod는 항상 정확히 하나의 컨테이너만 포함할 수 있다.',ans:false,
+   exp:'<strong>×</strong> — Pod는 <strong>1개 이상의 컨테이너</strong>를 포함 가능. 사이드카 패턴(주 컨테이너 + 로그 수집·프록시 보조 컨테이너)에서 멀티 컨테이너 Pod가 널리 사용됩니다. 같은 Pod 내 컨테이너는 localhost 통신과 볼륨을 공유합니다.'},
+  {cat:'OX',diff:'mid',type:'ox',
+   q:'Kubernetes의 kube-scheduler는 클러스터의 모든 상태 정보를 저장하는 역할을 한다.',ans:false,
+   exp:'<strong>×</strong> — 클러스터 상태를 저장하는 것은 <strong>etcd</strong>입니다. <em>kube-scheduler</em>는 새로 생성된 Pod를 적절한 Worker Node에 배치할 노드를 선택하는 역할만 합니다. kube-apiserver=API 진입점, etcd=상태 저장, kube-scheduler=Pod 노드 배치 결정.'},
+  {cat:'OX',diff:'mid',type:'ox',
+   q:'Kubernetes에서 Deployment의 기본 배포 전략은 RollingUpdate이며 서비스 중단 없이 배포가 가능하다.',ans:true,
+   exp:'<strong>○</strong> — Deployment의 기본 전략은 <strong>RollingUpdate</strong>. maxSurge(추가 허용 Pod 수)와 maxUnavailable(동시 불가 Pod 수)을 조절하여 서비스 중단 없이 점진적으로 구 Pod를 새 Pod로 교체합니다. maxUnavailable=0 설정 시 항상 지정된 수의 Pod가 정상 운영됩니다.'},
+  {cat:'OX',diff:'hard',type:'ox',
+   q:'Kubernetes NetworkPolicy를 설정하면 별도의 CNI 플러그인 없이도 Pod 간 트래픽 제어가 자동으로 적용된다.',ans:false,
+   exp:'<strong>×</strong> — NetworkPolicy 규칙 자체는 K8s API 오브젝트로 정의할 수 있지만, 실제 <strong>트래픽 제어를 적용하려면 NetworkPolicy를 지원하는 CNI 플러그인</strong>(Calico, Cilium, Weave 등)이 설치되어 있어야 합니다. 기본 CNI(Flannel 등)는 NetworkPolicy를 지원하지 않을 수 있습니다.'},
+  {cat:'OX',diff:'mid',type:'ox',
+   q:'Kubernetes의 HPA(Horizontal Pod Autoscaler)는 CPU·메모리 사용률에 따라 Worker Node 수를 자동으로 조정한다.',ans:false,
+   exp:'<strong>×</strong> — HPA는 <strong>Pod 수</strong>를 수평으로 자동 조정합니다. Worker Node 수를 자동으로 조정하는 것은 <em>Cluster Autoscaler(CA)</em>입니다. HPA=Pod 수(replicas) 조정 / VPA=Pod의 CPU·메모리 리소스 조정 / CA=Node 수 조정. 세 가지 오토스케일러를 함께 사용하면 최적의 확장성 확보.'},
+];
+let answered=0,correct=0;
+function renderQ(f){
+  const data=f==='all'?QA:QA.filter(q=>q.cat===f);
+  const list=document.getElementById('ql');list.innerHTML='';
+  answered=0;correct=0;upS();
+  const CATC={'구조':'tb','오브젝트':'ty','네트워크':'tg','스케일':'tp','보안':'tr','OX':'to'};
+  const DLC={'easy':'easy 쉬움','mid':'mid 보통','hard':'hard 어려움'};
+  const NL=['①','②','③','④'];
+  if(!data.length){list.innerHTML='<div style="text-align:center;padding:40px;color:var(--mu)">문제 없음</div>';return;}
+  data.forEach((q,i)=>{
+    const gi=QA.indexOf(q);
+    const el=document.createElement('div');el.className='qa';
+    const tc=CATC[q.cat]||'tb';
+    const [dc,dn]=(DLC[q.diff]||'mid 보통').split(' ');
+    if(q.type==='ox'){
+      el.innerHTML=`<div class="qa-hd" onclick="this.closest('.qa').classList.toggle('open')"><div><div class="qa-meta"><span class="qn">Q${String(i+1).padStart(2,'0')}</span><span class="tag ${tc}">${q.cat}</span><span class="diff ${dc}">${dn}</span><span class="tag tg">O/X</span></div><div class="qq">${q.q}</div></div><span class="tgl">▾</span></div>
+      <div class="qa-bd"><div class="ox-wr"><button class="ox" onclick="pickOX(this,true,${gi})">⭕ 옳다</button><button class="ox" onclick="pickOX(this,false,${gi})">❌ 틀리다</button></div><div class="exp" id="ex-${gi}"><div class="exp-t">💡 해설</div>${q.exp}</div></div>`;
+    } else {
+      el.innerHTML=`<div class="qa-hd" onclick="this.closest('.qa').classList.toggle('open')"><div><div class="qa-meta"><span class="qn">Q${String(i+1).padStart(2,'0')}</span><span class="tag ${tc}">${q.cat}</span><span class="diff ${dc}">${dn}</span></div><div class="qq">${q.q}</div></div><span class="tgl">▾</span></div>
+      <div class="qa-bd"><div class="chs">${q.cs.map((c,ci)=>`<div class="ch" data-ci="${ci}" onclick="pickCh(this,${gi})"><span class="cnum">${NL[ci]}</span><span>${c}</span></div>`).join('')}</div><div class="exp" id="ex-${gi}"><div class="exp-t">💡 해설</div>${q.exp}</div></div>`;
+    }
+    list.appendChild(el);
+  });
+}
+function pickCh(el,gi){
+  const bd=el.closest('.qa-bd');if(bd.querySelector('.ok,.ng'))return;
+  const q=QA[gi];
+  bd.querySelectorAll('.ch').forEach((c,i)=>{c.classList.add('lk');if(i===q.ans)c.classList.add('ok');else if(i===parseInt(el.dataset.ci))c.classList.add('ng');});
+  document.getElementById('ex-'+gi).classList.add('show');
+  answered++;if(parseInt(el.dataset.ci)===q.ans)correct++;upS();
+}
+function pickOX(btn,val,gi){
+  const bd=btn.closest('.qa-bd');if(bd.querySelector('.so,.sx'))return;
+  const q=QA[gi];
+  bd.querySelectorAll('.ox').forEach(b=>b.classList.add('lk'));
+  btn.classList.add(val?'so':'sx');
+  if(val!==q.ans){btn.style.opacity='.5';bd.querySelectorAll('.ox')[val?1:0].classList.add(q.ans?'so':'sx');}
+  document.getElementById('ex-'+gi).classList.add('show');
+  answered++;if(val===q.ans)correct++;upS();
+}
+function upS(){document.getElementById('sc').textContent=correct;document.getElementById('st').textContent=answered;}
+document.getElementById('fbar').addEventListener('click',e=>{
+  const b=e.target.closest('.fb');if(!b)return;
+  document.querySelectorAll('.fb').forEach(x=>x.classList.remove('on'));b.classList.add('on');renderQ(b.dataset.f);
+});
+renderQ('all');
+</script>
+</body>
+</html>

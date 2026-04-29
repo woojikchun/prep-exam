@@ -1,0 +1,673 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;900&family=JetBrains+Mono:wght@400;700&display=swap');
+:root{--bg:#080410;--s1:#0d0618;--s2:#130924;--s3:#190d2e;--bdr:#2d1560;--a1:#c084fc;--a2:#34d399;--a3:#fbbf24;--a4:#f87171;--a5:#38bdf8;--a6:#fb923c;--a7:#f472b6;--txt:#e2e8f0;--mu:#64748b;}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Noto Sans KR',sans-serif;background:var(--bg);color:var(--txt);min-height:100vh;}
+.hdr{padding:20px 24px 14px;background:linear-gradient(150deg,#080410,#0e061c,#080410);border-bottom:1px solid var(--bdr);}
+.hdr-r{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:6px;}
+.pill{padding:3px 10px;border-radius:20px;font-size:10px;font-weight:700;}
+.p1{background:linear-gradient(135deg,#3b0764,var(--a1));color:#fff;}
+.p2{background:rgba(52,211,153,.15);color:var(--a2);border:1px solid rgba(52,211,153,.3);}
+.p3{background:rgba(251,191,36,.15);color:var(--a3);border:1px solid rgba(251,191,36,.3);}
+h1{font-size:18px;font-weight:900;}
+.h1g{background:linear-gradient(90deg,var(--a1),var(--a5),var(--a7));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.hdr p{color:var(--mu);font-size:11.5px;margin-top:3px;}
+.tabs{display:flex;padding:0 24px;background:var(--s1);border-bottom:1px solid var(--bdr);overflow-x:auto;scrollbar-width:none;}
+.tabs::-webkit-scrollbar{display:none;}
+.tab{padding:10px 13px;font-size:11.5px;font-weight:600;color:var(--mu);cursor:pointer;border-bottom:2px solid transparent;white-space:nowrap;transition:all .2s;background:none;border-top:none;border-left:none;border-right:none;font-family:'Noto Sans KR',sans-serif;}
+.tab.on{color:var(--a1);border-bottom-color:var(--a1);}
+.wrap{padding:18px 24px;max-width:960px;margin:0 auto;}
+.pnl{display:none;}.pnl.on{display:block;}
+.card{background:var(--s1);border:1px solid var(--bdr);border-radius:11px;padding:16px;margin-bottom:12px;}
+.card-h{display:flex;align-items:center;gap:9px;margin-bottom:12px;}
+.ico{width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0;}
+.ip{background:rgba(192,132,252,.15);}.ig{background:rgba(52,211,153,.15);}.iy{background:rgba(251,191,36,.15);}.ir{background:rgba(248,113,113,.15);}.ib{background:rgba(56,189,248,.15);}.io{background:rgba(251,146,60,.15);}.im{background:rgba(244,114,182,.15);}
+.card h3{font-size:13.5px;font-weight:700;}
+.tag{display:inline-block;padding:2px 7px;border-radius:4px;font-size:9.5px;font-weight:600;margin:2px 2px 2px 0;}
+.tp{background:rgba(192,132,252,.12);color:var(--a1);border:1px solid rgba(192,132,252,.25);}
+.tg{background:rgba(52,211,153,.12);color:var(--a2);border:1px solid rgba(52,211,153,.25);}
+.ty{background:rgba(251,191,36,.12);color:var(--a3);border:1px solid rgba(251,191,36,.25);}
+.tr{background:rgba(248,113,113,.12);color:var(--a4);border:1px solid rgba(248,113,113,.25);}
+.tb{background:rgba(56,189,248,.12);color:var(--a5);border:1px solid rgba(56,189,248,.25);}
+.to{background:rgba(251,146,60,.12);color:var(--a6);border:1px solid rgba(251,146,60,.25);}
+.tm{background:rgba(244,114,182,.12);color:var(--a7);border:1px solid rgba(244,114,182,.25);}
+table{width:100%;border-collapse:collapse;font-size:12px;}
+th{background:var(--s2);color:var(--mu);font-weight:700;padding:7px 11px;text-align:left;font-size:9.5px;text-transform:uppercase;letter-spacing:.5px;border-bottom:1px solid var(--bdr);}
+td{padding:8px 11px;border-bottom:1px solid rgba(45,21,96,.5);vertical-align:top;line-height:1.55;}
+tr:last-child td{border-bottom:none;}
+tr:hover td{background:rgba(255,255,255,.02);}
+td strong{color:var(--a3);}
+ul.il{list-style:none;display:flex;flex-direction:column;gap:6px;}
+ul.il li{font-size:12px;padding-left:15px;position:relative;line-height:1.5;}
+ul.il li::before{content:'▸';position:absolute;left:0;color:var(--a1);font-size:9.5px;top:3px;}
+ul.il li strong{color:var(--a3);}
+ul.il li em{color:var(--a2);font-style:normal;}
+.memo{background:linear-gradient(135deg,rgba(192,132,252,.07),rgba(56,189,248,.07));border:1px solid rgba(192,132,252,.22);border-left:3px solid var(--a1);border-radius:7px;padding:9px 13px;font-size:12px;font-weight:600;color:var(--a1);margin:9px 0;}
+.memo::before{content:'🎯 핵심 암기 │ ';color:var(--mu);font-weight:400;}
+.warn{background:rgba(248,113,113,.07);border:1px solid rgba(248,113,113,.25);border-left:3px solid var(--a4);border-radius:7px;padding:9px 13px;font-size:12px;font-weight:600;color:var(--a4);margin:9px 0;}
+.warn::before{content:'⚠️ 시험 포인트 │ ';color:var(--mu);font-weight:400;}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px;}
+@media(max-width:580px){.g2{grid-template-columns:1fr;}}
+.formula{background:var(--s2);border:1px solid rgba(192,132,252,.18);border-radius:6px;padding:10px 12px;font-family:'JetBrains Mono',monospace;font-size:10.5px;margin:8px 0;line-height:1.85;overflow-x:auto;}
+.formula .cm{color:var(--mu);}.formula .kw{color:var(--a1);}.formula .val{color:var(--a3);}
+/* pipeline visual */
+.pipe{display:flex;align-items:center;gap:3px;overflow-x:auto;margin:10px 0;padding-bottom:3px;flex-wrap:wrap;}
+.pbox{border-radius:7px;padding:9px 12px;font-size:10.5px;font-weight:700;text-align:center;border:1px solid;min-width:80px;flex:1;}
+.parr{color:var(--mu);font-size:16px;flex-shrink:0;padding:0 2px;}
+/* domain cards */
+.dc-grid{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin:10px 0;}
+.dc{background:var(--s2);border:1px solid var(--bdr);border-radius:8px;padding:12px;}
+.dc-ico{font-size:20px;margin-bottom:5px;}
+.dc-name{font-size:12.5px;font-weight:900;margin-bottom:5px;}
+.dc-sub{font-size:11px;color:var(--mu);line-height:1.5;}
+/* acc */
+.acc{background:var(--s2);border:1px solid var(--bdr);border-radius:9px;margin-bottom:8px;overflow:hidden;}
+.acc-h{display:flex;justify-content:space-between;align-items:center;padding:10px 14px;cursor:pointer;user-select:none;}
+.acc-h:hover{background:rgba(255,255,255,.02);}
+.acc-title{font-size:12.5px;font-weight:800;flex:1;}
+.acc-tgl{color:var(--mu);transition:transform .2s;font-size:14px;flex-shrink:0;margin-left:8px;}
+.acc.open .acc-tgl{transform:rotate(180deg);}
+.acc-body{display:none;border-top:1px solid var(--bdr);padding:12px 14px;background:var(--s3);font-size:12px;line-height:1.65;}
+.acc.open .acc-body{display:block;}
+.acc-body strong{color:var(--a3);}
+.acc-body em{color:var(--a2);font-style:normal;}
+/* qa */
+.qa{background:var(--s1);border:1px solid var(--bdr);border-radius:9px;margin-bottom:10px;overflow:hidden;}
+.qa:hover{border-color:rgba(192,132,252,.25);}
+.qa-hd{padding:12px 16px;cursor:pointer;display:flex;justify-content:space-between;align-items:flex-start;gap:9px;user-select:none;}
+.qa-meta{display:flex;align-items:center;gap:5px;margin-bottom:4px;flex-wrap:wrap;}
+.qn{font-family:'JetBrains Mono',monospace;font-size:9.5px;font-weight:700;color:var(--mu);}
+.qq{font-size:12.5px;font-weight:600;line-height:1.5;}
+.tgl{color:var(--mu);font-size:15px;flex-shrink:0;transition:transform .2s;}
+.qa.open .tgl{transform:rotate(180deg);}
+.qa-bd{display:none;border-top:1px solid var(--bdr);padding:12px 16px;background:var(--s2);}
+.qa.open .qa-bd{display:block;}
+.chs{display:flex;flex-direction:column;gap:6px;margin-bottom:10px;}
+.ch{display:flex;align-items:flex-start;gap:9px;padding:8px 12px;border-radius:6px;border:1px solid var(--bdr);font-size:12px;cursor:pointer;background:var(--s1);line-height:1.45;transition:all .15s;}
+.ch:hover:not(.lk){border-color:rgba(192,132,252,.3);background:rgba(192,132,252,.04);}
+.ch.ok{border-color:var(--a2);background:rgba(52,211,153,.1);color:var(--a2);}
+.ch.ng{border-color:var(--a4);background:rgba(248,113,113,.08);color:var(--a4);opacity:.7;}
+.ch.lk{cursor:default;}
+.cnum{font-family:'JetBrains Mono',monospace;font-weight:700;font-size:10.5px;flex-shrink:0;margin-top:1px;color:var(--mu);}
+.ch.ok .cnum{color:var(--a2);}.ch.ng .cnum{color:var(--a4);}
+.exp{background:rgba(192,132,252,.05);border:1px solid rgba(192,132,252,.18);border-radius:7px;padding:11px 13px;font-size:12px;line-height:1.6;display:none;}
+.exp.show{display:block;}
+.exp-t{font-size:9.5px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--a1);margin-bottom:5px;}
+.exp strong{color:var(--a3);}
+.exp em{color:var(--a2);font-style:normal;}
+.ox-wr{display:flex;gap:8px;margin-bottom:10px;}
+.ox{flex:1;padding:10px;border-radius:7px;border:1px solid var(--bdr);font-size:18px;cursor:pointer;background:var(--s1);transition:all .15s;font-family:'Noto Sans KR',sans-serif;color:var(--txt);}
+.ox:hover:not(.lk){transform:scale(1.02);}
+.ox.so{border-color:var(--a2);background:rgba(52,211,153,.15);}
+.ox.sx{border-color:var(--a4);background:rgba(248,113,113,.1);}
+.ox.lk{cursor:default;}
+.diff{display:inline-block;padding:2px 6px;border-radius:9px;font-size:8.5px;font-weight:700;}
+.easy{background:rgba(52,211,153,.2);color:var(--a2);}
+.mid{background:rgba(251,191,36,.2);color:var(--a3);}
+.hard{background:rgba(248,113,113,.2);color:var(--a4);}
+.fb-wr{display:flex;gap:5px;flex-wrap:wrap;margin-bottom:12px;}
+.fb{padding:4px 11px;border-radius:18px;border:1px solid var(--bdr);font-size:10.5px;font-weight:600;cursor:pointer;background:var(--s2);color:var(--mu);transition:all .15s;font-family:'Noto Sans KR',sans-serif;}
+.fb.on{background:rgba(192,132,252,.15);color:var(--a1);border-color:var(--a1);}
+.sc-b{background:var(--s2);border:1px solid var(--bdr);border-radius:7px;padding:4px 12px;font-size:11.5px;color:var(--mu);}
+.sc-b span{color:var(--a1);font-weight:700;}
+</style>
+</head>
+<body>
+<div class="hdr">
+  <div class="hdr-r">
+    <span class="pill p1">비정형 데이터 마이닝</span>
+    <span class="pill p2">텍스트·웹·소셜·이미지</span>
+    <span class="pill p3">감리사 핵심 출제</span>
+  </div>
+  <h1><span class="h1g">비정형 Data Mining 완전 정리</span></h1>
+  <p>텍스트 마이닝 · NLP · 감성 분석 · 웹 마이닝 · 소셜 네트워크 분석 · 이미지·오디오 마이닝</p>
+</div>
+<div class="tabs">
+  <button class="tab on" data-p="p1">📋 개요·분류</button>
+  <button class="tab" data-p="p2">📝 텍스트 마이닝·NLP</button>
+  <button class="tab" data-p="p3">😊 감성 분석·토픽 모델링</button>
+  <button class="tab" data-p="p4">🌐 웹 마이닝</button>
+  <button class="tab" data-p="p5">🕸️ 소셜 네트워크·이미지</button>
+  <button class="tab" data-p="p6">❓ 예상문제</button>
+</div>
+<div class="wrap">
+
+<!-- P1: 개요 -->
+<div class="pnl on" id="p1">
+  <div class="card">
+    <div class="card-h"><div class="ico ip">📋</div><h3>비정형 데이터 마이닝 개요 ⭐</h3></div>
+    <div style="background:var(--s2);border:1px solid rgba(192,132,252,.28);border-radius:9px;padding:13px;margin-bottom:12px;font-size:12.5px;line-height:1.85;">
+      <strong style="color:var(--a1)">비정형 데이터(Unstructured Data)</strong>: 미리 정해진 스키마·형식이 없는 데이터 — 전 세계 데이터의 약 <em style="color:var(--a3);font-style:normal;">80~90%</em>를 차지하며 전통적 RDBMS로 처리 어려움
+    </div>
+
+    <div class="g2">
+      <div>
+        <p style="font-size:11.5px;font-weight:800;color:var(--a3);margin-bottom:7px;">데이터 유형 분류 ⭐</p>
+        <table>
+          <thead><tr><th>유형</th><th>예시</th></tr></thead>
+          <tbody>
+            <tr><td><strong>정형(Structured)</strong></td><td>DB 테이블·엑셀·CSV</td></tr>
+            <tr><td><strong>반정형(Semi-Structured)</strong></td><td>XML·JSON·HTML·이메일</td></tr>
+            <tr><td><strong>비정형(Unstructured) ⭐</strong></td><td>텍스트·이미지·오디오·비디오·SNS</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div>
+        <p style="font-size:11.5px;font-weight:800;color:var(--a1);margin-bottom:7px;">비정형 DM의 특성</p>
+        <ul class="il">
+          <li><strong>고차원성:</strong> 수만~수십만 차원 (텍스트 어휘 수)</li>
+          <li><strong>희소성(Sparsity):</strong> 대부분의 값이 0 (TF-IDF 행렬)</li>
+          <li><strong>모호성·맥락 의존:</strong> 동일 단어 다른 의미 (중의성)</li>
+          <li><strong>노이즈:</strong> 오탈자·축약어·이모지·방언</li>
+          <li><strong>비구조적 특성:</strong> 패턴 추출 전 전처리 필수</li>
+        </ul>
+      </div>
+    </div>
+
+    <p style="font-size:12px;font-weight:800;color:var(--a1);margin-bottom:8px;">비정형 데이터 마이닝 주요 분야 ⭐</p>
+    <div class="dc-grid">
+      <div class="dc">
+        <div class="dc-ico">📝</div>
+        <div class="dc-name" style="color:var(--a1);">텍스트 마이닝 (Text Mining)</div>
+        <div class="dc-sub">비정형 텍스트에서 패턴·지식 추출<br>자연어 처리(NLP) 기반<br>분류·군집·정보추출·요약</div>
+      </div>
+      <div class="dc">
+        <div class="dc-ico">🌐</div>
+        <div class="dc-name" style="color:var(--a2);">웹 마이닝 (Web Mining)</div>
+        <div class="dc-sub">웹 콘텐츠·구조·사용 패턴 분석<br>검색엔진·PageRank·크롤링<br>클릭스트림·사용자 행동</div>
+      </div>
+      <div class="dc">
+        <div class="dc-ico">😊</div>
+        <div class="dc-name" style="color:var(--a3);">감성 분석 (Sentiment Analysis)</div>
+        <div class="dc-sub">텍스트의 감성·의견·태도 분류<br>긍정·부정·중립 3분류<br>제품 리뷰·SNS·여론 분석</div>
+      </div>
+      <div class="dc">
+        <div class="dc-ico">🕸️</div>
+        <div class="dc-name" style="color:var(--a5);">소셜 네트워크 분석 (SNA)</div>
+        <div class="dc-sub">노드·엣지 기반 네트워크 구조<br>커뮤니티 탐지·영향력 측정<br>중심성 지표·구조적 공백</div>
+      </div>
+      <div class="dc">
+        <div class="dc-ico">🖼️</div>
+        <div class="dc-name" style="color:var(--a6);">이미지·비디오 마이닝</div>
+        <div class="dc-sub">CNN 기반 특성 추출·분류<br>객체 탐지·이상 탐지<br>의료 영상·자율주행·CCTV</div>
+      </div>
+      <div class="dc">
+        <div class="dc-ico">🎵</div>
+        <div class="dc-name" style="color:var(--a7);">오디오·멀티미디어 마이닝</div>
+        <div class="dc-sub">음성 인식·화자 식별<br>감정 인식·이상 소음 탐지<br>음악 장르·콘텐츠 기반 검색</div>
+      </div>
+    </div>
+    <div class="memo">비정형=텍스트·이미지·오디오·비디오·SNS / 전체 데이터 80~90% / 희소·고차원·노이즈 / 전처리 필수</div>
+  </div>
+</div>
+
+<!-- P2: 텍스트 마이닝·NLP -->
+<div class="pnl" id="p2">
+  <div class="card">
+    <div class="card-h"><div class="ico ip">📝</div><h3>텍스트 마이닝 (Text Mining) & NLP 파이프라인 ⭐</h3></div>
+
+    <div class="pipe">
+      <div class="pbox" style="background:rgba(248,113,113,.1);border-color:rgba(248,113,113,.35);color:var(--a4);">① 수집<br><small style="color:var(--mu);font-weight:400;">크롤링·API·DB</small></div>
+      <div class="parr">→</div>
+      <div class="pbox" style="background:rgba(251,191,36,.1);border-color:rgba(251,191,36,.35);color:var(--a3);">② 전처리<br><small style="color:var(--mu);font-weight:400;">정제·정규화</small></div>
+      <div class="parr">→</div>
+      <div class="pbox" style="background:rgba(192,132,252,.1);border-color:rgba(192,132,252,.35);color:var(--a1);">③ 형태소 분석<br><small style="color:var(--mu);font-weight:400;">토큰화·품사</small></div>
+      <div class="parr">→</div>
+      <div class="pbox" style="background:rgba(56,189,248,.1);border-color:rgba(56,189,248,.35);color:var(--a5);">④ 벡터화<br><small style="color:var(--mu);font-weight:400;">TF-IDF·Word2Vec</small></div>
+      <div class="parr">→</div>
+      <div class="pbox" style="background:rgba(52,211,153,.1);border-color:rgba(52,211,153,.35);color:var(--a2);">⑤ 분석<br><small style="color:var(--mu);font-weight:400;">분류·군집·추출</small></div>
+      <div class="parr">→</div>
+      <div class="pbox" style="background:rgba(251,146,60,.1);border-color:rgba(251,146,60,.35);color:var(--a6);">⑥ 시각화<br><small style="color:var(--mu);font-weight:400;">워드클라우드</small></div>
+    </div>
+
+    <div class="acc open" onclick="this.classList.toggle('open')">
+      <div class="acc-h"><div class="acc-title" style="color:var(--a3);">텍스트 전처리 기법 ⭐</div><div class="acc-tgl">▾</div></div>
+      <div class="acc-body">
+        <table>
+          <thead><tr><th>기법</th><th>설명</th><th>예시</th></tr></thead>
+          <tbody>
+            <tr><td><strong>토큰화 (Tokenization) ⭐</strong></td><td>텍스트를 단어·문장 단위로 분리</td><td>"I love NLP" → ["I","love","NLP"]</td></tr>
+            <tr><td><strong>불용어 제거 (Stopwords) ⭐</strong></td><td>분석에 불필요한 단어(조사·접속사·관사) 제거</td><td>은·는·이·가·the·a·and 제거</td></tr>
+            <tr><td><strong>어간 추출 (Stemming)</strong></td><td>단어를 어근으로 단순 변환 (규칙 기반)</td><td>running→run, studies→studi</td></tr>
+            <tr><td><strong>표제어 추출 (Lemmatization) ⭐</strong></td><td>문법적 원형(표제어)으로 변환 (사전 기반)</td><td>running→run, better→good</td></tr>
+            <tr><td><strong>정규화 (Normalization)</strong></td><td>소문자화·특수문자·숫자·URL 제거</td><td>"Hello!!" → "hello"</td></tr>
+            <tr><td><strong>n-gram ⭐</strong></td><td>연속 n개 단어/문자 조합으로 문맥 포착</td><td>bigram: "machine learning"→["machine learning"]</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="acc" onclick="this.classList.toggle('open')">
+      <div class="acc-h"><div class="acc-title" style="color:var(--a1);">텍스트 벡터화 — TF-IDF vs Word2Vec ⭐</div><div class="acc-tgl">▾</div></div>
+      <div class="acc-body">
+        <div class="formula"><span class="kw">TF (Term Frequency)</span>    = 문서 내 단어 출현 빈도 / 총 단어 수
+<span class="kw">IDF (Inverse Document Frequency)</span> = log(총문서수 / 단어포함문서수)
+<span class="kw">TF-IDF</span> = TF × IDF
+<span class="cm">  → 자주 등장하지만 모든 문서에 흔한 단어(the,is)는 낮은 가중치</span>
+<span class="cm">  → 특정 문서에만 자주 등장하는 단어에 높은 가중치 → 중요 단어 부각</span></div>
+        <table style="margin-top:8px;">
+          <thead><tr><th>비교</th><th>TF-IDF (BoW)</th><th style="color:var(--a1);">Word2Vec·임베딩</th></tr></thead>
+          <tbody>
+            <tr><td><strong>표현 방식</strong></td><td>희소 벡터 (대부분 0)</td><td><strong>밀집 벡터 (100~300차원)</strong></td></tr>
+            <tr><td><strong>의미 포착</strong></td><td>단어 빈도만 / 의미 무관</td><td><strong>유사 의미 단어 = 가까운 벡터</strong></td></tr>
+            <tr><td><strong>순서 고려</strong></td><td>불고려 (Bag of Words)</td><td>문맥 창(Window) 고려</td></tr>
+            <tr><td><strong>예시</strong></td><td>문서 분류·검색·키워드</td><td>유사 단어 탐색·감성 분석</td></tr>
+            <tr><td><strong>모델</strong></td><td>TF-IDF, BM25</td><td><strong>Word2Vec, GloVe, FastText, BERT</strong></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="acc" onclick="this.classList.toggle('open')">
+      <div class="acc-h"><div class="acc-title" style="color:var(--a2);">NLP 핵심 태스크 & 기법 ⭐</div><div class="acc-tgl">▾</div></div>
+      <div class="acc-body">
+        <table>
+          <thead><tr><th>태스크</th><th>설명</th><th>대표 기법·모델</th></tr></thead>
+          <tbody>
+            <tr><td><strong>품사 태깅 (POS Tagging)</strong></td><td>각 단어의 품사(명사·동사·형용사) 레이블 부착</td><td>HMM, CRF, BERT</td></tr>
+            <tr><td><strong>개체명 인식 (NER) ⭐</strong></td><td>인명·지명·기관명·날짜 등 개체 인식</td><td>BiLSTM-CRF, BERT-NER</td></tr>
+            <tr><td><strong>구문 분석 (Parsing)</strong></td><td>문장 구조 분석 (구성소·의존 관계)</td><td>Stanford Parser, spaCy</td></tr>
+            <tr><td><strong>기계 번역 (MT)</strong></td><td>한 언어를 다른 언어로 자동 번역</td><td>Seq2Seq+Attention, Transformer</td></tr>
+            <tr><td><strong>질의응답 (QA) ⭐</strong></td><td>질문에 대한 답을 문서에서 추출</td><td>BERT, GPT, RAG</td></tr>
+            <tr><td><strong>문서 요약 ⭐</strong></td><td>긴 문서를 짧게 요약</td><td>추출적(TextRank) / 생성적(BART·T5)</td></tr>
+            <tr><td><strong>정보 추출 (IE)</strong></td><td>비정형 텍스트에서 구조화된 정보 추출</td><td>관계 추출, 사건 추출</td></tr>
+          </tbody>
+        </table>
+        <ul class="il" style="margin-top:8px;">
+          <li><strong>TextRank ⭐:</strong> PageRank를 문장/단어에 적용 — 핵심 문장 추출 (비지도 요약)</li>
+          <li><strong>BERT ⭐:</strong> 양방향 Transformer 사전 학습 — NLP 대부분 태스크의 Fine-tuning 기반</li>
+        </ul>
+      </div>
+    </div>
+    <div class="memo">텍스트 전처리: 토큰화→불용어제거→표제어추출→벡터화 / TF-IDF=빈도×희소 / Word2Vec=밀집·의미포착 / NER=개체명인식</div>
+  </div>
+</div>
+
+<!-- P3: 감성 분석·토픽 모델링 -->
+<div class="pnl" id="p3">
+  <div class="card">
+    <div class="card-h"><div class="ico iy">😊</div><h3>감성 분석 (Sentiment Analysis / Opinion Mining) ⭐</h3></div>
+    <div style="background:var(--s2);border:1px solid rgba(251,191,36,.25);border-radius:9px;padding:12px;margin-bottom:11px;font-size:12.5px;line-height:1.8;">
+      <strong style="color:var(--a3)">감성 분석</strong>: 텍스트에서 <em style="color:var(--a1);font-style:normal;">긍정·부정·중립의 감성(Sentiment)과 의견(Opinion)</em>을 자동으로 추출·분류하는 기법 — 마케팅·CS·정치·금융에 광범위하게 활용
+    </div>
+
+    <div class="acc open" onclick="this.classList.toggle('open')">
+      <div class="acc-h"><div class="acc-title" style="color:var(--a3);">감성 분석 3가지 접근법 ⭐</div><div class="acc-tgl">▾</div></div>
+      <div class="acc-body">
+        <table>
+          <thead><tr><th>접근법</th><th>방법</th><th>장점</th><th>단점</th></tr></thead>
+          <tbody>
+            <tr><td><strong>어휘 기반 (Lexicon-based) ⭐</strong></td><td>감성 사전(긍정어/부정어 목록)으로 점수 합산<br>예: SentiWordNet, KNU 감성사전</td><td>도메인 무관·빠름·레이블 불필요</td><td>신조어·풍자·맥락 처리 어려움</td></tr>
+            <tr><td><strong>머신러닝 기반 ⭐</strong></td><td>레이블된 데이터로 분류기 학습<br>Naïve Bayes·SVM·로지스틱 회귀</td><td>도메인 특화·높은 정확도</td><td>레이블 데이터 필요·도메인 이전 어려움</td></tr>
+            <tr><td><strong>딥러닝 기반 ⭐</strong></td><td>LSTM·CNN·BERT·GPT로 문맥 이해<br>사전학습+Fine-tuning</td><td>문맥·복합 감성 이해 우수</td><td>대규모 데이터·GPU 필요·해석 어려움</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="acc" onclick="this.classList.toggle('open')">
+      <div class="acc-h"><div class="acc-title" style="color:var(--a5);">감성 분석 세분화 수준 & 도전 과제 ⭐</div><div class="acc-tgl">▾</div></div>
+      <div class="acc-body">
+        <div class="g2">
+          <div>
+            <p style="font-size:11.5px;font-weight:800;color:var(--a5);margin-bottom:6px;">분석 단위별 수준</p>
+            <ul class="il">
+              <li><strong>문서 수준:</strong> 전체 문서의 감성 (긍정·부정)</li>
+              <li><strong>문장 수준:</strong> 각 문장의 감성 분류</li>
+              <li><strong>속성 수준(ABSA) ⭐:</strong> 특정 속성/측면에 대한 감성<br>예: "배터리는 좋은데 화면이 별로" → 배터리=긍정, 화면=부정</li>
+              <li><strong>개체 수준:</strong> 특정 인물·브랜드·제품에 대한 감성</li>
+            </ul>
+          </div>
+          <div>
+            <p style="font-size:11.5px;font-weight:800;color:var(--a4);margin-bottom:6px;">주요 도전 과제</p>
+            <ul class="il">
+              <li><strong>풍자·아이러니 ⭐:</strong> "진짜 최고야…(비꼬는)" — 표면 감성과 반대</li>
+              <li><strong>부정어 처리:</strong> "좋지 않다" vs "매우 좋다"</li>
+              <li><strong>비교급:</strong> "A가 B보다 낫다" — 상대적 감성</li>
+              <li><strong>도메인 의존성:</strong> "작다"=카메라선호/배터리싫음</li>
+              <li><strong>이모지·이모티콘:</strong> 😊😢 처리</li>
+              <li><strong>다국어·방언:</strong> 표준어 외 변형</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="memo">감성분석=긍정·부정·중립 분류 / 어휘기반·ML기반·딥러닝기반 / ABSA=속성별감성 / 풍자·부정어 처리가 주요 도전</div>
+  </div>
+
+  <div class="card">
+    <div class="card-h"><div class="ico ip">🗂️</div><h3>토픽 모델링 (Topic Modeling) ⭐</h3></div>
+    <div style="background:var(--s2);border:1px solid rgba(192,132,252,.25);border-radius:9px;padding:12px;margin-bottom:11px;font-size:12.5px;line-height:1.8;">
+      <strong style="color:var(--a1)">토픽 모델링</strong>: 레이블 없이 대량의 문서에서 <em style="color:var(--a3);font-style:normal;">숨겨진 주제(토픽)를 자동으로 발견</em>하는 비지도 학습 — 문서 분류·탐색·요약에 활용
+    </div>
+
+    <div class="acc open" onclick="this.classList.toggle('open')">
+      <div class="acc-h"><div class="acc-title" style="color:var(--a1);">LDA (Latent Dirichlet Allocation) ⭐ — 가장 중요</div><div class="acc-tgl">▾</div></div>
+      <div class="acc-body">
+        <ul class="il" style="margin-bottom:8px;">
+          <li><strong>핵심 가정:</strong> 각 <em>문서는 여러 토픽의 혼합</em>이고, 각 <em>토픽은 단어의 확률 분포</em>로 구성</li>
+          <li><strong>Dirichlet 분포:</strong> 문서-토픽 분포와 토픽-단어 분포에 사전 분포로 적용</li>
+          <li><strong>생성 과정:</strong> ①토픽 혼합 비율(θ) 선택 → ②각 단어의 토픽(z) 선택 → ③해당 토픽의 단어(w) 선택</li>
+          <li><strong>추론:</strong> Gibbs Sampling·변분 추론(Variational Inference)으로 잠재 변수 추정</li>
+          <li><strong>하이퍼파라미터:</strong> K=토픽 수(사전 지정 필요) / α(문서-토픽 밀도) / β(토픽-단어 밀도)</li>
+          <li><strong>출력:</strong> 각 문서의 토픽 비율 + 각 토픽의 대표 단어 목록</li>
+          <li><strong>평가:</strong> 혼잡도(Perplexity, 낮을수록) / 토픽 일관성(Coherence, 높을수록)</li>
+        </ul>
+        <div class="formula"><span class="kw">LDA 결과 예시</span>
+토픽 1 (기술): <span class="val">AI(0.15), 딥러닝(0.12), 모델(0.10)</span>
+토픽 2 (정치): <span class="val">선거(0.18), 정당(0.14), 국회(0.11)</span>
+토픽 3 (경제): <span class="val">금리(0.20), 주식(0.15), 환율(0.09)</span>
+문서 1: 토픽1=0.6, 토픽2=0.1, 토픽3=0.3</div>
+      </div>
+    </div>
+
+    <div class="acc" onclick="this.classList.toggle('open')">
+      <div class="acc-h"><div class="acc-title" style="color:var(--a2);">기타 토픽 모델링 기법</div><div class="acc-tgl">▾</div></div>
+      <div class="acc-body">
+        <table>
+          <thead><tr><th>모델</th><th>특징</th><th>LDA 대비</th></tr></thead>
+          <tbody>
+            <tr><td><strong>LSA/LSI (잠재의미분석) ⭐</strong></td><td>SVD로 단어-문서 행렬 차원 축소</td><td>확률 모델 아님 / 토픽 해석 어려움</td></tr>
+            <tr><td><strong>NMF (비음수 행렬 분해)</strong></td><td>비음수 제약으로 부분 기반 표현 / 직관적 토픽</td><td>해석 용이 / 확률 해석 불가</td></tr>
+            <tr><td><strong>CTM (Correlated Topic Model)</strong></td><td>토픽 간 상관관계 모델링</td><td>LDA 확장 / 관련 토픽 발견</td></tr>
+            <tr><td><strong>BERTopic</strong></td><td>BERT 임베딩 + HDBSCAN + TF-IDF</td><td>최신 · 의미 기반 · 고성능</td></tr>
+          </tbody>
+        </table>
+        <ul class="il" style="margin-top:8px;">
+          <li><strong>LSA ⭐:</strong> 단어-문서 행렬에 SVD 적용 → 잠재 의미 공간에서 유사도 계산 / 동의어·다의어 처리</li>
+          <li><strong>LSA vs LDA:</strong> LSA=SVD·결정론적·의미공간 / LDA=확률론적·토픽혼합·베이지안</li>
+        </ul>
+      </div>
+    </div>
+    <div class="memo">LDA=문서는 토픽혼합·토픽은 단어분포·K사전지정·Gibbs Sampling / 평가=Perplexity(낮을수록)·Coherence(높을수록) / LSA=SVD차원축소</div>
+  </div>
+</div>
+
+<!-- P4: 웹 마이닝 -->
+<div class="pnl" id="p4">
+  <div class="card">
+    <div class="card-h"><div class="ico ib">🌐</div><h3>웹 마이닝 (Web Mining) ⭐</h3></div>
+    <div style="background:var(--s2);border:1px solid rgba(56,189,248,.25);border-radius:9px;padding:12px;margin-bottom:11px;font-size:12.5px;line-height:1.8;">
+      <strong style="color:var(--a5)">웹 마이닝</strong>: 웹 데이터(콘텐츠·구조·사용 로그)에서 <em style="color:var(--a3);font-style:normal;">유용한 지식·패턴</em>을 추출하는 데이터 마이닝의 특수 분야
+    </div>
+
+    <div class="acc open" onclick="this.classList.toggle('open')">
+      <div class="acc-h"><div class="acc-title" style="color:var(--a5);">웹 마이닝 3대 유형 ⭐</div><div class="acc-tgl">▾</div></div>
+      <div class="acc-body">
+        <table>
+          <thead><tr><th>유형</th><th>대상</th><th>기법</th><th>활용 예시</th></tr></thead>
+          <tbody>
+            <tr><td><strong>웹 콘텐츠 마이닝 ⭐</strong></td><td>웹 페이지 텍스트·이미지·멀티미디어</td><td>텍스트 마이닝·NLP·이미지 처리</td><td>뉴스 분류·제품 설명 추출</td></tr>
+            <tr><td><strong>웹 구조 마이닝 ⭐</strong></td><td>웹 링크 구조 (하이퍼링크 그래프)</td><td>PageRank·HITS·링크 분석</td><td>검색엔진 랭킹·웹 커뮤니티</td></tr>
+            <tr><td><strong>웹 사용 마이닝 ⭐</strong></td><td>서버 로그·클릭스트림·세션 데이터</td><td>순서 패턴·연관 규칙·군집</td><td>추천 시스템·UX 개선·광고</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="acc" onclick="this.classList.toggle('open')">
+      <div class="acc-h"><div class="acc-title" style="color:var(--a3);">웹 크롤링 & 스크래핑 ⭐</div><div class="acc-tgl">▾</div></div>
+      <div class="acc-body">
+        <ul class="il">
+          <li><strong>웹 크롤러(Spider/Bot) ⭐:</strong> URL을 자동으로 순회하며 웹 페이지를 수집하는 프로그램 — 검색엔진의 기반</li>
+          <li><strong>BFS vs DFS 크롤링:</strong> BFS=넓이우선(인기 페이지 먼저) / DFS=깊이우선(특정 사이트 심층)</li>
+          <li><strong>robots.txt ⭐:</strong> 크롤링 허용·금지 경로를 명시한 파일 — 윤리적 크롤링의 기준</li>
+          <li><strong>Scrapy·BeautifulSoup·Selenium:</strong> 파이썬 주요 크롤링 라이브러리</li>
+          <li><strong>동적 웹(JavaScript) ⭐:</strong> Selenium·Playwright로 브라우저 자동화하여 렌더링 후 수집</li>
+          <li><strong>크롤링 윤리:</strong> 과도한 요청→서버 부하 / 저작권·개인정보 고려 필수</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="acc" onclick="this.classList.toggle('open')">
+      <div class="acc-h"><div class="acc-title" style="color:var(--a1);">HITS 알고리즘 ⭐ (PageRank 대안)</div><div class="acc-tgl">▾</div></div>
+      <div class="acc-body">
+        <ul class="il" style="margin-bottom:8px;">
+          <li><strong>HITS (Hyperlink-Induced Topic Search):</strong> Jon Kleinberg(1999) — 쿼리 의존적 링크 분석</li>
+          <li><strong>두 가지 점수:</strong> ①<em>Hub(허브) 점수</em>: 좋은 Authority 페이지로 많이 링크하는 페이지 / ②<em>Authority 점수</em>: 좋은 Hub 페이지로부터 많이 링크 받는 페이지</li>
+          <li><strong>상호 강화:</strong> 좋은 Hub은 좋은 Authority를 가리키고, 좋은 Authority는 좋은 Hub에 가리켜짐</li>
+          <li><strong>반복 업데이트:</strong> Hub↔Authority 점수를 수렴할 때까지 반복</li>
+        </ul>
+        <table>
+          <thead><tr><th>비교</th><th>PageRank</th><th style="color:var(--a1);">HITS</th></tr></thead>
+          <tbody>
+            <tr><td><strong>의존성</strong></td><td>쿼리 독립적 (전역 계산)</td><td><strong>쿼리 의존적 (검색 후 계산)</strong></td></tr>
+            <tr><td><strong>점수</strong></td><td>단일 점수</td><td><strong>Hub + Authority 두 가지</strong></td></tr>
+            <tr><td><strong>속도</strong></td><td>빠름 (사전 계산)</td><td>느림 (실시간 계산)</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div class="memo">웹마이닝 3종: 콘텐츠(텍스트·이미지)·구조(링크·PageRank)·사용(로그·클릭스트림) / robots.txt=크롤링 규칙 / HITS=Hub+Authority</div>
+  </div>
+
+  <div class="card">
+    <div class="card-h"><div class="ico ig">🔍</div><h3>정보 검색 (Information Retrieval) ⭐</h3></div>
+    <table>
+      <thead><tr><th>모델</th><th>원리</th><th>특징</th></tr></thead>
+      <tbody>
+        <tr><td><strong>불리언 모델</strong></td><td>AND·OR·NOT 논리 연산으로 문서 검색</td><td>정확·단순 / 순위 없음 / 이진 판별</td></tr>
+        <tr><td><strong>벡터공간 모델 (VSM) ⭐</strong></td><td>문서·쿼리를 TF-IDF 벡터로 표현 → 코사인 유사도 계산</td><td>순위 가능 / 유사도 측정 / 가장 많이 사용</td></tr>
+        <tr><td><strong>확률 모델 (BM25) ⭐</strong></td><td>쿼리 단어의 문서 내 확률 기반 랭킹 / 문서 길이 정규화</td><td>VSM 개선 / 현재 검색엔진 표준</td></tr>
+        <tr><td><strong>신경망 검색 (Dense Retrieval)</strong></td><td>BERT 임베딩으로 의미 기반 검색 / 벡터 DB 활용</td><td>의미 검색·다국어·RAG 기반</td></tr>
+      </tbody>
+    </table>
+    <div class="formula"><span class="kw">코사인 유사도</span> cos(d,q) = (d·q) / (|d|·|q|)
+<span class="cm">  → 1에 가까울수록 문서와 쿼리가 유사</span>
+<span class="kw">BM25</span> score(D,Q) = Σ IDF(qᵢ) · f(qᵢ,D)·(k₁+1) / (f(qᵢ,D)+k₁·(1-b+b·|D|/avgdl))
+<span class="cm">  → k₁=1.2~2.0 (TF 포화), b=0.75 (문서길이 정규화)</span></div>
+    <div class="memo">VSM=TF-IDF 벡터·코사인유사도·순위가능 / BM25=확률기반·문서길이정규화·현재검색표준 / 밀집검색=BERT임베딩·의미기반</div>
+  </div>
+</div>
+
+<!-- P5: 소셜 네트워크·이미지 -->
+<div class="pnl" id="p5">
+  <div class="card">
+    <div class="card-h"><div class="ico ip">🕸️</div><h3>소셜 네트워크 분석 (SNA) ⭐</h3></div>
+    <div style="background:var(--s2);border:1px solid rgba(192,132,252,.25);border-radius:9px;padding:12px;margin-bottom:11px;font-size:12.5px;line-height:1.8;">
+      <strong style="color:var(--a1)">SNA (Social Network Analysis)</strong>: 노드(개인·조직)와 엣지(관계·상호작용)로 이루어진 네트워크를 분석하여 <em style="color:var(--a3);font-style:normal;">영향력·커뮤니티·정보 전파</em> 패턴을 탐구
+    </div>
+
+    <div class="acc open" onclick="this.classList.toggle('open')">
+      <div class="acc-h"><div class="acc-title" style="color:var(--a1);">중심성 지표 (Centrality Measures) ⭐</div><div class="acc-tgl">▾</div></div>
+      <div class="acc-body">
+        <table>
+          <thead><tr><th>지표</th><th>정의</th><th>의미</th><th>활용</th></tr></thead>
+          <tbody>
+            <tr><td><strong>연결 중심성 ⭐<br>(Degree Centrality)</strong></td><td>노드의 직접 연결 수 / (N-1)</td><td>직접 연결 많을수록 중요</td><td>인기도·즉시 영향력</td></tr>
+            <tr><td><strong>근접 중심성 ⭐<br>(Closeness Centrality)</strong></td><td>(N-1) / Σ 최단경로 거리</td><td>다른 노드에 빨리 도달 가능</td><td>정보 전파 속도·효율</td></tr>
+            <tr><td><strong>매개 중심성 ⭐<br>(Betweenness Centrality)</strong></td><td>다른 쌍의 최단경로 중 통과 비율</td><td>정보 흐름의 병목·브로커</td><td>정보 통제·게이트키퍼</td></tr>
+            <tr><td><strong>고유벡터 중심성<br>(Eigenvector)</strong></td><td>연결된 이웃의 중요도를 반영</td><td>중요한 노드와 연결될수록 중요</td><td>PageRank 원리와 동일</td></tr>
+            <tr><td><strong>PageRank</strong></td><td>고유벡터 중심성 + 댐핑팩터</td><td>웹·인용 네트워크 중요도</td><td>검색엔진·논문 영향력</td></tr>
+          </tbody>
+        </table>
+        <div class="warn">연결중심성=직접연결 수 / 근접중심성=평균 거리 짧음=빠른전파 / 매개중심성=경로 사이 병목·브로커 — 세 지표 구분 핵심!</div>
+      </div>
+    </div>
+
+    <div class="acc" onclick="this.classList.toggle('open')">
+      <div class="acc-h"><div class="acc-title" style="color:var(--a2);">커뮤니티 탐지 & 네트워크 특성 ⭐</div><div class="acc-tgl">▾</div></div>
+      <div class="acc-body">
+        <ul class="il" style="margin-bottom:8px;">
+          <li><strong>커뮤니티(Community) ⭐:</strong> 커뮤니티 내부 연결은 밀집하고 커뮤니티 외부 연결은 드문 노드 집합</li>
+          <li><strong>모듈성(Modularity, Q) ⭐:</strong> 커뮤니티의 품질 척도 — -1~1 / 높을수록 명확한 커뮤니티 구조</li>
+          <li><strong>Girvan-Newman 알고리즘:</strong> 매개 중심성 높은 엣지를 반복 제거 → 커뮤니티 분리</li>
+          <li><strong>Louvain 알고리즘 ⭐:</strong> 탐욕적(Greedy) 모듈성 최적화 — 대규모 네트워크에 효율적</li>
+          <li><strong>소세계 현상(Small World) ⭐:</strong> 6단계 분리(Six Degrees of Separation) — 매우 짧은 평균 경로</li>
+          <li><strong>척도 없는 네트워크(Scale-Free) ⭐:</strong> 거듭제곱 법칙(Power Law) 연결 분포 — 허브(Hub) 노드 존재 / 인터넷·SNS 특성</li>
+          <li><strong>구조적 공백(Structural Hole):</strong> 연결되지 않은 그룹 사이를 연결하는 브로커 포지션 — 정보·권력 이점</li>
+        </ul>
+      </div>
+    </div>
+    <div class="memo">중심성: 연결(직접연결)·근접(평균거리)·매개(병목·브로커) / Louvain=모듈성최적화 / 소세계=6단계분리 / 척도없는=허브·거듭제곱법칙</div>
+  </div>
+
+  <div class="card">
+    <div class="card-h"><div class="ico io">🖼️</div><h3>이미지·오디오·멀티미디어 마이닝 ⭐</h3></div>
+    <div class="acc open" onclick="this.classList.toggle('open')">
+      <div class="acc-h"><div class="acc-title" style="color:var(--a6);">이미지 마이닝 핵심 기법 ⭐</div><div class="acc-tgl">▾</div></div>
+      <div class="acc-body">
+        <table>
+          <thead><tr><th>태스크</th><th>설명</th><th>대표 모델</th></tr></thead>
+          <tbody>
+            <tr><td><strong>이미지 분류 ⭐</strong></td><td>이미지를 미리 정의된 클래스로 분류</td><td>AlexNet·VGG·ResNet·EfficientNet</td></tr>
+            <tr><td><strong>객체 탐지 ⭐</strong></td><td>이미지 내 여러 객체의 위치(Bounding Box)+클래스</td><td>YOLO·SSD·Faster R-CNN</td></tr>
+            <tr><td><strong>의미론적 분할 (Semantic Segmentation)</strong></td><td>픽셀 단위로 클래스 분류</td><td>FCN·U-Net·DeepLab</td></tr>
+            <tr><td><strong>얼굴 인식 (Face Recognition)</strong></td><td>얼굴 탐지·식별·검증</td><td>FaceNet·ArcFace·DeepFace</td></tr>
+            <tr><td><strong>GAN (생성적 적대 신경망)</strong></td><td>생성자+판별자 적대 학습으로 새 이미지 생성</td><td>GAN·DCGAN·StyleGAN·Stable Diffusion</td></tr>
+            <tr><td><strong>특성 기반 검색 (CBIR) ⭐</strong></td><td>이미지 특성(색상·질감·형태)으로 유사 이미지 검색</td><td>SIFT·HOG·CNN 특성 벡터</td></tr>
+          </tbody>
+        </table>
+        <ul class="il" style="margin-top:8px;">
+          <li><strong>CNN 특성 추출 ⭐:</strong> 합성곱 레이어가 자동으로 계층적 특성(에지→질감→객체) 학습</li>
+          <li><strong>전이 학습(Transfer Learning) ⭐:</strong> ImageNet으로 사전 학습된 모델을 새 도메인에 fine-tuning</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="acc" onclick="this.classList.toggle('open')">
+      <div class="acc-h"><div class="acc-title" style="color:var(--a7);">오디오·텍스트-이미지 멀티모달 ⭐</div><div class="acc-tgl">▾</div></div>
+      <div class="acc-body">
+        <ul class="il">
+          <li><strong>음성 인식(STT·ASR) ⭐:</strong> 음성 → 텍스트 변환 / HMM → RNN → Transformer(Whisper)</li>
+          <li><strong>텍스트-음성 변환(TTS):</strong> 텍스트 → 자연스러운 음성 / WaveNet·Tacotron</li>
+          <li><strong>화자 다이어리제이션:</strong> 여러 화자의 발화를 분리·식별</li>
+          <li><strong>음악 정보 검색(MIR):</strong> 장르·템포·멜로디 분류 / 훔쳐듣기 → 노래 인식(Shazam 원리)</li>
+          <li><strong>멀티모달 AI ⭐:</strong> 텍스트+이미지+오디오를 함께 처리하는 모델 — CLIP(이미지-텍스트), GPT-4V, Gemini</li>
+          <li><strong>CLIP ⭐:</strong> 이미지와 텍스트를 같은 임베딩 공간에 정렬 → 텍스트로 이미지 검색 / Zero-Shot 분류</li>
+        </ul>
+      </div>
+    </div>
+    <div class="memo">이미지분류=ResNet / 객체탐지=YOLO·Faster R-CNN / 음성인식=Whisper / 전이학습=ImageNet사전학습+Fine-tuning / CLIP=이미지-텍스트정렬</div>
+  </div>
+</div>
+
+<!-- P6: QA -->
+<div class="pnl" id="p6">
+  <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:7px;margin-bottom:12px;">
+    <div class="fb-wr" id="fbar" style="margin:0;">
+      <button class="fb on" data-f="all">전체</button>
+      <button class="fb" data-f="텍스트">📝 텍스트·NLP</button>
+      <button class="fb" data-f="감성">😊 감성·토픽</button>
+      <button class="fb" data-f="웹">🌐 웹마이닝</button>
+      <button class="fb" data-f="SNA">🕸️ SNA·이미지</button>
+      <button class="fb" data-f="OX">⭕ OX</button>
+    </div>
+    <div class="sc-b">정답: <span id="sc">0</span>/<span id="st">0</span></div>
+  </div>
+  <div id="ql"></div>
+</div>
+
+</div>
+<script>
+document.querySelectorAll('.tab').forEach(t=>t.addEventListener('click',()=>{
+  document.querySelectorAll('.tab,.pnl').forEach(x=>x.classList.remove('on'));
+  t.classList.add('on');document.getElementById(t.dataset.p).classList.add('on');
+}));
+const QA=[
+  {cat:'텍스트',diff:'easy',
+   q:'TF-IDF에서 IDF(Inverse Document Frequency)의 역할로 가장 적절한 것은?',
+   cs:['문서 내 특정 단어의 출현 빈도를 측정한다.','전체 문서에서 흔하게 나타나는 단어(the, is, 은, 는)의 가중치를 낮추고 특정 문서에만 나타나는 중요 단어를 부각시킨다.','단어의 품사(명사, 동사)를 분류한다.','문서 간 유사도를 계산한다.'],ans:1,
+   exp:'<strong>IDF(역문서 빈도)</strong> = log(총문서수/단어포함문서수). 많은 문서에 등장하는 흔한 단어(stop words)일수록 IDF가 낮아져 <em>TF-IDF 가중치가 감소</em>합니다. 반면 특정 문서에만 나타나는 전문 용어는 IDF가 높아 중요 단어로 부각됩니다. TF=단어 출현 빈도, TF-IDF=TF×IDF로 문서 내 중요 단어 추출.'},
+  {cat:'텍스트',diff:'mid',
+   q:'어간 추출(Stemming)과 표제어 추출(Lemmatization)의 차이로 가장 적절한 것은?',
+   cs:['어간 추출은 사전 기반으로 단어의 원형을 반환하고, 표제어 추출은 규칙으로 단순 절단한다.','어간 추출은 규칙 기반으로 단순히 어미를 절단하고, 표제어 추출은 사전·문법 기반으로 올바른 원형(표제어)을 반환한다.','두 기법은 동일하며 이름만 다르다.','어간 추출만 자연어 처리에 사용된다.'],ans:1,
+   exp:'<strong>어간 추출(Stemming)</strong>: 규칙 기반으로 단순히 어미 절단 → "studies"→"studi"(잘못된 형태도 허용). 빠름. <strong>표제어 추출(Lemmatization)</strong>: 사전·문법 분석으로 올바른 원형 반환 → "better"→"good", "running"→"run". 느리지만 정확. 감리사 시험에서 두 기법의 차이를 묻는 문제가 자주 출제됩니다.'},
+  {cat:'텍스트',diff:'mid',
+   q:'Word2Vec이 TF-IDF(Bag of Words) 방식보다 우수한 점으로 가장 적절한 것은?',
+   cs:['항상 더 빠른 학습 속도를 제공한다.','단어의 의미·유사성을 밀집 벡터로 표현하여 유사 의미 단어가 벡터 공간에서 가깝게 위치한다.','희소 벡터를 사용하여 메모리 효율적이다.','레이블된 데이터만 필요하다.'],ans:1,
+   exp:'<strong>Word2Vec의 핵심 장점</strong>: 단어를 저차원 <em>밀집 벡터(Dense Vector)</em>로 표현하며 유사한 의미의 단어는 벡터 공간에서 가깝게 위치합니다. "왕-남자+여자≈여왕" 같은 의미 연산이 가능합니다. TF-IDF는 단어 빈도만 고려하여 의미 파악 불가·고차원 희소 벡터. Word2Vec=비지도 학습(주변 단어 예측).'},
+  {cat:'감성',diff:'mid',
+   q:'감성 분석에서 ABSA(Aspect-Based Sentiment Analysis)의 의미로 가장 적절한 것은?',
+   cs:['전체 문서 단위로 긍정·부정을 분류한다.','특정 속성·측면(배터리·화면·가격)에 대한 개별 감성을 분석하여 세분화된 의견을 추출한다.','감성 사전만을 이용한 분석 방법이다.','소셜 미디어 데이터에만 적용 가능한 기법이다.'],ans:1,
+   exp:'<strong>ABSA(속성 기반 감성 분석)</strong>: "배터리는 좋은데 카메라가 별로야"처럼 하나의 문서에서 <em>여러 속성에 대해 서로 다른 감성</em>을 추출합니다. 전체 문서 수준 분석보다 세밀한 인사이트 제공. 제품 리뷰 분석·호텔 평가에 활용. 도전 과제: 속성 식별+감성 매핑을 동시에 수행해야 함.'},
+  {cat:'감성',diff:'mid',
+   q:'LDA(Latent Dirichlet Allocation) 토픽 모델링에서 토픽 수(K)의 결정 방식으로 가장 적절한 것은?',
+   cs:['알고리즘이 데이터에서 자동으로 최적 K를 결정한다.','K는 사전에 사용자가 지정해야 하며, Perplexity나 Coherence 지표로 최적 K를 탐색한다.','K는 항상 문서 수의 제곱근으로 결정된다.','K는 단어 어휘 크기(Vocabulary Size)와 동일하게 설정한다.'],ans:1,
+   exp:'<strong>LDA의 K(토픽 수)</strong>: K-Means와 마찬가지로 <em>사전에 사용자가 지정</em>해야 합니다. 최적 K 탐색: ①<em>Perplexity</em>(낮을수록 좋음, 단 계속 낮아짐) ②<em>Coherence Score</em>(높을수록 토픽 해석 용이, 가장 권장) ③도메인 지식. 실전에서는 여러 K를 시도하여 Coherence가 높은 K 선택. BERTopic은 K 자동 결정.'},
+  {cat:'웹',diff:'mid',
+   q:'웹 마이닝의 3가지 유형 중 "서버 로그와 클릭스트림 데이터를 분석하여 사용자 행동 패턴을 파악하는" 유형은?',
+   cs:['웹 콘텐츠 마이닝(Web Content Mining)','웹 구조 마이닝(Web Structure Mining)','웹 사용 마이닝(Web Usage Mining)','웹 스키마 마이닝(Web Schema Mining)'],ans:2,
+   exp:'<strong>웹 사용 마이닝(Web Usage Mining)</strong>: 서버 로그·클릭스트림·세션 데이터·쿠키에서 <em>사용자 행동 패턴</em>을 분석합니다. 추천 시스템·UX 개선·광고 최적화에 활용. 웹 콘텐츠=텍스트·이미지 내용, 웹 구조=링크 구조·PageRank. 웹 사용=로그·행동 패턴.'},
+  {cat:'웹',diff:'hard',
+   q:'HITS 알고리즘에서 Hub 점수와 Authority 점수의 관계로 가장 적절한 것은?',
+   cs:['Hub 점수가 높을수록 다른 페이지로부터 링크를 많이 받는 페이지이다.','좋은 Hub는 높은 Authority 페이지로 링크하고, 좋은 Authority는 좋은 Hub로부터 링크를 많이 받아 두 점수가 상호 강화된다.','Hub와 Authority는 독립적으로 계산된다.','HITS는 PageRank와 달리 댐핑 팩터를 사용하는 알고리즘이다.'],ans:1,
+   exp:'<strong>HITS 상호 강화</strong>: <em>좋은 Hub</em>=권위 있는(Authority) 페이지들을 많이 가리키는 페이지. <em>좋은 Authority</em>=좋은 Hub들로부터 많이 가리켜지는 페이지. 반복 계산으로 수렴. PageRank와 차이: HITS=쿼리의존적·Hub+Authority 두 점수 / PageRank=쿼리독립적·단일 점수·댐핑팩터.'},
+  {cat:'SNA',diff:'mid',
+   q:'소셜 네트워크 분석에서 매개 중심성(Betweenness Centrality)이 높은 노드의 특성으로 가장 적절한 것은?',
+   cs:['가장 많은 직접 연결(Degree)을 가진 노드이다.','다른 노드 쌍들의 최단 경로상에 자주 위치하여 정보 흐름의 병목점·브로커 역할을 한다.','다른 노드들과 평균적으로 가장 짧은 거리에 위치한다.','연결된 이웃 노드들이 서로도 연결되어 있는 비율이 높다.'],ans:1,
+   exp:'<strong>매개 중심성(Betweenness)</strong>: 다른 노드 쌍의 <em>최단 경로 중 자신을 통과하는 비율</em>. 높은 매개 중심성=정보·자원 흐름의 <em>병목·브로커·게이트키퍼</em>. 연결중심성=직접연결 수, 근접중심성=평균 거리 짧음=정보 빠른 전파, 매개중심성=경로 사이 중개자. 구조적 공백을 연결하는 브로커와 유사 개념.'},
+  {cat:'SNA',diff:'mid',
+   q:'SNS에서 관찰되는 "척도 없는 네트워크(Scale-Free Network)"의 특성으로 가장 적절한 것은?',
+   cs:['모든 노드가 동일한 수의 연결을 가진다.','소수의 허브(Hub) 노드가 매우 많은 연결을 가지고 대다수 노드는 적은 연결을 가지는 거듭제곱 법칙 분포를 따른다.','연결의 수가 정규 분포를 따른다.','모든 노드가 정확히 6단계 이내에 연결된다.'],ans:1,
+   exp:'<strong>척도 없는 네트워크(Scale-Free)</strong>: 연결 수가 <em>거듭제곱 법칙(Power Law)</em>을 따라 소수의 <em>허브(Hub) 노드</em>(팔로워 수백만인 유명인)와 다수의 일반 노드로 구성됩니다. 인터넷·SNS·인용 네트워크·생물 네트워크의 공통 특성. 선호적 연결(Preferential Attachment)로 형성. 소세계 현상=6단계 분리(평균 경로 짧음).'},
+  {cat:'텍스트',diff:'hard',
+   q:'개체명 인식(NER, Named Entity Recognition)의 목적으로 가장 적절한 것은?',
+   cs:['문서를 긍정·부정·중립으로 분류하는 작업','텍스트에서 인명·지명·기관명·날짜·금액 등의 개체를 자동으로 탐지하고 분류하는 작업','문서의 핵심 주제를 자동으로 발견하는 작업','단어를 어근 형태로 변환하는 전처리 작업'],ans:1,
+   exp:'<strong>NER(개체명 인식)</strong>: 비정형 텍스트에서 <em>특정 범주(인명·지명·기관명·날짜·금액·제품명)의 개체</em>를 자동으로 탐지하고 분류합니다. "삼성전자가 서울에서 발표한 갤럭시 S24" → [삼성전자:ORG, 서울:LOC, 갤럭시 S24:PRODUCT]. 정보 추출·지식 그래프·QA 시스템의 핵심 구성 요소. BiLSTM-CRF·BERT 기반 모델 표준.'},
+  {cat:'OX',diff:'easy',type:'ox',
+   q:'텍스트 마이닝에서 불용어(Stopword) 제거는 "the", "a", "은", "는" 등 분석에 불필요한 단어를 제거하여 중요한 단어에 집중할 수 있도록 하는 전처리 기법이다.',ans:true,
+   exp:'<strong>○</strong> — 불용어(Stopword) 제거: 조사·관사·접속사·관계대명사 등 텍스트 분석에서 의미가 없는 단어를 사전에 등록하여 제거합니다. 이를 통해 차원을 줄이고 중요 단어의 가중치를 높입니다. 언어별 불용어 목록이 다르며(한국어·영어 등), 도메인에 따라 커스텀 불용어를 추가할 수 있습니다.'},
+  {cat:'감성',diff:'mid',type:'ox',
+   q:'감성 분석에서 풍자(Sarcasm)와 아이러니(Irony)는 어휘 기반 감성 분석으로 쉽게 처리할 수 있는 특성이다.',ans:false,
+   exp:'<strong>×</strong> — 풍자·아이러니는 <strong>표면적 단어의 감성이 실제 의도와 반대</strong>이므로 어휘 기반 접근으로 처리하기 매우 어렵습니다. "정말 최고의 서비스네요…(비꼬는 의미)"에서 "최고"는 긍정어지만 실제 의미는 부정적입니다. 딥러닝(BERT·LLM) 기반의 문맥 이해가 필요하며, 감성 분석의 가장 큰 도전 과제 중 하나입니다.'},
+  {cat:'웹',diff:'mid',type:'ox',
+   q:'robots.txt 파일은 웹 크롤러에게 크롤링이 허용·금지된 경로를 명시하는 파일로, 윤리적 크롤링의 기준이 된다.',ans:true,
+   exp:'<strong>○</strong> — robots.txt: 웹 서버 루트에 위치하는 텍스트 파일로 <em>User-agent별 허용(Allow)·금지(Disallow) 경로</em>를 명시합니다. 예: "User-agent: * / Disallow: /private/" → 모든 크롤러의 /private/ 경로 접근 금지. 법적 강제력은 없지만 윤리적 크롤링의 기준입니다. 검색엔진(Googlebot 등)은 이를 준수합니다.'},
+  {cat:'SNA',diff:'hard',type:'ox',
+   q:'소셜 네트워크에서 연결 중심성(Degree Centrality)이 높은 노드는 반드시 매개 중심성(Betweenness Centrality)도 높다.',ans:false,
+   exp:'<strong>×</strong> — 두 중심성은 독립적으로 높거나 낮을 수 있습니다. 예) 방사형 네트워크의 중심 허브는 연결 중심성+매개 중심성 모두 높지만, 두 집단이 하나의 브로커로 연결된 경우 그 브로커는 연결 수가 적어도(연결 중심성↓) 매개 중심성은 매우 높습니다. 각 중심성은 서로 다른 네트워크에서의 역할을 측정합니다.'},
+];
+let answered=0,correct=0;
+function renderQ(f){
+  const data=f==='all'?QA:QA.filter(q=>q.cat===f);
+  const list=document.getElementById('ql');list.innerHTML='';
+  answered=0;correct=0;upS();
+  const CATC={'텍스트':'tp','감성':'ty','웹':'tb','SNA':'tg','OX':'to'};
+  const DLC={'easy':'easy 쉬움','mid':'mid 보통','hard':'hard 어려움'};
+  const NL=['①','②','③','④'];
+  if(!data.length){list.innerHTML='<div style="text-align:center;padding:40px;color:var(--mu)">문제 없음</div>';return;}
+  data.forEach((q,i)=>{
+    const gi=QA.indexOf(q);
+    const el=document.createElement('div');el.className='qa';
+    const tc=CATC[q.cat]||'tp';
+    const [dc,dn]=(DLC[q.diff]||'mid 보통').split(' ');
+    if(q.type==='ox'){
+      el.innerHTML=`<div class="qa-hd" onclick="this.closest('.qa').classList.toggle('open')"><div><div class="qa-meta"><span class="qn">Q${String(i+1).padStart(2,'0')}</span><span class="tag ${tc}">${q.cat}</span><span class="diff ${dc}">${dn}</span><span class="tag tg">O/X</span></div><div class="qq">${q.q}</div></div><span class="tgl">▾</span></div>
+      <div class="qa-bd"><div class="ox-wr"><button class="ox" onclick="pickOX(this,true,${gi})">⭕ 옳다</button><button class="ox" onclick="pickOX(this,false,${gi})">❌ 틀리다</button></div><div class="exp" id="ex-${gi}"><div class="exp-t">💡 해설</div>${q.exp}</div></div>`;
+    } else {
+      el.innerHTML=`<div class="qa-hd" onclick="this.closest('.qa').classList.toggle('open')"><div><div class="qa-meta"><span class="qn">Q${String(i+1).padStart(2,'0')}</span><span class="tag ${tc}">${q.cat}</span><span class="diff ${dc}">${dn}</span></div><div class="qq">${q.q}</div></div><span class="tgl">▾</span></div>
+      <div class="qa-bd"><div class="chs">${q.cs.map((c,ci)=>`<div class="ch" data-ci="${ci}" onclick="pickCh(this,${gi})"><span class="cnum">${NL[ci]}</span><span>${c}</span></div>`).join('')}</div><div class="exp" id="ex-${gi}"><div class="exp-t">💡 해설</div>${q.exp}</div></div>`;
+    }
+    list.appendChild(el);
+  });
+}
+function pickCh(el,gi){
+  const bd=el.closest('.qa-bd');if(bd.querySelector('.ok,.ng'))return;
+  const q=QA[gi];
+  bd.querySelectorAll('.ch').forEach((c,i)=>{c.classList.add('lk');if(i===q.ans)c.classList.add('ok');else if(i===parseInt(el.dataset.ci))c.classList.add('ng');});
+  document.getElementById('ex-'+gi).classList.add('show');
+  answered++;if(parseInt(el.dataset.ci)===q.ans)correct++;upS();
+}
+function pickOX(btn,val,gi){
+  const bd=btn.closest('.qa-bd');if(bd.querySelector('.so,.sx'))return;
+  const q=QA[gi];
+  bd.querySelectorAll('.ox').forEach(b=>b.classList.add('lk'));
+  btn.classList.add(val?'so':'sx');
+  if(val!==q.ans){btn.style.opacity='.5';bd.querySelectorAll('.ox')[val?1:0].classList.add(q.ans?'so':'sx');}
+  document.getElementById('ex-'+gi).classList.add('show');
+  answered++;if(val===q.ans)correct++;upS();
+}
+function upS(){document.getElementById('sc').textContent=correct;document.getElementById('st').textContent=answered;}
+document.getElementById('fbar').addEventListener('click',e=>{
+  const b=e.target.closest('.fb');if(!b)return;
+  document.querySelectorAll('.fb').forEach(x=>x.classList.remove('on'));b.classList.add('on');renderQ(b.dataset.f);
+});
+renderQ('all');
+</script>
+</body>
+</html>

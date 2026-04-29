@@ -1,0 +1,721 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&family=JetBrains+Mono:wght@400;700&display=swap');
+:root{
+  --bg:#08101e;--s1:#0d1829;--s2:#122038;--s3:#182a4a;
+  --bdr:#1e3460;--a1:#60a5fa;--a2:#c084fc;--a3:#34d399;
+  --a4:#fbbf24;--a5:#f87171;--a6:#fb923c;
+  --txt:#e2e8f0;--mu:#64748b;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Noto Sans KR',sans-serif;background:var(--bg);color:var(--txt);min-height:100vh;}
+
+.hdr{padding:22px 24px 16px;background:linear-gradient(150deg,#08101e 0%,#0f1c38 50%,#08101e 100%);border-bottom:1px solid var(--bdr);position:relative;overflow:hidden;}
+.hdr::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 60% 80% at 80% 30%,rgba(96,165,250,.08),transparent 65%),radial-gradient(ellipse 40% 60% at 20% 80%,rgba(192,132,252,.07),transparent 60%);pointer-events:none;}
+.hdr-r{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:6px;align-items:center;}
+.pill{padding:3px 10px;border-radius:20px;font-size:10px;font-weight:700;letter-spacing:.8px;}
+.p1{background:linear-gradient(135deg,#1e3a8a,var(--a1));color:#fff;}
+.p2{background:rgba(251,191,36,.15);color:var(--a4);border:1px solid rgba(251,191,36,.3);}
+.p3{background:rgba(192,132,252,.15);color:var(--a2);border:1px solid rgba(192,132,252,.3);}
+h1{font-size:19px;font-weight:900;}
+.h1g{background:linear-gradient(90deg,var(--a1),var(--a2),var(--a3));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.hdr p{color:var(--mu);font-size:12px;margin-top:3px;}
+
+.tabs{display:flex;padding:0 24px;background:var(--s1);border-bottom:1px solid var(--bdr);overflow-x:auto;scrollbar-width:none;}
+.tabs::-webkit-scrollbar{display:none;}
+.tab{padding:11px 14px;font-size:12px;font-weight:600;color:var(--mu);cursor:pointer;border-bottom:2px solid transparent;white-space:nowrap;transition:all .2s;background:none;border-top:none;border-left:none;border-right:none;font-family:'Noto Sans KR',sans-serif;}
+.tab:hover{color:var(--txt);}.tab.on{color:var(--a1);border-bottom-color:var(--a1);}
+
+.wrap{padding:20px 24px;max-width:960px;margin:0 auto;}
+.pnl{display:none;}.pnl.on{display:block;}
+
+.card{background:var(--s1);border:1px solid var(--bdr);border-radius:12px;padding:18px;margin-bottom:14px;}
+.card-h{display:flex;align-items:center;gap:10px;margin-bottom:14px;}
+.ico{width:34px;height:34px;border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:17px;flex-shrink:0;}
+.ib{background:rgba(96,165,250,.15);}.ip{background:rgba(192,132,252,.15);}.ig{background:rgba(52,211,153,.15);}.iy{background:rgba(251,191,36,.15);}.ir{background:rgba(248,113,113,.15);}.io{background:rgba(251,146,60,.15);}
+.card h3{font-size:14px;font-weight:700;}
+
+.tag{display:inline-block;padding:2px 8px;border-radius:4px;font-size:10px;font-weight:600;margin:2px 2px 2px 0;}
+.tb{background:rgba(96,165,250,.12);color:var(--a1);border:1px solid rgba(96,165,250,.25);}
+.tp{background:rgba(192,132,252,.12);color:var(--a2);border:1px solid rgba(192,132,252,.25);}
+.tg{background:rgba(52,211,153,.12);color:var(--a3);border:1px solid rgba(52,211,153,.25);}
+.ty{background:rgba(251,191,36,.12);color:var(--a4);border:1px solid rgba(251,191,36,.25);}
+.tr{background:rgba(248,113,113,.12);color:var(--a5);border:1px solid rgba(248,113,113,.25);}
+.to{background:rgba(251,146,60,.12);color:var(--a6);border:1px solid rgba(251,146,60,.25);}
+
+table{width:100%;border-collapse:collapse;font-size:12.5px;}
+th{background:var(--s2);color:var(--mu);font-weight:700;padding:8px 12px;text-align:left;font-size:10px;text-transform:uppercase;letter-spacing:.5px;border-bottom:1px solid var(--bdr);}
+td{padding:9px 12px;border-bottom:1px solid rgba(30,52,96,.5);vertical-align:top;line-height:1.6;}
+tr:last-child td{border-bottom:none;}
+tr:hover td{background:rgba(255,255,255,.02);}
+td strong{color:var(--a4);}
+
+ul.il{list-style:none;display:flex;flex-direction:column;gap:7px;}
+ul.il li{font-size:12.5px;padding-left:16px;position:relative;line-height:1.55;}
+ul.il li::before{content:'▸';position:absolute;left:0;color:var(--a1);font-size:10px;top:3px;}
+ul.il li strong{color:var(--a4);}
+ul.il li em{color:var(--a3);font-style:normal;}
+
+.memo{background:linear-gradient(135deg,rgba(96,165,250,.07),rgba(192,132,252,.07));border:1px solid rgba(96,165,250,.22);border-left:3px solid var(--a1);border-radius:8px;padding:10px 14px;font-size:12.5px;font-weight:600;color:var(--a1);margin:10px 0;}
+.memo::before{content:'🎯 한 줄 암기 │ ';color:var(--mu);font-weight:400;}
+
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:14px;}
+@media(max-width:600px){.g2{grid-template-columns:1fr;}}
+
+/* 절차 flow */
+.proc-wrap{display:flex;flex-direction:column;gap:0;margin:12px 0;}
+.proc-step{display:flex;gap:12px;align-items:stretch;}
+.proc-line{display:flex;flex-direction:column;align-items:center;width:32px;flex-shrink:0;}
+.proc-dot{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;flex-shrink:0;z-index:1;}
+.proc-vline{flex:1;width:2px;background:var(--bdr);margin:4px 0;}
+.proc-step:last-child .proc-vline{display:none;}
+.proc-content{background:var(--s2);border:1px solid var(--bdr);border-radius:9px;padding:12px 14px;margin-bottom:8px;flex:1;cursor:pointer;transition:border-color .2s;}
+.proc-content:hover{border-color:rgba(96,165,250,.35);}
+.proc-title{font-size:13px;font-weight:700;margin-bottom:2px;}
+.proc-sub{font-size:11px;color:var(--mu);}
+.proc-detail{display:none;border-top:1px solid var(--bdr);margin-top:10px;padding-top:10px;}
+.proc-content.open .proc-detail{display:block;}
+.out-chips{display:flex;flex-wrap:wrap;gap:5px;margin-top:8px;}
+.chip{background:var(--s1);border:1px solid var(--bdr);border-radius:5px;padding:3px 9px;font-size:10.5px;}
+.chip::before{content:'📄 ';}
+
+/* term grid */
+.term-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:10px 0;}
+@media(max-width:580px){.term-grid{grid-template-columns:1fr;}}
+.term-card{background:var(--s2);border:1px solid var(--bdr);border-radius:8px;padding:11px 13px;}
+.term-name{font-size:11.5px;font-weight:800;margin-bottom:4px;}
+.term-def{font-size:11px;color:var(--txt);line-height:1.5;}
+
+/* compare */
+.cmp{display:grid;grid-template-columns:1fr auto 1fr;gap:10px;align-items:start;margin:12px 0;}
+.cmp-col{background:var(--s2);border:1px solid var(--bdr);border-radius:10px;padding:14px;}
+.cmp-title{font-size:12px;font-weight:800;margin-bottom:10px;padding-bottom:8px;border-bottom:1px solid var(--bdr);}
+.vs{color:var(--mu);font-size:18px;font-weight:700;text-align:center;padding-top:40px;}
+
+/* QA */
+.qa{background:var(--s1);border:1px solid var(--bdr);border-radius:10px;margin-bottom:11px;overflow:hidden;transition:border-color .2s;}
+.qa:hover{border-color:rgba(96,165,250,.25);}
+.qa-hd{padding:14px 18px;cursor:pointer;display:flex;justify-content:space-between;align-items:flex-start;gap:10px;user-select:none;}
+.qa-meta{display:flex;align-items:center;gap:6px;margin-bottom:5px;flex-wrap:wrap;}
+.qn{font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:700;color:var(--mu);}
+.qq{font-size:13px;font-weight:600;line-height:1.55;}
+.tgl{color:var(--mu);font-size:16px;flex-shrink:0;transition:transform .2s;}
+.qa.open .tgl{transform:rotate(180deg);}
+.qa-bd{display:none;border-top:1px solid var(--bdr);padding:14px 18px;background:var(--s2);}
+.qa.open .qa-bd{display:block;}
+.chs{display:flex;flex-direction:column;gap:7px;margin-bottom:12px;}
+.ch{display:flex;align-items:flex-start;gap:10px;padding:9px 13px;border-radius:7px;border:1px solid var(--bdr);font-size:12.5px;cursor:pointer;background:var(--s1);line-height:1.5;transition:all .15s;}
+.ch:hover:not(.lk){border-color:rgba(96,165,250,.3);background:rgba(96,165,250,.04);}
+.ch.ok{border-color:var(--a3);background:rgba(52,211,153,.1);color:var(--a3);}
+.ch.ng{border-color:var(--a5);background:rgba(248,113,113,.08);color:var(--a5);opacity:.7;}
+.ch.lk{cursor:default;}
+.cnum{font-family:'JetBrains Mono',monospace;font-weight:700;font-size:11px;flex-shrink:0;margin-top:1px;color:var(--mu);}
+.ch.ok .cnum{color:var(--a3);}.ch.ng .cnum{color:var(--a5);}
+.exp{background:rgba(96,165,250,.05);border:1px solid rgba(96,165,250,.18);border-radius:8px;padding:12px 14px;font-size:12.5px;line-height:1.65;display:none;}
+.exp.show{display:block;}
+.exp-t{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--a1);margin-bottom:6px;}
+.exp strong{color:var(--a4);}
+.exp em{color:var(--a3);font-style:normal;}
+.ox-wr{display:flex;gap:10px;margin-bottom:12px;}
+.ox{flex:1;padding:11px;border-radius:8px;border:1px solid var(--bdr);font-size:20px;cursor:pointer;background:var(--s1);transition:all .15s;font-family:'Noto Sans KR',sans-serif;color:var(--txt);}
+.ox:hover:not(.lk){transform:scale(1.02);}
+.ox.so{border-color:var(--a3);background:rgba(52,211,153,.15);}
+.ox.sx{border-color:var(--a5);background:rgba(248,113,113,.1);}
+.ox.lk{cursor:default;}
+.diff{display:inline-block;padding:2px 7px;border-radius:10px;font-size:9px;font-weight:700;}
+.easy{background:rgba(52,211,153,.2);color:var(--a3);}
+.mid{background:rgba(251,191,36,.2);color:var(--a4);}
+.hard{background:rgba(248,113,113,.2);color:var(--a5);}
+.fb-wr{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:14px;}
+.fb{padding:5px 12px;border-radius:20px;border:1px solid var(--bdr);font-size:11px;font-weight:600;cursor:pointer;background:var(--s2);color:var(--mu);transition:all .15s;font-family:'Noto Sans KR',sans-serif;}
+.fb.on{background:rgba(96,165,250,.15);color:var(--a1);border-color:var(--a1);}
+.sc-b{background:var(--s2);border:1px solid var(--bdr);border-radius:8px;padding:5px 14px;font-size:12px;color:var(--mu);}
+.sc-b span{color:var(--a1);font-weight:700;}
+.sep{display:flex;align-items:center;gap:10px;margin:18px 0 14px;color:var(--mu);font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1px;}
+.sep::before,.sep::after{content:'';flex:1;height:1px;background:var(--bdr);}
+
+.req-box{background:var(--s2);border:1px solid rgba(96,165,250,.3);border-left:4px solid var(--a1);border-radius:8px;padding:12px 16px;margin:8px 0;}
+.req-num{font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:700;color:var(--a1);margin-bottom:4px;}
+.req-text{font-size:12.5px;line-height:1.6;}
+
+.law-ref{background:rgba(251,191,36,.08);border:1px solid rgba(251,191,36,.25);border-radius:8px;padding:10px 14px;font-size:12px;line-height:1.6;color:var(--a4);margin:8px 0;}
+.law-ref::before{content:'⚖️ 법령 │ ';color:var(--mu);}
+
+.org-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin:10px 0;}
+@media(max-width:580px){.org-grid{grid-template-columns:1fr;}}
+.org-card{background:var(--s2);border:1px solid var(--bdr);border-radius:9px;padding:12px;}
+.org-title{font-size:11.5px;font-weight:800;margin-bottom:8px;padding-bottom:6px;border-bottom:1px solid var(--bdr);}
+</style>
+</head>
+<body>
+
+<div class="hdr">
+  <div class="hdr-r">
+    <span class="pill p1">기재부 계약예규</span>
+    <span class="pill p2">국가계약법 시행령 §43조의3</span>
+    <span class="pill p3">감리사 출제</span>
+  </div>
+  <h1><span class="h1g">경쟁적 대화에 의한 계약 체결 기준</span></h1>
+  <p>국가계약법 시행령 제43조의3 · 지방계약법 시행령 제44조의2 · 기획재정부 계약예규</p>
+</div>
+
+<div class="tabs">
+  <button class="tab on" data-p="p1">📌 개요·정의</button>
+  <button class="tab" data-p="p2">📋 적용 요건</button>
+  <button class="tab" data-p="p3">🔄 계약 절차</button>
+  <button class="tab" data-p="p4">🏛️ 조직·주요 용어</button>
+  <button class="tab" data-p="p5">⚖️ 협상계약 비교</button>
+  <button class="tab" data-p="p6">❓ 예상문제</button>
+</div>
+
+<div class="wrap">
+
+<!-- ===== P1: 개요 ===== -->
+<div class="pnl on" id="p1">
+  <div class="card">
+    <div class="card-h"><div class="ico ib">📌</div><h3>경쟁적 대화에 의한 계약 — 정의</h3></div>
+    <div style="background:var(--s2);border:1px solid rgba(96,165,250,.25);border-radius:10px;padding:14px;margin-bottom:14px;">
+      <p style="font-size:13px;line-height:1.75;font-weight:500;">전문성·기술성이 요구되는 <strong style="color:var(--a1)">물품 또는 용역계약</strong>으로서, 기술적 요구사항이나 계약목적물의 세부내용을 미리 정하기 어렵거나 대안이 다양하여 최적 대안 선정이 곤란한 경우, <strong style="color:var(--a3)">입찰대상자들과 경쟁적·기술적 대화</strong>를 통해 계약목적물의 세부내용 및 이행방안을 <em style="color:var(--a4);font-style:normal;">조정·확정</em>한 후 제안서를 평가하여 계약을 체결하는 방식</p>
+    </div>
+    <div class="law-ref">국가계약법 시행령 제43조의3 (2018년 신설) · 지방계약법 시행령 제44조의2 · 기획재정부 계약예규 「경쟁적 대화에 의한 계약체결기준」</div>
+    <div class="memo">경쟁적 대화 = 계약목적물 자체를 대화로 확정 후 최종제안서 제출 → 평가 → 계약</div>
+  </div>
+
+  <div class="g2">
+    <div class="card">
+      <div class="card-h"><div class="ico iy">⚡</div><h3>도입 배경</h3></div>
+      <ul class="il">
+        <li><strong>기존 한계:</strong> 협상에 의한 계약은 발주기관이 요구사항을 사전에 명확히 알아야 함</li>
+        <li><strong>문제:</strong> 혁신기술·복잡계약에서 <em>세부 요구사항을 미리 특정하기 어려움</em></li>
+        <li><strong>해결:</strong> 대화를 통해 함께 최적 솔루션 도출</li>
+        <li><strong>도입:</strong> EU 공공조달지침(2004) → 국내 2018년 시행령 신설</li>
+      </ul>
+    </div>
+    <div class="card">
+      <div class="card-h"><div class="ico ig">🌍</div><h3>해외 적용 사례</h3></div>
+      <ul class="il">
+        <li><strong>영국 BBC:</strong> 디지털방송 전환 취약계층 700만명 지원사업자 선정 — 과거 경험 없는 대규모·복잡 사업</li>
+        <li><strong>프랑스:</strong> 혁신기술 해상풍력발전기 설치 — 새로운 기술로 요구사항 사전 특정 불가</li>
+        <li><strong>공통점:</strong> 전례 없는 복잡사업, 다수 대안 존재, 시장 참여자와 함께 해결책 개발 필요</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-h"><div class="ico ip">📊</div><h3>법령 체계</h3></div>
+    <table>
+      <thead><tr><th>법령</th><th>근거 조항</th><th>적용 대상</th></tr></thead>
+      <tbody>
+        <tr><td><strong>국가계약법 시행령</strong></td><td>제43조의3</td><td>중앙행정기관 등 국가기관</td></tr>
+        <tr><td><strong>지방계약법 시행령</strong></td><td>제44조의2</td><td>지방자치단체</td></tr>
+        <tr><td><strong>기재부 계약예규</strong></td><td>경쟁적 대화에 의한 계약체결기준</td><td>세부 방법·절차·비용 지급</td></tr>
+        <tr><td><strong>조달청 세부기준</strong></td><td>경쟁적 대화에 의한 계약체결 세부기준</td><td>조달청 집행 물품·용역</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- ===== P2: 적용 요건 ===== -->
+<div class="pnl" id="p2">
+  <div class="card">
+    <div class="card-h"><div class="ico iy">⚙️</div><h3>경쟁적 대화 적용 요건 (3가지 중 하나 해당)</h3></div>
+    <p style="font-size:12px;color:var(--mu);margin-bottom:12px;">전문성·기술성이 요구되는 <strong style="color:var(--a1)">물품 또는 용역계약</strong>으로서 다음 각 호의 어느 하나에 해당하는 경우</p>
+    <div class="req-box">
+      <div class="req-num">요건 ①</div>
+      <div class="req-text"><strong>기술적 요구사항이나 최종 계약목적물의 세부내용을 미리 정하기 어려운 경우</strong><br><span style="font-size:11.5px;color:var(--mu)">→ 신기술·혁신기술 적용으로 요구사항 특정 불가, 발주기관의 전문지식 부족</span></div>
+    </div>
+    <div class="req-box">
+      <div class="req-num">요건 ②</div>
+      <div class="req-text"><strong>물품·용역 등의 대안이 다양하여 최적의 대안을 선정하기 어려운 경우</strong><br><span style="font-size:11.5px;color:var(--mu)">→ 여러 기술·방식이 경쟁 가능, 발주기관 단독으로 최적 솔루션 판단 어려움</span></div>
+    </div>
+    <div class="req-box">
+      <div class="req-num">요건 ③</div>
+      <div class="req-text"><strong>상용화되지 아니한 물품을 구매하려는 경우</strong><br><span style="font-size:11.5px;color:var(--mu)">→ 시장에 없는 새로운 제품·서비스, R&D 연계 혁신 조달</span></div>
+    </div>
+    <div class="memo">3가지 요건: ①세부내용 미확정 ②대안 다양 ③상용화 미완 — 셋 중 하나만 해당되면 가능</div>
+  </div>
+
+  <div class="g2">
+    <div class="card">
+      <div class="card-h"><div class="ico ig">✅</div><h3>경쟁적 대화 적합 사업 유형</h3></div>
+      <ul class="il">
+        <li>대규모 <strong>공공 IT·정보시스템</strong> 구축사업 (혁신기술 기반)</li>
+        <li>전례 없는 <strong>복잡한 인프라·시설물</strong> 구축</li>
+        <li><strong>신기술·신서비스</strong> 도입 계약</li>
+        <li><strong>민관 협력(PPP)</strong> 대형 프로젝트</li>
+        <li>상용화되지 않은 <strong>혁신 제품</strong> 공공구매</li>
+        <li>다양한 기술 대안이 공존하는 <strong>융복합 사업</strong></li>
+      </ul>
+    </div>
+    <div class="card">
+      <div class="card-h"><div class="ico ir">⚠️</div><h3>부적합 사업 유형</h3></div>
+      <ul class="il">
+        <li><strong>요구사항이 명확한</strong> 일반 구매·용역</li>
+        <li>기술 대안이 단순하거나 <strong>표준화된</strong> 사업</li>
+        <li><strong>단순 노무 용역</strong> (청소·경비 등)</li>
+        <li>이미 상용화된 제품의 <strong>일반 구매</strong></li>
+        <li>발주기관이 충분한 전문지식을 갖춘 <strong>반복 사업</strong></li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-h"><div class="ico io">📣</div><h3>입찰 공고 시 명시 의무</h3></div>
+    <ul class="il">
+      <li>입찰공고 시 <strong>경쟁적 대화에 의한 계약이라는 뜻을 명시</strong>하여야 함</li>
+      <li>기본 제안요청서 교부 또는 열람 방법 안내</li>
+      <li>경쟁적 대화 참여비용 지급 여부 및 방법 사전 공고</li>
+      <li>낙찰자로 선정되지 않은 자에 대한 <em>참여비용 전부 또는 일부 지급 가능</em></li>
+    </ul>
+    <div class="memo">⭐ 경쟁적 대화 참여비용 → 낙찰 실패자에게도 예산 범위 내 지급 가능 (협상계약과 차이)</div>
+  </div>
+</div>
+
+<!-- ===== P3: 절차 ===== -->
+<div class="pnl" id="p3">
+  <div class="card">
+    <div class="card-h"><div class="ico ib">🔄</div><h3>경쟁적 대화에 의한 계약 절차 (6단계)</h3></div>
+    <div class="proc-wrap">
+      <!-- 1 -->
+      <div class="proc-step">
+        <div class="proc-line"><div class="proc-dot" style="background:rgba(96,165,250,.2);color:var(--a1)">1</div><div class="proc-vline"></div></div>
+        <div class="proc-content" onclick="this.classList.toggle('open')">
+          <div class="proc-title" style="color:var(--a1)">입찰 공고 및 기본제안서 제출</div>
+          <div class="proc-sub">경쟁적 대화 계약임을 명시 · 기본 제안요청서 교부</div>
+          <div class="proc-detail">
+            <ul class="il">
+              <li><strong>입찰공고:</strong> 경쟁적 대화에 의한 계약임을 명시 (의무)</li>
+              <li><strong>기본 제안요청서:</strong> 기본적인 요구사항 및 제안서 작성 기준 제시</li>
+              <li><strong>기본제안서:</strong> 입찰 참가자가 기술능력·수행방안 등을 담아 제출</li>
+              <li>기본제안서는 상세 기술능력 중심 — 가격 중심 아님</li>
+            </ul>
+            <div class="out-chips"><span class="chip">입찰공고</span><span class="chip">기본 제안요청서</span><span class="chip">기본제안서</span></div>
+          </div>
+        </div>
+      </div>
+      <!-- 2 -->
+      <div class="proc-step">
+        <div class="proc-line"><div class="proc-dot" style="background:rgba(192,132,252,.2);color:var(--a2)">2</div><div class="proc-vline"></div></div>
+        <div class="proc-content" onclick="this.classList.toggle('open')">
+          <div class="proc-title" style="color:var(--a2)">기본제안서 평가 → 참여적격자 선정</div>
+          <div class="proc-sub">사업추진단이 기술능력 종합 평가 · 대화 참여 대상자 선정</div>
+          <div class="proc-detail">
+            <ul class="il">
+              <li><strong>평가 주체:</strong> 사업추진단 (수요기관의 장이 설치한 임시조직)</li>
+              <li><strong>기술자문단:</strong> 평가 과정에서 전문 자문 제공</li>
+              <li><strong>감시인:</strong> 공정성·투명성 점검</li>
+              <li><strong>참여적격자:</strong> 기본제안서 평가 합격자 → 경쟁적 대화 참여 자격</li>
+              <li>탈락자에게는 결과 통보 (이의신청 가능)</li>
+            </ul>
+            <div class="out-chips"><span class="chip">기본제안서 평가 결과서</span><span class="chip">참여적격자 명단</span></div>
+          </div>
+        </div>
+      </div>
+      <!-- 3 -->
+      <div class="proc-step">
+        <div class="proc-line"><div class="proc-dot" style="background:rgba(52,211,153,.2);color:var(--a3)">3</div><div class="proc-vline"></div></div>
+        <div class="proc-content" onclick="this.classList.toggle('open')">
+          <div class="proc-title" style="color:var(--a3)">🗣️ 경쟁적 대화 실시 (핵심 단계)</div>
+          <div class="proc-sub">대화참여자들과 개별 기술적 대화 → 계약목적물 세부내용 조정·확정</div>
+          <div class="proc-detail">
+            <ul class="il">
+              <li><strong>대화 원칙:</strong> 참여자별 <em>개별 분리 진행</em> — 타 참여자의 기술정보 누출 금지</li>
+              <li><strong>대화 내용:</strong> 계약목적물 세부내용, 이행방안, 기술적 요구사항 조정</li>
+              <li><strong>회의록:</strong> 서기가 각 대화 내용을 회의록으로 정리</li>
+              <li><strong>반복 가능:</strong> 필요 시 복수 라운드 대화 실시</li>
+              <li><strong>대화 종결:</strong> 최적 대안이 확인되면 종결 선언</li>
+              <li><strong>최종제안서 제출 적격자:</strong> 대화 종결 후 자격 부여</li>
+            </ul>
+            <div class="out-chips"><span class="chip">대화 회의록</span><span class="chip">조정된 요구사항</span></div>
+          </div>
+        </div>
+      </div>
+      <!-- 4 -->
+      <div class="proc-step">
+        <div class="proc-line"><div class="proc-dot" style="background:rgba(251,191,36,.2);color:var(--a4)">4</div><div class="proc-vline"></div></div>
+        <div class="proc-content" onclick="this.classList.toggle('open')">
+          <div class="proc-title" style="color:var(--a4)">최종 제안요청서 교부 → 최종제안서 제출</div>
+          <div class="proc-sub">대화로 확정된 요구사항 기반 최종 제안요청서 교부</div>
+          <div class="proc-detail">
+            <ul class="il">
+              <li><strong>최종 제안요청서:</strong> 경쟁적 대화 결과 확정된 세부 요구사항 반영</li>
+              <li><strong>교부 대상:</strong> 대화 종결 후 최종제안서 제출 적격자에게 교부</li>
+              <li><strong>최종제안서:</strong> 기술능력 + 가격(입찰가격) 포함</li>
+              <li>최종제안서 미제출 시 → 가격입찰서 미제출로 간주</li>
+            </ul>
+            <div class="out-chips"><span class="chip">최종 제안요청서</span><span class="chip">최종제안서 (기술+가격)</span></div>
+          </div>
+        </div>
+      </div>
+      <!-- 5 -->
+      <div class="proc-step">
+        <div class="proc-line"><div class="proc-dot" style="background:rgba(248,113,113,.2);color:var(--a5)">5</div><div class="proc-vline"></div></div>
+        <div class="proc-content" onclick="this.classList.toggle('open')">
+          <div class="proc-title" style="color:var(--a5)">최종제안서 평가 → 낙찰자 선정</div>
+          <div class="proc-sub">제안서평가위원회 심의 · 기술+가격 종합 평가</div>
+          <div class="proc-detail">
+            <ul class="il">
+              <li><strong>평가 주체:</strong> 제안서평가위원회 (협상계약과 동일 방식 준용)</li>
+              <li><strong>평가 요소:</strong> 이행실적·기술능력·사업수행계획·재무상태·입찰가격 종합</li>
+              <li><strong>준용 규정:</strong> 협상에 의한 계약 제43조 제4항·5항·7항~9항 준용</li>
+              <li>협상절차 없이 제안서 평가만으로 낙찰자 결정</li>
+            </ul>
+            <div class="out-chips"><span class="chip">최종제안서 평가 결과서</span><span class="chip">낙찰자 결정서</span></div>
+          </div>
+        </div>
+      </div>
+      <!-- 6 -->
+      <div class="proc-step">
+        <div class="proc-line"><div class="proc-dot" style="background:rgba(52,211,153,.2);color:var(--a3)">6</div></div>
+        <div class="proc-content" onclick="this.classList.toggle('open')">
+          <div class="proc-title" style="color:var(--a3)">계약 체결 + 참여비용 지급</div>
+          <div class="proc-sub">낙찰자와 계약 체결 · 낙찰 실패자에 참여비용 지급 가능</div>
+          <div class="proc-detail">
+            <ul class="il">
+              <li><strong>계약 체결:</strong> 가장 유리하다고 인정되는 자와 계약 체결</li>
+              <li><strong>참여비용 지급:</strong> 낙찰자로 선정되지 않은 참여자에게 <em>예산 범위 내 전부 또는 일부 지급 가능</em></li>
+              <li>참여비용 지급 여부는 사전에 입찰공고 시 명시</li>
+              <li>혁신조달 참여 인센티브 — 민간 부담 경감 목적</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="memo">입찰공고→기본제안서→참여적격자→경쟁적대화→최종제안서→평가→계약+참여비용</div>
+  </div>
+</div>
+
+<!-- ===== P4: 조직·용어 ===== -->
+<div class="pnl" id="p4">
+  <div class="card">
+    <div class="card-h"><div class="ico ip">🏛️</div><h3>경쟁적 대화 추진 조직</h3></div>
+    <div class="org-grid">
+      <div class="org-card">
+        <div class="org-title" style="color:var(--a1)">📋 사업추진단</div>
+        <ul class="il">
+          <li>수요기관의 장이 <strong>설치한 임시 조직</strong></li>
+          <li>경쟁적 대화 절차 전반 관리·진행</li>
+          <li>기본제안서 평가 수행</li>
+          <li>대화 과정 총괄 운영</li>
+        </ul>
+      </div>
+      <div class="org-card">
+        <div class="org-title" style="color:var(--a3)">🎓 기술자문단</div>
+        <ul class="il">
+          <li>수요기관의 장이 임명한 <strong>부문별 전문가</strong></li>
+          <li>기본제안서 평가 시 자문·조언</li>
+          <li>경쟁적 대화 과정에서 기술 자문</li>
+          <li>전문성 보완 역할</li>
+        </ul>
+      </div>
+      <div class="org-card">
+        <div class="org-title" style="color:var(--a4)">👀 감시인</div>
+        <ul class="il">
+          <li>수요기관의 장이 임명</li>
+          <li>절차 전반의 <strong>공정성·투명성 담보</strong></li>
+          <li>대화 내용 기밀 유지 감시</li>
+          <li>타 참여자 정보 누출 방지</li>
+        </ul>
+      </div>
+      <div class="org-card">
+        <div class="org-title" style="color:var(--a6)">✍️ 서기</div>
+        <ul class="il">
+          <li>수요기관의 장이 임명</li>
+          <li>대화 과정에서 협의한 내용을 <strong>회의록으로 정리</strong></li>
+          <li>대화 결과의 기록·보존 담당</li>
+        </ul>
+      </div>
+    </div>
+    <div class="memo">4대 조직: 사업추진단(운영) + 기술자문단(자문) + 감시인(공정성) + 서기(회의록)</div>
+  </div>
+
+  <div class="card">
+    <div class="card-h"><div class="ico ib">📖</div><h3>핵심 용어 정의</h3></div>
+    <div class="term-grid">
+      <div class="term-card">
+        <div class="term-name" style="color:var(--a1)">기본 제안요청서</div>
+        <div class="term-def">입찰 참가자에게 기본제안서 제출을 요청하기 위해 교부·열람하게 하는 서류</div>
+      </div>
+      <div class="term-card">
+        <div class="term-name" style="color:var(--a1)">기본제안서</div>
+        <div class="term-def">입찰 참가자가 기본 제안요청서에 따라 작성·제출하는 서류 (기술능력 중심)</div>
+      </div>
+      <div class="term-card">
+        <div class="term-name" style="color:var(--a2)">참여적격자</div>
+        <div class="term-def">기본제안서 평가 결과에 따라 경쟁적 대화에 참여할 대상자로 선정된 자</div>
+      </div>
+      <div class="term-card">
+        <div class="term-name" style="color:var(--a2)">대화참여자</div>
+        <div class="term-def">참여적격자 중에서 실제로 경쟁적 대화에 참여하는 자</div>
+      </div>
+      <div class="term-card">
+        <div class="term-name" style="color:var(--a4)">최종 제안요청서</div>
+        <div class="term-def">경쟁적 대화 과정에 참여한 자에게 최종제안서 제출을 요청하기 위한 서류 (대화 결과 반영)</div>
+      </div>
+      <div class="term-card">
+        <div class="term-name" style="color:var(--a4)">최종제안서</div>
+        <div class="term-def">대화 과정 참여자가 최종 제안요청서에 따라 작성하는 서류 (기술+가격 포함)</div>
+      </div>
+      <div class="term-card">
+        <div class="term-name" style="color:var(--a3)">최종제안서 제출 적격자</div>
+        <div class="term-def">대화참여자 중에서 수요기관의 장이 최종제안서 제출 자격을 인정한 자</div>
+      </div>
+      <div class="term-card">
+        <div class="term-name" style="color:var(--a3)">기본제안서 평가</div>
+        <div class="term-def">참여적격자 선정을 위해 사업추진단이 기술능력을 종합적으로 평가하는 것</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-h"><div class="ico ig">🔑</div><h3>경쟁적 대화 핵심 원칙</h3></div>
+    <table>
+      <thead><tr><th>원칙</th><th>내용</th></tr></thead>
+      <tbody>
+        <tr><td><span class="tag tb">개별 분리</span></td><td>각 참여자와 <strong>개별적으로 분리</strong>하여 대화 실시 — 타 참여자 정보 공유 금지</td></tr>
+        <tr><td><span class="tag tp">기밀 보호</span></td><td>참여자의 기술적 해결책·지식재산권 등 <strong>기밀 정보 보호</strong> 의무</td></tr>
+        <tr><td><span class="tag tg">공정성</span></td><td>모든 참여자에게 동등한 대화 기회 제공, 특정 참여자 편향 금지</td></tr>
+        <tr><td><span class="tag ty">투명성</span></td><td>대화 내용 회의록 작성, 절차의 투명성 확보</td></tr>
+        <tr><td><span class="tag tr">참여비용</span></td><td>낙찰 실패자에게도 예산 범위 내 <strong>참여비용 전부 또는 일부 지급 가능</strong></td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- ===== P5: 협상계약 비교 ===== -->
+<div class="pnl" id="p5">
+  <div class="card">
+    <div class="card-h"><div class="ico ip">⚖️</div><h3>경쟁적 대화 vs 협상에 의한 계약 비교</h3></div>
+    <table>
+      <thead><tr><th>구분</th><th style="color:var(--a1)">경쟁적 대화</th><th style="color:var(--a3)">협상에 의한 계약</th></tr></thead>
+      <tbody>
+        <tr><td><strong>법적 근거</strong></td><td>국가계약법 시행령 §43조의3</td><td>국가계약법 시행령 §43조</td></tr>
+        <tr><td><strong>적용 요건</strong></td><td>계약목적물 세부내용 <strong>미확정</strong>, 대안 다양, 비상용화 물품</td><td>전문성·기술성·창의성 요구 — 계약내용이 <strong>어느 정도 특정</strong></td></tr>
+        <tr><td><strong>핵심 차이</strong></td><td>대화로 <strong>계약목적물 자체를 확정</strong>한 후 제안서 제출</td><td>제안서 제출 후 <strong>협상</strong>을 통해 계약 조건 조정</td></tr>
+        <tr><td><strong>절차</strong></td><td>기본제안서→대화→최종제안서→평가→계약</td><td>제안서→협상→계약</td></tr>
+        <tr><td><strong>요구사항 명확성</strong></td><td>대화 전: <em>불명확</em> / 대화 후: 확정</td><td>제안요청서 작성 시 <em>어느 정도 특정</em></td></tr>
+        <tr><td><strong>참여비용</strong></td><td>낙찰 실패자에게도 <strong>지급 가능</strong></td><td>별도 규정 없음</td></tr>
+        <tr><td><strong>추진 조직</strong></td><td>사업추진단·기술자문단·감시인·서기 <strong>별도 구성</strong></td><td>제안서평가위원회 중심</td></tr>
+        <tr><td><strong>대화/협상 시점</strong></td><td>제안서 제출 <strong>이전</strong></td><td>제안서 제출 <strong>이후</strong></td></tr>
+        <tr><td><strong>적용 사업</strong></td><td>혁신기술·복잡계약·비상용화 물품</td><td>IT용역·컨설팅·연구용역 등 일반 전문용역</td></tr>
+      </tbody>
+    </table>
+    <div class="memo">핵심 차이: 경쟁적대화=대화로 계약목적물 확정 후 제안서 / 협상=제안서 후 협상</div>
+  </div>
+
+  <div class="g2">
+    <div class="card">
+      <h3 style="margin-bottom:10px;font-size:13px;">📋 경쟁적 대화만의 특징</h3>
+      <ul class="il">
+        <li><strong>계약목적물 미확정 상태에서 시작</strong> — 대화로 함께 설계</li>
+        <li>기본제안서 → 경쟁적 대화 → 최종 제안요청서 순서</li>
+        <li><strong>사업추진단, 기술자문단, 감시인, 서기</strong> 별도 구성 필요</li>
+        <li><strong>참여비용 지급 제도</strong> — 낙찰 실패자 부담 경감</li>
+        <li>개별 분리 대화 원칙 — 기밀 보호</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3 style="margin-bottom:10px;font-size:13px;">📋 협상에 의한 계약만의 특징</h3>
+      <ul class="il">
+        <li>계약내용 어느 정도 특정된 상태에서 제안서 제출</li>
+        <li>제안서 평가 후 <strong>협상절차</strong>로 계약 조건 조정</li>
+        <li>협상에의한계약 체결기준 준용</li>
+        <li>지식기반산업 등에 <strong>우선 적용 가능</strong></li>
+        <li>경쟁적 대화보다 적용 범위가 넓음 (일반 전문용역)</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-h"><div class="ico iy">🔗</div><h3>준용 관계</h3></div>
+    <ul class="il">
+      <li>경쟁적 대화에 의한 계약 체결 시 <strong>제안요청서 설명, 세부 계약체결기준, 제안서 평가</strong>에 관해서는 협상에 의한 계약 관련 조항(제43조 제4항·5항·7항~9항)을 준용</li>
+      <li>준용 시 "협상에 의한 계약"은 <em>"경쟁적 대화에 의한 계약"으로 대체</em></li>
+      <li>세부 사항(대화 방법·절차·참여비용 지급)은 기획재정부장관이 별도 계약예규로 정함</li>
+    </ul>
+    <div class="memo">경쟁적 대화 = 협상계약 준용 + 추가 특례(대화 절차·참여비용 등)</div>
+  </div>
+</div>
+
+<!-- ===== P6: 예상문제 ===== -->
+<div class="pnl" id="p6">
+  <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;margin-bottom:14px;">
+    <div class="fb-wr" id="fbar" style="margin:0;">
+      <button class="fb on" data-f="all">전체</button>
+      <button class="fb" data-f="개요">📌 개요</button>
+      <button class="fb" data-f="요건">⚙️ 요건</button>
+      <button class="fb" data-f="절차">🔄 절차</button>
+      <button class="fb" data-f="조직">🏛️ 조직·용어</button>
+      <button class="fb" data-f="비교">⚖️ 비교</button>
+      <button class="fb" data-f="OX">⭕ OX</button>
+    </div>
+    <div class="sc-b">정답: <span id="sc">0</span>/<span id="st">0</span></div>
+  </div>
+  <div id="ql"></div>
+</div>
+
+</div>
+
+<script>
+document.querySelectorAll('.tab').forEach(t=>t.addEventListener('click',()=>{
+  document.querySelectorAll('.tab,.pnl').forEach(x=>x.classList.remove('on'));
+  t.classList.add('on');document.getElementById(t.dataset.p).classList.add('on');
+}));
+
+const QA=[
+  {cat:'개요',diff:'easy',
+   q:'경쟁적 대화에 의한 계약의 법적 근거(국가기관)로 올바른 것은?',
+   cs:['국가계약법 시행령 제43조','국가계약법 시행령 제43조의3','국가계약법 제27조','기획재정부령 제43조의2'],
+   ans:1,
+   exp:'경쟁적 대화에 의한 계약의 법적 근거는 <strong>국가계약법 시행령 제43조의3</strong>(2018년 신설)입니다. 지방자치단체의 경우 지방계약법 시행령 제44조의2가 근거이며, 세부 방법·절차는 기획재정부 계약예규(경쟁적 대화에 의한 계약체결기준)에서 정합니다.'},
+  {cat:'개요',diff:'mid',
+   q:'경쟁적 대화에 의한 계약의 핵심 특징으로 가장 적절한 것은?',
+   cs:['제안서를 제출받아 평가한 후 협상절차를 통해 최종 계약 조건을 결정하는 방식',
+       '입찰대상자들과 경쟁적·기술적 대화를 통해 계약목적물의 세부내용을 확정한 후 제안서를 평가하는 방식',
+       '최저가 입찰자와 계약하되 기술능력을 추가 평가하는 방식',
+       '단독 사업자와 수의계약을 체결하되 기술 검증을 거치는 방식'],
+   ans:1,
+   exp:'경쟁적 대화의 핵심: <strong>입찰대상자들과 경쟁적·기술적 대화를 통해 계약목적물의 세부내용 및 이행방안을 조정·확정한 후 제안서를 제출받아 평가</strong>하여 계약 체결. 대화 후 최종제안서를 받는 것이 협상계약과 다른 점입니다.'},
+  {cat:'요건',diff:'mid',
+   q:'경쟁적 대화에 의한 계약 적용 요건으로 규정된 3가지 중 가장 적절하지 않은 것은?',
+   cs:['기술적 요구사항이나 최종 계약목적물의 세부내용을 미리 정하기 어려운 경우',
+       '물품·용역 등의 대안이 다양하여 최적의 대안을 선정하기 어려운 경우',
+       '상용화되지 아니한 물품을 구매하려는 경우',
+       '입찰 참가자 수가 3인 미만으로 경쟁이 제한되는 경우'],
+   ans:3,
+   exp:'경쟁적 대화의 적용 요건 3가지는: <strong>①세부내용 미확정, ②대안 다양, ③비상용화 물품</strong>입니다. "입찰자 수 제한"은 별도 수의계약 요건이며, 경쟁적 대화의 적용 요건이 아닙니다. 셋 중 하나만 해당되어도 적용 가능합니다.'},
+  {cat:'요건',diff:'hard',
+   q:'경쟁적 대화에 의한 계약 입찰 공고 시 반드시 명시해야 하는 것은?',
+   cs:['예정가격','최소 참여자 수','경쟁적 대화에 의한 계약이라는 뜻','기술자문단 구성 계획'],
+   ans:2,
+   exp:'경쟁적 대화에 의한 계약을 체결하려는 경우 입찰공고 시 <strong>경쟁적 대화에 의한 계약이라는 뜻을 명시</strong>해야 합니다(국가계약법 시행령 제43조의3 제2항). 예정가격은 비공개가 원칙이며, 기술자문단 구성은 내부 준비사항입니다.'},
+  {cat:'절차',diff:'mid',
+   q:'경쟁적 대화에 의한 계약 절차를 올바른 순서로 나열한 것은?',
+   cs:['최종제안서 → 경쟁적 대화 → 기본제안서 → 평가 → 계약',
+       '기본제안서 → 참여적격자 선정 → 경쟁적 대화 → 최종제안서 → 평가 → 계약',
+       '입찰공고 → 협상 → 최종제안서 → 경쟁적 대화 → 계약',
+       '기본제안서 → 최종제안서 → 경쟁적 대화 → 평가 → 계약'],
+   ans:1,
+   exp:'올바른 순서: <strong>입찰공고→기본제안서 제출→기본제안서 평가(참여적격자 선정)→경쟁적 대화→최종 제안요청서 교부→최종제안서 제출→최종제안서 평가→낙찰자 선정→계약 체결</strong>. 대화가 기본제안서 이후, 최종제안서 이전에 위치하는 것이 핵심입니다.'},
+  {cat:'절차',diff:'hard',
+   q:'경쟁적 대화 실시 시 준수해야 할 원칙으로 가장 적절하지 않은 것은?',
+   cs:['참여자별 개별·분리하여 대화를 실시한다.',
+       '감시인이 절차의 공정성과 투명성을 점검한다.',
+       '서기가 대화 내용을 회의록으로 정리한다.',
+       '모든 참여자를 한 자리에 모아 공개 토론 방식으로 대화를 진행한다.'],
+   ans:3,
+   exp:'경쟁적 대화는 <strong>참여자별 개별·분리 방식</strong>으로 진행됩니다. 모든 참여자를 한 자리에 모아 공개 토론하는 방식이면 타 참여자의 기술 아이디어가 노출되어 기밀 보호 원칙에 위반됩니다. 대화 내용은 회의록으로 정리하고 감시인이 공정성을 점검합니다.'},
+  {cat:'절차',diff:'mid',
+   q:'경쟁적 대화에서 "최종제안서 미제출" 시의 법적 효과로 가장 적절한 것은?',
+   cs:['참여적격자 지위를 잃지만 다음 입찰에는 참여 가능하다.',
+       '감시인의 판단에 따라 기본제안서로 대체 처리된다.',
+       '가격입찰서를 제출하지 않은 것으로 간주된다.',
+       '자동으로 최저가 입찰자로 처리된다.'],
+   ans:2,
+   exp:'경쟁적 대화에서 입찰자가 최종제안서를 제출하지 않은 경우 <strong>가격입찰서를 제출하지 않은 것으로 간주</strong>됩니다. 이는 실질적으로 해당 입찰에서 탈락을 의미합니다.'},
+  {cat:'조직',diff:'mid',
+   q:'경쟁적 대화에서 "절차 전반의 공정성 및 투명성을 담보하기 위해 수요기관의 장이 임명한 자"는?',
+   cs:['기술자문단','사업추진단','감시인','서기'],
+   ans:2,
+   exp:'<strong>감시인</strong>은 경쟁적 대화에 의한 계약체결 절차 전반의 <em>공정성 및 투명성을 담보</em>하기 위하여 수요기관의 장이 임명합니다. 기술자문단은 전문 자문, 서기는 회의록 작성, 사업추진단은 전체 절차 운영을 담당합니다.'},
+  {cat:'조직',diff:'mid',
+   q:'경쟁적 대화 과정에서 대화 내용을 회의록으로 정리하는 역할을 하는 자는?',
+   cs:['감시인','서기','기술자문단','사업추진단장'],
+   ans:1,
+   exp:'<strong>서기</strong>는 경쟁적 대화를 실시하는 과정에서 협의한 내용을 <em>회의록으로 정리</em>하기 위하여 수요기관의 장이 임명합니다. 회의록은 절차의 투명성 확보 및 이후 분쟁 시 근거 자료로 활용됩니다.'},
+  {cat:'조직',diff:'hard',
+   q:'"참여적격자 중에서 수요기관의 장이 최종제안서 제출 자격을 인정한 자"를 지칭하는 용어는?',
+   cs:['대화참여자','참여적격자','최종제안서 제출 적격자','우선 협상 대상자'],
+   ans:2,
+   exp:'<strong>최종제안서 제출 적격자</strong>: 대화참여자 중에서 수요기관의 장이 최종제안서 제출 자격을 인정한 자. 구분이 중요합니다: <em>참여적격자</em>(기본제안서 평가 합격) → <em>대화참여자</em>(실제 대화 참여) → <em>최종제안서 제출 적격자</em>(대화 종결 후 자격 인정).'},
+  {cat:'비교',diff:'mid',
+   q:'경쟁적 대화에 의한 계약과 협상에 의한 계약의 가장 큰 차이점으로 가장 적절한 것은?',
+   cs:['경쟁적 대화는 낙찰자 결정 후 협상이 있고, 협상계약은 협상 없이 제안서만 평가한다.',
+       '경쟁적 대화는 대화로 계약목적물 자체를 확정한 후 제안서를 제출하지만, 협상계약은 제안서 제출 후 협상으로 계약 조건을 조정한다.',
+       '경쟁적 대화는 가격 중심, 협상계약은 기술능력 중심으로 평가한다.',
+       '경쟁적 대화는 지방자치단체만, 협상계약은 국가기관만 적용 가능하다.'],
+   ans:1,
+   exp:'핵심 차이: <strong>경쟁적 대화</strong>는 대화(계약목적물 미확정 상태)로 계약목적물 세부내용을 확정한 후 최종제안서를 제출합니다. <em>협상계약</em>은 계약내용이 어느 정도 특정된 상태에서 제안서를 제출받아 평가한 후 협상절차를 통해 계약 조건을 조정합니다.'},
+  {cat:'비교',diff:'hard',
+   q:'경쟁적 대화에 의한 계약에서만 존재하는 특징으로 가장 적절한 것은?',
+   cs:['제안서평가위원회의 심의를 거쳐 최종제안서를 평가한다.',
+       '이행실적·기술능력·사업수행계획·재무상태·입찰가격을 종합 평가한다.',
+       '낙찰자로 선정되지 않은 참여자에게 참여비용의 전부 또는 일부를 지급할 수 있다.',
+       '제안요청서 설명 시 협상계약 관련 조항을 준용한다.'],
+   ans:2,
+   exp:'<strong>참여비용 지급</strong>은 경쟁적 대화에만 있는 특별 제도입니다. 대화 참여에 상당한 비용이 드는 혁신계약의 특성상 낙찰 실패자에게도 예산 범위 내 참여비용의 전부 또는 일부를 지급할 수 있습니다. ①②④는 협상계약에서도 동일하게 적용됩니다.'},
+  // OX
+  {cat:'OX',diff:'easy',type:'ox',
+   q:'경쟁적 대화에 의한 계약은 계약목적물의 세부내용을 먼저 확정한 후 대화를 진행한다.',
+   ans:false,
+   exp:'<strong>×</strong> — 경쟁적 대화는 <em>계약목적물의 세부내용을 미리 확정하기 어려운 경우</em>에 사용하며, <strong>대화를 통해 계약목적물의 세부내용을 조정·확정</strong>합니다. 내용이 사전에 확정된 경우라면 협상에 의한 계약을 활용합니다.'},
+  {cat:'OX',diff:'mid',type:'ox',
+   q:'경쟁적 대화에서 낙찰자로 선정되지 않은 참여자에게도 예산 범위 내에서 참여비용의 전부 또는 일부를 지급할 수 있다.',
+   ans:true,
+   exp:'<strong>○</strong> — 국가계약법 시행령 제43조의3 제5항에서 <em>경쟁적 대화에 참여하고 제안서를 제출한 자 중 낙찰자로 선정되지 않은 참여자에게 예산의 범위에서 경쟁적 대화 참여비용의 전부 또는 일부를 지급할 수 있다</em>고 규정합니다.'},
+  {cat:'OX',diff:'mid',type:'ox',
+   q:'경쟁적 대화에서 모든 참여자를 동시에 한 장소에 모아 공개 토론 방식으로 대화를 진행해야 한다.',
+   ans:false,
+   exp:'<strong>×</strong> — 경쟁적 대화는 각 참여자와 <strong>개별·분리하여 대화</strong>를 실시합니다. 이는 타 참여자의 기술적 해결책이나 지식재산권 등 기밀 정보가 누출되지 않도록 보호하기 위한 원칙입니다. 공개 토론 방식은 기밀 보호 원칙에 위반됩니다.'},
+  {cat:'OX',diff:'hard',type:'ox',
+   q:'경쟁적 대화에서 "사업추진단"은 수요기관의 장이 설치한 임시 조직으로, 기본제안서 평가를 수행한다.',
+   ans:true,
+   exp:'<strong>○</strong> — 사업추진단은 수요기관의 장이 경쟁적 대화에 의한 <em>계약체결 절차의 원활한 진행을 위하여 설치한 임시 조직</em>이며, <strong>기본제안서 평가</strong>(참여적격자 선정을 위한 기술능력 종합 평가)를 수행합니다.'},
+  {cat:'OX',diff:'mid',type:'ox',
+   q:'경쟁적 대화에 의한 계약에서 최종제안서 평가 및 제안서평가위원회 관련 사항은 협상에 의한 계약의 해당 조항을 준용한다.',
+   ans:true,
+   exp:'<strong>○</strong> — 국가계약법 시행령 제43조의3 제6항에서 <em>제안요청서에 대한 설명, 세부적인 계약체결기준 및 제안서 평가 등에 관하여는 제43조(협상에 의한 계약) 관련 규정을 준용</em>하되, "협상에 의한 계약"을 "경쟁적 대화에 의한 계약"으로 대체하여 적용합니다.'},
+];
+
+let answered=0,correct=0;
+function renderQ(f){
+  const data=f==='all'?QA:QA.filter(q=>q.cat===f);
+  const list=document.getElementById('ql');list.innerHTML='';
+  answered=0;correct=0;upS();
+  const CATC={'개요':'tb','요건':'ty','절차':'tg','조직':'tp','비교':'to','OX':'tr'};
+  const DLC={'easy':'easy 쉬움','mid':'mid 보통','hard':'hard 어려움'};
+  const NL=['①','②','③','④'];
+  if(!data.length){list.innerHTML='<div style="text-align:center;padding:40px;color:var(--mu)">문제 없음</div>';return;}
+  data.forEach((q,i)=>{
+    const gi=QA.indexOf(q);
+    const el=document.createElement('div');el.className='qa';
+    const tc=CATC[q.cat]||'tb';
+    const [dc,dn]=(DLC[q.diff]||'mid 보통').split(' ');
+    if(q.type==='ox'){
+      el.innerHTML=`<div class="qa-hd" onclick="this.closest('.qa').classList.toggle('open')"><div><div class="qa-meta"><span class="qn">Q${String(i+1).padStart(2,'0')}</span><span class="tag ${tc}">${q.cat}</span><span class="diff ${dc}">${dn}</span><span class="tag tp">O/X</span></div><div class="qq">${q.q}</div></div><span class="tgl">▾</span></div>
+      <div class="qa-bd"><div class="ox-wr"><button class="ox" onclick="pickOX(this,true,${gi})">⭕ 옳다</button><button class="ox" onclick="pickOX(this,false,${gi})">❌ 틀리다</button></div><div class="exp" id="ex-${gi}"><div class="exp-t">💡 해설</div>${q.exp}</div></div>`;
+    } else {
+      el.innerHTML=`<div class="qa-hd" onclick="this.closest('.qa').classList.toggle('open')"><div><div class="qa-meta"><span class="qn">Q${String(i+1).padStart(2,'0')}</span><span class="tag ${tc}">${q.cat}</span><span class="diff ${dc}">${dn}</span></div><div class="qq">${q.q}</div></div><span class="tgl">▾</span></div>
+      <div class="qa-bd"><div class="chs">${q.cs.map((c,ci)=>`<div class="ch" data-ci="${ci}" onclick="pickCh(this,${gi})"><span class="cnum">${NL[ci]}</span><span>${c}</span></div>`).join('')}</div><div class="exp" id="ex-${gi}"><div class="exp-t">💡 해설</div>${q.exp}</div></div>`;
+    }
+    list.appendChild(el);
+  });
+}
+function pickCh(el,gi){
+  const bd=el.closest('.qa-bd');if(bd.querySelector('.ok,.ng'))return;
+  const q=QA[gi];
+  bd.querySelectorAll('.ch').forEach((c,i)=>{c.classList.add('lk');if(i===q.ans)c.classList.add('ok');else if(i===parseInt(el.dataset.ci))c.classList.add('ng');});
+  document.getElementById('ex-'+gi).classList.add('show');
+  answered++;if(parseInt(el.dataset.ci)===q.ans)correct++;upS();
+}
+function pickOX(btn,val,gi){
+  const bd=btn.closest('.qa-bd');if(bd.querySelector('.so,.sx'))return;
+  const q=QA[gi];
+  bd.querySelectorAll('.ox').forEach(b=>b.classList.add('lk'));
+  btn.classList.add(val?'so':'sx');
+  if(val!==q.ans){btn.style.opacity='.5';bd.querySelectorAll('.ox')[val?1:0].classList.add(q.ans?'so':'sx');}
+  document.getElementById('ex-'+gi).classList.add('show');
+  answered++;if(val===q.ans)correct++;upS();
+}
+function upS(){document.getElementById('sc').textContent=correct;document.getElementById('st').textContent=answered;}
+document.getElementById('fbar').addEventListener('click',e=>{
+  const b=e.target.closest('.fb');if(!b)return;
+  document.querySelectorAll('.fb').forEach(x=>x.classList.remove('on'));b.classList.add('on');renderQ(b.dataset.f);
+});
+renderQ('all');
+</script>
+</body>
+</html>

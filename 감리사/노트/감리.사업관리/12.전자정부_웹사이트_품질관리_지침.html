@@ -1,0 +1,678 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&family=JetBrains+Mono:wght@400;700&display=swap');
+:root{
+  --bg:#060e1c;--s1:#0b1626;--s2:#101f38;--s3:#162848;
+  --bdr:#1c3462;--a1:#38bdf8;--a2:#a78bfa;--a3:#34d399;
+  --a4:#fbbf24;--a5:#f87171;--a6:#fb923c;
+  --txt:#e2e8f0;--mu:#64748b;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Noto Sans KR',sans-serif;background:var(--bg);color:var(--txt);min-height:100vh;}
+.hdr{padding:22px 24px 16px;background:linear-gradient(150deg,#060e1c 0%,#0e1e3a 50%,#060e1c 100%);border-bottom:1px solid var(--bdr);position:relative;overflow:hidden;}
+.hdr::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 65% 85% at 80% 30%,rgba(56,189,248,.09),transparent 65%),radial-gradient(ellipse 45% 65% at 20% 80%,rgba(167,139,250,.07),transparent 60%);pointer-events:none;}
+.hdr-r{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:6px;align-items:center;}
+.pill{padding:3px 10px;border-radius:20px;font-size:10px;font-weight:700;letter-spacing:.8px;}
+.p1{background:linear-gradient(135deg,#1e3a8a,var(--a1));color:#fff;}
+.p2{background:rgba(251,191,36,.15);color:var(--a4);border:1px solid rgba(251,191,36,.3);}
+.p3{background:rgba(167,139,250,.15);color:var(--a2);border:1px solid rgba(167,139,250,.3);}
+h1{font-size:19px;font-weight:900;}
+.h1g{background:linear-gradient(90deg,var(--a1),var(--a2),var(--a3));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.hdr p{color:var(--mu);font-size:12px;margin-top:3px;}
+.tabs{display:flex;padding:0 24px;background:var(--s1);border-bottom:1px solid var(--bdr);overflow-x:auto;scrollbar-width:none;}
+.tabs::-webkit-scrollbar{display:none;}
+.tab{padding:11px 14px;font-size:12px;font-weight:600;color:var(--mu);cursor:pointer;border-bottom:2px solid transparent;white-space:nowrap;transition:all .2s;background:none;border-top:none;border-left:none;border-right:none;font-family:'Noto Sans KR',sans-serif;}
+.tab:hover{color:var(--txt);}.tab.on{color:var(--a1);border-bottom-color:var(--a1);}
+.wrap{padding:20px 24px;max-width:960px;margin:0 auto;}
+.pnl{display:none;}.pnl.on{display:block;}
+.card{background:var(--s1);border:1px solid var(--bdr);border-radius:12px;padding:18px;margin-bottom:14px;}
+.card-h{display:flex;align-items:center;gap:10px;margin-bottom:14px;}
+.ico{width:34px;height:34px;border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:17px;flex-shrink:0;}
+.ib{background:rgba(56,189,248,.15);}.ip{background:rgba(167,139,250,.15);}.ig{background:rgba(52,211,153,.15);}.iy{background:rgba(251,191,36,.15);}.ir{background:rgba(248,113,113,.15);}.io{background:rgba(251,146,60,.15);}
+.card h3{font-size:14px;font-weight:700;}
+.tag{display:inline-block;padding:2px 8px;border-radius:4px;font-size:10px;font-weight:600;margin:2px 2px 2px 0;}
+.tb{background:rgba(56,189,248,.12);color:var(--a1);border:1px solid rgba(56,189,248,.25);}
+.tp{background:rgba(167,139,250,.12);color:var(--a2);border:1px solid rgba(167,139,250,.25);}
+.tg{background:rgba(52,211,153,.12);color:var(--a3);border:1px solid rgba(52,211,153,.25);}
+.ty{background:rgba(251,191,36,.12);color:var(--a4);border:1px solid rgba(251,191,36,.25);}
+.tr{background:rgba(248,113,113,.12);color:var(--a5);border:1px solid rgba(248,113,113,.25);}
+.to{background:rgba(251,146,60,.12);color:var(--a6);border:1px solid rgba(251,146,60,.25);}
+table{width:100%;border-collapse:collapse;font-size:12.5px;}
+th{background:var(--s2);color:var(--mu);font-weight:700;padding:8px 12px;text-align:left;font-size:10px;text-transform:uppercase;letter-spacing:.5px;border-bottom:1px solid var(--bdr);}
+td{padding:9px 12px;border-bottom:1px solid rgba(28,52,96,.45);vertical-align:top;line-height:1.6;}
+tr:last-child td{border-bottom:none;}
+tr:hover td{background:rgba(255,255,255,.02);}
+td strong{color:var(--a4);}
+ul.il{list-style:none;display:flex;flex-direction:column;gap:7px;}
+ul.il li{font-size:12.5px;padding-left:16px;position:relative;line-height:1.55;}
+ul.il li::before{content:'▸';position:absolute;left:0;color:var(--a1);font-size:10px;top:3px;}
+ul.il li strong{color:var(--a4);}
+ul.il li em{color:var(--a3);font-style:normal;}
+.memo{background:linear-gradient(135deg,rgba(56,189,248,.07),rgba(167,139,250,.07));border:1px solid rgba(56,189,248,.22);border-left:3px solid var(--a1);border-radius:8px;padding:10px 14px;font-size:12.5px;font-weight:600;color:var(--a1);margin:10px 0;}
+.memo::before{content:'🎯 한 줄 암기 │ ';color:var(--mu);font-weight:400;}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:14px;}
+@media(max-width:600px){.g2{grid-template-columns:1fr;}}
+.law-ref{background:rgba(251,191,36,.08);border:1px solid rgba(251,191,36,.25);border-radius:8px;padding:10px 14px;font-size:12px;line-height:1.6;color:var(--a4);margin:8px 0;}
+.law-ref::before{content:'⚖️ 법령 │ ';color:var(--mu);}
+
+/* 7대 원칙 카드 */
+.principle-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin:12px 0;}
+@media(max-width:640px){.principle-grid{grid-template-columns:1fr 1fr;}}
+.pc{border-radius:10px;padding:13px;border:1px solid;cursor:pointer;transition:transform .15s,box-shadow .15s;}
+.pc:hover{transform:translateY(-2px);box-shadow:0 4px 16px rgba(0,0,0,.3);}
+.pc-num{font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:700;margin-bottom:6px;opacity:.7;}
+.pc-name{font-size:13px;font-weight:800;margin-bottom:4px;}
+.pc-key{font-size:11px;opacity:.8;line-height:1.4;}
+.pc-extra{font-size:10.5px;color:rgba(255,255,255,.6);margin-top:6px;line-height:1.4;display:none;}
+.pc.open .pc-extra{display:block;}
+
+/* 진단기준 탭 내부 */
+.diag-tabs{display:flex;gap:6px;flex-wrap:wrap;margin:10px 0;}
+.dtab{padding:5px 12px;border-radius:20px;border:1px solid var(--bdr);font-size:11px;font-weight:600;cursor:pointer;background:var(--s2);color:var(--mu);transition:all .15s;font-family:'Noto Sans KR',sans-serif;}
+.dtab.on{background:rgba(56,189,248,.15);color:var(--a1);border-color:var(--a1);}
+.dpnl{display:none;}.dpnl.on{display:block;}
+
+/* QA */
+.qa{background:var(--s1);border:1px solid var(--bdr);border-radius:10px;margin-bottom:11px;overflow:hidden;transition:border-color .2s;}
+.qa:hover{border-color:rgba(56,189,248,.25);}
+.qa-hd{padding:14px 18px;cursor:pointer;display:flex;justify-content:space-between;align-items:flex-start;gap:10px;user-select:none;}
+.qa-meta{display:flex;align-items:center;gap:6px;margin-bottom:5px;flex-wrap:wrap;}
+.qn{font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:700;color:var(--mu);}
+.qq{font-size:13px;font-weight:600;line-height:1.55;}
+.tgl{color:var(--mu);font-size:16px;flex-shrink:0;transition:transform .2s;}
+.qa.open .tgl{transform:rotate(180deg);}
+.qa-bd{display:none;border-top:1px solid var(--bdr);padding:14px 18px;background:var(--s2);}
+.qa.open .qa-bd{display:block;}
+.chs{display:flex;flex-direction:column;gap:7px;margin-bottom:12px;}
+.ch{display:flex;align-items:flex-start;gap:10px;padding:9px 13px;border-radius:7px;border:1px solid var(--bdr);font-size:12.5px;cursor:pointer;background:var(--s1);line-height:1.5;transition:all .15s;}
+.ch:hover:not(.lk){border-color:rgba(56,189,248,.3);background:rgba(56,189,248,.04);}
+.ch.ok{border-color:var(--a3);background:rgba(52,211,153,.1);color:var(--a3);}
+.ch.ng{border-color:var(--a5);background:rgba(248,113,113,.08);color:var(--a5);opacity:.7;}
+.ch.lk{cursor:default;}
+.cnum{font-family:'JetBrains Mono',monospace;font-weight:700;font-size:11px;flex-shrink:0;margin-top:1px;color:var(--mu);}
+.ch.ok .cnum{color:var(--a3);}.ch.ng .cnum{color:var(--a5);}
+.exp{background:rgba(56,189,248,.05);border:1px solid rgba(56,189,248,.18);border-radius:8px;padding:12px 14px;font-size:12.5px;line-height:1.65;display:none;}
+.exp.show{display:block;}
+.exp-t{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--a1);margin-bottom:6px;}
+.exp strong{color:var(--a4);}
+.exp em{color:var(--a3);font-style:normal;}
+.ox-wr{display:flex;gap:10px;margin-bottom:12px;}
+.ox{flex:1;padding:11px;border-radius:8px;border:1px solid var(--bdr);font-size:20px;cursor:pointer;background:var(--s1);transition:all .15s;font-family:'Noto Sans KR',sans-serif;color:var(--txt);}
+.ox:hover:not(.lk){transform:scale(1.02);}
+.ox.so{border-color:var(--a3);background:rgba(52,211,153,.15);}
+.ox.sx{border-color:var(--a5);background:rgba(248,113,113,.1);}
+.ox.lk{cursor:default;}
+.diff{display:inline-block;padding:2px 7px;border-radius:10px;font-size:9px;font-weight:700;}
+.easy{background:rgba(52,211,153,.2);color:var(--a3);}
+.mid{background:rgba(251,191,36,.2);color:var(--a4);}
+.hard{background:rgba(248,113,113,.2);color:var(--a5);}
+.fb-wr{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:14px;}
+.fb{padding:5px 12px;border-radius:20px;border:1px solid var(--bdr);font-size:11px;font-weight:600;cursor:pointer;background:var(--s2);color:var(--mu);transition:all .15s;font-family:'Noto Sans KR',sans-serif;}
+.fb.on{background:rgba(56,189,248,.15);color:var(--a1);border-color:var(--a1);}
+.sc-b{background:var(--s2);border:1px solid var(--bdr);border-radius:8px;padding:5px 14px;font-size:12px;color:var(--mu);}
+.sc-b span{color:var(--a1);font-weight:700;}
+</style>
+</head>
+<body>
+
+<div class="hdr">
+  <div class="hdr-r">
+    <span class="pill p1">행안부 고시 제2024-25호</span>
+    <span class="pill p2">전자정부법 §16·19·23·50</span>
+    <span class="pill p3">7대 품질관리 원칙</span>
+  </div>
+  <h1><span class="h1g">전자정부 웹사이트 품질관리 지침</span></h1>
+  <p>행정안전부 고시 제2024-25호 · 2024.4.12. 시행 · 전자정부 웹사이트 품질 7대 원칙 및 진단기준 규정</p>
+</div>
+
+<div class="tabs">
+  <button class="tab on" data-p="p1">📌 개요·정의</button>
+  <button class="tab" data-p="p2">⭐ 7대 품질관리 원칙</button>
+  <button class="tab" data-p="p3">🔍 품질진단 기준</button>
+  <button class="tab" data-p="p4">🏛️ 체계·역할</button>
+  <button class="tab" data-p="p5">📋 조문 상세</button>
+  <button class="tab" data-p="p6">❓ 예상문제</button>
+</div>
+
+<div class="wrap">
+
+<!-- ===== P1: 개요 ===== -->
+<div class="pnl on" id="p1">
+  <div class="card">
+    <div class="card-h"><div class="ico ib">📌</div><h3>전자정부 웹사이트 품질관리 지침 개요</h3></div>
+    <div class="law-ref">전자정부법 제16조·제19조·제23조·제50조 / 동법 시행령 제19조·제59조 근거</div>
+    <table style="margin-top:12px;">
+      <thead><tr><th>구분</th><th>내용</th></tr></thead>
+      <tbody>
+        <tr><td><strong>지침명</strong></td><td>전자정부 웹사이트 품질관리 지침</td></tr>
+        <tr><td><strong>최신 고시</strong></td><td>행정안전부 고시 제2024-25호 (2024.4.12. 시행)</td></tr>
+        <tr><td><strong>이전 고시</strong></td><td>행안부 고시 제2021-19호 (2021.2.27.)</td></tr>
+        <tr><td><strong>연혁</strong></td><td>구(舊) 「전자정부서비스 호환성 준수지침」→ 개정 확대</td></tr>
+        <tr><td><strong>전문기관</strong></td><td>한국지능정보사회진흥원(NIA) — 지능정보화 기본법 제12조</td></tr>
+        <tr><td><strong>목적</strong></td><td>전자정부 웹사이트의 품질관리에 관한 사항 규정</td></tr>
+      </tbody>
+    </table>
+    <div class="memo">전자정부법 §16·19·23·50 근거 / 행안부 고시 / NIA = 품질관리 전문기관</div>
+  </div>
+
+  <div class="g2">
+    <div class="card">
+      <div class="card-h"><div class="ico iy">📖</div><h3>핵심 용어 정의</h3></div>
+      <table>
+        <thead><tr><th>용어</th><th>정의</th></tr></thead>
+        <tbody>
+          <tr><td><strong>웹페이지</strong></td><td>인터넷을 통해 텍스트·그림·영상·음성 등을 제공하는 웹 문서</td></tr>
+          <tr><td><strong>전자정부 웹사이트</strong></td><td>전자정부 서비스(법 §2⑤) 제공을 위해 구성된 웹페이지의 집합체</td></tr>
+          <tr><td><strong>웹브라우저</strong></td><td>웹페이지를 해석하여 이용자에게 정보를 전달하는 프로그램</td></tr>
+          <tr><td><strong>모바일 웹</strong></td><td>스마트폰 등 모바일 기기의 웹브라우저에 최적화된 웹사이트</td></tr>
+          <tr><td><strong>웹표준</strong></td><td>국제 표준화 기구(ISO, W3C 등)에서 정의하는 기술표준</td></tr>
+          <tr><td><strong>웹사이트 품질</strong></td><td>호환성·접근성·개방성·접속성·편의성·효율성·신뢰성 등 품질 전반</td></tr>
+          <tr><td><strong>웹사이트 품질관리</strong></td><td>품질 확보를 위한 목표 설정·계획 수립·품질진단·개선 등 제반 활동</td></tr>
+          <tr><td><strong>웹사이트 품질진단</strong></td><td>웹사이트 품질을 측정하여 현재 수준을 진단·평가하는 활동</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="card">
+      <div class="card-h"><div class="ico ig">🎯</div><h3>적용 범위</h3></div>
+      <ul class="il">
+        <li><strong>중앙행정기관</strong> (대통령·국무총리 소속 기관 포함) 및 그 소속 기관</li>
+        <li><strong>지방자치단체</strong></li>
+        <li><strong>공공기관</strong> (전자정부법 제2조제3호)</li>
+        <li><strong>지방 출자·출연기관</strong> (지방출자출연법 제5조 지정)</li>
+        <li style="color:var(--mu);">※ 총칭: "행정기관등"</li>
+        <li><strong style="color:var(--a5);">예외:</strong> 각급 학교는 지도·감독 행정기관 등이 관리</li>
+      </ul>
+      <div class="memo">적용 대상 = 중앙행정기관 + 지자체 + 공공기관 + 지방출자출연기관 ("행정기관등")</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-h"><div class="ico ip">🗺️</div><h3>지침 개정 연혁 및 변화</h3></div>
+    <table>
+      <thead><tr><th>시기</th><th>고시</th><th>주요 내용</th></tr></thead>
+      <tbody>
+        <tr><td>2020년 이전</td><td>전자정부서비스 호환성 준수지침</td><td>웹표준·웹호환성 위주 — 좁은 범위</td></tr>
+        <tr><td><strong>2020년</strong></td><td>고시 제2020-38호</td><td>「전자정부 웹사이트 품질관리 지침」으로 개정 — 7대 품질원칙 도입</td></tr>
+        <tr><td><strong>2021년</strong></td><td>고시 제2021-19호</td><td>7대 원칙 명시 확립, NIA 전문기관 지정</td></tr>
+        <tr><td><strong>2024년</strong></td><td>고시 제2024-25호</td><td>최신 기준 반영 (현행)</td></tr>
+        <tr><td><strong>2025년</strong></td><td>고시 제2025-46호</td><td>기술적 진단기준 → 가이드로 위임, 개방성 기준 수정</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- ===== P2: 7대 원칙 ===== -->
+<div class="pnl" id="p2">
+  <div class="card">
+    <div class="card-h"><div class="ico iy">⭐</div><h3>웹사이트 품질관리 7대 원칙 (제4조) — 클릭하면 상세 내용 확인</h3></div>
+    <p style="font-size:12px;color:var(--mu);margin-bottom:12px;">행정기관등의 장은 웹사이트 품질관리 수행 시 다음 7가지 원칙을 준수하여야 한다</p>
+    <div class="principle-grid">
+      <div class="pc" style="background:rgba(56,189,248,.08);border-color:rgba(56,189,248,.3);" onclick="this.classList.toggle('open')">
+        <div class="pc-num" style="color:var(--a1);">원칙 01</div>
+        <div class="pc-name" style="color:var(--a1);">호환성</div>
+        <div class="pc-key">웹표준 사용<br>다양한 브라우저 동등 서비스</div>
+        <div class="pc-extra">웹 표준 기술((X)HTML, CSS, DOM 등) 사용 / 모든 웹브라우저에서 동일하게 표시 / 비표준 기술(액티브X·플러그인 등) 제거</div>
+      </div>
+      <div class="pc" style="background:rgba(52,211,153,.08);border-color:rgba(52,211,153,.3);" onclick="this.classList.toggle('open')">
+        <div class="pc-num" style="color:var(--a3);">원칙 02</div>
+        <div class="pc-name" style="color:var(--a3);">접근성</div>
+        <div class="pc-key">신체·인지적 제약 없이<br>정보·기능 쉽게 접근 보장</div>
+        <div class="pc-extra">장애인·고령자 포함 모든 이용자 접근 보장 / 웹 접근성 지침(WCAG/KWCAG) 준수 / 대체 텍스트, 키보드 접근, 색상 대비 등</div>
+      </div>
+      <div class="pc" style="background:rgba(251,191,36,.08);border-color:rgba(251,191,36,.3);" onclick="this.classList.toggle('open')">
+        <div class="pc-num" style="color:var(--a4);">원칙 03</div>
+        <div class="pc-name" style="color:var(--a4);">개방성</div>
+        <div class="pc-key">특정 검색엔진 통한<br>공개 정보 자유 이용 보장</div>
+        <div class="pc-extra">robots.txt 등으로 크롤링 허용 / 로그인 없이 공개 정보 접근 가능 / 검색엔진 색인 허용 (2025년 개정: 일부 차단 가능하도록 완화)</div>
+      </div>
+      <div class="pc" style="background:rgba(167,139,250,.08);border-color:rgba(167,139,250,.3);" onclick="this.classList.toggle('open')">
+        <div class="pc-num" style="color:var(--a2);">원칙 04</div>
+        <div class="pc-name" style="color:var(--a2);">접속성</div>
+        <div class="pc-key">응답시간·속도·용량·<br>링크 최적 상태 제공</div>
+        <div class="pc-extra">페이지 로딩 속도 최적화 / 깨진 링크(오류 404) 없음 / 서버 가용성 및 응답시간 확보 / 불필요한 파일 용량 최소화</div>
+      </div>
+      <div class="pc" style="background:rgba(251,146,60,.08);border-color:rgba(251,146,60,.3);" onclick="this.classList.toggle('open')">
+        <div class="pc-num" style="color:var(--a6);">원칙 05</div>
+        <div class="pc-name" style="color:var(--a6);">편의성</div>
+        <div class="pc-key">디자인·스타일·기능을<br>이용자 중심으로 구현</div>
+        <div class="pc-extra">직관적 UI/UX 설계 / 이용자 중심 정보 구조 / 모바일 최적화 / 검색·내비게이션 편의 / 디지털 정부서비스 UI/UX 가이드라인 준수</div>
+      </div>
+      <div class="pc" style="background:rgba(248,113,113,.08);border-color:rgba(248,113,113,.3);" onclick="this.classList.toggle('open')">
+        <div class="pc-num" style="color:var(--a5);">원칙 06</div>
+        <div class="pc-name" style="color:var(--a5);">효율성</div>
+        <div class="pc-key">유사·중복·저활용<br>사이트 통합·폐기</div>
+        <div class="pc-extra">서로 유사하거나 중복되는 웹사이트 통합 / 이용 활성화 수준이 낮거나 운영 가치가 낮은 경우 폐기 / 행안부 장관의 통합·폐기 권고 대상</div>
+      </div>
+      <div class="pc" style="background:rgba(56,189,248,.08);border-color:rgba(56,189,248,.3);grid-column:span 1;" onclick="this.classList.toggle('open')">
+        <div class="pc-num" style="color:var(--a1);">원칙 07</div>
+        <div class="pc-name" style="color:var(--a1);">신뢰성</div>
+        <div class="pc-key">정보 오류·개인정보 노출·<br>게시판 점검 및 개선</div>
+        <div class="pc-extra">공개 정보의 최신성·정확성 관리 / 개인정보 노출 여부 주기적 점검 / 스팸·악성 게시물 관리 / 콘텐츠 정확성 확보</div>
+      </div>
+      <div style="background:var(--s2);border:1px solid var(--bdr);border-radius:10px;padding:13px;display:flex;align-items:center;justify-content:center;font-size:12px;color:var(--mu);text-align:center;">각 카드 클릭 시<br>상세 내용 표시</div>
+    </div>
+    <div class="memo">7대 원칙 암기: <strong>호·접·개·접·편·효·신</strong> (호환·접근·개방·접속·편의·효율·신뢰)</div>
+  </div>
+
+  <div class="card">
+    <div class="card-h"><div class="ico ig">📊</div><h3>7대 원칙 구조적 이해</h3></div>
+    <table>
+      <thead><tr><th>#</th><th>원칙</th><th>핵심 키워드</th><th>주요 기술/기준</th></tr></thead>
+      <tbody>
+        <tr><td><span class="tag tb">01</span></td><td><strong>호환성</strong></td><td>웹표준 · 다양한 브라우저</td><td>HTML5, CSS, DOM, ECMA-262, 비표준 기술 제거</td></tr>
+        <tr><td><span class="tag tg">02</span></td><td><strong>접근성</strong></td><td>신체·인지적 제약 없이</td><td>WCAG 2.1, 한국형 웹 콘텐츠 접근성 지침(KWCAG)</td></tr>
+        <tr><td><span class="tag ty">03</span></td><td><strong>개방성</strong></td><td>검색엔진 · 공개 정보 자유</td><td>robots.txt, 크롤링 허용 (2025년: 일부 차단 가능)</td></tr>
+        <tr><td><span class="tag tp">04</span></td><td><strong>접속성</strong></td><td>응답시간·속도·링크</td><td>페이지 로딩, 404 오류 없음, 서버 가용성</td></tr>
+        <tr><td><span class="tag to">05</span></td><td><strong>편의성</strong></td><td>이용자 중심 디자인</td><td>UI/UX 가이드라인, 모바일 최적화</td></tr>
+        <tr><td><span class="tag tr">06</span></td><td><strong>효율성</strong></td><td>유사중복 방지 · 통합·폐기</td><td>웹사이트 통합·폐기 권고 (행안부장관)</td></tr>
+        <tr><td><span class="tag tb">07</span></td><td><strong>신뢰성</strong></td><td>정보 오류·개인정보 점검</td><td>콘텐츠 정확성, 개인정보 노출 점검</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- ===== P3: 품질진단 기준 ===== -->
+<div class="pnl" id="p3">
+  <div class="card">
+    <div class="card-h"><div class="ico ib">🔍</div><h3>전자정부 웹사이트 품질진단 기준 (별표)</h3></div>
+    <p style="font-size:12px;color:var(--mu);margin-bottom:10px;">7대 원칙에 따른 진단 지표 — 각 영역별 세부 진단 내용</p>
+    <div class="diag-tabs">
+      <button class="dtab on" data-d="d1">🔵 호환성</button>
+      <button class="dtab" data-d="d2">🟢 접근성</button>
+      <button class="dtab" data-d="d3">🟡 개방성</button>
+      <button class="dtab" data-d="d4">🟣 접속성</button>
+      <button class="dtab" data-d="d5">🟠 편의성</button>
+      <button class="dtab" data-d="d6">🔴 효율성</button>
+      <button class="dtab" data-d="d7">🔵 신뢰성</button>
+    </div>
+
+    <div class="dpnl on" id="d1">
+      <table>
+        <thead><tr><th>진단 지표</th><th>세부 진단 내용</th></tr></thead>
+        <tbody>
+          <tr><td><strong>1.1 (X)HTML 표준 준수</strong></td><td>웹페이지 문법이 (X)HTML 기술표준을 준수하는가? 최신 웹표준(HTML5) 적용 여부</td></tr>
+          <tr><td><strong>1.2 CSS 표준 준수</strong></td><td>시각적 속성(크기·색채·배치·정렬·여백 등)이 CSS 표준을 준수하는가?</td></tr>
+          <tr><td><strong>1.3 문자(한글) 부호화</strong></td><td>문자 부호화 방식을 <strong>UTF-8</strong>로 적용하는가?</td></tr>
+          <tr><td><strong>1.4 제어 기능 표준</strong></td><td>동적 구성·제어 기술표준(DOM, ECMA-262 등)을 적용하는가?</td></tr>
+          <tr><td><strong>1.5 비표준 기술 제거</strong></td><td>비표준 기술(플래시·실버라이트·자바애플릿·액티브X·EXE파일 등) 제거 여부</td></tr>
+          <tr><td><strong>2.1 기능 호환성 확보</strong></td><td>동적 기능이 모든 브라우저에서 동등하게 동작하는가?</td></tr>
+          <tr><td><strong>2.2 화면 호환성 확보</strong></td><td>웹페이지가 모든 브라우저에서 동등하게 표시되는가?</td></tr>
+        </tbody>
+      </table>
+      <div class="memo">호환성 핵심: HTML5+CSS 표준 / UTF-8 / 액티브X·EXE 제거 / 모든 브라우저 동등 표시</div>
+    </div>
+
+    <div class="dpnl" id="d2">
+      <table>
+        <thead><tr><th>진단 지표</th><th>세부 진단 내용</th></tr></thead>
+        <tbody>
+          <tr><td><strong>대체 텍스트</strong></td><td>이미지·멀티미디어 등에 대체 텍스트 제공 여부</td></tr>
+          <tr><td><strong>키보드 접근성</strong></td><td>마우스 없이 키보드만으로 모든 기능 사용 가능 여부</td></tr>
+          <tr><td><strong>색상 대비</strong></td><td>전경색과 배경색의 명도 대비가 충분한가?</td></tr>
+          <tr><td><strong>초점 관리</strong></td><td>키보드 포커스 순서 및 시각적 표시 여부</td></tr>
+          <tr><td><strong>명확한 링크</strong></td><td>링크 텍스트가 링크 목적을 명확히 설명하는가?</td></tr>
+          <tr><td><strong>근거 표준</strong></td><td>한국형 웹 콘텐츠 접근성 지침(KWCAG 2.1) / WCAG 2.1 기반</td></tr>
+        </tbody>
+      </table>
+      <div class="memo">접근성 = KWCAG 2.1 기반 / 대체텍스트·키보드접근·색상대비·초점 관리</div>
+    </div>
+
+    <div class="dpnl" id="d3">
+      <table>
+        <thead><tr><th>진단 지표</th><th>세부 진단 내용</th></tr></thead>
+        <tbody>
+          <tr><td><strong>크롤링 허용</strong></td><td>검색엔진 로봇이 공개 정보를 수집할 수 있도록 허용하는가? (robots.txt 설정)</td></tr>
+          <tr><td><strong>메타데이터 제공</strong></td><td>검색엔진이 웹사이트를 효과적으로 색인할 수 있도록 메타정보 제공 여부</td></tr>
+          <tr><td><strong>공개 정보 접근</strong></td><td>로그인 없이 공개된 정보에 접근할 수 있는가?</td></tr>
+          <tr><td><strong>2025년 개정</strong></td><td>기존 '완전 허용' → <strong>일부 차단 가능</strong>으로 완화 (보안·개인정보 보호 등 사유)</td></tr>
+        </tbody>
+      </table>
+      <div class="memo">개방성 = 검색엔진 크롤링 허용 / 2025년 개정: 일부 차단 허용</div>
+    </div>
+
+    <div class="dpnl" id="d4">
+      <table>
+        <thead><tr><th>진단 지표</th><th>세부 진단 내용</th></tr></thead>
+        <tbody>
+          <tr><td><strong>응답 시간</strong></td><td>웹페이지가 웹브라우저에 표시되기까지 응답시간이 적정한가?</td></tr>
+          <tr><td><strong>링크 유효성</strong></td><td>깨진 링크(404 오류 등) 없이 모든 링크가 정상 작동하는가?</td></tr>
+          <tr><td><strong>파일 용량</strong></td><td>페이지 구성 파일의 용량이 최적화되어 있는가?</td></tr>
+          <tr><td><strong>서버 가용성</strong></td><td>웹사이트 서버가 정상적으로 운영되어 접속 가능한가?</td></tr>
+        </tbody>
+      </table>
+      <div class="memo">접속성 = 응답시간·링크 유효성·파일 용량 최적화·서버 가용성</div>
+    </div>
+
+    <div class="dpnl" id="d5">
+      <table>
+        <thead><tr><th>진단 지표</th><th>세부 진단 내용</th></tr></thead>
+        <tbody>
+          <tr><td><strong>이용자 중심 UI</strong></td><td>이용자 중심의 직관적 디자인 및 기능 구성 여부</td></tr>
+          <tr><td><strong>모바일 최적화</strong></td><td>모바일 기기에서도 편리하게 이용 가능한가?</td></tr>
+          <tr><td><strong>검색 기능</strong></td><td>이용자가 필요한 정보를 쉽게 찾을 수 있는 검색 기능 제공 여부</td></tr>
+          <tr><td><strong>내비게이션</strong></td><td>메뉴 구조·사이트맵 등 내비게이션이 직관적인가?</td></tr>
+          <tr><td><strong>근거 가이드</strong></td><td>디지털 정부서비스 UI/UX 가이드라인 준수</td></tr>
+        </tbody>
+      </table>
+      <div class="memo">편의성 = 이용자 중심 UI·모바일 최적화·검색·내비게이션 / UI/UX 가이드라인</div>
+    </div>
+
+    <div class="dpnl" id="d6">
+      <table>
+        <thead><tr><th>진단 지표</th><th>세부 진단 내용</th></tr></thead>
+        <tbody>
+          <tr><td><strong>유사·중복 웹사이트</strong></td><td>기관 내·외에 유사하거나 중복되는 웹사이트가 존재하는가?</td></tr>
+          <tr><td><strong>이용 활성화 수준</strong></td><td>방문자 수, 페이지뷰 등 이용률이 현저히 낮은가?</td></tr>
+          <tr><td><strong>운영 가치 평가</strong></td><td>웹사이트의 목적·역할·콘텐츠의 가치가 지속 운영을 정당화하는가?</td></tr>
+          <tr><td><strong>권고 처분</strong></td><td>행안부장관이 통합 또는 폐기 권고 가능 (전자정부법 제23조)</td></tr>
+        </tbody>
+      </table>
+      <div class="memo">효율성 = 유사중복 웹사이트 통합·폐기 / 행안부장관 권고 처분 (전자정부법 §23)</div>
+    </div>
+
+    <div class="dpnl" id="d7">
+      <table>
+        <thead><tr><th>진단 지표</th><th>세부 진단 내용</th></tr></thead>
+        <tbody>
+          <tr><td><strong>정보 최신성·정확성</strong></td><td>공개된 정보가 최신의 것으로 유지되고, 오류가 없는가?</td></tr>
+          <tr><td><strong>개인정보 노출</strong></td><td>웹사이트에 주민번호·연락처 등 개인정보가 노출되지 않는가?</td></tr>
+          <tr><td><strong>게시판 관리</strong></td><td>스팸·불건전 게시물, 악성 코드 유포 게시물 등이 없는가?</td></tr>
+          <tr><td><strong>콘텐츠 정확성</strong></td><td>공지사항·정책 안내 등 주요 콘텐츠의 내용이 정확한가?</td></tr>
+        </tbody>
+      </table>
+      <div class="memo">신뢰성 = 정보 최신·정확 + 개인정보 노출 점검 + 게시판 관리</div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== P4: 체계·역할 ===== -->
+<div class="pnl" id="p4">
+  <div class="card">
+    <div class="card-h"><div class="ico ip">🏛️</div><h3>웹사이트 품질관리 추진 체계</h3></div>
+    <table>
+      <thead><tr><th>주체</th><th>역할 및 권한</th></tr></thead>
+      <tbody>
+        <tr><td><strong style="color:var(--a1)">행정안전부장관</strong></td><td>
+          ① 웹사이트 품질진단 실시 (이용률·중요도 고려 대상 선정)<br>
+          ② 품질진단 결과에 따른 <strong>품질개선 권고</strong><br>
+          ③ 전자정부법 §23에 따른 <strong>통합 또는 폐기 처분 권고</strong><br>
+          ④ 웹사이트 품질관리 교육 실시<br>
+          ⑤ 행정기관등에 품질진단 결과 제출 요청 가능
+        </td></tr>
+        <tr><td><strong style="color:var(--a3)">행정기관등의 장</strong></td><td>
+          ① 웹사이트 품질관리 <strong>계획 수립 의무</strong><br>
+          ② 별표 품질진단 기준으로 자체 <strong>품질진단 시행 의무</strong><br>
+          ③ 행안부 권고 시 품질개선·처분 이행 후 <strong>결과 통보 의무</strong><br>
+          ④ 웹사이트 <strong>품질관리자 지정 가능</strong>
+        </td></tr>
+        <tr><td><strong style="color:var(--a4)">NIA (한국지능정보사회진흥원)</strong></td><td>
+          ① 웹사이트 품질진단 기준 설정 지원<br>
+          ② 웹사이트 품질관리 관련 현황 및 법·제도 조사연구<br>
+          ③ 홍보·교육·<strong>컨설팅</strong> 및 이행확인 지원<br>
+          ④ 각종 통계 분석 및 제도 개선사항 발굴<br>
+          ⑤ 기타 품질관리에 필요한 업무 지원
+        </td></tr>
+      </tbody>
+    </table>
+    <div class="memo">행안부(진단·권고) → 행정기관등(자체진단·계획 의무) → NIA(전문기관·지원)</div>
+  </div>
+
+  <div class="g2">
+    <div class="card">
+      <div class="card-h"><div class="ico ig">👤</div><h3>웹사이트 품질관리자 (제5조)</h3></div>
+      <ul class="il">
+        <li><strong>지정 여부:</strong> 행정기관등의 장이 <em>지정할 수 있음</em> (의무 아님)</li>
+        <li><strong>역할:</strong> 웹사이트 품질관리 실무 총괄</li>
+        <li><strong>업무:</strong>
+          <ul style="list-style:none;padding-left:12px;margin-top:4px;">
+            <li style="font-size:11.5px;margin-bottom:2px;">① 품질관리 계획의 수립 및 시행</li>
+            <li style="font-size:11.5px;margin-bottom:2px;">② 이용자 및 콘텐츠 관리</li>
+            <li style="font-size:11.5px;margin-bottom:2px;">③ 품질진단 및 개선</li>
+            <li style="font-size:11.5px;">④ 그 밖의 품질관리 사항</li>
+          </ul>
+        </li>
+      </ul>
+    </div>
+    <div class="card">
+      <div class="card-h"><div class="ico iy">📋</div><h3>품질관리 계획 수립 항목 (제6조)</h3></div>
+      <ul class="il">
+        <li><strong>웹사이트 품질관리 목표</strong></li>
+        <li><strong>품질관리 추진 체계</strong></li>
+        <li><strong>품질진단 및 개선 계획</strong></li>
+        <li><strong>품질확보 방안</strong></li>
+        <li>그 밖에 품질관리를 위해 필요한 사항</li>
+      </ul>
+      <div class="memo">계획 5개 항목: 목표·체계·진단개선계획·확보방안·기타</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-h"><div class="ico io">📚</div><h3>품질관리 교육 (제9조)</h3></div>
+    <div class="g2">
+      <div>
+        <p style="font-size:12px;font-weight:700;color:var(--a4);margin-bottom:8px;">교육 대상</p>
+        <ul class="il">
+          <li>웹사이트 품질관리자</li>
+          <li>웹사이트 개발 및 운영 사업자</li>
+          <li>그 밖에 교육이 필요한 자</li>
+        </ul>
+      </div>
+      <div>
+        <p style="font-size:12px;font-weight:700;color:var(--a4);margin-bottom:8px;">교육 내용</p>
+        <ul class="il">
+          <li>웹사이트 품질관리 절차</li>
+          <li>웹사이트 품질진단 및 개선</li>
+          <li>그 밖에 품질관리를 위해 필요한 사항</li>
+        </ul>
+      </div>
+    </div>
+    <p style="font-size:11px;color:var(--mu);margin-top:8px;">※ 행정안전부장관이 실시 / 재검토기한: 매 3년(6월 30일까지)</p>
+  </div>
+</div>
+
+<!-- ===== P5: 조문 상세 ===== -->
+<div class="pnl" id="p5">
+  <div class="card">
+    <div class="card-h"><div class="ico ib">📋</div><h3>조문별 핵심 내용 요약</h3></div>
+    <table>
+      <thead><tr><th>조문</th><th>제목</th><th>핵심 내용</th></tr></thead>
+      <tbody>
+        <tr><td><span class="tag tb">제1조</span></td><td>목적</td><td>전자정부법 §16·19·23·50, 시행령 §19·59에 따른 전자정부 웹사이트 품질관리 사항 규정</td></tr>
+        <tr><td><span class="tag tb">제2조</span></td><td>정의</td><td>웹페이지·전자정부 웹사이트·웹브라우저·모바일 웹·웹표준·웹사이트 품질(7개 분야)·품질관리·품질진단 정의</td></tr>
+        <tr><td><span class="tag tg">제3조</span></td><td>적용범위</td><td>중앙행정기관·지자체·공공기관·지방출자출연기관 운영 웹사이트 / 학교는 지도·감독 기관이 관리</td></tr>
+        <tr><td><span class="tag ty">제4조</span></td><td>품질관리 원칙</td><td><strong>7대 원칙: 호환성·접근성·개방성·접속성·편의성·효율성·신뢰성</strong></td></tr>
+        <tr><td><span class="tag tp">제5조</span></td><td>품질관리자</td><td>지정 가능(의무 아님) / 품질관리 실무 총괄 / 4가지 업무</td></tr>
+        <tr><td><span class="tag tp">제6조</span></td><td>품질관리 계획</td><td>행정기관등의 장이 수립 / 5개 항목 포함</td></tr>
+        <tr><td><span class="tag to">제7조</span></td><td>품질진단</td><td>행정기관등: 별표 기준으로 자체 진단 의무 / 행안부장관: 대상 선정 후 진단 가능 / 결과 제출 요청 가능</td></tr>
+        <tr><td><span class="tag tr">제8조</span></td><td>품질개선·처분</td><td>행안부장관: 개선·통합·폐기 <strong>권고</strong> 가능 / 행정기관등: 조치 이행 후 <strong>결과 통보 의무</strong></td></tr>
+        <tr><td><span class="tag tg">제9조</span></td><td>교육</td><td>행안부장관이 교육 실시 / 대상: 품질관리자·개발·운영 사업자 / 내용: 절차·진단·개선</td></tr>
+        <tr><td><span class="tag tb">제10조</span></td><td>전문기관</td><td><strong>NIA(한국지능정보사회진흥원)</strong> 전문기관 지정 / 5가지 지원 업무</td></tr>
+        <tr><td><span class="tag tp">제11조</span></td><td>재검토기한</td><td>2021년 7월 1일 기준, 매 3년(6월 30일까지) 타당성 검토</td></tr>
+      </tbody>
+    </table>
+    <div class="memo">제4조(7대원칙)·제7조(진단의무)·제8조(개선권고·통보의무)·제10조(NIA 전문기관) ← 시험 핵심</div>
+  </div>
+
+  <div class="card">
+    <div class="card-h"><div class="ico ir">⚠️</div><h3>핵심 의무·권한 구분</h3></div>
+    <table>
+      <thead><tr><th>구분</th><th>의무 사항</th><th>임의 사항</th></tr></thead>
+      <tbody>
+        <tr><td><strong>행정기관등의 장</strong></td><td>품질관리 계획 수립 의무 (제6조)<br>별표 기준으로 품질진단 시행 의무 (제7조①)<br>권고 시 조치 이행 + 결과 통보 의무 (제8조②)</td><td>품질관리자 지정 <em>(가능·임의)</em></td></tr>
+        <tr><td><strong>행안부장관</strong></td><td>-</td><td>품질진단 실시 <em>(가능)</em><br>개선·처분 권고 <em>(권고·임의)</em><br>교육 실시 <em>(가능)</em><br>결과 제출 요청 <em>(가능)</em></td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- ===== P6: 예상문제 ===== -->
+<div class="pnl" id="p6">
+  <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;margin-bottom:14px;">
+    <div class="fb-wr" id="fbar" style="margin:0;">
+      <button class="fb on" data-f="all">전체</button>
+      <button class="fb" data-f="개요">📌 개요</button>
+      <button class="fb" data-f="원칙">⭐ 7대원칙</button>
+      <button class="fb" data-f="체계">🏛️ 체계</button>
+      <button class="fb" data-f="조문">📋 조문</button>
+      <button class="fb" data-f="OX">⭕ OX</button>
+    </div>
+    <div class="sc-b">정답: <span id="sc">0</span>/<span id="st">0</span></div>
+  </div>
+  <div id="ql"></div>
+</div>
+
+</div>
+
+<script>
+document.querySelectorAll('.tab').forEach(t=>t.addEventListener('click',()=>{
+  document.querySelectorAll('.tab,.pnl').forEach(x=>x.classList.remove('on'));
+  t.classList.add('on');document.getElementById(t.dataset.p).classList.add('on');
+}));
+document.querySelectorAll('.dtab').forEach(t=>t.addEventListener('click',()=>{
+  document.querySelectorAll('.dtab,.dpnl').forEach(x=>x.classList.remove('on'));
+  t.classList.add('on');document.getElementById(t.dataset.d).classList.add('on');
+}));
+
+const QA=[
+  {cat:'개요',diff:'easy',
+   q:'전자정부 웹사이트 품질관리 지침의 법적 근거 조항으로 가장 적절한 것은?',
+   cs:['전자정부법 제54조 및 제57조','전자정부법 제16조·제19조·제23조·제50조','소프트웨어진흥법 제20조·제54조','정보통신망법 제45조·제47조'],
+   ans:1,
+   exp:'전자정부 웹사이트 품질관리 지침의 법적 근거는 <strong>전자정부법 제16조, 제19조, 제23조 및 제50조</strong>와 동법 시행령 제19조·제59조입니다. 행정안전부 고시 제2024-25호(2024.4.12.)로 시행됩니다.'},
+  {cat:'개요',diff:'mid',
+   q:'전자정부 웹사이트 품질관리 지침에 따른 전문기관으로 지정된 기관은?',
+   cs:['한국인터넷진흥원(KISA)','한국정보통신기술협회(TTA)','한국지능정보사회진흥원(NIA)','한국산업기술시험원(KTL)'],
+   ans:2,
+   exp:'제10조에 따라 웹사이트 품질관리의 전문성과 객관성을 확보하기 위한 전문기관은 <strong>한국지능정보사회진흥원(NIA)</strong>입니다(지능정보화 기본법 제12조 근거). NIA는 품질진단 기준 설정 지원, 조사연구, 교육·컨설팅 등을 수행합니다.'},
+  {cat:'개요',diff:'mid',
+   q:'이 지침의 적용 범위로 가장 적절하지 않은 것은?',
+   cs:['중앙행정기관 및 그 소속 기관','지방자치단체','민간 인터넷 쇼핑몰 사이트','지방출자출연기관이 운영하는 웹사이트'],
+   ans:2,
+   exp:'이 지침은 중앙행정기관·지자체·공공기관·지방출자출연기관 등 <strong>행정기관등이 운영하는 웹사이트</strong>에 적용됩니다. <strong>민간 인터넷 쇼핑몰</strong>은 행정기관등에 해당하지 않으므로 이 지침의 적용 대상이 아닙니다.'},
+  {cat:'원칙',diff:'easy',
+   q:'전자정부 웹사이트 품질관리 지침 제4조에서 규정한 웹사이트 품질관리 원칙의 수로 올바른 것은?',
+   cs:['5가지','6가지','7가지','9가지'],
+   ans:2,
+   exp:'제4조에서 행정기관등의 장이 준수해야 할 웹사이트 품질관리 원칙은 <strong>7가지</strong>입니다: <em>호환성·접근성·개방성·접속성·편의성·효율성·신뢰성</em>. 암기법: <strong>호접개접편효신</strong>'},
+  {cat:'원칙',diff:'mid',
+   q:'웹사이트 품질관리 7대 원칙 중 "이용자가 신체적 또는 인지적 제약 등으로 인한 불편함 없이 정보와 기능에 쉽게 접근할 수 있도록 보장"하는 원칙은?',
+   cs:['호환성','개방성','접근성','편의성'],
+   ans:2,
+   exp:'<strong>접근성</strong>은 이용자가 신체적 또는 인지적 제약 등으로 인한 불편함 없이 웹사이트에서 제공하는 정보와 위치식별 등 기능에 쉽게 접근할 수 있도록 보장하는 원칙입니다. 장애인·고령자 포함 모든 이용자를 위한 웹 접근성(KWCAG 2.1)이 기준입니다.'},
+  {cat:'원칙',diff:'mid',
+   q:'웹사이트 품질관리 7대 원칙 중 "유사하거나 중복되는 웹사이트 또는 이용 활성화 수준이 낮은 경우 통합 또는 폐기"와 관련된 원칙은?',
+   cs:['신뢰성','접속성','효율성','개방성'],
+   ans:2,
+   exp:'<strong>효율성</strong>은 웹사이트가 서로 유사하거나 중복되는 경우, 또는 이용 활성화 수준 및 운영 가치가 낮은 경우 <em>통합 또는 폐기</em>하여 효율성을 확보하는 원칙입니다. 행안부장관이 통합·폐기를 권고할 수 있습니다(전자정부법 §23).'},
+  {cat:'원칙',diff:'hard',
+   q:'다음 중 웹사이트 품질관리 7대 원칙과 그 설명이 잘못 연결된 것은?',
+   cs:['호환성 — 웹표준 기술 사용, 다양한 웹브라우저에서 동등한 서비스 제공',
+       '신뢰성 — 정보의 오류, 개인정보 노출 여부, 게시판 등에 대한 점검 및 개선',
+       '개방성 — 특정 검색엔진을 통해 공개 정보를 아무런 제약 없이 이용할 수 있도록 보장',
+       '접속성 — 이용자가 신체적·인지적 제약 없이 정보와 기능에 쉽게 접근할 수 있도록 보장'],
+   ans:3,
+   exp:'④은 <strong>접근성</strong>의 정의입니다. <strong>접속성</strong>은 "웹사이트가 웹브라우저에 표시되기까지의 응답시간, 속도, 용량, 링크 연결 등을 최적의 상태로 제공하여 접속성을 확보"하는 것입니다. 접근성(장애인·노인)과 접속성(속도·링크)을 혼동하지 않도록 주의가 필요합니다.'},
+  {cat:'체계',diff:'mid',
+   q:'행정안전부장관이 웹사이트 품질개선 또는 통합·폐기를 권고한 경우, 행정기관등의 장이 이행해야 할 의무로 가장 적절한 것은?',
+   cs:['권고를 받은 날로부터 30일 이내에 이행해야 하며, 이행 여부는 선택사항이다.',
+       '조치를 이행하고 그 결과를 행정안전부장관에게 통보하여야 한다.',
+       '의회에 보고 후 예산 확보가 되는 경우에만 이행하면 된다.',
+       '권고는 법적 구속력이 없으므로 이행 여부를 자체적으로 판단한다.'],
+   ans:1,
+   exp:'제8조 제2항: 행안부장관의 권고를 받은 행정기관등의 장은 <strong>웹사이트 품질개선 및 처분에 필요한 조치를 이행하고 그 결과를 행정안전부장관에게 통보하여야 한다</strong>. 조치 이행 + 결과 통보가 모두 의무입니다.'},
+  {cat:'체계',diff:'hard',
+   q:'웹사이트 품질관리자에 관한 설명으로 가장 적절하지 않은 것은?',
+   cs:['행정기관등의 장이 품질관리자를 지정할 수 있다(의무 아님).',
+       '품질관리자는 품질관리 계획의 수립 및 시행을 담당한다.',
+       '품질관리자는 반드시 전문 자격증 소지자여야 한다.',
+       '품질관리자는 이용자 및 콘텐츠 관리 업무를 수행한다.'],
+   ans:2,
+   exp:'지침에서 웹사이트 품질관리자는 <strong>전문 자격증 소지 요건이 없습니다</strong>. 행정기관등의 장이 임의로 지정할 수 있으며, 품질관리 실무를 총괄하면서 ①품질관리 계획 수립·시행, ②이용자·콘텐츠 관리, ③품질진단·개선, ④기타 품질관리 업무를 수행합니다.'},
+  {cat:'조문',diff:'mid',
+   q:'웹사이트 품질진단(제7조)에 관한 설명으로 가장 적절하지 않은 것은?',
+   cs:['행정기관등의 장은 별표의 품질진단 기준으로 운영 중인 웹사이트에 대해 품질진단을 시행하여야 한다.',
+       '행정안전부장관은 이용률·중요도 등을 고려하여 대상을 선정하고 품질진단을 시행할 수 있다.',
+       '행정안전부장관은 행정기관등의 장에게 품질진단 결과를 요청할 수 있다.',
+       '행정기관등의 장이 행안부의 품질진단에 동의하지 않으면 진단을 거부할 수 있다.'],
+   ans:3,
+   exp:'지침에서 행정기관등의 장이 행안부의 품질진단을 <strong>거부할 수 있다는 규정은 없습니다</strong>. 행안부장관은 ①이용률·중요도 고려하여 대상 선정 후 진단 실시, ②행정기관등에 진단 결과 제출 요청이 모두 가능합니다.'},
+  {cat:'조문',diff:'hard',
+   q:'웹사이트 품질관리 계획(제6조)에 포함되어야 할 항목으로 가장 거리가 먼 것은?',
+   cs:['웹사이트 품질관리 목표','웹사이트 품질관리 추진 체계','웹사이트 개발 사업자의 재무 상태 확인','웹사이트 품질진단 및 개선 계획'],
+   ans:2,
+   exp:'제6조에서 규정한 품질관리 계획 포함 항목: ①품질관리 목표, ②품질관리 추진 체계, ③품질진단 및 개선 계획, ④품질확보 방안, ⑤그 밖에 필요한 사항. <strong>개발 사업자의 재무 상태</strong>는 포함 항목이 아닙니다.'},
+  // OX
+  {cat:'OX',diff:'easy',type:'ox',
+   q:'전자정부 웹사이트 품질관리 지침에 따르면 행정기관등의 장은 웹사이트 품질관리자를 반드시 지정하여야 한다.',
+   ans:false,
+   exp:'<strong>×</strong> — 제5조 제1항: 행정기관등의 장은 웹사이트 품질관리자를 <em>지정할 수 있다</em>고 규정되어 있습니다. <strong>지정 의무가 아니라 임의(선택) 사항</strong>입니다. 반면 품질관리 계획 수립과 품질진단 시행은 의무 사항입니다.'},
+  {cat:'OX',diff:'mid',type:'ox',
+   q:'웹사이트 품질관리 7대 원칙은 호환성·접근성·개방성·접속성·편의성·효율성·신뢰성이다.',
+   ans:true,
+   exp:'<strong>○</strong> — 제4조에서 규정한 7대 품질관리 원칙은 <strong>① 호환성 ② 접근성 ③ 개방성 ④ 접속성 ⑤ 편의성 ⑥ 효율성 ⑦ 신뢰성</strong>입니다. 암기: <em>호접개접편효신</em>. 구 지침(호환성 준수지침)에서 웹표준·호환성 위주였던 것이 7대 원칙으로 확대되었습니다.'},
+  {cat:'OX',diff:'mid',type:'ox',
+   q:'행정안전부장관은 웹사이트 품질진단 결과에 따라 행정기관등의 장에게 웹사이트 통합 또는 폐기를 직접 명령할 수 있다.',
+   ans:false,
+   exp:'<strong>×</strong> — 제8조 제1항: 행정안전부장관은 웹사이트 통합 또는 폐기 등의 처분을 <strong>권고</strong>할 수 있을 뿐이며, 직접 명령할 수 없습니다. 다만 권고를 받은 행정기관등의 장은 조치를 이행하고 결과를 통보할 의무가 있습니다.'},
+  {cat:'OX',diff:'hard',type:'ox',
+   q:'전자정부 웹사이트 품질관리 지침에서 "웹사이트 품질진단"이란 웹사이트 품질을 측정하여 현재의 수준을 진단 및 평가하는 활동이다.',
+   ans:true,
+   exp:'<strong>○</strong> — 제2조 제1항 제8호의 정의: "웹사이트 품질진단"이란 <em>웹사이트 품질을 측정하여 현재의 수준을 진단 및 평가하는 활동</em>을 말합니다. "웹사이트 품질관리"(목표 설정·계획 수립·품질진단·개선 등 제반 활동)와 구분해야 합니다.'},
+  {cat:'OX',diff:'mid',type:'ox',
+   q:'이 지침에서 전문기관으로 지정된 한국지능정보사회진흥원(NIA)은 웹사이트 품질진단 기준을 단독으로 결정하여 고시할 수 있다.',
+   ans:false,
+   exp:'<strong>×</strong> — NIA(제10조)는 웹사이트 품질진단 기준 <em>설정의 지원</em> 업무를 수행합니다. 지원 역할이며 단독으로 고시할 권한은 없습니다. 지침의 별표에 규정된 품질진단 기준은 행정안전부가 고시합니다. NIA는 지원·조사연구·교육·컨설팅 역할을 담당합니다.'},
+];
+
+let answered=0,correct=0;
+function renderQ(f){
+  const data=f==='all'?QA:QA.filter(q=>q.cat===f);
+  const list=document.getElementById('ql');list.innerHTML='';
+  answered=0;correct=0;upS();
+  const CATC={'개요':'tb','원칙':'ty','체계':'tg','조문':'tp','OX':'tr'};
+  const DLC={'easy':'easy 쉬움','mid':'mid 보통','hard':'hard 어려움'};
+  const NL=['①','②','③','④'];
+  if(!data.length){list.innerHTML='<div style="text-align:center;padding:40px;color:var(--mu)">문제 없음</div>';return;}
+  data.forEach((q,i)=>{
+    const gi=QA.indexOf(q);
+    const el=document.createElement('div');el.className='qa';
+    const tc=CATC[q.cat]||'tb';
+    const [dc,dn]=(DLC[q.diff]||'mid 보통').split(' ');
+    if(q.type==='ox'){
+      el.innerHTML=`<div class="qa-hd" onclick="this.closest('.qa').classList.toggle('open')"><div><div class="qa-meta"><span class="qn">Q${String(i+1).padStart(2,'0')}</span><span class="tag ${tc}">${q.cat}</span><span class="diff ${dc}">${dn}</span><span class="tag tp">O/X</span></div><div class="qq">${q.q}</div></div><span class="tgl">▾</span></div>
+      <div class="qa-bd"><div class="ox-wr"><button class="ox" onclick="pickOX(this,true,${gi})">⭕ 옳다</button><button class="ox" onclick="pickOX(this,false,${gi})">❌ 틀리다</button></div><div class="exp" id="ex-${gi}"><div class="exp-t">💡 해설</div>${q.exp}</div></div>`;
+    } else {
+      el.innerHTML=`<div class="qa-hd" onclick="this.closest('.qa').classList.toggle('open')"><div><div class="qa-meta"><span class="qn">Q${String(i+1).padStart(2,'0')}</span><span class="tag ${tc}">${q.cat}</span><span class="diff ${dc}">${dn}</span></div><div class="qq">${q.q}</div></div><span class="tgl">▾</span></div>
+      <div class="qa-bd"><div class="chs">${q.cs.map((c,ci)=>`<div class="ch" data-ci="${ci}" onclick="pickCh(this,${gi})"><span class="cnum">${NL[ci]}</span><span>${c}</span></div>`).join('')}</div><div class="exp" id="ex-${gi}"><div class="exp-t">💡 해설</div>${q.exp}</div></div>`;
+    }
+    list.appendChild(el);
+  });
+}
+function pickCh(el,gi){
+  const bd=el.closest('.qa-bd');if(bd.querySelector('.ok,.ng'))return;
+  const q=QA[gi];
+  bd.querySelectorAll('.ch').forEach((c,i)=>{c.classList.add('lk');if(i===q.ans)c.classList.add('ok');else if(i===parseInt(el.dataset.ci))c.classList.add('ng');});
+  document.getElementById('ex-'+gi).classList.add('show');
+  answered++;if(parseInt(el.dataset.ci)===q.ans)correct++;upS();
+}
+function pickOX(btn,val,gi){
+  const bd=btn.closest('.qa-bd');if(bd.querySelector('.so,.sx'))return;
+  const q=QA[gi];
+  bd.querySelectorAll('.ox').forEach(b=>b.classList.add('lk'));
+  btn.classList.add(val?'so':'sx');
+  if(val!==q.ans){btn.style.opacity='.5';bd.querySelectorAll('.ox')[val?1:0].classList.add(q.ans?'so':'sx');}
+  document.getElementById('ex-'+gi).classList.add('show');
+  answered++;if(val===q.ans)correct++;upS();
+}
+function upS(){document.getElementById('sc').textContent=correct;document.getElementById('st').textContent=answered;}
+document.getElementById('fbar').addEventListener('click',e=>{
+  const b=e.target.closest('.fb');if(!b)return;
+  document.querySelectorAll('.fb').forEach(x=>x.classList.remove('on'));b.classList.add('on');renderQ(b.dataset.f);
+});
+renderQ('all');
+</script>
+</body>
+</html>

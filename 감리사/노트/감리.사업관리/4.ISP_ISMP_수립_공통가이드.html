@@ -1,0 +1,776 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&family=JetBrains+Mono:wght@400;700&display=swap');
+:root{
+  --bg:#0b0f1a;--sur:#131929;--sur2:#1a2236;--sur3:#212d45;
+  --bdr:#2a3650;--acc:#38bdf8;--acc2:#818cf8;--acc3:#34d399;
+  --acc4:#fbbf24;--acc5:#f87171;--text:#e2e8f0;--muted:#64748b;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Noto Sans KR',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;}
+
+/* HEADER */
+.hdr{padding:22px 24px 16px;background:linear-gradient(160deg,#0b0f1a 0%,#111827 40%,#0f172a 100%);border-bottom:1px solid var(--bdr);position:relative;overflow:hidden;}
+.hdr::before{content:'';position:absolute;top:-80px;right:-60px;width:320px;height:320px;background:radial-gradient(circle,rgba(56,189,248,.08) 0%,transparent 65%);pointer-events:none;}
+.hdr::after{content:'';position:absolute;bottom:-50px;left:30%;width:250px;height:250px;background:radial-gradient(circle,rgba(129,140,248,.06) 0%,transparent 65%);pointer-events:none;}
+.hdr-row{display:flex;align-items:center;gap:10px;margin-bottom:5px;flex-wrap:wrap;}
+.pill{padding:3px 10px;border-radius:20px;font-size:10px;font-weight:700;letter-spacing:.8px;}
+.pill-1{background:linear-gradient(135deg,var(--acc2),var(--acc));color:#fff;}
+.pill-2{background:rgba(251,191,36,.15);color:var(--acc4);border:1px solid rgba(251,191,36,.3);}
+.pill-3{background:rgba(52,211,153,.15);color:var(--acc3);border:1px solid rgba(52,211,153,.3);}
+h1{font-size:20px;font-weight:900;background:linear-gradient(90deg,var(--acc),var(--acc2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.hdr p{color:var(--muted);font-size:12px;margin-top:2px;}
+
+/* TABS */
+.tabs{display:flex;gap:2px;padding:0 24px;background:var(--sur);border-bottom:1px solid var(--bdr);overflow-x:auto;scrollbar-width:none;}
+.tabs::-webkit-scrollbar{display:none;}
+.tab{padding:11px 15px;font-size:12px;font-weight:600;color:var(--muted);cursor:pointer;border-bottom:2px solid transparent;white-space:nowrap;transition:all .2s;background:none;border-top:none;border-left:none;border-right:none;font-family:'Noto Sans KR',sans-serif;}
+.tab:hover{color:var(--text);}
+.tab.on{color:var(--acc);border-bottom-color:var(--acc);}
+
+.body{padding:20px 24px;max-width:960px;margin:0 auto;}
+.pnl{display:none;}.pnl.on{display:block;}
+
+/* Cards */
+.card{background:var(--sur);border:1px solid var(--bdr);border-radius:12px;padding:18px;margin-bottom:14px;}
+.card-h{display:flex;align-items:center;gap:10px;margin-bottom:14px;}
+.ico{width:34px;height:34px;border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:17px;flex-shrink:0;}
+.ico-b{background:rgba(56,189,248,.15);}
+.ico-p{background:rgba(129,140,248,.15);}
+.ico-g{background:rgba(52,211,153,.15);}
+.ico-y{background:rgba(251,191,36,.15);}
+.ico-r{background:rgba(248,113,113,.15);}
+.card h3{font-size:14px;font-weight:700;}
+.card h4{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:var(--muted);margin-bottom:10px;}
+
+/* Tag */
+.tag{display:inline-block;padding:2px 8px;border-radius:4px;font-size:10px;font-weight:600;margin:2px 2px 2px 0;}
+.tb{background:rgba(56,189,248,.12);color:var(--acc);border:1px solid rgba(56,189,248,.25);}
+.tp{background:rgba(129,140,248,.12);color:var(--acc2);border:1px solid rgba(129,140,248,.25);}
+.tg{background:rgba(52,211,153,.12);color:var(--acc3);border:1px solid rgba(52,211,153,.25);}
+.ty{background:rgba(251,191,36,.12);color:var(--acc4);border:1px solid rgba(251,191,36,.25);}
+.tr{background:rgba(248,113,113,.12);color:var(--acc5);border:1px solid rgba(248,113,113,.25);}
+
+/* Table */
+table{width:100%;border-collapse:collapse;font-size:12.5px;}
+th{background:var(--sur2);color:var(--muted);font-weight:700;padding:8px 12px;text-align:left;font-size:10px;text-transform:uppercase;letter-spacing:.5px;border-bottom:1px solid var(--bdr);}
+td{padding:9px 12px;border-bottom:1px solid rgba(42,54,80,.5);vertical-align:top;line-height:1.6;}
+tr:last-child td{border-bottom:none;}
+tr:hover td{background:rgba(255,255,255,.02);}
+td strong{color:var(--acc4);}
+
+/* Memo */
+.memo{background:linear-gradient(135deg,rgba(56,189,248,.06),rgba(129,140,248,.06));border:1px solid rgba(56,189,248,.2);border-left:3px solid var(--acc);border-radius:8px;padding:10px 14px;font-size:12.5px;font-weight:600;color:var(--acc);margin:10px 0;}
+.memo::before{content:'🎯 한 줄 암기 │ ';color:var(--muted);font-weight:400;}
+
+/* Flow */
+.flow{display:flex;align-items:stretch;gap:4px;flex-wrap:wrap;margin:12px 0;}
+.flow-node{background:var(--sur2);border:1px solid var(--bdr);border-radius:8px;padding:8px 12px;font-size:11.5px;font-weight:600;text-align:center;min-width:90px;flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;}
+.flow-node small{font-size:9px;font-weight:400;color:var(--muted);}
+.flow-arr{color:var(--acc);font-size:18px;display:flex;align-items:center;padding:0 2px;}
+
+/* Grid 2 */
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:14px;}
+@media(max-width:600px){.g2{grid-template-columns:1fr;}}
+
+/* Info list */
+ul.il{list-style:none;display:flex;flex-direction:column;gap:7px;}
+ul.il li{font-size:12.5px;padding-left:16px;position:relative;line-height:1.55;}
+ul.il li::before{content:'▸';position:absolute;left:0;color:var(--acc);font-size:10px;top:3px;}
+ul.il li strong{color:var(--acc4);}
+ul.il li em{color:var(--acc3);font-style:normal;}
+
+/* Comparison special */
+.cmp-wrap{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:10px 0;}
+@media(max-width:600px){.cmp-wrap{grid-template-columns:1fr;}}
+.cmp-col{background:var(--sur2);border:1px solid var(--bdr);border-radius:10px;padding:14px;}
+.cmp-col h5{font-size:12px;font-weight:800;margin-bottom:10px;padding-bottom:8px;border-bottom:1px solid var(--bdr);}
+.isp-h{color:var(--acc);}
+.ismp-h{color:var(--acc3);}
+
+/* Phase steps */
+.phase{display:flex;flex-direction:column;gap:8px;margin:10px 0;}
+.ph{background:var(--sur2);border:1px solid var(--bdr);border-radius:9px;overflow:hidden;cursor:pointer;transition:border-color .2s;}
+.ph:hover{border-color:rgba(56,189,248,.3);}
+.ph-hd{display:flex;align-items:center;gap:10px;padding:11px 14px;}
+.ph-num{width:26px;height:26px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;flex-shrink:0;}
+.ph-title{font-size:13px;font-weight:700;flex:1;}
+.ph-arr{color:var(--muted);transition:transform .2s;font-size:14px;}
+.ph.open .ph-arr{transform:rotate(180deg);}
+.ph-body{display:none;border-top:1px solid var(--bdr);padding:12px 14px 14px;}
+.ph.open .ph-body{display:block;}
+.out-chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px;}
+.out-chip{background:var(--sur);border:1px solid var(--bdr);border-radius:6px;padding:4px 10px;font-size:11px;color:var(--text);}
+.out-chip::before{content:'📄 ';}
+
+/* QA */
+.qa{background:var(--sur);border:1px solid var(--bdr);border-radius:10px;margin-bottom:11px;overflow:hidden;transition:border-color .2s;}
+.qa:hover{border-color:rgba(56,189,248,.25);}
+.qa-hd{padding:14px 18px;cursor:pointer;display:flex;justify-content:space-between;align-items:flex-start;gap:10px;user-select:none;}
+.qa-meta{display:flex;align-items:center;gap:6px;margin-bottom:5px;flex-wrap:wrap;}
+.qn{font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:700;color:var(--muted);}
+.qq{font-size:13px;font-weight:600;line-height:1.55;}
+.tgl{color:var(--muted);font-size:16px;flex-shrink:0;transition:transform .2s;}
+.qa.open .tgl{transform:rotate(180deg);}
+.qa-bd{display:none;border-top:1px solid var(--bdr);padding:14px 18px;background:var(--sur2);}
+.qa.open .qa-bd{display:block;}
+.chs{display:flex;flex-direction:column;gap:7px;margin-bottom:12px;}
+.ch{display:flex;align-items:flex-start;gap:10px;padding:9px 13px;border-radius:7px;border:1px solid var(--bdr);font-size:12.5px;cursor:pointer;background:var(--sur);line-height:1.5;transition:all .15s;}
+.ch:hover:not(.lk){border-color:rgba(56,189,248,.3);background:rgba(56,189,248,.04);}
+.ch.ok{border-color:var(--acc3);background:rgba(52,211,153,.1);color:var(--acc3);}
+.ch.ng{border-color:var(--acc5);background:rgba(248,113,113,.08);color:var(--acc5);opacity:.7;}
+.ch.lk{cursor:default;}
+.cnum{font-family:'JetBrains Mono',monospace;font-weight:700;font-size:11px;flex-shrink:0;margin-top:1px;color:var(--muted);}
+.ch.ok .cnum{color:var(--acc3);}.ch.ng .cnum{color:var(--acc5);}
+.exp{background:rgba(56,189,248,.05);border:1px solid rgba(56,189,248,.18);border-radius:8px;padding:12px 14px;font-size:12.5px;line-height:1.65;display:none;}
+.exp.show{display:block;}
+.exp-t{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--acc);margin-bottom:6px;}
+.exp strong{color:var(--acc4);}
+.exp em{color:var(--acc3);font-style:normal;}
+
+.ox-wr{display:flex;gap:10px;margin-bottom:12px;}
+.ox{flex:1;padding:11px;border-radius:8px;border:1px solid var(--bdr);font-size:20px;cursor:pointer;background:var(--sur);transition:all .15s;font-family:'Noto Sans KR',sans-serif;color:var(--text);}
+.ox:hover:not(.lk){transform:scale(1.02);}
+.ox.so{border-color:var(--acc3);background:rgba(52,211,153,.15);}
+.ox.sx{border-color:var(--acc5);background:rgba(248,113,113,.1);}
+.ox.lk{cursor:default;}
+
+.diff{display:inline-block;padding:2px 7px;border-radius:10px;font-size:9px;font-weight:700;}
+.easy{background:rgba(52,211,153,.2);color:var(--acc3);}
+.mid{background:rgba(251,191,36,.2);color:var(--acc4);}
+.hard{background:rgba(248,113,113,.2);color:var(--acc5);}
+
+.sep{display:flex;align-items:center;gap:10px;margin:18px 0 14px;color:var(--muted);font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1px;}
+.sep::before,.sep::after{content:'';flex:1;height:1px;background:var(--bdr);}
+
+.fbtn-wrap{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:16px;}
+.fb{padding:5px 12px;border-radius:20px;border:1px solid var(--bdr);font-size:11px;font-weight:600;cursor:pointer;background:var(--sur2);color:var(--muted);transition:all .15s;font-family:'Noto Sans KR',sans-serif;}
+.fb.on{background:rgba(56,189,248,.15);color:var(--acc);border-color:var(--acc);}
+
+.score{background:var(--sur2);border:1px solid var(--bdr);border-radius:8px;padding:5px 14px;font-size:12px;color:var(--muted);}
+.score span{color:var(--acc);font-weight:700;}
+</style>
+</head>
+<body>
+
+<div class="hdr">
+  <div class="hdr-row">
+    <span class="pill pill-1">감리사 핵심</span>
+    <span class="pill pill-2">NIA 제9판 반영</span>
+    <span class="pill pill-3">기출 출제 多</span>
+  </div>
+  <h1>ISP · ISMP 수립 공통 가이드</h1>
+  <p>정보화전략계획(ISP) & 정보시스템마스터플랜(ISMP) — 개념·절차·비교·예상문제 완전 정복</p>
+</div>
+
+<div class="tabs">
+  <button class="tab on" data-p="p1">📌 개요 & 정의</button>
+  <button class="tab" data-p="p2">🔄 수행 절차</button>
+  <button class="tab" data-p="p3">⚖️ ISP vs ISMP</button>
+  <button class="tab" data-p="p4">🏗️ EA·ITA 관계</button>
+  <button class="tab" data-p="p5">❓ 예상문제</button>
+</div>
+
+<div class="body">
+
+<!-- ===== TAB 1 ===== -->
+<div class="pnl on" id="p1">
+
+  <div class="card">
+    <div class="card-h"><div class="ico ico-b">📌</div><h3>ISP · ISMP란 무엇인가?</h3></div>
+    <div class="cmp-wrap">
+      <div class="cmp-col">
+        <h5 class="isp-h">🔵 ISP — 정보화전략계획<br><small style="color:var(--muted);font-weight:400">Information Strategy Planning</small></h5>
+        <ul class="il">
+          <li><strong>정의:</strong> 조직의 경영목표 전략을 효과적으로 지원하기 위한 정보화 전략·비전 정의 및 IT 사업과제·로드맵 수립 활동</li>
+          <li><strong>범위:</strong> <em>전사(全社) 정보시스템</em> 포괄</li>
+          <li><strong>관점:</strong> CIO 차원 — IT 방향과 계획 제시</li>
+          <li><strong>주요 활동:</strong> 환경분석 → 현황분석(As-Is) → 목표모델 설계(To-Be) → 이행계획 수립</li>
+          <li><strong>결과물 수준:</strong> RFP 수준 정의 (상세 기능 포함 X)</li>
+        </ul>
+      </div>
+      <div class="cmp-col">
+        <h5 class="ismp-h">🟢 ISMP — 정보시스템마스터플랜<br><small style="color:var(--muted);font-weight:400">Information System Master Plan</small></h5>
+        <ul class="il">
+          <li><strong>정의:</strong> 특정 SW개발 사업에 대한 상세분석과 제안요청서(RFP) 마련을 위해 기능적·기술적·비기능적 요건을 상세 기술하고 구축전략·이행계획 수립</li>
+          <li><strong>범위:</strong> <em>특정 사업·정보시스템</em> 대상</li>
+          <li><strong>관점:</strong> 구축사업 계획 수립</li>
+          <li><strong>주요 활동:</strong> 현황분석 → 요구사항 도출 → 기능/기술 설계 → 이행계획</li>
+          <li><strong>결과물 수준:</strong> <em>기능점수 도출 가능 수준</em>까지 상세화</li>
+        </ul>
+      </div>
+    </div>
+    <div class="memo">ISP=전사 정보화 전략·로드맵 / ISMP=특정 사업 상세 요건+RFP 작성 목표</div>
+  </div>
+
+  <div class="card">
+    <div class="card-h"><div class="ico ico-y">📋</div><h3>공통가이드 적용 근거 및 의무</h3></div>
+    <ul class="il">
+      <li><strong>근거:</strong> 기획재정부 '예산안 편성 및 기금운용계획안 작성 세부지침' + '예산 및 기금운용계획 집행지침'</li>
+      <li><strong>발행 주체:</strong> 기획재정부 + 한국지능정보사회진흥원(NIA) — 매년 개정·배포</li>
+      <li><strong>의무:</strong> 정보시스템 구축·재구축 예산 요구 전 ISP 또는 ISMP 수립 후 <em>기획재정부 검토 필수</em></li>
+      <li><strong>선택 기준:</strong> 시스템 신규/재구축 여부, 사전준비도 체크리스트 결과에 따라 ISP 또는 ISMP 선택</li>
+      <li><strong>제외 유형:</strong> 민간투자형 SW사업, 클라우드·디지털 서비스 도입·전환 우선 검토 사업 등</li>
+      <li><strong>현행 버전:</strong> <em>제9판 (2025년 개정)</em> — 소규모 정보시스템 구축 사업계획 수립 안내 추가</li>
+    </ul>
+    <div class="memo">예산 요구 전 ISP/ISMP 수립 → 기재부 검토 필수 (NIA·기재부 공동 가이드)</div>
+  </div>
+
+  <div class="g2">
+    <div class="card">
+      <h4>ISP 수립 목적</h4>
+      <ul class="il">
+        <li>조직 경영목표와 IT 전략 <strong>연계</strong></li>
+        <li>전사 정보화 <strong>비전·전략</strong> 수립</li>
+        <li>중장기 IT 투자 <strong>로드맵</strong> 제시</li>
+        <li>중복 투자 방지 및 <strong>우선순위</strong> 결정</li>
+        <li>정보화 추진 <strong>마스터플랜</strong> 역할</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h4>ISMP 수립 목적</h4>
+      <ul class="il">
+        <li>형식적 ISP의 <strong>한계 극복</strong></li>
+        <li>기능점수 도출 가능 수준 <strong>상세 기술</strong></li>
+        <li>불합리한 <strong>과업 변경 방지</strong></li>
+        <li>중복투자·기능 재구축 <strong>방지</strong></li>
+        <li>개발 일정 축소 문제 <strong>사전 예방</strong></li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-h"><div class="ico ico-p">🔍</div><h3>사전준비도 체크리스트 — ISP vs ISMP 선택 기준</h3></div>
+    <table>
+      <thead><tr><th>판단 기준</th><th>ISP 선택</th><th>ISMP 선택</th></tr></thead>
+      <tbody>
+        <tr><td>시스템 구축 성격</td><td>신규 구축 (방향 미정)</td><td><strong>재구축 또는 방향 확정</strong></td></tr>
+        <tr><td>정보화 전략 수립 여부</td><td>전략 미수립 상태</td><td><strong>기존 ISP·전략 존재</strong></td></tr>
+        <tr><td>요구사항 구체성</td><td>요구사항 불명확</td><td><strong>요구사항 구체적 도출 가능</strong></td></tr>
+        <tr><td>범위</td><td>전사·대규모</td><td><strong>특정 사업·시스템 단위</strong></td></tr>
+        <tr><td>산출물 목적</td><td>정보화 전략 수립</td><td><strong>RFP 작성 + 기능점수 산정</strong></td></tr>
+      </tbody>
+    </table>
+    <div class="memo">사전준비도 체크리스트로 ISP/ISMP 선택 — ISMP는 구체적 요건+RFP가 목표</div>
+  </div>
+
+</div>
+
+<!-- ===== TAB 2 ===== -->
+<div class="pnl" id="p2">
+
+  <div class="card">
+    <div class="card-h"><div class="ico ico-b">🔄</div><h3>ISP 수행 절차 (4단계)</h3></div>
+    <div class="flow">
+      <div class="flow-node" style="border-color:rgba(56,189,248,.4)">
+        <span style="font-size:18px">🔍</span>
+        <span style="color:var(--acc)">①환경분석</span>
+        <small>경영환경·IT동향</small>
+      </div>
+      <div class="flow-arr">→</div>
+      <div class="flow-node" style="border-color:rgba(129,140,248,.4)">
+        <span style="font-size:18px">📊</span>
+        <span style="color:var(--acc2)">②현황분석</span>
+        <small>As-Is 분석</small>
+      </div>
+      <div class="flow-arr">→</div>
+      <div class="flow-node" style="border-color:rgba(52,211,153,.4)">
+        <span style="font-size:18px">🎯</span>
+        <span style="color:var(--acc3)">③목표모델 설계</span>
+        <small>To-Be 설계</small>
+      </div>
+      <div class="flow-arr">→</div>
+      <div class="flow-node" style="border-color:rgba(251,191,36,.4)">
+        <span style="font-size:18px">🗺️</span>
+        <span style="color:var(--acc4)">④이행계획 수립</span>
+        <small>로드맵·우선순위</small>
+      </div>
+    </div>
+    <div class="memo">ISP: 환경분석 → 현황(As-Is) → 목표(To-Be) → 이행계획(로드맵)</div>
+
+    <div class="phase" style="margin-top:14px;">
+      <div class="ph" onclick="tog(this)">
+        <div class="ph-hd">
+          <div class="ph-num" style="background:rgba(56,189,248,.2);color:var(--acc)">①</div>
+          <div class="ph-title">환경 분석</div>
+          <span class="ph-arr">▾</span>
+        </div>
+        <div class="ph-body">
+          <ul class="il">
+            <li><strong>경영환경 분석:</strong> 자사·경쟁사(유관기관)·고객 특성 분석</li>
+            <li><strong>IT 환경 분석:</strong> 최신 정보기술 동향 분석</li>
+            <li><strong>목표:</strong> 조직의 경영목표·전략 확인 및 이해</li>
+            <li><em>ISMP는 환경 분석 수행 불필요</em> (기 수립된 ISP 검토만 함)</li>
+          </ul>
+          <div class="out-chips"><span class="out-chip">경영환경분석서</span><span class="out-chip">IT동향분석서</span></div>
+        </div>
+      </div>
+      <div class="ph" onclick="tog(this)">
+        <div class="ph-hd">
+          <div class="ph-num" style="background:rgba(129,140,248,.2);color:var(--acc2)">②</div>
+          <div class="ph-title">현황 분석 (As-Is)</div>
+          <span class="ph-arr">▾</span>
+        </div>
+        <div class="ph-body">
+          <ul class="il">
+            <li><strong>업무 분석:</strong> 업무 프로세스·기능 현황 파악, 문제점 도출</li>
+            <li><strong>정보시스템 분석:</strong> 현행 시스템 구조·데이터·인프라 현황 분석</li>
+            <li><strong>성과 분석:</strong> 기존 정보화 투자 효과성 평가</li>
+            <li>ISP: 경영목표 기준으로 문제점·개선방향 분석</li>
+            <li>ISMP: SW사업 범위 내 현황 파악 + <em>사용자 요구사항 도출</em></li>
+          </ul>
+          <div class="out-chips"><span class="out-chip">업무현황 분석서</span><span class="out-chip">정보시스템 현황서</span><span class="out-chip">문제점·개선과제 목록</span></div>
+        </div>
+      </div>
+      <div class="ph" onclick="tog(this)">
+        <div class="ph-hd">
+          <div class="ph-num" style="background:rgba(52,211,153,.2);color:var(--acc3)">③</div>
+          <div class="ph-title">목표모델 설계 (To-Be)</div>
+          <span class="ph-arr">▾</span>
+        </div>
+        <div class="ph-body">
+          <ul class="il">
+            <li><strong>정보화 비전·전략 수립:</strong> 정보화전략 정의서 작성</li>
+            <li><strong>목표 업무모델 설계:</strong> 개선 업무 프로세스 설계</li>
+            <li><strong>목표 정보시스템 설계:</strong> 아키텍처 방향, 정보 구조 설계</li>
+            <li>ISP: 정보화 전략·IT 사업과제 도출 및 정의</li>
+            <li>ISMP: 기능적·기술적·비기능적 요구사항 <em>상세 설계 (기능점수 도출 가능 수준)</em></li>
+          </ul>
+          <div class="out-chips"><span class="out-chip">정보화 전략 정의서</span><span class="out-chip">목표 아키텍처</span><span class="out-chip">요구사항 정의서(ISMP)</span></div>
+        </div>
+      </div>
+      <div class="ph" onclick="tog(this)">
+        <div class="ph-hd">
+          <div class="ph-num" style="background:rgba(251,191,36,.2);color:var(--acc4)">④</div>
+          <div class="ph-title">이행계획 수립</div>
+          <span class="ph-arr">▾</span>
+        </div>
+        <div class="ph-body">
+          <ul class="il">
+            <li><strong>과제 우선순위:</strong> 중요도·긴급도·효과성 기반 우선순위 결정</li>
+            <li><strong>이행 로드맵:</strong> 단기·중기·장기 추진 일정 수립</li>
+            <li><strong>투자계획:</strong> 사업비 추정, 예산 요청 자료 작성</li>
+            <li>ISP: 전사 IT 사업 로드맵 및 예산 계획</li>
+            <li>ISMP: <em>제안요청서(RFP) 작성</em> + 구체적 사업계획 수립</li>
+          </ul>
+          <div class="out-chips"><span class="out-chip">이행계획서</span><span class="out-chip">로드맵</span><span class="out-chip">투자계획서</span><span class="out-chip">RFP(ISMP)</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-h"><div class="ico ico-g">🗂️</div><h3>ISMP 5단계 수행 절차</h3></div>
+    <div class="flow">
+      <div class="flow-node" style="border-color:rgba(56,189,248,.4);">
+        <span style="color:var(--acc)">①사업 준비</span><small>착수·범위 확정</small>
+      </div>
+      <div class="flow-arr">→</div>
+      <div class="flow-node" style="border-color:rgba(129,140,248,.4);">
+        <span style="color:var(--acc2)">②현황 분석</span><small>업무·시스템 현황</small>
+      </div>
+      <div class="flow-arr">→</div>
+      <div class="flow-node" style="border-color:rgba(52,211,153,.4);">
+        <span style="color:var(--acc3)">③요구사항 분석</span><small>기능·비기능</small>
+      </div>
+      <div class="flow-arr">→</div>
+      <div class="flow-node" style="border-color:rgba(251,191,36,.4);">
+        <span style="color:var(--acc4)">④구축 전략 수립</span><small>기술구조 설계</small>
+      </div>
+      <div class="flow-arr">→</div>
+      <div class="flow-node" style="border-color:rgba(248,113,113,.4);">
+        <span style="color:var(--acc5)">⑤이행계획 수립</span><small>RFP 작성</small>
+      </div>
+    </div>
+    <div class="memo">ISMP 5단계: 준비→현황→요구사항→구축전략→이행(RFP) — 단 1사이클만 수행</div>
+    <div style="margin-top:10px;">
+      <table>
+        <thead><tr><th>단계</th><th>핵심 활동</th><th>주요 산출물</th></tr></thead>
+        <tbody>
+          <tr><td><strong>①사업 준비</strong></td><td>사업 범위 확정, 추진 체계 구성, 착수 보고</td><td>사업 계획서, 착수 보고서</td></tr>
+          <tr><td><strong>②현황 분석</strong></td><td>업무·정보시스템 현황 파악, 문제점 도출</td><td>현황 분석서, 문제점 목록</td></tr>
+          <tr><td><strong>③요구사항 분석</strong></td><td>사용자 요구사항 도출 (기능·기술·비기능·프로젝트지원)</td><td>요구사항 정의서, 요구사항 추적표</td></tr>
+          <tr><td><strong>④구축 전략 수립</strong></td><td>기술 아키텍처 방향, 구축 방법론 결정</td><td>구축 전략서, 목표 아키텍처</td></tr>
+          <tr><td><strong>⑤이행계획 수립</strong></td><td>기능점수 산정, RFP 작성, 사업비 추정</td><td>이행계획서, 제안요청서(RFP)</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+</div>
+
+<!-- ===== TAB 3 ===== -->
+<div class="pnl" id="p3">
+
+  <div class="card">
+    <div class="card-h"><div class="ico ico-p">⚖️</div><h3>ISP vs ISMP 핵심 비교표</h3></div>
+    <table>
+      <thead><tr><th>구분</th><th style="color:var(--acc)">ISP</th><th style="color:var(--acc3)">ISMP</th></tr></thead>
+      <tbody>
+        <tr><td><strong>정식 명칭</strong></td><td>정보화전략계획</td><td>정보시스템마스터플랜</td></tr>
+        <tr><td><strong>영문</strong></td><td>Information Strategy Planning</td><td>Information System Master Plan</td></tr>
+        <tr><td><strong>수행 범위</strong></td><td>전사(全社) 정보시스템 포괄</td><td>특정 SW사업·시스템 대상</td></tr>
+        <tr><td><strong>주요 목적</strong></td><td>정보화 전략·비전·로드맵 수립</td><td>RFP 작성 + 기능점수 도출 수준 상세화</td></tr>
+        <tr><td><strong>환경분석</strong></td><td><em>필수</em> (경영환경·IT 동향)</td><td><strong>불필요</strong> (기 수립 전략 검토만)</td></tr>
+        <tr><td><strong>요구사항 수준</strong></td><td>사업과제·이행방향 정의 수준</td><td>입출력·절차·기능검증 요건까지 상세</td></tr>
+        <tr><td><strong>RFP 관계</strong></td><td>예산 확보 후 RFP 별도 작성</td><td><em>ISMP 자체가 RFP 작성 목표</em></td></tr>
+        <tr><td><strong>설계 대상</strong></td><td>정보화 전략·업무 프로세스·조직체계</td><td>기능/기술/비기능/프로젝트지원 요구사항</td></tr>
+        <tr><td><strong>관점</strong></td><td>CIO 차원 (IT 방향·계획)</td><td>구축사업 담당자 차원</td></tr>
+        <tr><td><strong>수행 단계</strong></td><td>4단계 (환경→현황→목표→이행)</td><td>5단계 (준비→현황→요구→전략→이행)</td></tr>
+        <tr><td><strong>적용 대상</strong></td><td>전략 미수립·신규 대규모 사업</td><td>대부분의 공공부문 SW사업</td></tr>
+      </tbody>
+    </table>
+    <div class="memo">ISP=CIO 차원 전략(환경분석O·RFP별도) vs ISMP=사업 차원 상세(환경분석X·RFP포함)</div>
+  </div>
+
+  <div class="g2">
+    <div class="card">
+      <h4>ISP에는 있고 ISMP에는 없는 것</h4>
+      <ul class="il">
+        <li><strong>경영환경 분석</strong> (자사·경쟁사·고객)</li>
+        <li><strong>IT 동향 분석</strong></li>
+        <li><strong>전사 정보화 비전·전략</strong> 수립</li>
+        <li><strong>중장기 로드맵</strong> (전사 수준)</li>
+        <li>정보관리 <strong>조직체계</strong> 설계</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h4>ISMP에는 있고 ISP에는 없는 것</h4>
+      <ul class="il">
+        <li><strong>기능점수 도출 가능</strong> 수준 상세화</li>
+        <li>입출력 정보·절차·기능검증 요건 기술</li>
+        <li><strong>비기능 요구사항</strong> 상세 (성능·품질·보안)</li>
+        <li><strong>제안요청서(RFP)</strong> 직접 작성</li>
+        <li>프로젝트 지원 요구사항 정의</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-h"><div class="ico ico-y">📊</div><h3>ISMP 4가지 요구사항 유형</h3></div>
+    <table>
+      <thead><tr><th>유형</th><th>내용</th><th>예시</th></tr></thead>
+      <tbody>
+        <tr>
+          <td><span class="tag tb">기능적</span></td>
+          <td>시스템이 수행해야 할 업무 기능</td>
+          <td>회원 가입, 결제, 조회, 승인 처리</td>
+        </tr>
+        <tr>
+          <td><span class="tag tp">기술적</span></td>
+          <td>구현 기술 방향 및 아키텍처 요건</td>
+          <td>클라우드 기반, MSA 아키텍처, Java 기반</td>
+        </tr>
+        <tr>
+          <td><span class="tag tg">비기능적</span></td>
+          <td>성능·품질·보안·가용성 요건</td>
+          <td>응답시간 2초 이내, 99.9% 가용성, 암호화</td>
+        </tr>
+        <tr>
+          <td><span class="tag ty">프로젝트 지원</span></td>
+          <td>사업 수행 지원 관련 요건</td>
+          <td>교육훈련, 유지보수, 사용자 지원체계</td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="memo">ISMP 요구사항 4유형: 기능적 · 기술적 · 비기능적 · 프로젝트지원</div>
+  </div>
+
+</div>
+
+<!-- ===== TAB 4 ===== -->
+<div class="pnl" id="p4">
+
+  <div class="card">
+    <div class="card-h"><div class="ico ico-b">🏗️</div><h3>EA · ITA · ISP · ISMP 계층 관계</h3></div>
+    <div style="display:flex;flex-direction:column;gap:8px;margin:12px 0;">
+      <div style="background:rgba(251,191,36,.1);border:1px solid rgba(251,191,36,.3);border-radius:9px;padding:12px 16px;">
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;">
+          <span class="tag ty">CEO 차원</span>
+          <strong style="color:var(--acc4)">EA / ITA — 전사적 아키텍처</strong>
+        </div>
+        <ul class="il">
+          <li>전사 차원의 구성요소 정의·개선하는 <strong>청사진</strong></li>
+          <li>현행 아키텍처(As-Is) → 목표 아키텍처(To-Be) + 이행계획</li>
+          <li>비즈니스·IT 유연한 융합 목적</li>
+        </ul>
+      </div>
+      <div style="text-align:center;color:var(--muted);font-size:18px;">↓ IT 방향·계획 반영</div>
+      <div style="background:rgba(56,189,248,.08);border:1px solid rgba(56,189,248,.3);border-radius:9px;padding:12px 16px;">
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;">
+          <span class="tag tb">CIO 차원</span>
+          <strong style="color:var(--acc)">ISP — 정보화전략계획</strong>
+        </div>
+        <ul class="il">
+          <li>EA/ITA 방향 하에서 <strong>IT 방향과 계획</strong> 제시</li>
+          <li>전사 IT 사업과제·로드맵 수립</li>
+          <li>경영목표와 IT 전략 연계</li>
+        </ul>
+      </div>
+      <div style="text-align:center;color:var(--muted);font-size:18px;">↓ 구축방향 일치</div>
+      <div style="background:rgba(52,211,153,.08);border:1px solid rgba(52,211,153,.3);border-radius:9px;padding:12px 16px;">
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;">
+          <span class="tag tg">사업 차원</span>
+          <strong style="color:var(--acc3)">ISMP — 정보시스템마스터플랜</strong>
+        </div>
+        <ul class="il">
+          <li>EA/ITA 목표 아키텍처 구조 하에 특정 사업의 <strong>구축 목표·방향 수립</strong></li>
+          <li>ISP의 IT 방향과 일치하도록 사용자·시스템 요구사항 기술</li>
+          <li>RFP 작성 및 구체적 구축 사업계획 수립</li>
+        </ul>
+      </div>
+    </div>
+    <div class="memo">EA(청사진) → ISP(CIO·IT계획) → ISMP(사업·RFP) 계층 구조</div>
+  </div>
+
+  <div class="card">
+    <div class="card-h"><div class="ico ico-p">🔗</div><h3>EA / ITA 핵심 개념</h3></div>
+    <ul class="il">
+      <li><strong>EA (Enterprise Architecture):</strong> 전사적 아키텍처 — 비즈니스·IT 전체 구성요소 정의·관리하는 청사진</li>
+      <li><strong>ITA (Information Technology Architecture):</strong> 정보기술 아키텍처 — 국내 공공부문 EA 기반 개념</li>
+      <li><strong>현행 아키텍처(As-Is):</strong> 현재 조직의 업무·시스템·데이터·기술 아키텍처</li>
+      <li><strong>목표 아키텍처(To-Be):</strong> 미래 지향적 목표 아키텍처</li>
+      <li><strong>이행계획:</strong> 현행 → 목표 전환을 위한 단계적 계획</li>
+    </ul>
+    <div style="margin-top:12px;">
+      <table>
+        <thead><tr><th>구분</th><th>EA/ITA</th><th>ISP</th><th>ISMP</th></tr></thead>
+        <tbody>
+          <tr><td>관점</td><td>CEO / 전사</td><td>CIO / 전략</td><td>사업담당 / 구축</td></tr>
+          <tr><td>범위</td><td>전사 아키텍처</td><td>전사 IT 전략</td><td>특정 사업</td></tr>
+          <tr><td>목적</td><td>청사진 수립</td><td>IT 방향·계획</td><td>RFP·상세 요건</td></tr>
+          <tr><td>관계</td><td>최상위 기준</td><td>EA 하위 IT계획</td><td>ISP 하위 실행</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="memo">EA=CEO전사청사진 / ISP=CIO IT계획 / ISMP=사업담당 상세실행 — 위→아래 계층</div>
+  </div>
+
+</div>
+
+<!-- ===== TAB 5 ===== -->
+<div class="pnl" id="p5">
+  <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;margin-bottom:14px;">
+    <div class="fbtn-wrap" id="fbar" style="margin:0;">
+      <button class="fb on" data-f="all">전체</button>
+      <button class="fb" data-f="정의">📌 정의·개요</button>
+      <button class="fb" data-f="비교">⚖️ ISP/ISMP 비교</button>
+      <button class="fb" data-f="절차">🔄 절차·산출물</button>
+      <button class="fb" data-f="EA">🏗️ EA·ITA</button>
+      <button class="fb" data-f="OX">⭕ OX</button>
+    </div>
+    <div class="score">정답: <span id="sc">0</span>/<span id="st">0</span></div>
+  </div>
+  <div id="ql"></div>
+</div>
+
+</div><!-- /body -->
+
+<script>
+// Tab switching
+document.querySelectorAll('.tab').forEach(t=>t.addEventListener('click',()=>{
+  document.querySelectorAll('.tab').forEach(x=>x.classList.remove('on'));
+  document.querySelectorAll('.pnl').forEach(x=>x.classList.remove('on'));
+  t.classList.add('on');
+  document.getElementById(t.dataset.p).classList.add('on');
+}));
+
+// Phase accordion
+function tog(el){el.classList.toggle('open');}
+
+// Q&A Data
+const QA=[
+  {cat:'정의',diff:'easy',
+   q:'ISP(정보화전략계획)의 정의로 가장 적절한 것은?',
+   cs:['특정 SW개발 사업에 대한 제안요청서(RFP)를 마련하기 위한 기능·기술 요건 상세 기술 활동',
+       '조직의 경영목표 전략을 지원하기 위한 정보화 전략·비전 정의 및 IT 사업과제·로드맵 수립 활동',
+       'EA/ITA의 현행 아키텍처를 분석하고 목표 아키텍처 수립 및 이행계획을 작성하는 활동',
+       '기능점수 도출이 가능한 수준까지 사용자 요구사항을 상세히 기술하는 활동'],
+   ans:1,
+   exp:'<strong>ISP(정보화전략계획)</strong>는 조직의 경영목표 전략을 효과적으로 지원하기 위한 <em>정보화 전략·비전을 정의하고 IT 사업(과제) 도출 및 로드맵을 수립</em>하는 활동입니다. 전사(全社) 정보시스템을 포괄하는 것이 핵심입니다. ①④는 ISMP, ③은 EA에 해당합니다.'},
+  {cat:'정의',diff:'easy',
+   q:'ISMP(정보시스템마스터플랜)의 핵심 목표로 가장 적합한 것은?',
+   cs:['전사 정보화 비전과 중장기 IT 로드맵 수립',
+       '조직의 경영환경 분석을 통한 IT 전략 방향 제시',
+       '특정 SW사업에 대한 상세 요구사항 기술 및 RFP 작성',
+       '전사적 아키텍처(EA) 목표모델 수립'],
+   ans:2,
+   exp:'<strong>ISMP</strong>는 특정 SW개발 사업에 대한 비즈니스·정보기술 현황과 요구사항을 분석하고, <em>기능점수 도출이 가능한 수준까지 기능적·기술적·비기능적 요건을 상세히 기술하며 RFP 작성을 목표</em>로 합니다. ISP와 달리 범위가 특정 사업에 한정됩니다.'},
+  {cat:'정의',diff:'mid',
+   q:'ISP·ISMP 수립 공통가이드를 발행하는 기관으로 옳은 것은?',
+   cs:['행정안전부 단독 발행',
+       '기획재정부와 한국지능정보사회진흥원(NIA) 공동',
+       '과학기술정보통신부와 NIA 공동',
+       'NIA 단독 발행'],
+   ans:1,
+   exp:'ISP·ISMP 수립 공통가이드는 <strong>기획재정부와 한국지능정보사회진흥원(NIA)이 공동</strong>으로 매년 개정·배포합니다. 기재부의 \'예산안 편성 및 기금운용계획안 작성 세부지침\'을 근거로 하며, 정보시스템 구축 예산 요구 전 반드시 준수해야 합니다.'},
+  {cat:'정의',diff:'mid',
+   q:'정보시스템 구축·재구축을 위한 예산 요구 시 ISP 또는 ISMP를 수립한 후 최종산출물 검토를 받아야 하는 기관은?',
+   cs:['행정안전부','감사원','기획재정부','한국지능정보사회진흥원'],
+   ans:2,
+   exp:'정보시스템 구축·재구축 예산 요구에 앞서 ISP 또는 ISMP를 수립하여 최종산출물에 대한 <strong>기획재정부의 검토</strong>를 받아야 합니다. 이는 예산의 효율적 집행과 중복투자 방지를 위한 의무 절차입니다.'},
+
+  {cat:'비교',diff:'mid',
+   q:'ISP와 ISMP를 비교한 설명으로 가장 적절하지 않은 것은?',
+   cs:['ISP는 전사 정보시스템을 포괄하며, ISMP는 특정 SW사업을 대상으로 한다.',
+       'ISMP는 ISP와 달리 경영환경 분석 활동이 필요하지 않다.',
+       'ISP와 ISMP 모두 기관 상황에 관계없이 항상 동시에 수행하여야 한다.',
+       'ISMP는 예산 확보 후 별도 RFP 작성 없이 ISMP 결과물이 RFP 역할을 한다.'],
+   ans:2,
+   exp:'ISP와 ISMP는 <strong>기관의 시스템 신규/재구축 여부, 사전준비도 체크리스트 결과에 따라 하나를 선택</strong>해서 수행합니다. 항상 동시에 수행하는 것이 아닙니다. 기관이 상황에 맞게 ISP 또는 ISMP를 선택할 수 있습니다.'},
+  {cat:'비교',diff:'hard',
+   q:'ISP와 ISMP의 업무·정보시스템 분석 관점 차이로 가장 적절한 것은?',
+   cs:['ISP는 SW사업 범위 내 현황을 파악하고 사용자 요구사항을 도출하며, ISMP는 경영목표 기준으로 문제점과 개선방향을 분석한다.',
+       'ISP는 경영목표 전략 기준으로 업무·시스템 문제점·개선 방향을 분석하며, ISMP는 SW사업 범위 내 현황 파악 및 사용자 요구사항을 도출한다.',
+       'ISP와 ISMP는 동일한 관점으로 업무·정보시스템을 분석하므로 분석 결과를 공유할 수 있다.',
+       'ISMP는 전사 업무 프로세스를 분석하고, ISP는 특정 시스템의 요구사항을 도출한다.'],
+   ans:1,
+   exp:'<strong>ISP</strong>는 환경분석을 통해 확인된 <em>조직의 경영목표 전략을 기준으로</em> 업무·정보시스템의 문제점 및 개선 방향을 분석합니다. 반면 <strong>ISMP</strong>는 <em>SW사업 범위 내의 업무·시스템 현황을 파악하고 사용자 요구사항을 도출</em>하는 것이 핵심 차이점입니다.'},
+  {cat:'비교',diff:'mid',
+   q:'ISMP에서 정의하는 요구사항의 4가지 유형으로 올바르게 짝지어진 것은?',
+   cs:['기능적·기술적·비기능적·운영적 요구사항',
+       '기능적·기술적·비기능적·프로젝트 지원 요구사항',
+       '사용자·시스템·인터페이스·성능 요구사항',
+       '업무·데이터·아키텍처·보안 요구사항'],
+   ans:1,
+   exp:'ISMP는 <strong>① 기능적 요구사항</strong>(업무 기능), <strong>② 기술적 요구사항</strong>(구현 기술·아키텍처), <strong>③ 비기능적 요구사항</strong>(성능·품질·보안), <strong>④ 프로젝트 지원 요구사항</strong>(교육·유지보수·지원체계)의 4가지 유형으로 상세히 기술합니다.'},
+  {cat:'비교',diff:'hard',
+   q:'ISP는 이행계획 단계에서 RFP를 작성하지 않고 예산 확보 후 별도로 RFP를 작성한다. ISMP 도입의 목적으로 가장 적합한 것은?',
+   cs:['예산 절감을 위해 ISP와 ISMP를 통합 수행하기 위함',
+       '형식적 ISP의 한계를 넘어 기획 단계에서 상세 요건을 확보함으로써 불합리한 과업 변경·중복투자 방지',
+       'ISP보다 더 광범위한 환경분석을 수행하기 위함',
+       '전사 아키텍처(EA) 수립의 대안으로 활용하기 위함'],
+   ans:1,
+   exp:'ISMP 도입 목적은 <strong>형식적 ISP 수립의 한계를 극복</strong>하기 위함입니다. 기획 단계에서 상세한 요건을 확보하면 ① 불합리한 과업 변경 방지, ② 동일 기능·시스템 중복투자 방지, ③ 분석·설계 단계 지연 방지, ④ 개발 일정 축소 예방 등의 효과를 거둘 수 있습니다.'},
+
+  {cat:'절차',diff:'mid',
+   q:'ISP 수행 절차를 올바른 순서로 나열한 것은?',
+   cs:['현황분석 → 환경분석 → 목표모델 설계 → 이행계획 수립',
+       '환경분석 → 현황분석 → 목표모델 설계 → 이행계획 수립',
+       '환경분석 → 목표모델 설계 → 현황분석 → 이행계획 수립',
+       '현황분석 → 목표모델 설계 → 환경분석 → 이행계획 수립'],
+   ans:1,
+   exp:'ISP 수행 절차: <strong>① 환경분석(경영환경·IT동향) → ② 현황분석(As-Is) → ③ 목표모델 설계(To-Be) → ④ 이행계획 수립(로드맵)</strong>. 환경분석이 가장 먼저 수행되어 조직의 경영목표·전략을 파악하는 것이 핵심입니다.'},
+  {cat:'절차',diff:'mid',
+   q:'ISMP 수행 절차는 총 몇 단계이며, 반복 수행 여부로 옳은 것은?',
+   cs:['4단계, 여러 번 반복 수행','5단계, 여러 번 반복 수행','4단계, 단 1사이클만 수행','5단계, 단 1사이클만 수행'],
+   ans:3,
+   exp:'ISMP 방법론은 <strong>총 5단계(사업준비→현황분석→요구사항분석→구축전략수립→이행계획수립)</strong>로 구성되며, 반복적으로 여러 번 수행하는 것이 아니라 <em>하나의 사업으로 마무리될 수 있도록 단 1사이클만 수행</em>하도록 설계되었습니다.'},
+  {cat:'절차',diff:'hard',
+   q:'ISP 이행계획 수립 단계의 주요 산출물로 가장 적절하지 않은 것은?',
+   cs:['이행계획서','로드맵','투자계획서','제안요청서(RFP)'],
+   ans:3,
+   exp:'ISP의 이행계획 단계에서는 <strong>이행계획서·로드맵·투자계획서·사업비 추정</strong> 등이 산출됩니다. <em>제안요청서(RFP)</em>는 예산 확보 이후 별도로 작성하거나 ISMP에서 작성합니다. ISP는 RFP 수준 정의까지만 하고 상세 RFP는 ISMP의 역할입니다.'},
+
+  {cat:'EA',diff:'mid',
+   q:'EA(전사적 아키텍처)·ISP·ISMP의 관계에서 "CIO 차원에서 IT 방향과 계획을 제시"하는 것은?',
+   cs:['EA','ISP','ISMP','ITA'],
+   ans:1,
+   exp:'<strong>ISP(정보화전략계획)</strong>는 CIO 차원에서 IT 방향과 계획을 제시합니다. EA/ITA는 CEO의 진두지휘 하에 전사 차원의 구성요소를 정의·개선하는 청사진이며, ISMP는 특정 사업의 구축 목표·방향 수립과 요구사항 기술을 담당합니다.'},
+  {cat:'EA',diff:'hard',
+   q:'ISMP와 EA/ITA의 관계를 가장 적절하게 설명한 것은?',
+   cs:['ISMP는 EA/ITA를 완전히 대체하며 EA 없이도 독립적으로 수행된다.',
+       'ISMP는 EA/ITA의 현행 아키텍처를 분석하는 활동이다.',
+       'ISMP는 EA/ITA의 목표 아키텍처 구조 하에 특정 사업의 구축 목표·방향과 요구사항을 기술한다.',
+       'ISMP와 EA/ITA는 동일한 개념으로, 공공부문에서만 EA를 ISMP라 부른다.'],
+   ans:2,
+   exp:'<strong>ISMP</strong>는 <em>EA/ITA의 목표 아키텍처 구조 하에</em>, IT 방향 및 계획과 일치하도록 특정 사업의 구축 목표 및 방향을 수립하고 사용자 및 시스템 요구사항을 기술합니다. 즉 ISMP는 EA라는 큰 그림 안에서 특정 사업의 실행 계획을 수립하는 하위 활동입니다.'},
+
+  // OX
+  {cat:'OX',diff:'easy',type:'ox',
+   q:'ISMP를 수행할 때는 ISP와 마찬가지로 경영환경 분석(자사·경쟁사·고객 분석)을 반드시 수행해야 한다.',
+   ans:false,
+   exp:'<strong>×</strong> — ISMP는 <em>환경 분석 활동이 필요하지 않습니다.</em> ISP 등에서 기 수립된 정보화 전략을 검토하여 SW사업의 구축 방향과 일치시키는 것으로 충분합니다. 경영목표 전략을 분석하는 환경분석은 ISP의 고유 활동입니다.'},
+  {cat:'OX',diff:'mid',type:'ox',
+   q:'ISP·ISMP 수립 공통가이드에 따라 정보시스템 구축 예산 요구 시 기획재정부의 검토를 반드시 받아야 한다.',
+   ans:true,
+   exp:'<strong>○</strong> — 각 중앙관서는 정보시스템 구축·재구축 예산 요구에 앞서 ISP 또는 ISMP를 수립하여 <em>최종산출물에 대한 기획재정부의 검토</em>를 받아야 합니다. 이는 예산 편성 세부지침에서 정한 의무 절차입니다.'},
+  {cat:'OX',diff:'mid',type:'ox',
+   q:'ISMP의 결과물은 예산 확보 이후 별도의 제안요청서(RFP) 없이 직접 구축사업의 RFP로 활용될 수 있다.',
+   ans:true,
+   exp:'<strong>○</strong> — ISMP의 핵심 목표 중 하나가 <em>RFP 작성</em>입니다. ISP는 예산 확보 후 RFP를 별도 작성하지만, ISMP는 기획 단계에서 상세 기능·요건을 기술하여 RFP로 직접 활용합니다. 이것이 ISMP 도입의 핵심 이점입니다.'},
+  {cat:'OX',diff:'hard',type:'ox',
+   q:'ISP는 특정 SW사업에 대한 기능점수 도출이 가능한 수준까지 요구사항을 상세화하는 것이 목표이다.',
+   ans:false,
+   exp:'<strong>×</strong> — 기능점수 도출이 가능한 수준까지 요구사항을 상세화하는 것은 <em>ISMP</em>의 목표입니다. ISP는 전사 IT 사업과제·로드맵 수립 수준의 RFP 정의까지만 하며, 개별 기능의 입출력·절차·검증요건까지 상세화하지 않습니다.'},
+  {cat:'OX',diff:'mid',type:'ox',
+   q:'EA(전사적 아키텍처)는 CEO 차원에서 전사의 구성요소를 정의하고 개선하는 청사진으로, ISP보다 더 상위 개념이다.',
+   ans:true,
+   exp:'<strong>○</strong> — EA는 <em>CEO의 진두지휘 하에 전사 차원</em>의 구성 요소를 정의하고 개선하는 청사진입니다. ISP는 CIO 차원에서 IT 방향과 계획을 제시하므로 EA의 하위 개념입니다. EA → ISP → ISMP 순으로 추상화 수준이 낮아집니다.'},
+];
+
+let answered=0,correct=0;
+function renderQ(f){
+  const data=f==='all'?QA:QA.filter(q=>q.cat===f);
+  const list=document.getElementById('ql');
+  list.innerHTML='';
+  answered=0;correct=0;upScore();
+  if(!data.length){list.innerHTML='<div style="text-align:center;padding:40px;color:var(--muted)">해당 카테고리 문제가 없습니다</div>';return;}
+  data.forEach((q,i)=>{
+    const gi=QA.indexOf(q);
+    const el=document.createElement('div');
+    el.className='qa';
+    el.dataset.gi=gi;
+    const dl={'easy':'easy 쉬움','mid':'mid 보통','hard':'hard 어려움'};
+    const [dc,dn]=(dl[q.diff]||'mid 보통').split(' ');
+    const catC={'정의':'tb','비교':'tp','절차':'tg','EA':'ty','OX':'tr'};
+    const tc=catC[q.cat]||'tb';
+    if(q.type==='ox'){
+      el.innerHTML=`<div class="qa-hd" onclick="this.closest('.qa').classList.toggle('open')">
+        <div><div class="qa-meta"><span class="qn">Q${String(i+1).padStart(2,'0')}</span><span class="tag ${tc}">${q.cat}</span><span class="diff ${dc}">${dn}</span><span class="tag tp">O/X</span></div><div class="qq">${q.q}</div></div>
+        <span class="tgl">▾</span></div>
+      <div class="qa-bd">
+        <div class="ox-wr">
+          <button class="ox" onclick="pickOX(this,true,${gi})">⭕ 옳다</button>
+          <button class="ox" onclick="pickOX(this,false,${gi})">❌ 틀리다</button>
+        </div>
+        <div class="exp" id="ex-${gi}"><div class="exp-t">💡 해설</div>${q.exp}</div>
+      </div>`;
+    } else {
+      const nl=['①','②','③','④'];
+      el.innerHTML=`<div class="qa-hd" onclick="this.closest('.qa').classList.toggle('open')">
+        <div><div class="qa-meta"><span class="qn">Q${String(i+1).padStart(2,'0')}</span><span class="tag ${tc}">${q.cat}</span><span class="diff ${dc}">${dn}</span></div><div class="qq">${q.q}</div></div>
+        <span class="tgl">▾</span></div>
+      <div class="qa-bd">
+        <div class="chs">${q.cs.map((c,ci)=>`<div class="ch" data-ci="${ci}" onclick="pickCh(this,${gi})"><span class="cnum">${nl[ci]}</span><span>${c}</span></div>`).join('')}</div>
+        <div class="exp" id="ex-${gi}"><div class="exp-t">💡 해설</div>${q.exp}</div>
+      </div>`;
+    }
+    list.appendChild(el);
+  });
+}
+function pickCh(el,gi){
+  const bd=el.closest('.qa-bd');
+  if(bd.querySelector('.ok,.ng'))return;
+  const q=QA[gi];
+  bd.querySelectorAll('.ch').forEach((c,i)=>{
+    c.classList.add('lk');
+    if(i===q.ans)c.classList.add('ok');
+    else if(i===parseInt(el.dataset.ci))c.classList.add('ng');
+  });
+  document.getElementById('ex-'+gi).classList.add('show');
+  answered++;if(parseInt(el.dataset.ci)===q.ans)correct++;upScore();
+}
+function pickOX(btn,val,gi){
+  const bd=btn.closest('.qa-bd');
+  if(bd.querySelector('.so,.sx'))return;
+  const q=QA[gi];
+  bd.querySelectorAll('.ox').forEach(b=>b.classList.add('lk'));
+  btn.classList.add(val?'so':'sx');
+  if(val!==q.ans){btn.style.opacity='.5';bd.querySelectorAll('.ox')[val?1:0].classList.add(q.ans?'so':'sx');}
+  document.getElementById('ex-'+gi).classList.add('show');
+  answered++;if(val===q.ans)correct++;upScore();
+}
+function upScore(){document.getElementById('sc').textContent=correct;document.getElementById('st').textContent=answered;}
+document.getElementById('fbar').addEventListener('click',e=>{
+  const b=e.target.closest('.fb');if(!b)return;
+  document.querySelectorAll('.fb').forEach(x=>x.classList.remove('on'));
+  b.classList.add('on');renderQ(b.dataset.f);
+});
+renderQ('all');
+</script>
+</body>
+</html>

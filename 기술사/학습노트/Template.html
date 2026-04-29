@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>Deadlock 조건 및 처리방법 - 기술사 답안 예시</title>
+  <style>
+    body { font-family: "맑은 고딕", Arial, sans-serif; line-height: 1.6; margin: 40px; }
+    h1, h2 { color: #003366; }
+    table { border-collapse: collapse; width: 100%; margin: 20px 0; }
+    table, th, td { border: 1px solid #333; }
+    th, td { padding: 8px; text-align: center; }
+    .diagram { font-family: monospace; background: #f9f9f9; padding: 10px; margin: 10px 0; }
+    .pagebreak { page-break-before: always; }
+  </style>
+</head>
+<body>
+
+<h1>Deadlock 조건 및 처리방법</h1>
+<p>동일한 주제라도 정보관리 기술사와 컴퓨터시스템응용 기술사에서는 답안 작성 방향이 다릅니다. 아래는 두 시험 버전의 모범 답안 예시입니다.</p>
+
+<hr>
+
+<h2>정보관리 기술사 답안 (관리·운영 관점)</h2>
+
+<h3>1. 서론</h3>
+<p>정보시스템 운영에서 자원 관리의 효율성과 안정성은 매우 중요하다. Deadlock은 자원 관리 실패로 발생하는 대표적 문제로, 관리적 관점에서 예방과 정책적 대응이 필요하다.</p>
+
+<h3>2. 본론</h3>
+<h4>Deadlock 발생 조건 (Coffman 조건)</h4>
+<table>
+  <tr><th>조건</th><th>설명</th><th>관리적 의미</th></tr>
+  <tr><td>상호 배제</td><td>자원은 한 번에 하나만 사용</td><td>자원 공유 정책 필요</td></tr>
+  <tr><td>점유와 대기</td><td>자원 점유 상태에서 추가 요청</td><td>자원 요청 절차 관리</td></tr>
+  <tr><td>비선점</td><td>자원 강제 회수 불가</td><td>운영 정책으로 선점 허용 고려</td></tr>
+  <tr><td>순환 대기</td><td>프로세스들이 원형으로 대기</td><td>자원 요청 순서 강제</td></tr>
+</table>
+
+<h4>Deadlock 처리 방법</h4>
+<ul>
+  <li><b>예방</b>: 자원 요청 순서 강제, 선점 정책 도입</li>
+  <li><b>회피</b>: 안전 상태 유지, 관리적 모니터링</li>
+  <li><b>탐지</b>: 자원 사용 로그 분석, 모니터링 시스템</li>
+  <li><b>회복</b>: 프로세스 종료, 자원 회수 정책</li>
+</ul>
+
+<div class="diagram">
+프로세스 A → 자원1 점유 → 자원2 요청<br>
+프로세스 B → 자원2 점유 → 자원1 요청<br>
+==> 순환 대기 발생
+</div>
+
+<h3>3. 결론</h3>
+<p>Deadlock은 단순한 기술 문제가 아니라 관리적 리스크로 이어질 수 있다. 따라서 예방적 정책과 모니터링 체계 구축이 필수적이다.</p>
+
+<div class="pagebreak"></div>
+
+<h2>컴퓨터시스템응용 기술사 답안 (기술·설계 관점)</h2>
+
+<h3>1. 서론</h3>
+<p>운영체제와 데이터베이스 시스템에서 Deadlock은 자원 경쟁으로 발생하는 심각한 문제이다. 기술적 관점에서는 알고리즘과 시스템 설계를 통해 해결해야 한다.</p>
+
+<h3>2. 본론</h3>
+<h4>Deadlock 발생 조건 (Coffman 조건)</h4>
+<table>
+  <tr><th>조건</th><th>설명</th><th>기술적 의미</th></tr>
+  <tr><td>상호 배제</td><td>자원은 배타적으로 사용</td><td>락(lock) 메커니즘 설계</td></tr>
+  <tr><td>점유와 대기</td><td>자원 점유 후 추가 요청</td><td>멀티스레드 자원 관리</td></tr>
+  <tr><td>비선점</td><td>자원 강제 회수 불가</td><td>자원 선점 알고리즘 필요</td></tr>
+  <tr><td>순환 대기</td><td>프로세스들이 원형 대기</td><td>자원 할당 그래프 분석</td></tr>
+</table>
+
+<h4>Deadlock 처리 방법</h4>
+<ul>
+  <li><b>예방</b>: 자원 요청 순서 강제, 선점 허용</li>
+  <li><b>회피</b>: Banker’s Algorithm 적용, 안전 상태 유지</li>
+  <li><b>탐지</b>: 자원 할당 그래프(Resource Allocation Graph) 기반 탐지</li>
+  <li><b>회복</b>: 프로세스 강제 종료, 자원 선점</li>
+</ul>
+
+<div class="diagram">
+자원 할당 그래프 예시:<br>
+P1 → R1<br>
+P2 → R2<br>
+R1 → P2<br>
+R2 → P1<br>
+==> 순환 대기 탐지
+</div>
+
+<h3>3. 결론</h3>
+<p>Deadlock은 시스템 성능과 안정성을 저해하는 주요 요인이다. 운영체제 수준에서 알고리즘을 적용하고, 데이터베이스 설계 시 트랜잭션 관리와 락 정책을 최적화해야 한다.</p>
+
+</body>
+</html>

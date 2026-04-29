@@ -1,0 +1,585 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>낙관적·비관적 동시성 제어 — 컴퓨터시스템응용 기술사 모범 답안</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;500;700&family=Noto+Sans+KR:wght@400;500;700&family=JetBrains+Mono:wght@400;600&display=swap');
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --ink:#1a1a1a;--ink2:#333;--ink3:#666;
+  --line:#c8c8c8;--line2:#e2e0da;--bg:#fdfcf8;
+  --accent:#1a3a6e;--accent2:#7a3010;--green:#2d6a4f;--purple:#4a3080;
+}
+body{background:#dddad2;font-family:'Noto Sans KR',sans-serif;color:var(--ink);padding:20px 0 40px}
+.doc{max-width:800px;margin:0 auto;background:var(--bg);box-shadow:0 4px 32px rgba(0,0,0,.22)}
+
+.hdr{border-bottom:3px double var(--ink);padding:20px 36px 16px;display:flex;align-items:flex-start;gap:16px}
+.hdr-l{flex:1}
+.lbl{font-size:11px;letter-spacing:.14em;color:var(--ink3);font-family:'Noto Serif KR',serif}
+.ttl{font-size:20px;font-weight:700;font-family:'Noto Serif KR',serif;color:var(--accent);line-height:1.35;margin-top:5px}
+.pills{display:flex;gap:8px;margin-top:9px;flex-wrap:wrap}
+.pill{font-size:11px;padding:2px 10px;border:1px solid var(--line);border-radius:2px;color:var(--ink2);background:#fff}
+.score-box{border:1.5px solid var(--ink);padding:10px 16px;text-align:center;min-width:72px}
+.sc-lbl{font-size:10px;color:var(--ink3);letter-spacing:.06em}
+.sc-n{font-size:24px;font-weight:700;font-family:'Noto Serif KR',serif;color:var(--accent);line-height:1.1}
+
+.body{padding:24px 40px 48px}
+.qbox{background:#f0efea;border:1px solid #bbb;padding:14px 18px;border-radius:3px;margin-bottom:24px;font-size:12.5px;color:var(--ink2);line-height:1.85}
+.qbox strong{color:var(--ink);font-weight:700}
+
+.sh {font-size:14.5px;font-weight:700;font-family:'Noto Serif KR',serif;color:var(--accent);border-bottom:1.5px solid var(--accent);padding-bottom:5px;margin:0 0 13px}
+.sh2{font-size:13px;font-weight:700;color:var(--ink);margin:13px 0 5px;padding-left:8px;border-left:3px solid var(--accent2)}
+.sh3{font-size:12.5px;font-weight:700;color:var(--ink2);margin:9px 0 4px;padding-left:18px}
+.sec{margin-bottom:22px}
+.txt{font-size:12.5px;line-height:1.92;color:var(--ink2)}
+.txt p{margin-bottom:5px}
+.i1{padding-left:14px}
+.i2{padding-left:28px}
+.kw{font-weight:700;color:var(--ink)}
+
+.tw{margin:10px 0 14px;overflow-x:auto}
+table{width:100%;border-collapse:collapse;font-size:11.5px}
+th{background:var(--accent);color:#fff;padding:6px 9px;text-align:left;font-weight:500;border:1px solid var(--accent)}
+td{padding:6px 9px;border:1px solid var(--line);vertical-align:top;line-height:1.75;color:var(--ink2)}
+tr:nth-child(even) td{background:#f4f3ef}
+.kc{font-weight:700;color:var(--ink)}
+.tc{text-align:center}
+
+.fig{margin:13px 0 16px;background:#f8f7f3;border:1px solid var(--line2);border-radius:4px;padding:12px 8px}
+.fc{font-size:11px;color:var(--ink3);text-align:center;margin-top:7px;font-style:italic}
+
+/* 비교 카드 */
+.cmp-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:10px 0 14px}
+.cmp-card{border-radius:6px;overflow:hidden}
+.cmp-head{padding:10px 14px;font-size:13px;font-weight:700;color:#fff}
+.cmp-body{padding:8px 14px 12px;font-size:12px;line-height:1.82;color:var(--ink2);background:#fff}
+.opt .cmp-head{background:#2d6a4f}
+.opt{border:1.5px solid #2d6a4f}
+.pes .cmp-head{background:#7a3010}
+.pes{border:1.5px solid #7a3010}
+
+/* 타임라인 */
+.tl-wrap{overflow-x:auto;margin:10px 0 12px}
+.tl-table{border-collapse:collapse;font-size:11px;min-width:540px;width:100%}
+.tl-table th{padding:5px 8px;border:1px solid var(--line);font-weight:600;text-align:center}
+.tl-table td{padding:5px 8px;border:1px solid var(--line);text-align:left;white-space:nowrap}
+.th1{background:#1a3a6e;color:#fff}
+.th2{background:#7a3010;color:#fff}
+.th3{background:#555;color:#fff}
+.td1{background:#E6F1FB;color:#0C447C;font-weight:700;text-align:center}
+.td2{background:#FAEEDA;color:#7a3010;font-weight:700;text-align:center}
+.td-ok{background:#EAF3DE;color:#2d6a4f;font-weight:700;text-align:center}
+.td-err{background:#FCEBEB;color:#A32D2D;font-weight:700;text-align:center}
+.td-cm{font-size:10px;color:#888;font-style:italic;text-align:center}
+.td-gray{background:#f4f3ef;color:#888;text-align:center}
+
+/* 3단계 박스 */
+.phase-row{display:flex;gap:0;margin:10px 0}
+.phase-box{flex:1;padding:8px 6px;text-align:center;border:1px solid var(--line);font-size:11px}
+.phase-arr{display:flex;align-items:center;color:#bbb;font-size:16px;padding:0 2px;flex-shrink:0}
+.ph-opt .phase-box{background:#EAF3DE;border-color:#2d6a4f;color:#2d6a4f}
+.ph-pes .phase-box{background:#FAEEDA;border-color:#7a3010;color:#7a3010}
+.phase-title{font-weight:700;font-size:12px;display:block;margin-bottom:3px}
+
+.note{margin:16px 0 0;padding:12px 16px;border:1px solid #8b6914;background:#fffbef;border-radius:3px}
+.nt{font-size:12px;font-weight:700;color:#6a4f00;margin-bottom:5px}
+.nb{font-size:12px;color:#4a3800;line-height:1.85}
+
+.pb{border:none;border-top:2px dashed #bbb;margin:24px 0;position:relative}
+.pb::after{content:"— 다음 페이지 —";position:absolute;top:-9px;left:50%;transform:translateX(-50%);background:var(--bg);padding:0 10px;font-size:10px;color:#bbb;white-space:nowrap}
+.ftr{border-top:2px solid var(--ink);margin:0 40px;padding:10px 0;display:flex;justify-content:space-between;font-size:10px;color:var(--ink3)}
+
+.badge{display:inline-block;font-size:10.5px;padding:1px 8px;border-radius:2px;font-weight:600;margin:1px 2px}
+.badge-r{background:#FCEBEB;color:#A32D2D;border:1px solid #f0b8b8}
+.badge-g{background:#EAF3DE;color:#2d6a4f;border:1px solid #b0d89a}
+.badge-b{background:#E6F1FB;color:#0C447C;border:1px solid #9dc4f0}
+.badge-o{background:#FAEEDA;color:#7a3010;border:1px solid #f0c88a}
+.badge-p{background:#eeedfe;color:#4a3080;border:1px solid #b8b0f0}
+
+.formula{display:inline-block;font-family:'JetBrains Mono',monospace;font-size:11.5px;background:#f0efea;border:1px solid var(--line2);border-radius:3px;padding:2px 8px;color:#1a3a6e;font-weight:700;margin:2px 0}
+.code-wrap{margin:6px 0 10px;background:#1e1e2e;border-radius:5px;overflow:auto;padding:11px 14px}
+.code-wrap pre{font-family:'JetBrains Mono','Courier New',monospace;font-size:11px;line-height:1.7;color:#cdd6f4}
+.c-kw{color:#cba6f7}.c-fn{color:#89b4fa}.c-cm{color:#6c7086}.c-nm{color:#fab387}.c-st{color:#a6e3a1}
+</style>
+</head>
+<body>
+<div class="doc">
+
+<!-- Header -->
+<div class="hdr">
+  <div class="hdr-l">
+    <div class="lbl">컴퓨터시스템응용 기술사 · 예상 문제 및 모범 답안</div>
+    <div class="ttl">낙관적 동시성 제어와 비관적 동시성 제어<br>(Optimistic vs Pessimistic Concurrency Control)</div>
+    <div class="pills">
+      <span class="pill">4교시 · 논술형</span>
+      <span class="pill">데이터베이스 / 트랜잭션 관리</span>
+      <span class="pill">키워드: OCC · PCC · 버전 충돌 · SELECT FOR UPDATE · 갱신 손실</span>
+    </div>
+  </div>
+  <div class="score-box">
+    <div class="sc-lbl">배점</div>
+    <div class="sc-n">25</div>
+    <div class="sc-lbl">점</div>
+  </div>
+</div>
+
+<div class="body">
+
+<!-- 문제 -->
+<div class="qbox">
+  <strong>【 문 제 】</strong><br><br>
+  데이터베이스의 동시성 제어(Concurrency Control) 전략으로서
+  <strong>낙관적 동시성 제어(Optimistic Concurrency Control, OCC)</strong>와
+  <strong>비관적 동시성 제어(Pessimistic Concurrency Control, PCC)</strong>에 대하여 다음을 설명하시오.<br><br>
+  &emsp;(1) 동시성 제어의 필요성과 두 전략의 기본 철학 &nbsp;(4점)<br>
+  &emsp;(2) 낙관적 동시성 제어의 동작 원리 — 3단계 절차 및 충돌 탐지 &nbsp;(8점)<br>
+  &emsp;(3) 비관적 동시성 제어의 동작 원리 — 공유 잠금·배타 잠금·2PL &nbsp;(8점)<br>
+  &emsp;(4) 두 전략의 종합 비교 및 실무 선택 기준 &nbsp;(5점)
+</div>
+
+<!-- ─── Ⅰ. 개요 ─── -->
+<div class="sec">
+  <div class="sh">Ⅰ. 동시성 제어의 필요성과 두 전략의 기본 철학</div>
+
+  <div class="sh2">1. 동시성 제어(Concurrency Control)의 필요성</div>
+  <div class="txt i1">
+    <p>다수의 트랜잭션이 동시에 동일 데이터에 접근·수정할 때 <span class="kw">갱신 손실(Lost Update)·더티 읽기(Dirty Read)·반복 불가 읽기(Non-Repeatable Read)</span> 등의 이상 현상이 발생한다. 동시성 제어는 이러한 이상 현상을 방지하면서 <span class="kw">동시성(Throughput)과 일관성(Correctness)을 균형 있게 유지</span>하는 핵심 메커니즘이다.</p>
+  </div>
+
+  <div class="sh2">2. 두 전략의 기본 철학 비교</div>
+  <div class="cmp-grid">
+    <div class="cmp-card opt">
+      <div class="cmp-head">낙관적 동시성 제어 (OCC)</div>
+      <div class="cmp-body">
+        <span class="kw">철학:</span> "충돌은 드물다 — 일단 실행하고 커밋 직전에만 충돌을 검사한다."<br><br>
+        작업 중 아무 잠금도 획득하지 않고 자유롭게 읽기·수정을 수행한다. 커밋 시점에 다른 트랜잭션이 동일 데이터를 변경했는지 검증하고, 충돌이 감지되면 <span class="kw">롤백·재시도</span>한다.<br><br>
+        <span class="kw">적합 환경:</span> 읽기 집약, 충돌 빈도 낮음
+      </div>
+    </div>
+    <div class="cmp-card pes">
+      <div class="cmp-head">비관적 동시성 제어 (PCC)</div>
+      <div class="cmp-body">
+        <span class="kw">철학:</span> "충돌은 언제든 발생한다 — 데이터 접근 전부터 잠금으로 미리 방지한다."<br><br>
+        데이터를 읽거나 수정하기 전에 <span class="kw">잠금(Lock)을 획득</span>하여 다른 트랜잭션의 접근을 차단한다. 트랜잭션 종료 시 잠금을 해제한다.<br><br>
+        <span class="kw">적합 환경:</span> 쓰기 집약, 충돌 빈도 높음
+      </div>
+    </div>
+  </div>
+
+  <!-- 전략 포지셔닝 다이어그램 -->
+  <div class="fig">
+    <svg width="100%" viewBox="0 0 680 130" xmlns="http://www.w3.org/2000/svg" role="img">
+      <title>OCC vs PCC 포지셔닝</title>
+      <defs>
+        <marker id="pa" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+          <path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.5"/>
+        </marker>
+      </defs>
+      <!-- 충돌 빈도 축 -->
+      <line x1="40" y1="65" x2="640" y2="65" stroke="#bbb" stroke-width="2"
+            marker-end="url(#pa)"/>
+      <line x1="640" y1="65" x2="40" y2="65" stroke="#bbb" stroke-width="2"
+            marker-end="url(#pa)"/>
+      <text font-size="11" font-weight="700" fill="#2d6a4f" x="36" y="60" text-anchor="middle" font-family="'Noto Sans KR',sans-serif">충돌↓</text>
+      <text font-size="11" font-weight="700" fill="#7a3010" x="645" y="60" text-anchor="middle" font-family="'Noto Sans KR',sans-serif">충돌↑</text>
+      <text font-size="10.5" fill="#555" x="340" y="100" text-anchor="middle" font-family="'Noto Sans KR',sans-serif">← 충돌 빈도(읽기 집약 ↔ 쓰기 집약) →</text>
+
+      <!-- OCC 구간 -->
+      <rect x="50" y="28" width="220" height="28" rx="4" fill="#2d6a4f" fill-opacity=".15" stroke="#2d6a4f" stroke-width="1.2"/>
+      <text font-size="12" font-weight="700" fill="#2d6a4f" x="160" y="46" text-anchor="middle" font-family="'Noto Sans KR',sans-serif">OCC 최적 구간</text>
+      <text font-size="10" fill="#2d6a4f" x="160" y="26" text-anchor="middle" font-family="'Noto Sans KR',sans-serif">읽기 90%↑ · 낮은 충돌률</text>
+
+      <!-- MVCC 중간 -->
+      <rect x="270" y="28" width="140" height="28" rx="4" fill="#4a3080" fill-opacity=".15" stroke="#4a3080" stroke-width="1.2"/>
+      <text font-size="12" font-weight="700" fill="#4a3080" x="340" y="46" text-anchor="middle" font-family="'Noto Sans KR',sans-serif">MVCC · SSI</text>
+      <text font-size="10" fill="#4a3080" x="340" y="26" text-anchor="middle" font-family="'Noto Sans KR',sans-serif">혼합 워크로드</text>
+
+      <!-- PCC 구간 -->
+      <rect x="410" y="28" width="220" height="28" rx="4" fill="#7a3010" fill-opacity=".15" stroke="#7a3010" stroke-width="1.2"/>
+      <text font-size="12" font-weight="700" fill="#7a3010" x="520" y="46" text-anchor="middle" font-family="'Noto Sans KR',sans-serif">PCC 최적 구간</text>
+      <text font-size="10" fill="#7a3010" x="520" y="26" text-anchor="middle" font-family="'Noto Sans KR',sans-serif">쓰기 집약 · 높은 충돌률</text>
+    </svg>
+    <div class="fc">【그림 1】 충돌 빈도에 따른 OCC·MVCC·PCC 적합 구간</div>
+  </div>
+</div>
+
+<hr class="pb">
+
+<!-- ─── Ⅱ. OCC ─── -->
+<div class="sec">
+  <div class="sh">Ⅱ. 낙관적 동시성 제어(OCC)의 동작 원리</div>
+
+  <div class="sh2">1. OCC 3단계 절차</div>
+  <div class="phase-row ph-opt">
+    <div class="phase-box">
+      <span class="phase-title">① 읽기 단계 (Read Phase)</span>
+      데이터를 읽어 프라이빗 작업 공간(Private Workspace)에 복사·수정.<br>잠금 없음. 타임스탬프/버전 번호 기록
+    </div>
+    <div class="phase-arr">→</div>
+    <div class="phase-box">
+      <span class="phase-title">② 검증 단계 (Validation Phase)</span>
+      커밋 직전 충돌 검사.<br>"내가 읽는 동안 다른 T가 같은 데이터를 수정했는가?"<br>충돌 시 → 롤백
+    </div>
+    <div class="phase-arr">→</div>
+    <div class="phase-box">
+      <span class="phase-title">③ 쓰기 단계 (Write Phase)</span>
+      검증 통과 시 작업 공간의 변경 내용을 실제 DB에 반영.<br>검증 실패 시 → Abort + 재시도
+    </div>
+  </div>
+  <div class="fc" style="margin-bottom:12px">【그림 2】 OCC 3단계 절차 — Read → Validate → Write</div>
+
+  <div class="sh2">2. 충돌 탐지 메커니즘 — 버전 번호(Version Number) 방식</div>
+  <div class="txt i1">
+    <p>각 행(Row)에 <span class="kw">버전 번호(Version) 또는 타임스탬프</span>를 유지한다. 트랜잭션은 데이터 읽기 시 버전을 기록하고, 쓰기 시 현재 DB의 버전과 비교한다.</p>
+    <div style="margin:6px 0 8px">
+      <span class="formula">읽은 버전 == 현재 DB 버전 → 검증 통과 → 커밋 (버전 +1)</span><br>
+      <span class="formula">읽은 버전 != 현재 DB 버전 → 충돌 감지 → 롤백·재시도</span>
+    </div>
+  </div>
+
+  <div class="sh2">3. OCC 타임라인 예제 — 재고 차감 시나리오</div>
+  <div class="tl-wrap">
+    <table class="tl-table">
+      <tr>
+        <th class="th3" style="width:7%">시각</th>
+        <th class="th1" style="width:33%">T1 (주문 A: 재고 -3)</th>
+        <th class="th2" style="width:33%">T2 (주문 B: 재고 -5)</th>
+        <th class="th3" style="width:27%">DB 재고 (버전)</th>
+      </tr>
+      <tr><td class="td-cm">t1</td><td class="td1">재고=10, v=1 읽기 (로컬 복사)</td><td class="td-gray">—</td><td class="tc">10 (v=1)</td></tr>
+      <tr><td class="td-cm">t2</td><td class="td-gray">—</td><td class="td2">재고=10, v=1 읽기 (로컬 복사)</td><td class="tc">10 (v=1)</td></tr>
+      <tr><td class="td-cm">t3</td><td class="td1">로컬: 재고 = 10-3 = 7 계산</td><td class="td-gray">—</td><td class="tc">10 (v=1)</td></tr>
+      <tr><td class="td-cm">t4</td><td class="td-gray">—</td><td class="td2">로컬: 재고 = 10-5 = 5 계산</td><td class="tc">10 (v=1)</td></tr>
+      <tr><td class="td-cm">t5</td><td class="td-ok">검증: DB v=1 == 읽은 v=1 ✔<br>커밋: 재고=7, v=2</td><td class="td-gray">—</td><td class="tc">7 (v=2)</td></tr>
+      <tr><td class="td-cm">t6</td><td class="td-gray">—</td><td class="td-err">검증: DB v=2 ≠ 읽은 v=1 ✗<br>충돌! → ROLLBACK → 재시도</td><td class="tc">7 (v=2)</td></tr>
+      <tr><td class="td-cm">t7</td><td class="td-gray">—</td><td class="td2">재시도: 재고=7, v=2 재읽기<br>→ 7-5=2 계산 → 커밋 (v=3)</td><td class="tc">2 (v=3)</td></tr>
+    </table>
+  </div>
+  <div class="fc" style="margin-bottom:12px">【표 1】 OCC 버전 번호 기반 충돌 탐지 타임라인</div>
+
+  <div class="sh2">4. OCC 구현 방식 비교</div>
+  <div class="tw">
+    <table>
+      <tr><th style="width:22%">구현 방식</th><th style="width:36%">메커니즘</th><th>사용 예</th></tr>
+      <tr>
+        <td><span class="kc">버전 번호 (Version)</span></td>
+        <td>행마다 version 컬럼 유지. UPDATE 시 WHERE version=? 조건 추가. 영향 행 수=0이면 충돌</td>
+        <td>JPA @Version, Hibernate</td>
+      </tr>
+      <tr>
+        <td><span class="kc">타임스탬프 (Timestamp)</span></td>
+        <td>읽기·쓰기 타임스탬프 비교. Thomas Write Rule 적용으로 일부 충돌 허용</td>
+        <td>분산 DB, Google Spanner</td>
+      </tr>
+      <tr>
+        <td><span class="kc">ETag (HTTP)</span></td>
+        <td>REST API에서 응답 ETag를 If-Match 헤더로 전송. 불일치 시 409 Conflict</td>
+        <td>REST API 낙관적 갱신</td>
+      </tr>
+      <tr>
+        <td><span class="kc">CAS (Compare-And-Swap)</span></td>
+        <td>원자적 비교 교환 연산. 기대값과 현재값 일치 시만 갱신</td>
+        <td>Redis, 캐시 계층</td>
+      </tr>
+    </table>
+  </div>
+  <div class="fc" style="margin-top:-8px;margin-bottom:12px">【표 2】 OCC 구현 방식 비교</div>
+
+  <div class="sh2">5. JPA @Version 코드 예시</div>
+  <div class="code-wrap"><pre><span class="c-cm">// JPA 낙관적 잠금 — @Version 어노테이션</span>
+<span class="c-kw">@Entity</span>
+<span class="c-kw">public class</span> <span class="c-fn">Product</span> {
+    <span class="c-kw">@Id</span> <span class="c-kw">private</span> Long id;
+    <span class="c-kw">private int</span> stock;
+    <span class="c-kw">@Version</span>              <span class="c-cm">// ← 버전 컬럼 자동 관리</span>
+    <span class="c-kw">private int</span> version;
+}
+
+<span class="c-cm">// 서비스 레이어 — 충돌 시 OptimisticLockException 처리</span>
+<span class="c-kw">try</span> {
+    Product p = em.find(Product.<span class="c-kw">class</span>, id);  <span class="c-cm">// version=1 읽기</span>
+    p.setStock(p.getStock() - <span class="c-nm">3</span>);           <span class="c-cm">// 로컬 수정</span>
+    em.flush();  <span class="c-cm">// UPDATE SET stock=7, version=2 WHERE id=? AND version=1</span>
+} <span class="c-kw">catch</span> (OptimisticLockException e) {
+    <span class="c-cm">// 충돌 → 재시도 로직 (Retry with Exponential Backoff)</span>
+}</pre></div>
+
+  <div class="sh2">6. OCC의 한계 — Starvation(기아) 문제</div>
+  <div class="txt i1">
+    <p>충돌이 빈번한 환경에서는 트랜잭션이 반복적으로 롤백·재시도되는 <span class="kw">라이브락(Livelock) 또는 기아(Starvation)</span>가 발생할 수 있다. 지수 백오프(Exponential Backoff) + 최대 재시도 제한으로 완화한다.</p>
+  </div>
+</div>
+
+<hr class="pb">
+
+<!-- ─── Ⅲ. PCC ─── -->
+<div class="sec">
+  <div class="sh">Ⅲ. 비관적 동시성 제어(PCC)의 동작 원리</div>
+
+  <div class="sh2">1. 잠금(Lock)의 종류</div>
+  <div class="tw">
+    <table>
+      <tr><th style="width:18%">잠금 유형</th><th style="width:28%">획득 조건</th><th style="width:28%">허용 동시 연산</th><th>SQL 예시</th></tr>
+      <tr>
+        <td><span class="kc">공유 잠금 (S-Lock)<br>Shared Lock</span></td>
+        <td>읽기(SELECT) 시 획득. 다른 트랜잭션의 S-Lock과 양립 가능</td>
+        <td>읽기 O / 쓰기 X<br>(다른 S-Lock 허용, X-Lock 거부)</td>
+        <td><span class="formula">SELECT … LOCK IN SHARE MODE</span></td>
+      </tr>
+      <tr>
+        <td><span class="kc">배타 잠금 (X-Lock)<br>Exclusive Lock</span></td>
+        <td>쓰기(UPDATE·DELETE) 시 획득. 모든 다른 잠금과 배타적</td>
+        <td>읽기 X / 쓰기 X<br>(S-Lock·X-Lock 모두 거부)</td>
+        <td><span class="formula">SELECT … FOR UPDATE</span></td>
+      </tr>
+      <tr>
+        <td><span class="kc">의향 잠금 (I-Lock)<br>Intent Lock</span></td>
+        <td>하위 수준(행) 잠금 전 상위(테이블)에 의향 표시</td>
+        <td>IS·IX·SIX 등 세분화</td>
+        <td>DBMS 내부 자동 관리</td>
+      </tr>
+    </table>
+  </div>
+  <div class="fc" style="margin-top:-8px;margin-bottom:10px">【표 3】 잠금 유형 비교</div>
+
+  <div class="sh2">2. 잠금 호환성 행렬 (Lock Compatibility Matrix)</div>
+  <div class="tw">
+    <table>
+      <tr>
+        <th style="text-align:center;background:#555;color:#fff">요청 ↓ \ 보유 →</th>
+        <th style="text-align:center;background:#1a3a6e;color:#fff">없음</th>
+        <th style="text-align:center;background:#1a3a6e;color:#fff">S-Lock</th>
+        <th style="text-align:center;background:#7a3010;color:#fff">X-Lock</th>
+      </tr>
+      <tr>
+        <td class="tc kc" style="background:#1a3a6e;color:#fff">S-Lock 요청</td>
+        <td style="background:#EAF3DE;color:#2d6a4f;font-weight:700;text-align:center">허용 ✔</td>
+        <td style="background:#EAF3DE;color:#2d6a4f;font-weight:700;text-align:center">허용 ✔</td>
+        <td style="background:#FCEBEB;color:#A32D2D;font-weight:700;text-align:center">대기 ✗</td>
+      </tr>
+      <tr>
+        <td class="tc kc" style="background:#7a3010;color:#fff">X-Lock 요청</td>
+        <td style="background:#EAF3DE;color:#2d6a4f;font-weight:700;text-align:center">허용 ✔</td>
+        <td style="background:#FCEBEB;color:#A32D2D;font-weight:700;text-align:center">대기 ✗</td>
+        <td style="background:#FCEBEB;color:#A32D2D;font-weight:700;text-align:center">대기 ✗</td>
+      </tr>
+    </table>
+  </div>
+  <div class="fc" style="margin-top:-8px;margin-bottom:12px">【표 4】 잠금 호환성 행렬 — S-S 양립, S-X·X-X 배타</div>
+
+  <div class="sh2">3. 2단계 잠금 프로토콜 (2PL) 복습</div>
+  <div class="phase-row ph-pes">
+    <div class="phase-box">
+      <span class="phase-title">확장 단계 (Growing Phase)</span>
+      필요한 잠금을 획득만 가능<br>잠금 해제 불가
+    </div>
+    <div class="phase-arr">→</div>
+    <div class="phase-box" style="background:#fff;border-color:#7a3010">
+      <span class="phase-title" style="color:#7a3010">잠금 포인트 (Lock Point)</span>
+      최대 잠금 보유 시점<br>이후 해제만 가능
+    </div>
+    <div class="phase-arr">→</div>
+    <div class="phase-box">
+      <span class="phase-title">축소 단계 (Shrinking Phase)</span>
+      잠금 해제만 가능<br>신규 획득 불가
+    </div>
+  </div>
+  <div class="fc" style="margin-bottom:12px">【그림 3】 2PL(2단계 잠금) — 직렬 가능성(Serializability) 보장</div>
+
+  <div class="sh2">4. PCC 타임라인 예제 — 동일 재고 차감 시나리오</div>
+  <div class="tl-wrap">
+    <table class="tl-table">
+      <tr>
+        <th class="th3" style="width:7%">시각</th>
+        <th class="th1" style="width:33%">T1 (재고 -3)</th>
+        <th class="th2" style="width:33%">T2 (재고 -5)</th>
+        <th class="th3" style="width:27%">DB 재고 / 잠금 상태</th>
+      </tr>
+      <tr><td class="td-cm">t1</td><td class="td1">SELECT … FOR UPDATE<br>→ X-Lock 획득 ✔</td><td class="td-gray">—</td><td class="tc">10 / T1:X-Lock</td></tr>
+      <tr><td class="td-cm">t2</td><td class="td-gray">—</td><td class="td2">SELECT … FOR UPDATE<br>→ X-Lock 요청 → <span style="color:#A32D2D;font-weight:700">대기 ⏳</span></td><td class="tc">10 / T1:X-Lock<br>T2:대기</td></tr>
+      <tr><td class="td-cm">t3</td><td class="td1">UPDATE 재고 = 10-3 = 7</td><td class="td-gray">(대기 중)</td><td class="tc">7 / T1:X-Lock</td></tr>
+      <tr><td class="td-cm">t4</td><td class="td-ok">COMMIT → X-Lock 해제 ✔</td><td class="td-gray">(대기 중)</td><td class="tc">7 / 잠금 없음</td></tr>
+      <tr><td class="td-cm">t5</td><td class="td-gray">—</td><td class="td2">X-Lock 획득 ✔<br>SELECT → 재고=7 읽기</td><td class="tc">7 / T2:X-Lock</td></tr>
+      <tr><td class="td-cm">t6</td><td class="td-gray">—</td><td class="td-ok">UPDATE 재고 = 7-5 = 2<br>COMMIT ✔</td><td class="tc">2 / 잠금 없음</td></tr>
+    </table>
+  </div>
+  <div class="fc" style="margin-bottom:12px">【표 5】 PCC(SELECT FOR UPDATE) 타임라인 — T2는 T1 완료까지 대기, 최종 재고 정합</div>
+
+  <div class="sh2">5. PCC 잠금 범위별 세분화</div>
+  <div class="tw">
+    <table>
+      <tr><th style="width:20%">잠금 범위</th><th style="width:30%">설명</th><th style="width:24%">장점</th><th>단점</th></tr>
+      <tr><td><span class="kc">테이블 잠금</span></td><td>테이블 전체에 잠금 적용</td><td>관리 단순</td><td>동시성 극히 낮음</td></tr>
+      <tr><td><span class="kc">페이지 잠금</span></td><td>디스크 페이지(8KB 등) 단위</td><td>중간 수준</td><td>불필요 행까지 차단</td></tr>
+      <tr><td><span class="kc">행 잠금 (Row Lock)</span></td><td>개별 행 단위 잠금</td><td>높은 동시성</td><td>잠금 에스컬레이션 가능</td></tr>
+      <tr><td><span class="kc">갭 잠금 (Gap Lock)</span></td><td>범위 내 존재하지 않는 행의 삽입 차단</td><td>Phantom Read 방지</td><td>범위 설정 복잡</td></tr>
+      <tr><td><span class="kc">넥스트 키 잠금<br>(Next-Key Lock)</span></td><td>Row Lock + Gap Lock 결합</td><td>Phantom 완전 방지</td><td>MySQL InnoDB 기본 — 교착상태 증가</td></tr>
+    </table>
+  </div>
+  <div class="fc" style="margin-top:-8px;margin-bottom:12px">【표 6】 PCC 잠금 범위별 세분화</div>
+
+  <div class="sh2">6. PCC의 한계 — 교착상태(Deadlock)</div>
+  <div class="txt i1">
+    <p>두 트랜잭션이 서로 상대방의 잠금을 기다리면 <span class="kw">교착상태(Deadlock)</span>가 발생한다. DBMS는 Wait-for Graph로 사이클을 탐지하고 희생자를 선택하여 롤백·복구한다. 예방을 위해 <span class="kw">자원 획득 순서를 전역적으로 일관되게 강제</span>하거나 타임아웃(Timeout)을 적용한다.</p>
+  </div>
+</div>
+
+<hr class="pb">
+
+<!-- ─── Ⅳ. 종합 비교 및 선택 ─── -->
+<div class="sec">
+  <div class="sh">Ⅳ. 종합 비교 및 실무 선택 기준</div>
+
+  <div class="sh2">1. OCC vs. PCC 종합 비교</div>
+  <div class="tw">
+    <table>
+      <tr>
+        <th style="width:22%">비교 항목</th>
+        <th style="background:#2d6a4f;color:#fff">낙관적 동시성 제어 (OCC)</th>
+        <th style="background:#7a3010;color:#fff">비관적 동시성 제어 (PCC)</th>
+      </tr>
+      <tr><td><span class="kc">충돌 처리 시점</span></td><td>커밋 직전 사후 검증</td><td>데이터 접근 이전 사전 차단</td></tr>
+      <tr><td><span class="kc">잠금 사용 여부</span></td><td>없음 (Lock-Free)</td><td>S-Lock / X-Lock 사용</td></tr>
+      <tr><td><span class="kc">처리량 (Throughput)</span></td><td>충돌 낮으면 <span class="badge badge-g">높음</span></td><td>잠금 대기로 <span class="badge badge-o">낮을 수 있음</span></td></tr>
+      <tr><td><span class="kc">충돌 빈도 높을 때</span></td><td>롤백·재시도 폭증 → <span class="badge badge-r">성능 저하</span></td><td>잠금 대기 증가하나 최종 일관성 보장</td></tr>
+      <tr><td><span class="kc">교착상태</span></td><td>없음 (잠금 미사용)</td><td>가능 → 탐지·복구 필요</td></tr>
+      <tr><td><span class="kc">기아(Starvation)</span></td><td>반복 충돌 시 Livelock 가능</td><td>우선순위·에이징으로 방지</td></tr>
+      <tr><td><span class="kc">메모리 오버헤드</span></td><td>버전/타임스탬프 저장 공간</td><td>잠금 테이블(Lock Table) 유지</td></tr>
+      <tr><td><span class="kc">분산 환경 적합성</span></td><td><span class="badge badge-g">적합</span> — 네트워크 지연 중 잠금 불필요</td><td><span class="badge badge-o">어려움</span> — 분산 잠금 관리 복잡</td></tr>
+      <tr><td><span class="kc">구현 복잡도</span></td><td>재시도 로직 필요</td><td>교착상태 처리 필요</td></tr>
+      <tr><td><span class="kc">대표 구현체</span></td><td>JPA @Version, HTTP ETag, Google Spanner</td><td>MySQL FOR UPDATE, Oracle SELECT FOR UPDATE, DB2 CS Lock</td></tr>
+    </table>
+  </div>
+  <div class="fc" style="margin-top:-8px;margin-bottom:12px">【표 7】 OCC vs. PCC 종합 비교</div>
+
+  <div class="sh2">2. 실무 선택 기준 매트릭스</div>
+  <div class="tw">
+    <table>
+      <tr><th style="width:28%">상황·요건</th><th style="width:24%">권장 전략</th><th>근거</th></tr>
+      <tr>
+        <td>읽기 80~90% 이상<br>(SNS 피드, 상품 조회)</td>
+        <td class="tc"><span class="badge badge-g">OCC</span></td>
+        <td>충돌 희소 → 잠금 오버헤드 불필요, 높은 처리량</td>
+      </tr>
+      <tr>
+        <td>재고·좌석·티켓 차감<br>(동시 다수 쓰기)</td>
+        <td class="tc"><span class="badge badge-o">PCC</span></td>
+        <td>충돌 빈번 → OCC 재시도 폭증, PCC로 순차 처리</td>
+      </tr>
+      <tr>
+        <td>분산 마이크로서비스<br>API 계층 갱신</td>
+        <td class="tc"><span class="badge badge-g">OCC (ETag/버전)</span></td>
+        <td>네트워크 지연 중 잠금 보유 불가 → OCC 필수</td>
+      </tr>
+      <tr>
+        <td>금융 계좌 이체<br>(완전 일관성 요구)</td>
+        <td class="tc"><span class="badge badge-o">PCC (SELECT FOR UPDATE)</span></td>
+        <td>자금 손실 허용 불가 → 잠금으로 완전 직렬화</td>
+      </tr>
+      <tr>
+        <td>장시간 오프라인 편집<br>(협업 문서·설계)</td>
+        <td class="tc"><span class="badge badge-g">OCC (버전 체크)</span></td>
+        <td>편집 중 잠금 보유 불가 → 충돌 시 머지/재작성</td>
+      </tr>
+      <tr>
+        <td>복잡 비즈니스 트랜잭션<br>(여러 테이블 갱신)</td>
+        <td class="tc"><span class="badge badge-p">혼합 전략</span></td>
+        <td>핵심 자원 PCC + 부수 자원 OCC 혼합 설계</td>
+      </tr>
+    </table>
+  </div>
+  <div class="fc" style="margin-top:-8px;margin-bottom:12px">【표 8】 실무 선택 기준 매트릭스</div>
+
+  <div class="sh2">3. 전략 선택 의사결정 흐름도</div>
+  <div class="fig">
+    <svg width="100%" viewBox="0 0 680 200" xmlns="http://www.w3.org/2000/svg" role="img">
+      <title>OCC vs PCC 선택 의사결정 흐름도</title>
+      <defs>
+        <marker id="df" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse">
+          <path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </marker>
+      </defs>
+      <!-- Start -->
+      <rect x="270" y="10" width="140" height="32" rx="16" fill="#555"/>
+      <text font-size="11.5" font-weight="700" fill="#fff" x="340" y="30" text-anchor="middle" font-family="'Noto Sans KR',sans-serif">시작: 동시성 전략 선택</text>
+
+      <!-- Q1: 충돌 빈도 -->
+      <polygon points="340,60 450,90 340,120 230,90" fill="#f8f7f3" stroke="#1a3a6e" stroke-width="1.5"/>
+      <text font-size="11" font-weight="700" fill="#1a3a6e" x="340" y="87" text-anchor="middle" font-family="'Noto Sans KR',sans-serif">충돌 빈도</text>
+      <text font-size="11" font-weight="700" fill="#1a3a6e" x="340" y="101" text-anchor="middle" font-family="'Noto Sans KR',sans-serif">높은가?</text>
+      <line x1="340" y1="42" x2="340" y2="58" stroke="#aaa" stroke-width="1" marker-end="url(#df)" fill="none"/>
+
+      <!-- No → OCC -->
+      <line x1="230" y1="90" x2="115" y2="90" stroke="#2d6a4f" stroke-width="1.5" marker-end="url(#df)" fill="none"/>
+      <text font-size="10" fill="#2d6a4f" font-weight="700" x="172" y="82" text-anchor="middle" font-family="'Noto Sans KR',sans-serif">낮음(No)</text>
+
+      <!-- Q2: 분산 환경? -->
+      <polygon points="90,120 160,145 90,170 20,145" fill="#f8f7f3" stroke="#2d6a4f" stroke-width="1.5"/>
+      <text font-size="10.5" font-weight="700" fill="#2d6a4f" x="90" y="142" text-anchor="middle" font-family="'Noto Sans KR',sans-serif">분산</text>
+      <text font-size="10.5" font-weight="700" fill="#2d6a4f" x="90" y="156" text-anchor="middle" font-family="'Noto Sans KR',sans-serif">환경?</text>
+      <line x1="90" y1="90" x2="90" y2="118" stroke="#aaa" stroke-width="1" marker-end="url(#df)" fill="none"/>
+
+      <!-- OCC -->
+      <rect x="14" y="172" width="76" height="24" rx="12" fill="#2d6a4f"/>
+      <text font-size="11" font-weight="700" fill="#fff" x="52" y="188" text-anchor="middle" font-family="'Noto Sans KR',sans-serif">OCC</text>
+      <line x1="52" y1="170" x2="52" y2="172" stroke="#aaa" stroke-width="0.8" marker-end="url(#df)" fill="none"/>
+      <!-- OCC+버전 -->
+      <rect x="100" y="172" width="90" height="24" rx="12" fill="#2d6a4f"/>
+      <text font-size="10.5" font-weight="700" fill="#fff" x="145" y="188" text-anchor="middle" font-family="'Noto Sans KR',sans-serif">OCC+ETag</text>
+      <line x1="127" y1="170" x2="145" y2="172" stroke="#aaa" stroke-width="0.8" marker-end="url(#df)" fill="none"/>
+
+      <!-- Yes → PCC -->
+      <line x1="450" y1="90" x2="555" y2="90" stroke="#7a3010" stroke-width="1.5" marker-end="url(#df)" fill="none"/>
+      <text font-size="10" fill="#7a3010" font-weight="700" x="502" y="82" text-anchor="middle" font-family="'Noto Sans KR',sans-serif">높음(Yes)</text>
+
+      <!-- Q3: 완전 직렬화? -->
+      <polygon points="580,120 650,145 580,170 510,145" fill="#f8f7f3" stroke="#7a3010" stroke-width="1.5"/>
+      <text font-size="10.5" font-weight="700" fill="#7a3010" x="580" y="142" text-anchor="middle" font-family="'Noto Sans KR',sans-serif">완전</text>
+      <text font-size="10.5" font-weight="700" fill="#7a3010" x="580" y="156" text-anchor="middle" font-family="'Noto Sans KR',sans-serif">직렬화?</text>
+      <line x1="580" y1="90" x2="580" y2="118" stroke="#aaa" stroke-width="1" marker-end="url(#df)" fill="none"/>
+
+      <!-- PCC/SELECT FOR UPDATE -->
+      <rect x="506" y="172" width="76" height="24" rx="12" fill="#7a3010"/>
+      <text font-size="10.5" font-weight="700" fill="#fff" x="544" y="188" text-anchor="middle" font-family="'Noto Sans KR',sans-serif">PCC/2PL</text>
+      <line x1="544" y1="170" x2="544" y2="172" stroke="#aaa" stroke-width="0.8" marker-end="url(#df)" fill="none"/>
+      <!-- SERIALIZABLE -->
+      <rect x="592" y="172" width="80" height="24" rx="12" fill="#A32D2D"/>
+      <text font-size="10.5" font-weight="700" fill="#fff" x="632" y="188" text-anchor="middle" font-family="'Noto Sans KR',sans-serif">SERIALIZABLE</text>
+      <line x1="614" y1="170" x2="632" y2="172" stroke="#aaa" stroke-width="0.8" marker-end="url(#df)" fill="none"/>
+    </svg>
+    <div class="fc">【그림 4】 OCC vs. PCC 선택 의사결정 흐름도</div>
+  </div>
+</div>
+
+<!-- ─── Ⅴ. 결론 ─── -->
+<div class="sec">
+  <div class="sh">Ⅴ. 결론</div>
+  <div class="txt">
+    <p>낙관적 동시성 제어는 <span class="kw">잠금 없이 높은 처리량</span>을 달성하므로 읽기 집약·분산 환경에 적합하며, 비관적 동시성 제어는 <span class="kw">사전 잠금으로 충돌 자체를 차단</span>하므로 쓰기 집약·완전 정합성이 요구되는 환경에 적합하다. 현대 시스템에서는 <span class="kw">핵심 자원(재고·잔액)에는 PCC, 일반 읽기·갱신에는 OCC 또는 MVCC를 혼합</span>하는 전략이 가장 현실적이다. 전략 선택의 핵심 지표는 워크로드의 <span class="kw">읽기/쓰기 비율과 충돌 빈도</span>이며, 이를 측정·모니터링한 뒤 결정해야 한다.</p>
+  </div>
+</div>
+
+<div class="note">
+  <div class="nt">★ 기술사 핵심 코멘트</div>
+  <div class="nb">
+    동시성 제어의 본질은 <strong>충돌 가능성과 처리량 간의 트레이드오프를 워크로드 특성에 맞게 최적화</strong>하는 것이며, 시스템 감리 시 다음을 중점 검토해야 한다.<br>
+    ① <strong>OCC 재시도 전략 설계 여부:</strong> 버전 충돌 시 무한 재시도(Infinite Retry)는 CPU 폭증·Livelock 위험 — 지수 백오프(Exponential Backoff)와 최대 재시도 횟수 제한이 구현되어 있는지 확인<br>
+    ② <strong>PCC 잠금 타임아웃 설정:</strong> innodb_lock_wait_timeout(MySQL) 등 잠금 대기 상한이 설정되지 않으면 교착 미탐지 상황에서 무한 대기 발생 — 타임아웃·데드락 탐지 주기 적정성 점검<br>
+    ③ <strong>PCC 잠금 에스컬레이션:</strong> SQL Server의 행 잠금 → 페이지 → 테이블 자동 에스컬레이션은 동시성을 급격히 저하시킴 — 에스컬레이션 임계값(LOCK_ESCALATION) 설정 적정성 확인<br>
+    ④ <strong>분산 트랜잭션에서의 OCC:</strong> Saga 패턴·이벤트 소싱 기반 마이크로서비스에서는 OCC + 보상 트랜잭션(Compensating Transaction)의 조합이 표준 — 보상 로직의 멱등성(Idempotency) 구현 여부 감리
+  </div>
+</div>
+
+</div><!-- /body -->
+
+<div class="ftr">
+  <span>컴퓨터시스템응용 기술사 · 모범 답안</span>
+  <span>낙관적(OCC) vs 비관적(PCC) 동시성 제어</span>
+  <span>총 5개 항목 · 표 8개 · 그림 4개 · 타임라인 2종 · 코드 예시 포함</span>
+</div>
+
+</div><!-- /doc -->
+</body>
+</html>

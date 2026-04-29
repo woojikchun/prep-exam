@@ -1,0 +1,687 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&family=JetBrains+Mono:wght@400;700&display=swap');
+:root{
+  --bg:#060c1a;--s1:#0b1526;--s2:#101f38;--s3:#162848;
+  --bdr:#1c3462;--a1:#38bdf8;--a2:#a78bfa;--a3:#34d399;
+  --a4:#fbbf24;--a5:#f87171;--a6:#fb923c;
+  --txt:#e2e8f0;--mu:#64748b;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Noto Sans KR',sans-serif;background:var(--bg);color:var(--txt);min-height:100vh;}
+.hdr{padding:22px 24px 16px;background:linear-gradient(150deg,#060c1a 0%,#0e1e3a 50%,#060c1a 100%);border-bottom:1px solid var(--bdr);position:relative;overflow:hidden;}
+.hdr::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 65% 85% at 80% 30%,rgba(56,189,248,.09),transparent 65%),radial-gradient(ellipse 167,139,250,.07),transparent 60%);pointer-events:none;}
+.hdr-r{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:6px;}
+.pill{padding:3px 10px;border-radius:20px;font-size:10px;font-weight:700;letter-spacing:.8px;}
+.p1{background:linear-gradient(135deg,#1e3a8a,var(--a1));color:#fff;}
+.p2{background:rgba(251,191,36,.15);color:var(--a4);border:1px solid rgba(251,191,36,.3);}
+.p3{background:rgba(52,211,153,.15);color:var(--a3);border:1px solid rgba(52,211,153,.3);}
+h1{font-size:19px;font-weight:900;}
+.h1g{background:linear-gradient(90deg,var(--a1),var(--a2),var(--a3));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.hdr p{color:var(--mu);font-size:12px;margin-top:3px;}
+.tabs{display:flex;padding:0 24px;background:var(--s1);border-bottom:1px solid var(--bdr);overflow-x:auto;scrollbar-width:none;}
+.tabs::-webkit-scrollbar{display:none;}
+.tab{padding:11px 14px;font-size:12px;font-weight:600;color:var(--mu);cursor:pointer;border-bottom:2px solid transparent;white-space:nowrap;transition:all .2s;background:none;border-top:none;border-left:none;border-right:none;font-family:'Noto Sans KR',sans-serif;}
+.tab:hover{color:var(--txt);}.tab.on{color:var(--a1);border-bottom-color:var(--a1);}
+.wrap{padding:20px 24px;max-width:960px;margin:0 auto;}
+.pnl{display:none;}.pnl.on{display:block;}
+.card{background:var(--s1);border:1px solid var(--bdr);border-radius:12px;padding:18px;margin-bottom:14px;}
+.card-h{display:flex;align-items:center;gap:10px;margin-bottom:14px;}
+.ico{width:34px;height:34px;border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:17px;flex-shrink:0;}
+.ib{background:rgba(56,189,248,.15);}.ip{background:rgba(167,139,250,.15);}.ig{background:rgba(52,211,153,.15);}.iy{background:rgba(251,191,36,.15);}.ir{background:rgba(248,113,113,.15);}.io{background:rgba(251,146,60,.15);}
+.card h3{font-size:14px;font-weight:700;}
+.tag{display:inline-block;padding:2px 8px;border-radius:4px;font-size:10px;font-weight:600;margin:2px 2px 2px 0;}
+.tb{background:rgba(56,189,248,.12);color:var(--a1);border:1px solid rgba(56,189,248,.25);}
+.tp{background:rgba(167,139,250,.12);color:var(--a2);border:1px solid rgba(167,139,250,.25);}
+.tg{background:rgba(52,211,153,.12);color:var(--a3);border:1px solid rgba(52,211,153,.25);}
+.ty{background:rgba(251,191,36,.12);color:var(--a4);border:1px solid rgba(251,191,36,.25);}
+.tr{background:rgba(248,113,113,.12);color:var(--a5);border:1px solid rgba(248,113,113,.25);}
+.to{background:rgba(251,146,60,.12);color:var(--a6);border:1px solid rgba(251,146,60,.25);}
+table{width:100%;border-collapse:collapse;font-size:12.5px;}
+th{background:var(--s2);color:var(--mu);font-weight:700;padding:8px 12px;text-align:left;font-size:10px;text-transform:uppercase;letter-spacing:.5px;border-bottom:1px solid var(--bdr);}
+td{padding:9px 12px;border-bottom:1px solid rgba(28,52,96,.45);vertical-align:top;line-height:1.6;}
+tr:last-child td{border-bottom:none;}
+tr:hover td{background:rgba(255,255,255,.02);}
+td strong{color:var(--a4);}
+ul.il{list-style:none;display:flex;flex-direction:column;gap:7px;}
+ul.il li{font-size:12.5px;padding-left:16px;position:relative;line-height:1.55;}
+ul.il li::before{content:'▸';position:absolute;left:0;color:var(--a1);font-size:10px;top:3px;}
+ul.il li strong{color:var(--a4);}
+ul.il li em{color:var(--a3);font-style:normal;}
+.memo{background:linear-gradient(135deg,rgba(56,189,248,.07),rgba(167,139,250,.07));border:1px solid rgba(56,189,248,.22);border-left:3px solid var(--a1);border-radius:8px;padding:10px 14px;font-size:12.5px;font-weight:600;color:var(--a1);margin:10px 0;}
+.memo::before{content:'🎯 한 줄 암기 │ ';color:var(--mu);font-weight:400;}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:14px;}
+@media(max-width:600px){.g2{grid-template-columns:1fr;}}
+
+/* 흐름도 */
+.flow-box{background:var(--s2);border:1px solid var(--bdr);border-radius:10px;padding:14px;margin:10px 0;}
+.flow-row{display:flex;align-items:center;gap:6px;margin-bottom:8px;flex-wrap:wrap;}
+.flow-row:last-child{margin-bottom:0;}
+.fnode{border-radius:8px;padding:7px 12px;font-size:11.5px;font-weight:700;text-align:center;min-width:90px;flex-shrink:0;}
+.farr{color:var(--mu);font-size:18px;font-weight:900;flex-shrink:0;}
+.fstep{font-size:10px;color:var(--mu);width:100%;padding-left:4px;margin-top:-4px;margin-bottom:4px;}
+
+/* 프로토콜 아코디언 */
+.acc{background:var(--s2);border:1px solid var(--bdr);border-radius:10px;margin-bottom:9px;overflow:hidden;}
+.acc-h{display:flex;justify-content:space-between;align-items:center;padding:12px 16px;cursor:pointer;user-select:none;transition:background .15s;}
+.acc-h:hover{background:rgba(255,255,255,.02);}
+.acc-badge{font-size:13px;font-weight:800;}
+.acc-sub{font-size:11px;color:var(--mu);font-family:'JetBrains Mono',monospace;margin-top:2px;}
+.acc-tgl{color:var(--mu);transition:transform .2s;font-size:16px;}
+.acc.open .acc-tgl{transform:rotate(180deg);}
+.acc-body{display:none;border-top:1px solid var(--bdr);padding:14px 16px;}
+.acc.open .acc-body{display:block;}
+
+/* 장단점 */
+.pros-cons{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:10px 0;}
+@media(max-width:560px){.pros-cons{grid-template-columns:1fr;}}
+.pc-box{border-radius:9px;padding:13px;}
+
+/* QA */
+.qa{background:var(--s1);border:1px solid var(--bdr);border-radius:10px;margin-bottom:11px;overflow:hidden;transition:border-color .2s;}
+.qa:hover{border-color:rgba(56,189,248,.25);}
+.qa-hd{padding:14px 18px;cursor:pointer;display:flex;justify-content:space-between;align-items:flex-start;gap:10px;user-select:none;}
+.qa-meta{display:flex;align-items:center;gap:6px;margin-bottom:5px;flex-wrap:wrap;}
+.qn{font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:700;color:var(--mu);}
+.qq{font-size:13px;font-weight:600;line-height:1.55;}
+.tgl{color:var(--mu);font-size:16px;flex-shrink:0;transition:transform .2s;}
+.qa.open .tgl{transform:rotate(180deg);}
+.qa-bd{display:none;border-top:1px solid var(--bdr);padding:14px 18px;background:var(--s2);}
+.qa.open .qa-bd{display:block;}
+.chs{display:flex;flex-direction:column;gap:7px;margin-bottom:12px;}
+.ch{display:flex;align-items:flex-start;gap:10px;padding:9px 13px;border-radius:7px;border:1px solid var(--bdr);font-size:12.5px;cursor:pointer;background:var(--s1);line-height:1.5;transition:all .15s;}
+.ch:hover:not(.lk){border-color:rgba(56,189,248,.3);background:rgba(56,189,248,.04);}
+.ch.ok{border-color:var(--a3);background:rgba(52,211,153,.1);color:var(--a3);}
+.ch.ng{border-color:var(--a5);background:rgba(248,113,113,.08);color:var(--a5);opacity:.7;}
+.ch.lk{cursor:default;}
+.cnum{font-family:'JetBrains Mono',monospace;font-weight:700;font-size:11px;flex-shrink:0;margin-top:1px;color:var(--mu);}
+.ch.ok .cnum{color:var(--a3);}.ch.ng .cnum{color:var(--a5);}
+.exp{background:rgba(56,189,248,.05);border:1px solid rgba(56,189,248,.18);border-radius:8px;padding:12px 14px;font-size:12.5px;line-height:1.65;display:none;}
+.exp.show{display:block;}
+.exp-t{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--a1);margin-bottom:6px;}
+.exp strong{color:var(--a4);}
+.exp em{color:var(--a3);font-style:normal;}
+.ox-wr{display:flex;gap:10px;margin-bottom:12px;}
+.ox{flex:1;padding:11px;border-radius:8px;border:1px solid var(--bdr);font-size:20px;cursor:pointer;background:var(--s1);transition:all .15s;font-family:'Noto Sans KR',sans-serif;color:var(--txt);}
+.ox:hover:not(.lk){transform:scale(1.02);}
+.ox.so{border-color:var(--a3);background:rgba(52,211,153,.15);}
+.ox.sx{border-color:var(--a5);background:rgba(248,113,113,.1);}
+.ox.lk{cursor:default;}
+.diff{display:inline-block;padding:2px 7px;border-radius:10px;font-size:9px;font-weight:700;}
+.easy{background:rgba(52,211,153,.2);color:var(--a3);}
+.mid{background:rgba(251,191,36,.2);color:var(--a4);}
+.hard{background:rgba(248,113,113,.2);color:var(--a5);}
+.fb-wr{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:14px;}
+.fb{padding:5px 12px;border-radius:20px;border:1px solid var(--bdr);font-size:11px;font-weight:600;cursor:pointer;background:var(--s2);color:var(--mu);transition:all .15s;font-family:'Noto Sans KR',sans-serif;}
+.fb.on{background:rgba(56,189,248,.15);color:var(--a1);border-color:var(--a1);}
+.sc-b{background:var(--s2);border:1px solid var(--bdr);border-radius:8px;padding:5px 14px;font-size:12px;color:var(--mu);}
+.sc-b span{color:var(--a1);font-weight:700;}
+</style>
+</head>
+<body>
+
+<div class="hdr">
+  <div class="hdr-r">
+    <span class="pill p1">SSO — Single Sign-On</span>
+    <span class="pill p2">SAML · OAuth · OIDC · Kerberos</span>
+    <span class="pill p3">감리사 핵심 출제</span>
+  </div>
+  <h1><span class="h1g">SSO (Single Sign-On) 완전 정리</span></h1>
+  <p>한 번 인증으로 여러 시스템 접근 · SAML · OAuth 2.0 · OIDC · Kerberos · LDAP · RADIUS</p>
+</div>
+
+<div class="tabs">
+  <button class="tab on" data-p="p1">🔑 SSO 개요·구조</button>
+  <button class="tab" data-p="p2">📜 SAML</button>
+  <button class="tab" data-p="p3">🔐 OAuth 2.0 · OIDC</button>
+  <button class="tab" data-p="p4">🎫 Kerberos · LDAP · RADIUS</button>
+  <button class="tab" data-p="p5">📊 비교 총정리</button>
+  <button class="tab" data-p="p6">❓ 예상문제</button>
+</div>
+
+<div class="wrap">
+
+<!-- ===== P1: SSO 개요 ===== -->
+<div class="pnl on" id="p1">
+  <div class="card">
+    <div class="card-h"><div class="ico ib">🔑</div><h3>SSO (Single Sign-On) 정의</h3></div>
+    <div style="background:var(--s2);border:1px solid rgba(56,189,248,.28);border-radius:10px;padding:14px;margin-bottom:12px;">
+      <p style="font-size:13px;line-height:1.75;font-weight:500;">
+        <strong style="color:var(--a1)">SSO(Single Sign-On)</strong>란 사용자가 <em style="color:var(--a3);font-style:normal;">한 번만 인증(로그인)</em>하면, 연결된 여러 시스템·애플리케이션에 <em style="color:var(--a4);font-style:normal;">추가 로그인 없이</em> 접근할 수 있도록 하는 인증 통합 메커니즘
+      </p>
+    </div>
+    <div class="pros-cons">
+      <div class="pc-box" style="background:rgba(52,211,153,.07);border:1px solid rgba(52,211,153,.28);">
+        <p style="font-size:11.5px;font-weight:800;color:var(--a3);margin-bottom:8px;">✅ 장점</p>
+        <ul class="il">
+          <li>사용자 편의성 향상 (한 번만 로그인)</li>
+          <li>비밀번호 관리 부담 감소</li>
+          <li>IT 관리 비용 절감 (비밀번호 재설정 요청↓)</li>
+          <li>강력한 중앙 인증 정책 적용 가능</li>
+          <li>계정 프로비저닝·디프로비저닝 일원화</li>
+        </ul>
+      </div>
+      <div class="pc-box" style="background:rgba(248,113,113,.07);border:1px solid rgba(248,113,113,.28);">
+        <p style="font-size:11.5px;font-weight:800;color:var(--a5);margin-bottom:8px;">⚠️ 단점 / 위험</p>
+        <ul class="il">
+          <li><strong>단일 실패 지점(SPOF):</strong> IdP 장애 시 모든 서비스 접근 불가</li>
+          <li><strong>계정 탈취 위험 증폭:</strong> 한 계정 도용 → 모든 서비스 접근</li>
+          <li>구현 복잡도 높음</li>
+          <li>레거시 시스템과의 통합 어려움</li>
+          <li>세션 관리 복잡 (세션 타임아웃·공유)</li>
+        </ul>
+      </div>
+    </div>
+    <div class="memo">SSO = 한 번 인증 → 여러 시스템 접근 / SPOF 위험 (IdP 장애 → 전체 서비스 차단)</div>
+  </div>
+
+  <div class="card">
+    <div class="card-h"><div class="ico iy">🏛️</div><h3>SSO 핵심 구성 요소</h3></div>
+    <table>
+      <thead><tr><th>구성요소</th><th>역할</th><th>예시</th></tr></thead>
+      <tbody>
+        <tr><td><span class="tag ty">IdP (Identity Provider)</span></td><td>사용자 인증을 담당하는 중앙 신원 제공자 — 실제 로그인 처리</td><td>Okta, Keycloak, Active Directory FS</td></tr>
+        <tr><td><span class="tag tg">SP (Service Provider)</span></td><td>사용자가 접근하려는 서비스 — IdP에게 인증을 위임</td><td>Google Workspace, Salesforce, 사내 앱</td></tr>
+        <tr><td><span class="tag tb">토큰 / 어설션</span></td><td>인증 성공 증명서 — IdP→SP로 전달되는 신뢰 매개체</td><td>SAML Assertion, JWT, Kerberos Ticket</td></tr>
+        <tr><td><span class="tag tp">세션 관리</span></td><td>SSO 세션 유지 — 브라우저 쿠키 또는 토큰 기반</td><td>SSO 쿠키, Access Token</td></tr>
+      </tbody>
+    </table>
+    <div class="memo">IdP(인증) ↔ SP(서비스) / 토큰·어설션으로 신뢰 전달 / IdP = SSO의 핵심 SPOF</div>
+  </div>
+
+  <div class="card">
+    <div class="card-h"><div class="ico ig">🔄</div><h3>SSO 기본 동작 흐름</h3></div>
+    <div class="flow-box">
+      <div class="flow-row">
+        <div class="fnode" style="background:rgba(56,189,248,.12);border:1px solid rgba(56,189,248,.3);color:var(--a1);">① 사용자</div>
+        <div class="farr">→</div>
+        <div class="fnode" style="background:rgba(52,211,153,.12);border:1px solid rgba(52,211,153,.3);color:var(--a3);">② SP 접근 요청</div>
+        <div class="farr">→</div>
+        <div class="fnode" style="background:rgba(251,191,36,.12);border:1px solid rgba(251,191,36,.3);color:var(--a4);">③ IdP로 리다이렉트</div>
+      </div>
+      <div class="flow-row" style="padding-left:24px;">
+        <div class="farr" style="transform:rotate(90deg);">→</div>
+      </div>
+      <div class="flow-row" style="flex-direction:row-reverse;">
+        <div class="fnode" style="background:rgba(56,189,248,.12);border:1px solid rgba(56,189,248,.3);color:var(--a1);">⑦ 서비스 이용</div>
+        <div class="farr" style="transform:scaleX(-1);">→</div>
+        <div class="fnode" style="background:rgba(52,211,153,.12);border:1px solid rgba(52,211,153,.3);color:var(--a3);">⑥ SP 검증 후 접근 허용</div>
+        <div class="farr" style="transform:scaleX(-1);">→</div>
+        <div class="fnode" style="background:rgba(167,139,250,.12);border:1px solid rgba(167,139,250,.3);color:var(--a2);">⑤ 토큰/어설션 발급</div>
+        <div class="farr" style="transform:scaleX(-1);">→</div>
+        <div class="fnode" style="background:rgba(251,191,36,.12);border:1px solid rgba(251,191,36,.3);color:var(--a4);">④ IdP 로그인</div>
+      </div>
+    </div>
+    <p style="font-size:11px;color:var(--mu);margin-top:6px;">SP=Service Provider(서비스) / IdP=Identity Provider(인증서버) / 이후 다른 SP 접근 시 ④~⑤ 생략 (SSO 세션 재사용)</p>
+  </div>
+
+  <div class="card">
+    <div class="card-h"><div class="ico ip">🗺️</div><h3>SSO 구현 방식 분류</h3></div>
+    <table>
+      <thead><tr><th>방식</th><th>특징</th><th>프로토콜·기술</th></tr></thead>
+      <tbody>
+        <tr><td><span class="tag tb">Federation SSO</span></td><td>서로 다른 도메인·조직 간 신뢰 관계 기반 SSO</td><td>SAML 2.0, OIDC</td></tr>
+        <tr><td><span class="tag tg">Delegated Auth</span></td><td>제3자 IdP에 인증 위임 (소셜 로그인 등)</td><td>OAuth 2.0, OIDC</td></tr>
+        <tr><td><span class="tag ty">Kerberos SSO</span></td><td>티켓 기반 네트워크 인증 (동일 도메인 내)</td><td>Kerberos v5</td></tr>
+        <tr><td><span class="tag tp">토큰 기반</span></td><td>JWT 등 자가 검증 토큰으로 세션 공유</td><td>JWT, Session Token</td></tr>
+        <tr><td><span class="tag to">Agent/Reverse Proxy</span></td><td>웹 에이전트·리버스 프록시가 인증 중개</td><td>Apache SSO, Nginx Auth</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- ===== P2: SAML ===== -->
+<div class="pnl" id="p2">
+  <div class="card">
+    <div class="card-h"><div class="ico ib">📜</div><h3>SAML (Security Assertion Markup Language)</h3></div>
+    <table>
+      <thead><tr><th>항목</th><th>내용</th></tr></thead>
+      <tbody>
+        <tr><td><strong>정의</strong></td><td>XML 기반 <strong>인증·권한 부여 정보</strong>를 IdP와 SP 사이에서 교환하는 개방형 표준</td></tr>
+        <tr><td><strong>버전</strong></td><td><strong>SAML 2.0</strong> (현행 / 2005년 OASIS 표준)</td></tr>
+        <tr><td><strong>데이터 형식</strong></td><td><strong>XML</strong> (무겁고 복잡하지만 엔터프라이즈 환경에 강함)</td></tr>
+        <tr><td><strong>전송 방식</strong></td><td>HTTP Redirect / HTTP POST / HTTP Artifact Binding</td></tr>
+        <tr><td><strong>주요 용도</strong></td><td>기업 환경 Federated SSO — 서로 다른 조직/도메인 간 인증 연동</td></tr>
+        <tr><td><strong>보안</strong></td><td>XML 디지털 서명(xmldsig) + XML 암호화(xmlenc)로 어설션 무결성·기밀성 보장</td></tr>
+      </tbody>
+    </table>
+    <div class="memo">SAML = XML 기반 / OASIS 표준 / 엔터프라이즈 Federation SSO / IdP↔SP 어설션 교환</div>
+  </div>
+
+  <div class="card">
+    <div class="card-h"><div class="ico iy">📦</div><h3>SAML 3가지 어설션 유형</h3></div>
+    <table>
+      <thead><tr><th>어설션 유형</th><th>내용</th><th>포함 정보</th></tr></thead>
+      <tbody>
+        <tr><td><span class="tag tg">Authentication Assertion</span><br>(인증 어설션)</td><td>사용자가 IdP에서 언제, 어떻게 인증했는지 증명</td><td>인증 시각, 인증 방법(비밀번호·MFA 등)</td></tr>
+        <tr><td><span class="tag tb">Attribute Assertion</span><br>(속성 어설션)</td><td>사용자의 속성 정보 전달</td><td>이름, 이메일, 역할(Role), 부서 등</td></tr>
+        <tr><td><span class="tag ty">Authorization Decision Assertion</span><br>(인가 결정 어설션)</td><td>특정 자원에 대한 접근 권한 결정 결과</td><td>허용/거부 결정, 자원 URI</td></tr>
+      </tbody>
+    </table>
+    <div class="memo">SAML 3대 어설션: ①인증(언제·어떻게) ②속성(이름·역할) ③인가결정(허용/거부)</div>
+  </div>
+
+  <div class="card">
+    <div class="card-h"><div class="ico ig">🔄</div><h3>SAML SSO 동작 흐름 (SP-Initiated)</h3></div>
+    <div class="flow-box">
+      <div style="font-size:11.5px;line-height:1.9;">
+        <div style="display:flex;align-items:flex-start;gap:8px;margin-bottom:4px;">
+          <span style="background:rgba(56,189,248,.2);color:var(--a1);border-radius:4px;padding:2px 7px;font-weight:800;font-size:11px;flex-shrink:0;">①</span>
+          <span>사용자가 SP(서비스 앱)에 접근 시도</span>
+        </div>
+        <div style="display:flex;align-items:flex-start;gap:8px;margin-bottom:4px;">
+          <span style="background:rgba(52,211,153,.2);color:var(--a3);border-radius:4px;padding:2px 7px;font-weight:800;font-size:11px;flex-shrink:0;">②</span>
+          <span>SP가 <strong>SAML AuthnRequest</strong> 생성 → 브라우저를 통해 IdP로 리다이렉트</span>
+        </div>
+        <div style="display:flex;align-items:flex-start;gap:8px;margin-bottom:4px;">
+          <span style="background:rgba(251,191,36,.2);color:var(--a4);border-radius:4px;padding:2px 7px;font-weight:800;font-size:11px;flex-shrink:0;">③</span>
+          <span>IdP에서 사용자 로그인 (이미 SSO 세션 있으면 자동 통과)</span>
+        </div>
+        <div style="display:flex;align-items:flex-start;gap:8px;margin-bottom:4px;">
+          <span style="background:rgba(167,139,250,.2);color:var(--a2);border-radius:4px;padding:2px 7px;font-weight:800;font-size:11px;flex-shrink:0;">④</span>
+          <span>IdP가 <strong>SAML Response(어설션 포함)</strong> 생성 → 서명 후 브라우저를 통해 SP로 POST</span>
+        </div>
+        <div style="display:flex;align-items:flex-start;gap:8px;margin-bottom:4px;">
+          <span style="background:rgba(248,113,113,.2);color:var(--a5);border-radius:4px;padding:2px 7px;font-weight:800;font-size:11px;flex-shrink:0;">⑤</span>
+          <span>SP가 SAML Response 서명 검증 + 어설션 파싱</span>
+        </div>
+        <div style="display:flex;align-items:flex-start;gap:8px;">
+          <span style="background:rgba(251,146,60,.2);color:var(--a6);border-radius:4px;padding:2px 7px;font-weight:800;font-size:11px;flex-shrink:0;">⑥</span>
+          <span>SP가 세션 생성 → 사용자에게 서비스 제공</span>
+        </div>
+      </div>
+    </div>
+    <p style="font-size:11px;color:var(--mu);margin-top:8px;">IdP-Initiated: IdP에서 먼저 SAML Response를 SP에 Push하는 방식 (SP로의 리다이렉트 없음)</p>
+    <div class="memo">SAML 흐름: SP→AuthnRequest→IdP 로그인→SAML Response(서명)→SP 검증→서비스</div>
+  </div>
+</div>
+
+<!-- ===== P3: OAuth · OIDC ===== -->
+<div class="pnl" id="p3">
+  <div class="card">
+    <div class="card-h"><div class="ico iy">🔐</div><h3>OAuth 2.0 — 인가(Authorization) 프레임워크</h3></div>
+    <table>
+      <thead><tr><th>항목</th><th>내용</th></tr></thead>
+      <tbody>
+        <tr><td><strong>정의</strong></td><td>제3자 애플리케이션이 자원 소유자(사용자) 동의 하에 자원에 접근하도록 권한을 위임하는 프레임워크</td></tr>
+        <tr><td><strong>핵심</strong></td><td><strong>인가(Authorization)</strong> 프레임워크 — 인증(Authentication)이 아님 ⭐</td></tr>
+        <tr><td><strong>토큰</strong></td><td><strong>Access Token</strong> (자원 접근권) + Refresh Token (재발급용)</td></tr>
+        <tr><td><strong>데이터 형식</strong></td><td>JSON + HTTPS (SAML의 XML보다 경량)</td></tr>
+        <tr><td><strong>역할</strong></td><td>Resource Owner(사용자) / Client(앱) / Authorization Server(IdP) / Resource Server(API)</td></tr>
+      </tbody>
+    </table>
+    <div class="memo">OAuth 2.0 = 인가 위임 프레임워크 (인증 ❌) / Access Token 발급 / JSON+HTTPS</div>
+  </div>
+
+  <div class="card">
+    <div class="card-h"><div class="ico ig">📋</div><h3>OAuth 2.0 — 4가지 Grant Type</h3></div>
+    <div class="acc" onclick="this.classList.toggle('open')">
+      <div class="acc-h">
+        <div><div class="acc-badge" style="color:var(--a1);">① Authorization Code Grant</div><div class="acc-sub">웹 앱 · 가장 안전 · 권장</div></div>
+        <div class="acc-tgl">▾</div>
+      </div>
+      <div class="acc-body">
+        <ul class="il">
+          <li><strong>흐름:</strong> 클라이언트 → 인가코드 요청 → 사용자 동의 → 인가코드 발급 → Access Token 교환</li>
+          <li><strong>특징:</strong> Access Token이 브라우저에 직접 노출되지 않음 — 가장 안전</li>
+          <li><strong>용도:</strong> 서버 사이드 웹 애플리케이션</li>
+          <li><strong>PKCE:</strong> Public Client(모바일·SPA)에는 PKCE(Proof Key for Code Exchange) 필수 추가</li>
+        </ul>
+      </div>
+    </div>
+    <div class="acc" onclick="this.classList.toggle('open')">
+      <div class="acc-h">
+        <div><div class="acc-badge" style="color:var(--a3);">② Implicit Grant</div><div class="acc-sub">브라우저 SPA · ⚠️ 보안 취약 · 사용 지양</div></div>
+        <div class="acc-tgl">▾</div>
+      </div>
+      <div class="acc-body">
+        <ul class="il">
+          <li>Authorization Code 없이 Access Token을 URL Fragment로 직접 발급</li>
+          <li>브라우저 히스토리에 Token 노출 위험 → <strong>보안상 취약</strong></li>
+          <li>OAuth 2.1에서 <strong>삭제 예정</strong> → PKCE 적용 Authorization Code로 대체</li>
+        </ul>
+      </div>
+    </div>
+    <div class="acc" onclick="this.classList.toggle('open')">
+      <div class="acc-h">
+        <div><div class="acc-badge" style="color:var(--a4);">③ Client Credentials Grant</div><div class="acc-sub">서버↔서버 · 사용자 없음</div></div>
+        <div class="acc-tgl">▾</div>
+      </div>
+      <div class="acc-body">
+        <ul class="il">
+          <li>사용자 없이 클라이언트 자체 자격증명으로 Access Token 발급</li>
+          <li><strong>Machine-to-Machine(M2M)</strong> 통신에 사용 (백엔드 API 간 통신)</li>
+          <li>사용자 동의 불필요</li>
+        </ul>
+      </div>
+    </div>
+    <div class="acc" onclick="this.classList.toggle('open')">
+      <div class="acc-h">
+        <div><div class="acc-badge" style="color:var(--a2);">④ Resource Owner Password Credentials</div><div class="acc-sub">⚠️ 비권장 · 사용자 비밀번호 직접 노출</div></div>
+        <div class="acc-tgl">▾</div>
+      </div>
+      <div class="acc-body">
+        <ul class="il">
+          <li>사용자의 ID/비밀번호를 클라이언트에게 직접 제공 → 클라이언트가 Token 요청</li>
+          <li>비밀번호가 클라이언트에 노출되어 <strong>보안상 비권장</strong></li>
+          <li>OAuth 2.1에서 <strong>삭제 예정</strong></li>
+        </ul>
+      </div>
+    </div>
+    <div class="memo">Grant Type: Authorization Code(권장) / Implicit(지양) / Client Credentials(M2M) / ROPC(비권장)</div>
+  </div>
+
+  <div class="card">
+    <div class="card-h"><div class="ico ib">🪪</div><h3>OIDC (OpenID Connect) — OAuth 2.0 위에 인증 추가</h3></div>
+    <table>
+      <thead><tr><th>항목</th><th>내용</th></tr></thead>
+      <tbody>
+        <tr><td><strong>정의</strong></td><td>OAuth 2.0을 기반으로 <strong>사용자 인증(Authentication)</strong> 기능을 추가한 프로토콜</td></tr>
+        <tr><td><strong>핵심 토큰</strong></td><td><strong>ID Token</strong> (JWT 형식) — 사용자 신원 정보 포함</td></tr>
+        <tr><td><strong>관계</strong></td><td>OIDC = OAuth 2.0 + ID Token + UserInfo Endpoint</td></tr>
+        <tr><td><strong>용도</strong></td><td>소셜 로그인(Google·Kakao·Naver), 웹/모바일 앱 인증</td></tr>
+        <tr><td><strong>UserInfo</strong></td><td><code>/userinfo</code> 엔드포인트로 사용자 프로필 조회</td></tr>
+      </tbody>
+    </table>
+
+    <div style="background:var(--s2);border:1px solid var(--bdr);border-radius:9px;padding:14px;margin-top:10px;">
+      <p style="font-size:12px;font-weight:700;color:var(--a4);margin-bottom:10px;">⭐ OAuth 2.0 vs OIDC vs SAML 핵심 구분</p>
+      <table>
+        <thead><tr><th>구분</th><th style="color:var(--a6)">OAuth 2.0</th><th style="color:var(--a1)">OIDC</th><th style="color:var(--a3)">SAML 2.0</th></tr></thead>
+        <tbody>
+          <tr><td><strong>목적</strong></td><td><strong>인가</strong> (Authorization)</td><td><strong>인증</strong> (Authentication)</td><td>인증 + 인가</td></tr>
+          <tr><td><strong>토큰</strong></td><td>Access Token</td><td>ID Token (JWT)</td><td>XML Assertion</td></tr>
+          <tr><td><strong>형식</strong></td><td>JSON</td><td>JSON / JWT</td><td>XML</td></tr>
+          <tr><td><strong>주요 환경</strong></td><td>API 접근 위임</td><td>소셜 로그인, SPA</td><td>기업 Enterprise</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="memo">OIDC = OAuth 2.0 + 인증 / ID Token(JWT) 추가 / "소셜 로그인 = OIDC" / OAuth는 인가만</div>
+  </div>
+</div>
+
+<!-- ===== P4: Kerberos · LDAP · RADIUS ===== -->
+<div class="pnl" id="p4">
+  <div class="card">
+    <div class="card-h"><div class="ico iy">🎫</div><h3>Kerberos — 티켓 기반 네트워크 인증</h3></div>
+    <table>
+      <thead><tr><th>항목</th><th>내용</th></tr></thead>
+      <tbody>
+        <tr><td><strong>정의</strong></td><td>MIT 개발 네트워크 인증 프로토콜 — <strong>대칭키 기반 티켓</strong>으로 SSO 구현</td></tr>
+        <tr><td><strong>버전</strong></td><td>Kerberos v5 (RFC 4120, 현행)</td></tr>
+        <tr><td><strong>핵심 서버</strong></td><td><strong>KDC (Key Distribution Center)</strong> = AS + TGS로 구성</td></tr>
+        <tr><td><strong>AS</strong></td><td>Authentication Server — 사용자 인증 후 <strong>TGT(Ticket Granting Ticket)</strong> 발급</td></tr>
+        <tr><td><strong>TGS</strong></td><td>Ticket Granting Server — TGT를 받아 서비스 접근 티켓(<strong>Service Ticket</strong>) 발급</td></tr>
+        <tr><td><strong>특징</strong></td><td>비밀번호가 네트워크로 전송되지 않음 / <strong>상호 인증</strong>(클라이언트↔서버) / 시간 동기화 필수(±5분)</td></tr>
+        <tr><td><strong>환경</strong></td><td>Active Directory(AD) 도메인 내 Windows SSO의 기반 프로토콜</td></tr>
+        <tr><td><strong>단점</strong></td><td>단일 실패 지점(KDC) / 시간 동기화 필수 / 방화벽 통과 어려움</td></tr>
+      </tbody>
+    </table>
+    <div class="memo">Kerberos = KDC(AS+TGS) / TGT→Service Ticket / 대칭키 / 상호 인증 / AD 기반 SSO</div>
+  </div>
+
+  <div class="card">
+    <div class="card-h"><div class="ico ib">🎫</div><h3>Kerberos 동작 흐름 (5단계)</h3></div>
+    <div class="flow-box" style="font-size:12.5px;line-height:1.8;">
+      <div style="display:flex;align-items:flex-start;gap:8px;margin-bottom:5px;">
+        <span style="background:rgba(56,189,248,.2);color:var(--a1);border-radius:4px;padding:2px 7px;font-weight:800;flex-shrink:0;">①</span>
+        <span>클라이언트 → <strong>AS(인증서버)</strong>: 사용자 ID 전송 (비밀번호 미전송)</span>
+      </div>
+      <div style="display:flex;align-items:flex-start;gap:8px;margin-bottom:5px;">
+        <span style="background:rgba(52,211,153,.2);color:var(--a3);border-radius:4px;padding:2px 7px;font-weight:800;flex-shrink:0;">②</span>
+        <span>AS → 클라이언트: <strong>TGT</strong>(Ticket Granting Ticket) + 세션키 발급 (사용자 비밀키로 암호화)</span>
+      </div>
+      <div style="display:flex;align-items:flex-start;gap:8px;margin-bottom:5px;">
+        <span style="background:rgba(251,191,36,.2);color:var(--a4);border-radius:4px;padding:2px 7px;font-weight:800;flex-shrink:0;">③</span>
+        <span>클라이언트 → <strong>TGS(티켓부여서버)</strong>: TGT + 서비스 요청 전송</span>
+      </div>
+      <div style="display:flex;align-items:flex-start;gap:8px;margin-bottom:5px;">
+        <span style="background:rgba(167,139,250,.2);color:var(--a2);border-radius:4px;padding:2px 7px;font-weight:800;flex-shrink:0;">④</span>
+        <span>TGS → 클라이언트: <strong>Service Ticket</strong> 발급 (서비스 서버 비밀키로 암호화)</span>
+      </div>
+      <div style="display:flex;align-items:flex-start;gap:8px;">
+        <span style="background:rgba(248,113,113,.2);color:var(--a5);border-radius:4px;padding:2px 7px;font-weight:800;flex-shrink:0;">⑤</span>
+        <span>클라이언트 → <strong>서비스 서버</strong>: Service Ticket 제시 → 서비스 이용</span>
+      </div>
+    </div>
+    <div class="memo">Kerberos 흐름: AS→TGT → TGS→Service Ticket → 서비스서버 제시 / 비밀번호 네트워크 미전송</div>
+  </div>
+
+  <div class="g2">
+    <div class="card">
+      <div class="card-h"><div class="ico ig">📂</div><h3>LDAP (Lightweight Directory Access Protocol)</h3></div>
+      <table>
+        <thead><tr><th>항목</th><th>내용</th></tr></thead>
+        <tbody>
+          <tr><td><strong>정의</strong></td><td>네트워크 디렉터리 서비스 접근 프로토콜 — 사용자·그룹·자원 정보 저장·조회</td></tr>
+          <tr><td><strong>포트</strong></td><td>389(평문) / 636(LDAPS, TLS)</td></tr>
+          <tr><td><strong>구조</strong></td><td>DIT(Directory Information Tree) — <strong>계층적 트리</strong> 구조, DN(Distinguished Name)으로 객체 식별</td></tr>
+          <tr><td><strong>역할</strong></td><td>SSO에서 <strong>신원 저장소(Identity Store)</strong> — IdP 뒷단에서 사용자 계정 관리</td></tr>
+          <tr><td><strong>예시</strong></td><td>Microsoft AD(Active Directory), OpenLDAP</td></tr>
+        </tbody>
+      </table>
+      <div class="memo">LDAP = 디렉터리 서비스 / 계층적 트리 / DN 식별 / SSO의 신원 저장소</div>
+    </div>
+    <div class="card">
+      <div class="card-h"><div class="ico io">📡</div><h3>RADIUS (Remote Authentication Dial-In User Service)</h3></div>
+      <table>
+        <thead><tr><th>항목</th><th>내용</th></tr></thead>
+        <tbody>
+          <tr><td><strong>정의</strong></td><td>중앙화된 네트워크 접근 인증·권한부여·계정관리(AAA) 프로토콜</td></tr>
+          <tr><td><strong>포트</strong></td><td>1812(인증) / 1813(계정)</td></tr>
+          <tr><td><strong>AAA</strong></td><td><strong>Authentication·Authorization·Accounting</strong> — 인증·권한부여·로그</td></tr>
+          <tr><td><strong>용도</strong></td><td>VPN, 무선 LAN(Wi-Fi 802.1X), 네트워크 장비 접근 제어</td></tr>
+          <tr><td><strong>vs TACACS+</strong></td><td>RADIUS=UDP·인증/인가 통합 / TACACS+=TCP·AAA 분리·Cisco 독점</td></tr>
+        </tbody>
+      </table>
+      <div class="memo">RADIUS = AAA(인증·인가·계정) / UDP 1812/1813 / VPN·WiFi 802.1X / vs TACACS+=TCP·분리</div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== P5: 비교 총정리 ===== -->
+<div class="pnl" id="p5">
+  <div class="card">
+    <div class="card-h"><div class="ico ip">📊</div><h3>SSO 관련 프로토콜 총합 비교</h3></div>
+    <table>
+      <thead><tr><th>구분</th><th style="color:var(--a1)">SAML 2.0</th><th style="color:var(--a3)">OAuth 2.0</th><th style="color:var(--a4)">OIDC</th><th style="color:var(--a2)">Kerberos</th></tr></thead>
+      <tbody>
+        <tr><td><strong>주요 기능</strong></td><td>인증+인가</td><td><strong>인가만</strong></td><td>인증(+인가)</td><td>인증</td></tr>
+        <tr><td><strong>데이터 형식</strong></td><td>XML</td><td>JSON</td><td>JSON/JWT</td><td>이진 티켓</td></tr>
+        <tr><td><strong>신뢰 매개</strong></td><td>SAML Assertion</td><td>Access Token</td><td>ID Token(JWT)</td><td>TGT/Service Ticket</td></tr>
+        <tr><td><strong>암호화 기반</strong></td><td>비대칭키(RSA)</td><td>HTTPS</td><td>HTTPS+JWT</td><td><strong>대칭키</strong></td></tr>
+        <tr><td><strong>환경</strong></td><td>Enterprise B2B</td><td>API·소셜로그인</td><td>소셜로그인·SPA</td><td>AD 도메인 내</td></tr>
+        <tr><td><strong>표준</strong></td><td>OASIS</td><td>IETF RFC 6749</td><td>OpenID Foundation</td><td>IETF RFC 4120</td></tr>
+        <tr><td><strong>복잡도</strong></td><td>높음</td><td>중간</td><td>중간</td><td>높음</td></tr>
+      </tbody>
+    </table>
+    <div class="memo">SAML=Enterprise·XML / OAuth=인가·JSON / OIDC=인증·JWT / Kerberos=대칭키·AD</div>
+  </div>
+
+  <div class="g2">
+    <div class="card">
+      <div class="card-h"><div class="ico iy">⭐</div><h3>핵심 암기 포인트</h3></div>
+      <ul class="il">
+        <li><strong>OAuth 2.0 ≠ 인증:</strong> <em>인가(Authorization) 프레임워크</em> — 인증은 OIDC</li>
+        <li><strong>OIDC = OAuth 2.0 + ID Token:</strong> JWT 형식의 ID Token으로 인증 추가</li>
+        <li><strong>SAML:</strong> XML, OASIS 표준, Enterprise Federated SSO</li>
+        <li><strong>Kerberos:</strong> KDC(AS+TGS), TGT→Service Ticket, <em>대칭키</em>, ±5분 시간동기</li>
+        <li><strong>SSO 최대 위험:</strong> SPOF — IdP 장애 시 모든 서비스 불가</li>
+        <li><strong>Implicit Grant:</strong> 보안 취약 → PKCE+Auth Code로 대체</li>
+        <li><strong>LDAP:</strong> 디렉터리 서비스·신원 저장소 / RADIUS: AAA·VPN·WiFi</li>
+      </ul>
+    </div>
+    <div class="card">
+      <div class="card-h"><div class="ico ir">🎯</div><h3>자주 혼동 포인트</h3></div>
+      <ul class="il">
+        <li><strong>OAuth ≠ SSO:</strong> OAuth는 인가 위임, SSO는 인증 통합 — OIDC가 SSO 역할</li>
+        <li><strong>SAML vs OIDC:</strong> 기업·레거시=SAML / 모바일·API·소셜=OIDC</li>
+        <li><strong>Kerberos 상호 인증:</strong> 클라이언트와 서버 모두 인증 — 단방향 아님</li>
+        <li><strong>RADIUS vs TACACS+:</strong> RADIUS=UDP·인증인가통합 / TACACS+=TCP·AAA분리</li>
+        <li><strong>TGT vs Service Ticket:</strong> TGT=TGS 접근권 / ST=실제 서비스 접근권</li>
+        <li><strong>LDAP vs RADIUS:</strong> LDAP=계정정보저장소 / RADIUS=네트워크접근 AAA</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<!-- ===== P6: 예상문제 ===== -->
+<div class="pnl" id="p6">
+  <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;margin-bottom:14px;">
+    <div class="fb-wr" id="fbar" style="margin:0;">
+      <button class="fb on" data-f="all">전체</button>
+      <button class="fb" data-f="SSO">🔑 SSO</button>
+      <button class="fb" data-f="SAML">📜 SAML</button>
+      <button class="fb" data-f="OAuth">🔐 OAuth·OIDC</button>
+      <button class="fb" data-f="Kerb">🎫 Kerberos</button>
+      <button class="fb" data-f="기타">🌐 기타</button>
+      <button class="fb" data-f="OX">⭕ OX</button>
+    </div>
+    <div class="sc-b">정답: <span id="sc">0</span>/<span id="st">0</span></div>
+  </div>
+  <div id="ql"></div>
+</div>
+
+</div>
+
+<script>
+document.querySelectorAll('.tab').forEach(t=>t.addEventListener('click',()=>{
+  document.querySelectorAll('.tab,.pnl').forEach(x=>x.classList.remove('on'));
+  t.classList.add('on');document.getElementById(t.dataset.p).classList.add('on');
+}));
+
+const QA=[
+  {cat:'SSO',diff:'easy',
+   q:'SSO(Single Sign-On)의 가장 큰 보안 위험으로 가장 적절한 것은?',
+   cs:['비밀번호가 평문으로 전송될 수 있다.','IdP(Identity Provider) 장애 시 연결된 모든 서비스에 접근할 수 없게 된다(SPOF).','각 서비스마다 별도의 인증서가 필요하다.','SSO는 암호화를 지원하지 않는다.'],
+   ans:1,
+   exp:'SSO의 가장 큰 보안 위험: <strong>단일 실패 지점(SPOF, Single Point of Failure)</strong>. IdP(인증 서버)에 장애가 발생하거나 계정이 탈취되면 연결된 모든 서비스에 영향을 미칩니다. 또한 한 계정이 도용되면 모든 서비스에 무단 접근이 가능합니다.'},
+  {cat:'SSO',diff:'mid',
+   q:'SSO에서 IdP(Identity Provider)의 역할로 가장 적절한 것은?',
+   cs:['사용자가 접근하는 실제 서비스를 제공하는 서버','사용자의 신원을 인증하고 토큰·어설션을 발급하는 중앙 인증 서버','사용자 인터페이스를 제공하는 웹 서버','데이터베이스에 사용자 데이터를 저장하는 서버'],
+   ans:1,
+   exp:'<strong>IdP(Identity Provider)</strong>: 사용자 신원 인증(로그인)을 담당하고, 인증 성공 시 SP(Service Provider)가 신뢰할 수 있는 <em>토큰(SAML Assertion, ID Token 등)을 발급</em>하는 중앙 인증 서버입니다. SP는 직접 인증하지 않고 IdP에 인증을 위임합니다.'},
+  {cat:'SAML',diff:'mid',
+   q:'SAML 2.0이 사용하는 데이터 형식과 주요 사용 환경으로 가장 적절한 것은?',
+   cs:['JSON 형식, 모바일 앱 소셜 로그인','XML 형식, 기업(Enterprise) Federated SSO','이진 형식, AD 도메인 내 네트워크 인증','JWT 형식, RESTful API 접근 제어'],
+   ans:1,
+   exp:'<strong>SAML 2.0</strong>: <em>XML 형식</em>의 어설션(Assertion)을 사용하며, OASIS 표준 기반의 <em>기업 환경 Federated SSO</em>에 주로 활용됩니다. 모바일·API 환경에서는 JSON 기반의 OIDC가 더 많이 사용됩니다. SAML의 XML은 무겁지만 엔터프라이즈 환경에서의 풍부한 기능을 제공합니다.'},
+  {cat:'SAML',diff:'hard',
+   q:'SAML의 3가지 어설션 유형으로 가장 적절한 것은?',
+   cs:['인증 어설션, 암호화 어설션, 권한 어설션','인증 어설션, 속성 어설션, 인가결정 어설션','식별 어설션, 세션 어설션, 접근 어설션','서명 어설션, 토큰 어설션, 정책 어설션'],
+   ans:1,
+   exp:'SAML의 3가지 어설션: ①<strong>Authentication Assertion(인증 어설션)</strong> — 사용자가 언제·어떻게 인증했는지, ②<strong>Attribute Assertion(속성 어설션)</strong> — 이름·이메일·역할 등 사용자 속성, ③<strong>Authorization Decision Assertion(인가결정 어설션)</strong> — 특정 자원 접근 허용/거부 결정.'},
+  {cat:'OAuth',diff:'easy',
+   q:'OAuth 2.0의 핵심 목적으로 가장 적절한 것은?',
+   cs:['사용자 신원을 인증(Authentication)하는 프로토콜','제3자 애플리케이션에 자원 접근 권한을 위임(Authorization)하는 프레임워크','이메일을 암호화하는 표준','디렉터리 서비스에 접근하는 프로토콜'],
+   ans:1,
+   exp:'<strong>OAuth 2.0</strong>: <em>인가(Authorization) 위임 프레임워크</em>입니다. 인증(Authentication)이 아닙니다. 사용자(Resource Owner)의 동의 하에 제3자 애플리케이션(Client)이 자원 서버의 자원에 접근할 수 있도록 Access Token을 발급합니다. 인증 기능은 OAuth 2.0을 확장한 OIDC가 담당합니다.'},
+  {cat:'OAuth',diff:'mid',
+   q:'OAuth 2.0의 Grant Type 중 서버 간(Machine-to-Machine) 통신에 가장 적합한 것은?',
+   cs:['Authorization Code Grant','Implicit Grant','Client Credentials Grant','Resource Owner Password Credentials'],
+   ans:2,
+   exp:'<strong>Client Credentials Grant</strong>: 사용자(Resource Owner) 없이 클라이언트 자체 자격증명(ID·Secret)으로 Access Token을 발급합니다. <em>Machine-to-Machine(M2M)</em>, 즉 백엔드 API 간 서비스-to-서비스 통신에 적합합니다. Authorization Code Grant는 사용자가 직접 로그인하는 웹 앱에 적합합니다.'},
+  {cat:'OAuth',diff:'hard',
+   q:'OIDC(OpenID Connect)에 관한 설명으로 가장 적절한 것은?',
+   cs:['OIDC는 OAuth 2.0과 완전히 별개의 독립적인 프로토콜이다.',
+       'OIDC는 OAuth 2.0을 기반으로 ID Token(JWT)을 추가하여 사용자 인증 기능을 제공한다.',
+       'OIDC는 XML 형식의 어설션을 사용하여 엔터프라이즈 환경에 최적화되어 있다.',
+       'OIDC는 인가(Authorization)만 제공하며 인증은 별도 프로토콜이 필요하다.'],
+   ans:1,
+   exp:'<strong>OIDC(OpenID Connect)</strong> = <em>OAuth 2.0 + 인증</em>. OAuth 2.0 위에 <strong>ID Token(JWT 형식)</strong>과 UserInfo 엔드포인트를 추가하여 사용자 신원 인증을 제공합니다. "구글·카카오 로그인" 같은 소셜 로그인의 표준 프로토콜입니다. XML이 아닌 JSON/JWT 형식을 사용합니다.'},
+  {cat:'Kerb',diff:'mid',
+   q:'Kerberos 인증 프로토콜에서 TGT(Ticket Granting Ticket)의 역할로 가장 적절한 것은?',
+   cs:['서비스 서버에 직접 제시하여 서비스를 이용하는 티켓','AS(Authentication Server)에서 발급받아 TGS에 제출하면 Service Ticket을 발급받을 수 있는 티켓','네트워크 패킷을 암호화하기 위한 세션 키','사용자 비밀번호를 안전하게 저장하는 데이터 구조'],
+   ans:1,
+   exp:'Kerberos 티켓 구조: <strong>TGT(Ticket Granting Ticket)</strong> — AS(인증서버)에서 발급, TGS(티켓부여서버)에 제출하면 <em>Service Ticket</em>을 받을 수 있습니다. <strong>Service Ticket</strong> — TGS에서 발급, 실제 서비스 서버에 제출하여 서비스를 이용합니다. TGT는 "서비스 티켓을 받을 수 있는 권리증" 역할입니다.'},
+  {cat:'Kerb',diff:'hard',
+   q:'Kerberos의 특징으로 가장 적절하지 않은 것은?',
+   cs:['비밀번호가 네트워크를 통해 직접 전송되지 않는다.',
+       '클라이언트와 서버 간 상호 인증(Mutual Authentication)을 지원한다.',
+       '비대칭키(공개키/개인키) 암호화를 기반으로 한다.',
+       'KDC(Key Distribution Center) 서버의 시간과 클라이언트 시간이 ±5분 이내여야 한다.'],
+   ans:2,
+   exp:'Kerberos는 <strong>대칭키(비밀키) 암호화</strong>를 기반으로 합니다. 비대칭키(공개키/개인키)가 아닙니다. Kerberos v5에서 PKINIT 확장으로 비대칭키를 일부 사용할 수 있지만, 기본 메커니즘은 대칭키 기반입니다. SAML·OIDC가 RSA 등 비대칭키를 사용하는 것과 구분해야 합니다.'},
+  {cat:'기타',diff:'mid',
+   q:'RADIUS와 TACACS+의 비교로 가장 적절한 것은?',
+   cs:['RADIUS는 TCP, TACACS+는 UDP를 사용한다.',
+       'RADIUS는 UDP를 사용하고 인증·인가를 통합하며, TACACS+는 TCP를 사용하고 AAA를 분리한다.',
+       'RADIUS는 Cisco 독점 프로토콜이고, TACACS+는 개방 표준이다.',
+       'RADIUS와 TACACS+는 모두 같은 포트(1812)를 사용한다.'],
+   ans:1,
+   exp:'<strong>RADIUS</strong>: <em>UDP</em> 포트 1812(인증)/1813(계정), 인증과 인가를 하나의 패킷에서 처리. <strong>TACACS+</strong>: <em>TCP</em> 포트 49, 인증(Authentication)·인가(Authorization)·계정(Accounting)을 별도로 처리(분리), Cisco 독점 프로토콜. TACACS+는 더 세밀한 제어가 가능하며 네트워크 장비 관리에 많이 사용됩니다.'},
+  // OX
+  {cat:'OX',diff:'easy',type:'ox',
+   q:'OAuth 2.0은 사용자 인증(Authentication)을 위한 프로토콜이다.',
+   ans:false,
+   exp:'<strong>×</strong> — OAuth 2.0은 <strong>인가(Authorization) 위임 프레임워크</strong>입니다. 인증(Authentication)은 제공하지 않습니다. "소셜 로그인"처럼 인증이 필요한 경우에는 OAuth 2.0을 확장한 <em>OIDC(OpenID Connect)</em>를 사용합니다. OIDC는 OAuth 2.0에 ID Token(JWT)을 추가하여 인증 기능을 제공합니다.'},
+  {cat:'OX',diff:'mid',type:'ox',
+   q:'Kerberos는 클라이언트와 서버 간 상호 인증(Mutual Authentication)을 지원한다.',
+   ans:true,
+   exp:'<strong>○</strong> — Kerberos는 <em>상호 인증(Mutual Authentication)</em>을 지원합니다. 클라이언트가 서버를 인증할 수 있고, 서버도 클라이언트를 인증할 수 있습니다. Service Ticket에는 서버 인증을 위한 인증자(Authenticator)가 포함되어 있어 양방향 인증이 가능합니다.'},
+  {cat:'OX',diff:'mid',type:'ox',
+   q:'SAML의 Attribute Assertion은 사용자가 언제, 어떻게 인증했는지에 대한 정보를 포함한다.',
+   ans:false,
+   exp:'<strong>×</strong> — 사용자가 언제·어떻게 인증했는지(인증 시각, 인증 방법)는 <strong>Authentication Assertion(인증 어설션)</strong>의 내용입니다. <em>Attribute Assertion(속성 어설션)</em>은 사용자의 이름·이메일·역할·부서 등 속성 정보를 포함합니다. 두 어설션을 혼동하지 않도록 주의하세요.'},
+  {cat:'OX',diff:'hard',type:'ox',
+   q:'OAuth 2.0의 Implicit Grant는 보안 취약점으로 인해 PKCE를 적용한 Authorization Code Grant로 대체가 권장된다.',
+   ans:true,
+   exp:'<strong>○</strong> — Implicit Grant는 Access Token을 URL Fragment에 직접 노출하여 브라우저 히스토리에 토큰이 남는 등 보안에 취약합니다. 현재는 <strong>PKCE(Proof Key for Code Exchange)를 적용한 Authorization Code Grant</strong>로 대체가 권장되며, OAuth 2.1에서는 Implicit Grant가 삭제 예정입니다.'},
+  {cat:'OX',diff:'mid',type:'ox',
+   q:'LDAP는 사용자 인증을 위해 AAA(Authentication, Authorization, Accounting)를 직접 처리하는 네트워크 접근 제어 프로토콜이다.',
+   ans:false,
+   exp:'<strong>×</strong> — AAA를 처리하는 네트워크 접근 제어 프로토콜은 <strong>RADIUS</strong>(또는 TACACS+)입니다. <em>LDAP</em>는 디렉터리 서비스 접근 프로토콜로, 주로 <strong>사용자·그룹·자원 정보를 저장·조회</strong>하는 신원 저장소(Identity Store) 역할을 합니다. LDAP는 종종 RADIUS나 Kerberos의 백엔드 사용자 DB로 활용됩니다.'},
+];
+
+let answered=0,correct=0;
+function renderQ(f){
+  const data=f==='all'?QA:QA.filter(q=>q.cat===f);
+  const list=document.getElementById('ql');list.innerHTML='';
+  answered=0;correct=0;upS();
+  const CATC={'SSO':'tb','SAML':'tg','OAuth':'ty','Kerb':'tp','기타':'to','OX':'tr'};
+  const DLC={'easy':'easy 쉬움','mid':'mid 보통','hard':'hard 어려움'};
+  const NL=['①','②','③','④'];
+  if(!data.length){list.innerHTML='<div style="text-align:center;padding:40px;color:var(--mu)">문제 없음</div>';return;}
+  data.forEach((q,i)=>{
+    const gi=QA.indexOf(q);
+    const el=document.createElement('div');el.className='qa';
+    const tc=CATC[q.cat]||'tb';
+    const [dc,dn]=(DLC[q.diff]||'mid 보통').split(' ');
+    if(q.type==='ox'){
+      el.innerHTML=`<div class="qa-hd" onclick="this.closest('.qa').classList.toggle('open')"><div><div class="qa-meta"><span class="qn">Q${String(i+1).padStart(2,'0')}</span><span class="tag ${tc}">${q.cat}</span><span class="diff ${dc}">${dn}</span><span class="tag tp">O/X</span></div><div class="qq">${q.q}</div></div><span class="tgl">▾</span></div>
+      <div class="qa-bd"><div class="ox-wr"><button class="ox" onclick="pickOX(this,true,${gi})">⭕ 옳다</button><button class="ox" onclick="pickOX(this,false,${gi})">❌ 틀리다</button></div><div class="exp" id="ex-${gi}"><div class="exp-t">💡 해설</div>${q.exp}</div></div>`;
+    } else {
+      el.innerHTML=`<div class="qa-hd" onclick="this.closest('.qa').classList.toggle('open')"><div><div class="qa-meta"><span class="qn">Q${String(i+1).padStart(2,'0')}</span><span class="tag ${tc}">${q.cat}</span><span class="diff ${dc}">${dn}</span></div><div class="qq">${q.q}</div></div><span class="tgl">▾</span></div>
+      <div class="qa-bd"><div class="chs">${q.cs.map((c,ci)=>`<div class="ch" data-ci="${ci}" onclick="pickCh(this,${gi})"><span class="cnum">${NL[ci]}</span><span>${c}</span></div>`).join('')}</div><div class="exp" id="ex-${gi}"><div class="exp-t">💡 해설</div>${q.exp}</div></div>`;
+    }
+    list.appendChild(el);
+  });
+}
+function pickCh(el,gi){
+  const bd=el.closest('.qa-bd');if(bd.querySelector('.ok,.ng'))return;
+  const q=QA[gi];
+  bd.querySelectorAll('.ch').forEach((c,i)=>{c.classList.add('lk');if(i===q.ans)c.classList.add('ok');else if(i===parseInt(el.dataset.ci))c.classList.add('ng');});
+  document.getElementById('ex-'+gi).classList.add('show');
+  answered++;if(parseInt(el.dataset.ci)===q.ans)correct++;upS();
+}
+function pickOX(btn,val,gi){
+  const bd=btn.closest('.qa-bd');if(bd.querySelector('.so,.sx'))return;
+  const q=QA[gi];
+  bd.querySelectorAll('.ox').forEach(b=>b.classList.add('lk'));
+  btn.classList.add(val?'so':'sx');
+  if(val!==q.ans){btn.style.opacity='.5';bd.querySelectorAll('.ox')[val?1:0].classList.add(q.ans?'so':'sx');}
+  document.getElementById('ex-'+gi).classList.add('show');
+  answered++;if(val===q.ans)correct++;upS();
+}
+function upS(){document.getElementById('sc').textContent=correct;document.getElementById('st').textContent=answered;}
+document.getElementById('fbar').addEventListener('click',e=>{
+  const b=e.target.closest('.fb');if(!b)return;
+  document.querySelectorAll('.fb').forEach(x=>x.classList.remove('on'));b.classList.add('on');renderQ(b.dataset.f);
+});
+renderQ('all');
+</script>
+</body>
+</html>

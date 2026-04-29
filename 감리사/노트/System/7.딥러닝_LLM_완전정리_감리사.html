@@ -1,0 +1,692 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;900&family=JetBrains+Mono:wght@400;700&display=swap');
+:root{--bg:#040b10;--s1:#071018;--s2:#0b1622;--s3:#101d2c;--bdr:#1a3550;--a1:#38bdf8;--a2:#34d399;--a3:#fbbf24;--a4:#f87171;--a5:#a78bfa;--a6:#fb923c;--txt:#e2e8f0;--mu:#64748b;}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Noto Sans KR',sans-serif;background:var(--bg);color:var(--txt);min-height:100vh;}
+.hdr{padding:20px 24px 14px;background:linear-gradient(150deg,#040b10,#081520,#040b10);border-bottom:1px solid var(--bdr);}
+.hdr-r{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:6px;}
+.pill{padding:3px 10px;border-radius:20px;font-size:10px;font-weight:700;}
+.p1{background:linear-gradient(135deg,#0c4a6e,var(--a1));color:#fff;}
+.p2{background:rgba(167,139,250,.15);color:var(--a5);border:1px solid rgba(167,139,250,.3);}
+.p3{background:rgba(251,191,36,.15);color:var(--a3);border:1px solid rgba(251,191,36,.3);}
+h1{font-size:18px;font-weight:900;}
+.h1g{background:linear-gradient(90deg,var(--a1),var(--a5),var(--a2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.hdr p{color:var(--mu);font-size:11.5px;margin-top:3px;}
+.tabs{display:flex;padding:0 24px;background:var(--s1);border-bottom:1px solid var(--bdr);overflow-x:auto;scrollbar-width:none;}
+.tabs::-webkit-scrollbar{display:none;}
+.tab{padding:10px 13px;font-size:11.5px;font-weight:600;color:var(--mu);cursor:pointer;border-bottom:2px solid transparent;white-space:nowrap;transition:all .2s;background:none;border-top:none;border-left:none;border-right:none;font-family:'Noto Sans KR',sans-serif;}
+.tab.on{color:var(--a1);border-bottom-color:var(--a1);}
+.wrap{padding:18px 24px;max-width:960px;margin:0 auto;}
+.pnl{display:none;}.pnl.on{display:block;}
+.card{background:var(--s1);border:1px solid var(--bdr);border-radius:11px;padding:16px;margin-bottom:12px;}
+.card-h{display:flex;align-items:center;gap:9px;margin-bottom:12px;}
+.ico{width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0;}
+.ib{background:rgba(56,189,248,.15);}.ig{background:rgba(52,211,153,.15);}.iy{background:rgba(251,191,36,.15);}.ir{background:rgba(248,113,113,.15);}.ip{background:rgba(167,139,250,.15);}
+.card h3{font-size:13.5px;font-weight:700;}
+.tag{display:inline-block;padding:2px 7px;border-radius:4px;font-size:9.5px;font-weight:600;margin:2px 2px 2px 0;}
+.tb{background:rgba(56,189,248,.12);color:var(--a1);border:1px solid rgba(56,189,248,.25);}
+.tg{background:rgba(52,211,153,.12);color:var(--a2);border:1px solid rgba(52,211,153,.25);}
+.ty{background:rgba(251,191,36,.12);color:var(--a3);border:1px solid rgba(251,191,36,.25);}
+.tr{background:rgba(248,113,113,.12);color:var(--a4);border:1px solid rgba(248,113,113,.25);}
+.tp{background:rgba(167,139,250,.12);color:var(--a5);border:1px solid rgba(167,139,250,.25);}
+.to{background:rgba(251,146,60,.12);color:var(--a6);border:1px solid rgba(251,146,60,.25);}
+table{width:100%;border-collapse:collapse;font-size:12px;}
+th{background:var(--s2);color:var(--mu);font-weight:700;padding:7px 11px;text-align:left;font-size:9.5px;text-transform:uppercase;letter-spacing:.5px;border-bottom:1px solid var(--bdr);}
+td{padding:8px 11px;border-bottom:1px solid rgba(26,53,80,.5);vertical-align:top;line-height:1.55;}
+tr:last-child td{border-bottom:none;}
+tr:hover td{background:rgba(255,255,255,.02);}
+td strong{color:var(--a3);}
+ul.il{list-style:none;display:flex;flex-direction:column;gap:6px;}
+ul.il li{font-size:12px;padding-left:15px;position:relative;line-height:1.5;}
+ul.il li::before{content:'▸';position:absolute;left:0;color:var(--a1);font-size:9.5px;top:3px;}
+ul.il li strong{color:var(--a3);}
+ul.il li em{color:var(--a2);font-style:normal;}
+.memo{background:linear-gradient(135deg,rgba(56,189,248,.07),rgba(167,139,250,.07));border:1px solid rgba(56,189,248,.22);border-left:3px solid var(--a1);border-radius:7px;padding:9px 13px;font-size:12px;font-weight:600;color:var(--a1);margin:9px 0;}
+.memo::before{content:'🎯 한 줄 암기 │ ';color:var(--mu);font-weight:400;}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px;}
+@media(max-width:580px){.g2{grid-template-columns:1fr;}}
+.formula{background:var(--s2);border:1px solid rgba(56,189,248,.18);border-radius:6px;padding:10px 12px;font-family:'JetBrains Mono',monospace;font-size:10.5px;margin:8px 0;line-height:1.7;color:var(--a2);}
+.formula .cm{color:var(--mu);}
+.formula .kw{color:var(--a1);}
+.formula .val{color:var(--a3);}
+.acc{background:var(--s2);border:1px solid var(--bdr);border-radius:9px;margin-bottom:8px;overflow:hidden;}
+.acc-h{display:flex;justify-content:space-between;align-items:center;padding:10px 14px;cursor:pointer;user-select:none;}
+.acc-h:hover{background:rgba(255,255,255,.02);}
+.acc-title{font-size:12.5px;font-weight:800;flex:1;}
+.acc-tgl{color:var(--mu);transition:transform .2s;font-size:14px;flex-shrink:0;margin-left:8px;}
+.acc.open .acc-tgl{transform:rotate(180deg);}
+.acc-body{display:none;border-top:1px solid var(--bdr);padding:12px 14px;background:var(--s3);font-size:12px;}
+.acc.open .acc-body{display:block;}
+.acc-body strong{color:var(--a3);}
+.acc-body em{color:var(--a2);font-style:normal;}
+/* attention diagram */
+.attn-row{display:flex;gap:6px;flex-wrap:wrap;margin:8px 0;}
+.attn-box{border-radius:6px;padding:8px 10px;font-size:10.5px;font-weight:700;text-align:center;border:1px solid;flex:1;min-width:70px;}
+/* qa */
+.qa{background:var(--s1);border:1px solid var(--bdr);border-radius:9px;margin-bottom:10px;overflow:hidden;}
+.qa:hover{border-color:rgba(56,189,248,.25);}
+.qa-hd{padding:12px 16px;cursor:pointer;display:flex;justify-content:space-between;align-items:flex-start;gap:9px;user-select:none;}
+.qa-meta{display:flex;align-items:center;gap:5px;margin-bottom:4px;flex-wrap:wrap;}
+.qn{font-family:'JetBrains Mono',monospace;font-size:9.5px;font-weight:700;color:var(--mu);}
+.qq{font-size:12.5px;font-weight:600;line-height:1.5;}
+.tgl{color:var(--mu);font-size:15px;flex-shrink:0;transition:transform .2s;}
+.qa.open .tgl{transform:rotate(180deg);}
+.qa-bd{display:none;border-top:1px solid var(--bdr);padding:12px 16px;background:var(--s2);}
+.qa.open .qa-bd{display:block;}
+.chs{display:flex;flex-direction:column;gap:6px;margin-bottom:10px;}
+.ch{display:flex;align-items:flex-start;gap:9px;padding:8px 12px;border-radius:6px;border:1px solid var(--bdr);font-size:12px;cursor:pointer;background:var(--s1);line-height:1.45;transition:all .15s;}
+.ch:hover:not(.lk){border-color:rgba(56,189,248,.3);background:rgba(56,189,248,.04);}
+.ch.ok{border-color:var(--a2);background:rgba(52,211,153,.1);color:var(--a2);}
+.ch.ng{border-color:var(--a4);background:rgba(248,113,113,.08);color:var(--a4);opacity:.7;}
+.ch.lk{cursor:default;}
+.cnum{font-family:'JetBrains Mono',monospace;font-weight:700;font-size:10.5px;flex-shrink:0;margin-top:1px;color:var(--mu);}
+.ch.ok .cnum{color:var(--a2);}.ch.ng .cnum{color:var(--a4);}
+.exp{background:rgba(56,189,248,.05);border:1px solid rgba(56,189,248,.18);border-radius:7px;padding:11px 13px;font-size:12px;line-height:1.6;display:none;}
+.exp.show{display:block;}
+.exp-t{font-size:9.5px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--a1);margin-bottom:5px;}
+.exp strong{color:var(--a3);}
+.exp em{color:var(--a2);font-style:normal;}
+.ox-wr{display:flex;gap:8px;margin-bottom:10px;}
+.ox{flex:1;padding:10px;border-radius:7px;border:1px solid var(--bdr);font-size:18px;cursor:pointer;background:var(--s1);transition:all .15s;font-family:'Noto Sans KR',sans-serif;color:var(--txt);}
+.ox:hover:not(.lk){transform:scale(1.02);}
+.ox.so{border-color:var(--a2);background:rgba(52,211,153,.15);}
+.ox.sx{border-color:var(--a4);background:rgba(248,113,113,.1);}
+.ox.lk{cursor:default;}
+.diff{display:inline-block;padding:2px 6px;border-radius:9px;font-size:8.5px;font-weight:700;}
+.easy{background:rgba(52,211,153,.2);color:var(--a2);}
+.mid{background:rgba(251,191,36,.2);color:var(--a3);}
+.hard{background:rgba(248,113,113,.2);color:var(--a4);}
+.fb-wr{display:flex;gap:5px;flex-wrap:wrap;margin-bottom:12px;}
+.fb{padding:4px 11px;border-radius:18px;border:1px solid var(--bdr);font-size:10.5px;font-weight:600;cursor:pointer;background:var(--s2);color:var(--mu);transition:all .15s;font-family:'Noto Sans KR',sans-serif;}
+.fb.on{background:rgba(56,189,248,.15);color:var(--a1);border-color:var(--a1);}
+.sc-b{background:var(--s2);border:1px solid var(--bdr);border-radius:7px;padding:4px 12px;font-size:11.5px;color:var(--mu);}
+.sc-b span{color:var(--a1);font-weight:700;}
+</style>
+</head>
+<body>
+<div class="hdr">
+  <div class="hdr-r">
+    <span class="pill p1">Deep Learning & LLM</span>
+    <span class="pill p2">신경망 · Transformer · GPT · BERT</span>
+    <span class="pill p3">감리사 핵심 출제</span>
+  </div>
+  <h1><span class="h1g">딥러닝 & LLM 완전 정리</span></h1>
+  <p>신경망 기초 · CNN · RNN/LSTM · Transformer · Attention · BERT · GPT · 파인튜닝 · LLM 응용</p>
+</div>
+<div class="tabs">
+  <button class="tab on" data-p="p1">🧠 신경망 기초</button>
+  <button class="tab" data-p="p2">🖼️ CNN</button>
+  <button class="tab" data-p="p3">🔄 RNN·LSTM·GRU</button>
+  <button class="tab" data-p="p4">⚡ Transformer·Attention</button>
+  <button class="tab" data-p="p5">🤖 BERT·GPT·LLM</button>
+  <button class="tab" data-p="p6">🔧 학습기법·최적화</button>
+  <button class="tab" data-p="p7">❓ 예상문제</button>
+</div>
+<div class="wrap">
+
+<!-- P1: 신경망 기초 -->
+<div class="pnl on" id="p1">
+  <div class="card">
+    <div class="card-h"><div class="ico ib">🧠</div><h3>인공 신경망 (ANN) 기초 구조</h3></div>
+    <div style="background:var(--s2);border:1px solid rgba(56,189,248,.25);border-radius:9px;padding:12px;margin-bottom:11px;font-size:12.5px;line-height:1.8;">
+      <strong style="color:var(--a1)">딥러닝</strong>: 다수의 은닉층을 가진 <em style="color:var(--a3);font-style:normal;">심층 신경망</em>으로 데이터에서 계층적 특성을 자동 학습하는 ML 기법 — 특성 공학이 불필요
+    </div>
+    <div class="attn-row">
+      <div class="attn-box" style="background:rgba(56,189,248,.08);border-color:rgba(56,189,248,.3);color:var(--a1);">입력층<br><span style="font-size:9.5px;color:var(--mu);">Input Layer</span></div>
+      <div style="display:flex;align-items:center;color:var(--mu);font-size:18px;padding:0 4px;">→</div>
+      <div class="attn-box" style="background:rgba(167,139,250,.08);border-color:rgba(167,139,250,.3);color:var(--a5);">은닉층 1<br><span style="font-size:9.5px;color:var(--mu);">Hidden Layer</span></div>
+      <div style="display:flex;align-items:center;color:var(--mu);font-size:18px;padding:0 4px;">→</div>
+      <div class="attn-box" style="background:rgba(167,139,250,.08);border-color:rgba(167,139,250,.3);color:var(--a5);">은닉층 N<br><span style="font-size:9.5px;color:var(--mu);">Hidden Layer</span></div>
+      <div style="display:flex;align-items:center;color:var(--mu);font-size:18px;padding:0 4px;">→</div>
+      <div class="attn-box" style="background:rgba(52,211,153,.08);border-color:rgba(52,211,153,.3);color:var(--a2);">출력층<br><span style="font-size:9.5px;color:var(--mu);">Output Layer</span></div>
+    </div>
+    <table style="margin-top:12px;">
+      <thead><tr><th>활성화 함수</th><th>수식</th><th>특징·용도</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Sigmoid</strong></td><td>1/(1+e⁻ˣ) → (0,1)</td><td>이진 분류 출력 / 기울기 소실 문제</td></tr>
+        <tr><td><strong>Tanh</strong></td><td>(eˣ-e⁻ˣ)/(eˣ+e⁻ˣ) → (-1,1)</td><td>Sigmoid 개선·0 중심 / 기울기 소실 여전히 존재</td></tr>
+        <tr><td><strong>ReLU ⭐</strong></td><td>max(0, x)</td><td>가장 많이 사용 / 기울기 소실 완화 / Dead Neuron 위험</td></tr>
+        <tr><td><strong>Leaky ReLU</strong></td><td>x>0: x, x≤0: αx (α≈0.01)</td><td>Dead Neuron 해결 / 음수 영역 작은 기울기</td></tr>
+        <tr><td><strong>Softmax</strong></td><td>eˣⁱ/Σeˣʲ → 합=1</td><td>다중 분류 출력층 / 확률 분포 출력</td></tr>
+        <tr><td><strong>GELU</strong></td><td>x·Φ(x) (근사)</td><td>Transformer·BERT에서 사용 / ReLU보다 부드러운 곡선</td></tr>
+      </tbody>
+    </table>
+    <div class="memo">활성화 함수: ReLU=은닉층 기본(기울기소실완화) / Sigmoid=이진출력 / Softmax=다중분류출력 / GELU=Transformer</div>
+  </div>
+
+  <div class="card">
+    <div class="card-h"><div class="ico ip">⚙️</div><h3>역전파 (Backpropagation) & 손실 함수</h3></div>
+    <div class="g2">
+      <div>
+        <p style="font-size:11.5px;font-weight:800;color:var(--a1);margin-bottom:7px;">순전파 → 역전파 학습 과정</p>
+        <ul class="il">
+          <li><strong>순전파(Forward):</strong> 입력→출력 방향으로 예측값 계산</li>
+          <li><strong>손실 계산:</strong> 예측값과 실제값 차이(Loss) 계산</li>
+          <li><strong>역전파(Backward):</strong> 연쇄 법칙(Chain Rule)으로 출력→입력 방향으로 기울기 계산</li>
+          <li><strong>가중치 업데이트:</strong> 경사 하강법으로 기울기 방향 반대로 가중치 조정</li>
+          <li><strong>기울기 소실(Vanishing Gradient):</strong> 층 깊어질수록 기울기가 0에 수렴 → ReLU·배치 정규화로 완화</li>
+          <li><strong>기울기 폭발(Exploding Gradient):</strong> 기울기가 무한대로 발산 → Gradient Clipping으로 완화</li>
+        </ul>
+      </div>
+      <div>
+        <p style="font-size:11.5px;font-weight:800;color:var(--a3);margin-bottom:7px;">주요 손실 함수</p>
+        <table>
+          <thead><tr><th>손실 함수</th><th>용도</th></tr></thead>
+          <tbody>
+            <tr><td><strong>MSE</strong></td><td>회귀 / 평균 제곱 오차</td></tr>
+            <tr><td><strong>MAE</strong></td><td>회귀 / 이상치 강인</td></tr>
+            <tr><td><strong>Binary CE ⭐</strong></td><td>이진 분류 (로지스틱)</td></tr>
+            <tr><td><strong>Categorical CE ⭐</strong></td><td>다중 분류 (Softmax)</td></tr>
+            <tr><td><strong>Huber Loss</strong></td><td>회귀 / MSE+MAE 결합</td></tr>
+            <tr><td><strong>KL 발산</strong></td><td>확률 분포 차이 측정</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div class="memo">역전파=연쇄법칙으로 기울기 계산·역방향 전파 / 기울기소실→ReLU·배치정규화 / 기울기폭발→Gradient Clipping</div>
+  </div>
+</div>
+
+<!-- P2: CNN -->
+<div class="pnl" id="p2">
+  <div class="card">
+    <div class="card-h"><div class="ico iy">🖼️</div><h3>합성곱 신경망 (CNN — Convolutional Neural Network) ⭐</h3></div>
+    <div style="background:var(--s2);border:1px solid rgba(251,191,36,.25);border-radius:9px;padding:12px;margin-bottom:11px;font-size:12px;line-height:1.75;">
+      <strong style="color:var(--a3)">CNN</strong>: 이미지의 <em style="color:var(--a1);font-style:normal;">공간적 특성(엣지·텍스처·패턴)</em>을 합성곱 연산으로 자동 추출하는 신경망 — 이미지 분류·탐지·분할에 최적화
+    </div>
+
+    <div class="acc open" onclick="this.classList.toggle('open')">
+      <div class="acc-h"><div class="acc-title" style="color:var(--a3);">CNN 주요 레이어 <span class="tag ty">⭐핵심</span></div><div class="acc-tgl">▾</div></div>
+      <div class="acc-body">
+        <table>
+          <thead><tr><th>레이어</th><th>역할</th><th>핵심 파라미터</th></tr></thead>
+          <tbody>
+            <tr><td><strong>합성곱층 (Conv)</strong></td><td>필터(커널)를 슬라이딩하며 특성 맵(Feature Map) 추출 / <strong>가중치 공유</strong>로 파라미터 절감</td><td>필터 크기·개수·Stride·Padding</td></tr>
+            <tr><td><strong>풀링층 (Pooling)</strong></td><td>특성 맵을 다운샘플링 — MaxPooling(최대값) / AvgPooling(평균값)</td><td>풀링 크기 / 공간 불변성 확보</td></tr>
+            <tr><td><strong>완전연결층 (FC)</strong></td><td>추출된 특성을 기반으로 최종 분류·회귀 수행</td><td>Softmax 출력</td></tr>
+            <tr><td><strong>배치 정규화</strong></td><td>미니배치 단위로 활성화 값을 정규화 → 학습 안정·가속</td><td>학습률 크게 설정 가능</td></tr>
+            <tr><td><strong>드롭아웃 (Dropout)</strong></td><td>학습 중 무작위로 뉴런을 비활성화 → 과적합 방지</td><td>드롭률 (보통 0.5)</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="acc" onclick="this.classList.toggle('open')">
+      <div class="acc-h"><div class="acc-title" style="color:var(--a1);">주요 CNN 아키텍처 역사 <span class="tag tb">발전 흐름</span></div><div class="acc-tgl">▾</div></div>
+      <div class="acc-body">
+        <table>
+          <thead><tr><th>모델</th><th>연도</th><th>핵심 특징</th></tr></thead>
+          <tbody>
+            <tr><td><strong>LeNet-5</strong></td><td>1998</td><td>최초 CNN / 손글씨 인식 / 합성곱·풀링 구조 제시</td></tr>
+            <tr><td><strong>AlexNet</strong></td><td>2012</td><td>ImageNet 우승 / GPU 활용 / ReLU·Dropout·LRN 도입 / 딥러닝 붐의 시작</td></tr>
+            <tr><td><strong>VGGNet</strong></td><td>2014</td><td>3×3 작은 필터 깊게 쌓기 / 단순하고 규칙적인 구조 / 파라미터 많음</td></tr>
+            <tr><td><strong>GoogLeNet(Inception)</strong></td><td>2014</td><td>Inception 모듈(다양한 크기 필터 병렬 적용) / 1×1 합성곱으로 차원 축소</td></tr>
+            <tr><td><strong>ResNet ⭐</strong></td><td>2015</td><td><strong>잔차 연결(Residual/Skip Connection)</strong> → 기울기 소실 해결 → 수백 층 학습 가능</td></tr>
+            <tr><td><strong>DenseNet</strong></td><td>2017</td><td>모든 층을 연결(Dense Connection) / 특성 재사용 / 파라미터 효율</td></tr>
+            <tr><td><strong>EfficientNet</strong></td><td>2019</td><td>너비·깊이·해상도를 복합 스케일링 / 적은 파라미터로 높은 정확도</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <table style="margin-top:12px;">
+      <thead><tr><th>CNN 응용 분야</th><th>기법·모델</th></tr></thead>
+      <tbody>
+        <tr><td><strong>이미지 분류</strong></td><td>ResNet·VGG·EfficientNet — 이미지를 클래스로 분류</td></tr>
+        <tr><td><strong>객체 탐지 (Detection)</strong></td><td>YOLO·SSD·Faster R-CNN — 위치(Bounding Box) + 클래스 동시 예측</td></tr>
+        <tr><td><strong>시맨틱 분할 (Segmentation)</strong></td><td>U-Net·FCN·DeepLab — 픽셀별 클래스 예측</td></tr>
+        <tr><td><strong>얼굴 인식</strong></td><td>FaceNet·DeepFace — 임베딩 공간에서 유사도 비교</td></tr>
+        <tr><td><strong>의료 영상</strong></td><td>U-Net — 종양·병변 분할 (의료 영상 분석 표준)</td></tr>
+      </tbody>
+    </table>
+    <div class="memo">CNN: 합성곱(필터·가중치공유)→풀링(다운샘플링)→FC(분류) / ResNet=잔차연결로 기울기소실 해결·수백층 가능</div>
+  </div>
+</div>
+
+<!-- P3: RNN·LSTM -->
+<div class="pnl" id="p3">
+  <div class="card">
+    <div class="card-h"><div class="ico ig">🔄</div><h3>RNN · LSTM · GRU — 순차 데이터 처리 ⭐</h3></div>
+
+    <div class="acc open" onclick="this.classList.toggle('open')">
+      <div class="acc-h"><div class="acc-title" style="color:var(--a2);">RNN (Recurrent Neural Network) <span class="tag tg">순환 신경망</span></div><div class="acc-tgl">▾</div></div>
+      <div class="acc-body">
+        <ul class="il">
+          <li><strong>원리:</strong> 이전 시점의 <em>은닉 상태(Hidden State)</em>를 다음 시점에 전달 → 순서 정보(시계열·텍스트) 처리</li>
+          <li><strong>수식:</strong> hₜ = tanh(Wₕhₜ₋₁ + Wₓxₜ + b)</li>
+          <li><strong>장기 의존성 문제:</strong> 시퀀스가 길어질수록 초기 정보가 소실(기울기 소실)</li>
+          <li><strong>응용:</strong> 텍스트 분류·언어 모델·감성 분석 (현재는 Transformer로 대체)</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="acc" onclick="this.classList.toggle('open')">
+      <div class="acc-h"><div class="acc-title" style="color:var(--a3);">LSTM (Long Short-Term Memory) <span class="tag ty">⭐핵심</span></div><div class="acc-tgl">▾</div></div>
+      <div class="acc-body">
+        <ul class="il">
+          <li><strong>목적:</strong> RNN의 장기 의존성 문제 해결 — <em>게이트(Gate) 메커니즘</em>으로 정보 선택적 기억·망각</li>
+          <li><strong>핵심 구조 — 3개 게이트:</strong></li>
+        </ul>
+        <table style="margin-top:8px;">
+          <thead><tr><th>게이트</th><th>역할</th><th>출력 범위</th></tr></thead>
+          <tbody>
+            <tr><td><strong>망각 게이트 (Forget Gate) ⭐</strong></td><td>이전 셀 상태에서 <strong>삭제할 정보</strong> 결정 — σ(W·[hₜ₋₁,xₜ]+b)</td><td>0(전부 삭제)~1(전부 유지)</td></tr>
+            <tr><td><strong>입력 게이트 (Input Gate) ⭐</strong></td><td>현재 입력에서 <strong>저장할 정보</strong> 결정 — σ(W·[hₜ₋₁,xₜ]+b)</td><td>0~1</td></tr>
+            <tr><td><strong>출력 게이트 (Output Gate) ⭐</strong></td><td>셀 상태에서 <strong>출력할 정보</strong> 결정 — σ(W·[hₜ₋₁,xₜ]+b)</td><td>0~1</td></tr>
+          </tbody>
+        </table>
+        <ul class="il" style="margin-top:8px;">
+          <li><strong>셀 상태(Cell State):</strong> 컨베이어 벨트처럼 장기 기억을 전달하는 핵심 통로</li>
+          <li><strong>응용:</strong> 기계 번역·음성 인식·시계열 예측·감성 분석</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="acc" onclick="this.classList.toggle('open')">
+      <div class="acc-h"><div class="acc-title" style="color:var(--a5);">GRU (Gated Recurrent Unit) <span class="tag tp">LSTM 경량화</span></div><div class="acc-tgl">▾</div></div>
+      <div class="acc-body">
+        <ul class="il">
+          <li><strong>LSTM 대비:</strong> 셀 상태를 제거하고 은닉 상태만 사용 / 게이트 2개(업데이트·리셋)로 단순화</li>
+          <li><strong>업데이트 게이트:</strong> 이전 은닉 상태를 얼마나 유지할지</li>
+          <li><strong>리셋 게이트:</strong> 이전 은닉 상태를 얼마나 잊을지</li>
+          <li><strong>장점:</strong> 파라미터 적음·학습 빠름 / 짧은 시퀀스에서 LSTM과 성능 유사</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="acc" onclick="this.classList.toggle('open')">
+      <div class="acc-h"><div class="acc-title" style="color:var(--a4);">Seq2Seq & Attention (초기 형태) <span class="tag tr">번역·요약</span></div><div class="acc-tgl">▾</div></div>
+      <div class="acc-body">
+        <ul class="il">
+          <li><strong>Seq2Seq:</strong> 인코더(입력 시퀀스 → 컨텍스트 벡터) + 디코더(컨텍스트 → 출력 시퀀스)</li>
+          <li><strong>병목 문제:</strong> 고정 크기 컨텍스트 벡터에 모든 정보 압축 → 긴 문장에서 성능 저하</li>
+          <li><strong>Attention 메커니즘:</strong> 디코더가 매 시점마다 인코더의 <em>모든 은닉 상태를 참조</em> → 관련 위치에 집중</li>
+          <li><strong>효과:</strong> 긴 문장 번역 성능 개선 / Transformer의 직접 전신</li>
+        </ul>
+      </div>
+    </div>
+    <div class="memo">RNN=이전 은닉상태 전달 / LSTM=3게이트(망각·입력·출력)로 장기의존성 해결 / GRU=2게이트 경량화 / Seq2Seq→Attention</div>
+  </div>
+</div>
+
+<!-- P4: Transformer -->
+<div class="pnl" id="p4">
+  <div class="card">
+    <div class="card-h"><div class="ico ib">⚡</div><h3>Transformer 아키텍처 ⭐ "Attention is All You Need" (2017)</h3></div>
+    <div style="background:var(--s2);border:1px solid rgba(56,189,248,.25);border-radius:9px;padding:12px;margin-bottom:11px;font-size:12px;line-height:1.75;"><strong style="color:var(--a1)">Transformer</strong>: RNN 없이 <em style="color:var(--a3);font-style:normal;">Self-Attention만으로</em> 순차 데이터를 처리 — <strong>병렬 계산 가능</strong>하여 학습 속도↑ / 모든 위치 간 직접 연결 → 장거리 의존성 탁월</div>
+
+    <div class="g2">
+      <div>
+        <p style="font-size:11.5px;font-weight:800;color:var(--a1);margin-bottom:7px;">인코더 (Encoder)</p>
+        <ul class="il">
+          <li><strong>Self-Attention:</strong> 입력 시퀀스 내 모든 토큰 간 관계 계산</li>
+          <li><strong>Feed-Forward Network:</strong> 위치별 독립적 변환</li>
+          <li><strong>Add & Norm:</strong> 잔차 연결 + Layer Normalization</li>
+          <li>N개 인코더 블록 반복 (BERT=12·24개)</li>
+          <li><strong>용도:</strong> 이해(이진 분류·NER·QA)</li>
+        </ul>
+      </div>
+      <div>
+        <p style="font-size:11.5px;font-weight:800;color:var(--a3);margin-bottom:7px;">디코더 (Decoder)</p>
+        <ul class="il">
+          <li><strong>Masked Self-Attention:</strong> 미래 토큰을 보지 못하게 마스킹</li>
+          <li><strong>Cross-Attention:</strong> 인코더 출력을 Key·Value로 참조</li>
+          <li><strong>Feed-Forward Network</strong></li>
+          <li>N개 디코더 블록 반복 (GPT=12~96개)</li>
+          <li><strong>용도:</strong> 생성(번역·요약·텍스트 생성)</li>
+        </ul>
+      </div>
+    </div>
+    <div class="memo">Transformer = Encoder(Self-Attention) + Decoder(Masked-Self-Attention + Cross-Attention) / 병렬처리·장거리의존성</div>
+  </div>
+
+  <div class="card">
+    <div class="card-h"><div class="ico ip">👁️</div><h3>Attention & Self-Attention ⭐ — 핵심 메커니즘</h3></div>
+
+    <div class="acc open" onclick="this.classList.toggle('open')">
+      <div class="acc-h"><div class="acc-title" style="color:var(--a5);">Scaled Dot-Product Attention 수식 <span class="tag tp">⭐최중요</span></div><div class="acc-tgl">▾</div></div>
+      <div class="acc-body">
+        <div class="formula"><span class="kw">Attention(Q, K, V)</span> = softmax(<span class="val">QKᵀ / √dₖ</span>) · V
+
+<span class="cm"># Q(Query): 현재 처리 중인 토큰의 "질문"</span>
+<span class="cm"># K(Key):   각 토큰의 "색인" — Q와 유사도 계산</span>
+<span class="cm"># V(Value): 각 토큰의 실제 "값" — 유사도로 가중합</span>
+<span class="cm"># √dₖ:     키 차원으로 나눠 스케일링 → 기울기 안정화</span></div>
+        <ul class="il" style="margin-top:8px;">
+          <li><strong>Self-Attention:</strong> Q·K·V가 모두 같은 시퀀스에서 나옴 → 문장 내 토큰 간 관계 포착</li>
+          <li><strong>예시:</strong> "The animal didn't cross the street because <strong>it</strong> was too tired" → "it"이 "animal"을 참조</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="acc" onclick="this.classList.toggle('open')">
+      <div class="acc-h"><div class="acc-title" style="color:var(--a1);">Multi-Head Attention ⭐ <span class="tag tb">여러 관점 병렬 처리</span></div><div class="acc-tgl">▾</div></div>
+      <div class="acc-body">
+        <ul class="il">
+          <li><strong>원리:</strong> Attention을 h개의 헤드(Head)로 병렬 수행 → 서로 다른 관점(구문·의미·위치)에서 관계 포착</li>
+          <li><strong>수식:</strong> MultiHead(Q,K,V) = Concat(head₁,...,headₕ)·Wᵒ</li>
+          <li><strong>각 헤드:</strong> headᵢ = Attention(QWᵢQ, KWᵢK, VWᵢV)</li>
+          <li><strong>BERT-base:</strong> 12헤드 / BERT-large: 16헤드 / GPT-3: 96헤드</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="acc" onclick="this.classList.toggle('open')">
+      <div class="acc-h"><div class="acc-title" style="color:var(--a3);">위치 인코딩 (Positional Encoding) ⭐ <span class="tag ty">순서 정보 주입</span></div><div class="acc-tgl">▾</div></div>
+      <div class="acc-body">
+        <ul class="il">
+          <li><strong>문제:</strong> Transformer는 병렬 처리이므로 토큰 순서 정보가 없음 → 위치 정보를 별도로 주입</li>
+          <li><strong>사인·코사인 PE:</strong> 각 위치를 사인·코사인 함수로 인코딩 (BERT·원본 Transformer)</li>
+          <li><strong>학습 가능 PE:</strong> 위치 임베딩을 학습으로 결정 (GPT, BERT 변형)</li>
+          <li><strong>상대적 PE:</strong> RoPE(GPT-Neo·LLaMA)·ALiBi — 긴 컨텍스트 일반화에 유리</li>
+        </ul>
+      </div>
+    </div>
+    <div class="memo">Attention = softmax(QKᵀ/√dₖ)·V / Q=질문·K=색인·V=값 / Multi-Head=여러 관점 병렬 / 위치인코딩=순서정보 주입</div>
+  </div>
+</div>
+
+<!-- P5: BERT·GPT·LLM -->
+<div class="pnl" id="p5">
+  <div class="card">
+    <div class="card-h"><div class="ico ip">🤖</div><h3>BERT vs GPT — 대표 사전학습 언어 모델 ⭐</h3></div>
+    <table>
+      <thead><tr><th>항목</th><th style="color:var(--a1)">BERT ⭐</th><th style="color:var(--a3)">GPT 시리즈 ⭐</th></tr></thead>
+      <tbody>
+        <tr><td><strong>개발사</strong></td><td>Google (2018)</td><td>OpenAI (GPT-1: 2018 ~ GPT-4: 2023)</td></tr>
+        <tr><td><strong>구조</strong></td><td><strong>Transformer 인코더만</strong> 사용</td><td><strong>Transformer 디코더만</strong> 사용</td></tr>
+        <tr><td><strong>방향성</strong></td><td><strong>양방향(Bidirectional)</strong> — 앞뒤 문맥 모두 참조</td><td><strong>단방향(Autoregressive·좌→우)</strong> — 이전 토큰만 참조</td></tr>
+        <tr><td><strong>사전학습 과제</strong></td><td>MLM(마스크 언어 모델) + NSP(다음 문장 예측)</td><td>CLM(인과 언어 모델링) — 다음 토큰 예측</td></tr>
+        <tr><td><strong>강점</strong></td><td>언어 <strong>이해</strong> — 분류·NER·QA·감성 분석</td><td>언어 <strong>생성</strong> — 텍스트 생성·번역·요약·대화</td></tr>
+        <tr><td><strong>파인튜닝</strong></td><td>태스크별 헤드 추가 후 전체 파인튜닝</td><td>프롬프트 기반 / Few-shot / RLHF</td></tr>
+        <tr><td><strong>대표 파생 모델</strong></td><td>RoBERTa·ALBERT·DistilBERT·KoBERT</td><td>ChatGPT·GPT-4·Codex·InstructGPT</td></tr>
+      </tbody>
+    </table>
+
+    <div class="acc" onclick="this.classList.toggle('open')">
+      <div class="acc-h"><div class="acc-title" style="color:var(--a1);">BERT 사전학습 — MLM & NSP ⭐</div><div class="acc-tgl">▾</div></div>
+      <div class="acc-body">
+        <ul class="il">
+          <li><strong>MLM(Masked Language Model):</strong> 입력 토큰의 15%를 [MASK]로 대체 → 마스킹된 토큰 예측 학습 → 양방향 문맥 학습</li>
+          <li><strong>15% 중 처리:</strong> 80%=[MASK] 대체 / 10%=랜덤 토큰 / 10%=원래 토큰 유지</li>
+          <li><strong>NSP(Next Sentence Prediction):</strong> 두 문장이 연속인지(IsNext) 무작위인지(NotNext) 예측 → 문장 간 관계 학습</li>
+          <li><strong>입력 형식:</strong> [CLS] 문장A [SEP] 문장B [SEP]</li>
+          <li><strong>[CLS] 토큰:</strong> 전체 문장 표현 — 분류 태스크에서 이 벡터 사용</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="memo">BERT=인코더·양방향·MLM+NSP·이해강점 / GPT=디코더·단방향·CLM·생성강점 / [CLS]=전체문장표현</div>
+  </div>
+
+  <div class="card">
+    <div class="card-h"><div class="ico iy">🌐</div><h3>LLM (Large Language Model) 핵심 개념</h3></div>
+
+    <div class="acc" onclick="this.classList.toggle('open')">
+      <div class="acc-h"><div class="acc-title" style="color:var(--a3);">RLHF — 인간 피드백 강화학습 ⭐ (ChatGPT의 핵심)</div><div class="acc-tgl">▾</div></div>
+      <div class="acc-body">
+        <ul class="il">
+          <li><strong>RLHF(Reinforcement Learning from Human Feedback):</strong> 인간 평가자의 피드백으로 언어 모델을 안전하고 유용하게 정렬(Alignment)</li>
+          <li><strong>3단계 프로세스:</strong></li>
+        </ul>
+        <table style="margin-top:8px;">
+          <thead><tr><th>단계</th><th>내용</th></tr></thead>
+          <tbody>
+            <tr><td><strong>① SFT</strong> (지도 파인튜닝)</td><td>인간 작성 데모 데이터로 모델 파인튜닝 → 기본 지시 따르기 학습</td></tr>
+            <tr><td><strong>② 보상 모델 학습</strong></td><td>인간이 여러 응답에 순위 매김 → 좋은 응답에 높은 보상 주는 모델 학습</td></tr>
+            <tr><td><strong>③ PPO 강화학습</strong></td><td>보상 모델을 환경으로 PPO(Proximal Policy Optimization) 알고리즘으로 LLM 정책 최적화</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="acc" onclick="this.classList.toggle('open')">
+      <div class="acc-h"><div class="acc-title" style="color:var(--a2);">파인튜닝 기법 — Full FT · LoRA · Prompt Tuning ⭐</div><div class="acc-tgl">▾</div></div>
+      <div class="acc-body">
+        <table>
+          <thead><tr><th>기법</th><th>방법</th><th>특징</th></tr></thead>
+          <tbody>
+            <tr><td><strong>Full Fine-Tuning</strong></td><td>모든 파라미터 업데이트</td><td>최고 성능 / 대용량 GPU·데이터 필요 / 파국적 망각 위험</td></tr>
+            <tr><td><strong>LoRA ⭐</strong></td><td>가중치 행렬을 저랭크 행렬 2개로 분해하여 소수 파라미터만 학습</td><td>파라미터 0.1~1% 학습 / GPU 효율↑ / 원본 가중치 보존</td></tr>
+            <tr><td><strong>QLoRA</strong></td><td>4-bit 양자화 + LoRA</td><td>소비자 GPU로 대형 모델 파인튜닝 가능</td></tr>
+            <tr><td><strong>Prompt Tuning</strong></td><td>소프트 프롬프트(학습 가능 토큰)만 추가</td><td>모델 가중치 고정 / 매우 효율적</td></tr>
+            <tr><td><strong>Instruction Tuning</strong></td><td>지시-응답 쌍으로 파인튜닝</td><td>지시 따르기 능력 개선 / FLAN·InstructGPT</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="acc" onclick="this.classList.toggle('open')">
+      <div class="acc-h"><div class="acc-title" style="color:var(--a5);">RAG & 프롬프트 엔지니어링 ⭐</div><div class="acc-tgl">▾</div></div>
+      <div class="acc-body">
+        <table>
+          <thead><tr><th>기법</th><th>설명</th></tr></thead>
+          <tbody>
+            <tr><td><strong>RAG ⭐</strong><br>(검색증강생성)</td><td>LLM이 외부 지식 베이스(벡터 DB)를 실시간 검색하여 컨텍스트로 주입 → 환각(Hallucination) 감소·최신 지식 활용</td></tr>
+            <tr><td><strong>Zero-shot</strong></td><td>예시 없이 지시만으로 태스크 수행 — GPT-3·4의 강점</td></tr>
+            <tr><td><strong>Few-shot</strong></td><td>소수의 입력-출력 예시(shot)를 컨텍스트에 포함 → 성능 향상</td></tr>
+            <tr><td><strong>Chain-of-Thought (CoT)</strong></td><td>"단계별로 생각해 보자" → 추론 과정을 명시하여 복잡한 문제 해결력↑</td></tr>
+            <tr><td><strong>환각(Hallucination)</strong></td><td>LLM이 사실이 아닌 정보를 그럴듯하게 생성하는 현상 → RAG·사실 검증으로 완화</td></tr>
+            <tr><td><strong>컨텍스트 창(Context Window)</strong></td><td>LLM이 한 번에 처리할 수 있는 최대 토큰 수 — GPT-4: 128K·Gemini: 1M 토큰</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <table style="margin-top:12px;">
+      <thead><tr><th>주요 LLM 모델</th><th>개발사</th><th>특징</th></tr></thead>
+      <tbody>
+        <tr><td><strong>GPT-4</strong></td><td>OpenAI</td><td>멀티모달(텍스트+이미지) / 128K 컨텍스트 / 최강 추론</td></tr>
+        <tr><td><strong>Claude 3.5</strong></td><td>Anthropic</td><td>안전성 중시(Constitutional AI) / 200K 컨텍스트 / 코딩 우수</td></tr>
+        <tr><td><strong>Gemini</strong></td><td>Google DeepMind</td><td>멀티모달 네이티브 / 1M 컨텍스트(Ultra) / Google 서비스 통합</td></tr>
+        <tr><td><strong>LLaMA 3</strong></td><td>Meta</td><td>오픈소스 / 파인튜닝 기반 생태계 / 8B·70B·405B</td></tr>
+        <tr><td><strong>Mistral</strong></td><td>Mistral AI</td><td>오픈소스 / 슬라이딩 윈도우 Attention / 효율적 소형 모델</td></tr>
+      </tbody>
+    </table>
+    <div class="memo">RLHF=인간피드백강화학습(SFT→보상모델→PPO) / LoRA=저랭크 분해·소수파라미터학습 / RAG=외부검색+생성·환각감소</div>
+  </div>
+</div>
+
+<!-- P6: 학습 기법 -->
+<div class="pnl" id="p6">
+  <div class="card">
+    <div class="card-h"><div class="ico ig">🔧</div><h3>딥러닝 학습 기법 & 최적화</h3></div>
+
+    <div class="acc open" onclick="this.classList.toggle('open')">
+      <div class="acc-h"><div class="acc-title" style="color:var(--a2);">경사 하강법 변형 (최적화 알고리즘) ⭐</div><div class="acc-tgl">▾</div></div>
+      <div class="acc-body">
+        <table>
+          <thead><tr><th>옵티마이저</th><th>특징</th><th>수식 핵심</th></tr></thead>
+          <tbody>
+            <tr><td><strong>SGD</strong></td><td>배치 1개(또는 미니배치)로 기울기 계산·업데이트 / 노이즈 많음</td><td>w = w - η·∇L</td></tr>
+            <tr><td><strong>Momentum</strong></td><td>이전 기울기 방향 관성 추가 → 진동 감소·수렴 가속</td><td>v = βv - η·∇L, w += v</td></tr>
+            <tr><td><strong>AdaGrad</strong></td><td>파라미터별 학습률 적응적 조정 / 희소 데이터에 효과적 / 학습률 0에 수렴 문제</td><td>η/√(Σg²+ε)</td></tr>
+            <tr><td><strong>RMSProp</strong></td><td>AdaGrad 개선 — 지수이동평균으로 기울기 제곱 추적</td><td>η/√(E[g²]+ε)</td></tr>
+            <tr><td><strong>Adam ⭐</strong></td><td>Momentum + RMSProp 결합 / 딥러닝 기본 옵티마이저 / 빠른 수렴</td><td>m̂ₜ / (√v̂ₜ+ε)</td></tr>
+            <tr><td><strong>AdamW</strong></td><td>Adam + 가중치 감쇠(L2 정규화) 분리 / Transformer 파인튜닝 표준</td><td>Adam + λw 감쇠</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="acc" onclick="this.classList.toggle('open')">
+      <div class="acc-h"><div class="acc-title" style="color:var(--a3);">정규화 기법 (과적합 방지) ⭐</div><div class="acc-tgl">▾</div></div>
+      <div class="acc-body">
+        <table>
+          <thead><tr><th>기법</th><th>원리</th><th>사용 위치</th></tr></thead>
+          <tbody>
+            <tr><td><strong>Dropout ⭐</strong></td><td>학습 중 무작위 뉴런 비활성화 (p=0.5) — 앙상블 효과</td><td>FC 레이어 / 학습시에만 적용</td></tr>
+            <tr><td><strong>배치 정규화(BN) ⭐</strong></td><td>미니배치 단위 정규화 → 내부 공변량 이동 해결 / 학습 안정·가속</td><td>합성곱·FC 레이어 후</td></tr>
+            <tr><td><strong>레이어 정규화(LN)</strong></td><td>각 샘플의 피처 차원을 정규화 → 배치 크기에 무관</td><td>Transformer·RNN (배치가 변동적인 경우)</td></tr>
+            <tr><td><strong>데이터 증강</strong></td><td>뒤집기·회전·자르기·색상 변환으로 훈련 데이터 다양성 증가</td><td>이미지 분야 / Mixup·CutMix</td></tr>
+            <tr><td><strong>조기 종료</strong></td><td>검증 손실이 증가하기 시작하면 학습 중단</td><td>모든 딥러닝 모델</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="acc" onclick="this.classList.toggle('open')">
+      <div class="acc-h"><div class="acc-title" style="color:var(--a5);">전이 학습 & 자기 지도 학습 ⭐</div><div class="acc-tgl">▾</div></div>
+      <div class="acc-body">
+        <table>
+          <thead><tr><th>개념</th><th>설명</th></tr></thead>
+          <tbody>
+            <tr><td><strong>전이 학습 ⭐</strong></td><td>대용량 데이터로 사전 학습(Pre-training)한 모델을 소규모 태스크에 파인튜닝(Fine-tuning) — 적은 데이터로 높은 성능</td></tr>
+            <tr><td><strong>특성 추출</strong></td><td>사전학습 모델 가중치 동결 → 새 분류 헤드만 학습 (소규모 데이터에 적합)</td></tr>
+            <tr><td><strong>전체 파인튜닝</strong></td><td>사전학습 모델 전체를 낮은 학습률로 재학습 (중규모 이상 데이터)</td></tr>
+            <tr><td><strong>자기 지도 학습</strong></td><td>레이블 없이 데이터 자체에서 지도 신호 생성 (BERT의 MLM, GPT의 CLM)</td></tr>
+            <tr><td><strong>대조 학습(Contrastive)</strong></td><td>유사 샘플은 임베딩 공간에서 가깝게, 다른 샘플은 멀게 학습 (SimCLR, CLIP)</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="acc" onclick="this.classList.toggle('open')">
+      <div class="acc-h"><div class="acc-title" style="color:var(--a1);">LLM 양자화 & 경량화 기법</div><div class="acc-tgl">▾</div></div>
+      <div class="acc-body">
+        <ul class="il">
+          <li><strong>양자화(Quantization):</strong> FP32 가중치를 INT8·INT4로 압축 → 모델 크기↓·추론 속도↑ (GPTQ·GGUF 포맷)</li>
+          <li><strong>지식 증류(Knowledge Distillation):</strong> 큰 교사(Teacher) 모델의 출력을 소프트 레이블로 작은 학생(Student) 모델 학습 (DistilBERT=BERT 절반 크기)</li>
+          <li><strong>가지치기(Pruning):</strong> 중요도 낮은 가중치를 0으로 만들어 희소 모델 생성</li>
+          <li><strong>MoE(Mixture of Experts):</strong> 입력에 따라 일부 전문가 네트워크만 활성화 → 파라미터↑ but 실제 연산↓ (GPT-4·Mistral 8x7B)</li>
+          <li><strong>Speculative Decoding:</strong> 소형 모델이 먼저 예측 → 대형 모델이 검증 → 생성 속도↑</li>
+        </ul>
+      </div>
+    </div>
+    <div class="memo">Adam=딥러닝 기본 옵티마이저·AdamW=Transformer표준 / BN=미니배치정규화 / LN=Transformer정규화 / 전이학습=사전학습+파인튜닝</div>
+  </div>
+</div>
+
+<!-- P7: QA -->
+<div class="pnl" id="p7">
+  <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:7px;margin-bottom:12px;">
+    <div class="fb-wr" id="fbar" style="margin:0;">
+      <button class="fb on" data-f="all">전체</button>
+      <button class="fb" data-f="기초">🧠 기초</button>
+      <button class="fb" data-f="CNN">🖼️ CNN</button>
+      <button class="fb" data-f="RNN">🔄 RNN·LSTM</button>
+      <button class="fb" data-f="Transformer">⚡ Transformer</button>
+      <button class="fb" data-f="LLM">🤖 LLM</button>
+      <button class="fb" data-f="OX">⭕ OX</button>
+    </div>
+    <div class="sc-b">정답: <span id="sc">0</span>/<span id="st">0</span></div>
+  </div>
+  <div id="ql"></div>
+</div>
+
+</div>
+<script>
+document.querySelectorAll('.tab').forEach(t=>t.addEventListener('click',()=>{
+  document.querySelectorAll('.tab,.pnl').forEach(x=>x.classList.remove('on'));
+  t.classList.add('on');document.getElementById(t.dataset.p).classList.add('on');
+}));
+const QA=[
+  {cat:'기초',diff:'easy',
+   q:'딥러닝에서 가장 많이 사용되는 활성화 함수로 기울기 소실 문제를 완화하는 것은?',
+   cs:['Sigmoid','Tanh','ReLU','Softmax'],ans:2,
+   exp:'<strong>ReLU(Rectified Linear Unit)</strong>: f(x) = max(0,x). 양수 영역에서 기울기=1로 일정하여 <em>기울기 소실 완화</em>. 딥러닝 은닉층의 기본 활성화 함수. 단점: 음수 입력 시 뉴런이 완전히 죽는 "Dead Neuron" 문제 → <em>Leaky ReLU</em>로 완화. Softmax=다중분류 출력층, Sigmoid=이진 분류 출력층, GELU=Transformer.'},
+  {cat:'기초',diff:'mid',
+   q:'역전파(Backpropagation)에서 기울기 소실(Vanishing Gradient) 문제의 원인과 대응 방법으로 가장 적절한 것은?',
+   cs:['학습률이 너무 높아 발생 → 학습률 감소로 해결','층이 깊어질수록 활성화 함수(Sigmoid·Tanh)의 기울기가 0에 수렴 → ReLU·배치 정규화·잔차 연결로 완화','데이터셋이 너무 작아 발생 → 데이터 증강으로 해결','과적합으로 인해 발생 → Dropout으로 해결'],ans:1,
+   exp:'<strong>기울기 소실</strong>: 깊은 층에서 역전파 시 Sigmoid·Tanh의 기울기(≤0.25)가 연속 곱으로 0에 수렴. 대응: ①<em>ReLU</em>(양수 영역 기울기=1) ②<em>배치 정규화</em>(활성화 값 정규화) ③<em>잔차 연결(ResNet)</em>(기울기 직통 경로). 기울기 폭발은 Gradient Clipping으로 대응.'},
+  {cat:'CNN',diff:'mid',
+   q:'ResNet(Residual Network)이 매우 깊은 신경망(수백 층)을 학습 가능하게 한 핵심 기법은?',
+   cs:['더 작은 필터(1×1) 사용','잔차 연결(Skip Connection·Residual Connection)로 입력을 레이어를 건너뛰어 직접 더함','더 많은 드롭아웃 사용','배치 크기를 크게 설정'],ans:1,
+   exp:'<strong>ResNet 잔차 연결(Skip/Residual Connection)</strong>: F(x) + x 형태로 입력 x를 레이어 출력에 직접 더합니다. 이 "지름길(shortcut)"을 통해 기울기가 역전파 시 소실 없이 직접 전달됩니다. 2015년 ImageNet 우승, 수백·수천 층 학습 가능. VGGNet=3×3 필터 깊이 쌓기(잔차연결 없음)'},
+  {cat:'CNN',diff:'hard',
+   q:'CNN에서 합성곱 레이어의 가중치 공유(Weight Sharing)의 의미로 가장 적절한 것은?',
+   cs:['모든 레이어가 동일한 가중치를 사용한다.','하나의 필터가 이미지 전체를 슬라이딩하며 동일한 가중치로 특성을 추출한다.','다수의 필터가 서로 가중치를 공유한다.','배치 내 모든 샘플이 동일한 가중치를 공유한다.'],ans:1,
+   exp:'<strong>가중치 공유(Weight Sharing)</strong>: CNN의 하나의 필터(커널)가 이미지 전체를 동일한 가중치로 슬라이딩하며 특성을 추출합니다. 이를 통해 ①파라미터 수 대폭 감소 ②위치 불변성(고양이가 어디 있어도 동일한 필터로 인식) ③일반화 능력 향상. FC 레이어와 달리 모든 위치에서 같은 필터 재사용.'},
+  {cat:'RNN',diff:'mid',
+   q:'LSTM(Long Short-Term Memory)의 핵심 구성 요소 3가지 게이트로 가장 적절한 것은?',
+   cs:['인코더 게이트·디코더 게이트·출력 게이트','망각 게이트·입력 게이트·출력 게이트','셀프 어텐션·크로스 어텐션·피드포워드','업데이트 게이트·리셋 게이트·출력 게이트'],ans:1,
+   exp:'<strong>LSTM 3개 게이트</strong>: ①<em>망각 게이트(Forget Gate)</em>: 셀 상태에서 삭제할 정보 결정(σ, 0~1) ②<em>입력 게이트(Input Gate)</em>: 새로 저장할 정보 결정(σ) ③<em>출력 게이트(Output Gate)</em>: 셀 상태에서 출력할 정보 결정(σ). GRU는 업데이트·리셋 2개 게이트로 단순화한 LSTM 변형입니다.'},
+  {cat:'Transformer',diff:'mid',
+   q:'Transformer의 Self-Attention에서 Q·K·V의 역할로 가장 적절한 것은?',
+   cs:['Q=값·K=색인·V=질문','Q=질문·K=색인·V=값 — Attention(Q,K,V)=softmax(QKᵀ/√dₖ)·V','Q·K·V 모두 동일한 행렬이다.','Q=인코더 입력·K=디코더 입력·V=출력'],ans:1,
+   exp:'<strong>Scaled Dot-Product Attention</strong>: <em>Q(Query)=현재 처리 토큰의 "질문"</em>, <em>K(Key)=각 토큰의 "색인"(Q와 유사도 계산)</em>, <em>V(Value)=각 토큰의 실제 "값"(유사도로 가중합)</em>. 수식: Attention(Q,K,V) = softmax(QKᵀ/√dₖ)·V. √dₖ으로 나누는 것은 스케일링(기울기 안정화). Self-Attention에서 Q·K·V 모두 같은 입력에서 나옴.'},
+  {cat:'Transformer',diff:'hard',
+   q:'Transformer에서 위치 인코딩(Positional Encoding)이 필요한 이유로 가장 적절한 것은?',
+   cs:['배치 정규화를 대체하기 위해','Transformer는 병렬 처리로 토큰 순서 정보가 없으므로 위치 정보를 별도로 주입하기 위해','멀티-헤드 어텐션의 계산 복잡도를 줄이기 위해','드롭아웃의 효과를 높이기 위해'],ans:1,
+   exp:'<strong>위치 인코딩(Positional Encoding)</strong>: RNN은 순차 처리로 자동으로 순서를 인식하지만, Transformer는 Self-Attention이 모든 토큰을 병렬로 처리하므로 <em>토큰의 순서(위치) 정보가 없습니다</em>. 이를 해결하기 위해 토큰 임베딩에 위치 정보를 더합니다. 원본 Transformer는 사인·코사인 함수 사용, GPT 계열은 학습 가능한 위치 임베딩 사용.'},
+  {cat:'LLM',diff:'mid',
+   q:'BERT와 GPT의 가장 핵심적인 구조적 차이로 가장 적절한 것은?',
+   cs:['BERT는 디코더만, GPT는 인코더만 사용한다.','BERT는 Transformer 인코더 기반 양방향 모델로 언어 이해에 강하고, GPT는 디코더 기반 단방향 자기회귀 모델로 언어 생성에 강하다.','BERT와 GPT는 동일한 구조를 사용한다.','BERT는 CNN 기반, GPT는 RNN 기반이다.'],ans:1,
+   exp:'<strong>BERT</strong>: Transformer <em>인코더</em> 사용, <em>양방향(Bidirectional)</em> 문맥 참조, MLM+NSP 사전학습 → 언어 이해 강점(분류·NER·QA). <strong>GPT</strong>: Transformer <em>디코더</em> 사용, <em>단방향(좌→우)</em>, CLM(다음 토큰 예측) 사전학습 → 언어 생성 강점(텍스트 생성·대화·번역). BERT=이해, GPT=생성.'},
+  {cat:'LLM',diff:'mid',
+   q:'RAG(Retrieval-Augmented Generation)의 주된 목적으로 가장 적절한 것은?',
+   cs:['LLM의 파라미터 수를 늘려 성능을 향상시킨다.','LLM이 외부 지식 베이스를 실시간 검색하여 컨텍스트로 활용함으로써 환각(Hallucination)을 감소시키고 최신 정보를 제공한다.','모든 LLM의 학습 시간을 단축시킨다.','LLM 모델을 경량화하여 추론 속도를 높인다.'],ans:1,
+   exp:'<strong>RAG(검색증강생성)</strong>: 사용자 질문 → 벡터 DB에서 관련 문서 검색 → 문서를 컨텍스트로 LLM에 주입 → 답변 생성. 효과: ①<em>환각(Hallucination) 감소</em>(근거 문서 기반 답변) ②최신 정보 활용(지식 컷오프 극복) ③도메인 지식 주입. 파인튜닝 대비 비용 효율적.'},
+  {cat:'LLM',diff:'hard',
+   q:'RLHF(Reinforcement Learning from Human Feedback)의 3단계 프로세스로 가장 적절한 것은?',
+   cs:['데이터 수집 → 모델 사전학습 → 평가','SFT(지도 파인튜닝) → 보상 모델 학습 → PPO 강화학습으로 모델 최적화','프롬프트 설계 → Few-shot 학습 → 모델 배포','양자화 → 지식 증류 → 가지치기'],ans:1,
+   exp:'<strong>RLHF 3단계</strong>: ①<em>SFT(Supervised Fine-Tuning)</em>: 인간이 작성한 데모 데이터로 파인튜닝 ②<em>보상 모델 학습</em>: 여러 응답에 인간이 순위 매기면 좋은 응답에 높은 보상을 주는 모델 학습 ③<em>PPO 강화학습</em>: 보상 모델을 환경으로 PPO 알고리즘으로 LLM 정책 최적화. ChatGPT·InstructGPT·Claude의 핵심 기법.'},
+  {cat:'OX',diff:'easy',type:'ox',
+   q:'BERT는 Transformer 디코더만 사용하며 텍스트 생성에 특화된 모델이다.',ans:false,
+   exp:'<strong>×</strong> — BERT는 <strong>Transformer 인코더</strong>를 사용하는 <em>양방향</em> 언어 모델로 언어 <strong>이해</strong>에 특화됩니다(분류·NER·QA). 텍스트 생성에 특화된 것은 Transformer <em>디코더</em> 기반의 <strong>GPT 시리즈</strong>입니다. BERT=인코더·이해, GPT=디코더·생성.'},
+  {cat:'Transformer',diff:'mid',type:'ox',
+   q:'Transformer의 Multi-Head Attention은 하나의 Attention을 여러 헤드로 병렬 수행하여 다양한 관점에서 관계를 포착한다.',ans:true,
+   exp:'<strong>○</strong> — <strong>Multi-Head Attention</strong>: Scaled Dot-Product Attention을 h개의 헤드(Head)로 병렬 수행. 각 헤드는 서로 다른 선형 변환(Wᵢ)으로 Q·K·V를 투영하여 다른 관점(구문·의미·위치 등)에서 토큰 간 관계를 포착합니다. 모든 헤드의 출력을 연결(Concat)하여 최종 표현 생성.'},
+  {cat:'LLM',diff:'mid',type:'ox',
+   q:'LoRA(Low-Rank Adaptation)는 사전학습 모델의 모든 파라미터를 업데이트하는 Full Fine-Tuning 기법이다.',ans:false,
+   exp:'<strong>×</strong> — LoRA는 <strong>PEFT(Parameter-Efficient Fine-Tuning)</strong> 기법으로, 기존 가중치 행렬을 <em>저랭크 행렬 A·B로 분해</em>(W ≈ W₀ + ΔW = W₀ + BA)하여 <strong>소수의 파라미터(0.1~1%)만</strong> 학습합니다. 원본 가중치는 동결(freeze). GPU 메모리 효율↑ / 빠른 파인튜닝. QLoRA는 4-bit 양자화+LoRA 결합.'},
+  {cat:'RNN',diff:'mid',type:'ox',
+   q:'GRU(Gated Recurrent Unit)는 LSTM보다 더 많은 게이트(4개)를 사용하여 성능을 향상시킨 모델이다.',ans:false,
+   exp:'<strong>×</strong> — GRU는 LSTM의 경량화 버전으로 <strong>2개의 게이트</strong>(업데이트 게이트·리셋 게이트)만 사용합니다. LSTM은 3개 게이트(망각·입력·출력) + 별도 셀 상태. GRU는 파라미터가 적고 계산이 빠르며, 짧은 시퀀스에서는 LSTM과 비슷한 성능. 더 복잡한 것은 LSTM입니다.'},
+  {cat:'기초',diff:'hard',type:'ox',
+   q:'배치 정규화(Batch Normalization)는 Transformer 모델에서도 레이어 정규화(Layer Normalization) 대신 사용하는 것이 표준이다.',ans:false,
+   exp:'<strong>×</strong> — Transformer에서는 <strong>레이어 정규화(Layer Normalization)</strong>가 표준입니다. 이유: BN은 미니배치 단위로 정규화하므로 배치 크기에 의존적이고 RNN·Transformer처럼 가변 길이 시퀀스에 부적합합니다. LN은 각 샘플의 피처 차원을 정규화하여 배치 크기에 무관하게 안정적으로 동작합니다. BN은 CNN 이미지 모델에서 주로 사용.'},
+];
+let answered=0,correct=0;
+function renderQ(f){
+  const data=f==='all'?QA:QA.filter(q=>q.cat===f);
+  const list=document.getElementById('ql');list.innerHTML='';
+  answered=0;correct=0;upS();
+  const CATC={'기초':'tb','CNN':'ty','RNN':'tg','Transformer':'tp','LLM':'to','OX':'tr'};
+  const DLC={'easy':'easy 쉬움','mid':'mid 보통','hard':'hard 어려움'};
+  const NL=['①','②','③','④'];
+  if(!data.length){list.innerHTML='<div style="text-align:center;padding:40px;color:var(--mu)">문제 없음</div>';return;}
+  data.forEach((q,i)=>{
+    const gi=QA.indexOf(q);
+    const el=document.createElement('div');el.className='qa';
+    const tc=CATC[q.cat]||'tb';
+    const [dc,dn]=(DLC[q.diff]||'mid 보통').split(' ');
+    if(q.type==='ox'){
+      el.innerHTML=`<div class="qa-hd" onclick="this.closest('.qa').classList.toggle('open')"><div><div class="qa-meta"><span class="qn">Q${String(i+1).padStart(2,'0')}</span><span class="tag ${tc}">${q.cat}</span><span class="diff ${dc}">${dn}</span><span class="tag tg">O/X</span></div><div class="qq">${q.q}</div></div><span class="tgl">▾</span></div>
+      <div class="qa-bd"><div class="ox-wr"><button class="ox" onclick="pickOX(this,true,${gi})">⭕ 옳다</button><button class="ox" onclick="pickOX(this,false,${gi})">❌ 틀리다</button></div><div class="exp" id="ex-${gi}"><div class="exp-t">💡 해설</div>${q.exp}</div></div>`;
+    } else {
+      el.innerHTML=`<div class="qa-hd" onclick="this.closest('.qa').classList.toggle('open')"><div><div class="qa-meta"><span class="qn">Q${String(i+1).padStart(2,'0')}</span><span class="tag ${tc}">${q.cat}</span><span class="diff ${dc}">${dn}</span></div><div class="qq">${q.q}</div></div><span class="tgl">▾</span></div>
+      <div class="qa-bd"><div class="chs">${q.cs.map((c,ci)=>`<div class="ch" data-ci="${ci}" onclick="pickCh(this,${gi})"><span class="cnum">${NL[ci]}</span><span>${c}</span></div>`).join('')}</div><div class="exp" id="ex-${gi}"><div class="exp-t">💡 해설</div>${q.exp}</div></div>`;
+    }
+    list.appendChild(el);
+  });
+}
+function pickCh(el,gi){
+  const bd=el.closest('.qa-bd');if(bd.querySelector('.ok,.ng'))return;
+  const q=QA[gi];
+  bd.querySelectorAll('.ch').forEach((c,i)=>{c.classList.add('lk');if(i===q.ans)c.classList.add('ok');else if(i===parseInt(el.dataset.ci))c.classList.add('ng');});
+  document.getElementById('ex-'+gi).classList.add('show');
+  answered++;if(parseInt(el.dataset.ci)===q.ans)correct++;upS();
+}
+function pickOX(btn,val,gi){
+  const bd=btn.closest('.qa-bd');if(bd.querySelector('.so,.sx'))return;
+  const q=QA[gi];
+  bd.querySelectorAll('.ox').forEach(b=>b.classList.add('lk'));
+  btn.classList.add(val?'so':'sx');
+  if(val!==q.ans){btn.style.opacity='.5';bd.querySelectorAll('.ox')[val?1:0].classList.add(q.ans?'so':'sx');}
+  document.getElementById('ex-'+gi).classList.add('show');
+  answered++;if(val===q.ans)correct++;upS();
+}
+function upS(){document.getElementById('sc').textContent=correct;document.getElementById('st').textContent=answered;}
+document.getElementById('fbar').addEventListener('click',e=>{
+  const b=e.target.closest('.fb');if(!b)return;
+  document.querySelectorAll('.fb').forEach(x=>x.classList.remove('on'));b.classList.add('on');renderQ(b.dataset.f);
+});
+renderQ('all');
+</script>
+</body>
+</html>

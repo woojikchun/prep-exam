@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>동적 프로그래밍과 그리디 알고리즘</title>
+<style>
+body{font-family:Arial,Helvetica,sans-serif; line-height:1.75; margin:40px; color:#111;}
+h1,h2,h3{line-height:1.3}
+.page{max-width:900px; margin:0 auto;}
+hr{border:none; border-top:1px solid #bbb; margin:28px 0;}
+table{border-collapse:collapse; width:100%; margin:14px 0;}
+th,td{border:1px solid #666; padding:8px 10px; vertical-align:top;}
+th{background:#f2f2f2;}
+pre{background:#fafafa; border:1px solid #ddd; padding:12px; overflow:auto;}
+.figure{border:1px solid #999; padding:12px; margin:14px 0; background:#fcfcfc;}
+.small{font-size:0.95em; color:#333;}
+</style>
+</head>
+<body>
+<div class="page">
+<h1>컴퓨터시스템응용 기술사 예상문제 모범답안</h1>
+<p><b>문제:</b> 동적 프로그래밍과 그리디 알고리즘의 차이점과 적용 사례를 설명하시오.</p>
+
+<h2>1. 개요</h2>
+<p>동적 프로그래밍(DP)과 그리디 알고리즘은 모두 최적화 문제를 해결하는 대표 기법이다. DP는 부분 문제의 해를 저장·재사용하여 전체 최적해를 구하고, 그리디는 매 단계에서 현재 가장 좋아 보이는 선택을 반복한다.</p>
+
+<h2>2. 동적 프로그래밍</h2>
+<p>DP는 중복 부분 문제와 최적 부분 구조를 가진 문제에 적합하다. 상태를 정의하고 점화식을 세운 뒤, 메모이제이션 또는 테이블 방식으로 구현한다.</p>
+<div class="figure">
+<b>[그림 1] DP의 구조 예시</b>
+<pre>
+계단 오르기 문제
+ dp[n] = dp[n-1] + dp[n-2]
+ 0, 1, 2, 3, 4, 5 ...
+ 이전 값들을 저장하고 재사용</pre>
+</div>
+
+<h2>3. 그리디 알고리즘</h2>
+<p>그리디는 각 단계에서 가장 유리한 선택을 즉시 확정하는 방식이다. 탐욕 선택 속성과 최적 부분 구조가 만족될 때 최적해를 보장한다.</p>
+<div class="figure">
+<b>[그림 2] 그리디 선택 흐름</b>
+<pre>
+작업 선택 문제
+- 종료 시간이 빠른 작업 우선 선택
+- 선택 후 되돌리지 않음
+- 다음 선택으로 계속 진행</pre>
+</div>
+
+<h2>4. 차이점</h2>
+<table>
+<tr><th>구분</th><th>동적 프로그래밍</th><th>그리디 알고리즘</th></tr>
+<tr><td>선택 방식</td><td>여러 경우를 모두 고려</td><td>현재 최선의 선택만 수행</td></tr>
+<tr><td>해의 보장</td><td>조건 충족 시 최적해 보장</td><td>탐욕 선택 속성 필요</td></tr>
+<tr><td>복잡도</td><td>상대적으로 큼</td><td>일반적으로 빠름</td></tr>
+<tr><td>예시</td><td>0/1 배낭, LCS, 편집 거리</td><td>MST, 활동 선택, 허프만 코딩</td></tr>
+</table>
+
+<h2>5. 적용 사례</h2>
+<p><b>DP 사례:</b> 0/1 배낭 문제, 최장 공통 부분 수열(LCS), 편집 거리 등이 있다. 이들 문제는 중복 계산이 많아 DP가 유리하다.</p>
+<p><b>그리디 사례:</b> 최소 신장 트리(Kruskal, Prim), 활동 선택 문제, 허프만 코딩 등이 있다. 이들 문제는 현재의 최선 선택이 전체 최적해로 이어질 수 있다.</p>
+
+<div class="figure">
+<b>[그림 3] 0/1 배낭 문제의 DP 테이블 개념</b>
+<pre>
+행: 물건 i
+열: 무게 w
+dp[i][w] = max(dp[i-1][w], dp[i-1][w-weight[i]] + value[i])</pre>
+</div>
+
+<div class="figure">
+<b>[그림 4] MST의 그리디 확장</b>
+<pre>
+- 최소 가중치 간선부터 선택
+- 사이클을 만들지 않는 범위에서 확장
+- 최종적으로 하나의 트리 구성</pre>
+</div>
+
+<h2>6. 결론</h2>
+<p>DP는 정확한 최적해를 위해 계산량을 줄이며 체계적으로 문제를 푸는 기법이고, 그리디는 빠른 의사결정으로 해를 구하는 기법이다. 문제의 성질에 따라 두 방법을 구분하여 적용해야 한다.</p>
+</div>
+</body>
+</html>

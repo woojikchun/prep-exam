@@ -1,0 +1,615 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>클러스터드 vs 논클러스터드 인덱스 — 컴퓨터시스템응용 기술사 모범 답안</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;500;700&family=Noto+Sans+KR:wght@400;500;700&family=JetBrains+Mono:wght@400;600&display=swap');
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --ink:#1a1a1a;--ink2:#333;--ink3:#666;
+  --line:#c8c8c8;--line2:#e2e0da;--bg:#fdfcf8;
+  --accent:#1a3a6e;--accent2:#7a3010;--green:#2d6a4f;--purple:#4a3080;
+}
+body{background:#dddad2;font-family:'Noto Sans KR',sans-serif;color:var(--ink);padding:20px 0 40px}
+.doc{max-width:800px;margin:0 auto;background:var(--bg);box-shadow:0 4px 32px rgba(0,0,0,.22)}
+
+.hdr{border-bottom:3px double var(--ink);padding:20px 36px 16px;display:flex;align-items:flex-start;gap:16px}
+.hdr-l{flex:1}
+.lbl{font-size:11px;letter-spacing:.14em;color:var(--ink3);font-family:'Noto Serif KR',serif}
+.ttl{font-size:20px;font-weight:700;font-family:'Noto Serif KR',serif;color:var(--accent);line-height:1.35;margin-top:5px}
+.pills{display:flex;gap:8px;margin-top:9px;flex-wrap:wrap}
+.pill{font-size:11px;padding:2px 10px;border:1px solid var(--line);border-radius:2px;color:var(--ink2);background:#fff}
+.score-box{border:1.5px solid var(--ink);padding:10px 16px;text-align:center;min-width:72px}
+.sc-lbl{font-size:10px;color:var(--ink3);letter-spacing:.06em}
+.sc-n{font-size:24px;font-weight:700;font-family:'Noto Serif KR',serif;color:var(--accent);line-height:1.1}
+
+.body{padding:24px 40px 48px}
+.qbox{background:#f0efea;border:1px solid #bbb;padding:14px 18px;border-radius:3px;margin-bottom:24px;font-size:12.5px;color:var(--ink2);line-height:1.85}
+.qbox strong{color:var(--ink);font-weight:700}
+
+.sh {font-size:14.5px;font-weight:700;font-family:'Noto Serif KR',serif;color:var(--accent);border-bottom:1.5px solid var(--accent);padding-bottom:5px;margin:0 0 13px}
+.sh2{font-size:13px;font-weight:700;color:var(--ink);margin:13px 0 5px;padding-left:8px;border-left:3px solid var(--accent2)}
+.sh3{font-size:12.5px;font-weight:700;color:var(--ink2);margin:9px 0 4px;padding-left:18px}
+.sec{margin-bottom:22px}
+.txt{font-size:12.5px;line-height:1.92;color:var(--ink2)}
+.txt p{margin-bottom:5px}
+.i1{padding-left:14px}
+.i2{padding-left:28px}
+.kw{font-weight:700;color:var(--ink)}
+
+.tw{margin:10px 0 14px;overflow-x:auto}
+table{width:100%;border-collapse:collapse;font-size:11.5px}
+th{background:var(--accent);color:#fff;padding:6px 9px;text-align:left;font-weight:500;border:1px solid var(--accent)}
+td{padding:6px 9px;border:1px solid var(--line);vertical-align:top;line-height:1.75;color:var(--ink2)}
+tr:nth-child(even) td{background:#f4f3ef}
+.kc{font-weight:700;color:var(--ink)}
+.tc{text-align:center}
+
+.fig{margin:13px 0 16px;background:#f8f7f3;border:1px solid var(--line2);border-radius:4px;padding:12px 8px}
+.fc{font-size:11px;color:var(--ink3);text-align:center;margin-top:7px;font-style:italic}
+
+.note{margin:16px 0 0;padding:12px 16px;border:1px solid #8b6914;background:#fffbef;border-radius:3px}
+.nt{font-size:12px;font-weight:700;color:#6a4f00;margin-bottom:5px}
+.nb{font-size:12px;color:#4a3800;line-height:1.85}
+
+.pb{border:none;border-top:2px dashed #bbb;margin:24px 0;position:relative}
+.pb::after{content:"— 다음 페이지 —";position:absolute;top:-9px;left:50%;transform:translateX(-50%);background:var(--bg);padding:0 10px;font-size:10px;color:#bbb;white-space:nowrap}
+
+.ftr{border-top:2px solid var(--ink);margin:0 40px;padding:10px 0;display:flex;justify-content:space-between;font-size:10px;color:var(--ink3)}
+
+.badge{display:inline-block;font-size:10.5px;padding:1px 8px;border-radius:2px;font-weight:600;margin:1px 2px}
+.badge-r{background:#FCEBEB;color:#A32D2D;border:1px solid #f0b8b8}
+.badge-g{background:#EAF3DE;color:#2d6a4f;border:1px solid #b0d89a}
+.badge-b{background:#E6F1FB;color:#0C447C;border:1px solid #9dc4f0}
+.badge-o{background:#FAEEDA;color:#7a3010;border:1px solid #f0c88a}
+.badge-p{background:#eeedfe;color:#4a3080;border:1px solid #b8b0f0}
+
+.formula{display:inline-block;font-family:'JetBrains Mono',monospace;font-size:11.5px;background:#f0efea;border:1px solid var(--line2);border-radius:3px;padding:2px 8px;color:#1a3a6e;font-weight:700;margin:2px 0}
+
+/* 비교 카드 */
+.compare-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:10px 0 14px}
+.c-card{border-radius:6px;overflow:hidden}
+.c-head{padding:10px 14px;font-size:13px;font-weight:700;color:#fff}
+.c-body{padding:8px 14px 12px;font-size:12px;line-height:1.82;color:var(--ink2)}
+.c-cl .c-head{background:#1a3a6e}
+.c-cl{border:1.5px solid #1a3a6e}
+.c-nc .c-head{background:#7a3010}
+.c-nc{border:1.5px solid #7a3010}
+
+/* 선택 기준 행렬 */
+.sel-y{background:#EAF3DE;color:#2d6a4f;font-weight:700;text-align:center}
+.sel-n{background:#FCEBEB;color:#A32D2D;font-weight:700;text-align:center}
+.sel-h{background:#1a3a6e;color:#fff;text-align:center;font-weight:600}
+.sel-cl{background:#E6F1FB;color:#0C447C;text-align:center;font-weight:700}
+.sel-nc{background:#FAEEDA;color:#7a3010;text-align:center;font-weight:700}
+</style>
+</head>
+<body>
+<div class="doc">
+
+<!-- ── Header ── -->
+<div class="hdr">
+  <div class="hdr-l">
+    <div class="lbl">컴퓨터시스템응용 기술사 · 예상 문제 및 모범 답안</div>
+    <div class="ttl">클러스터드 인덱스와 논클러스터드 인덱스<br>비교 및 선택 기준</div>
+    <div class="pills">
+      <span class="pill">4교시 · 논술형</span>
+      <span class="pill">데이터베이스 / 인덱스 설계</span>
+      <span class="pill">키워드: Clustered · Non-Clustered · 물리적 정렬 · 2차 탐색 · FILLFACTOR</span>
+    </div>
+  </div>
+  <div class="score-box">
+    <div class="sc-lbl">배점</div>
+    <div class="sc-n">25</div>
+    <div class="sc-lbl">점</div>
+  </div>
+</div>
+
+<div class="body">
+
+<!-- 문제 -->
+<div class="qbox">
+  <strong>【 문 제 】</strong><br><br>
+  데이터베이스 성능 최적화의 핵심인 인덱스 설계와 관련하여
+  <strong>클러스터드 인덱스(Clustered Index)</strong>와
+  <strong>논클러스터드 인덱스(Non-Clustered Index)</strong>에 대하여 다음을 설명하시오.<br><br>
+  &emsp;(1) 두 인덱스의 개념, 물리적 구조 및 탐색 원리 &nbsp;(8점)<br>
+  &emsp;(2) 구조적 특성 및 성능 측면의 종합 비교 &nbsp;(8점)<br>
+  &emsp;(3) DBMS별 구현 차이 (InnoDB · SQL Server · Oracle) &nbsp;(4점)<br>
+  &emsp;(4) 실무 선택 기준 및 복합 인덱스 설계 고려사항 &nbsp;(5점)
+</div>
+
+<!-- ─── Ⅰ. 개념·구조·탐색 ─── -->
+<div class="sec">
+  <div class="sh">Ⅰ. 두 인덱스의 개념, 물리적 구조 및 탐색 원리</div>
+
+  <div class="compare-grid">
+    <div class="c-card c-cl">
+      <div class="c-head">클러스터드 인덱스 (Clustered Index)</div>
+      <div class="c-body">
+        <span class="kw">정의:</span> 테이블의 <span class="kw">실제 데이터 행(Row)이 인덱스 키 순서대로 물리적으로 정렬·저장</span>되는 인덱스. B+ 트리의 <span class="kw">리프 노드 = 실제 데이터 페이지</span>이므로 인덱스와 데이터가 분리되지 않는다.<br><br>
+        <span class="kw">핵심 제약:</span> 테이블당 <span class="kw">1개만</span> 생성 가능 (데이터를 두 가지 순서로 동시에 저장 불가)
+      </div>
+    </div>
+    <div class="c-card c-nc">
+      <div class="c-head">논클러스터드 인덱스 (Non-Clustered Index)</div>
+      <div class="c-body">
+        <span class="kw">정의:</span> 인덱스 구조가 실제 데이터와 <span class="kw">별도의 저장 공간</span>에 위치하며, B+ 트리의 <span class="kw">리프 노드에는 키 값 + 행 위치 포인터(RID 또는 클러스터드 키)</span>만 저장한다.<br><br>
+        <span class="kw">핵심 특징:</span> 테이블당 <span class="kw">다수 생성 가능</span> (SQL Server 최대 999개, MySQL InnoDB 64개)
+      </div>
+    </div>
+  </div>
+
+  <div class="sh2">1. 물리적 구조 비교 다이어그램</div>
+  <div class="fig">
+    <svg width="100%" viewBox="0 0 720 340" xmlns="http://www.w3.org/2000/svg" role="img">
+      <title>클러스터드 vs 논클러스터드 인덱스 물리 구조</title>
+      <defs>
+        <marker id="ci" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse">
+          <path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </marker>
+      </defs>
+
+      <!-- ── 클러스터드 (왼쪽) ── -->
+      <text font-size="12" font-weight="700" fill="#1a3a6e" x="170" y="18" text-anchor="middle" font-family="'Noto Sans KR',sans-serif">클러스터드 인덱스</text>
+
+      <!-- Root -->
+      <rect x="110" y="26" width="120" height="30" rx="4" fill="#1a3a6e"/>
+      <text font-size="11" font-weight="700" fill="#fff" x="170" y="45" text-anchor="middle" font-family="'JetBrains Mono',monospace">30 | 70</text>
+      <text font-size="9.5" fill="#9dc4f0" x="170" y="57" text-anchor="middle" font-family="'Noto Sans KR',sans-serif">루트 노드</text>
+
+      <!-- Internal -->
+      <rect x="50"  y="90" width="100" height="28" rx="4" fill="#2d5a9e" stroke="#1a3a6e" stroke-width="1"/>
+      <text font-size="11" font-weight="700" fill="#fff" x="100" y="108" text-anchor="middle" font-family="'JetBrains Mono',monospace">10 | 20</text>
+      <rect x="190" y="90" width="100" height="28" rx="4" fill="#2d5a9e" stroke="#1a3a6e" stroke-width="1"/>
+      <text font-size="11" font-weight="700" fill="#fff" x="240" y="108" text-anchor="middle" font-family="'JetBrains Mono',monospace">40 | 60</text>
+      <line x1="140" y1="56" x2="105" y2="88" stroke="#aaa" stroke-width="1" marker-end="url(#ci)" fill="none"/>
+      <line x1="200" y1="56" x2="240" y2="88" stroke="#aaa" stroke-width="1" marker-end="url(#ci)" fill="none"/>
+
+      <!-- 리프 = 실제 데이터 페이지 -->
+      <rect x="16"  y="152" width="96" height="60" rx="4" fill="#1a3a6e" stroke="#0d2347" stroke-width="1.5"/>
+      <text font-size="10" font-weight="700" fill="#9dc4f0" x="64"  y="168" text-anchor="middle" font-family="'Noto Sans KR',sans-serif">페이지 1</text>
+      <text font-size="10.5" fill="#fff" x="64"  y="183" text-anchor="middle" font-family="'JetBrains Mono',monospace">5  |홍길동|20세</text>
+      <text font-size="10.5" fill="#fff" x="64"  y="198" text-anchor="middle" font-family="'JetBrains Mono',monospace">8  |이순신|35세</text>
+
+      <rect x="122" y="152" width="96" height="60" rx="4" fill="#1a3a6e" stroke="#0d2347" stroke-width="1.5"/>
+      <text font-size="10" font-weight="700" fill="#9dc4f0" x="170" y="168" text-anchor="middle" font-family="'Noto Sans KR',sans-serif">페이지 2</text>
+      <text font-size="10.5" fill="#fff" x="170" y="183" text-anchor="middle" font-family="'JetBrains Mono',monospace">10 |김유신|28세</text>
+      <text font-size="10.5" fill="#fff" x="170" y="198" text-anchor="middle" font-family="'JetBrains Mono',monospace">20 |강감찬|42세</text>
+
+      <rect x="228" y="152" width="96" height="60" rx="4" fill="#1a3a6e" stroke="#0d2347" stroke-width="1.5"/>
+      <text font-size="10" font-weight="700" fill="#9dc4f0" x="276" y="168" text-anchor="middle" font-family="'Noto Sans KR',sans-serif">페이지 3</text>
+      <text font-size="10.5" fill="#fff" x="276" y="183" text-anchor="middle" font-family="'JetBrains Mono',monospace">30 |세종대|55세</text>
+      <text font-size="10.5" fill="#fff" x="276" y="198" text-anchor="middle" font-family="'JetBrains Mono',monospace">40 |장영실|30세</text>
+
+      <line x1="70"  y1="118" x2="64"  y2="150" stroke="#aaa" stroke-width="1" marker-end="url(#ci)" fill="none"/>
+      <line x1="100" y1="118" x2="170" y2="150" stroke="#aaa" stroke-width="1" marker-end="url(#ci)" fill="none"/>
+      <line x1="240" y1="118" x2="276" y2="150" stroke="#aaa" stroke-width="1" marker-end="url(#ci)" fill="none"/>
+
+      <!-- 리프=데이터 표시 -->
+      <rect x="16" y="222" width="308" height="18" rx="3" fill="#E6F1FB" stroke="#1a3a6e" stroke-width="0.8"/>
+      <text font-size="10" font-weight="700" fill="#0C447C" x="170" y="235" text-anchor="middle" font-family="'Noto Sans KR',sans-serif">★ 리프 노드 = 실제 데이터 페이지 (B+ Tree Leaf ≡ Data)</text>
+
+      <!-- 연결 리스트 -->
+      <path d="M112 182 L120 182" fill="none" stroke="#b8860b" stroke-width="1.5" marker-end="url(#ci)"/>
+      <path d="M218 182 L226 182" fill="none" stroke="#b8860b" stroke-width="1.5" marker-end="url(#ci)"/>
+
+      <!-- ── 논클러스터드 (오른쪽) ── -->
+      <text font-size="12" font-weight="700" fill="#7a3010" x="555" y="18" text-anchor="middle" font-family="'Noto Sans KR',sans-serif">논클러스터드 인덱스</text>
+
+      <!-- Index B+ tree -->
+      <rect x="495" y="26" width="120" height="30" rx="4" fill="#7a3010"/>
+      <text font-size="11" font-weight="700" fill="#fff" x="555" y="45" text-anchor="middle" font-family="'JetBrains Mono',monospace">30 | 70</text>
+      <text font-size="9.5" fill="#f5c4a0" x="555" y="57" text-anchor="middle" font-family="'Noto Sans KR',sans-serif">인덱스 루트</text>
+
+      <rect x="430" y="90" width="110" height="28" rx="4" fill="#9a4010" stroke="#7a3010" stroke-width="1"/>
+      <text font-size="11" font-weight="700" fill="#fff" x="485" y="108" text-anchor="middle" font-family="'JetBrains Mono',monospace">10 | 20</text>
+      <rect x="560" y="90" width="110" height="28" rx="4" fill="#9a4010" stroke="#7a3010" stroke-width="1"/>
+      <text font-size="11" font-weight="700" fill="#fff" x="615" y="108" text-anchor="middle" font-family="'JetBrains Mono',monospace">40 | 60</text>
+      <line x1="525" y1="56" x2="490" y2="88" stroke="#aaa" stroke-width="1" marker-end="url(#ci)" fill="none"/>
+      <line x1="585" y1="56" x2="615" y2="88" stroke="#aaa" stroke-width="1" marker-end="url(#ci)" fill="none"/>
+
+      <!-- 리프 = 키+포인터 -->
+      <rect x="390" y="152" width="115" height="56" rx="4" fill="#7a3010" stroke="#4a1a00" stroke-width="1.5"/>
+      <text font-size="9.5" font-weight="700" fill="#f5c4a0" x="448" y="167" text-anchor="middle" font-family="'Noto Sans KR',sans-serif">리프(키+포인터)</text>
+      <text font-size="10.5" fill="#fff" x="448" y="182" text-anchor="middle" font-family="'JetBrains Mono',monospace">5  → RID(1,1)</text>
+      <text font-size="10.5" fill="#fff" x="448" y="196" text-anchor="middle" font-family="'JetBrains Mono',monospace">8  → RID(1,2)</text>
+
+      <rect x="516" y="152" width="115" height="56" rx="4" fill="#7a3010" stroke="#4a1a00" stroke-width="1.5"/>
+      <text font-size="9.5" font-weight="700" fill="#f5c4a0" x="574" y="167" text-anchor="middle" font-family="'Noto Sans KR',sans-serif">리프(키+포인터)</text>
+      <text font-size="10.5" fill="#fff" x="574" y="182" text-anchor="middle" font-family="'JetBrains Mono',monospace">10 → RID(2,1)</text>
+      <text font-size="10.5" fill="#fff" x="574" y="196" text-anchor="middle" font-family="'JetBrains Mono',monospace">20 → RID(2,2)</text>
+
+      <line x1="455" y1="118" x2="448" y2="150" stroke="#aaa" stroke-width="1" marker-end="url(#ci)" fill="none"/>
+      <line x1="575" y1="118" x2="574" y2="150" stroke="#aaa" stroke-width="1" marker-end="url(#ci)" fill="none"/>
+
+      <!-- 실제 데이터 (힙/클러스터드) -->
+      <rect x="390" y="242" width="242" height="56" rx="4" fill="#555" stroke="#333" stroke-width="1"/>
+      <text font-size="9.5" font-weight="700" fill="#ddd" x="511" y="257" text-anchor="middle" font-family="'Noto Sans KR',sans-serif">실제 데이터 (힙 또는 클러스터드 인덱스)</text>
+      <text font-size="10.5" fill="#fff" x="511" y="272" text-anchor="middle" font-family="'JetBrains Mono',monospace">RID(1,1): 5  |홍길동|20세</text>
+      <text font-size="10.5" fill="#fff" x="511" y="286" text-anchor="middle" font-family="'JetBrains Mono',monospace">RID(2,1): 10 |김유신|28세</text>
+
+      <!-- 포인터 화살표 -->
+      <line x1="448" y1="208" x2="448" y2="240" stroke="#EF9F27" stroke-width="1.8" marker-end="url(#ci)" fill="none" stroke-dasharray="4 2"/>
+      <line x1="574" y1="208" x2="574" y2="240" stroke="#EF9F27" stroke-width="1.8" marker-end="url(#ci)" fill="none" stroke-dasharray="4 2"/>
+      <text font-size="9.5" fill="#EF9F27" font-weight="700" x="630" y="228" font-family="'Noto Sans KR',sans-serif">2차 탐색</text>
+      <text font-size="9.5" fill="#EF9F27" font-weight="700" x="630" y="238" font-family="'Noto Sans KR',sans-serif">(RID or PK)</text>
+
+      <!-- 구분선 -->
+      <line x1="360" y1="10" x2="360" y2="310" stroke="#ccc" stroke-width="1" stroke-dasharray="5 3"/>
+    </svg>
+    <div class="fc">【그림 1】 물리적 구조 비교 — 좌: 클러스터드(리프=데이터), 우: 논클러스터드(리프=키+포인터 → 2차 탐색)</div>
+  </div>
+
+  <div class="sh2">2. 탐색 경로 비교</div>
+  <div class="tw">
+    <table>
+      <tr><th style="width:22%">구분</th><th>클러스터드 인덱스</th><th>논클러스터드 인덱스</th></tr>
+      <tr>
+        <td><span class="kc">탐색 단계</span></td>
+        <td>루트 → 내부 노드 → <span class="kw">리프(= 데이터)</span><br>1회 탐색으로 완료</td>
+        <td>루트 → 내부 노드 → 리프(포인터 획득)<br>→ <span class="kw">RID/PK로 2차 탐색</span></td>
+      </tr>
+      <tr>
+        <td><span class="kc">디스크 I/O</span></td>
+        <td>트리 높이 h번 I/O</td>
+        <td>트리 높이 h번 + <span class="kw">추가 1~2회</span> I/O</td>
+      </tr>
+      <tr>
+        <td><span class="kc">범위 스캔</span></td>
+        <td>리프(=데이터) 연결 리스트 순회 — <span class="kw">최고 효율</span></td>
+        <td>각 포인터마다 랜덤 I/O 발생 — 범위 넓을수록 비효율</td>
+      </tr>
+      <tr>
+        <td><span class="kc">포인터 저장 방식</span></td>
+        <td>해당 없음 (리프 = 데이터)</td>
+        <td>힙 테이블: <span class="kw">RID</span>(파일#:페이지#:슬롯#)<br>클러스터드 존재 시: <span class="kw">클러스터드 키 값</span></td>
+      </tr>
+    </table>
+  </div>
+  <div class="fc" style="margin-top:-8px;margin-bottom:12px">【표 1】 탐색 경로 및 디스크 I/O 비교</div>
+</div>
+
+<hr class="pb">
+
+<!-- ─── Ⅱ. 종합 비교 ─── -->
+<div class="sec">
+  <div class="sh">Ⅱ. 구조적 특성 및 성능 측면의 종합 비교</div>
+
+  <div class="tw">
+    <table>
+      <tr>
+        <th style="width:20%">비교 항목</th>
+        <th style="background:#1a3a6e;color:#fff">클러스터드 인덱스</th>
+        <th style="background:#7a3010;color:#fff">논클러스터드 인덱스</th>
+      </tr>
+      <tr>
+        <td><span class="kc">데이터 저장 위치</span></td>
+        <td>B+ 트리 리프 노드 = 데이터 페이지<br>(인덱스와 데이터 통합)</td>
+        <td>인덱스 별도 저장소<br>데이터는 힙 또는 클러스터드에 분리</td>
+      </tr>
+      <tr>
+        <td><span class="kc">테이블당 생성 수</span></td>
+        <td class="tc"><span class="badge badge-b">1개만 가능</span></td>
+        <td class="tc"><span class="badge badge-o">다수 가능</span><br>(MS SQL 999개, InnoDB 64개)</td>
+      </tr>
+      <tr>
+        <td><span class="kc">물리적 정렬</span></td>
+        <td>데이터가 키 순서로 <span class="kw">실제 물리 정렬</span></td>
+        <td>논리적 정렬만 — 데이터는 비정렬</td>
+      </tr>
+      <tr>
+        <td><span class="kc">등치 검색 (=)</span></td>
+        <td class="tc"><span class="badge badge-g">빠름 ★★★★★</span></td>
+        <td class="tc"><span class="badge badge-o">보통 ★★★★</span><br>(2차 탐색 추가)</td>
+      </tr>
+      <tr>
+        <td><span class="kc">범위 검색 (BETWEEN)</span></td>
+        <td class="tc"><span class="badge badge-g">매우 빠름 ★★★★★</span></td>
+        <td class="tc"><span class="badge badge-r">느림 ★★★</span><br>(범위 넓을수록 랜덤 I/O)</td>
+      </tr>
+      <tr>
+        <td><span class="kc">INSERT 성능</span></td>
+        <td class="tc"><span class="badge badge-r">상대적 느림</span><br>페이지 분할(Split) 빈번</td>
+        <td class="tc"><span class="badge badge-g">상대적 빠름</span><br>인덱스만 갱신</td>
+      </tr>
+      <tr>
+        <td><span class="kc">UPDATE 성능</span></td>
+        <td>키 변경 시 데이터 이동 필요 → 비용 큼</td>
+        <td>포인터만 갱신 → 상대적 저비용</td>
+      </tr>
+      <tr>
+        <td><span class="kc">저장 공간</span></td>
+        <td>추가 공간 없음 (데이터 = 인덱스)</td>
+        <td>인덱스 별도 저장 → <span class="kw">추가 공간 필요</span></td>
+      </tr>
+      <tr>
+        <td><span class="kc">커버링 인덱스</span></td>
+        <td>전체 행 포함 — 항상 커버</td>
+        <td>SELECT 컬럼 포함 시 <span class="kw">Covering Index</span>로 2차 탐색 생략 가능</td>
+      </tr>
+      <tr>
+        <td><span class="kc">NULL 허용</span></td>
+        <td>일반적으로 PK — NULL 불가</td>
+        <td>NULL 허용 컬럼에도 생성 가능</td>
+      </tr>
+      <tr>
+        <td><span class="kc">단편화(Fragmentation)</span></td>
+        <td>무작위 삽입 시 페이지 분할 → 단편화↑</td>
+        <td>인덱스 페이지 단편화 — 상대적 낮음</td>
+      </tr>
+    </table>
+  </div>
+  <div class="fc" style="margin-top:-8px;margin-bottom:14px">【표 2】 클러스터드 vs. 논클러스터드 인덱스 종합 비교</div>
+
+  <div class="sh2">커버링 인덱스(Covering Index) — 논클러스터드의 최적화 기법</div>
+  <div class="txt i1">
+    <p><span class="kw">커버링 인덱스(Covering Index)</span>란 쿼리에서 요구하는 모든 컬럼이 논클러스터드 인덱스 내에 포함되어 있어 <span class="kw">데이터 페이지 접근(2차 탐색)이 불필요</span>한 상태를 말한다. INCLUDE 컬럼을 인덱스에 추가하거나 복합 인덱스로 구성하면 달성 가능하다.</p>
+    <p class="i1">예: <span class="formula">CREATE INDEX idx ON orders(cust_id) INCLUDE (order_date, amount)</span><br>
+    → <span class="formula">SELECT order_date, amount FROM orders WHERE cust_id = 100</span> — 데이터 페이지 접근 0회</p>
+  </div>
+</div>
+
+<hr class="pb">
+
+<!-- ─── Ⅲ. DBMS별 구현 ─── -->
+<div class="sec">
+  <div class="sh">Ⅲ. DBMS별 구현 차이</div>
+
+  <div class="fig">
+    <svg width="100%" viewBox="0 0 720 250" xmlns="http://www.w3.org/2000/svg" role="img">
+      <title>DBMS별 클러스터드/논클러스터드 구현 비교</title>
+      <defs>
+        <marker id="db" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse">
+          <path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </marker>
+      </defs>
+
+      <!-- InnoDB -->
+      <rect x="16" y="12" width="218" height="226" rx="6" fill="#f8f7f3" stroke="#1a3a6e" stroke-width="1.5"/>
+      <rect x="16" y="12" width="218" height="30" rx="6" fill="#1a3a6e"/>
+      <text font-size="12" font-weight="700" fill="#fff" x="125" y="31" text-anchor="middle" font-family="'Noto Sans KR',sans-serif">MySQL InnoDB</text>
+
+      <!-- PK = 클러스터드 -->
+      <rect x="30"  y="54" width="190" height="40" rx="4" fill="#E6F1FB" stroke="#1a3a6e" stroke-width="1"/>
+      <text font-size="11" font-weight="700" fill="#0C447C" x="125" y="70" text-anchor="middle" font-family="'Noto Sans KR',sans-serif">PK = 클러스터드 인덱스</text>
+      <text font-size="10" fill="#555" x="125" y="86" text-anchor="middle" font-family="'Noto Sans KR',sans-serif">리프 = 전체 행 데이터</text>
+
+      <!-- Secondary Index -->
+      <rect x="30"  y="106" width="190" height="40" rx="4" fill="#FAEEDA" stroke="#7a3010" stroke-width="1"/>
+      <text font-size="11" font-weight="700" fill="#7a3010" x="125" y="122" text-anchor="middle" font-family="'Noto Sans KR',sans-serif">보조 인덱스 (Secondary)</text>
+      <text font-size="10" fill="#555" x="125" y="138" text-anchor="middle" font-family="'Noto Sans KR',sans-serif">리프 = 인덱스 키 + PK 값</text>
+
+      <!-- 화살표: Secondary → PK(데이터) -->
+      <line x1="125" y1="146" x2="125" y2="162" stroke="#EF9F27" stroke-width="1.5" marker-end="url(#db)" fill="none" stroke-dasharray="3 2"/>
+
+      <rect x="30" y="164" width="190" height="40" rx="4" fill="#1a3a6e" stroke="#0d2347" stroke-width="1"/>
+      <text font-size="11" font-weight="700" fill="#fff" x="125" y="181" text-anchor="middle" font-family="'Noto Sans KR',sans-serif">PK 클러스터드로 2차 탐색</text>
+      <text font-size="10" fill="#9dc4f0" x="125" y="196" text-anchor="middle" font-family="'Noto Sans KR',sans-serif">PK → 클러스터드 리프(행 데이터)</text>
+
+      <rect x="30" y="212" width="190" height="22" rx="3" fill="#EAF3DE" stroke="#2d6a4f" stroke-width="0.8"/>
+      <text font-size="10" fill="#2d6a4f" x="125" y="227" text-anchor="middle" font-family="'Noto Sans KR',sans-serif">★ PK가 없으면 내부 RowID가 클러스터드</text>
+
+      <!-- SQL Server -->
+      <rect x="252" y="12" width="218" height="226" rx="6" fill="#f8f7f3" stroke="#4a3080" stroke-width="1.5"/>
+      <rect x="252" y="12" width="218" height="30" rx="6" fill="#4a3080"/>
+      <text font-size="12" font-weight="700" fill="#fff" x="361" y="31" text-anchor="middle" font-family="'Noto Sans KR',sans-serif">SQL Server</text>
+
+      <rect x="266" y="54" width="190" height="40" rx="4" fill="#eeedfe" stroke="#4a3080" stroke-width="1"/>
+      <text font-size="11" font-weight="700" fill="#4a3080" x="361" y="70" text-anchor="middle" font-family="'Noto Sans KR',sans-serif">클러스터드 인덱스</text>
+      <text font-size="10" fill="#555" x="361" y="86" text-anchor="middle" font-family="'Noto Sans KR',sans-serif">명시적 생성 (PK 자동 or 수동)</text>
+
+      <rect x="266" y="106" width="190" height="40" rx="4" fill="#FAEEDA" stroke="#7a3010" stroke-width="1"/>
+      <text font-size="11" font-weight="700" fill="#7a3010" x="361" y="122" text-anchor="middle" font-family="'Noto Sans KR',sans-serif">논클러스터드 인덱스</text>
+      <text font-size="10" fill="#555" x="361" y="138" text-anchor="middle" font-family="'Noto Sans KR',sans-serif">리프 = 키 + 클러스터드 키(있을 때)</text>
+
+      <rect x="266" y="106" width="190" height="40" rx="4" fill="#FAEEDA" stroke="#7a3010" stroke-width="1"/>
+      <rect x="266" y="156" width="190" height="40" rx="4" fill="#f0efea" stroke="#888" stroke-width="1"/>
+      <text font-size="11" font-weight="700" fill="#555" x="361" y="172" text-anchor="middle" font-family="'Noto Sans KR',sans-serif">힙(Heap) 테이블</text>
+      <text font-size="10" fill="#888" x="361" y="188" text-anchor="middle" font-family="'Noto Sans KR',sans-serif">클러스터드 미생성 시 RID 포인터</text>
+
+      <rect x="266" y="212" width="190" height="22" rx="3" fill="#EAF3DE" stroke="#2d6a4f" stroke-width="0.8"/>
+      <text font-size="10" fill="#2d6a4f" x="361" y="227" text-anchor="middle" font-family="'Noto Sans KR',sans-serif">★ INCLUDE 컬럼으로 커버링 인덱스</text>
+
+      <!-- Oracle -->
+      <rect x="488" y="12" width="218" height="226" rx="6" fill="#f8f7f3" stroke="#A32D2D" stroke-width="1.5"/>
+      <rect x="488" y="12" width="218" height="30" rx="6" fill="#A32D2D"/>
+      <text font-size="12" font-weight="700" fill="#fff" x="597" y="31" text-anchor="middle" font-family="'Noto Sans KR',sans-serif">Oracle DB</text>
+
+      <rect x="502" y="54" width="190" height="40" rx="4" fill="#FCEBEB" stroke="#A32D2D" stroke-width="1"/>
+      <text font-size="11" font-weight="700" fill="#A32D2D" x="597" y="70" text-anchor="middle" font-family="'Noto Sans KR',sans-serif">IOT (Index-Organized Table)</text>
+      <text font-size="10" fill="#555" x="597" y="86" text-anchor="middle" font-family="'Noto Sans KR',sans-serif">클러스터드 인덱스 개념 (선택적)</text>
+
+      <rect x="502" y="106" width="190" height="40" rx="4" fill="#f0efea" stroke="#888" stroke-width="1"/>
+      <text font-size="11" font-weight="700" fill="#555" x="597" y="122" text-anchor="middle" font-family="'Noto Sans KR',sans-serif">힙 테이블 (기본)</span></text>
+      <text font-size="10" fill="#888" x="597" y="138" text-anchor="middle" font-family="'Noto Sans KR',sans-serif">기본은 힙 — ROWID로 접근</text>
+
+      <rect x="502" y="156" width="190" height="40" rx="4" fill="#FAEEDA" stroke="#7a3010" stroke-width="1"/>
+      <text font-size="11" font-weight="700" fill="#7a3010" x="597" y="172" text-anchor="middle" font-family="'Noto Sans KR',sans-serif">B-Tree / Bitmap 인덱스</text>
+      <text font-size="10" fill="#555" x="597" y="188" text-anchor="middle" font-family="'Noto Sans KR',sans-serif">리프 = 키 + ROWID</text>
+
+      <rect x="502" y="212" width="190" height="22" rx="3" fill="#EAF3DE" stroke="#2d6a4f" stroke-width="0.8"/>
+      <text font-size="10" fill="#2d6a4f" x="597" y="227" text-anchor="middle" font-family="'Noto Sans KR',sans-serif">★ Bitmap Index: 저선택도 컬럼 특화</text>
+    </svg>
+    <div class="fc">【그림 2】 DBMS별 클러스터드·논클러스터드 인덱스 구현 차이</div>
+  </div>
+
+  <div class="tw">
+    <table>
+      <tr><th style="width:16%">DBMS</th><th style="width:30%">클러스터드 구현</th><th style="width:30%">논클러스터드 구현</th><th>특이사항</th></tr>
+      <tr>
+        <td><span class="kc">MySQL InnoDB</span></td>
+        <td>PK 자동 클러스터드. PK 없으면 UNIQUE NOT NULL 첫 컬럼, 없으면 내부 RowID</td>
+        <td>보조 인덱스 리프에 PK 값 저장 → PK를 통해 클러스터드 2차 탐색</td>
+        <td>PK 크기가 모든 보조 인덱스 크기에 영향. PK는 짧게 설계 필수</td>
+      </tr>
+      <tr>
+        <td><span class="kc">SQL Server</span></td>
+        <td>PK 생성 시 기본 클러스터드. 클러스터드 없는 테이블 = 힙(Heap)</td>
+        <td>클러스터드 없으면 RID 포인터, 있으면 클러스터드 키 저장</td>
+        <td>INCLUDE 컬럼으로 커버링 인덱스 구성 용이. 필터 인덱스 지원</td>
+      </tr>
+      <tr>
+        <td><span class="kc">Oracle</span></td>
+        <td>기본은 힙 테이블. IOT(Index-Organized Table) 선택 시 클러스터드 효과</td>
+        <td>B-Tree 인덱스(기본), Bitmap 인덱스(저선택도), 함수 기반 인덱스</td>
+        <td>Bitmap 인덱스: 성별·상태 등 카디널리티 낮은 컬럼에 DW 환경 특화</td>
+      </tr>
+      <tr>
+        <td><span class="kc">PostgreSQL</span></td>
+        <td>클러스터드 인덱스 개념 미지원. CLUSTER 명령으로 일시 물리 정렬 가능</td>
+        <td>B-Tree(기본), Hash, GiST, GIN, BRIN 등 다양한 인덱스 유형 지원</td>
+        <td>힙 기반 구조. 모든 인덱스는 논클러스터드 성격. INCLUDE 컬럼 지원</td>
+      </tr>
+    </table>
+  </div>
+  <div class="fc" style="margin-top:-8px;margin-bottom:12px">【표 3】 DBMS별 구현 차이 비교</div>
+</div>
+
+<hr class="pb">
+
+<!-- ─── Ⅳ. 선택 기준 ─── -->
+<div class="sec">
+  <div class="sh">Ⅳ. 실무 선택 기준 및 복합 인덱스 설계 고려사항</div>
+
+  <div class="sh2">1. 클러스터드 인덱스 선택 기준</div>
+  <div class="txt i1">
+    <p>① <span class="kw">범위 검색이 빈번한 컬럼:</span> ORDER_DATE, CREATED_AT 등 날짜·순번 컬럼 — 물리 정렬로 범위 스캔 최적화</p>
+    <p>② <span class="kw">단조 증가(Monotonically Increasing) 키:</span> AUTO_INCREMENT, SEQUENCE — 페이지 분할 최소화. UUID처럼 무작위 키는 피해야 함</p>
+    <p>③ <span class="kw">가장 자주 사용되는 조회 기준 컬럼:</span> 전체 쿼리 중 가장 빈번한 WHERE 조건 컬럼에 배정하여 최대 효과</p>
+    <p>④ <span class="kw">짧은 컬럼:</span> INT(4 bytes) > BIGINT(8 bytes) > VARCHAR — 모든 보조 인덱스가 클러스터드 키를 복사 저장하므로 크기가 작을수록 전체 인덱스 공간 절약</p>
+  </div>
+
+  <div class="sh2">2. 논클러스터드 인덱스 선택 기준</div>
+  <div class="txt i1">
+    <p>① <span class="kw">등치 검색이 주 패턴인 컬럼:</span> 이메일·고객ID 조회 — 단일 행 검색, 2차 탐색 비용 미미</p>
+    <p>② <span class="kw">고선택도(High Cardinality) 컬럼:</span> 주민번호·이메일처럼 중복값이 적을수록 효율↑. 저선택도(성별·상태)는 효과 미미</p>
+    <p>③ <span class="kw">복수 접근 패턴 지원:</span> 클러스터드 1개 한계를 보완하여 다양한 조회 조건에 대응</p>
+    <p>④ <span class="kw">커버링 인덱스 구성 가능 시:</span> SELECT 컬럼 + WHERE 컬럼을 모두 포함하여 2차 탐색 제거</p>
+  </div>
+
+  <div class="sh2">3. 선택 기준 매트릭스</div>
+  <div class="tw">
+    <table>
+      <tr>
+        <th class="sel-h" style="width:28%">상황·요건</th>
+        <th class="sel-h" style="width:18%">클러스터드</th>
+        <th class="sel-h" style="width:18%">논클러스터드</th>
+        <th class="sel-h">비고</th>
+      </tr>
+      <tr>
+        <td>범위 검색 (BETWEEN, ≥)</td>
+        <td class="sel-y">강력 추천</td>
+        <td class="sel-n">비효율</td>
+        <td>물리 정렬로 순차 I/O</td>
+      </tr>
+      <tr>
+        <td>단건 등치 검색 (=)</td>
+        <td class="sel-y">적합</td>
+        <td class="sel-y">적합</td>
+        <td>차이 미미, 둘 다 O(log n)</td>
+      </tr>
+      <tr>
+        <td>ORDER BY + LIMIT 정렬</td>
+        <td class="sel-y">강력 추천</td>
+        <td class="sel-n">정렬 추가 비용</td>
+        <td>이미 정렬된 상태 활용</td>
+      </tr>
+      <tr>
+        <td>다수 쿼리 패턴 지원 필요</td>
+        <td class="sel-n">1개 한계</td>
+        <td class="sel-y">다수 생성</td>
+        <td>각 쿼리에 맞는 논클러스터드</td>
+      </tr>
+      <tr>
+        <td>INSERT 집약 워크로드</td>
+        <td class="sel-n">주의 (페이지 분할)</td>
+        <td class="sel-y">상대적 유리</td>
+        <td>무작위 PK(UUID) 회피 권장</td>
+      </tr>
+      <tr>
+        <td>SELECT 컬럼 수 적고 고정</td>
+        <td>—</td>
+        <td class="sel-y">커버링 인덱스</td>
+        <td>INCLUDE 컬럼으로 2차 탐색 제거</td>
+      </tr>
+      <tr>
+        <td>저선택도 컬럼 (성별·상태)</td>
+        <td class="sel-n">부적합</td>
+        <td class="sel-n">B-Tree 비효율</td>
+        <td>Oracle Bitmap, 파티셔닝 고려</td>
+      </tr>
+      <tr>
+        <td>DW·분석 집계 쿼리</td>
+        <td class="sel-y">IOT / 날짜 정렬</td>
+        <td class="sel-y">Bitmap (Oracle)</td>
+        <td>컬럼스토어 인덱스 병행 검토</td>
+      </tr>
+    </table>
+  </div>
+  <div class="fc" style="margin-top:-8px;margin-bottom:12px">【표 4】 상황별 인덱스 선택 기준 매트릭스</div>
+
+  <div class="sh2">4. 복합 인덱스(Composite Index) 설계 원칙</div>
+  <div class="txt i1">
+    <p>① <span class="kw">선두 컬럼 원칙(Left-Most Prefix):</span> 복합 인덱스 (A, B, C)는 A, (A,B), (A,B,C) 조건에만 유효. B 단독 조건은 인덱스 미사용</p>
+    <p>② <span class="kw">등치 조건 선행, 범위 조건 후행:</span> (=) 컬럼을 앞에, (BETWEEN, >) 컬럼을 뒤에 배치. 범위 조건 이후 컬럼은 인덱스 활용 불가</p>
+    <p>③ <span class="kw">선택도 높은 컬럼 우선:</span> 카디널리티가 높은 컬럼을 앞에 배치하여 초기 필터링 효율 극대화</p>
+    <p>④ <span class="kw">인덱스 수 최소화:</span> 논클러스터드 인덱스 과다 생성은 INSERT/UPDATE/DELETE 성능 저하. 실제 사용되는 쿼리 기반으로 최적화</p>
+  </div>
+
+  <div class="sh2">5. 인덱스 단편화 관리</div>
+  <div class="tw">
+    <table>
+      <tr><th style="width:26%">관리 항목</th><th style="width:36%">내용</th><th>권장 조치</th></tr>
+      <tr>
+        <td><span class="kc">FILLFACTOR 설정</span></td>
+        <td>페이지 초기 채움 비율. 낮을수록 여유 공간↑ → 분할 빈도↓, 공간↑</td>
+        <td>쓰기 집약 테이블: 70~80%<br>읽기 전용: 90~100%</td>
+      </tr>
+      <tr>
+        <td><span class="kc">인덱스 재구성 (REORGANIZE)</span></td>
+        <td>리프 수준 단편화만 해결. 온라인 수행 가능</td>
+        <td>단편화 5~30% 구간</td>
+      </tr>
+      <tr>
+        <td><span class="kc">인덱스 재빌드 (REBUILD)</span></td>
+        <td>전체 인덱스 재생성. 단편화 완전 제거</td>
+        <td>단편화 30% 초과 시</td>
+      </tr>
+    </table>
+  </div>
+  <div class="fc" style="margin-top:-8px;margin-bottom:12px">【표 5】 인덱스 단편화 관리 방법</div>
+</div>
+
+<!-- ─── Ⅴ. 결론 ─── -->
+<div class="sec">
+  <div class="sh">Ⅴ. 결론</div>
+  <div class="txt">
+    <p>클러스터드 인덱스는 <span class="kw">물리적 정렬로 범위 탐색과 정렬 쿼리에 최적</span>이며, 논클러스터드 인덱스는 <span class="kw">다양한 접근 패턴 지원과 커버링 인덱스로 2차 탐색 비용을 제거</span>할 수 있다. 실무에서는 클러스터드 인덱스 키를 <span class="kw">단조 증가·짧은 정수형</span>으로 설계하고, 논클러스터드는 <span class="kw">고선택도 컬럼과 쿼리 패턴 기반의 커버링 인덱스</span>로 보완하는 것이 최적 전략이다. 과도한 인덱스는 쓰기 성능을 저하시키므로 실제 쿼리 실행 계획(EXPLAIN) 분석을 통한 선택적 설계가 필수이다.</p>
+  </div>
+</div>
+
+<div class="note">
+  <div class="nt">★ 기술사 핵심 코멘트</div>
+  <div class="nb">
+    인덱스 설계의 본질은 <strong>읽기 성능 향상과 쓰기 오버헤드 간의 트레이드오프를 워크로드에 맞게 최적화</strong>하는 것이며, DB 설계·감리 시 다음을 중점 검토해야 한다.<br>
+    ① <strong>클러스터드 키 선택 적정성:</strong> UUID·GUID처럼 무작위 값을 PK로 설계한 경우 페이지 분할 빈발 및 단편화 위험 — 순번(AUTO_INCREMENT, SEQUENCE) 또는 시간 순 정렬 키로 교체 권고<br>
+    ② <strong>InnoDB 보조 인덱스 크기:</strong> PK가 길수록(VARCHAR 등) 모든 보조 인덱스 크기 배증 — PK 크기를 INT 또는 BIGINT로 제한했는지 확인<br>
+    ③ <strong>커버링 인덱스 활용 여부:</strong> 빈번한 조회 쿼리의 실행 계획에서 'Index Scan'이 아닌 'Index Only Scan'(PostgreSQL) 또는 'Covering Index'(MySQL)가 활성화되는지 점검<br>
+    ④ <strong>인덱스 수 과다 여부:</strong> 논클러스터드 인덱스 10개 이상 보유 테이블은 INSERT/UPDATE 시 다수 인덱스 동시 갱신으로 잠금 경합·응답 지연 발생 가능 — 미사용 인덱스 식별 후 삭제 권고
+  </div>
+</div>
+
+</div><!-- /body -->
+
+<div class="ftr">
+  <span>컴퓨터시스템응용 기술사 · 모범 답안</span>
+  <span>클러스터드 vs 논클러스터드 인덱스 — 구조·성능·DBMS별·선택 기준</span>
+  <span>총 5개 항목 · 표 5개 · 그림 2개 · 선택 기준 매트릭스 포함</span>
+</div>
+
+</div><!-- /doc -->
+</body>
+</html>

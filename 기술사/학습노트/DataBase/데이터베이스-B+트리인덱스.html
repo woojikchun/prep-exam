@@ -1,0 +1,654 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>B+ 트리 인덱스 — 컴퓨터시스템응용 기술사 모범 답안</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;500;700&family=Noto+Sans+KR:wght@400;500;700&family=JetBrains+Mono:wght@400;600&display=swap');
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --ink:#1a1a1a;--ink2:#333;--ink3:#666;
+  --line:#c8c8c8;--line2:#e2e0da;--bg:#fdfcf8;
+  --accent:#1a3a6e;--accent2:#7a3010;--green:#2d6a4f;--purple:#4a3080;
+}
+body{background:#dddad2;font-family:'Noto Sans KR',sans-serif;color:var(--ink);padding:20px 0 40px}
+.doc{max-width:800px;margin:0 auto;background:var(--bg);box-shadow:0 4px 32px rgba(0,0,0,.22)}
+
+.hdr{border-bottom:3px double var(--ink);padding:20px 36px 16px;display:flex;align-items:flex-start;gap:16px}
+.hdr-l{flex:1}
+.lbl{font-size:11px;letter-spacing:.14em;color:var(--ink3);font-family:'Noto Serif KR',serif}
+.ttl{font-size:20px;font-weight:700;font-family:'Noto Serif KR',serif;color:var(--accent);line-height:1.35;margin-top:5px}
+.pills{display:flex;gap:8px;margin-top:9px;flex-wrap:wrap}
+.pill{font-size:11px;padding:2px 10px;border:1px solid var(--line);border-radius:2px;color:var(--ink2);background:#fff}
+.score-box{border:1.5px solid var(--ink);padding:10px 16px;text-align:center;min-width:72px}
+.sc-lbl{font-size:10px;color:var(--ink3);letter-spacing:.06em}
+.sc-n{font-size:24px;font-weight:700;font-family:'Noto Serif KR',serif;color:var(--accent);line-height:1.1}
+
+.body{padding:24px 40px 48px}
+.qbox{background:#f0efea;border:1px solid #bbb;padding:14px 18px;border-radius:3px;margin-bottom:24px;font-size:12.5px;color:var(--ink2);line-height:1.85}
+.qbox strong{color:var(--ink);font-weight:700}
+
+.sh {font-size:14.5px;font-weight:700;font-family:'Noto Serif KR',serif;color:var(--accent);border-bottom:1.5px solid var(--accent);padding-bottom:5px;margin:0 0 13px}
+.sh2{font-size:13px;font-weight:700;color:var(--ink);margin:13px 0 5px;padding-left:8px;border-left:3px solid var(--accent2)}
+.sh3{font-size:12.5px;font-weight:700;color:var(--ink2);margin:9px 0 4px;padding-left:18px}
+.sec{margin-bottom:22px}
+.txt{font-size:12.5px;line-height:1.92;color:var(--ink2)}
+.txt p{margin-bottom:5px}
+.i1{padding-left:14px}
+.i2{padding-left:28px}
+.kw{font-weight:700;color:var(--ink)}
+
+.tw{margin:10px 0 14px;overflow-x:auto}
+table{width:100%;border-collapse:collapse;font-size:11.5px}
+th{background:var(--accent);color:#fff;padding:6px 9px;text-align:left;font-weight:500;border:1px solid var(--accent)}
+td{padding:6px 9px;border:1px solid var(--line);vertical-align:top;line-height:1.75;color:var(--ink2)}
+tr:nth-child(even) td{background:#f4f3ef}
+.kc{font-weight:700;color:var(--ink)}
+.tc{text-align:center}
+
+.fig{margin:13px 0 16px;background:#f8f7f3;border:1px solid var(--line2);border-radius:4px;padding:12px 8px}
+.fc{font-size:11px;color:var(--ink3);text-align:center;margin-top:7px;font-style:italic}
+
+.note{margin:16px 0 0;padding:12px 16px;border:1px solid #8b6914;background:#fffbef;border-radius:3px}
+.nt{font-size:12px;font-weight:700;color:#6a4f00;margin-bottom:5px}
+.nb{font-size:12px;color:#4a3800;line-height:1.85}
+
+.pb{border:none;border-top:2px dashed #bbb;margin:24px 0;position:relative}
+.pb::after{content:"— 다음 페이지 —";position:absolute;top:-9px;left:50%;transform:translateX(-50%);background:var(--bg);padding:0 10px;font-size:10px;color:#bbb;white-space:nowrap}
+
+.ftr{border-top:2px solid var(--ink);margin:0 40px;padding:10px 0;display:flex;justify-content:space-between;font-size:10px;color:var(--ink3)}
+
+.badge{display:inline-block;font-size:10.5px;padding:1px 8px;border-radius:2px;font-weight:600;margin:1px 2px}
+.badge-r{background:#FCEBEB;color:#A32D2D;border:1px solid #f0b8b8}
+.badge-g{background:#EAF3DE;color:#2d6a4f;border:1px solid #b0d89a}
+.badge-b{background:#E6F1FB;color:#0C447C;border:1px solid #9dc4f0}
+.badge-o{background:#FAEEDA;color:#7a3010;border:1px solid #f0c88a}
+.badge-p{background:#eeedfe;color:#4a3080;border:1px solid #b8b0f0}
+
+.formula{display:inline-block;font-family:'JetBrains Mono',monospace;font-size:11.5px;background:#f0efea;border:1px solid var(--line2);border-radius:3px;padding:2px 8px;color:#1a3a6e;font-weight:700;margin:2px 0}
+
+/* B+ Tree 노드 CSS */
+.bnode{display:inline-flex;border:2px solid var(--accent);border-radius:4px;overflow:hidden;font-family:'JetBrains Mono',monospace;font-size:12px;vertical-align:middle}
+.bnode .bk{padding:4px 8px;background:#fff;color:var(--ink);font-weight:700;border-right:1px solid var(--accent);min-width:28px;text-align:center}
+.bnode .bk:last-child{border-right:none}
+.bnode.internal .bk{background:#E6F1FB;color:#0C447C}
+.bnode.leaf .bk{background:#EAF3DE;color:#2d6a4f}
+.bnode.new .bk{background:#FAEEDA;color:#7a3010}
+.bnode.del .bk{background:#FCEBEB;color:#A32D2D;text-decoration:line-through}
+.bnode.hi .bk{background:#7a3010;color:#fff}
+
+/* 단계 라벨 */
+.step-label{display:inline-block;font-size:11px;font-weight:700;padding:2px 10px;border-radius:12px;margin-bottom:6px}
+.step-b{background:var(--accent);color:#fff}
+.step-g{background:var(--green);color:#fff}
+.step-r{background:#A32D2D;color:#fff}
+.step-o{background:#7a3010;color:#fff}
+</style>
+</head>
+<body>
+<div class="doc">
+
+<!-- ── Header ── -->
+<div class="hdr">
+  <div class="hdr-l">
+    <div class="lbl">컴퓨터시스템응용 기술사 · 예상 문제 및 모범 답안</div>
+    <div class="ttl">B+ 트리 인덱스의 구조와<br>검색·삽입·삭제 연산</div>
+    <div class="pills">
+      <span class="pill">4교시 · 논술형</span>
+      <span class="pill">데이터베이스 / 자료구조</span>
+      <span class="pill">키워드: 차수 · 분할 · 합병 · 균형 트리 · 범위 탐색</span>
+    </div>
+  </div>
+  <div class="score-box">
+    <div class="sc-lbl">배점</div>
+    <div class="sc-n">25</div>
+    <div class="sc-lbl">점</div>
+  </div>
+</div>
+
+<div class="body">
+
+<!-- 문제 -->
+<div class="qbox">
+  <strong>【 문 제 】</strong><br><br>
+  관계형 데이터베이스의 핵심 인덱스 자료구조인 <strong>B+ 트리(B+ Tree)</strong>에 대하여 다음을 설명하시오.<br><br>
+  &emsp;(1) B+ 트리의 정의, B 트리와의 비교, 구조적 특성 및 복잡도 &nbsp;(6점)<br>
+  &emsp;(2) 검색(Search) 연산 — 등치·범위 검색 &nbsp;(4점)<br>
+  &emsp;(3) 삽입(Insert) 연산 — 노드 분할(Split) 포함 &nbsp;(8점)<br>
+  &emsp;(4) 삭제(Delete) 연산 — 재분배(Redistribution) 및 합병(Merge) &nbsp;(7점)
+</div>
+
+<!-- ─── Ⅰ. 구조 ─── -->
+<div class="sec">
+  <div class="sh">Ⅰ. B+ 트리의 정의, B 트리와의 비교, 구조적 특성 및 복잡도</div>
+
+  <div class="sh2">1. B+ 트리(B+ Tree)의 정의</div>
+  <div class="txt i1">
+    <p><span class="kw">B+ 트리(B+ Tree)</span>는 차수(Order) m의 균형 다방향 탐색 트리(Balanced Multiway Search Tree)로, 모든 리프 노드가 동일한 깊이에 위치하며 <span class="kw">실제 데이터(레코드 포인터)는 리프 노드에만 저장</span>하고 내부 노드(Internal Node)는 오직 라우팅(경로 안내) 키만 보유한다. 리프 노드들은 <span class="kw">이중 연결 리스트(Doubly Linked List)</span>로 연결되어 범위 탐색(Range Scan)을 효율적으로 지원한다.</p>
+  </div>
+
+  <div class="sh2">2. B 트리 vs. B+ 트리 비교</div>
+  <div class="tw">
+    <table>
+      <tr><th style="width:24%">비교 항목</th><th>B 트리 (B-Tree)</th><th>B+ 트리 (B+ Tree)</th></tr>
+      <tr><td><span class="kc">데이터 저장 위치</span></td><td>내부·리프 노드 모두에 데이터 포인터 보유</td><td><span class="kw">리프 노드에만</span> 데이터 포인터 저장</td></tr>
+      <tr><td><span class="kc">내부 노드 역할</span></td><td>라우팅 키 + 데이터 포인터</td><td>라우팅 키만 (인덱스 역할)</td></tr>
+      <tr><td><span class="kc">리프 노드 연결</span></td><td>연결 리스트 없음</td><td><span class="kw">이중 연결 리스트</span>로 순차 접근</td></tr>
+      <tr><td><span class="kc">범위 탐색</span></td><td>중위 순회 필요 — 비효율</td><td>리프 연결 리스트 순회 — <span class="kw">고효율</span></td></tr>
+      <tr><td><span class="kc">키 중복</span></td><td>동일 키가 내부·리프에 한 번만 등장</td><td>내부 노드의 키가 리프 노드에 <span class="kw">중복 존재</span></td></tr>
+      <tr><td><span class="kc">내부 노드 팬아웃</span></td><td>상대적 낮음 (데이터 포함)</td><td><span class="kw">높음</span> — 키만 저장하므로 더 많은 자식 수용</td></tr>
+      <tr><td><span class="kc">대표 사용처</span></td><td>파일 시스템(NTFS 일부)</td><td><span class="kw">RDBMS 인덱스</span> (InnoDB, Oracle, PostgreSQL)</td></tr>
+    </table>
+  </div>
+  <div class="fc" style="margin-top:-8px;margin-bottom:12px">【표 1】 B 트리 vs. B+ 트리 비교</div>
+
+  <div class="sh2">3. B+ 트리 구조적 특성 (차수 m 기준)</div>
+  <div class="tw">
+    <table>
+      <tr><th style="width:26%">특성</th><th style="width:36%">내부 노드(Internal)</th><th>리프 노드(Leaf)</th></tr>
+      <tr><td><span class="kc">최대 키 수</span></td><td class="tc">m − 1 개</td><td class="tc">m − 1 개</td></tr>
+      <tr><td><span class="kc">최소 키 수</span></td><td class="tc">⌈m/2⌉ − 1 개 (루트 제외)</td><td class="tc">⌊(m−1)/2⌋ 개</td></tr>
+      <tr><td><span class="kc">자식 포인터 수</span></td><td class="tc">키 수 + 1 개</td><td class="tc">없음 (Next 포인터만)</td></tr>
+      <tr><td><span class="kc">데이터 포인터</span></td><td class="tc">없음 (키만)</td><td class="tc">모든 키에 레코드 포인터 보유</td></tr>
+      <tr><td><span class="kc">형제 연결</span></td><td class="tc">없음</td><td class="tc">이중 연결 리스트</td></tr>
+    </table>
+  </div>
+  <div class="fc" style="margin-top:-8px;margin-bottom:12px">【표 2】 B+ 트리 구조적 특성 (차수 m)</div>
+
+  <div class="sh2">4. B+ 트리 전체 구조도 (차수 m=4, 예제)</div>
+  <div class="fig">
+    <svg width="100%" viewBox="0 0 720 290" xmlns="http://www.w3.org/2000/svg" role="img">
+      <title>B+ 트리 전체 구조도 — 차수 4</title>
+      <defs>
+        <marker id="bp" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse">
+          <path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </marker>
+        <marker id="bq" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="4" markerHeight="4" orient="auto-start-reverse">
+          <path d="M2 1L8 5L2 9" fill="none" stroke="#b8860b" stroke-width="1.2"/>
+        </marker>
+      </defs>
+
+      <!-- 레벨 라벨 -->
+      <text font-size="10.5" fill="#888" x="18" y="52"  font-family="'Noto Sans KR',sans-serif">루트</text>
+      <text font-size="10.5" fill="#888" x="18" y="132" font-family="'Noto Sans KR',sans-serif">내부</text>
+      <text font-size="10.5" fill="#888" x="18" y="218" font-family="'Noto Sans KR',sans-serif">리프</text>
+
+      <!-- Root node: [30 | 70] -->
+      <rect x="290" y="28" width="140" height="34" rx="4" fill="#1a3a6e" stroke="#0d2347" stroke-width="1"/>
+      <line x1="360" y1="28" x2="360" y2="62" stroke="#fff" stroke-width="1"/>
+      <text font-size="13" font-weight="700" fill="#fff" x="327" y="49" text-anchor="middle" font-family="'JetBrains Mono',monospace">30</text>
+      <text font-size="13" font-weight="700" fill="#fff" x="393" y="49" text-anchor="middle" font-family="'JetBrains Mono',monospace">70</text>
+
+      <!-- Internal node L: [10 | 20] -->
+      <rect x="100" y="108" width="140" height="34" rx="4" fill="#2d5a9e" stroke="#1a3a6e" stroke-width="1"/>
+      <line x1="170" y1="108" x2="170" y2="142" stroke="#fff" stroke-width="1"/>
+      <text font-size="13" font-weight="700" fill="#fff" x="137" y="129" text-anchor="middle" font-family="'JetBrains Mono',monospace">10</text>
+      <text font-size="13" font-weight="700" fill="#fff" x="203" y="129" text-anchor="middle" font-family="'JetBrains Mono',monospace">20</text>
+
+      <!-- Internal node M: [40 | 55] -->
+      <rect x="290" y="108" width="140" height="34" rx="4" fill="#2d5a9e" stroke="#1a3a6e" stroke-width="1"/>
+      <line x1="360" y1="108" x2="360" y2="142" stroke="#fff" stroke-width="1"/>
+      <text font-size="13" font-weight="700" fill="#fff" x="327" y="129" text-anchor="middle" font-family="'JetBrains Mono',monospace">40</text>
+      <text font-size="13" font-weight="700" fill="#fff" x="393" y="129" text-anchor="middle" font-family="'JetBrains Mono',monospace">55</text>
+
+      <!-- Internal node R: [80] -->
+      <rect x="510" y="108" width="100" height="34" rx="4" fill="#2d5a9e" stroke="#1a3a6e" stroke-width="1"/>
+      <text font-size="13" font-weight="700" fill="#fff" x="560" y="129" text-anchor="middle" font-family="'JetBrains Mono',monospace">80</text>
+
+      <!-- Root → Internal 화살표 -->
+      <line x1="310" y1="62" x2="195" y2="106" stroke="#aaa" stroke-width="1" marker-end="url(#bp)" fill="none"/>
+      <line x1="360" y1="62" x2="360" y2="106" stroke="#aaa" stroke-width="1" marker-end="url(#bp)" fill="none"/>
+      <line x1="410" y1="62" x2="520" y2="106" stroke="#aaa" stroke-width="1" marker-end="url(#bp)" fill="none"/>
+
+      <!-- Leaf nodes -->
+      <!-- L1: [5|8] -->
+      <rect x="30"  y="194" width="92" height="34" rx="4" fill="#2d6a4f" stroke="#1a3d2b" stroke-width="1"/>
+      <line x1="61"  y1="194" x2="61"  y2="228" stroke="#fff" stroke-width="1"/>
+      <text font-size="12" font-weight="700" fill="#fff" x="48"  y="215" text-anchor="middle" font-family="'JetBrains Mono',monospace">5</text>
+      <text font-size="12" font-weight="700" fill="#fff" x="76"  y="215" text-anchor="middle" font-family="'JetBrains Mono',monospace">8</text>
+      <!-- L2: [10|15] -->
+      <rect x="132" y="194" width="100" height="34" rx="4" fill="#2d6a4f" stroke="#1a3d2b" stroke-width="1"/>
+      <line x1="164" y1="194" x2="164" y2="228" stroke="#fff" stroke-width="1"/>
+      <text font-size="12" font-weight="700" fill="#fff" x="150" y="215" text-anchor="middle" font-family="'JetBrains Mono',monospace">10</text>
+      <text font-size="12" font-weight="700" fill="#fff" x="196" y="215" text-anchor="middle" font-family="'JetBrains Mono',monospace">15</text>
+      <!-- L3: [20|25] -->
+      <rect x="244" y="194" width="100" height="34" rx="4" fill="#2d6a4f" stroke="#1a3d2b" stroke-width="1"/>
+      <line x1="276" y1="194" x2="276" y2="228" stroke="#fff" stroke-width="1"/>
+      <text font-size="12" font-weight="700" fill="#fff" x="262" y="215" text-anchor="middle" font-family="'JetBrains Mono',monospace">20</text>
+      <text font-size="12" font-weight="700" fill="#fff" x="308" y="215" text-anchor="middle" font-family="'JetBrains Mono',monospace">25</text>
+      <!-- L4: [30|35] -->
+      <rect x="356" y="194" width="100" height="34" rx="4" fill="#2d6a4f" stroke="#1a3d2b" stroke-width="1"/>
+      <line x1="388" y1="194" x2="388" y2="228" stroke="#fff" stroke-width="1"/>
+      <text font-size="12" font-weight="700" fill="#fff" x="374" y="215" text-anchor="middle" font-family="'JetBrains Mono',monospace">30</text>
+      <text font-size="12" font-weight="700" fill="#fff" x="420" y="215" text-anchor="middle" font-family="'JetBrains Mono',monospace">35</text>
+      <!-- L5: [40|50] -->
+      <rect x="468" y="194" width="100" height="34" rx="4" fill="#2d6a4f" stroke="#1a3d2b" stroke-width="1"/>
+      <line x1="500" y1="194" x2="500" y2="228" stroke="#fff" stroke-width="1"/>
+      <text font-size="12" font-weight="700" fill="#fff" x="486" y="215" text-anchor="middle" font-family="'JetBrains Mono',monospace">40</text>
+      <text font-size="12" font-weight="700" fill="#fff" x="522" y="215" text-anchor="middle" font-family="'JetBrains Mono',monospace">50</text>
+      <!-- L6: [55|60] -->
+      <rect x="580" y="194" width="100" height="34" rx="4" fill="#2d6a4f" stroke="#1a3d2b" stroke-width="1"/>
+      <line x1="612" y1="194" x2="612" y2="228" stroke="#fff" stroke-width="1"/>
+      <text font-size="12" font-weight="700" fill="#fff" x="598" y="215" text-anchor="middle" font-family="'JetBrains Mono',monospace">55</text>
+      <text font-size="12" font-weight="700" fill="#fff" x="644" y="215" text-anchor="middle" font-family="'JetBrains Mono',monospace">60</text>
+
+      <!-- Internal → Leaf 화살표 -->
+      <line x1="130" y1="142" x2="78"  y2="192" stroke="#aaa" stroke-width="1" marker-end="url(#bp)" fill="none"/>
+      <line x1="170" y1="142" x2="180" y2="192" stroke="#aaa" stroke-width="1" marker-end="url(#bp)" fill="none"/>
+      <line x1="210" y1="142" x2="295" y2="192" stroke="#aaa" stroke-width="1" marker-end="url(#bp)" fill="none"/>
+      <line x1="325" y1="142" x2="404" y2="192" stroke="#aaa" stroke-width="1" marker-end="url(#bp)" fill="none"/>
+      <line x1="360" y1="142" x2="492" y2="192" stroke="#aaa" stroke-width="1" marker-end="url(#bp)" fill="none"/>
+      <line x1="395" y1="142" x2="604" y2="192" stroke="#aaa" stroke-width="1" marker-end="url(#bp)" fill="none"/>
+      <line x1="475" y1="142" x2="500" y2="192" stroke="#aaa" stroke-width="0.8" marker-end="url(#bp)" fill="none" stroke-dasharray="4 2"/>
+      <line x1="545" y1="142" x2="630" y2="192" stroke="#aaa" stroke-width="0.8" marker-end="url(#bp)" fill="none" stroke-dasharray="4 2"/>
+
+      <!-- 리프 연결 리스트 (이중 연결) -->
+      <path d="M122 224 L130 224" fill="none" stroke="#b8860b" stroke-width="2" marker-end="url(#bq)"/>
+      <path d="M232 224 L242 224" fill="none" stroke="#b8860b" stroke-width="2" marker-end="url(#bq)"/>
+      <path d="M344 224 L354 224" fill="none" stroke="#b8860b" stroke-width="2" marker-end="url(#bq)"/>
+      <path d="M456 224 L466 224" fill="none" stroke="#b8860b" stroke-width="2" marker-end="url(#bq)"/>
+      <path d="M568 224 L578 224" fill="none" stroke="#b8860b" stroke-width="2" marker-end="url(#bq)"/>
+      <text font-size="10" fill="#b8860b" font-weight="700" x="360" y="255" text-anchor="middle" font-family="'Noto Sans KR',sans-serif">← 이중 연결 리스트 (범위 탐색 지원) →</text>
+
+      <!-- 레코드 포인터 표시 -->
+      <text font-size="9.5" fill="#2d6a4f" x="360" y="270" text-anchor="middle" font-family="'Noto Sans KR',sans-serif">▼ 리프 노드의 각 키는 실제 레코드(디스크 주소)를 가리킴</text>
+
+      <!-- 파란 내부 노드 설명 -->
+      <rect x="30" y="72" width="120" height="18" rx="3" fill="#E6F1FB" stroke="#1a3a6e" stroke-width="0.6"/>
+      <text font-size="9.5" fill="#0C447C" x="90" y="84" text-anchor="middle" font-family="'Noto Sans KR',sans-serif">내부: 키만 (라우팅)</text>
+      <rect x="580" y="158" width="120" height="18" rx="3" fill="#EAF3DE" stroke="#2d6a4f" stroke-width="0.6"/>
+      <text font-size="9.5" fill="#2d6a4f" x="640" y="170" text-anchor="middle" font-family="'Noto Sans KR',sans-serif">리프: 키+레코드 포인터</text>
+    </svg>
+    <div class="fc">【그림 1】 B+ 트리 전체 구조도 (차수 m=4) — 파랑: 내부 노드, 초록: 리프 노드, 금색: 연결 리스트</div>
+  </div>
+
+  <div class="sh2">5. 시간 복잡도</div>
+  <div class="tw">
+    <table>
+      <tr><th style="width:20%">연산</th><th style="width:26%">시간 복잡도</th><th>근거</th></tr>
+      <tr><td><span class="kc">검색 (등치)</span></td><td class="tc"><span class="formula">O(log_m N)</span></td><td>루트→리프까지 트리 높이 h = O(log_m N) 탐색</td></tr>
+      <tr><td><span class="kc">검색 (범위, k건)</span></td><td class="tc"><span class="formula">O(log_m N + k)</span></td><td>시작점 탐색 후 리프 연결 리스트 k건 순회</td></tr>
+      <tr><td><span class="kc">삽입</span></td><td class="tc"><span class="formula">O(log_m N)</span></td><td>탐색 + 분할(최대 h회)</td></tr>
+      <tr><td><span class="kc">삭제</span></td><td class="tc"><span class="formula">O(log_m N)</span></td><td>탐색 + 재분배/합병(최대 h회)</td></tr>
+      <tr><td><span class="kc">트리 높이</span></td><td class="tc"><span class="formula">h ≤ log_⌈m/2⌉ N</span></td><td>m=100, N=100만 → h ≤ 3~4</td></tr>
+    </table>
+  </div>
+  <div class="fc" style="margin-top:-8px;margin-bottom:12px">【표 3】 B+ 트리 시간 복잡도 (N: 총 키 수, m: 차수)</div>
+</div>
+
+<hr class="pb">
+
+<!-- ─── Ⅱ. 검색 ─── -->
+<div class="sec">
+  <div class="sh">Ⅱ. 검색(Search) 연산 — 등치·범위 검색</div>
+
+  <div class="sh2">1. 등치 검색 (Point Query)</div>
+  <div class="txt i1">
+    <p><span class="kw">알고리즘:</span> ① 루트에서 시작 ② 현재 노드에서 탐색 키 k와 비교하여 적절한 자식 포인터 선택 ③ 리프 노드에 도달할 때까지 반복 ④ 리프 노드에서 k를 선형 탐색하여 레코드 포인터 반환</p>
+  </div>
+  <div class="fig">
+    <svg width="100%" viewBox="0 0 700 185" xmlns="http://www.w3.org/2000/svg" role="img">
+      <title>B+ 트리 등치 검색 k=25 경로</title>
+      <defs>
+        <marker id="sr" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse">
+          <path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </marker>
+      </defs>
+      <!-- Root -->
+      <rect x="270" y="10" width="140" height="34" rx="4" fill="#1a3a6e" stroke="#0d2347" stroke-width="1"/>
+      <line x1="340" y1="10" x2="340" y2="44" stroke="#fff" stroke-width="1"/>
+      <text font-size="13" font-weight="700" fill="#fff" x="307" y="31" text-anchor="middle" font-family="'JetBrains Mono',monospace">30</text>
+      <text font-size="13" font-weight="700" fill="#fff" x="373" y="31" text-anchor="middle" font-family="'JetBrains Mono',monospace">70</text>
+      <!-- k=25 < 30 → 왼쪽 -->
+      <text font-size="10" fill="#EF9F27" font-weight="700" x="225" y="65" font-family="'Noto Sans KR',sans-serif">25 &lt; 30 → 왼쪽</text>
+      <path d="M290 44 L185 88" fill="none" stroke="#EF9F27" stroke-width="2.5" marker-end="url(#sr)"/>
+
+      <!-- Internal left -->
+      <rect x="80"  y="90" width="140" height="34" rx="4" fill="#2d5a9e" stroke="#1a3a6e" stroke-width="1"/>
+      <line x1="150" y1="90" x2="150" y2="124" stroke="#fff" stroke-width="1"/>
+      <text font-size="13" font-weight="700" fill="#fff" x="117" y="111" text-anchor="middle" font-family="'JetBrains Mono',monospace">10</text>
+      <text font-size="13" font-weight="700" fill="#fff" x="183" y="111" text-anchor="middle" font-family="'JetBrains Mono',monospace">20</text>
+      <!-- k=25 ≥ 20 → 오른쪽 -->
+      <text font-size="10" fill="#EF9F27" font-weight="700" x="165" y="148" font-family="'Noto Sans KR',sans-serif">25 ≥ 20 → 오른쪽</text>
+      <path d="M205 124 L285 158" fill="none" stroke="#EF9F27" stroke-width="2.5" marker-end="url(#sr)"/>
+
+      <!-- Leaf [20|25] -->
+      <rect x="250" y="160" width="110" height="34" rx="4" fill="#2d6a4f" stroke="#1a3d2b" stroke-width="2"/>
+      <line x1="282" y1="160" x2="282" y2="194" stroke="#fff" stroke-width="1"/>
+      <text font-size="12" font-weight="700" fill="#fff" x="268" y="181" text-anchor="middle" font-family="'JetBrains Mono',monospace">20</text>
+      <text font-size="13" font-weight="700" fill="#FFD700" x="323" y="181" text-anchor="middle" font-family="'JetBrains Mono',monospace">25 ★</text>
+
+      <!-- 다른 내부·리프 노드 (흐릿) -->
+      <rect x="360" y="90" width="140" height="34" rx="4" fill="#aaa" stroke="#999" stroke-width="0.5"/>
+      <text font-size="12" fill="#ddd" x="430" y="111" text-anchor="middle" font-family="'JetBrains Mono',monospace">40 | 55</text>
+      <rect x="520" y="90" width="100" height="34" rx="4" fill="#aaa" stroke="#999" stroke-width="0.5"/>
+      <text font-size="12" fill="#ddd" x="570" y="111" text-anchor="middle" font-family="'JetBrains Mono',monospace">80</text>
+
+      <!-- 검색 결과 -->
+      <rect x="420" y="162" width="240" height="30" rx="4" fill="#EAF3DE" stroke="#2d6a4f" stroke-width="1"/>
+      <text font-size="11.5" font-weight="700" fill="#2d6a4f" x="540" y="181" text-anchor="middle" font-family="'Noto Sans KR',sans-serif">k=25 발견 → 레코드 포인터 반환 ✔</text>
+    </svg>
+    <div class="fc">【그림 2】 등치 검색 k=25 — 루트→내부→리프 경로 추적 (주황 화살표)</div>
+  </div>
+
+  <div class="sh2">2. 범위 검색 (Range Query) — 20 ≤ k ≤ 40</div>
+  <div class="txt i1">
+    <p><span class="kw">알고리즘:</span> ① 하한(20)으로 등치 검색 → 시작 리프 도달 ② 리프의 이중 연결 리스트를 <span class="kw">오른쪽으로 순회</span>하며 상한(40) 이하인 키를 순서대로 수집 ③ 상한 초과 키를 만나면 종료</p>
+    <p>결과: 20, 25, 30, 35, 40 — 트리 재탐색 없이 연결 리스트만 순회하므로 <span class="kw">O(log_m N + k)</span>의 효율을 달성한다.</p>
+  </div>
+</div>
+
+<hr class="pb">
+
+<!-- ─── Ⅲ. 삽입 ─── -->
+<div class="sec">
+  <div class="sh">Ⅲ. 삽입(Insert) 연산 — 노드 분할(Split)</div>
+
+  <div class="sh2">1. 삽입 알고리즘 개요</div>
+  <div class="txt i1">
+    <p>① 삽입할 키의 올바른 리프 노드를 탐색<br>
+    ② 리프 노드에 공간이 있으면 키를 정렬된 위치에 삽입 후 종료<br>
+    ③ 리프 노드가 <span class="kw">가득 찬 경우(overflow)</span> → <span class="kw">노드 분할(Split)</span> 수행<br>
+    &emsp;· 중간 키(median)를 기준으로 두 노드로 분리<br>
+    &emsp;· 중간 키의 복사본(Copy-Up)을 부모 노드로 올림<br>
+    &emsp;· 부모도 가득 찼으면 재귀적으로 분할 → 루트까지 전파 가능</p>
+  </div>
+
+  <div class="sh2">2. 삽입 예제 — 차수 m=4, 키 45 삽입</div>
+  <div class="txt i1" style="margin-bottom:6px"><p>삽입 전: 리프 노드 [40 | 50]에 45를 삽입 → 최대 3키 초과(오버플로우) → 분할</p></div>
+
+  <div class="fig">
+    <svg width="100%" viewBox="0 0 700 360" xmlns="http://www.w3.org/2000/svg" role="img">
+      <title>B+ 트리 삽입 — 45 삽입 시 노드 분할</title>
+      <defs>
+        <marker id="si" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse">
+          <path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </marker>
+      </defs>
+
+      <!-- ─ 삽입 전 (BEFORE) ─ -->
+      <text font-size="12" font-weight="700" fill="#555" x="175" y="22" text-anchor="middle" font-family="'Noto Sans KR',sans-serif">【삽입 전】</text>
+
+      <!-- 부모 내부 노드: [30|55] -->
+      <rect x="100" y="30" width="150" height="34" rx="4" fill="#1a3a6e" stroke="#0d2347" stroke-width="1"/>
+      <line x1="150" y1="30" x2="150" y2="64" stroke="#fff" stroke-width="1"/>
+      <line x1="200" y1="30" x2="200" y2="64" stroke="#fff" stroke-width="1"/>
+      <text font-size="13" font-weight="700" fill="#fff" x="128" y="51" text-anchor="middle" font-family="'JetBrains Mono',monospace">30</text>
+      <text font-size="13" font-weight="700" fill="#fff" x="178" y="51" text-anchor="middle" font-family="'JetBrains Mono',monospace">55</text>
+
+      <!-- 리프 노드 [30|35] -->
+      <rect x="30"  y="100" width="110" height="34" rx="4" fill="#2d6a4f" stroke="#1a3d2b" stroke-width="1"/>
+      <line x1="62"  y1="100" x2="62"  y2="134" stroke="#fff" stroke-width="1"/>
+      <text font-size="12" font-weight="700" fill="#fff" x="48"  y="121" text-anchor="middle" font-family="'JetBrains Mono',monospace">30</text>
+      <text font-size="12" font-weight="700" fill="#fff" x="90"  y="121" text-anchor="middle" font-family="'JetBrains Mono',monospace">35</text>
+
+      <!-- 리프 노드 [40|50] — overflow 예정 -->
+      <rect x="155" y="100" width="120" height="34" rx="4" fill="#7a3010" stroke="#4a1a00" stroke-width="2"/>
+      <line x1="188" y1="100" x2="188" y2="134" stroke="#fff" stroke-width="1"/>
+      <line x1="222" y1="100" x2="222" y2="134" stroke="#fff" stroke-width="1"/>
+      <text font-size="12" font-weight="700" fill="#fff" x="173" y="121" text-anchor="middle" font-family="'JetBrains Mono',monospace">40</text>
+      <text font-size="13" font-weight="700" fill="#FFD700" x="205" y="121" text-anchor="middle" font-family="'JetBrains Mono',monospace">45</text>
+      <text font-size="12" font-weight="700" fill="#fff" x="250" y="121" text-anchor="middle" font-family="'JetBrains Mono',monospace">50</text>
+      <text font-size="10" fill="#7a3010" x="215" y="150" text-anchor="middle" font-family="'Noto Sans KR',sans-serif">⚠ 오버플로우 (m=4, 최대 3키)</text>
+
+      <!-- 리프 노드 [55|60] -->
+      <rect x="290" y="100" width="110" height="34" rx="4" fill="#2d6a4f" stroke="#1a3d2b" stroke-width="1"/>
+      <line x1="322" y1="100" x2="322" y2="134" stroke="#fff" stroke-width="1"/>
+      <text font-size="12" font-weight="700" fill="#fff" x="308" y="121" text-anchor="middle" font-family="'JetBrains Mono',monospace">55</text>
+      <text font-size="12" font-weight="700" fill="#fff" x="362" y="121" text-anchor="middle" font-family="'JetBrains Mono',monospace">60</text>
+
+      <!-- 화살표들 (before) -->
+      <line x1="130" y1="64" x2="90"  y2="98" stroke="#aaa" stroke-width="1" marker-end="url(#si)" fill="none"/>
+      <line x1="175" y1="64" x2="210" y2="98" stroke="#aaa" stroke-width="1" marker-end="url(#si)" fill="none"/>
+      <line x1="220" y1="64" x2="340" y2="98" stroke="#aaa" stroke-width="1" marker-end="url(#si)" fill="none"/>
+
+      <!-- ─ 분할 화살표 ─ -->
+      <text font-size="28" fill="#EF9F27" x="428" y="125" text-anchor="middle" font-family="'Noto Sans KR',sans-serif">⟹</text>
+      <text font-size="10.5" font-weight="700" fill="#EF9F27" x="428" y="142" text-anchor="middle" font-family="'Noto Sans KR',sans-serif">Split!</text>
+
+      <!-- ─ 삽입 후 (AFTER) ─ -->
+      <text font-size="12" font-weight="700" fill="#555" x="580" y="22" text-anchor="middle" font-family="'Noto Sans KR',sans-serif">【분할 후】</text>
+
+      <!-- 부모 내부 노드: [30|45|55] — 45가 올라옴 -->
+      <rect x="460" y="30" width="200" height="34" rx="4" fill="#2d6a4f" stroke="#1a3d2b" stroke-width="2"/>
+      <line x1="510" y1="30" x2="510" y2="64" stroke="#fff" stroke-width="1"/>
+      <line x1="560" y1="30" x2="560" y2="64" stroke="#fff" stroke-width="1"/>
+      <line x1="610" y1="30" x2="610" y2="64" stroke="#fff" stroke-width="1"/>
+      <text font-size="13" font-weight="700" fill="#fff" x="488" y="51" text-anchor="middle" font-family="'JetBrains Mono',monospace">30</text>
+      <text font-size="13" font-weight="700" fill="#FFD700" x="538" y="51" text-anchor="middle" font-family="'JetBrains Mono',monospace">45</text>
+      <text font-size="13" font-weight="700" fill="#fff" x="588" y="51" text-anchor="middle" font-family="'JetBrains Mono',monospace">55</text>
+      <text font-size="9.5" fill="#2d6a4f" x="560" y="18" text-anchor="middle" font-family="'Noto Sans KR',sans-serif">45 복사(Copy-Up) → 부모 삽입</text>
+
+      <!-- 새 리프1: [40|42] -->
+      <rect x="460" y="100" width="100" height="34" rx="4" fill="#2d6a4f" stroke="#1a3d2b" stroke-width="1"/>
+      <line x1="492" y1="100" x2="492" y2="134" stroke="#fff" stroke-width="1"/>
+      <text font-size="12" font-weight="700" fill="#fff" x="478" y="121" text-anchor="middle" font-family="'JetBrains Mono',monospace">40</text>
+      <text font-size="13" font-weight="700" fill="#FFD700" x="526" y="121" text-anchor="middle" font-family="'JetBrains Mono',monospace">42</text>
+
+      <!-- 새 리프2: [45|50] -->
+      <rect x="574" y="100" width="110" height="34" rx="4" fill="#1a3a6e" stroke="#0d2347" stroke-width="1.5"/>
+      <line x1="606" y1="100" x2="606" y2="134" stroke="#fff" stroke-width="1"/>
+      <text font-size="13" font-weight="700" fill="#FFD700" x="592" y="121" text-anchor="middle" font-family="'JetBrains Mono',monospace">45</text>
+      <text font-size="12" font-weight="700" fill="#fff" x="640" y="121" text-anchor="middle" font-family="'JetBrains Mono',monospace">50</text>
+      <text font-size="9.5" fill="#1a3a6e" x="620" y="150" text-anchor="middle" font-family="'Noto Sans KR',sans-serif">신규 분할 노드</text>
+
+      <!-- 화살표들 (after) -->
+      <line x1="496" y1="64" x2="510" y2="98"  stroke="#aaa" stroke-width="1" marker-end="url(#si)" fill="none"/>
+      <line x1="560" y1="64" x2="560" y2="98"  stroke="#aaa" stroke-width="1" marker-end="url(#si)" fill="none"/>
+      <line x1="600" y1="64" x2="620" y2="98"  stroke="#aaa" stroke-width="1" marker-end="url(#si)" fill="none"/>
+      <line x1="645" y1="64" x2="660" y2="98" stroke="#aaa" stroke-width="0.8" marker-end="url(#si)" fill="none" stroke-dasharray="3 2"/>
+
+      <!-- Copy-Up 설명 -->
+      <rect x="460" y="175" width="250" height="52" rx="4" fill="#EAF3DE" stroke="#2d6a4f" stroke-width="0.8"/>
+      <text font-size="11" font-weight="700" fill="#2d6a4f" x="585" y="195" text-anchor="middle" font-family="'Noto Sans KR',sans-serif">Copy-Up 규칙 (B+ 트리)</text>
+      <text font-size="10.5" fill="#2d6a4f" x="585" y="212" text-anchor="middle" font-family="'Noto Sans KR',sans-serif">· 리프 분할 시 중간 키를 부모로 복사</text>
+      <text font-size="10.5" fill="#2d6a4f" x="585" y="224" text-anchor="middle" font-family="'Noto Sans KR',sans-serif">· 리프에는 중간 키가 그대로 남음</text>
+
+      <!-- 삽입 단계 요약 -->
+      <rect x="30" y="175" width="380" height="72" rx="4" fill="#f0efea" stroke="#ccc" stroke-width="0.8"/>
+      <text font-size="11" font-weight="700" fill="#1a3a6e" x="220" y="194" text-anchor="middle" font-family="'Noto Sans KR',sans-serif">삽입 절차 요약 (k=45)</text>
+      <text font-size="10.5" fill="#333" x="44" y="210" font-family="'Noto Sans KR',sans-serif">① 리프 [40|50]에 45 삽입 시도 → 3키 초과(overflow)</text>
+      <text font-size="10.5" fill="#333" x="44" y="226" font-family="'Noto Sans KR',sans-serif">② ⌈4/2⌉=2번째 키(45) 기준 분할: [40,42] / [45,50]</text>
+      <text font-size="10.5" fill="#333" x="44" y="240" font-family="'Noto Sans KR',sans-serif">③ 45(Copy-Up) → 부모 내부 노드에 삽입: [30|45|55]</text>
+    </svg>
+    <div class="fc">【그림 3】 삽입 연산 — 오버플로우 시 리프 노드 분할 및 Copy-Up</div>
+  </div>
+
+  <div class="sh2">3. 루트 분할</div>
+  <div class="txt i1">
+    <p>분할이 루트까지 전파되어 루트가 오버플로우되면 새 루트를 생성하고 트리 높이가 1 증가한다. 이것이 B+ 트리가 <span class="kw">항상 균형을 유지하는 핵심 메커니즘</span>이다.</p>
+  </div>
+</div>
+
+<hr class="pb">
+
+<!-- ─── Ⅳ. 삭제 ─── -->
+<div class="sec">
+  <div class="sh">Ⅳ. 삭제(Delete) 연산 — 재분배 및 합병</div>
+
+  <div class="sh2">1. 삭제 알고리즘 개요</div>
+  <div class="txt i1">
+    <p>① 삭제할 키를 리프 노드에서 탐색 후 제거<br>
+    ② 리프 노드 키 수가 최솟값(⌊(m-1)/2⌋) 이상이면 종료 — <span class="kw">단순 삭제</span><br>
+    ③ 최솟값 미만(Underflow) 발생 시 두 가지 방법 중 하나 선택:<br>
+    &emsp;<span class="kw">재분배(Redistribution)</span>: 형제 노드에 여유 키가 있으면 빌려옴<br>
+    &emsp;<span class="kw">합병(Merge)</span>: 형제 노드도 최솟값이면 두 노드를 병합 → 부모의 키 삭제 → 연쇄 전파 가능</p>
+  </div>
+
+  <div class="sh2">2. 삭제 경우 ① — 단순 삭제 (여유 있음)</div>
+  <div class="txt i1"><p>리프 [20 | 25]에서 20 삭제 → [25] — 최솟값(1) 충족, 종료.</p></div>
+
+  <div class="sh2">3. 삭제 경우 ② — 재분배(Redistribution)</div>
+  <div class="txt i1"><p>오른쪽 형제 노드에서 가장 작은 키를 빌려와 부모의 구분 키를 갱신한다.</p></div>
+
+  <div class="fig">
+    <svg width="100%" viewBox="0 0 700 230" xmlns="http://www.w3.org/2000/svg" role="img">
+      <title>재분배(Redistribution) 삭제</title>
+      <defs>
+        <marker id="sd" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse">
+          <path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </marker>
+      </defs>
+
+      <!-- BEFORE -->
+      <text font-size="11" font-weight="700" fill="#555" x="165" y="18" text-anchor="middle" font-family="'Noto Sans KR',sans-serif">【삭제 전 — 35 삭제】</text>
+      <!-- 부모 -->
+      <rect x="100" y="28" width="130" height="32" rx="4" fill="#1a3a6e" stroke="#0d2347" stroke-width="1"/>
+      <line x1="165" y1="28" x2="165" y2="60" stroke="#fff" stroke-width="1"/>
+      <text font-size="13" font-weight="700" fill="#fff" x="134" y="48" text-anchor="middle" font-family="'JetBrains Mono',monospace">30</text>
+      <text font-size="13" font-weight="700" fill="#fff" x="196" y="48" text-anchor="middle" font-family="'JetBrains Mono',monospace">40</text>
+      <!-- 리프 L: [30|35] → 35 삭제 → [30] underflow -->
+      <rect x="50"  y="84" width="110" height="32" rx="4" fill="#A32D2D" stroke="#7a0a0a" stroke-width="1.5"/>
+      <line x1="82" y1="84" x2="82"  y2="116" stroke="#fff" stroke-width="1"/>
+      <text font-size="12" font-weight="700" fill="#fff" x="68" y="104" text-anchor="middle" font-family="'JetBrains Mono',monospace">30</text>
+      <text font-size="12" font-weight="700" fill="#f88" x="106" y="104" text-anchor="middle" font-family="'JetBrains Mono',monospace">35̶</text>
+      <!-- 리프 R: [40|45|50] → 여유 있음 -->
+      <rect x="180" y="84" width="140" height="32" rx="4" fill="#2d6a4f" stroke="#1a3d2b" stroke-width="1"/>
+      <line x1="213" y1="84" x2="213" y2="116" stroke="#fff" stroke-width="1"/>
+      <line x1="247" y1="84" x2="247" y2="116" stroke="#fff" stroke-width="1"/>
+      <text font-size="12" font-weight="700" fill="#fff" x="198" y="104" text-anchor="middle" font-family="'JetBrains Mono',monospace">40</text>
+      <text font-size="12" font-weight="700" fill="#fff" x="230" y="104" text-anchor="middle" font-family="'JetBrains Mono',monospace">45</text>
+      <text font-size="12" font-weight="700" fill="#fff" x="290" y="104" text-anchor="middle" font-family="'JetBrains Mono',monospace">50</text>
+      <text font-size="10" fill="#2d6a4f" x="250" y="128" font-family="'Noto Sans KR',sans-serif">여유 있음 (3키 ≥ ⌈(4-1)/2⌉=2)</text>
+
+      <line x1="134" y1="60" x2="105" y2="82" stroke="#aaa" stroke-width="1" marker-end="url(#sd)" fill="none"/>
+      <line x1="196" y1="60" x2="250" y2="82" stroke="#aaa" stroke-width="1" marker-end="url(#sd)" fill="none"/>
+
+      <!-- 화살표 -->
+      <text font-size="26" fill="#EF9F27" x="400" y="108" text-anchor="middle" font-family="'Noto Sans KR',sans-serif">⟹</text>
+      <text font-size="10.5" font-weight="700" fill="#EF9F27" x="400" y="124" text-anchor="middle" font-family="'Noto Sans KR',sans-serif">재분배</text>
+
+      <!-- AFTER -->
+      <text font-size="11" font-weight="700" fill="#555" x="570" y="18" text-anchor="middle" font-family="'Noto Sans KR',sans-serif">【재분배 후】</text>
+      <!-- 부모 갱신: 30→40 -->
+      <rect x="500" y="28" width="130" height="32" rx="4" fill="#2d6a4f" stroke="#1a3d2b" stroke-width="1.5"/>
+      <line x1="565" y1="28" x2="565" y2="60" stroke="#fff" stroke-width="1"/>
+      <text font-size="13" font-weight="700" fill="#fff" x="534" y="48" text-anchor="middle" font-family="'JetBrains Mono',monospace">30</text>
+      <text font-size="13" font-weight="700" fill="#FFD700" x="596" y="48" text-anchor="middle" font-family="'JetBrains Mono',monospace">45</text>
+      <text font-size="9.5" fill="#2d6a4f" x="596" y="18" text-anchor="middle" font-family="'Noto Sans KR',sans-serif">↑ 부모 키 40→45 갱신</text>
+      <!-- 리프 L: [30|40] -->
+      <rect x="450" y="84" width="110" height="32" rx="4" fill="#2d6a4f" stroke="#1a3d2b" stroke-width="1"/>
+      <line x1="482" y1="84" x2="482" y2="116" stroke="#fff" stroke-width="1"/>
+      <text font-size="12" font-weight="700" fill="#fff" x="468" y="104" text-anchor="middle" font-family="'JetBrains Mono',monospace">30</text>
+      <text font-size="13" font-weight="700" fill="#FFD700" x="514" y="104" text-anchor="middle" font-family="'JetBrains Mono',monospace">40</text>
+      <!-- 리프 R: [45|50] -->
+      <rect x="580" y="84" width="110" height="32" rx="4" fill="#2d6a4f" stroke="#1a3d2b" stroke-width="1"/>
+      <line x1="612" y1="84" x2="612" y2="116" stroke="#fff" stroke-width="1"/>
+      <text font-size="12" font-weight="700" fill="#fff" x="598" y="104" text-anchor="middle" font-family="'JetBrains Mono',monospace">45</text>
+      <text font-size="12" font-weight="700" fill="#fff" x="644" y="104" text-anchor="middle" font-family="'JetBrains Mono',monospace">50</text>
+      <line x1="534" y1="60" x2="505" y2="82" stroke="#aaa" stroke-width="1" marker-end="url(#sd)" fill="none"/>
+      <line x1="596" y1="60" x2="635" y2="82" stroke="#aaa" stroke-width="1" marker-end="url(#sd)" fill="none"/>
+
+      <rect x="440" y="148" width="260" height="40" rx="4" fill="#E6F1FB" stroke="#1a3a6e" stroke-width="0.8"/>
+      <text font-size="10.5" fill="#0C447C" x="570" y="164" text-anchor="middle" font-family="'Noto Sans KR',sans-serif">형제의 첫 키(40)를 가져와 왼쪽에 붙이고</text>
+      <text font-size="10.5" fill="#0C447C" x="570" y="180" text-anchor="middle" font-family="'Noto Sans KR',sans-serif">부모 구분 키를 형제의 새 첫 키(45)로 갱신</text>
+    </svg>
+    <div class="fc">【그림 4】 재분배 삭제 — 오른쪽 형제에서 40을 빌려오고 부모 키 갱신</div>
+  </div>
+
+  <div class="sh2">4. 삭제 경우 ③ — 합병(Merge)</div>
+  <div class="txt i1"><p>양쪽 형제 모두 최솟값이어서 빌릴 수 없을 때, 두 리프 노드를 합치고 부모의 구분 키를 삭제한다. 부모에서도 underflow 발생 시 재귀적으로 합병 전파.</p></div>
+
+  <div class="fig">
+    <svg width="100%" viewBox="0 0 700 250" xmlns="http://www.w3.org/2000/svg" role="img">
+      <title>합병(Merge) 삭제</title>
+      <defs>
+        <marker id="sm" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse">
+          <path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </marker>
+      </defs>
+
+      <!-- BEFORE -->
+      <text font-size="11" font-weight="700" fill="#555" x="175" y="18" text-anchor="middle" font-family="'Noto Sans KR',sans-serif">【삭제 전 — 50 삭제 (형제 최솟값)】</text>
+      <!-- 부모 -->
+      <rect x="90" y="28" width="170" height="32" rx="4" fill="#1a3a6e" stroke="#0d2347" stroke-width="1"/>
+      <line x1="175" y1="28" x2="175" y2="60" stroke="#fff" stroke-width="1"/>
+      <text font-size="13" font-weight="700" fill="#fff" x="135" y="48" text-anchor="middle" font-family="'JetBrains Mono',monospace">45</text>
+      <text font-size="13" font-weight="700" fill="#fff" x="215" y="48" text-anchor="middle" font-family="'JetBrains Mono',monospace">55</text>
+      <!-- 리프 L: [45] 최솟값 -->
+      <rect x="50"  y="84" width="80"  height="32" rx="4" fill="#4a3080" stroke="#2d1a60" stroke-width="1"/>
+      <text font-size="12" font-weight="700" fill="#fff" x="90"  y="104" text-anchor="middle" font-family="'JetBrains Mono',monospace">45</text>
+      <text font-size="9.5" fill="#4a3080" x="90" y="126" text-anchor="middle" font-family="'Noto Sans KR',sans-serif">최솟값(1키)</text>
+      <!-- 리프 M: [50] → 삭제 후 0 → underflow -->
+      <rect x="150" y="84" width="80"  height="32" rx="4" fill="#A32D2D" stroke="#7a0a0a" stroke-width="2"/>
+      <text font-size="12" font-weight="700" fill="#f88" x="190" y="104" text-anchor="middle" font-family="'JetBrains Mono',monospace">50̶</text>
+      <text font-size="9.5" fill="#A32D2D" x="190" y="126" text-anchor="middle" font-family="'Noto Sans KR',sans-serif">삭제 → 0 underflow</text>
+      <!-- 리프 R: [55] 최솟값 -->
+      <rect x="250" y="84" width="80"  height="32" rx="4" fill="#4a3080" stroke="#2d1a60" stroke-width="1"/>
+      <text font-size="12" font-weight="700" fill="#fff" x="290" y="104" text-anchor="middle" font-family="'JetBrains Mono',monospace">55</text>
+      <text font-size="9.5" fill="#4a3080" x="290" y="126" text-anchor="middle" font-family="'Noto Sans KR',sans-serif">최솟값(1키)</text>
+
+      <line x1="130" y1="60" x2="90"  y2="82" stroke="#aaa" stroke-width="1" marker-end="url(#sm)" fill="none"/>
+      <line x1="175" y1="60" x2="190" y2="82" stroke="#aaa" stroke-width="1" marker-end="url(#sm)" fill="none"/>
+      <line x1="220" y1="60" x2="290" y2="82" stroke="#aaa" stroke-width="1" marker-end="url(#sm)" fill="none"/>
+
+      <!-- 화살표 -->
+      <text font-size="26" fill="#EF9F27" x="400" y="108" text-anchor="middle" font-family="'Noto Sans KR',sans-serif">⟹</text>
+      <text font-size="10.5" font-weight="700" fill="#EF9F27" x="400" y="124" text-anchor="middle" font-family="'Noto Sans KR',sans-serif">합병(Merge)</text>
+
+      <!-- AFTER -->
+      <text font-size="11" font-weight="700" fill="#555" x="580" y="18" text-anchor="middle" font-family="'Noto Sans KR',sans-serif">【합병 후】</text>
+      <!-- 부모: 45만 남음 -->
+      <rect x="510" y="28" width="130" height="32" rx="4" fill="#2d6a4f" stroke="#1a3d2b" stroke-width="1.5"/>
+      <text font-size="13" font-weight="700" fill="#fff" x="575" y="48" text-anchor="middle" font-family="'JetBrains Mono',monospace">55</text>
+      <text font-size="9.5" fill="#2d6a4f" x="575" y="18" text-anchor="middle" font-family="'Noto Sans KR',sans-serif">부모 구분 키 45 삭제</text>
+      <!-- 합쳐진 리프: [45|55] -->
+      <rect x="510" y="84" width="130" height="32" rx="4" fill="#2d6a4f" stroke="#1a3d2b" stroke-width="2"/>
+      <line x1="575" y1="84" x2="575" y2="116" stroke="#fff" stroke-width="1"/>
+      <text font-size="12" font-weight="700" fill="#fff" x="544" y="104" text-anchor="middle" font-family="'JetBrains Mono',monospace">45</text>
+      <text font-size="12" font-weight="700" fill="#fff" x="608" y="104" text-anchor="middle" font-family="'JetBrains Mono',monospace">55</text>
+      <text font-size="9.5" fill="#1a3a6e" x="575" y="126" text-anchor="middle" font-family="'Noto Sans KR',sans-serif">두 리프 합병 → [45|55]</text>
+      <line x1="575" y1="60" x2="575" y2="82" stroke="#aaa" stroke-width="1" marker-end="url(#sm)" fill="none"/>
+
+      <rect x="440" y="152" width="260" height="52" rx="4" fill="#EAF3DE" stroke="#2d6a4f" stroke-width="0.8"/>
+      <text font-size="10.5" font-weight="700" fill="#2d6a4f" x="570" y="169" text-anchor="middle" font-family="'Noto Sans KR',sans-serif">합병(Merge) 절차</text>
+      <text font-size="10.5" fill="#2d6a4f" x="570" y="184" text-anchor="middle" font-family="'Noto Sans KR',sans-serif">① [45] + [55] → [45|55] 합병</text>
+      <text font-size="10.5" fill="#2d6a4f" x="570" y="198" text-anchor="middle" font-family="'Noto Sans KR',sans-serif">② 부모 구분 키 45 삭제</text>
+    </svg>
+    <div class="fc">【그림 5】 합병 삭제 — 양쪽 형제 모두 최솟값 → 병합 후 부모 구분 키 삭제</div>
+  </div>
+
+  <div class="sh2">5. 삭제 연산 의사결정 요약</div>
+  <div class="tw">
+    <table>
+      <tr><th style="width:28%">삭제 후 상황</th><th style="width:34%">처리 방법</th><th>부모 영향</th></tr>
+      <tr><td><span class="kc">키 수 ≥ 최솟값</span></td><td>단순 삭제 후 종료</td><td>없음</td></tr>
+      <tr><td><span class="kc">키 수 &lt; 최솟값<br>형제에 여유 있음</span></td><td><span class="kw">재분배</span> — 형제에서 키 1개 가져옴</td><td>구분 키(Separator) 갱신</td></tr>
+      <tr><td><span class="kc">키 수 &lt; 최솟값<br>형제도 최솟값</span></td><td><span class="kw">합병</span> — 형제와 병합</td><td>부모 구분 키 삭제 → 연쇄 전파 가능</td></tr>
+      <tr><td><span class="kc">루트 합병 후 자식 1개</span></td><td>루트 제거, 자식이 새 루트가 됨</td><td>트리 높이 1 감소</td></tr>
+    </table>
+  </div>
+  <div class="fc" style="margin-top:-8px;margin-bottom:12px">【표 4】 삭제 연산 의사결정 요약</div>
+</div>
+
+<!-- ─── Ⅴ. 결론 ─── -->
+<div class="sec">
+  <div class="sh">Ⅴ. 결론</div>
+  <div class="txt">
+    <p>B+ 트리는 <span class="kw">균형 유지·높은 팬아웃·리프 연결 리스트</span>의 세 가지 특성으로 RDBMS 인덱스의 표준 자료구조 지위를 확립하였다. 검색·삽입·삭제 모두 <span class="kw">O(log_m N)</span>의 균일한 복잡도를 보장하며, 디스크 I/O 최소화와 범위 탐색 효율성이 결합되어 대용량 데이터베이스 환경에 최적화된 구조이다. 삽입 시 분할(Split)과 삭제 시 재분배·합병(Merge)은 트리의 균형을 자동으로 유지하는 자기 조정(Self-Balancing) 메커니즘이다.</p>
+  </div>
+</div>
+
+<div class="note">
+  <div class="nt">★ 기술사 핵심 코멘트</div>
+  <div class="nb">
+    B+ 트리의 본질은 <strong>균형 유지 + 고팬아웃으로 디스크 접근 횟수를 로그 수준(h≈3~4)으로 억제</strong>하는 것이며, DB 시스템 설계·감리 시 다음을 중점 검토해야 한다.<br>
+    ① <strong>인덱스 설계 적정성:</strong> 선택도(Selectivity) 낮은 컬럼(성별 등)에 B+ 트리 인덱스는 비효율 — 전체 테이블 스캔이 오히려 빠를 수 있음. 쿼리 실행 계획(EXPLAIN) 분석 여부 확인<br>
+    ② <strong>페이지 분할(Page Split) 과다:</strong> 순차 삽입이 아닌 무작위 삽입 시 리프 노드 분할이 빈발하여 페이지 단편화 발생 → FILLFACTOR 설정 및 주기적 인덱스 재구성(REBUILD) 정책 수립 여부<br>
+    ③ <strong>클러스터드 vs. 논클러스터드 인덱스:</strong> InnoDB 프라이머리 키는 클러스터드(리프에 실제 데이터 저장) — 보조 인덱스는 리프에 PK값 저장 후 2차 탐색 발생. 설계 시 PK 선택 전략 검토<br>
+    ④ <strong>범위 스캔 최적화:</strong> 리프 연결 리스트를 활용한 범위 탐색의 장점을 최대한 활용하기 위해 복합 인덱스의 컬럼 순서(범위 조건 컬럼을 후순위에 배치)를 올바르게 설계했는지 감리
+  </div>
+</div>
+
+</div><!-- /body -->
+
+<div class="ftr">
+  <span>컴퓨터시스템응용 기술사 · 모범 답안</span>
+  <span>B+ 트리 인덱스 — 구조·검색·삽입(Split)·삭제(Redistribution·Merge)</span>
+  <span>총 5개 항목 · 표 4개 · 그림 5개 · 연산 다이어그램 포함</span>
+</div>
+
+</div><!-- /doc -->
+</body>
+</html>

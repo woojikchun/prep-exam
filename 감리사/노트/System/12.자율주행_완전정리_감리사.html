@@ -1,0 +1,637 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;900&family=JetBrains+Mono:wght@400;700&display=swap');
+:root{--bg:#030d08;--s1:#061510;--s2:#0a1e16;--s3:#0f271e;--bdr:#1a4a2e;--a1:#4ade80;--a2:#38bdf8;--a3:#fbbf24;--a4:#f87171;--a5:#a78bfa;--a6:#fb923c;--txt:#e2e8f0;--mu:#64748b;}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Noto Sans KR',sans-serif;background:var(--bg);color:var(--txt);min-height:100vh;}
+.hdr{padding:20px 24px 14px;background:linear-gradient(150deg,#030d08,#071a10,#030d08);border-bottom:1px solid var(--bdr);}
+.hdr-r{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:6px;}
+.pill{padding:3px 10px;border-radius:20px;font-size:10px;font-weight:700;}
+.p1{background:linear-gradient(135deg,#052e16,var(--a1));color:#000;}
+.p2{background:rgba(56,189,248,.15);color:var(--a2);border:1px solid rgba(56,189,248,.3);}
+.p3{background:rgba(251,191,36,.15);color:var(--a3);border:1px solid rgba(251,191,36,.3);}
+h1{font-size:18px;font-weight:900;}
+.h1g{background:linear-gradient(90deg,var(--a1),var(--a2),var(--a3));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.hdr p{color:var(--mu);font-size:11.5px;margin-top:3px;}
+.tabs{display:flex;padding:0 24px;background:var(--s1);border-bottom:1px solid var(--bdr);overflow-x:auto;scrollbar-width:none;}
+.tabs::-webkit-scrollbar{display:none;}
+.tab{padding:10px 13px;font-size:11.5px;font-weight:600;color:var(--mu);cursor:pointer;border-bottom:2px solid transparent;white-space:nowrap;transition:all .2s;background:none;border-top:none;border-left:none;border-right:none;font-family:'Noto Sans KR',sans-serif;}
+.tab.on{color:var(--a1);border-bottom-color:var(--a1);}
+.wrap{padding:18px 24px;max-width:960px;margin:0 auto;}
+.pnl{display:none;}.pnl.on{display:block;}
+.card{background:var(--s1);border:1px solid var(--bdr);border-radius:11px;padding:16px;margin-bottom:12px;}
+.card-h{display:flex;align-items:center;gap:9px;margin-bottom:12px;}
+.ico{width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0;}
+.ig{background:rgba(74,222,128,.15);}.ib{background:rgba(56,189,248,.15);}.iy{background:rgba(251,191,36,.15);}.ir{background:rgba(248,113,113,.15);}.ip{background:rgba(167,139,250,.15);}.io{background:rgba(251,146,60,.15);}
+.card h3{font-size:13.5px;font-weight:700;}
+.tag{display:inline-block;padding:2px 7px;border-radius:4px;font-size:9.5px;font-weight:600;margin:2px 2px 2px 0;}
+.tg{background:rgba(74,222,128,.12);color:var(--a1);border:1px solid rgba(74,222,128,.25);}
+.tb{background:rgba(56,189,248,.12);color:var(--a2);border:1px solid rgba(56,189,248,.25);}
+.ty{background:rgba(251,191,36,.12);color:var(--a3);border:1px solid rgba(251,191,36,.25);}
+.tr{background:rgba(248,113,113,.12);color:var(--a4);border:1px solid rgba(248,113,113,.25);}
+.tp{background:rgba(167,139,250,.12);color:var(--a5);border:1px solid rgba(167,139,250,.25);}
+.to{background:rgba(251,146,60,.12);color:var(--a6);border:1px solid rgba(251,146,60,.25);}
+table{width:100%;border-collapse:collapse;font-size:12px;}
+th{background:var(--s2);color:var(--mu);font-weight:700;padding:7px 11px;text-align:left;font-size:9.5px;text-transform:uppercase;letter-spacing:.5px;border-bottom:1px solid var(--bdr);}
+td{padding:8px 11px;border-bottom:1px solid rgba(26,74,46,.5);vertical-align:top;line-height:1.55;}
+tr:last-child td{border-bottom:none;}
+tr:hover td{background:rgba(255,255,255,.02);}
+td strong{color:var(--a3);}
+ul.il{list-style:none;display:flex;flex-direction:column;gap:6px;}
+ul.il li{font-size:12px;padding-left:15px;position:relative;line-height:1.5;}
+ul.il li::before{content:'▸';position:absolute;left:0;color:var(--a1);font-size:9.5px;top:3px;}
+ul.il li strong{color:var(--a3);}
+ul.il li em{color:var(--a2);font-style:normal;}
+.memo{background:linear-gradient(135deg,rgba(74,222,128,.07),rgba(56,189,248,.07));border:1px solid rgba(74,222,128,.22);border-left:3px solid var(--a1);border-radius:7px;padding:9px 13px;font-size:12px;font-weight:600;color:var(--a1);margin:9px 0;}
+.memo::before{content:'🎯 한 줄 암기 │ ';color:var(--mu);font-weight:400;}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px;}
+@media(max-width:580px){.g2{grid-template-columns:1fr;}}
+/* level cards */
+.level-row{display:flex;gap:5px;overflow-x:auto;margin:10px 0;padding-bottom:4px;}
+.lv{border-radius:8px;padding:11px 10px;border:1px solid;min-width:120px;flex:1;text-align:center;}
+.lv-num{font-size:18px;font-weight:900;margin-bottom:3px;}
+.lv-name{font-size:10.5px;font-weight:800;margin-bottom:5px;}
+.lv-desc{font-size:9.5px;color:var(--mu);line-height:1.4;}
+/* sensor cards */
+.sensor-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:10px 0;}
+@media(max-width:580px){.sensor-grid{grid-template-columns:1fr 1fr;}}
+.sc{background:var(--s2);border:1px solid var(--bdr);border-radius:8px;padding:12px;}
+.sc-ico{font-size:22px;margin-bottom:5px;}
+.sc-name{font-size:12px;font-weight:800;margin-bottom:4px;}
+.sc-sub{font-size:10.5px;color:var(--mu);line-height:1.4;}
+/* acc */
+.acc{background:var(--s2);border:1px solid var(--bdr);border-radius:9px;margin-bottom:8px;overflow:hidden;}
+.acc-h{display:flex;justify-content:space-between;align-items:center;padding:10px 14px;cursor:pointer;user-select:none;}
+.acc-h:hover{background:rgba(255,255,255,.02);}
+.acc-title{font-size:12.5px;font-weight:800;flex:1;}
+.acc-tgl{color:var(--mu);transition:transform .2s;font-size:14px;flex-shrink:0;margin-left:8px;}
+.acc.open .acc-tgl{transform:rotate(180deg);}
+.acc-body{display:none;border-top:1px solid var(--bdr);padding:12px 14px;background:var(--s3);font-size:12px;line-height:1.65;}
+.acc.open .acc-body{display:block;}
+.acc-body strong{color:var(--a3);}
+.acc-body em{color:var(--a2);font-style:normal;}
+/* qa */
+.qa{background:var(--s1);border:1px solid var(--bdr);border-radius:9px;margin-bottom:10px;overflow:hidden;}
+.qa:hover{border-color:rgba(74,222,128,.25);}
+.qa-hd{padding:12px 16px;cursor:pointer;display:flex;justify-content:space-between;align-items:flex-start;gap:9px;user-select:none;}
+.qa-meta{display:flex;align-items:center;gap:5px;margin-bottom:4px;flex-wrap:wrap;}
+.qn{font-family:'JetBrains Mono',monospace;font-size:9.5px;font-weight:700;color:var(--mu);}
+.qq{font-size:12.5px;font-weight:600;line-height:1.5;}
+.tgl{color:var(--mu);font-size:15px;flex-shrink:0;transition:transform .2s;}
+.qa.open .tgl{transform:rotate(180deg);}
+.qa-bd{display:none;border-top:1px solid var(--bdr);padding:12px 16px;background:var(--s2);}
+.qa.open .qa-bd{display:block;}
+.chs{display:flex;flex-direction:column;gap:6px;margin-bottom:10px;}
+.ch{display:flex;align-items:flex-start;gap:9px;padding:8px 12px;border-radius:6px;border:1px solid var(--bdr);font-size:12px;cursor:pointer;background:var(--s1);line-height:1.45;transition:all .15s;}
+.ch:hover:not(.lk){border-color:rgba(74,222,128,.3);background:rgba(74,222,128,.04);}
+.ch.ok{border-color:var(--a1);background:rgba(74,222,128,.1);color:var(--a1);}
+.ch.ng{border-color:var(--a4);background:rgba(248,113,113,.08);color:var(--a4);opacity:.7;}
+.ch.lk{cursor:default;}
+.cnum{font-family:'JetBrains Mono',monospace;font-weight:700;font-size:10.5px;flex-shrink:0;margin-top:1px;color:var(--mu);}
+.ch.ok .cnum{color:var(--a1);}.ch.ng .cnum{color:var(--a4);}
+.exp{background:rgba(74,222,128,.05);border:1px solid rgba(74,222,128,.18);border-radius:7px;padding:11px 13px;font-size:12px;line-height:1.6;display:none;}
+.exp.show{display:block;}
+.exp-t{font-size:9.5px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--a1);margin-bottom:5px;}
+.exp strong{color:var(--a3);}
+.exp em{color:var(--a2);font-style:normal;}
+.ox-wr{display:flex;gap:8px;margin-bottom:10px;}
+.ox{flex:1;padding:10px;border-radius:7px;border:1px solid var(--bdr);font-size:18px;cursor:pointer;background:var(--s1);transition:all .15s;font-family:'Noto Sans KR',sans-serif;color:var(--txt);}
+.ox:hover:not(.lk){transform:scale(1.02);}
+.ox.so{border-color:var(--a1);background:rgba(74,222,128,.15);}
+.ox.sx{border-color:var(--a4);background:rgba(248,113,113,.1);}
+.ox.lk{cursor:default;}
+.diff{display:inline-block;padding:2px 6px;border-radius:9px;font-size:8.5px;font-weight:700;}
+.easy{background:rgba(74,222,128,.2);color:var(--a1);}
+.mid{background:rgba(251,191,36,.2);color:var(--a3);}
+.hard{background:rgba(248,113,113,.2);color:var(--a4);}
+.fb-wr{display:flex;gap:5px;flex-wrap:wrap;margin-bottom:12px;}
+.fb{padding:4px 11px;border-radius:18px;border:1px solid var(--bdr);font-size:10.5px;font-weight:600;cursor:pointer;background:var(--s2);color:var(--mu);transition:all .15s;font-family:'Noto Sans KR',sans-serif;}
+.fb.on{background:rgba(74,222,128,.15);color:var(--a1);border-color:var(--a1);}
+.sc-b{background:var(--s2);border:1px solid var(--bdr);border-radius:7px;padding:4px 12px;font-size:11.5px;color:var(--mu);}
+.sc-b span{color:var(--a1);font-weight:700;}
+</style>
+</head>
+<body>
+<div class="hdr">
+  <div class="hdr-r">
+    <span class="pill p1">🚗 자율주행 (Autonomous Driving)</span>
+    <span class="pill p2">SAE 레벨·센서·V2X·AI·보안</span>
+    <span class="pill p3">감리사 핵심 출제</span>
+  </div>
+  <h1><span class="h1g">자율주행 기술 완전 정리</span></h1>
+  <p>자율주행 레벨 · 핵심 센서 · 인지·판단·제어 아키텍처 · V2X · HD맵 · AI/ML · 보안·표준</p>
+</div>
+<div class="tabs">
+  <button class="tab on" data-p="p1">🏎️ 개요·레벨</button>
+  <button class="tab" data-p="p2">📡 핵심 센서</button>
+  <button class="tab" data-p="p3">🧠 인지·판단·제어</button>
+  <button class="tab" data-p="p4">📶 V2X·HD맵</button>
+  <button class="tab" data-p="p5">🔒 보안·안전·표준</button>
+  <button class="tab" data-p="p6">❓ 예상문제</button>
+</div>
+<div class="wrap">
+
+<!-- P1: 개요·레벨 -->
+<div class="pnl on" id="p1">
+  <div class="card">
+    <div class="card-h"><div class="ico ig">🏎️</div><h3>자율주행 SAE 레벨 분류 ⭐ (J3016)</h3></div>
+    <div style="background:var(--s2);border:1px solid rgba(74,222,128,.25);border-radius:9px;padding:12px;margin-bottom:11px;font-size:12px;line-height:1.75;">
+      <strong style="color:var(--a1)">SAE International J3016</strong>: 자율주행을 <em style="color:var(--a3);font-style:normal;">운전 자동화 수준</em>에 따라 Level 0~5로 분류하는 국제 표준 — "누가 운전하는가"가 핵심
+    </div>
+    <div class="level-row">
+      <div class="lv" style="background:rgba(248,113,113,.08);border-color:rgba(248,113,113,.3);">
+        <div class="lv-num" style="color:var(--a4);">L0</div>
+        <div class="lv-name" style="color:var(--a4);">비자동화</div>
+        <div class="lv-desc">운전자 전담<br>경고만 가능</div>
+      </div>
+      <div class="lv" style="background:rgba(251,146,60,.08);border-color:rgba(251,146,60,.3);">
+        <div class="lv-num" style="color:var(--a6);">L1</div>
+        <div class="lv-name" style="color:var(--a6);">운전자 보조</div>
+        <div class="lv-desc">조향 또는 가감속<br>1가지만 자동</div>
+      </div>
+      <div class="lv" style="background:rgba(251,191,36,.08);border-color:rgba(251,191,36,.3);">
+        <div class="lv-num" style="color:var(--a3);">L2</div>
+        <div class="lv-name" style="color:var(--a3);">부분 자동화</div>
+        <div class="lv-desc">조향+가감속 동시<br>운전자 감시 필수</div>
+      </div>
+      <div class="lv" style="background:rgba(56,189,248,.08);border-color:rgba(56,189,248,.3);">
+        <div class="lv-num" style="color:var(--a2);">L3</div>
+        <div class="lv-name" style="color:var(--a2);">조건부 자동화</div>
+        <div class="lv-desc">조건부 자동운전<br>요청 시 운전자 개입</div>
+      </div>
+      <div class="lv" style="background:rgba(167,139,250,.08);border-color:rgba(167,139,250,.3);">
+        <div class="lv-num" style="color:var(--a5);">L4</div>
+        <div class="lv-name" style="color:var(--a5);">고도 자동화</div>
+        <div class="lv-desc">특정 영역(ODD)에서<br>완전 자동운전</div>
+      </div>
+      <div class="lv" style="background:rgba(74,222,128,.08);border-color:rgba(74,222,128,.3);">
+        <div class="lv-num" style="color:var(--a1);">L5</div>
+        <div class="lv-name" style="color:var(--a1);">완전 자동화</div>
+        <div class="lv-desc">모든 조건·도로<br>운전자 불필요</div>
+      </div>
+    </div>
+    <table>
+      <thead><tr><th>레벨</th><th>명칭</th><th>시스템 역할</th><th>인간 역할</th><th>대표 기술·제품</th></tr></thead>
+      <tbody>
+        <tr><td><span class="tag tr">L0</span></td><td>비자동화</td><td>경고·일시 개입만</td><td>모든 운전</td><td>자동 긴급 제동(AEB)·경고음</td></tr>
+        <tr><td><span class="tag to">L1</span></td><td>운전자 보조</td><td>조향 또는 가감속 중 1가지</td><td>나머지 모든 것</td><td>LKAS(차선유지) 또는 ACC(크루즈)</td></tr>
+        <tr><td><span class="tag ty">L2</span></td><td>부분 자동화</td><td>조향+가감속 동시 자동</td><td>상시 감시·즉시 개입 가능</td><td>Tesla Autopilot, GM Super Cruise</td></tr>
+        <tr><td><span class="tag tb">L3</span></td><td>조건부 자동화</td><td>ODD 내 모든 주행</td><td>시스템 요청 시 개입</td><td>Honda SENSING Elite, Mercedes S-Class</td></tr>
+        <tr><td><span class="tag tp">L4</span></td><td>고도 자동화</td><td>특정 영역 완전 자동</td><td>해당 영역 내 개입 불필요</td><td>Waymo One, 로봇택시, 자율주행 셔틀</td></tr>
+        <tr><td><span class="tag tg">L5</span></td><td>완전 자동화</td><td>모든 조건 완전 자동</td><td>불필요 (핸들 없어도 됨)</td><td>현재 미실현 (연구 단계)</td></tr>
+      </tbody>
+    </table>
+    <div class="memo">L0=경고만 / L1=조향OR가감속 / L2=조향+가감속(운전자감시) / L3=조건부(요청시개입) / L4=특정ODD완전 / L5=무조건완전</div>
+  </div>
+
+  <div class="card">
+    <div class="card-h"><div class="ico iy">📋</div><h3>자율주행 핵심 용어</h3></div>
+    <table>
+      <thead><tr><th>용어</th><th>설명</th></tr></thead>
+      <tbody>
+        <tr><td><strong>ODD (Operational Design Domain)</strong></td><td>자율주행 시스템이 정상 작동하도록 설계된 조건 범위 — 도로 유형·날씨·속도·지리적 영역</td></tr>
+        <tr><td><strong>OEDR (Object and Event Detection & Response)</strong></td><td>물체·사건 감지 및 대응 — 자율주행의 핵심 기능 (인지+판단+제어)</td></tr>
+        <tr><td><strong>DDT (Dynamic Driving Task)</strong></td><td>실시간 운전 작업 전체 (조향·가감속·경로 계획·위험 대응)</td></tr>
+        <tr><td><strong>MRC (Minimal Risk Condition)</strong></td><td>시스템 한계 도달 시 안전하게 차량을 정지·대피시키는 최소 위험 상태</td></tr>
+        <tr><td><strong>AEB (Automatic Emergency Braking)</strong></td><td>전방 충돌 위험 감지 시 자동 긴급 제동 (L0에도 탑재)</td></tr>
+        <tr><td><strong>ADAS (Advanced Driver Assistance System)</strong></td><td>L1~L2 수준의 첨단 운전자 보조 시스템 총칭</td></tr>
+        <tr><td><strong>Functional Safety (ISO 26262)</strong></td><td>자동차 기능 안전 표준 — ASIL(A~D) 등급으로 안전 요구사항 분류</td></tr>
+      </tbody>
+    </table>
+    <div class="memo">ODD=작동설계영역 / DDT=실시간운전작업 / MRC=최소위험상태 / ADAS=L1~L2보조시스템 / ISO26262=기능안전표준</div>
+  </div>
+</div>
+
+<!-- P2: 센서 -->
+<div class="pnl" id="p2">
+  <div class="card">
+    <div class="card-h"><div class="ico ib">📡</div><h3>자율주행 핵심 센서 비교 ⭐</h3></div>
+    <div class="sensor-grid">
+      <div class="sc">
+        <div class="sc-ico">🔴</div>
+        <div class="sc-name" style="color:var(--a4);">LiDAR</div>
+        <div class="sc-sub">레이저 펄스로 3D 포인트 클라우드 생성<br>정밀 거리 측정·3D 지도<br>야간 강력·비·눈에 취약<br>비용 높음</div>
+      </div>
+      <div class="sc">
+        <div class="sc-ico">📷</div>
+        <div class="sc-name" style="color:var(--a2);">카메라 (Camera)</div>
+        <div class="sc-sub">표지판·신호·차선·물체 인식<br>색상·텍스처 정보 풍부<br>저조도·역광에 취약<br>저비용·고해상도</div>
+      </div>
+      <div class="sc">
+        <div class="sc-ico">📻</div>
+        <div class="sc-name" style="color:var(--a3);">레이더 (Radar)</div>
+        <div class="sc-sub">전파로 속도·거리 측정<br>악천후(비·눈·안개)에 강함<br>해상도 낮음<br>장거리 탐지 가능</div>
+      </div>
+      <div class="sc">
+        <div class="sc-ico">🔊</div>
+        <div class="sc-name" style="color:var(--a1);">초음파 (Ultrasonic)</div>
+        <div class="sc-sub">근거리(수 m) 장애물 탐지<br>주차 보조·저속 사용<br>저비용·단거리<br>속도 측정 불가</div>
+      </div>
+      <div class="sc">
+        <div class="sc-ico">🛰️</div>
+        <div class="sc-name" style="color:var(--a5);">GPS/GNSS</div>
+        <div class="sc-sub">위성 기반 절대 위치<br>터널·지하 차단<br>오차 수 m → RTK로 cm급<br>HD맵 보정과 결합</div>
+      </div>
+      <div class="sc">
+        <div class="sc-ico">📐</div>
+        <div class="sc-name" style="color:var(--a6);">IMU</div>
+        <div class="sc-sub">관성 측정 장치<br>가속도·각속도 측정<br>GPS 불가 구간 보완<br>Dead Reckoning</div>
+      </div>
+    </div>
+    <table style="margin-top:12px;">
+      <thead><tr><th>비교 항목</th><th style="color:var(--a4)">LiDAR</th><th style="color:var(--a2)">카메라</th><th style="color:var(--a3)">레이더</th><th style="color:var(--a1)">초음파</th></tr></thead>
+      <tbody>
+        <tr><td><strong>측정 방식</strong></td><td>레이저 펄스</td><td>빛(광학)</td><td>전파(마이크로파)</td><td>음파</td></tr>
+        <tr><td><strong>3D 정보</strong></td><td><strong>○ (포인트 클라우드)</strong></td><td>△ (스테레오)</td><td>△</td><td>×</td></tr>
+        <tr><td><strong>야간 성능</strong></td><td>○</td><td>△ (적외선 필요)</td><td>○</td><td>○</td></tr>
+        <tr><td><strong>악천후 대응</strong></td><td>△ (비·눈 취약)</td><td>× (취약)</td><td><strong>○ (강함)</strong></td><td>○</td></tr>
+        <tr><td><strong>속도 측정</strong></td><td>△</td><td>×</td><td><strong>○ (도플러)</strong></td><td>×</td></tr>
+        <tr><td><strong>인식 거리</strong></td><td>수백 m</td><td>수십~100m</td><td>수백 m</td><td>수 m</td></tr>
+        <tr><td><strong>비용</strong></td><td>높음</td><td>낮음</td><td>중간</td><td>매우 낮음</td></tr>
+        <tr><td><strong>주요 용도</strong></td><td>3D 지도·정밀 인식</td><td>표지판·차선·신호</td><td>속도·장거리 물체</td><td>주차 보조</td></tr>
+      </tbody>
+    </table>
+
+    <div class="acc" onclick="this.classList.toggle('open')">
+      <div class="acc-h"><div class="acc-title" style="color:var(--a1);">센서 퓨전 (Sensor Fusion) ⭐ — 다중 센서 통합</div><div class="acc-tgl">▾</div></div>
+      <div class="acc-body">
+        <ul class="il">
+          <li><strong>정의:</strong> 여러 센서의 데이터를 <em>결합하여 단일 센서의 한계를 보완</em>하고 더 정확한 환경 인식을 달성</li>
+          <li><strong>초기 퓨전(Early Fusion):</strong> 원시 데이터 수준에서 결합 → 최대 정보 활용 / 계산 복잡</li>
+          <li><strong>후기 퓨전(Late Fusion):</strong> 각 센서의 결과(인식 후)를 결합 → 구현 단순 / 정보 손실</li>
+          <li><strong>중간 퓨전(Middle Fusion):</strong> 특성 추출 단계에서 결합 → 균형적</li>
+          <li><strong>칼만 필터(Kalman Filter):</strong> 센서 퓨전의 대표 알고리즘 — 노이즈 있는 측정값에서 최적 상태 추정</li>
+          <li><strong>Tesla의 접근:</strong> 카메라만 사용(Camera-Only) — LiDAR 불필요 주장 (비용 절감, AI 의존)</li>
+          <li><strong>Waymo의 접근:</strong> LiDAR+카메라+레이더 모두 사용 — 높은 비용, 높은 안전성</li>
+        </ul>
+      </div>
+    </div>
+    <div class="memo">LiDAR=3D포인트클라우드·야간강·악천후취약 / 레이더=악천후강·속도측정(도플러) / 카메라=색상·표지판 / 센서퓨전=단점보완</div>
+  </div>
+</div>
+
+<!-- P3: 인지·판단·제어 -->
+<div class="pnl" id="p3">
+  <div class="card">
+    <div class="card-h"><div class="ico ip">🧠</div><h3>자율주행 소프트웨어 아키텍처 — 인지·판단·제어 ⭐</h3></div>
+    <div style="display:flex;gap:4px;margin:10px 0;flex-wrap:wrap;">
+      <div style="flex:1;min-width:130px;background:rgba(74,222,128,.08);border:1px solid rgba(74,222,128,.3);border-radius:8px;padding:12px;text-align:center;">
+        <div style="font-size:22px;margin-bottom:5px;">👁️</div>
+        <div style="font-size:12px;font-weight:900;color:var(--a1);margin-bottom:4px;">① 인지 (Perception)</div>
+        <div style="font-size:10.5px;color:var(--mu);">센서 데이터 처리<br>물체·차선·신호 인식<br>3D 환경 모델 생성</div>
+      </div>
+      <div style="display:flex;align-items:center;color:var(--mu);font-size:20px;padding:0 2px;">→</div>
+      <div style="flex:1;min-width:130px;background:rgba(56,189,248,.08);border:1px solid rgba(56,189,248,.3);border-radius:8px;padding:12px;text-align:center;">
+        <div style="font-size:22px;margin-bottom:5px;">🗺️</div>
+        <div style="font-size:12px;font-weight:900;color:var(--a2);margin-bottom:4px;">② 위치추정 (Localization)</div>
+        <div style="font-size:10.5px;color:var(--mu);">HD맵+GPS+센서<br>cm급 정밀 위치<br>SLAM·Particle Filter</div>
+      </div>
+      <div style="display:flex;align-items:center;color:var(--mu);font-size:20px;padding:0 2px;">→</div>
+      <div style="flex:1;min-width:130px;background:rgba(251,191,36,.08);border:1px solid rgba(251,191,36,.3);border-radius:8px;padding:12px;text-align:center;">
+        <div style="font-size:22px;margin-bottom:5px;">🤔</div>
+        <div style="font-size:12px;font-weight:900;color:var(--a3);margin-bottom:4px;">③ 판단 (Planning)</div>
+        <div style="font-size:10.5px;color:var(--mu);">경로 계획<br>행동 결정<br>장애물 회피</div>
+      </div>
+      <div style="display:flex;align-items:center;color:var(--mu);font-size:20px;padding:0 2px;">→</div>
+      <div style="flex:1;min-width:130px;background:rgba(248,113,113,.08);border:1px solid rgba(248,113,113,.3);border-radius:8px;padding:12px;text-align:center;">
+        <div style="font-size:22px;margin-bottom:5px;">🎮</div>
+        <div style="font-size:12px;font-weight:900;color:var(--a4);margin-bottom:4px;">④ 제어 (Control)</div>
+        <div style="font-size:10.5px;color:var(--mu);">조향·가속·제동<br>PID 제어기<br>실제 차량 명령</div>
+      </div>
+    </div>
+
+    <div class="acc open" onclick="this.classList.toggle('open')">
+      <div class="acc-h"><div class="acc-title" style="color:var(--a1);">인지 (Perception) — AI 기반 환경 인식</div><div class="acc-tgl">▾</div></div>
+      <div class="acc-body">
+        <ul class="il">
+          <li><strong>객체 탐지(Object Detection):</strong> YOLO·SSD·Faster R-CNN — 차량·보행자·표지판 실시간 감지</li>
+          <li><strong>의미론적 분할(Semantic Segmentation):</strong> 픽셀별 클래스 분류 — 도로·하늘·건물 구분</li>
+          <li><strong>3D 객체 탐지:</strong> LiDAR 포인트 클라우드 기반 — PointNet·VoxelNet</li>
+          <li><strong>차선 인식:</strong> OpenCV·딥러닝 — 차선 경계 추출 및 추적</li>
+          <li><strong>교통 신호 인식:</strong> CNN 기반 색상·형태 분류 (빨강·노랑·초록)</li>
+          <li><strong>보행자 예측:</strong> 보행자의 미래 이동 경로 예측 — LSTM·Transformer 기반</li>
+          <li><strong>점유 격자(Occupancy Grid):</strong> 공간을 격자로 나누어 각 셀의 점유 확률 표현</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="acc" onclick="this.classList.toggle('open')">
+      <div class="acc-h"><div class="acc-title" style="color:var(--a3);">판단·계획 (Planning) — 3단계 계층 구조 ⭐</div><div class="acc-tgl">▾</div></div>
+      <div class="acc-body">
+        <table>
+          <thead><tr><th>계획 단계</th><th>역할</th><th>시간 범위</th></tr></thead>
+          <tbody>
+            <tr><td><strong>미션 계획 (Mission Planning)</strong></td><td>출발지→목적지 전체 경로 계획 (A*·Dijkstra·HD맵)</td><td>수십 분~시간</td></tr>
+            <tr><td><strong>행동 계획 (Behavioral Planning)</strong></td><td>차선 변경·추월·교차로 통과 등 전술적 행동 결정 — 상태 기계(State Machine)·MCTS</td><td>수 초~수십 초</td></tr>
+            <tr><td><strong>동작 계획 (Motion Planning)</strong></td><td>충돌 없이 부드러운 실제 궤적 생성 — Frenet Frame·Polynomial·RRT·MPC</td><td>수백 ms</td></tr>
+          </tbody>
+        </table>
+        <ul class="il" style="margin-top:8px;">
+          <li><strong>비용 함수(Cost Function):</strong> 안전·효율·편안함·규정 준수를 가중치로 최적 경로 선택</li>
+          <li><strong>강화학습 적용:</strong> 복잡한 시나리오(교차로·합류)에서 학습 기반 행동 결정</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="acc" onclick="this.classList.toggle('open')">
+      <div class="acc-h"><div class="acc-title" style="color:var(--a5);">위치 추정 (Localization) — SLAM & HD맵 활용</div><div class="acc-tgl">▾</div></div>
+      <div class="acc-body">
+        <ul class="il">
+          <li><strong>SLAM (Simultaneous Localization And Mapping):</strong> <em>지도 작성과 위치 추정을 동시</em> 수행 — 미지 환경에서 활용</li>
+          <li><strong>NDT (Normal Distribution Transform):</strong> LiDAR 스캔을 HD맵과 매칭하여 정밀 위치 추정</li>
+          <li><strong>파티클 필터(Particle Filter):</strong> 가능한 위치 후보를 확률 분포로 표현·갱신</li>
+          <li><strong>칼만 필터(Kalman Filter):</strong> GPS·IMU·LiDAR 측정값을 융합하여 최적 위치 추정</li>
+          <li><strong>정밀도:</strong> GPS 단독=수 m 오차 → 센서 퓨전+HD맵 매칭=수 cm 오차</li>
+        </ul>
+      </div>
+    </div>
+    <div class="memo">인지(센서→물체인식) → 위치추정(HD맵+GPS+LiDAR→cm급) → 계획(미션·행동·동작 3단계) → 제어(조향·가속·제동)</div>
+  </div>
+</div>
+
+<!-- P4: V2X·HD맵 -->
+<div class="pnl" id="p4">
+  <div class="card">
+    <div class="card-h"><div class="ico ib">📶</div><h3>V2X (Vehicle-to-Everything) 통신 ⭐</h3></div>
+    <div style="background:var(--s2);border:1px solid rgba(56,189,248,.25);border-radius:9px;padding:12px;margin-bottom:11px;font-size:12px;line-height:1.75;">
+      <strong style="color:var(--a2)">V2X</strong>: 차량이 <em style="color:var(--a3);font-style:normal;">다른 차량·인프라·보행자·네트워크</em>와 통신하여 센서만으로는 불가능한 정보를 획득하는 협력 지능형 교통 시스템
+    </div>
+    <table>
+      <thead><tr><th>유형</th><th>Full Name</th><th>통신 대상</th><th>주요 용도</th></tr></thead>
+      <tbody>
+        <tr><td><span class="tag tb">V2V ⭐</span></td><td>Vehicle-to-Vehicle</td><td>다른 차량</td><td>충돌 경고·전방 교통 정보·협력 주행(군집주행·Platooning)</td></tr>
+        <tr><td><span class="tag tg">V2I ⭐</span></td><td>Vehicle-to-Infrastructure</td><td>도로 인프라</td><td>신호등 정보·도로 상태·과속 카메라·공사 구간 알림</td></tr>
+        <tr><td><span class="tag ty">V2P</span></td><td>Vehicle-to-Pedestrian</td><td>보행자·자전거</td><td>스마트폰 기반 보행자 위치 공유·충돌 경고</td></tr>
+        <tr><td><span class="tag tp">V2N</span></td><td>Vehicle-to-Network</td><td>클라우드·서버</td><td>HD맵 실시간 업데이트·원격 모니터링·SW 업데이트(OTA)</td></tr>
+        <tr><td><span class="tag to">V2G</span></td><td>Vehicle-to-Grid</td><td>전력망</td><td>전기차 배터리로 전력망 균형 조절·양방향 충방전</td></tr>
+      </tbody>
+    </table>
+
+    <div class="acc open" onclick="this.classList.toggle('open')">
+      <div class="acc-h"><div class="acc-title" style="color:var(--a2);">V2X 통신 기술 — DSRC vs C-V2X ⭐</div><div class="acc-tgl">▾</div></div>
+      <div class="acc-body">
+        <table>
+          <thead><tr><th>항목</th><th>DSRC (전용단거리통신)</th><th>C-V2X (셀룰러 V2X)</th></tr></thead>
+          <tbody>
+            <tr><td><strong>기반 표준</strong></td><td>IEEE 802.11p (WAVE)</td><td>3GPP (LTE-V2X → 5G NR-V2X)</td></tr>
+            <tr><td><strong>주파수</strong></td><td>5.9GHz 전용 대역</td><td>LTE/5G 주파수</td></tr>
+            <tr><td><strong>통신 범위</strong></td><td>수백 m (직접 통신)</td><td>수 km (기지국 경유 가능)</td></tr>
+            <tr><td><strong>지연시간</strong></td><td>낮음 (~수 ms)</td><td>낮음 (5G: ~1ms)</td></tr>
+            <tr><td><strong>인프라 의존</strong></td><td>낮음 (D2D 직접)</td><td>높음 (기지국 필요, 단 PC5도 지원)</td></tr>
+            <tr><td><strong>성숙도</strong></td><td>성숙·기존 배포</td><td>빠른 성장·5G와 통합</td></tr>
+            <tr><td><strong>한국 표준</strong></td><td>국내 C-ITS 일부 적용</td><td>한국 주력 방향 (5G C-V2X)</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div class="memo">V2X: V2V(차→차)·V2I(차→인프라)·V2P(차→보행자)·V2N(차→네트워크) / DSRC=802.11p / C-V2X=LTE·5G 기반</div>
+  </div>
+
+  <div class="card">
+    <div class="card-h"><div class="ico iy">🗺️</div><h3>HD맵 (High Definition Map) ⭐</h3></div>
+    <div style="background:var(--s2);border:1px solid rgba(251,191,36,.25);border-radius:9px;padding:12px;margin-bottom:10px;font-size:12px;line-height:1.75;">
+      <strong style="color:var(--a3)">HD맵</strong>: cm급 정밀도의 <em style="color:var(--a1);font-style:normal;">3D 고정밀 디지털 지도</em> — 자율주행 차량의 위치 추정·경로 계획의 기반
+    </div>
+    <div class="g2">
+      <div>
+        <p style="font-size:11.5px;font-weight:800;color:var(--a3);margin-bottom:7px;">HD맵 구성 레이어</p>
+        <ul class="il">
+          <li><strong>도로 기하(Road Geometry):</strong> 차선 경계·곡률·경사·폭 (cm 정밀도)</li>
+          <li><strong>의미론적 레이어:</strong> 신호등·표지판·횡단보도·제한속도 위치</li>
+          <li><strong>동적 레이어:</strong> 실시간 교통·공사·사고 정보 (V2N 업데이트)</li>
+          <li><strong>3D 지형:</strong> 건물·고도 정보·터널·교량 구조</li>
+        </ul>
+      </div>
+      <div>
+        <p style="font-size:11.5px;font-weight:800;color:var(--a2);margin-bottom:7px;">HD맵 활용 & 표준</p>
+        <ul class="il">
+          <li><strong>활용:</strong> LiDAR 맵 매칭으로 cm급 위치 추정 / 사전 경로 계획 / 보이지 않는 전방 정보</li>
+          <li><strong>NDS (Navigation Data Standard):</strong> 차량 항법 데이터 표준</li>
+          <li><strong>OpenDRIVE:</strong> 도로 네트워크 기술 XML 표준</li>
+          <li><strong>OpenLABEL:</strong> AI 학습용 주석 표준 (ASAM)</li>
+          <li><strong>과제:</strong> 실시간 업데이트·대용량 데이터·개인정보 보호</li>
+        </ul>
+      </div>
+    </div>
+    <div class="memo">HD맵=cm급 정밀 3D 디지털지도 / 4레이어: 도로기하·의미론·동적·3D지형 / LiDAR 매칭으로 cm급 위치추정</div>
+  </div>
+
+  <div class="card">
+    <div class="card-h"><div class="ico io">🛣️</div><h3>군집 주행 (Platooning) & 협력 주행</h3></div>
+    <table>
+      <thead><tr><th>기술</th><th>설명</th><th>효과</th></tr></thead>
+      <tbody>
+        <tr><td><strong>군집 주행 (Platooning)</strong></td><td>선두 차량을 후속 차량들이 V2V 통신·자동 추종 — 최소 차간 거리 유지</td><td>연료 절감(공기 저항↓)·교통 흐름 개선·물류 효율↑</td></tr>
+        <tr><td><strong>CACC (협력 ACC)</strong></td><td>기존 ACC에 V2V 정보 추가 — 선두 차량의 가감속 즉시 반영</td><td>반응 시간 단축·안전 거리 최소화</td></tr>
+        <tr><td><strong>협력 교차로</strong></td><td>교차로에서 차량들이 V2I로 진입 시간 협상 — 신호 없이 통과</td><td>교차로 처리량↑·정지 시간↓</td></tr>
+        <tr><td><strong>OTA (Over-The-Air)</strong></td><td>무선으로 자율주행 소프트웨어 업데이트 — Tesla 등 상용화</td><td>보안 패치·기능 추가·리콜 대체</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- P5: 보안·안전·표준 -->
+<div class="pnl" id="p5">
+  <div class="card">
+    <div class="card-h"><div class="ico ir">🔒</div><h3>자율주행 사이버 보안 ⭐</h3></div>
+    <div class="acc open" onclick="this.classList.toggle('open')">
+      <div class="acc-h"><div class="acc-title" style="color:var(--a4);">주요 사이버 보안 위협</div><div class="acc-tgl">▾</div></div>
+      <div class="acc-body">
+        <table>
+          <thead><tr><th>공격 유형</th><th>방법</th><th>위험</th></tr></thead>
+          <tbody>
+            <tr><td><strong>GPS 스푸핑</strong></td><td>가짜 GPS 신호 송출 → 차량 위치 오인식</td><td>잘못된 경로·엉뚱한 위치로 유도</td></tr>
+            <tr><td><strong>센서 공격 (Adversarial)</strong></td><td>카메라 앞 적대적 패턴 부착 → AI 오인식 (정지 표지판→속도 제한)</td><td>위험한 운전 결정 유발</td></tr>
+            <tr><td><strong>CAN 버스 공격</strong></td><td>차량 내부 CAN 네트워크 접근 → 제어 명령 위·변조</td><td>조향·제동 탈취 가능</td></tr>
+            <tr><td><strong>V2X 공격</strong></td><td>가짜 V2X 메시지 전송 → 없는 사고·공사 정보 주입</td><td>불필요한 급정지·경로 이탈</td></tr>
+            <tr><td><strong>OTA 공격</strong></td><td>업데이트 채널 탈취 → 악성 펌웨어 배포</td><td>대규모 차량 동시 제어 탈취</td></tr>
+            <tr><td><strong>LiDAR 재밍·스푸핑</strong></td><td>레이저 빔으로 LiDAR 포화 또는 가짜 장애물 생성</td><td>없는 장애물 인식·급제동</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="acc" onclick="this.classList.toggle('open')">
+      <div class="acc-h"><div class="acc-title" style="color:var(--a2);">자동차 사이버 보안 표준 — ISO/SAE 21434 ⭐</div><div class="acc-tgl">▾</div></div>
+      <div class="acc-body">
+        <ul class="il">
+          <li><strong>ISO/SAE 21434:</strong> 자동차 사이버 보안 엔지니어링 표준 (2021) — 차량 전체 라이프사이클 보안</li>
+          <li><strong>TARA (Threat Analysis & Risk Assessment):</strong> 위협 분석·위험 평가 방법론 — 공격 경로·피해 시나리오 식별</li>
+          <li><strong>CSMS (Cyber Security Management System):</strong> 사이버 보안 관리 체계</li>
+          <li><strong>UN Regulation 155:</strong> 자동차 사이버 보안 규정 — 유럽·일본·한국 등 적용 의무화</li>
+          <li><strong>PKI (Public Key Infrastructure):</strong> V2X 메시지 서명·인증으로 위·변조 방지</li>
+          <li><strong>보안 부팅(Secure Boot):</strong> 펌웨어 서명 검증 → 무결성 보장</li>
+          <li><strong>HSM (Hardware Security Module):</strong> 차량 내 암호화 키 안전 저장</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="memo">자율주행 보안: GPS스푸핑·CAN버스공격·V2X위변조·OTA탈취 / ISO/SAE21434=자동차사이버보안표준 / UN R155=규정의무화</div>
+  </div>
+
+  <div class="card">
+    <div class="card-h"><div class="ico iy">📋</div><h3>기능 안전 표준 & 자율주행 관련 표준</h3></div>
+    <table>
+      <thead><tr><th>표준</th><th>내용</th><th>핵심 개념</th></tr></thead>
+      <tbody>
+        <tr><td><strong>ISO 26262 ⭐</strong></td><td>자동차 기능 안전(Functional Safety) 국제 표준</td><td><strong>ASIL (Automotive Safety Integrity Level)</strong> — A(낮음)~D(높음) / QM(안전무관) / 위험 분석(HARA)</td></tr>
+        <tr><td><strong>ISO/PAS 21448 (SOTIF)</strong></td><td>Safety Of The Intended Functionality — AI·센서 한계로 인한 기능 부족 안전</td><td>기능 자체의 한계(알려진/알려지지 않은 위험 시나리오)</td></tr>
+        <tr><td><strong>ISO/SAE 21434</strong></td><td>자동차 사이버 보안 엔지니어링</td><td>TARA·CSMS·전체 생애주기 보안</td></tr>
+        <tr><td><strong>SAE J3016</strong></td><td>자율주행 레벨 분류 (L0~L5)</td><td>운전 자동화 수준 정의</td></tr>
+        <tr><td><strong>IEEE 802.11p (WAVE)</strong></td><td>DSRC 기반 V2X 무선 통신</td><td>5.9GHz / DSRC / ITS 전용</td></tr>
+        <tr><td><strong>UN Regulation 155·156</strong></td><td>차량 사이버 보안(R155) 및 SW 업데이트(R156) 규정</td><td>EU·한국 형식 승인 의무 (2024~)</td></tr>
+      </tbody>
+    </table>
+
+    <div class="acc" onclick="this.classList.toggle('open')">
+      <div class="acc-h"><div class="acc-title" style="color:var(--a3);">ASIL 등급 (ISO 26262) ⭐</div><div class="acc-tgl">▾</div></div>
+      <div class="acc-body">
+        <table>
+          <thead><tr><th>등급</th><th>위험 수준</th><th>요구사항</th><th>예시</th></tr></thead>
+          <tbody>
+            <tr><td><strong>QM</strong></td><td>안전 무관</td><td>일반 품질 관리</td><td>실내 온도 표시</td></tr>
+            <tr><td><strong>ASIL A</strong></td><td>낮음</td><td>기본 안전 요구사항</td><td>주차 보조</td></tr>
+            <tr><td><strong>ASIL B</strong></td><td>중간</td><td>독립성·중복성 요구</td><td>에어백 제어</td></tr>
+            <tr><td><strong>ASIL C</strong></td><td>높음</td><td>강한 검증·진단</td><td>ABS 제동</td></tr>
+            <tr><td><strong>ASIL D</strong></td><td>최고 위험</td><td>최고 수준 안전 요구</td><td>자율주행 제어·EPS</td></tr>
+          </tbody>
+        </table>
+        <p style="margin-top:8px;font-size:11.5px;color:var(--mu);">ASIL = Severity(심각도) × Exposure(노출빈도) × Controllability(제어가능성)으로 결정</p>
+      </div>
+    </div>
+    <div class="memo">ISO26262=기능안전·ASIL A~D(D=최고위험) / SOTIF=AI·센서 기능한계 안전 / ISO/SAE21434=사이버보안 / UN R155=의무규정</div>
+  </div>
+</div>
+
+<!-- P6: QA -->
+<div class="pnl" id="p6">
+  <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:7px;margin-bottom:12px;">
+    <div class="fb-wr" id="fbar" style="margin:0;">
+      <button class="fb on" data-f="all">전체</button>
+      <button class="fb" data-f="레벨">🏎️ SAE 레벨</button>
+      <button class="fb" data-f="센서">📡 센서</button>
+      <button class="fb" data-f="아키텍처">🧠 인지·판단</button>
+      <button class="fb" data-f="V2X">📶 V2X</button>
+      <button class="fb" data-f="보안">🔒 보안·표준</button>
+      <button class="fb" data-f="OX">⭕ OX</button>
+    </div>
+    <div class="sc-b">정답: <span id="sc">0</span>/<span id="st">0</span></div>
+  </div>
+  <div id="ql"></div>
+</div>
+
+</div>
+<script>
+document.querySelectorAll('.tab').forEach(t=>t.addEventListener('click',()=>{
+  document.querySelectorAll('.tab,.pnl').forEach(x=>x.classList.remove('on'));
+  t.classList.add('on');document.getElementById(t.dataset.p).classList.add('on');
+}));
+const QA=[
+  {cat:'레벨',diff:'easy',
+   q:'SAE J3016 기준으로 "조향과 가감속을 동시에 자동으로 수행하지만 운전자가 상시 감시하며 즉시 개입 가능해야 하는" 자율주행 레벨은?',
+   cs:['Level 1 (운전자 보조)','Level 2 (부분 자동화)','Level 3 (조건부 자동화)','Level 4 (고도 자동화)'],ans:1,
+   exp:'<strong>Level 2 (부분 자동화)</strong>: 조향과 가감속을 동시에 자동으로 수행(LKAS+ACC). 그러나 운전자는 <em>상시 감시하고 즉시 개입 가능</em>해야 합니다. Tesla Autopilot, GM Super Cruise가 대표적. Level 3은 ODD 내에서 시스템이 모든 DDT를 수행하며 운전자는 시스템 요청 시에만 개입.'},
+  {cat:'레벨',diff:'mid',
+   q:'SAE Level 3과 Level 4의 가장 핵심적인 차이로 가장 적절한 것은?',
+   cs:['Level 3은 조향만, Level 4는 조향+가감속을 자동화한다.','Level 3은 시스템 요청 시 운전자 개입이 필요하고, Level 4는 특정 ODD 내에서 운전자 개입 없이 완전 자동으로 주행한다.','Level 3은 고속도로에서만, Level 4는 모든 도로에서 가능하다.','Level 3과 Level 4는 동일하며 제조사마다 다르게 명명한다.'],ans:1,
+   exp:'<strong>L3 vs L4 핵심 차이</strong>: L3(조건부 자동화)=ODD 내 자동 주행하지만 <em>시스템 요청 시 운전자가 개입 필요</em> → 운전자가 항상 대기. L4(고도 자동화)=특정 ODD(지오펜싱된 영역) 내에서 <em>운전자 개입 없이 완전 자동</em> → MRC로 안전하게 정차 가능. Waymo One 로봇택시가 L4 대표 사례.'},
+  {cat:'센서',diff:'mid',
+   q:'LiDAR 센서의 특징으로 가장 적절하지 않은 것은?',
+   cs:['레이저 펄스를 이용해 3D 포인트 클라우드를 생성한다.','야간에도 능동적으로 레이저를 발사하여 작동한다.','악천후(비·눈·안개) 환경에서 카메라보다 훨씬 강력한 성능을 보인다.','정밀한 거리 측정이 가능하여 3D 환경 지도 작성에 사용된다.'],ans:2,
+   exp:'<strong>LiDAR의 약점</strong>: 레이저 빛을 이용하므로 <em>비·눈·안개에 취약</em>합니다(빛이 산란). 악천후에 강한 센서는 <strong>레이더(Radar)</strong>입니다(전파 이용). LiDAR 장점: 3D 포인트 클라우드, 정밀 거리 측정, 야간 능동 작동. LiDAR 단점: 악천후 취약, 고비용, 속도 측정 성능 낮음.'},
+  {cat:'센서',diff:'mid',
+   q:'레이더(Radar) 센서가 자율주행에서 특히 유용한 이유로 가장 적절한 것은?',
+   cs:['색상과 텍스처 정보를 풍부하게 제공한다.','3D 포인트 클라우드를 생성하여 정밀한 환경 지도를 만든다.','악천후(비·눈·안개) 환경에서도 안정적으로 동작하며 도플러 효과로 속도를 측정한다.','cm급 정밀도의 거리를 측정한다.'],ans:2,
+   exp:'<strong>레이더(Radar)의 강점</strong>: ①전파 사용 → 비·눈·안개 등 <em>악천후에서도 안정적 동작</em> ②<em>도플러 효과</em>로 대상 물체의 속도 직접 측정 ③장거리(수백 m) 탐지 가능. 카메라=색상·텍스처·표지판 인식, LiDAR=3D 포인트 클라우드, 초음파=근거리 장애물.'},
+  {cat:'아키텍처',diff:'mid',
+   q:'자율주행 소프트웨어의 처리 순서로 가장 적절한 것은?',
+   cs:['제어→판단→인지→위치추정','인지→위치추정→판단→제어','판단→인지→제어→위치추정','위치추정→제어→인지→판단'],ans:1,
+   exp:'자율주행 소프트웨어 처리 순서: ①<strong>인지(Perception)</strong>: 센서 데이터로 주변 환경·물체 인식 → ②<strong>위치추정(Localization)</strong>: HD맵+GPS+LiDAR로 cm급 자기 위치 파악 → ③<strong>판단·계획(Planning)</strong>: 미션·행동·동작 계획 수립 → ④<strong>제어(Control)</strong>: 실제 조향·가속·제동 명령 전달.'},
+  {cat:'아키텍처',diff:'hard',
+   q:'SLAM(Simultaneous Localization And Mapping)의 정의로 가장 적절한 것은?',
+   cs:['GPS를 이용해 정밀한 위치를 추정하는 기술','미지의 환경에서 지도 작성과 자기 위치 추정을 동시에 수행하는 기술','여러 센서 데이터를 융합하여 단일 센서의 한계를 보완하는 기술','LiDAR 포인트 클라우드를 HD맵과 매칭하여 위치를 추정하는 기술'],ans:1,
+   exp:'<strong>SLAM(Simultaneous Localization And Mapping)</strong>: <em>지도를 모르는 상태에서 주행하면서 동시에 지도를 작성하고 자기 위치를 추정</em>하는 기술. 로봇공학·자율주행에서 핵심. 칼만 필터·파티클 필터·그래프 SLAM 등으로 구현. GPS가 없는 실내·지하에서 특히 유용.'},
+  {cat:'V2X',diff:'mid',
+   q:'V2X 통신에서 V2I(Vehicle-to-Infrastructure)의 주요 활용 사례로 가장 적절한 것은?',
+   cs:['다른 차량의 충돌 경고 메시지 수신','신호등 정보·도로 상태·공사 구간 정보를 도로 인프라로부터 수신','전력망과 양방향 전력 교환','클라우드 서버로 HD맵 업데이트 수신'],ans:1,
+   exp:'<strong>V2I(Vehicle-to-Infrastructure)</strong>: 차량과 도로 <em>인프라(신호등·도로변 장치·RSU)</em> 간 통신. 주요 활용: 신호등 정보(신호 변경 타이밍)·도로 상태·과속 카메라 위치·공사 구간 경고. V2V=차량 간 충돌 경고·군집 주행, V2N=클라우드·HD맵 업데이트, V2G=전력망 연계.'},
+  {cat:'V2X',diff:'hard',
+   q:'DSRC와 C-V2X의 차이로 가장 적절한 것은?',
+   cs:['DSRC는 5G 기반이고 C-V2X는 Wi-Fi 기반이다.','DSRC는 IEEE 802.11p 기반의 전용 단거리 통신이고, C-V2X는 LTE/5G 셀룰러 기술을 V2X에 적용한 것이다.','DSRC와 C-V2X는 동일한 기술이며 이름만 다르다.','C-V2X는 반드시 기지국이 있어야만 통신이 가능하다.'],ans:1,
+   exp:'<strong>DSRC(Dedicated Short Range Communication)</strong>: IEEE 802.11p(WAVE) 기반, 5.9GHz 전용 대역, 수백 m 직접 통신, 성숙한 기술. <strong>C-V2X(Cellular V2X)</strong>: 3GPP LTE/5G 기반, PC5(직접 통신)와 Uu(기지국 경유) 모두 지원, 장거리 가능, 5G와 통합 성장 중. C-V2X도 PC5 인터페이스로 기지국 없이 직접 통신 가능.'},
+  {cat:'보안',diff:'mid',
+   q:'자율주행 차량의 CAN 버스 공격의 위험성으로 가장 적절한 것은?',
+   cs:['차량의 GPS 신호를 방해하여 위치 오류를 유발한다.','차량 내부 네트워크에 접근하여 조향·제동 등 주행 제어 명령을 위·변조할 수 있다.','카메라 센서를 물리적으로 손상시킨다.','V2X 통신을 통해 가짜 교통 정보를 주입한다.'],ans:1,
+   exp:'<strong>CAN(Controller Area Network) 버스 공격</strong>: 차량 내 ECU(전자제어장치) 간 통신 네트워크인 CAN 버스에 접근하면 <em>조향·제동·엔진 등 차량 제어 명령을 위·변조</em>할 수 있습니다. OBD-II 포트·인포테인먼트 시스템·V2X를 통해 침투 가능. 대응: 방화벽·IDS·암호화·게이트웨이 분리.'},
+  {cat:'보안',diff:'hard',
+   q:'ISO 26262의 ASIL(Automotive Safety Integrity Level)에서 가장 높은 위험 수준의 등급으로 자율주행 제어에 요구되는 것은?',
+   cs:['ASIL A','ASIL B','ASIL C','ASIL D'],ans:3,
+   exp:'<strong>ASIL D</strong>: ISO 26262의 가장 높은 기능 안전 등급 (A < B < C < D). 최고 수준의 안전 요구사항·검증·독립성 필요. <em>자율주행 제어·전동 파워스티어링(EPS)·에어백 트리거</em> 등에 요구됩니다. ASIL = Severity(심각도)×Exposure(노출빈도)×Controllability(제어가능성)로 결정.'},
+  {cat:'OX',diff:'easy',type:'ox',
+   q:'SAE Level 3 자율주행에서는 ODD 내에서 시스템이 모든 운전 작업을 수행하며, 운전자는 시스템의 요청이 있을 때만 개입하면 된다.',ans:true,
+   exp:'<strong>○</strong> — SAE Level 3(조건부 자동화): ODD(작동설계영역) 내에서 시스템이 모든 DDT(동적 운전 과제)를 수행합니다. 운전자는 시스템이 요청할 때만 개입하면 되지만, 항상 개입 준비 상태를 유지해야 합니다. Level 4와의 차이: L4는 ODD 내에서 운전자 개입 없이 MRC로 안전하게 정차 가능.'},
+  {cat:'센서',diff:'mid',type:'ox',
+   q:'레이더(Radar)는 도플러 효과를 이용하여 물체의 속도를 직접 측정할 수 있으며, 악천후에서도 안정적으로 동작한다.',ans:true,
+   exp:'<strong>○</strong> — 레이더의 핵심 장점 2가지: ①<strong>도플러 효과</strong>로 이동 물체의 <em>속도를 직접 측정</em> ②전파(마이크로파)를 사용하므로 <em>비·눈·안개 등 악천후에서도 안정적</em> 동작. 반면 LiDAR는 야간에 강하지만 악천후에 취약하고, 카메라는 야간·악천후 모두 취약합니다. 레이더 단점: 해상도 낮음.'},
+  {cat:'V2X',diff:'mid',type:'ox',
+   q:'C-V2X는 반드시 셀룰러 기지국을 통해서만 통신하므로 기지국 없는 환경에서는 V2V 통신이 불가능하다.',ans:false,
+   exp:'<strong>×</strong> — C-V2X는 두 가지 통신 인터페이스를 지원합니다: ①<strong>PC5(Sidelink)</strong>: 기지국 없이 차량 간 직접 통신 (V2V/V2P 가능) ②<strong>Uu</strong>: 기지국을 통한 통신 (V2N). 따라서 기지국 없는 환경에서도 PC5 인터페이스로 V2V 직접 통신이 가능합니다. DSRC도 마찬가지로 차량 간 직접 통신 지원.'},
+  {cat:'보안',diff:'hard',type:'ox',
+   q:'ISO/PAS 21448(SOTIF)은 의도된 기능 자체의 한계(AI·센서 성능 부족)로 인한 불안전성을 다루며, ISO 26262의 기능 오류(Fault)와는 다른 영역을 다룬다.',ans:true,
+   exp:'<strong>○</strong> — <strong>ISO 26262(Functional Safety)</strong>: 하드웨어·소프트웨어 <em>결함(Fault)·오류(Failure)</em>로 인한 안전 위험을 다룹니다. <strong>ISO/PAS 21448(SOTIF)</strong>: 결함이 없어도 <em>AI·센서의 성능 한계·알고리즘 부적절성</em>으로 발생하는 안전 위험(예: 특정 날씨에서 AI 오인식)을 다룹니다. 자율주행에는 두 표준 모두 적용 필요.'},
+  {cat:'아키텍처',diff:'mid',type:'ox',
+   q:'센서 퓨전(Sensor Fusion)에서 후기 퓨전(Late Fusion)은 각 센서의 원시 데이터를 먼저 결합한 후 인식 알고리즘을 적용하는 방식이다.',ans:false,
+   exp:'<strong>×</strong> — 반대입니다. <strong>초기 퓨전(Early Fusion)</strong>이 원시 데이터 수준에서 먼저 결합하는 방식입니다. <strong>후기 퓨전(Late Fusion)</strong>은 각 센서가 <em>독립적으로 인식(처리)한 결과물</em>(예: 각 센서가 탐지한 객체 목록)을 마지막에 결합합니다. 장점: 구현 단순, 각 센서 모듈 독립적. 단점: 원시 정보 손실, 초기 퓨전 대비 정확도 낮을 수 있음.'},
+];
+let answered=0,correct=0;
+function renderQ(f){
+  const data=f==='all'?QA:QA.filter(q=>q.cat===f);
+  const list=document.getElementById('ql');list.innerHTML='';
+  answered=0;correct=0;upS();
+  const CATC={'레벨':'tg','센서':'tb','아키텍처':'ty','V2X':'tp','보안':'tr','OX':'to'};
+  const DLC={'easy':'easy 쉬움','mid':'mid 보통','hard':'hard 어려움'};
+  const NL=['①','②','③','④'];
+  if(!data.length){list.innerHTML='<div style="text-align:center;padding:40px;color:var(--mu)">문제 없음</div>';return;}
+  data.forEach((q,i)=>{
+    const gi=QA.indexOf(q);
+    const el=document.createElement('div');el.className='qa';
+    const tc=CATC[q.cat]||'tg';
+    const [dc,dn]=(DLC[q.diff]||'mid 보통').split(' ');
+    if(q.type==='ox'){
+      el.innerHTML=`<div class="qa-hd" onclick="this.closest('.qa').classList.toggle('open')"><div><div class="qa-meta"><span class="qn">Q${String(i+1).padStart(2,'0')}</span><span class="tag ${tc}">${q.cat}</span><span class="diff ${dc}">${dn}</span><span class="tag tg">O/X</span></div><div class="qq">${q.q}</div></div><span class="tgl">▾</span></div>
+      <div class="qa-bd"><div class="ox-wr"><button class="ox" onclick="pickOX(this,true,${gi})">⭕ 옳다</button><button class="ox" onclick="pickOX(this,false,${gi})">❌ 틀리다</button></div><div class="exp" id="ex-${gi}"><div class="exp-t">💡 해설</div>${q.exp}</div></div>`;
+    } else {
+      el.innerHTML=`<div class="qa-hd" onclick="this.closest('.qa').classList.toggle('open')"><div><div class="qa-meta"><span class="qn">Q${String(i+1).padStart(2,'0')}</span><span class="tag ${tc}">${q.cat}</span><span class="diff ${dc}">${dn}</span></div><div class="qq">${q.q}</div></div><span class="tgl">▾</span></div>
+      <div class="qa-bd"><div class="chs">${q.cs.map((c,ci)=>`<div class="ch" data-ci="${ci}" onclick="pickCh(this,${gi})"><span class="cnum">${NL[ci]}</span><span>${c}</span></div>`).join('')}</div><div class="exp" id="ex-${gi}"><div class="exp-t">💡 해설</div>${q.exp}</div></div>`;
+    }
+    list.appendChild(el);
+  });
+}
+function pickCh(el,gi){
+  const bd=el.closest('.qa-bd');if(bd.querySelector('.ok,.ng'))return;
+  const q=QA[gi];
+  bd.querySelectorAll('.ch').forEach((c,i)=>{c.classList.add('lk');if(i===q.ans)c.classList.add('ok');else if(i===parseInt(el.dataset.ci))c.classList.add('ng');});
+  document.getElementById('ex-'+gi).classList.add('show');
+  answered++;if(parseInt(el.dataset.ci)===q.ans)correct++;upS();
+}
+function pickOX(btn,val,gi){
+  const bd=btn.closest('.qa-bd');if(bd.querySelector('.so,.sx'))return;
+  const q=QA[gi];
+  bd.querySelectorAll('.ox').forEach(b=>b.classList.add('lk'));
+  btn.classList.add(val?'so':'sx');
+  if(val!==q.ans){btn.style.opacity='.5';bd.querySelectorAll('.ox')[val?1:0].classList.add(q.ans?'so':'sx');}
+  document.getElementById('ex-'+gi).classList.add('show');
+  answered++;if(val===q.ans)correct++;upS();
+}
+function upS(){document.getElementById('sc').textContent=correct;document.getElementById('st').textContent=answered;}
+document.getElementById('fbar').addEventListener('click',e=>{
+  const b=e.target.closest('.fb');if(!b)return;
+  document.querySelectorAll('.fb').forEach(x=>x.classList.remove('on'));b.classList.add('on');renderQ(b.dataset.f);
+});
+renderQ('all');
+</script>
+</body>
+</html>

@@ -1,0 +1,665 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&family=JetBrains+Mono:wght@400;700&display=swap');
+:root{
+  --bg:#060d1a;--s1:#0b1526;--s2:#101e36;--s3:#162747;
+  --bdr:#1a3060;--a1:#38bdf8;--a2:#a78bfa;--a3:#34d399;
+  --a4:#fbbf24;--a5:#f87171;--a6:#fb923c;
+  --txt:#e2e8f0;--mu:#64748b;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Noto Sans KR',sans-serif;background:var(--bg);color:var(--txt);min-height:100vh;}
+
+.hdr{padding:22px 24px 16px;background:linear-gradient(150deg,#060d1a 0%,#0d1c38 50%,#060d1a 100%);border-bottom:1px solid var(--bdr);position:relative;overflow:hidden;}
+.hdr::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 65% 85% at 80% 30%,rgba(56,189,248,.09),transparent 65%),radial-gradient(ellipse 45% 65% at 20% 80%,rgba(167,139,250,.07),transparent 60%);pointer-events:none;}
+.hdr-r{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:6px;align-items:center;}
+.pill{padding:3px 10px;border-radius:20px;font-size:10px;font-weight:700;letter-spacing:.8px;}
+.p1{background:linear-gradient(135deg,#1e3a8a,var(--a1));color:#fff;}
+.p2{background:rgba(251,191,36,.15);color:var(--a4);border:1px solid rgba(251,191,36,.3);}
+.p3{background:rgba(167,139,250,.15);color:var(--a2);border:1px solid rgba(167,139,250,.3);}
+h1{font-size:19px;font-weight:900;}
+.h1g{background:linear-gradient(90deg,var(--a1),var(--a2),var(--a3));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.hdr p{color:var(--mu);font-size:12px;margin-top:3px;}
+
+.tabs{display:flex;padding:0 24px;background:var(--s1);border-bottom:1px solid var(--bdr);overflow-x:auto;scrollbar-width:none;}
+.tabs::-webkit-scrollbar{display:none;}
+.tab{padding:11px 14px;font-size:12px;font-weight:600;color:var(--mu);cursor:pointer;border-bottom:2px solid transparent;white-space:nowrap;transition:all .2s;background:none;border-top:none;border-left:none;border-right:none;font-family:'Noto Sans KR',sans-serif;}
+.tab:hover{color:var(--txt);}.tab.on{color:var(--a1);border-bottom-color:var(--a1);}
+
+.wrap{padding:20px 24px;max-width:960px;margin:0 auto;}
+.pnl{display:none;}.pnl.on{display:block;}
+
+.card{background:var(--s1);border:1px solid var(--bdr);border-radius:12px;padding:18px;margin-bottom:14px;}
+.card-h{display:flex;align-items:center;gap:10px;margin-bottom:14px;}
+.ico{width:34px;height:34px;border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:17px;flex-shrink:0;}
+.ib{background:rgba(56,189,248,.15);}.ip{background:rgba(167,139,250,.15);}.ig{background:rgba(52,211,153,.15);}.iy{background:rgba(251,191,36,.15);}.ir{background:rgba(248,113,113,.15);}.io{background:rgba(251,146,60,.15);}
+.card h3{font-size:14px;font-weight:700;}
+
+.tag{display:inline-block;padding:2px 8px;border-radius:4px;font-size:10px;font-weight:600;margin:2px 2px 2px 0;}
+.tb{background:rgba(56,189,248,.12);color:var(--a1);border:1px solid rgba(56,189,248,.25);}
+.tp{background:rgba(167,139,250,.12);color:var(--a2);border:1px solid rgba(167,139,250,.25);}
+.tg{background:rgba(52,211,153,.12);color:var(--a3);border:1px solid rgba(52,211,153,.25);}
+.ty{background:rgba(251,191,36,.12);color:var(--a4);border:1px solid rgba(251,191,36,.25);}
+.tr{background:rgba(248,113,113,.12);color:var(--a5);border:1px solid rgba(248,113,113,.25);}
+.to{background:rgba(251,146,60,.12);color:var(--a6);border:1px solid rgba(251,146,60,.25);}
+
+table{width:100%;border-collapse:collapse;font-size:12.5px;}
+th{background:var(--s2);color:var(--mu);font-weight:700;padding:8px 12px;text-align:left;font-size:10px;text-transform:uppercase;letter-spacing:.5px;border-bottom:1px solid var(--bdr);}
+td{padding:9px 12px;border-bottom:1px solid rgba(26,48,96,.5);vertical-align:top;line-height:1.6;}
+tr:last-child td{border-bottom:none;}
+tr:hover td{background:rgba(255,255,255,.02);}
+td strong{color:var(--a4);}
+
+ul.il{list-style:none;display:flex;flex-direction:column;gap:7px;}
+ul.il li{font-size:12.5px;padding-left:16px;position:relative;line-height:1.55;}
+ul.il li::before{content:'▸';position:absolute;left:0;color:var(--a1);font-size:10px;top:3px;}
+ul.il li strong{color:var(--a4);}
+ul.il li em{color:var(--a3);font-style:normal;}
+
+.memo{background:linear-gradient(135deg,rgba(56,189,248,.07),rgba(167,139,250,.07));border:1px solid rgba(56,189,248,.22);border-left:3px solid var(--a1);border-radius:8px;padding:10px 14px;font-size:12.5px;font-weight:600;color:var(--a1);margin:10px 0;}
+.memo::before{content:'🎯 한 줄 암기 │ ';color:var(--mu);font-weight:400;}
+
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:14px;}
+@media(max-width:600px){.g2{grid-template-columns:1fr;}}
+
+/* 3단계 위탁 흐름 */
+.phase3{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:12px 0;}
+@media(max-width:580px){.phase3{grid-template-columns:1fr;}}
+.ph3{border-radius:10px;padding:14px;border:1px solid var(--bdr);}
+.ph3-title{font-size:12.5px;font-weight:800;margin-bottom:8px;padding-bottom:8px;border-bottom:1px solid var(--bdr);}
+
+/* 인력 구조 */
+.staff-wrap{display:flex;flex-direction:column;gap:8px;margin:10px 0;}
+.staff{background:var(--s2);border:1px solid var(--bdr);border-radius:9px;padding:12px 14px;display:flex;gap:12px;align-items:flex-start;}
+.staff-badge{width:34px;height:34px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0;}
+.staff-name{font-size:13px;font-weight:700;margin-bottom:4px;}
+.staff-desc{font-size:11.5px;color:var(--txt);line-height:1.5;}
+.req-badge{font-size:10px;font-weight:700;padding:2px 6px;border-radius:4px;margin-left:6px;}
+
+/* 독립성 경고박스 */
+.alert{background:rgba(248,113,113,.08);border:1px solid rgba(248,113,113,.3);border-left:4px solid var(--a5);border-radius:8px;padding:12px 16px;margin:10px 0;}
+.alert-title{font-size:11px;font-weight:700;text-transform:uppercase;color:var(--a5);margin-bottom:6px;letter-spacing:.8px;}
+.alert-text{font-size:12.5px;line-height:1.65;}
+.alert-text strong{color:var(--a5);}
+
+/* 대가산정 bar */
+.cost-wrap{display:flex;flex-direction:column;gap:8px;margin:10px 0;}
+.cost-item{display:flex;align-items:center;gap:10px;}
+.cost-label{font-size:11.5px;min-width:120px;font-weight:600;}
+.cost-bar-bg{flex:1;height:10px;background:var(--s2);border-radius:5px;overflow:hidden;}
+.cost-bar{height:100%;border-radius:5px;background:linear-gradient(90deg,var(--a1),var(--a3));}
+.cost-pct{font-size:11px;font-weight:700;color:var(--a4);min-width:60px;text-align:right;font-family:'JetBrains Mono',monospace;}
+
+/* PMO vs 감리 비교 */
+.cmp-tbl{display:grid;grid-template-columns:120px 1fr 1fr;font-size:12px;gap:0;}
+.cmp-h{background:var(--s2);font-weight:700;padding:8px 12px;border-bottom:1px solid var(--bdr);}
+.cmp-h:first-child{border-radius:8px 0 0 0;}
+.cmp-h:last-child{border-radius:0 8px 0 0;}
+.cmp-row{display:contents;}
+.cmp-cell{padding:9px 12px;border-bottom:1px solid rgba(26,48,96,.4);line-height:1.5;}
+.cmp-cell:nth-child(3n+1){font-weight:600;background:rgba(56,189,248,.04);color:var(--mu);font-size:11px;}
+.cmp-cell:nth-child(3n+2){color:var(--a1);}
+.cmp-cell:nth-child(3n){color:var(--a3);}
+.cmp-row:last-child .cmp-cell{border-bottom:none;}
+
+/* QA */
+.qa{background:var(--s1);border:1px solid var(--bdr);border-radius:10px;margin-bottom:11px;overflow:hidden;transition:border-color .2s;}
+.qa:hover{border-color:rgba(56,189,248,.25);}
+.qa-hd{padding:14px 18px;cursor:pointer;display:flex;justify-content:space-between;align-items:flex-start;gap:10px;user-select:none;}
+.qa-meta{display:flex;align-items:center;gap:6px;margin-bottom:5px;flex-wrap:wrap;}
+.qn{font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:700;color:var(--mu);}
+.qq{font-size:13px;font-weight:600;line-height:1.55;}
+.tgl{color:var(--mu);font-size:16px;flex-shrink:0;transition:transform .2s;}
+.qa.open .tgl{transform:rotate(180deg);}
+.qa-bd{display:none;border-top:1px solid var(--bdr);padding:14px 18px;background:var(--s2);}
+.qa.open .qa-bd{display:block;}
+.chs{display:flex;flex-direction:column;gap:7px;margin-bottom:12px;}
+.ch{display:flex;align-items:flex-start;gap:10px;padding:9px 13px;border-radius:7px;border:1px solid var(--bdr);font-size:12.5px;cursor:pointer;background:var(--s1);line-height:1.5;transition:all .15s;}
+.ch:hover:not(.lk){border-color:rgba(56,189,248,.3);background:rgba(56,189,248,.04);}
+.ch.ok{border-color:var(--a3);background:rgba(52,211,153,.1);color:var(--a3);}
+.ch.ng{border-color:var(--a5);background:rgba(248,113,113,.08);color:var(--a5);opacity:.7;}
+.ch.lk{cursor:default;}
+.cnum{font-family:'JetBrains Mono',monospace;font-weight:700;font-size:11px;flex-shrink:0;margin-top:1px;color:var(--mu);}
+.ch.ok .cnum{color:var(--a3);}.ch.ng .cnum{color:var(--a5);}
+.exp{background:rgba(56,189,248,.05);border:1px solid rgba(56,189,248,.18);border-radius:8px;padding:12px 14px;font-size:12.5px;line-height:1.65;display:none;}
+.exp.show{display:block;}
+.exp-t{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--a1);margin-bottom:6px;}
+.exp strong{color:var(--a4);}
+.exp em{color:var(--a3);font-style:normal;}
+.ox-wr{display:flex;gap:10px;margin-bottom:12px;}
+.ox{flex:1;padding:11px;border-radius:8px;border:1px solid var(--bdr);font-size:20px;cursor:pointer;background:var(--s1);transition:all .15s;font-family:'Noto Sans KR',sans-serif;color:var(--txt);}
+.ox:hover:not(.lk){transform:scale(1.02);}
+.ox.so{border-color:var(--a3);background:rgba(52,211,153,.15);}
+.ox.sx{border-color:var(--a5);background:rgba(248,113,113,.1);}
+.ox.lk{cursor:default;}
+.diff{display:inline-block;padding:2px 7px;border-radius:10px;font-size:9px;font-weight:700;}
+.easy{background:rgba(52,211,153,.2);color:var(--a3);}
+.mid{background:rgba(251,191,36,.2);color:var(--a4);}
+.hard{background:rgba(248,113,113,.2);color:var(--a5);}
+.fb-wr{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:14px;}
+.fb{padding:5px 12px;border-radius:20px;border:1px solid var(--bdr);font-size:11px;font-weight:600;cursor:pointer;background:var(--s2);color:var(--mu);transition:all .15s;font-family:'Noto Sans KR',sans-serif;}
+.fb.on{background:rgba(56,189,248,.15);color:var(--a1);border-color:var(--a1);}
+.sc-b{background:var(--s2);border:1px solid var(--bdr);border-radius:8px;padding:5px 14px;font-size:12px;color:var(--mu);}
+.sc-b span{color:var(--a1);font-weight:700;}
+.law-ref{background:rgba(251,191,36,.08);border:1px solid rgba(251,191,36,.25);border-radius:8px;padding:10px 14px;font-size:12px;line-height:1.6;color:var(--a4);margin:8px 0;}
+.law-ref::before{content:'⚖️ 법령 │ ';color:var(--mu);}
+</style>
+</head>
+<body>
+
+<div class="hdr">
+  <div class="hdr-r">
+    <span class="pill p1">행안부 고시 제2021-5호</span>
+    <span class="pill p2">전자정부법 §64조의2</span>
+    <span class="pill p3">PMO 핵심 규정</span>
+  </div>
+  <h1><span class="h1g">전자정부 사업관리 위탁에 관한 규정</span></h1>
+  <p>행정안전부 고시 제2021-5호 · 2021.1.19. 시행 · 전자정부사업관리(PMO) 위탁 방법·절차·대가 등 규정</p>
+</div>
+
+<div class="tabs">
+  <button class="tab on" data-p="p1">📌 개요·정의</button>
+  <button class="tab" data-p="p2">🎯 위탁 대상·요건</button>
+  <button class="tab" data-p="p3">🔄 위탁 범위·절차</button>
+  <button class="tab" data-p="p4">🏛️ 인력·독립성</button>
+  <button class="tab" data-p="p5">💰 대가산정·감리관계</button>
+  <button class="tab" data-p="p6">❓ 예상문제</button>
+</div>
+
+<div class="wrap">
+
+<!-- ===== P1: 개요 ===== -->
+<div class="pnl on" id="p1">
+  <div class="card">
+    <div class="card-h"><div class="ico ib">📌</div><h3>전자정부 사업관리 위탁 (PMO) 정의</h3></div>
+    <div class="law-ref">전자정부법 제64조의2 (전자정부사업관리의 위탁) · 행정안전부 고시 제2021-5호 (2021.1.19. 시행)</div>
+    <div style="background:var(--s2);border:1px solid rgba(56,189,248,.25);border-radius:10px;padding:14px;margin:12px 0;">
+      <p style="font-size:13px;line-height:1.75;font-weight:500;"><strong style="color:var(--a1)">전자정부사업관리(PMO)</strong>란 행정기관 등의 장이 전자정부사업을 효율적으로 수행하기 위해, 해당 사업의 <em style="color:var(--a3);font-style:normal;">관리·감독 업무의 전부 또는 일부</em>를 전문지식과 기술능력을 갖춘 자에게 <strong style="color:var(--a4)">위탁</strong>하는 제도 (Project Management Office)</p>
+    </div>
+    <table style="margin-top:12px;">
+      <thead><tr><th>구분</th><th>내용</th></tr></thead>
+      <tbody>
+        <tr><td><strong>규정명</strong></td><td>전자정부사업관리 위탁에 관한 규정</td></tr>
+        <tr><td><strong>발행</strong></td><td>행정안전부 고시 제2021-5호 (2021.1.19. 시행, 일부개정)</td></tr>
+        <tr><td><strong>법적 근거</strong></td><td>전자정부법 제64조의2, 동법 시행령 제78조의2~78조의4</td></tr>
+        <tr><td><strong>세부 가이드</strong></td><td>전자정부사업관리 위탁(PMO) 도입·운영 가이드 V2.1 (NIA)</td></tr>
+        <tr><td><strong>선택·감리 관계</strong></td><td>2017년부터 발주기관이 <strong>감리 또는 PMO 선택</strong> 가능 (전자정부법 시행령 개정)</td></tr>
+      </tbody>
+    </table>
+    <div class="memo">PMO = 전자정부사업의 관리·감독을 전문기관에 위탁하는 제도 (감리와 선택 관계)</div>
+  </div>
+
+  <div class="g2">
+    <div class="card">
+      <div class="card-h"><div class="ico iy">⚡</div><h3>도입 배경</h3></div>
+      <ul class="il">
+        <li>발주기관의 <strong>전문성 부족</strong>으로 대형·복잡 IT사업 관리 어려움</li>
+        <li>기존 감리는 단계별 검토 중심 — <em>지속적 관리·감독 취약</em></li>
+        <li>사업 진행 중 발생하는 <strong>쟁점·위험 실시간 대응</strong> 필요</li>
+        <li>발주기관이 <strong>의사결정 지원</strong>을 받을 수 있는 전문 기관 필요</li>
+        <li>2013년 전자정부법 시행령 개정으로 PMO 제도 도입</li>
+      </ul>
+    </div>
+    <div class="card">
+      <div class="card-h"><div class="ico ig">📋</div><h3>관련 법령 체계</h3></div>
+      <ul class="il">
+        <li><strong style="color:var(--a1)">전자정부법 §64조의2:</strong> PMO 위탁 근거, 선정기준 원칙</li>
+        <li><strong style="color:var(--a3)">동법 시행령 §78조의2:</strong> 위탁대상사업 세부 범위</li>
+        <li><strong style="color:var(--a3)">동법 시행령 §78조의3:</strong> 수탁자 자격 요건</li>
+        <li><strong style="color:var(--a3)">동법 시행령 §78조의4:</strong> 전자정부사업관리자 선정기준</li>
+        <li><strong style="color:var(--a4)">행안부 고시 제2021-5호:</strong> 대가산정 기준, 자료제출 등</li>
+        <li><em>PMO 도입·운영 가이드 V2.1 (NIA):</em> 세부 절차·방법</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-h"><div class="ico ip">🔑</div><h3>전자정부사업관리자 (PMO사업자) 자격요건</h3></div>
+    <p style="font-size:12px;color:var(--mu);margin-bottom:10px;">전자정부법 시행령 제78조의3에 따라 다음 중 하나에 해당하는 자</p>
+    <table>
+      <thead><tr><th>자격 유형</th><th>세부 요건</th></tr></thead>
+      <tbody>
+        <tr><td><span class="tag tg">공공기관</span></td><td>학교를 제외한 공공기관 (정부출연연구기관, 공기업 등)</td></tr>
+        <tr><td><span class="tag tb">감리법인</span></td><td>전자정부법에 따라 등록된 정보시스템 감리법인</td></tr>
+        <tr><td><span class="tag ty">SW사업자</span></td><td>소프트웨어 기술자를 <strong>3명 이상</strong> 보유한 소프트웨어사업자</td></tr>
+      </tbody>
+    </table>
+    <div class="memo">PMO 수탁자 = 공공기관 OR 감리법인 OR SW기술자 3명↑ SW사업자</div>
+  </div>
+</div>
+
+<!-- ===== P2: 위탁 대상·요건 ===== -->
+<div class="pnl" id="p2">
+  <div class="card">
+    <div class="card-h"><div class="ico iy">🎯</div><h3>PMO 위탁대상 사업 (4가지)</h3></div>
+    <p style="font-size:12px;color:var(--mu);margin-bottom:12px;">전자정부법 시행령 제78조의2 제1항 — 아래 사업에 대해 위탁 가능</p>
+    <div style="display:flex;flex-direction:column;gap:8px;margin:10px 0;">
+      <div style="background:rgba(56,189,248,.08);border:1px solid rgba(56,189,248,.25);border-left:4px solid var(--a1);border-radius:8px;padding:12px 16px;">
+        <div style="font-size:10px;font-weight:700;color:var(--a1);margin-bottom:4px;text-transform:uppercase;letter-spacing:.5px;">위탁대상 ①</div>
+        <div style="font-size:13px;font-weight:600;">국민의 생명·재산, 그 밖에 국민생활에 막대한 영향을 미치는 사업</div>
+        <div style="font-size:11px;color:var(--mu);margin-top:4px;">→ 재난안전, 의료정보, 사회보장 등 국민 안전·편의에 직결되는 시스템</div>
+      </div>
+      <div style="background:rgba(52,211,153,.08);border:1px solid rgba(52,211,153,.25);border-left:4px solid var(--a3);border-radius:8px;padding:12px 16px;">
+        <div style="font-size:10px;font-weight:700;color:var(--a3);margin-bottom:4px;text-transform:uppercase;letter-spacing:.5px;">위탁대상 ②</div>
+        <div style="font-size:13px;font-weight:600;">여러 행정기관 등이 사용하여 행정의 효율성에 미치는 영향이 큰 사업</div>
+        <div style="font-size:11px;color:var(--mu);margin-top:4px;">→ 범정부 공통 플랫폼, 여러 기관이 공동 활용하는 정보시스템</div>
+      </div>
+      <div style="background:rgba(251,191,36,.08);border:1px solid rgba(251,191,36,.25);border-left:4px solid var(--a4);border-radius:8px;padding:12px 16px;">
+        <div style="font-size:10px;font-weight:700;color:var(--a4);margin-bottom:4px;text-transform:uppercase;letter-spacing:.5px;">위탁대상 ③</div>
+        <div style="font-size:13px;font-weight:600;">여러 정보시스템이 연계·통합되거나 규모가 크고 복잡한 사업</div>
+        <div style="font-size:11px;color:var(--mu);margin-top:4px;">→ 대규모 차세대 시스템, 복잡한 연계·통합 프로젝트</div>
+      </div>
+      <div style="background:rgba(167,139,250,.08);border:1px solid rgba(167,139,250,.25);border-left:4px solid var(--a2);border-radius:8px;padding:12px 16px;">
+        <div style="font-size:10px;font-weight:700;color:var(--a2);margin-bottom:4px;text-transform:uppercase;letter-spacing:.5px;">위탁대상 ④</div>
+        <div style="font-size:13px;font-weight:600;">경험 및 전문성의 부족으로 위탁관리가 필요하다고 행정기관 등의 장이 인정하는 사업</div>
+        <div style="font-size:11px;color:var(--mu);margin-top:4px;">→ 발주기관 자체 역량 부족 시 — 기관장의 판단으로 결정</div>
+      </div>
+    </div>
+    <div class="memo">위탁대상: ①국민생활 영향 ②다기관 효율 ③대규모복잡 ④전문성부족 — 4가지 중 하나</div>
+  </div>
+
+  <div class="card">
+    <div class="card-h"><div class="ico ig">✅</div><h3>전자정부사업관리자 선정 기준 (4가지 평가항목)</h3></div>
+    <p style="font-size:12px;color:var(--mu);margin-bottom:12px;">전자정부법 시행령 제78조의4 · 발주기관은 특성을 고려하여 추가 선정기준 적용 가능</p>
+    <table>
+      <thead><tr><th>평가항목</th><th>세부 평가 내용</th></tr></thead>
+      <tbody>
+        <tr>
+          <td><strong>①수행인력</strong></td>
+          <td>유사 전자정부사업의 사업관리 경력, 투입인력의 적절성 (수행책임자·관리지원·기술지원)</td>
+        </tr>
+        <tr>
+          <td><strong>②업무수행</strong></td>
+          <td>업무수행 및 기술지원 내용의 적절성, 사업관리·기술지원·인력투입 계획의 적절성</td>
+        </tr>
+        <tr>
+          <td><strong>③수행실적</strong></td>
+          <td>유사한 공공 및 민간 정보화사업 추진실적 보유 정도</td>
+        </tr>
+        <tr>
+          <td><strong>④품질·성과관리</strong></td>
+          <td>PMO 사업의 품질관리 방안, 본사업 성과달성 지원방안</td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="memo">선정기준 4항목: 수행인력·업무수행·수행실적·품질성과관리 (대통령령 위임)</div>
+  </div>
+
+  <div class="card">
+    <div class="card-h"><div class="ico io">📢</div><h3>자료 제출 의무 (전자정부법 §64조의2 제4항)</h3></div>
+    <ul class="il">
+      <li><strong>의무 주체:</strong> 행정기관 등의 장 (전자정부사업관리를 위탁한 기관)</li>
+      <li><strong>제출 내용:</strong> 해당 전자정부사업과 위탁 용역 및 그 성과에 관한 자료</li>
+      <li><strong>제출 대상:</strong> 행정안전부장관</li>
+      <li><strong>목적:</strong> 행안부의 PMO 제도 운영 현황 파악 및 효과성 분석</li>
+    </ul>
+    <div class="memo">PMO 위탁 시 → 전자정부사업·용역·성과 자료를 행안부장관에게 제출 의무</div>
+  </div>
+</div>
+
+<!-- ===== P3: 위탁 범위·절차 ===== -->
+<div class="pnl" id="p3">
+  <div class="card">
+    <div class="card-h"><div class="ico ib">🔄</div><h3>PMO 위탁 범위 (3단계)</h3></div>
+    <div style="background:var(--s2);border:1px solid var(--bdr);border-radius:8px;padding:12px;margin-bottom:12px;font-size:12.5px;">
+      <strong>원칙:</strong> 기획·집행·사후관리 단계를 <em style="color:var(--a3)">모두 위탁</em>하되, 발주기관 여건에 따라 <strong style="color:var(--a4)">기획 또는 사후관리는 생략 가능</strong>
+    </div>
+    <div class="phase3">
+      <div class="ph3" style="background:rgba(56,189,248,.07);border-color:rgba(56,189,248,.3);">
+        <div class="ph3-title" style="color:var(--a1)">🔵 기획 단계 (B100)</div>
+        <ul class="il">
+          <li>사업계획서 작성 지원</li>
+          <li>ISP 결과 검토·분석</li>
+          <li>요구사항 정의 지원</li>
+          <li>제안요청서(RFP) 검토</li>
+          <li>사업자 선정 지원</li>
+          <li style="color:var(--mu);font-size:11px;">※ ISP 완료 후 생략 가능</li>
+        </ul>
+      </div>
+      <div class="ph3" style="background:rgba(52,211,153,.07);border-color:rgba(52,211,153,.3);">
+        <div class="ph3-title" style="color:var(--a3)">🟢 집행 단계 (B200)</div>
+        <ul class="il">
+          <li>착수계획서 검토</li>
+          <li>진도·일정 관리</li>
+          <li>범위·변경 관리</li>
+          <li>위험·이슈 관리</li>
+          <li>품질 관리</li>
+          <li>의사결정 지원·보고</li>
+        </ul>
+      </div>
+      <div class="ph3" style="background:rgba(251,191,36,.07);border-color:rgba(251,191,36,.3);">
+        <div class="ph3-title" style="color:var(--a4)">🟡 사후관리 단계 (B300)</div>
+        <ul class="il">
+          <li>시스템 운영 점검</li>
+          <li>성과 측정·평가</li>
+          <li>하자보수 이행 확인</li>
+          <li>운영 안정화 지원</li>
+          <li style="color:var(--mu);font-size:11px;">※ 여건에 따라 생략 가능</li>
+        </ul>
+      </div>
+    </div>
+    <div class="memo">3단계 원칙=기획+집행+사후관리 전부 / 집행단계는 필수 / 기획·사후관리 여건 시 생략</div>
+  </div>
+
+  <div class="card">
+    <div class="card-h"><div class="ico ip">📋</div><h3>PMO 도입·운영 가이드 3단계 추진 절차</h3></div>
+    <table>
+      <thead><tr><th>단계</th><th>코드</th><th>주요 활동</th></tr></thead>
+      <tbody>
+        <tr><td rowspan="3"><strong>A. PMO 사업 준비</strong></td><td>A100</td><td>PMO 도입 검토 — 도입 여부 결정, 추진계획 제출</td></tr>
+        <tr><td>A200</td><td>PMO 발주 및 계약 — RFP 작성, 제안서 평가, 계약</td></tr>
+        <tr><td>A300</td><td>PMO 사업 착수 — 착수보고, 업무파악</td></tr>
+        <tr><td rowspan="3"><strong>B. PMO 사업 운영</strong></td><td>B100</td><td>본사업 기획단계 관리</td></tr>
+        <tr><td>B200</td><td>본사업 집행단계 관리 (핵심)</td></tr>
+        <tr><td>B300</td><td>본사업 사후관리단계</td></tr>
+        <tr><td rowspan="3"><strong>C. PMO 사업 종료</strong></td><td>C100</td><td>PMO 사업 검사 — 과업이행 여부 확인</td></tr>
+        <tr><td>C200</td><td>PMO 사업 산출물 인수</td></tr>
+        <tr><td>C300</td><td>PMO 사업 실적 제출 (행안부장관)</td></tr>
+      </tbody>
+    </table>
+    <div class="memo">PMO 절차: A(준비·발주) → B(운영: 기획·집행·사후) → C(종료·검사·실적제출)</div>
+  </div>
+
+  <div class="card">
+    <div class="card-h"><div class="ico ig">📌</div><h3>통합 발주 (복수 사업 PMO)</h3></div>
+    <ul class="il">
+      <li><strong>허용:</strong> 발주시기 및 사업기간 등을 고려하여 <em>둘 이상의 전자정부사업에 대한 관리업무를 하나의 PMO 용역으로 위탁</em> 가능</li>
+      <li><strong>결정 주체:</strong> 발주총괄부서가 통합발주 여부 검토·결정</li>
+      <li><strong>장점:</strong> 관리 효율성 향상, 비용 절감, 일관된 품질 관리</li>
+      <li><strong>주의:</strong> PMO 사업자 선정은 본사업(PMO대상사업) 수행자 선정보다 먼저 이루어져야 함</li>
+    </ul>
+  </div>
+</div>
+
+<!-- ===== P4: 인력·독립성 ===== -->
+<div class="pnl" id="p4">
+  <div class="card">
+    <div class="card-h"><div class="ico ip">🏛️</div><h3>PMO 수행 인력 구성</h3></div>
+    <div class="staff-wrap">
+      <div class="staff">
+        <div class="staff-badge" style="background:rgba(56,189,248,.15);">👑</div>
+        <div>
+          <div class="staff-name">수행책임자 <span class="req-badge" style="background:rgba(248,113,113,.2);color:var(--a5);">필수</span></div>
+          <div class="staff-desc">PMO 총괄 지휘, 이해관계자 간 의사소통 담당, 의사결정 지원 보고, 발주기관 대면 창구<br><strong>상주 원칙</strong></div>
+        </div>
+      </div>
+      <div class="staff">
+        <div class="staff-badge" style="background:rgba(52,211,153,.15);">📊</div>
+        <div>
+          <div class="staff-name">관리지원 업무수행자 <span class="req-badge" style="background:rgba(251,191,36,.15);color:var(--a4);">규모에 따라</span></div>
+          <div class="staff-desc">일정관리·범위관리·자원관리·위험관리·품질관리·성과관리 등 사업관리 수행<br><strong>상주 원칙</strong></div>
+        </div>
+      </div>
+      <div class="staff">
+        <div class="staff-badge" style="background:rgba(167,139,250,.15);">💻</div>
+        <div>
+          <div class="staff-name">기술지원 업무수행자 <span class="req-badge" style="background:rgba(167,139,250,.15);color:var(--a2);">규모에 따라</span></div>
+          <div class="staff-desc">시스템 분석·설계·시험 관련 기술지원 담당<br><strong>비상주 허용</strong> (기술지원 업무 특성상)</div>
+        </div>
+      </div>
+    </div>
+    <p style="font-size:11.5px;color:var(--mu);margin-top:8px;line-height:1.6;">※ PMO 인력이 3명 미만인 경우, 1명이 여러 역할을 겸직 가능 (소규모 사업 배려)</p>
+    <div class="memo">수행책임자(필수·상주) + 관리지원(상주) + 기술지원(비상주) / 3명 미만 시 겸직 가능</div>
+  </div>
+
+  <div class="card">
+    <div class="card-h"><div class="ico ir">🛡️</div><h3>독립성 확보 원칙 (핵심 규정)</h3></div>
+    <div class="alert">
+      <div class="alert-title">⭐ 계열회사 조언 금지 (전자정부법 §64조의2 제3항)</div>
+      <div class="alert-text"><strong>전자정부사업관리자</strong>는 자기 또는 자기의 <strong>계열회사</strong>(공정거래법 제2조제12호에 따른 계열회사)가 <strong>해당 전자정부사업을 도급받도록 조언하여서는 아니 된다</strong></div>
+    </div>
+    <div class="alert">
+      <div class="alert-title">⭐ 3자 간 독립성 확보 (위탁규정 §6)</div>
+      <div class="alert-text"><strong>PMO사업자 ↔ PMO대상사업 수행자 ↔ 감리법인</strong> 상호 간에는 <strong>사회 통념상 독립성을 침해할 수 있는 특수관계가 없어야</strong> 한다</div>
+    </div>
+    <div class="memo">⭐⭐ 독립성: 계열회사 도급 조언 금지 + PMO·사업수행자·감리법인 3자 특수관계 금지</div>
+    <table style="margin-top:12px;">
+      <thead><tr><th>독립성 위반 유형</th><th>내용</th></tr></thead>
+      <tbody>
+        <tr><td><span class="tag tr">계열회사 조언 금지</span></td><td>PMO사업자가 자기 계열회사에게 본사업 도급 수주를 유리하게 조언하는 행위</td></tr>
+        <tr><td><span class="tag tr">수행자 특수관계</span></td><td>PMO사업자와 PMO대상사업 수행자가 동일 그룹이거나 특수관계인 경우</td></tr>
+        <tr><td><span class="tag tr">감리법인 특수관계</span></td><td>PMO사업자와 감리법인 간 독립성을 침해하는 관계</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- ===== P5: 대가산정·감리관계 ===== -->
+<div class="pnl" id="p5">
+  <div class="card">
+    <div class="card-h"><div class="ico iy">💰</div><h3>PMO 대가 산정 기준</h3></div>
+    <p style="font-size:12px;color:var(--mu);margin-bottom:12px;">행안부 고시 — 본사업비 대비 비율로 산정, 위탁 단계·난이도 가중치 적용</p>
+    <div class="cost-wrap">
+      <div class="cost-item">
+        <div class="cost-label">소규모 사업</div>
+        <div class="cost-bar-bg"><div class="cost-bar" style="width:100%;"></div></div>
+        <div class="cost-pct">최대 8.3%</div>
+      </div>
+      <div class="cost-item">
+        <div class="cost-label">중규모 사업</div>
+        <div class="cost-bar-bg"><div class="cost-bar" style="width:70%;"></div></div>
+        <div class="cost-pct">중간 수준</div>
+      </div>
+      <div class="cost-item">
+        <div class="cost-label">대규모 사업</div>
+        <div class="cost-bar-bg"><div class="cost-bar" style="width:46%;"></div></div>
+        <div class="cost-pct">최소 3.8%</div>
+      </div>
+    </div>
+    <ul class="il" style="margin-top:12px;">
+      <li><strong>산정 기준:</strong> 본사업 규모 + 위탁용역 단계(가중치) + 난이도</li>
+      <li><strong>범위:</strong> 본사업비 대비 <em>3.8% ~ 8.3%</em> 차등 적용 (사업 규모에 반비례)</li>
+      <li><strong>단계별 가중치:</strong> 집행단계 > 기획단계 > 사후관리단계 순</li>
+      <li><strong>PMO대상사업비:</strong> SW개발비 + HW·SW 구입비(SW 분리발주 금액 포함)</li>
+    </ul>
+    <div class="memo">PMO 대가 = 본사업비 × 3.8~8.3% / 소규모일수록 높은 비율 (관리 고정비 반영)</div>
+  </div>
+
+  <div class="card">
+    <div class="card-h"><div class="ico ip">⚖️</div><h3>PMO vs 정보시스템 감리 비교</h3></div>
+    <div class="cmp-tbl">
+      <div class="cmp-h">구분</div><div class="cmp-h" style="color:var(--a1)">PMO (사업관리 위탁)</div><div class="cmp-h" style="color:var(--a3)">정보시스템 감리</div>
+      <div class="cmp-row"><div class="cmp-cell">법적 근거</div><div class="cmp-cell">전자정부법 §64조의2</div><div class="cmp-cell">전자정부법 §57~63조</div></div>
+      <div class="cmp-row"><div class="cmp-cell">수행 방식</div><div class="cmp-cell">상주·지속적 관리·감독 지원</div><div class="cmp-cell">단계별 현장 점검 (비상주)</div></div>
+      <div class="cmp-row"><div class="cmp-cell">역할</div><div class="cmp-cell">발주기관 대리·지원 (사업관리 조력)</div><div class="cmp-cell">독립적 제3자 검토·평가</div></div>
+      <div class="cmp-row"><div class="cmp-cell">대상</div><div class="cmp-cell">선택적 (발주기관 재량)</div><div class="cmp-cell">의무 (20억↑) 또는 선택</div></div>
+      <div class="cmp-row"><div class="cmp-cell">관계</div><div class="cmp-cell">발주기관 편에서 사업 지원</div><div class="cmp-cell">중립적·독립적 점검·권고</div></div>
+      <div class="cmp-row"><div class="cmp-cell">선택</div><div class="cmp-cell" colspan="2" style="color:var(--a4);font-weight:600;">2017년부터 감리 또는 PMO 선택 가능 (발주기관 재량)</div></div>
+    </div>
+    <div class="memo">PMO=상주지원·발주기관편 vs 감리=비상주점검·독립제3자 / 2017년부터 선택 가능</div>
+  </div>
+
+  <div class="card">
+    <div class="card-h"><div class="ico ig">🔗</div><h3>PMO와 감리의 관계 — 감리 생략 허용 조건</h3></div>
+    <p style="font-size:12px;color:var(--mu);margin-bottom:12px;">PMO 수행 시 일정 조건 충족하면 정보시스템 감리 생략 가능</p>
+    <table>
+      <thead><tr><th>감리 생략 허용 조건</th><th>세부 내용</th></tr></thead>
+      <tbody>
+        <tr>
+          <td><span class="tag ty">조건 ①</span></td>
+          <td><strong>사업비 5억원 미만</strong>인 전자정부사업으로, 대국민 서비스용 행정·민원업무 처리 시스템 또는 여러 중앙행정기관이 공동으로 구축·사용하는 경우</td>
+        </tr>
+        <tr>
+          <td><span class="tag ty">조건 ②</span></td>
+          <td><strong>사업기간 5개월 미만</strong>인 정보시스템 구축사업인 경우</td>
+        </tr>
+      </tbody>
+    </table>
+    <p style="font-size:11.5px;color:var(--mu);margin-top:8px;line-height:1.6;">※ PMO가 단계별 감리를 하지 않는 경우, 전자정부사업관리자는 위탁대상사업 검사 전에 <strong style="color:var(--a4)">과업내용 이행여부를 점검</strong>해야 함 (발주기관의 검사 지원 활동)</p>
+    <div class="memo">PMO 수행 + 5억↓ 또는 5개월↓ → 감리 생략 가능 / 생략 시 PMO가 과업이행 점검</div>
+  </div>
+</div>
+
+<!-- ===== P6: 예상문제 ===== -->
+<div class="pnl" id="p6">
+  <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;margin-bottom:14px;">
+    <div class="fb-wr" id="fbar" style="margin:0;">
+      <button class="fb on" data-f="all">전체</button>
+      <button class="fb" data-f="개요">📌 개요</button>
+      <button class="fb" data-f="대상">🎯 대상·요건</button>
+      <button class="fb" data-f="범위">🔄 범위·절차</button>
+      <button class="fb" data-f="인력">🏛️ 인력·독립성</button>
+      <button class="fb" data-f="대가">💰 대가·감리</button>
+      <button class="fb" data-f="OX">⭕ OX</button>
+    </div>
+    <div class="sc-b">정답: <span id="sc">0</span>/<span id="st">0</span></div>
+  </div>
+  <div id="ql"></div>
+</div>
+
+</div>
+
+<script>
+document.querySelectorAll('.tab').forEach(t=>t.addEventListener('click',()=>{
+  document.querySelectorAll('.tab,.pnl').forEach(x=>x.classList.remove('on'));
+  t.classList.add('on');document.getElementById(t.dataset.p).classList.add('on');
+}));
+
+const QA=[
+  {cat:'개요',diff:'easy',
+   q:'전자정부사업관리 위탁(PMO) 제도의 법적 근거로 가장 적절한 것은?',
+   cs:['전자정부법 제57조','전자정부법 제64조의2','행정기관 정보시스템 구축·운영 지침','전자정부지원사업 관리지침'],
+   ans:1,
+   exp:'PMO의 법적 근거는 <strong>전자정부법 제64조의2(전자정부사업관리의 위탁)</strong>이며, 세부 규정은 동법 시행령 제78조의2~78조의4와 행안부 고시 제2021-5호에서 정합니다. 전자정부법 제57조는 정보시스템 감리에 관한 조항입니다.'},
+  {cat:'개요',diff:'mid',
+   q:'전자정부사업관리자(PMO사업자)가 될 수 있는 자격요건으로 가장 적절하지 않은 것은?',
+   cs:['학교를 제외한 공공기관','등록된 정보시스템 감리법인','소프트웨어 기술자를 3명 이상 보유한 소프트웨어사업자','소프트웨어 기술자를 1명 이상 보유한 IT컨설팅업체'],
+   ans:3,
+   exp:'PMO 수탁자 자격: ①공공기관(학교 제외), ②감리법인, ③<strong>SW기술자 3명 이상 보유한 SW사업자</strong>. 기술자가 1명 이상인 IT컨설팅업체는 자격 요건을 충족하지 않습니다. 최소 3명 이상이 법령상 요건입니다.'},
+  {cat:'개요',diff:'mid',
+   q:'전자정부사업관리를 위탁한 경우 자료를 제출해야 하는 기관으로 옳은 것은?',
+   cs:['기획재정부장관','국가정보원장','행정안전부장관','한국지능정보사회진흥원장'],
+   ans:2,
+   exp:'전자정부법 제64조의2 제4항: 행정기관 등의 장은 전자정부사업관리를 위탁한 경우 해당 전자정부사업과 위탁 용역 및 그 성과에 관한 자료를 <strong>행정안전부장관에게 제출</strong>해야 합니다. 이는 행안부의 PMO 제도 운영 현황 파악을 위한 것입니다.'},
+  {cat:'대상',diff:'mid',
+   q:'전자정부법 시행령 제78조의2에서 정한 PMO 위탁대상 사업에 해당하지 않는 것은?',
+   cs:['국민의 생명·재산에 막대한 영향을 미치는 사업','여러 정보시스템이 연계·통합되거나 규모가 크고 복잡한 사업','경험 및 전문성의 부족으로 위탁관리가 필요하다고 기관장이 인정하는 사업','사업비가 10억원 이하인 단순 유지보수 사업'],
+   ans:3,
+   exp:'PMO 위탁대상 4가지: ①국민생활 막대한 영향, ②다기관 행정 효율, ③대규모복잡 연계, ④기관장이 전문성 부족으로 인정. <strong>단순 유지보수나 소규모 사업</strong>은 위탁대상에 해당하지 않습니다. 위탁은 복잡하고 영향이 큰 사업을 대상으로 합니다.'},
+  {cat:'대상',diff:'hard',
+   q:'전자정부사업관리자 선정 시 평가하는 4가지 항목으로 올바르게 나열한 것은?',
+   cs:['재무상태·사업실적·기술능력·입찰가격',
+       '수행인력·업무수행·수행실적·품질 및 성과관리',
+       '인력·장비·기술력·제안서',
+       '경험·전문성·독립성·보안성'],
+   ans:1,
+   exp:'전자정부법 시행령 제78조의4에서 정한 PMO 사업관리자 선정 평가항목 4가지: <strong>① 수행인력 ② 업무수행 ③ 수행실적 ④ 품질 및 성과관리</strong>. 발주기관은 사업 특성에 따라 추가 기준을 적용할 수 있습니다.'},
+  {cat:'범위',diff:'mid',
+   q:'PMO 위탁 범위(3단계)에 대한 설명으로 가장 적절한 것은?',
+   cs:['기획·집행·사후관리 모두 항상 위탁해야 한다.',
+       '기획·집행·사후관리 모두 위탁이 원칙이나, 기획 또는 사후관리는 여건에 따라 생략 가능하다.',
+       '집행단계만 의무적으로 위탁하고 나머지는 선택이다.',
+       '사후관리단계만 필수이며 나머지는 선택이다.'],
+   ans:1,
+   exp:'PMO 위탁 원칙: <strong>기획·집행·사후관리 모두 위탁</strong>이 원칙이지만, 발주기관의 여건에 따라 <em>기획 또는 사후관리는 생략 가능</em>합니다. 집행단계(본사업 수행 중 관리)는 PMO의 핵심으로, 사실상 필수 단계입니다.'},
+  {cat:'범위',diff:'hard',
+   q:'PMO사업자는 본사업(PMO대상사업) 수행자 선정보다 언제 선정되어야 하는가?',
+   cs:['본사업 수행자 선정 후 PMO사업자 선정','본사업 수행자 선정과 동시에 선정','본사업 수행자 선정보다 이전에 선정','검사 완료 후 사후관리 단계에서 선정'],
+   ans:2,
+   exp:'PMO사업자는 <strong>본사업(PMO대상사업) 수행자 선정보다 먼저</strong> 선정해야 합니다. 이는 PMO가 기획단계부터 수행자 선정 과정을 지원하고, 충분한 업무파악 시간을 확보하기 위해서입니다. 기획단계를 생략하는 경우에도 마찬가지입니다.'},
+  {cat:'인력',diff:'mid',
+   q:'PMO 인력 구성에서 필수 지정이 요구되며 상주가 원칙인 인력은?',
+   cs:['기술지원 업무수행자','관리지원 업무수행자','수행책임자','발주기관 담당자'],
+   ans:2,
+   exp:'<strong>수행책임자</strong>는 PMO 인력 중 <em>필수 지정</em>이며 <em>상주가 원칙</em>입니다. PMO를 총괄 지휘하고 이해관계자 간 의사소통을 담당합니다. 기술지원 업무수행자는 유일하게 비상주가 허용됩니다. PMO 인력이 3명 미만인 경우 1명이 여러 역할 겸직 가능합니다.'},
+  {cat:'인력',diff:'hard',
+   q:'전자정부사업관리자의 독립성 확보 규정으로 가장 적절하지 않은 것은?',
+   cs:['PMO사업자는 계열회사가 해당 전자정부사업을 도급받도록 조언해서는 안 된다.',
+       'PMO사업자와 PMO대상사업 수행자 간에 특수관계가 없어야 한다.',
+       'PMO사업자와 감리법인 간에 독립성을 침해하는 특수관계가 없어야 한다.',
+       'PMO사업자는 본사업 수행자와 동일 회사이어도 무방하다.'],
+   ans:3,
+   exp:'독립성 원칙(전자정부법 §64조의2 제3항, 위탁규정 제6조): <em>PMO사업자·PMO대상사업 수행자·감리법인 상호 간 독립성을 침해하는 특수관계 금지</em>. <strong>PMO사업자와 본사업 수행자가 동일 회사인 것은 명백한 독립성 위반</strong>입니다.'},
+  {cat:'대가',diff:'mid',
+   q:'PMO 대가산정 기준으로 가장 적절한 것은?',
+   cs:['본사업비와 관계없이 고정금액으로 산정한다.',
+       '본사업비 대비 3.8%~8.3% 범위에서 사업규모에 따라 차등 적용한다.',
+       '감리 대가와 동일한 기준으로 산정한다.',
+       '발주기관이 자유롭게 결정하며 법적 기준은 없다.'],
+   ans:1,
+   exp:'PMO 대가는 <strong>본사업비 대비 3.8%~8.3%</strong> 범위에서 사업 규모·위탁 단계·난이도를 고려하여 차등 적용합니다. 사업 규모가 클수록 비율이 낮아지며(관리 고정비 효과), 집행단계에 더 높은 가중치를 적용합니다.'},
+  {cat:'대가',diff:'hard',
+   q:'PMO 수행 시 정보시스템 감리를 생략할 수 있는 조건으로 가장 적절한 것은?',
+   cs:['사업비 10억원 미만이고 사업기간 1년 미만인 경우','사업비 5억원 미만이거나 사업기간 5개월 미만인 정보시스템 구축사업인 경우','모든 PMO 수행 사업은 자동으로 감리 생략 가능하다.','PMO사업자가 감리법인인 경우 항상 감리 생략 가능하다.'],
+   ans:1,
+   exp:'PMO 수행 시 감리 생략 허용 조건: <strong>① 사업비 5억원 미만</strong> + 대국민 서비스용 또는 여러 기관 공동 사용, <strong>② 사업기간 5개월 미만</strong> 구축사업. 감리를 생략하는 경우 PMO가 검사 전 과업이행 여부를 점검해야 합니다.'},
+  {cat:'대가',diff:'mid',
+   q:'2017년 전자정부법 시행령 개정 이후 감리와 PMO의 관계로 가장 적절한 것은?',
+   cs:['감리와 PMO를 동시에 반드시 실시해야 한다.','PMO가 도입된 사업은 감리를 자동으로 대체한다.','발주기관이 사업 특성에 따라 감리 또는 PMO 중 선택할 수 있다.','PMO는 감리법인만 수행할 수 있다.'],
+   ans:2,
+   exp:'2017년 전자정부법 시행령 개정으로 <strong>발주기관이 정보화사업 발주 시 감리 또는 PMO 중 선택적으로 실시</strong>할 수 있게 되었습니다. 이를 통해 발주 업무가 간편해지고 비용 절약 효과도 거둘 수 있게 되었습니다.'},
+  // OX
+  {cat:'OX',diff:'easy',type:'ox',
+   q:'전자정부사업관리자(PMO사업자)는 자기의 계열회사가 해당 전자정부사업을 도급받도록 조언하는 것이 허용된다.',
+   ans:false,
+   exp:'<strong>×</strong> — 전자정부법 제64조의2 제3항: PMO사업자는 자기 또는 자기의 계열회사가 해당 전자정부사업을 <strong>도급받도록 조언하여서는 아니 됩니다</strong>. 이는 PMO의 독립성을 확보하기 위한 핵심 규정으로, 위반 시 법적 제재 대상이 됩니다.'},
+  {cat:'OX',diff:'mid',type:'ox',
+   q:'PMO 인력 중 기술지원 업무수행자는 상주가 원칙이나, 수행책임자는 비상주가 허용된다.',
+   ans:false,
+   exp:'<strong>×</strong> — 반대입니다. <strong>수행책임자와 관리지원 업무수행자는 상주가 원칙</strong>이며, <em>기술지원 업무수행자는 비상주가 허용</em>됩니다. 기술지원 업무의 특성상 필요 시에만 현장 지원하는 방식이 가능합니다.'},
+  {cat:'OX',diff:'mid',type:'ox',
+   q:'PMO 위탁 시 기획·집행·사후관리 3단계를 모두 위탁하는 것이 원칙이나, 기획 또는 사후관리는 여건에 따라 생략할 수 있다.',
+   ans:true,
+   exp:'<strong>○</strong> — 전자정부사업 기획·집행·사후관리 단계를 <em>모두 위탁</em>하는 것이 원칙이지만, 발주기관의 여건에 따라 <strong>기획 또는 사후관리 단계는 생략</strong>할 수 있습니다. 집행단계는 PMO의 핵심 기능으로 생략하기 어렵습니다.'},
+  {cat:'OX',diff:'hard',type:'ox',
+   q:'PMO 수행 시 사업비가 5억원 미만이고 사업기간이 5개월 미만인 구축사업의 경우 정보시스템 감리를 생략할 수 있다.',
+   ans:false,
+   exp:'<strong>×</strong> — 감리 생략 조건은 <strong>OR 조건</strong>입니다. <em>①사업비 5억원 미만</em>(+ 대국민 서비스용 등 조건) 또는 <em>②사업기간 5개월 미만</em> 구축사업 중 하나를 충족하면 됩니다. 두 조건을 AND로 동시에 충족해야 하는 것이 아닙니다.'},
+  {cat:'OX',diff:'mid',type:'ox',
+   q:'2017년부터 발주기관은 정보화사업 발주 시 감리와 PMO 중 하나를 선택하여 실시할 수 있다.',
+   ans:true,
+   exp:'<strong>○</strong> — 2016년 전자정부법 시행령 개정, 2017년 관련 행정규칙 일괄 개정으로 <strong>발주기관이 감리 또는 PMO를 선택적으로 실시</strong>할 수 있게 되었습니다. 이를 통해 발주 업무가 간편해지고 비용 절약 효과를 거둘 수 있게 되었습니다.'},
+];
+
+let answered=0,correct=0;
+function renderQ(f){
+  const data=f==='all'?QA:QA.filter(q=>q.cat===f);
+  const list=document.getElementById('ql');list.innerHTML='';
+  answered=0;correct=0;upS();
+  const CATC={'개요':'tb','대상':'ty','범위':'tg','인력':'tp','대가':'to','OX':'tr'};
+  const DLC={'easy':'easy 쉬움','mid':'mid 보통','hard':'hard 어려움'};
+  const NL=['①','②','③','④'];
+  if(!data.length){list.innerHTML='<div style="text-align:center;padding:40px;color:var(--mu)">문제 없음</div>';return;}
+  data.forEach((q,i)=>{
+    const gi=QA.indexOf(q);
+    const el=document.createElement('div');el.className='qa';
+    const tc=CATC[q.cat]||'tb';
+    const [dc,dn]=(DLC[q.diff]||'mid 보통').split(' ');
+    if(q.type==='ox'){
+      el.innerHTML=`<div class="qa-hd" onclick="this.closest('.qa').classList.toggle('open')"><div><div class="qa-meta"><span class="qn">Q${String(i+1).padStart(2,'0')}</span><span class="tag ${tc}">${q.cat}</span><span class="diff ${dc}">${dn}</span><span class="tag tp">O/X</span></div><div class="qq">${q.q}</div></div><span class="tgl">▾</span></div>
+      <div class="qa-bd"><div class="ox-wr"><button class="ox" onclick="pickOX(this,true,${gi})">⭕ 옳다</button><button class="ox" onclick="pickOX(this,false,${gi})">❌ 틀리다</button></div><div class="exp" id="ex-${gi}"><div class="exp-t">💡 해설</div>${q.exp}</div></div>`;
+    } else {
+      el.innerHTML=`<div class="qa-hd" onclick="this.closest('.qa').classList.toggle('open')"><div><div class="qa-meta"><span class="qn">Q${String(i+1).padStart(2,'0')}</span><span class="tag ${tc}">${q.cat}</span><span class="diff ${dc}">${dn}</span></div><div class="qq">${q.q}</div></div><span class="tgl">▾</span></div>
+      <div class="qa-bd"><div class="chs">${q.cs.map((c,ci)=>`<div class="ch" data-ci="${ci}" onclick="pickCh(this,${gi})"><span class="cnum">${NL[ci]}</span><span>${c}</span></div>`).join('')}</div><div class="exp" id="ex-${gi}"><div class="exp-t">💡 해설</div>${q.exp}</div></div>`;
+    }
+    list.appendChild(el);
+  });
+}
+function pickCh(el,gi){
+  const bd=el.closest('.qa-bd');if(bd.querySelector('.ok,.ng'))return;
+  const q=QA[gi];
+  bd.querySelectorAll('.ch').forEach((c,i)=>{c.classList.add('lk');if(i===q.ans)c.classList.add('ok');else if(i===parseInt(el.dataset.ci))c.classList.add('ng');});
+  document.getElementById('ex-'+gi).classList.add('show');
+  answered++;if(parseInt(el.dataset.ci)===q.ans)correct++;upS();
+}
+function pickOX(btn,val,gi){
+  const bd=btn.closest('.qa-bd');if(bd.querySelector('.so,.sx'))return;
+  const q=QA[gi];
+  bd.querySelectorAll('.ox').forEach(b=>b.classList.add('lk'));
+  btn.classList.add(val?'so':'sx');
+  if(val!==q.ans){btn.style.opacity='.5';bd.querySelectorAll('.ox')[val?1:0].classList.add(q.ans?'so':'sx');}
+  document.getElementById('ex-'+gi).classList.add('show');
+  answered++;if(val===q.ans)correct++;upS();
+}
+function upS(){document.getElementById('sc').textContent=correct;document.getElementById('st').textContent=answered;}
+document.getElementById('fbar').addEventListener('click',e=>{
+  const b=e.target.closest('.fb');if(!b)return;
+  document.querySelectorAll('.fb').forEach(x=>x.classList.remove('on'));b.classList.add('on');renderQ(b.dataset.f);
+});
+renderQ('all');
+</script>
+</body>
+</html>

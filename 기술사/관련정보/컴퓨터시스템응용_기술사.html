@@ -1,0 +1,724 @@
+
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:var(--font-sans);color:var(--color-text-primary)}
+.wrap{padding:1rem 0}
+.header{background:var(--color-background-secondary);border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-lg);padding:1rem 1.25rem;margin-bottom:1rem;display:flex;align-items:center;justify-content:space-between}
+.header h1{font-size:18px;font-weight:500}
+.header .badge{font-size:11px;padding:3px 8px;border-radius:var(--border-radius-md);background:#E6F1FB;color:#0C447C}
+.tabs{display:flex;gap:4px;flex-wrap:wrap;margin-bottom:1rem}
+.tab{font-size:12px;padding:5px 12px;border-radius:var(--border-radius-md);border:0.5px solid var(--color-border-tertiary);background:var(--color-background-primary);color:var(--color-text-secondary);cursor:pointer;transition:all .15s}
+.tab.active{background:#185FA5;color:#E6F1FB;border-color:#185FA5}
+.panel{display:none}.panel.active{display:block}
+.card{background:var(--color-background-primary);border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-lg);padding:1rem 1.25rem;margin-bottom:.75rem}
+.card h3{font-size:14px;font-weight:500;margin-bottom:.6rem;color:var(--color-text-primary)}
+.section-title{font-size:13px;font-weight:500;color:var(--color-text-secondary);margin:.75rem 0 .4rem;text-transform:uppercase;letter-spacing:.04em}
+.memo{background:#E1F5EE;border-left:3px solid #1D9E75;border-radius:0;padding:.5rem .75rem;font-size:13px;margin:.4rem 0;color:#085041;line-height:1.5}
+.point{background:#FAEEDA;border-left:3px solid #BA7517;border-radius:0;padding:.5rem .75rem;font-size:13px;margin:.4rem 0;color:#633806;line-height:1.5}
+.grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(0,1fr));gap:.75rem}
+.tag{display:inline-block;font-size:11px;padding:2px 7px;border-radius:var(--border-radius-md);margin:2px;font-weight:500}
+.tag-b{background:#E6F1FB;color:#0C447C}
+.tag-g{background:#EAF3DE;color:#3B6D11}
+.tag-r{background:#FCEBEB;color:#A32D2D}
+.tag-a{background:#FAEEDA;color:#854F0B}
+.tag-p{background:#EEEDFE;color:#3C3489}
+table{width:100%;border-collapse:collapse;font-size:13px}
+th{font-weight:500;font-size:12px;color:var(--color-text-secondary);text-align:left;padding:6px 8px;border-bottom:0.5px solid var(--color-border-tertiary)}
+td{padding:6px 8px;border-bottom:0.5px solid var(--color-border-tertiary);vertical-align:top;color:var(--color-text-primary);font-size:13px;line-height:1.5}
+tr:last-child td{border-bottom:none}
+.q-item{border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-md);padding:.75rem 1rem;margin-bottom:.6rem}
+.q-text{font-size:14px;margin-bottom:.5rem;line-height:1.6}
+.q-opts button{display:block;width:100%;text-align:left;font-size:13px;padding:5px 8px;margin:3px 0;border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-md);background:var(--color-background-primary);cursor:pointer;color:var(--color-text-primary);transition:all .12s}
+.q-opts button:hover{background:var(--color-background-secondary)}
+.q-opts button.correct{background:#EAF3DE;border-color:#639922;color:#27500A}
+.q-opts button.wrong{background:#FCEBEB;border-color:#A32D2D;color:#791F1F}
+.explain{font-size:12px;margin-top:.4rem;padding:.4rem .6rem;background:var(--color-background-secondary);border-radius:var(--border-radius-md);color:var(--color-text-secondary);display:none;line-height:1.5}
+.score-bar{display:flex;align-items:center;gap:12px;padding:.75rem 1rem;background:var(--color-background-secondary);border-radius:var(--border-radius-md);margin-bottom:.75rem;font-size:13px}
+.score-num{font-size:20px;font-weight:500}
+.filter-row{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:.75rem}
+.filter-btn{font-size:11px;padding:4px 10px;border-radius:var(--border-radius-md);border:0.5px solid var(--color-border-tertiary);background:var(--color-background-primary);cursor:pointer;color:var(--color-text-secondary)}
+.filter-btn.on{background:#185FA5;color:#E6F1FB;border-color:#185FA5}
+.acc-head{font-size:13px;font-weight:500;padding:.5rem .75rem;cursor:pointer;display:flex;justify-content:space-between;align-items:center;background:var(--color-background-secondary);border-radius:var(--border-radius-md);margin:.25rem 0}
+.acc-body{font-size:13px;padding:.5rem .75rem;line-height:1.7;display:none;color:var(--color-text-secondary)}
+.acc-body.open{display:block}
+.mini-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:.5rem}
+.mini-card{background:var(--color-background-secondary);border-radius:var(--border-radius-md);padding:.6rem .75rem;font-size:12px;line-height:1.5}
+.mini-card strong{font-size:12px;font-weight:500;display:block;margin-bottom:2px}
+</style>
+<div class="wrap">
+<div class="header">
+  <h1>컴퓨터 시스템 응용 기술사 — 핵심 요약</h1>
+  <span class="badge">Engineer PE</span>
+</div>
+<div class="tabs" id="tabs">
+  <button class="tab active" data-tab="arch">컴퓨터 구조</button>
+  <button class="tab" data-tab="os">운영체제</button>
+  <button class="tab" data-tab="db">데이터베이스</button>
+  <button class="tab" data-tab="net">네트워크</button>
+  <button class="tab" data-tab="algo">알고리즘/자료구조</button>
+  <button class="tab" data-tab="sw">소프트웨어공학</button>
+  <button class="tab" data-tab="sec">보안</button>
+  <button class="tab" data-tab="qa">기출 Q&amp;A</button>
+</div>
+
+<!-- 컴퓨터 구조 -->
+<div class="panel active" id="tab-arch">
+  <div class="grid2">
+    <div class="card">
+      <h3>CPU 구조 핵심</h3>
+      <p class="section-title">주요 레지스터</p>
+      <table>
+        <tr><th>레지스터</th><th>역할</th></tr>
+        <tr><td>PC (Program Counter)</td><td>다음 실행할 명령어 주소</td></tr>
+        <tr><td>IR (Instruction Register)</td><td>현재 실행 중인 명령어 저장</td></tr>
+        <tr><td>MAR</td><td>메모리 주소 레지스터</td></tr>
+        <tr><td>MBR/MDR</td><td>메모리 데이터 레지스터</td></tr>
+        <tr><td>SP (Stack Pointer)</td><td>스택 최상위 주소</td></tr>
+        <tr><td>PSW/FLAGS</td><td>상태 플래그 (ZF, CF, SF, OF)</td></tr>
+      </table>
+      <div class="memo" style="margin-top:.5rem">한 줄 암기: PC가 IR에 가져와 MAR→MBR→ALU 순으로 실행</div>
+    </div>
+    <div class="card">
+      <h3>명령어 파이프라인</h3>
+      <table>
+        <tr><th>단계</th><th>내용</th></tr>
+        <tr><td>IF (Instruction Fetch)</td><td>명령어 인출</td></tr>
+        <tr><td>ID (Instruction Decode)</td><td>명령어 해독</td></tr>
+        <tr><td>OF (Operand Fetch)</td><td>오퍼랜드 인출</td></tr>
+        <tr><td>EX (Execute)</td><td>명령어 실행</td></tr>
+        <tr><td>WB (Write Back)</td><td>결과 저장</td></tr>
+      </table>
+      <p class="section-title" style="margin-top:.5rem">해저드 종류</p>
+      <span class="tag tag-r">구조적 해저드</span><span class="tag tag-a">데이터 해저드</span><span class="tag tag-p">제어 해저드</span>
+      <div class="memo">해결: 파이프라인 스톨 / 포워딩 / 분기 예측</div>
+    </div>
+  </div>
+  <div class="card">
+    <h3>캐시 메모리</h3>
+    <div class="grid2">
+      <div>
+        <p class="section-title">캐시 매핑 방식</p>
+        <table>
+          <tr><th>방식</th><th>특징</th><th>충돌</th></tr>
+          <tr><td>직접 매핑</td><td>1:1 고정 배치</td><td>많음</td></tr>
+          <tr><td>완전 연관</td><td>어느 슬롯도 가능</td><td>적음</td></tr>
+          <tr><td>집합 연관</td><td>세트 내 자유 배치</td><td>중간</td></tr>
+        </table>
+      </div>
+      <div>
+        <p class="section-title">교체 알고리즘</p>
+        <span class="tag tag-b">LRU (최근 미사용)</span><span class="tag tag-g">LFU (최소 빈도)</span><span class="tag tag-a">FIFO</span><span class="tag tag-p">OPT (최적)</span>
+        <p class="section-title" style="margin-top:.5rem">지역성</p>
+        <span class="tag tag-b">시간적 지역성</span><span class="tag tag-g">공간적 지역성</span>
+        <div class="memo">히트율 = 캐시 히트 횟수 / 전체 참조 횟수</div>
+      </div>
+    </div>
+  </div>
+  <div class="card">
+    <h3>메모리 체계</h3>
+    <table>
+      <tr><th>종류</th><th>특성</th><th>사용</th></tr>
+      <tr><td>SRAM</td><td>빠름, 비쌈, 플립플롭</td><td>캐시</td></tr>
+      <tr><td>DRAM</td><td>느림, 저렴, 커패시터 (주기적 리프레시)</td><td>주기억장치</td></tr>
+      <tr><td>ROM</td><td>비휘발성, 읽기 전용</td><td>BIOS/펌웨어</td></tr>
+      <tr><td>플래시</td><td>비휘발성, 블록 단위 삭제</td><td>SSD/USB</td></tr>
+    </table>
+    <div class="point">기술사 포인트: 기억장치 계층구조 — 레지스터 > 캐시 > 주기억 > 보조기억; 위로 갈수록 빠르고 비싸고 용량 작음</div>
+  </div>
+  <div class="card">
+    <h3>입출력 방식 비교</h3>
+    <table>
+      <tr><th>방식</th><th>CPU 개입</th><th>속도</th><th>특징</th></tr>
+      <tr><td>프로그램 I/O (폴링)</td><td>지속 관여</td><td>느림</td><td>바쁜 대기(Busy Wait)</td></tr>
+      <tr><td>인터럽트 구동</td><td>완료 시 인터럽트</td><td>중간</td><td>CPU 다른 작업 가능</td></tr>
+      <tr><td>DMA</td><td>최소화</td><td>빠름</td><td>메모리-장치 직접 전송</td></tr>
+      <tr><td>채널 I/O</td><td>거의 없음</td><td>가장 빠름</td><td>전용 I/O 프로세서</td></tr>
+    </table>
+    <div class="memo">인터럽트 우선순위: 정전 > 기계 오류 > 외부 > SVC > 입출력</div>
+  </div>
+</div>
+
+<!-- 운영체제 -->
+<div class="panel" id="tab-os">
+  <div class="grid2">
+    <div class="card">
+      <h3>프로세스 vs 스레드</h3>
+      <table>
+        <tr><th>구분</th><th>프로세스</th><th>스레드</th></tr>
+        <tr><td>자원</td><td>독립된 주소 공간</td><td>프로세스 자원 공유</td></tr>
+        <tr><td>통신</td><td>IPC 필요</td><td>전역변수/힙 공유</td></tr>
+        <tr><td>컨텍스트 전환</td><td>무거움</td><td>가벼움</td></tr>
+        <tr><td>영향</td><td>독립적 오류 처리</td><td>한 스레드 오류→전체 영향</td></tr>
+      </table>
+      <div class="memo">PCB 구성: PID, 상태, PC, 레지스터, 메모리 한계, 파일 정보</div>
+    </div>
+    <div class="card">
+      <h3>프로세스 상태 전이</h3>
+      <div style="font-size:12px;line-height:2;padding:.25rem 0">
+        <span class="tag tag-g">NEW</span>→(admitted)→<span class="tag tag-b">READY</span>→(dispatch)→<span class="tag tag-p">RUNNING</span><br>
+        <span class="tag tag-p">RUNNING</span>→(interrupt)→<span class="tag tag-b">READY</span><br>
+        <span class="tag tag-p">RUNNING</span>→(I/O wait)→<span class="tag tag-a">WAITING</span>→(I/O done)→<span class="tag tag-b">READY</span><br>
+        <span class="tag tag-p">RUNNING</span>→(exit)→<span class="tag tag-r">TERMINATED</span>
+      </div>
+      <div class="memo">스왑 아웃: Ready/Waiting → Suspended 상태로 디스크 이동</div>
+    </div>
+  </div>
+  <div class="card">
+    <h3>CPU 스케줄링 알고리즘</h3>
+    <table>
+      <tr><th>알고리즘</th><th>방식</th><th>특징</th><th>단점</th></tr>
+      <tr><td>FCFS</td><td>비선점</td><td>구현 단순</td><td>콘보이 효과</td></tr>
+      <tr><td>SJF</td><td>비선점</td><td>평균 대기 최소</td><td>기아(Starvation)</td></tr>
+      <tr><td>SRTF</td><td>선점</td><td>SJF 선점 버전</td><td>실행시간 예측 어려움</td></tr>
+      <tr><td>Round Robin</td><td>선점</td><td>시분할, 공평</td><td>타임퀀텀 설정 중요</td></tr>
+      <tr><td>Priority</td><td>선점/비선점</td><td>우선순위 기반</td><td>기아 → 에이징으로 해결</td></tr>
+      <tr><td>MLQ / MLFQ</td><td>선점</td><td>다단계 큐</td><td>구현 복잡</td></tr>
+    </table>
+    <div class="point">기술사 포인트: 에이징(Aging) — 대기 시간이 길어질수록 우선순위를 높여 기아 방지</div>
+  </div>
+  <div class="grid2">
+    <div class="card">
+      <h3>교착상태 (Deadlock)</h3>
+      <p class="section-title">Coffman 4가지 조건</p>
+      <span class="tag tag-r">상호 배제</span><span class="tag tag-r">점유와 대기</span><span class="tag tag-r">비선점</span><span class="tag tag-r">환형 대기</span>
+      <p class="section-title" style="margin-top:.5rem">처리 방법</p>
+      <table>
+        <tr><th>방법</th><th>설명</th></tr>
+        <tr><td>예방 (Prevention)</td><td>4조건 중 하나 제거</td></tr>
+        <tr><td>회피 (Avoidance)</td><td>은행가 알고리즘</td></tr>
+        <tr><td>탐지 (Detection)</td><td>자원 할당 그래프 탐지</td></tr>
+        <tr><td>회복 (Recovery)</td><td>프로세스 종료/자원 선점</td></tr>
+      </table>
+      <div class="memo">암기: 예방→회피→탐지→회복 (예-회-탐-회)</div>
+    </div>
+    <div class="card">
+      <h3>메모리 관리</h3>
+      <p class="section-title">가상 메모리 기법</p>
+      <span class="tag tag-b">페이징</span><span class="tag tag-g">세그멘테이션</span><span class="tag tag-p">페이지드 세그멘테이션</span>
+      <p class="section-title" style="margin-top:.5rem">페이지 교체 알고리즘</p>
+      <table>
+        <tr><th>알고리즘</th><th>특징</th></tr>
+        <tr><td>OPT</td><td>이론적 최적, 미래 참조 필요</td></tr>
+        <tr><td>LRU</td><td>최근 미사용 교체, 실용적</td></tr>
+        <tr><td>FIFO</td><td>가장 오래된 교체, Belady 이상 발생</td></tr>
+        <tr><td>Clock</td><td>LRU 근사, 참조 비트 활용</td></tr>
+      </table>
+      <div class="memo">스래싱(Thrashing): 페이지 폴트 과다 → CPU 이용률 급감. 해결: 워킹셋 모델, PFF</div>
+    </div>
+  </div>
+  <div class="card">
+    <h3>동기화</h3>
+    <div class="grid2">
+      <div>
+        <p class="section-title">임계구역 조건 (Peterson)</p>
+        <span class="tag tag-b">상호 배제</span><span class="tag tag-g">진행 (Progress)</span><span class="tag tag-p">한계 대기 (Bounded Waiting)</span>
+        <p class="section-title" style="margin-top:.5rem">동기화 도구</p>
+        <table>
+          <tr><th>도구</th><th>특징</th></tr>
+          <tr><td>뮤텍스</td><td>이진 세마포, 소유자 해제</td></tr>
+          <tr><td>세마포</td><td>카운팅 세마포, P/V 연산</td></tr>
+          <tr><td>모니터</td><td>고수준 추상화, 조건 변수</td></tr>
+        </table>
+      </div>
+      <div>
+        <p class="section-title">고전 동기화 문제</p>
+        <div class="acc-head" onclick="tog(this)">생산자-소비자 <span>+</span></div>
+        <div class="acc-body">버퍼 공유. 세마포 3개: mutex, empty(N), full(0). 생산자는 empty P → mutex P → 쓰기 → mutex V → full V</div>
+        <div class="acc-head" onclick="tog(this)">식사하는 철학자 <span>+</span></div>
+        <div class="acc-body">5명, 5개 젓가락. 해결: 한 번에 양쪽 모두 집기, 짝수/홀수 순서 다르게, 4명만 식탁에 허용</div>
+        <div class="acc-head" onclick="tog(this)">Reader-Writer <span>+</span></div>
+        <div class="acc-body">다수 독자 동시 읽기 허용, 쓰기 시 단독 접근. Writer 기아 문제 주의</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 데이터베이스 -->
+<div class="panel" id="tab-db">
+  <div class="card">
+    <h3>정규화 (Normalization)</h3>
+    <table>
+      <tr><th>정규형</th><th>조건</th><th>제거 이상</th></tr>
+      <tr><td>1NF</td><td>원자값 (반복 그룹 제거)</td><td>반복 그룹 이상</td></tr>
+      <tr><td>2NF</td><td>1NF + 부분 함수 종속 제거</td><td>삽입/삭제 이상 일부</td></tr>
+      <tr><td>3NF</td><td>2NF + 이행 함수 종속 제거</td><td>갱신 이상</td></tr>
+      <tr><td>BCNF</td><td>모든 결정자가 후보키</td><td>3NF가 해결 못한 이상</td></tr>
+      <tr><td>4NF</td><td>BCNF + 다치 종속 제거</td><td>다치 종속 이상</td></tr>
+      <tr><td>5NF</td><td>4NF + 조인 종속 제거</td><td>조인 이상</td></tr>
+    </table>
+    <div class="memo">1NF→BCNF 암기: 원자-부분-이행-결정자 / 이상(Anomaly): 삽입·삭제·갱신</div>
+    <div class="point">기술사 포인트: 반정규화(Denormalization) — 성능을 위해 의도적 중복 허용. 조회 ↑, 갱신 이상 ↑ 트레이드오프</div>
+  </div>
+  <div class="grid2">
+    <div class="card">
+      <h3>트랜잭션 ACID</h3>
+      <table>
+        <tr><th>속성</th><th>의미</th></tr>
+        <tr><td>Atomicity (원자성)</td><td>All or Nothing</td></tr>
+        <tr><td>Consistency (일관성)</td><td>트랜잭션 전후 DB 일관 상태 유지</td></tr>
+        <tr><td>Isolation (격리성)</td><td>동시 실행 트랜잭션 독립</td></tr>
+        <tr><td>Durability (지속성)</td><td>커밋 결과는 영구 반영</td></tr>
+      </table>
+      <p class="section-title" style="margin-top:.5rem">트랜잭션 격리 수준</p>
+      <table>
+        <tr><th>수준</th><th>Dirty Read</th><th>Non-Rep</th><th>Phantom</th></tr>
+        <tr><td>Read Uncommitted</td><td>O</td><td>O</td><td>O</td></tr>
+        <tr><td>Read Committed</td><td>X</td><td>O</td><td>O</td></tr>
+        <tr><td>Repeatable Read</td><td>X</td><td>X</td><td>O</td></tr>
+        <tr><td>Serializable</td><td>X</td><td>X</td><td>X</td></tr>
+      </table>
+    </div>
+    <div class="card">
+      <h3>동시성 제어</h3>
+      <p class="section-title">락킹 프로토콜</p>
+      <span class="tag tag-b">공유 락 (S-Lock)</span><span class="tag tag-r">배타 락 (X-Lock)</span>
+      <div style="font-size:12px;margin:.4rem 0">S+S=가능, S+X=불가, X+X=불가</div>
+      <div class="acc-head" onclick="tog(this)">2PL (2단계 잠금) <span>+</span></div>
+      <div class="acc-body">확장 단계(Growing): 락 획득만. 수축 단계(Shrinking): 락 해제만. 직렬 가능성 보장하나 교착상태 발생 가능</div>
+      <div class="acc-head" onclick="tog(this)">MVCC <span>+</span></div>
+      <div class="acc-body">다중 버전 동시성 제어. 읽기 시 락 없이 스냅샷 읽기. PostgreSQL, InnoDB 사용. 쓰기 충돌 시 롤백</div>
+      <div class="acc-head" onclick="tog(this)">낙관적 vs 비관적 <span>+</span></div>
+      <div class="acc-body">비관적: 충돌 가능성 전제, 선제 락. 낙관적: 충돌 드물다 전제, 커밋 시 검증(충돌 시 롤백)</div>
+      <div class="memo">타임스탬프 기반 동시성: TS(Ti) < TS(Tj)면 Ti 먼저 수행된 것으로 처리</div>
+    </div>
+  </div>
+  <div class="card">
+    <h3>인덱스 & 저장 구조</h3>
+    <div class="grid2">
+      <div>
+        <p class="section-title">B+ Tree</p>
+        <ul style="font-size:13px;padding-left:1.2rem;line-height:1.8">
+          <li>리프 노드에만 실제 데이터 포인터</li>
+          <li>리프 노드 연결 리스트 → 범위 검색 효율</li>
+          <li>균형 트리, O(log n) 검색</li>
+          <li>DBMS 기본 인덱스 구조</li>
+        </ul>
+        <div class="memo">B Tree vs B+ Tree: B+는 내부 노드에 데이터 없음, 리프 체인 연결</div>
+      </div>
+      <div>
+        <p class="section-title">인덱스 종류</p>
+        <table>
+          <tr><th>종류</th><th>특징</th></tr>
+          <tr><td>클러스터드</td><td>물리적 정렬 일치, 테이블당 1개</td></tr>
+          <tr><td>논클러스터드</td><td>별도 인덱스 구조, 다수 가능</td></tr>
+          <tr><td>해시 인덱스</td><td>등치 검색 O(1), 범위 불가</td></tr>
+          <tr><td>비트맵 인덱스</td><td>카디널리티 낮은 컬럼, DW</td></tr>
+          <tr><td>함수 기반</td><td>표현식 결과 인덱싱</td></tr>
+        </table>
+      </div>
+    </div>
+  </div>
+  <div class="card">
+    <h3>관계 대수 & SQL 핵심</h3>
+    <div class="grid2">
+      <div>
+        <p class="section-title">관계 대수 연산자</p>
+        <span class="tag tag-b">σ 선택(Select)</span><span class="tag tag-g">π 투영(Project)</span><span class="tag tag-p">⋈ 조인</span><span class="tag tag-a">÷ 나눗셈</span><span class="tag tag-b">∪ 합집합</span><span class="tag tag-r">- 차집합</span><span class="tag tag-g">∩ 교집합</span><span class="tag tag-a">× 카티션</span>
+      </div>
+      <div>
+        <p class="section-title">JOIN 종류</p>
+        <table>
+          <tr><th>JOIN</th><th>결과</th></tr>
+          <tr><td>INNER JOIN</td><td>교집합</td></tr>
+          <tr><td>LEFT OUTER</td><td>왼쪽 모두 + 일치</td></tr>
+          <tr><td>FULL OUTER</td><td>양쪽 모두</td></tr>
+          <tr><td>CROSS JOIN</td><td>카티션 곱</td></tr>
+          <tr><td>SELF JOIN</td><td>자기 자신과 조인</td></tr>
+        </table>
+      </div>
+    </div>
+    <div class="point">기술사 포인트: SQL 실행 순서 — FROM → WHERE → GROUP BY → HAVING → SELECT → ORDER BY</div>
+  </div>
+</div>
+
+<!-- 네트워크 -->
+<div class="panel" id="tab-net">
+  <div class="card">
+    <h3>OSI 7계층 vs TCP/IP 4계층</h3>
+    <table>
+      <tr><th>OSI</th><th>TCP/IP</th><th>PDU</th><th>주요 프로토콜</th></tr>
+      <tr><td>7 응용</td><td rowspan="3">응용</td><td rowspan="3">Data</td><td>HTTP, FTP, DNS, SMTP, DHCP</td></tr>
+      <tr><td>6 표현</td><td>SSL/TLS, JPEG, ASCII</td></tr>
+      <tr><td>5 세션</td><td>NetBIOS, RPC</td></tr>
+      <tr><td>4 전송</td><td>전송</td><td>Segment</td><td>TCP, UDP</td></tr>
+      <tr><td>3 네트워크</td><td>인터넷</td><td>Packet</td><td>IP, ICMP, ARP, OSPF, BGP</td></tr>
+      <tr><td>2 데이터링크</td><td rowspan="2">네트워크 접근</td><td>Frame</td><td>Ethernet, MAC, PPP</td></tr>
+      <tr><td>1 물리</td><td>Bit</td><td>Hub, 케이블</td></tr>
+    </table>
+    <div class="memo">암기: 아표세전네데물 (응용·표현·세션·전송·네트워크·데이터링크·물리)</div>
+  </div>
+  <div class="grid2">
+    <div class="card">
+      <h3>TCP vs UDP</h3>
+      <table>
+        <tr><th>구분</th><th>TCP</th><th>UDP</th></tr>
+        <tr><td>연결</td><td>연결 지향</td><td>비연결</td></tr>
+        <tr><td>신뢰성</td><td>보장 (재전송)</td><td>미보장</td></tr>
+        <tr><td>순서</td><td>순서 보장</td><td>미보장</td></tr>
+        <tr><td>흐름제어</td><td>슬라이딩 윈도우</td><td>없음</td></tr>
+        <tr><td>혼잡제어</td><td>있음</td><td>없음</td></tr>
+        <tr><td>속도</td><td>느림</td><td>빠름</td></tr>
+        <tr><td>사용</td><td>HTTP, FTP</td><td>DNS, 스트리밍</td></tr>
+      </table>
+      <div class="memo">3-way Handshake: SYN→SYN+ACK→ACK / 4-way: FIN→ACK→FIN→ACK</div>
+    </div>
+    <div class="card">
+      <h3>라우팅 프로토콜</h3>
+      <table>
+        <tr><th>구분</th><th>프로토콜</th><th>알고리즘</th></tr>
+        <tr><td>IGP-거리벡터</td><td>RIP</td><td>Bellman-Ford, 홉수 제한 15</td></tr>
+        <tr><td>IGP-링크상태</td><td>OSPF</td><td>Dijkstra, 대규모 AS</td></tr>
+        <tr><td>IGP-하이브리드</td><td>EIGRP</td><td>DUAL 알고리즘 (Cisco)</td></tr>
+        <tr><td>EGP</td><td>BGP</td><td>경로 벡터, AS 간 라우팅</td></tr>
+      </table>
+      <p class="section-title" style="margin-top:.5rem">혼잡 제어</p>
+      <span class="tag tag-b">슬로우 스타트</span><span class="tag tag-g">AIMD</span><span class="tag tag-a">혼잡 회피</span><span class="tag tag-r">빠른 재전송</span>
+    </div>
+  </div>
+  <div class="card">
+    <h3>IP 주소 & 서브넷</h3>
+    <div class="grid2">
+      <div>
+        <p class="section-title">IPv4 클래스</p>
+        <table>
+          <tr><th>클래스</th><th>첫 비트</th><th>범위</th></tr>
+          <tr><td>A</td><td>0xxx</td><td>1.0.0.0 ~ 126.x.x.x</td></tr>
+          <tr><td>B</td><td>10xx</td><td>128.0.0.0 ~ 191.x.x.x</td></tr>
+          <tr><td>C</td><td>110x</td><td>192.0.0.0 ~ 223.x.x.x</td></tr>
+          <tr><td>D</td><td>1110</td><td>멀티캐스트</td></tr>
+        </table>
+      </div>
+      <div>
+        <p class="section-title">IPv4 vs IPv6</p>
+        <table>
+          <tr><th>구분</th><th>IPv4</th><th>IPv6</th></tr>
+          <tr><td>주소 길이</td><td>32bit</td><td>128bit</td></tr>
+          <tr><td>표기</td><td>점 10진수</td><td>콜론 16진수</td></tr>
+          <tr><td>보안</td><td>선택</td><td>IPSec 기본</td></tr>
+          <tr><td>헤더</td><td>가변</td><td>고정 40byte</td></tr>
+        </table>
+        <div class="memo">CIDR: /24 → 서브넷 마스크 255.255.255.0 → 호스트 254개</div>
+      </div>
+    </div>
+    <div class="point">기술사 포인트: NAT(Network Address Translation) — 사설 IP↔공인 IP 변환. IPv4 고갈 대응. NAPT(포트 기반 PAT)으로 1개 공인 IP로 다수 사설 연결</div>
+  </div>
+</div>
+
+<!-- 알고리즘/자료구조 -->
+<div class="panel" id="tab-algo">
+  <div class="card">
+    <h3>시간 복잡도 비교</h3>
+    <table>
+      <tr><th>알고리즘</th><th>Best</th><th>Average</th><th>Worst</th><th>안정</th></tr>
+      <tr><td>버블 정렬</td><td>O(n)</td><td>O(n²)</td><td>O(n²)</td><td>O</td></tr>
+      <tr><td>선택 정렬</td><td>O(n²)</td><td>O(n²)</td><td>O(n²)</td><td>X</td></tr>
+      <tr><td>삽입 정렬</td><td>O(n)</td><td>O(n²)</td><td>O(n²)</td><td>O</td></tr>
+      <tr><td>합병 정렬</td><td>O(n log n)</td><td>O(n log n)</td><td>O(n log n)</td><td>O</td></tr>
+      <tr><td>퀵 정렬</td><td>O(n log n)</td><td>O(n log n)</td><td>O(n²)</td><td>X</td></tr>
+      <tr><td>힙 정렬</td><td>O(n log n)</td><td>O(n log n)</td><td>O(n log n)</td><td>X</td></tr>
+      <tr><td>기수 정렬</td><td>O(nk)</td><td>O(nk)</td><td>O(nk)</td><td>O</td></tr>
+    </table>
+    <div class="memo">비교 기반 정렬 하한: Ω(n log n). 기수/계수 정렬은 비교 없이 O(n) 가능 (단, 제약 있음)</div>
+  </div>
+  <div class="grid2">
+    <div class="card">
+      <h3>트리 자료구조</h3>
+      <table>
+        <tr><th>종류</th><th>특징</th></tr>
+        <tr><td>이진 탐색 트리</td><td>왼쪽<루트<오른쪽, 최악 O(n)</td></tr>
+        <tr><td>AVL 트리</td><td>높이 균형 (|BF|≤1), O(log n)</td></tr>
+        <tr><td>레드-블랙 트리</td><td>완화된 균형, 삽입/삭제 빠름</td></tr>
+        <tr><td>B 트리</td><td>다방향, 디스크 최적화</td></tr>
+        <tr><td>B+ 트리</td><td>리프 연결, DBMS 인덱스</td></tr>
+        <tr><td>트라이</td><td>문자열 검색 O(m), m=문자열 길이</td></tr>
+      </table>
+    </div>
+    <div class="card">
+      <h3>그래프 알고리즘</h3>
+      <table>
+        <tr><th>알고리즘</th><th>용도</th><th>복잡도</th></tr>
+        <tr><td>BFS</td><td>최단 경로 (가중치 없음)</td><td>O(V+E)</td></tr>
+        <tr><td>DFS</td><td>연결 요소, 위상 정렬</td><td>O(V+E)</td></tr>
+        <tr><td>Dijkstra</td><td>단일 출발 최단 경로 (양수)</td><td>O((V+E)log V)</td></tr>
+        <tr><td>Bellman-Ford</td><td>음수 가중치 허용</td><td>O(VE)</td></tr>
+        <tr><td>Floyd-Warshall</td><td>모든 쌍 최단 경로</td><td>O(V³)</td></tr>
+        <tr><td>Kruskal</td><td>MST (간선 정렬)</td><td>O(E log E)</td></tr>
+        <tr><td>Prim</td><td>MST (정점 기반)</td><td>O(E log V)</td></tr>
+      </table>
+      <div class="memo">위상 정렬: DAG에서 선행 관계 순서 결정. Kahn's / DFS 역순</div>
+    </div>
+  </div>
+  <div class="card">
+    <h3>알고리즘 설계 패러다임</h3>
+    <div class="mini-grid">
+      <div class="mini-card"><strong>분할 정복</strong>문제를 부분 문제로 분할→해결→합병. 퀵/합병 정렬, 이진 탐색</div>
+      <div class="mini-card"><strong>동적 프로그래밍</strong>중복 부분 문제 + 최적 부분 구조. 메모이제이션/타뷸레이션. LCS, 배낭</div>
+      <div class="mini-card"><strong>그리디</strong>각 단계에서 최선 선택. 최적해 보장 안됨. MST, Dijkstra, 활동 선택</div>
+      <div class="mini-card"><strong>백트래킹</strong>가지치기로 탐색 공간 축소. N-Queens, 부분 집합 합</div>
+      <div class="mini-card"><strong>분기 한정</strong>백트래킹 + 상한/하한 계산. 여행자 문제(TSP)</div>
+    </div>
+    <div class="point">기술사 포인트: P vs NP — P: 다항 시간 풀이 가능, NP: 다항 시간 검증 가능. NP-완전: NP이면서 가장 어려운 문제. SAT, 3-SAT, TSP, 배낭</div>
+  </div>
+</div>
+
+<!-- 소프트웨어 공학 -->
+<div class="panel" id="tab-sw">
+  <div class="card">
+    <h3>소프트웨어 개발 생명주기 (SDLC)</h3>
+    <table>
+      <tr><th>모델</th><th>특징</th><th>적합 상황</th><th>단점</th></tr>
+      <tr><td>폭포수</td><td>순차적, 단계별 완결</td><td>요구사항 명확, 변경 적음</td><td>후반 요구 변경 어려움</td></tr>
+      <tr><td>프로토타입</td><td>시제품 우선 개발</td><td>요구사항 불명확</td><td>프로토타입 폐기 낭비</td></tr>
+      <tr><td>나선형</td><td>위험 분석 반복</td><td>대규모, 위험 높음</td><td>복잡, 비용 높음</td></tr>
+      <tr><td>반복적</td><td>증분 배포</td><td>핵심 기능 우선 필요</td><td>아키텍처 설계 중요</td></tr>
+    </table>
+    <div class="memo">나선형 모델 4단계: 계획→위험분석→개발→평가 (계-위-개-평)</div>
+  </div>
+  <div class="grid2">
+    <div class="card">
+      <h3>소프트웨어 테스트</h3>
+      <p class="section-title">테스트 수준</p>
+      <span class="tag tag-g">단위(Unit)</span>→<span class="tag tag-b">통합(Integration)</span>→<span class="tag tag-a">시스템(System)</span>→<span class="tag tag-p">인수(Acceptance)</span>
+      <p class="section-title" style="margin-top:.5rem">블랙박스 vs 화이트박스</p>
+      <table>
+        <tr><th>블랙박스</th><th>화이트박스</th></tr>
+        <tr><td>동치 분할</td><td>문장 커버리지</td></tr>
+        <tr><td>경계값 분석</td><td>분기 커버리지</td></tr>
+        <tr><td>원인-결과 그래프</td><td>조건 커버리지</td></tr>
+        <tr><td>오류 예측</td><td>경로 커버리지</td></tr>
+      </table>
+      <div class="memo">V 모델: 단위↔코딩, 통합↔상세설계, 시스템↔기본설계, 인수↔요구사항</div>
+    </div>
+    <div class="card">
+      <h3>소프트웨어 품질</h3>
+      <p class="section-title">ISO/IEC 25010 품질 특성</p>
+      <span class="tag tag-b">기능 적합성</span><span class="tag tag-g">성능 효율성</span><span class="tag tag-a">호환성</span><span class="tag tag-p">사용성</span><span class="tag tag-r">신뢰성</span><span class="tag tag-b">보안성</span><span class="tag tag-g">유지보수성</span><span class="tag tag-a">이식성</span>
+      <p class="section-title" style="margin-top:.5rem">코드 복잡도</p>
+      <table>
+        <tr><th>메트릭</th><th>공식/기준</th></tr>
+        <tr><td>McCabe 복잡도</td><td>V(G) = E - N + 2P (≤10 권장)</td></tr>
+        <tr><td>Halstead</td><td>연산자·피연산자 기반 길이/부피</td></tr>
+        <tr><td>LOC</td><td>소스 코드 라인 수 기반</td></tr>
+      </table>
+    </div>
+  </div>
+  <div class="card">
+    <h3>소프트웨어 추정 & 프로세스</h3>
+    <div class="grid2">
+      <div>
+        <p class="section-title">COCOMO 모델</p>
+        <table>
+          <tr><th>유형</th><th>특징</th></tr>
+          <tr><td>Basic</td><td>LOC 기반 단순 추정</td></tr>
+          <tr><td>Intermediate</td><td>비용 조정 인자 15개</td></tr>
+          <tr><td>Detailed</td><td>단계별 세밀 추정</td></tr>
+        </table>
+        <div style="margin-top:.4rem"><span class="tag tag-b">Organic</span><span class="tag tag-a">Semi-detached</span><span class="tag tag-r">Embedded</span></div>
+        <div class="memo">기능점수(FP): ILF, EIF, EI, EO, EQ 가중치 합산</div>
+      </div>
+      <div>
+        <p class="section-title">CMM/CMMI 성숙도</p>
+        <table>
+          <tr><th>레벨</th><th>명칭</th></tr>
+          <tr><td>1</td><td>초기 (Initial)</td></tr>
+          <tr><td>2</td><td>관리됨 (Managed)</td></tr>
+          <tr><td>3</td><td>정의됨 (Defined)</td></tr>
+          <tr><td>4</td><td>정량적 관리</td></tr>
+          <tr><td>5</td><td>최적화 (Optimizing)</td></tr>
+        </table>
+      </div>
+    </div>
+    <div class="point">기술사 포인트: EVM(획득가치관리) — PV·EV·AC·SV·CV·SPI·CPI. CPI=EV/AC, SPI=EV/PV</div>
+  </div>
+</div>
+
+<!-- 보안 -->
+<div class="panel" id="tab-sec">
+  <div class="card">
+    <h3>암호화 알고리즘 분류</h3>
+    <div class="grid2">
+      <div>
+        <p class="section-title">대칭키 암호</p>
+        <table>
+          <tr><th>알고리즘</th><th>블록 크기</th><th>키 길이</th></tr>
+          <tr><td>DES</td><td>64bit</td><td>56bit (취약)</td></tr>
+          <tr><td>3DES</td><td>64bit</td><td>112/168bit</td></tr>
+          <tr><td>AES</td><td>128bit</td><td>128/192/256bit</td></tr>
+          <tr><td>ARIA</td><td>128bit</td><td>128/192/256bit (국산)</td></tr>
+          <tr><td>SEED</td><td>128bit</td><td>128bit (국산)</td></tr>
+        </table>
+      </div>
+      <div>
+        <p class="section-title">비대칭키 암호</p>
+        <table>
+          <tr><th>알고리즘</th><th>기반</th><th>용도</th></tr>
+          <tr><td>RSA</td><td>소인수분해</td><td>암호화/서명</td></tr>
+          <tr><td>DSA</td><td>이산 대수</td><td>디지털 서명</td></tr>
+          <tr><td>ECC</td><td>타원 곡선</td><td>짧은 키, 모바일</td></tr>
+          <tr><td>DH</td><td>이산 대수</td><td>키 교환</td></tr>
+          <tr><td>ElGamal</td><td>이산 대수</td><td>암호화</td></tr>
+        </table>
+        <div class="memo">해시: MD5(128bit, 취약) / SHA-256(256bit) / SHA-3</div>
+      </div>
+    </div>
+  </div>
+  <div class="grid2">
+    <div class="card">
+      <h3>접근 통제 모델</h3>
+      <table>
+        <tr><th>모델</th><th>특징</th><th>적용</th></tr>
+        <tr><td>DAC</td><td>소유자가 권한 설정</td><td>Unix chmod</td></tr>
+        <tr><td>MAC</td><td>보안 레이블 기반</td><td>군사 시스템</td></tr>
+        <tr><td>RBAC</td><td>역할 기반</td><td>기업 시스템</td></tr>
+        <tr><td>ABAC</td><td>속성 기반</td><td>동적 정책</td></tr>
+      </table>
+      <p class="section-title" style="margin-top:.5rem">MAC 보안 모델</p>
+      <span class="tag tag-b">Bell-LaPadula (기밀성)</span><span class="tag tag-g">Biba (무결성)</span><span class="tag tag-p">Clark-Wilson</span>
+      <div class="memo">Bell-LaPadula: No Read Up, No Write Down / Biba: 반대</div>
+    </div>
+    <div class="card">
+      <h3>주요 공격 유형</h3>
+      <table>
+        <tr><th>공격</th><th>방법</th><th>대응</th></tr>
+        <tr><td>SQL 인젝션</td><td>악의적 SQL 삽입</td><td>파라미터화 쿼리</td></tr>
+        <tr><td>XSS</td><td>스크립트 삽입</td><td>입력 검증/인코딩</td></tr>
+        <tr><td>CSRF</td><td>위조 요청</td><td>토큰/Referer 검증</td></tr>
+        <tr><td>버퍼 오버플로우</td><td>메모리 초과 덮어쓰기</td><td>경계 검사, ASLR</td></tr>
+        <tr><td>무차별 대입</td><td>패스워드 전수 조사</td><td>계정 잠금, MFA</td></tr>
+        <tr><td>레인보우 테이블</td><td>해시 역산 테이블</td><td>솔트(Salt) 적용</td></tr>
+        <tr><td>사회공학</td><td>피싱, 스피어피싱</td><td>보안 교육</td></tr>
+      </table>
+    </div>
+  </div>
+  <div class="card">
+    <h3>PKI & 인증</h3>
+    <div class="grid2">
+      <div>
+        <p class="section-title">디지털 서명 과정</p>
+        <div style="font-size:12px;line-height:2">
+          <span class="tag tag-p">서명</span>: 원문 → 해시 → 송신자 개인키 암호화 → 서명<br>
+          <span class="tag tag-b">검증</span>: 서명 → 송신자 공개키 복호화 → 해시 비교
+        </div>
+        <div class="memo">기밀성: 수신자 공개키 암호화 / 인증: 송신자 개인키 서명</div>
+      </div>
+      <div>
+        <p class="section-title">PKI 구성요소</p>
+        <table>
+          <tr><th>요소</th><th>역할</th></tr>
+          <tr><td>CA (인증기관)</td><td>인증서 발급/서명</td></tr>
+          <tr><td>RA (등록기관)</td><td>신원 확인, CA에 요청</td></tr>
+          <tr><td>CRL</td><td>인증서 폐기 목록</td></tr>
+          <tr><td>OCSP</td><td>실시간 인증서 상태 확인</td></tr>
+          <tr><td>디렉터리</td><td>공개키 저장·배포</td></tr>
+        </table>
+      </div>
+    </div>
+    <div class="point">기술사 포인트: SSL/TLS Handshake — Client Hello → Server Hello + 인증서 → 키 교환 → Change Cipher Spec → 응용 데이터</div>
+  </div>
+</div>
+
+<!-- Q&A -->
+<div class="panel" id="tab-qa">
+  <div class="score-bar">
+    <div><div style="font-size:12px;color:var(--color-text-secondary)">점수</div><div class="score-num" id="score">0 / 0</div></div>
+    <div style="flex:1;height:6px;background:var(--color-background-secondary);border-radius:3px;overflow:hidden"><div id="score-bar" style="height:100%;background:#185FA5;width:0%;transition:width .3s"></div></div>
+    <button onclick="resetQ()" style="font-size:12px">초기화</button>
+  </div>
+  <div class="filter-row" id="filter-row">
+    <button class="filter-btn on" data-cat="all" onclick="filterQ(this)">전체</button>
+    <button class="filter-btn" data-cat="arch" onclick="filterQ(this)">컴퓨터구조</button>
+    <button class="filter-btn" data-cat="os" onclick="filterQ(this)">운영체제</button>
+    <button class="filter-btn" data-cat="db" onclick="filterQ(this)">데이터베이스</button>
+    <button class="filter-btn" data-cat="net" onclick="filterQ(this)">네트워크</button>
+    <button class="filter-btn" data-cat="algo" onclick="filterQ(this)">알고리즘</button>
+    <button class="filter-btn" data-cat="sec" onclick="filterQ(this)">보안</button>
+  </div>
+  <div id="q-list"></div>
+</div>
+
+</div>
+
+<script>
+const tabBtns = document.querySelectorAll('.tab');
+tabBtns.forEach(btn => btn.addEventListener('click', () => {
+  tabBtns.forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById('tab-' + btn.dataset.tab).classList.add('active');
+}));
+
+function tog(el) {
+  const body = el.nextElementSibling;
+  const isOpen = body.classList.contains('open');
+  body.classList.toggle('open', !isOpen);
+  el.querySelector('span').textContent = isOpen ? '+' : '−';
+}
+
+const questions = [
+  {cat:'arch', q:'캐시 메모리의 직접 매핑(Direct Mapping) 방식의 특징으로 옳은 것은?', opts:['임의의 캐시 슬롯에 배치 가능','충돌(Miss) 발생 가능성이 가장 높음','완전 연관 방식보다 구현이 복잡','집합 연관 방식보다 적중률이 높음'], ans:1, exp:'직접 매핑은 메모리 블록이 오직 하나의 캐시 슬롯에만 매핑되므로 충돌이 가장 많이 발생합니다. 대신 구현이 단순하고 비용이 낮습니다.'},
+  {cat:'arch', q:'파이프라인에서 데이터 해저드(Data Hazard)의 해결 방법으로 옳지 않은 것은?', opts:['데이터 포워딩(Forwarding)','파이프라인 스톨(Stall) 삽입','분기 예측(Branch Prediction)','컴파일러 스케줄링'], ans:2, exp:'분기 예측은 제어 해저드(Control Hazard) 해결 방법입니다. 데이터 해저드는 포워딩, 스톨, 컴파일러 재배치로 해결합니다.'},
+  {cat:'os', q:'다음 중 교착상태(Deadlock) 발생의 필요충분조건이 아닌 것은?', opts:['상호 배제(Mutual Exclusion)','점유와 대기(Hold and Wait)','선점(Preemption)','환형 대기(Circular Wait)'], ans:2, exp:'교착상태 4가지 조건: 상호 배제, 점유와 대기, 비선점(Non-Preemption), 환형 대기입니다. "선점"이 아니라 "비선점"이 조건입니다.'},
+  {cat:'os', q:'페이지 교체 알고리즘 중 Belady의 이상(Belady\'s Anomaly) 현상이 발생할 수 있는 알고리즘은?', opts:['LRU','OPT','FIFO','Clock'], ans:2, exp:'FIFO 알고리즘에서 프레임 수를 늘렸는데 오히려 페이지 폴트가 증가하는 Belady 이상 현상이 발생할 수 있습니다. LRU와 OPT에서는 발생하지 않습니다.'},
+  {cat:'db', q:'트랜잭션 격리 수준 중 Non-Repeatable Read는 방지하지만 Phantom Read가 발생할 수 있는 수준은?', opts:['Read Uncommitted','Read Committed','Repeatable Read','Serializable'], ans:2, exp:'Repeatable Read는 같은 트랜잭션에서 동일 행을 반복 읽으면 같은 값을 보장(Non-Repeatable Read 방지)하지만, 다른 트랜잭션의 INSERT로 새로운 행이 나타나는 Phantom Read는 발생할 수 있습니다.'},
+  {cat:'db', q:'정규화에서 BCNF가 3NF보다 강한 조건을 요구하는 이유는?', opts:['이행 함수 종속을 추가 제거','모든 결정자가 후보키여야 함','다치 종속을 제거','조인 종속을 제거'], ans:1, exp:'BCNF는 모든 결정자가 후보키여야 한다는 조건을 추가합니다. 3NF는 비주요 속성이 기본키에 완전 함수 종속이어야 하지만, BCNF는 후보키가 아닌 결정자가 존재하는 경우까지 제거합니다.'},
+  {cat:'net', q:'TCP의 3-way Handshake 순서로 올바른 것은?', opts:['SYN → ACK → SYN+ACK','SYN → SYN+ACK → ACK','ACK → SYN → SYN+ACK','SYN+ACK → SYN → ACK'], ans:1, exp:'TCP 연결 수립: 클라이언트가 SYN 전송 → 서버가 SYN+ACK 응답 → 클라이언트가 ACK 전송. 이후 연결이 수립됩니다.'},
+  {cat:'net', q:'링크 상태(Link-State) 라우팅 프로토콜로 Dijkstra 알고리즘을 사용하며 AS 내부에서 사용되는 IGP 프로토콜은?', opts:['RIP','BGP','OSPF','EIGRP'], ans:2, exp:'OSPF(Open Shortest Path First)는 링크 상태 라우팅 프로토콜로 Dijkstra 알고리즘을 사용합니다. RIP는 거리 벡터, BGP는 EGP, EIGRP는 하이브리드입니다.'},
+  {cat:'algo', q:'모든 쌍 최단 경로를 구하며 시간 복잡도가 O(V³)인 알고리즘은?', opts:['Dijkstra','Bellman-Ford','Floyd-Warshall','Kruskal'], ans:2, exp:'Floyd-Warshall 알고리즘은 DP를 이용해 모든 정점 쌍 간의 최단 경로를 O(V³)에 계산합니다. 음수 가중치도 허용하지만 음수 사이클은 처리 불가합니다.'},
+  {cat:'algo', q:'평균 O(n log n)이지만 최악의 경우 O(n²)이 되는 정렬 알고리즘은?', opts:['합병 정렬','힙 정렬','퀵 정렬','기수 정렬'], ans:2, exp:'퀵 정렬은 피벗이 항상 최솟값/최댓값으로 선택될 때(이미 정렬된 경우) O(n²)이 됩니다. 랜덤 피벗이나 중간값 피벗 선택으로 완화할 수 있습니다.'},
+  {cat:'sec', q:'Bell-LaPadula 모델에서 기밀성을 보장하기 위한 규칙으로 옳은 것은?', opts:['No Write Up, No Read Down','No Read Up, No Write Down','No Read Down, No Write Up','Read All, Write Lower'], ans:1, exp:'Bell-LaPadula: 기밀성 보호 모델. No Read Up(높은 보안 레벨의 데이터를 낮은 레벨 주체가 읽기 금지), No Write Down(높은 레벨 주체가 낮은 레벨에 쓰기 금지). 반대로 Biba는 무결성 모델입니다.'},
+  {cat:'sec', q:'디지털 서명에서 서명 생성 시 사용하는 키는?', opts:['수신자의 공개키','수신자의 개인키','송신자의 공개키','송신자의 개인키'], ans:3, exp:'디지털 서명: 송신자가 자신의 개인키로 서명 → 수신자가 송신자의 공개키로 검증. 기밀성(암호화)은 수신자의 공개키로 암호화하고 수신자 개인키로 복호화합니다.'}
+];
+
+let answered = {}, correct = 0, total = 0;
+let currentCat = 'all';
+
+function renderQs() {
+  const list = document.getElementById('q-list');
+  const filtered = currentCat === 'all' ? questions : questions.filter(q => q.cat === currentCat);
+  list.innerHTML = filtered.map((q, i) => {
+    const globalIdx = questions.indexOf(q);
+    const state = answered[globalIdx];
+    return `<div class="q-item" data-cat="${q.cat}" id="qi-${globalIdx}">
+      <div class="q-text"><b>Q${i+1}.</b> ${q.q}</div>
+      <div class="q-opts">${q.opts.map((o,j) => {
+        let cls = '';
+        if(state !== undefined) {
+          if(j === q.ans) cls = 'correct';
+          else if(j === state && state !== q.ans) cls = 'wrong';
+        }
+        return `<button onclick="checkAns(${globalIdx},${j})" ${state!==undefined?'disabled':''} class="${cls}">${['①','②','③','④'][j]} ${o}</button>`;
+      }).join('')}</div>
+      <div class="explain" id="exp-${globalIdx}" style="display:${state!==undefined?'block':'none'}">${q.exp}</div>
+    </div>`;
+  }).join('');
+}
+
+function checkAns(qi, chosen) {
+  if(answered[qi] !== undefined) return;
+  answered[qi] = chosen;
+  total++;
+  if(chosen === questions[qi].ans) correct++;
+  updateScore();
+  renderQs();
+}
+
+function updateScore() {
+  document.getElementById('score').textContent = correct + ' / ' + total;
+  document.getElementById('score-bar').style.width = (total ? Math.round(correct/total*100) : 0) + '%';
+}
+
+function filterQ(btn) {
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('on'));
+  btn.classList.add('on');
+  currentCat = btn.dataset.cat;
+  renderQs();
+}
+
+function resetQ() {
+  answered = {}; correct = 0; total = 0;
+  updateScore();
+  renderQs();
+}
+
+renderQs();
+</script>

@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>뉴로모픽 vs 폰노이만 아키텍처 — 기술사 답안</title>
+<style>
+/* ── 기본 리셋 및 레이아웃 ── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: 'Noto Sans KR', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif;
+  font-size: 14px;
+  color: #1a1a18;
+  background: #f5f4ef;
+  padding: 2rem 1.5rem;
+}
+.wrap {
+  max-width: 860px;
+  margin: 0 auto;
+  background: #ffffff;
+  border-radius: 12px;
+  border: 0.5px solid rgba(0,0,0,0.12);
+  padding: 2rem 2.25rem 3rem;
+}
+
+/* ── 컴포넌트 ── */
+.hdr {
+  border: 0.5px solid rgba(0,0,0,0.25);
+  border-radius: 12px;
+  padding: .85rem 1.25rem;
+  margin-bottom: 1.75rem;
+  background: #f5f4ef;
+}
+.hdr-label { font-size: 11px; color: #73726c; letter-spacing: .06em; margin-bottom: .35rem; }
+.hdr-q { font-size: 14px; font-weight: 600; line-height: 1.65; color: #1a1a18; }
+.hdr-sub { font-size: 12px; color: #73726c; font-weight: 400; }
+.sec { margin-bottom: 1.75rem; }
+.sec-h {
+  font-size: 15px; font-weight: 600;
+  padding-bottom: .45rem;
+  border-bottom: 0.5px solid rgba(0,0,0,0.15);
+  margin-bottom: .85rem;
+  color: #1a1a18;
+}
+.sub-h { font-size: 13px; font-weight: 600; margin: .9rem 0 .35rem; color: #1a1a18; }
+.body-t { font-size: 13px; line-height: 1.85; margin-bottom: .5rem; color: #1a1a18; }
+.fig-cap { font-size: 11px; color: #73726c; text-align: center; margin: .4rem 0 1.1rem; font-style: italic; }
+
+/* 강조 박스 */
+.hl {
+  background: #f5f4ef;
+  border-left: 2.5px solid #185FA5;
+  padding: .5rem .9rem;
+  font-size: 13px;
+  margin: .5rem 0 .8rem;
+  line-height: 1.75;
+  color: #1a1a18;
+}
+.wl {
+  background: #faeeda;
+  border-left: 2.5px solid #BA7517;
+  padding: .5rem .9rem;
+  font-size: 13px;
+  margin: .5rem 0 .8rem;
+  line-height: 1.75;
+  color: #412402;
+}
+
+/* 리스트 */
+.bul { font-size: 13px; line-height: 1.85; padding-left: 1.15rem; margin-bottom: .6rem; }
+.bul li { margin-bottom: .2rem; }
+
+/* 표 */
+table { width: 100%; border-collapse: collapse; font-size: 12px; margin: .4rem 0 .8rem; }
+th {
+  font-weight: 600; font-size: 11px;
+  background: #f5f4ef;
+  padding: 7px 9px;
+  border: 0.5px solid rgba(0,0,0,0.15);
+  color: #73726c; text-align: left;
+}
+td {
+  padding: 6px 9px;
+  border: 0.5px solid rgba(0,0,0,0.15);
+  vertical-align: top;
+  line-height: 1.6;
+  color: #1a1a18;
+}
+tr:nth-child(even) td { background: #fafaf8; }
+
+/* 카드 그리드 */
+.g3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: .5rem; margin: .5rem 0 .8rem; }
+@media (max-width: 600px) { .g3 { grid-template-columns: repeat(2, 1fr); } }
+.gc {
+  background: #f5f4ef;
+  border: 0.5px solid rgba(0,0,0,0.15);
+  border-radius: 8px;
+  padding: .65rem .75rem;
+}
+.gc strong { display: block; font-size: 12px; font-weight: 600; margin-bottom: 3px; color: #1a1a18; }
+.gc span { font-size: 11px; color: #5f5e5a; line-height: 1.55; }
+
+/* 결론 박스 */
+.con {
+  border: 0.5px solid rgba(0,0,0,0.25);
+  border-radius: 12px;
+  padding: 1rem 1.25rem;
+  background: #f5f4ef;
+}
+
+/* ── SVG 다이어그램용 클래스 ── */
+/* c-blue: 파란 계열 노드 */
+.c-blue > rect, .c-blue > ellipse, .c-blue > circle {
+  fill: #E6F1FB; stroke: #185FA5; stroke-width: 0.5;
+}
+.c-blue .th { fill: #0C447C; }
+.c-blue .ts { fill: #185FA5; }
+
+/* c-gray: 회색 계열 */
+.c-gray > rect, .c-gray > ellipse, .c-gray > circle {
+  fill: #F1EFE8; stroke: #5F5E5A; stroke-width: 0.5;
+}
+.c-gray .th { fill: #444441; }
+.c-gray .ts { fill: #5F5E5A; }
+
+/* c-teal: 청록 계열 */
+.c-teal > rect, .c-teal > ellipse, .c-teal > circle {
+  fill: #E1F5EE; stroke: #0F6E56; stroke-width: 0.5;
+}
+.c-teal .th { fill: #085041; }
+.c-teal .ts { fill: #0F6E56; }
+
+/* c-purple: 보라 계열 */
+.c-purple > rect, .c-purple > ellipse, .c-purple > circle {
+  fill: #EEEDFE; stroke: #534AB7; stroke-width: 0.5;
+}
+.c-purple .th { fill: #3C3489; }
+.c-purple .ts { fill: #534AB7; }
+
+/* c-amber: 황색 계열 */
+.c-amber > rect, .c-amber > ellipse, .c-amber > circle {
+  fill: #FAEEDA; stroke: #BA7517; stroke-width: 0.5;
+}
+.c-amber .th { fill: #412402; }
+.c-amber .ts { fill: #854F0B; }
+
+/* SVG 텍스트 클래스 */
+text.th { font-size: 14px; font-weight: 600; fill: #1a1a18; font-family: 'Noto Sans KR', 'Apple SD Gothic Neo', sans-serif; }
+text.ts { font-size: 12px; font-weight: 400; fill: #73726c; font-family: 'Noto Sans KR', 'Apple SD Gothic Neo', sans-serif; }
+
+/* SVG 기본 선 */
+line.arr { stroke: #73726c; stroke-width: 1; }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<div class="hdr">
+  <div class="hdr-label">기술사 시험 답안 — 컴퓨터시스템응용</div>
+  <div class="hdr-q">뉴로모픽 컴퓨팅(Neuromorphic Computing)과 기존 폰 노이만 아키텍처에 대하여 다음 사항을 설명하시오.</div>
+  <div class="hdr-sub" style="margin-top:.35rem">① 폰 노이만 아키텍처의 개념·구조 및 한계 &nbsp;② 뉴로모픽 컴퓨팅의 개념·동작 원리 &nbsp;③ 두 아키텍처의 비교 &nbsp;④ 응용 분야 및 전망</div>
+</div>
+
+<!-- I. 개요 -->
+<div class="sec">
+<div class="sec-h">I. 개요 — 폰 노이만 병목과 뉴로모픽 패러다임의 등장</div>
+<div class="body-t">
+  1945년 John von Neumann이 제안한 프로그램 내장 방식(Stored-Program Concept) 아키텍처는 현대 컴퓨터 설계의 표준으로 약 80년간 지배적 지위를 유지해 왔다. 그러나 딥러닝·AI 추론과 같이 데이터 집약적이고 대규모 병렬 연산이 요구되는 환경에서는 CPU와 메모리 간 단일 버스 구조가 근본적 성능 병목(Memory Wall)으로 부상하였다.
+</div>
+<div class="hl">
+  뉴로모픽 컴퓨팅은 인간 뇌의 뉴런(Neuron)·시냅스(Synapse) 구조를 VLSI 회로로 모방하여, 연산과 메모리를 물리적으로 통합(In-Memory Computing)하고 스파이크 기반 이벤트 구동(Event-Driven) 방식으로 극저전력 추론을 실현하는 차세대 컴퓨팅 패러다임이다.
+</div>
+</div>
+
+<!-- II. 폰 노이만 -->
+<div class="sec">
+<div class="sec-h">II. 폰 노이만 아키텍처 (Von Neumann Architecture)</div>
+<div class="sub-h">1) 개념 및 구조</div>
+
+<!-- 그림 1 -->
+<svg width="100%" viewBox="0 0 680 330" xmlns="http://www.w3.org/2000/svg" style="margin:.5rem 0;display:block">
+  <title>폰 노이만 아키텍처 구조도</title>
+  <defs>
+    <marker id="ar1" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M2 1L8 5L2 9" fill="none" stroke="#73726c" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+    </marker>
+    <marker id="ar1b" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M2 1L8 5L2 9" fill="none" stroke="#BA7517" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+    </marker>
+  </defs>
+
+  <!-- CPU 외곽 (파란색) -->
+  <rect x="35" y="45" width="228" height="185" rx="12" fill="#E6F1FB" stroke="#185FA5" stroke-width="0.5"/>
+  <text class="th" x="149" y="70" text-anchor="middle" dominant-baseline="central" fill="#0C447C">CPU</text>
+
+  <!-- 제어장치 -->
+  <rect x="55" y="90" width="88" height="44" rx="6" fill="#F1EFE8" stroke="#5F5E5A" stroke-width="0.5"/>
+  <text class="th" x="99" y="106" text-anchor="middle" dominant-baseline="central" fill="#444441">제어장치</text>
+  <text class="ts" x="99" y="120" text-anchor="middle" dominant-baseline="central" fill="#5F5E5A">CU</text>
+
+  <!-- 연산장치 -->
+  <rect x="55" y="152" width="88" height="44" rx="6" fill="#F1EFE8" stroke="#5F5E5A" stroke-width="0.5"/>
+  <text class="th" x="99" y="168" text-anchor="middle" dominant-baseline="central" fill="#444441">연산장치</text>
+  <text class="ts" x="99" y="182" text-anchor="middle" dominant-baseline="central" fill="#5F5E5A">ALU</text>
+
+  <!-- 레지스터 -->
+  <rect x="163" y="117" width="78" height="44" rx="6" fill="#F1EFE8" stroke="#5F5E5A" stroke-width="0.5"/>
+  <text class="th" x="202" y="133" text-anchor="middle" dominant-baseline="central" fill="#444441">레지스터</text>
+  <text class="ts" x="202" y="147" text-anchor="middle" dominant-baseline="central" fill="#5F5E5A">Register</text>
+
+  <!-- CU→ALU 화살표 -->
+  <line x1="99" y1="134" x2="99" y2="152" stroke="#73726c" stroke-width="1" marker-end="url(#ar1)"/>
+
+  <!-- 메모리 버스 레이블 -->
+  <text class="ts" x="319" y="118" text-anchor="middle" dominant-baseline="central" fill="#73726c">메모리 버스</text>
+  <!-- 버스 화살표 (양방향, 주황) -->
+  <line x1="263" y1="137" x2="375" y2="137" stroke="#BA7517" stroke-width="2.5" marker-end="url(#ar1b)" marker-start="url(#ar1b)"/>
+  <!-- 병목 배지 -->
+  <rect x="267" y="148" width="104" height="20" rx="4" fill="#FAEEDA" stroke="#BA7517" stroke-width="0.5"/>
+  <text x="319" y="158" text-anchor="middle" dominant-baseline="central" font-size="10" fill="#633806" font-family="'Noto Sans KR',sans-serif" font-weight="600">병목 구간 (Memory Wall)</text>
+
+  <!-- 주기억장치 외곽 (청록) -->
+  <rect x="375" y="45" width="228" height="185" rx="12" fill="#E1F5EE" stroke="#0F6E56" stroke-width="0.5"/>
+  <text class="th" x="489" y="70" text-anchor="middle" dominant-baseline="central" fill="#085041">주기억장치</text>
+
+  <!-- 명령어 영역 -->
+  <rect x="393" y="90" width="192" height="52" rx="6" fill="#E6F1FB" stroke="#185FA5" stroke-width="0.5"/>
+  <text class="th" x="489" y="109" text-anchor="middle" dominant-baseline="central" fill="#0C447C">명령어 영역</text>
+  <text class="ts" x="489" y="124" text-anchor="middle" dominant-baseline="central" fill="#185FA5">프로그램·코드</text>
+
+  <!-- 데이터 영역 -->
+  <rect x="393" y="158" width="192" height="52" rx="6" fill="#F1EFE8" stroke="#5F5E5A" stroke-width="0.5"/>
+  <text class="th" x="489" y="177" text-anchor="middle" dominant-baseline="central" fill="#444441">데이터 영역</text>
+  <text class="ts" x="489" y="192" text-anchor="middle" dominant-baseline="central" fill="#5F5E5A">입출력 데이터</text>
+
+  <!-- 입출력 장치 -->
+  <rect x="35" y="260" width="568" height="42" rx="8" fill="#F1EFE8" stroke="#5F5E5A" stroke-width="0.5"/>
+  <text class="th" x="319" y="281" text-anchor="middle" dominant-baseline="central" fill="#444441">입출력 장치 (I/O Device)</text>
+
+  <!-- CPU → I/O -->
+  <line x1="149" y1="230" x2="149" y2="260" stroke="#73726c" stroke-width="1" marker-end="url(#ar1)"/>
+  <!-- MEM → I/O -->
+  <line x1="489" y1="230" x2="489" y2="260" stroke="#73726c" stroke-width="1" marker-end="url(#ar1)"/>
+</svg>
+<div class="fig-cap">[그림 1] 폰 노이만 아키텍처 구조도 — CPU·메모리 분리 및 단일 버스 병목</div>
+
+<ul class="bul">
+  <li><strong>CPU</strong>: 제어장치(CU)·산술논리연산장치(ALU)·레지스터로 구성. 명령어 사이클(Fetch→Decode→Execute→Write-Back) 수행</li>
+  <li><strong>주기억장치</strong>: 프로그램(명령어)과 데이터를 동일 주소 공간에 저장 — 프로그램 내장 방식(Stored-Program)</li>
+  <li><strong>메모리 버스</strong>: CPU-메모리 간 단일 통로로 주소·데이터·제어 신호를 공유 → 병목의 핵심 원인</li>
+  <li><strong>입출력 장치</strong>: I/O 컨트롤러를 통해 CPU와 통신. 인터럽트·DMA 방식으로 처리</li>
+</ul>
+
+<div class="sub-h">2) 동작 방식 — 명령어 사이클</div>
+<div class="body-t">
+  ① <strong>인출(IF)</strong>: PC가 가리키는 주소의 명령어를 메모리에서 IR로 로드, PC 증가<br>
+  ② <strong>해독(ID)</strong>: 제어장치(CU)가 IR의 opcode를 해석하여 제어 신호 생성<br>
+  ③ <strong>실행(EX)</strong>: ALU가 오퍼랜드를 연산하거나 메모리 접근(Load/Store) 수행<br>
+  ④ <strong>저장(WB)</strong>: 연산 결과를 레지스터 또는 메모리에 기록
+</div>
+
+<div class="sub-h">3) 구조적 한계</div>
+<div class="wl"><strong>핵심 한계 — 폰 노이만 병목(Memory Wall)</strong>: CPU 연산 속도(GHz)와 메모리 접근 속도(수십~수백 ns) 간 격차가 지속 확대. AI 대규모 데이터 처리 시 전체 전력·시간의 60∼80%가 CPU↔메모리 데이터 이동에 소모됨.</div>
+<table>
+  <tr><th>한계 유형</th><th>내용</th><th>AI 워크로드 영향</th></tr>
+  <tr><td>메모리 월 (Memory Wall)</td><td>CPU 속도 vs. 메모리 대역폭 격차 심화</td><td>데이터 이동 비용이 연산 비용을 초과</td></tr>
+  <tr><td>단일 버스 병목</td><td>명령어·데이터가 동일 버스를 경쟁적으로 사용</td><td>병렬 추론 처리의 근본적 한계</td></tr>
+  <tr><td>고전력 소비</td><td>클록 동기로 전체 회로가 항상 동작</td><td>엣지 디바이스·배터리 환경 부적합</td></tr>
+  <tr><td>순차 처리 구조</td><td>명령어 사이클 기반 직렬 실행</td><td>대규모 병렬 패턴 인식에 비효율</td></tr>
+</table>
+</div>
+
+<!-- III. 뉴로모픽 -->
+<div class="sec">
+<div class="sec-h">III. 뉴로모픽 컴퓨팅 (Neuromorphic Computing)</div>
+<div class="sub-h">1) 개념 및 구조</div>
+<div class="body-t">Carver Mead(1990)가 제안한 개념으로, 인간 뇌의 860억 개 뉴런과 100조 개 시냅스 연결 구조를 VLSI 회로로 구현한다. 연산 단위(뉴런)와 메모리(시냅스 가중치)가 물리적으로 통합되어 폰 노이만 병목을 원천적으로 해소한다.</div>
+
+<!-- 그림 2 -->
+<svg width="100%" viewBox="0 0 680 345" xmlns="http://www.w3.org/2000/svg" style="margin:.5rem 0;display:block">
+  <title>뉴로모픽 아키텍처 구조도</title>
+  <defs>
+    <marker id="ar2" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M2 1L8 5L2 9" fill="none" stroke="#73726c" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+    </marker>
+  </defs>
+
+  <!-- NM 코어 A -->
+  <rect x="120" y="50" width="145" height="100" rx="10" fill="#EEEDFE" stroke="#534AB7" stroke-width="0.5"/>
+  <text class="th" x="192" y="95" text-anchor="middle" dominant-baseline="central" fill="#3C3489">NM 코어 A</text>
+  <text class="ts" x="192" y="113" text-anchor="middle" dominant-baseline="central" fill="#534AB7">(뉴런·시냅스 통합)</text>
+
+  <!-- NM 코어 B -->
+  <rect x="330" y="50" width="145" height="100" rx="10" fill="#EEEDFE" stroke="#534AB7" stroke-width="0.5"/>
+  <text class="th" x="402" y="95" text-anchor="middle" dominant-baseline="central" fill="#3C3489">NM 코어 B</text>
+  <text class="ts" x="402" y="113" text-anchor="middle" dominant-baseline="central" fill="#534AB7">(뉴런·시냅스 통합)</text>
+
+  <!-- NM 코어 C -->
+  <rect x="120" y="195" width="145" height="100" rx="10" fill="#EEEDFE" stroke="#534AB7" stroke-width="0.5"/>
+  <text class="th" x="192" y="240" text-anchor="middle" dominant-baseline="central" fill="#3C3489">NM 코어 C</text>
+  <text class="ts" x="192" y="258" text-anchor="middle" dominant-baseline="central" fill="#534AB7">(뉴런·시냅스 통합)</text>
+
+  <!-- NM 코어 D -->
+  <rect x="330" y="195" width="145" height="100" rx="10" fill="#EEEDFE" stroke="#534AB7" stroke-width="0.5"/>
+  <text class="th" x="402" y="240" text-anchor="middle" dominant-baseline="central" fill="#3C3489">NM 코어 D</text>
+  <text class="ts" x="402" y="258" text-anchor="middle" dominant-baseline="central" fill="#534AB7">(뉴런·시냅스 통합)</text>
+
+  <!-- 수평 연결 -->
+  <line x1="265" y1="85" x2="330" y2="85" stroke="#73726c" stroke-width="1" marker-end="url(#ar2)" marker-start="url(#ar2)"/>
+  <line x1="265" y1="230" x2="330" y2="230" stroke="#73726c" stroke-width="1" marker-end="url(#ar2)" marker-start="url(#ar2)"/>
+  <!-- 수직 연결 -->
+  <line x1="185" y1="150" x2="185" y2="195" stroke="#73726c" stroke-width="1" marker-end="url(#ar2)" marker-start="url(#ar2)"/>
+  <line x1="395" y1="150" x2="395" y2="195" stroke="#73726c" stroke-width="1" marker-end="url(#ar2)" marker-start="url(#ar2)"/>
+  <!-- 대각선 연결 (점선) -->
+  <line x1="265" y1="140" x2="330" y2="165" stroke="#73726c" stroke-width="0.75" stroke-dasharray="4 3"/>
+  <line x1="265" y1="165" x2="330" y2="140" stroke="#73726c" stroke-width="0.75" stroke-dasharray="4 3"/>
+
+  <!-- 메시 연결망 레이블 -->
+  <text class="ts" x="297" y="170" text-anchor="middle" dominant-baseline="central" fill="#73726c">메시 연결망</text>
+
+  <!-- 입력 화살표 (좌측) -->
+  <line x1="68" y1="85" x2="118" y2="85" stroke="#73726c" stroke-width="1" marker-end="url(#ar2)"/>
+  <line x1="68" y1="230" x2="118" y2="230" stroke="#73726c" stroke-width="1" marker-end="url(#ar2)"/>
+  <!-- 출력 화살표 (우측) -->
+  <line x1="477" y1="85" x2="522" y2="85" stroke="#73726c" stroke-width="1" marker-end="url(#ar2)"/>
+  <line x1="477" y1="230" x2="522" y2="230" stroke="#73726c" stroke-width="1" marker-end="url(#ar2)"/>
+
+  <!-- 레이블 -->
+  <text class="ts" x="44" y="143" text-anchor="middle" fill="#73726c">스파이크</text>
+  <text class="ts" x="44" y="157" text-anchor="middle" fill="#73726c">입력</text>
+  <text class="ts" x="547" y="143" text-anchor="middle" fill="#73726c">스파이크</text>
+  <text class="ts" x="547" y="157" text-anchor="middle" fill="#73726c">출력</text>
+
+  <!-- 스파이크 신호 파형 -->
+  <line x1="120" y1="308" x2="475" y2="308" stroke="#73726c" stroke-width="1"/>
+  <path d="M197,308 L202,286 L207,308" fill="none" stroke="#534AB7" stroke-width="1.8" stroke-linejoin="round"/>
+  <path d="M277,308 L282,281 L287,308" fill="none" stroke="#534AB7" stroke-width="1.8" stroke-linejoin="round"/>
+  <path d="M372,308 L377,290 L382,308" fill="none" stroke="#534AB7" stroke-width="1.8" stroke-linejoin="round"/>
+  <text class="ts" x="297" y="330" text-anchor="middle" fill="#73726c">이벤트 기반 스파이크 신호 — 발생 시에만 에너지 소비 (극저전력)</text>
+</svg>
+<div class="fig-cap">[그림 2] 뉴로모픽 아키텍처 구조도 — 다코어 메시 연결 및 스파이크 신호</div>
+
+<div class="sub-h">2) 스파이킹 신경망 (SNN: Spiking Neural Network) — LIF 모델</div>
+<div class="hl">
+  <strong>LIF(Leaky Integrate-and-Fire) 동작</strong>: 뉴런이 시냅스로부터 입력 전류를 누적(적분)하다가 막전위(Membrane Potential)가 임계값(θ)을 초과하면 스파이크(출력 펄스)를 발생시키고 전위를 초기화(리셋)한다. 스파이크 부재 시 막전위는 시간에 따라 자연 감쇠(Leak)된다.<br>
+  핵심: <strong>스파이크가 발생할 때만 에너지 소비</strong> → 이벤트 기반(Event-Driven) 극저전력 처리
+</div>
+
+<div class="sub-h">3) STDP 학습 (Spike-Timing Dependent Plasticity)</div>
+<ul class="bul">
+  <li><strong>LTP (강화, Long-Term Potentiation)</strong>: 시냅스 전(Pre) 뉴런이 시냅스 후(Post) 뉴런보다 먼저 스파이크 → 시냅스 가중치(w) 증가</li>
+  <li><strong>LTD (약화, Long-Term Depression)</strong>: 시냅스 후(Post)가 먼저 스파이크 → 시냅스 가중치 감소</li>
+  <li>역전파(Back-Propagation) 없이 <strong>로컬 학습 규칙만으로 온칩(On-Chip) 온라인 학습</strong> 가능 → 에너지·면적 효율 극대화</li>
+</ul>
+
+<div class="sub-h">4) 주요 특징</div>
+<table>
+  <tr><th>특징</th><th>내용</th></tr>
+  <tr><td>인메모리 컴퓨팅</td><td>시냅스 메모리가 뉴런 회로와 동일 위치 배치 → 데이터 이동 불필요, 메모리 월 해소</td></tr>
+  <tr><td>이벤트 기반 비동기</td><td>스파이크 발생 시에만 회로 활성화 → 클록 불필요, 정적 전력 최소화</td></tr>
+  <tr><td>대규모 병렬성</td><td>수천~수백만 뉴런 코어 동시 비동기 처리 → 폰 노이만 직렬 구조 대비 압도적 병렬성</td></tr>
+  <tr><td>하드웨어 학습</td><td>STDP 기반 온칩 학습 → 역전파·GPU 클러스터 불필요</td></tr>
+  <tr><td>내결함성</td><td>분산 구조로 일부 뉴런 손상 시에도 전체 기능 유지 (뇌와 유사한 견고성)</td></tr>
+</table>
+</div>
+
+<!-- IV. 비교 -->
+<div class="sec">
+<div class="sec-h">IV. 폰 노이만 아키텍처 vs. 뉴로모픽 컴퓨팅 비교 분석</div>
+<table>
+  <tr>
+    <th style="width:22%">비교 항목</th>
+    <th style="width:39%">폰 노이만 아키텍처</th>
+    <th style="width:39%">뉴로모픽 컴퓨팅</th>
+  </tr>
+  <tr><td>제안 시기·배경</td><td>1945년 (J. von Neumann) — 범용 계산기</td><td>1990년 (Carver Mead) — 뇌 신경망 모방</td></tr>
+  <tr><td>기본 처리 단위</td><td>트랜지스터 기반 논리 게이트 (MOSFET)</td><td>인공 뉴런 (LIF 모델) + 시냅스</td></tr>
+  <tr><td>처리 방식</td><td>클록 기반 동기식·순차 처리</td><td>이벤트 기반 비동기·대규모 병렬</td></tr>
+  <tr><td>메모리 구조</td><td>CPU와 메모리 물리적 분리 → 버스 병목</td><td>뉴런-시냅스 통합 (인메모리) → 병목 없음</td></tr>
+  <tr><td>프로그래밍</td><td>ISA 기반 명령어 + 소프트웨어 스택</td><td>신경망 토폴로지·스파이크 인코딩 설계</td></tr>
+  <tr><td>학습 방식</td><td>역전파(Back-Prop) + SGD (소프트웨어)</td><td>STDP 하드웨어 로컬 학습 (역전파 불필요)</td></tr>
+  <tr><td>전력 소비</td><td>수십 W ~ 수백 W (클록 항상 동작)</td><td>수 mW ~ 수백 mW (스파이크 이벤트 시만)</td></tr>
+  <tr><td>병렬성</td><td>제한적 (코어·스레드 수 기반)</td><td>극대화 (수백만 뉴런 동시 처리)</td></tr>
+  <tr><td>정확도·범용성</td><td>높음·범용 (결정론적, 생태계 풍부)</td><td>상대적으로 낮음·특화 (확률적, 에코시스템 초기)</td></tr>
+  <tr><td>적합 워크로드</td><td>범용 SW, DBMS, 과학 계산, 훈련(Training)</td><td>엣지 AI 추론, 패턴 인식, 센서 처리</td></tr>
+  <tr><td>대표 칩</td><td>Intel Core, AMD Ryzen, NVIDIA GPU</td><td>Intel Loihi 2, IBM TrueNorth, SpiNNaker</td></tr>
+</table>
+</div>
+
+<!-- V. 응용 및 전망 -->
+<div class="sec">
+<div class="sec-h">V. 뉴로모픽 컴퓨팅의 응용 분야 및 향후 전망</div>
+
+<div class="sub-h">1) 주요 응용 분야</div>
+<div class="g3">
+  <div class="gc"><strong>엣지 AI 추론</strong><span>스마트폰·IoT 디바이스의 mW급 온디바이스 추론 — 음성 인식, 제스처 감지</span></div>
+  <div class="gc"><strong>자율주행·로봇</strong><span>실시간 환경 인식, 센서 퓨전, 반응형 제어 — 저지연·극저전력</span></div>
+  <div class="gc"><strong>의료·신경과학</strong><span>뇌-컴퓨터 인터페이스(BCI), 신경 시뮬레이션, 발작 예측</span></div>
+  <div class="gc"><strong>보안·이상 탐지</strong><span>네트워크 이상 트래픽·사기 탐지 — 스파이크 스트림 이벤트 처리</span></div>
+  <div class="gc"><strong>스마트 센서</strong><span>이벤트 기반 비전(Dynamic Vision Sensor), 청각 센서 실시간 처리</span></div>
+  <div class="gc"><strong>우주·국방</strong><span>극한 환경 저전력 탑재 컴퓨팅, 자율 드론 온보드 추론</span></div>
+</div>
+
+<div class="sub-h">2) 대표 뉴로모픽 칩 현황</div>
+<table>
+  <tr><th>칩명</th><th>개발사</th><th>뉴런 수</th><th>전력</th><th>주요 특징</th></tr>
+  <tr><td>TrueNorth</td><td>IBM</td><td>100만</td><td>70 mW</td><td>256 코어, 4,096 뉴런/코어, CMOS 28nm 공정</td></tr>
+  <tr><td>Loihi 2</td><td>Intel</td><td>100만</td><td>~1 W</td><td>STDP 하드웨어 학습, Intel 4(7nm), Lava 프레임워크</td></tr>
+  <tr><td>SpiNNaker 2</td><td>맨체스터대</td><td>수억 (시뮬레이션)</td><td>수 W</td><td>ARM 코어 144개, 생물학적 실시간 SNN 시뮬레이션</td></tr>
+  <tr><td>BrainScaleS-2</td><td>하이델베르크대</td><td>512 (아날로그)</td><td>수십 mW</td><td>아날로그 뉴런 회로, 생물 대비 1,000배 처리 속도</td></tr>
+</table>
+
+<div class="sub-h">3) 향후 전망</div>
+<ul class="bul">
+  <li><strong>하이브리드 아키텍처</strong>: 폰 노이만(CPU/GPU 범용 훈련) + 뉴로모픽(엣지 추론 가속기) 결합 구조 — AI SoC에 통합 전망</li>
+  <li><strong>멤리스터(Memristor) 시냅스</strong>: RRAM·PCM 등 비휘발성 소자를 시냅스 저항으로 활용, 학습과 기억의 물리적 통합 실현</li>
+  <li><strong>엣지-클라우드 협업</strong>: 뉴로모픽 엣지 장치가 1차 사전 처리(스파이크 인코딩) → 클라우드 폰 노이만 서버가 정밀 추론 후처리</li>
+  <li><strong>표준화 과제</strong>: 프로그래밍 프레임워크(PyNN, Nengo, Intel Lava), 벤치마크(NeuroBench) 등 에코시스템 성숙 시급</li>
+  <li><strong>감리 관점</strong>: 비결정론적 학습 결과의 재현성, 설명 가능성(XAI), 사이버보안 검증 등 새로운 품질·감리 기준 수립 요구</li>
+</ul>
+</div>
+
+<!-- VI. 결론 -->
+<div class="sec">
+<div class="sec-h">VI. 결론</div>
+<div class="con">
+  <div class="body-t">폰 노이만 아키텍처는 범용성과 풍부한 소프트웨어 생태계의 강점으로 중단기적으로도 지배적 지위를 유지하겠으나, AI·IoT 시대의 대규모 병렬 추론과 초저전력 엣지 컴퓨팅 수요는 뉴로모픽 아키텍처의 채택을 지속 가속화할 것이다.</div>
+  <div class="body-t" style="margin-top:.6rem">근·중기적으로는 <strong>폰 노이만(훈련) + 뉴로모픽(추론) 하이브리드</strong> 구조가 AI 가속기로 실용화되고, 장기적으로는 멤리스터 기반 완전 뉴로모픽 시스템으로의 전환이 예상된다. 감리사 관점에서 뉴로모픽 시스템 도입 프로젝트에는 <strong>비결정론적 추론 결과의 검증 방법론, 하드웨어 내장 학습의 감사 추적성(Audit Trail), 온칩 데이터 보안</strong> 등 기존 폰 노이만 기반 시스템과는 다른 새로운 감리 기준 마련이 필수적이다.</div>
+</div>
+</div>
+
+</div><!-- /wrap -->
+</body>
+</html>

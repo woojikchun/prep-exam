@@ -1,0 +1,640 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;900&family=JetBrains+Mono:wght@400;700&display=swap');
+:root{--bg:#04080f;--s1:#070d1c;--s2:#0b1328;--s3:#101a34;--bdr:#1e3560;--a1:#818cf8;--a2:#34d399;--a3:#fbbf24;--a4:#f87171;--a5:#38bdf8;--a6:#fb923c;--a7:#e879f9;--txt:#e2e8f0;--mu:#64748b;}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Noto Sans KR',sans-serif;background:var(--bg);color:var(--txt);min-height:100vh;}
+.hdr{padding:20px 24px 14px;background:linear-gradient(150deg,#04080f,#09112a,#04080f);border-bottom:1px solid var(--bdr);}
+.hdr-r{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:6px;}
+.pill{padding:3px 10px;border-radius:20px;font-size:10px;font-weight:700;}
+.p1{background:linear-gradient(135deg,#1e1b4b,var(--a1));color:#fff;}
+.p2{background:rgba(52,211,153,.15);color:var(--a2);border:1px solid rgba(52,211,153,.3);}
+.p3{background:rgba(251,191,36,.15);color:var(--a3);border:1px solid rgba(251,191,36,.3);}
+h1{font-size:18px;font-weight:900;}
+.h1g{background:linear-gradient(90deg,var(--a1),var(--a5),var(--a2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.hdr p{color:var(--mu);font-size:11.5px;margin-top:3px;}
+.tabs{display:flex;padding:0 24px;background:var(--s1);border-bottom:1px solid var(--bdr);overflow-x:auto;scrollbar-width:none;}
+.tabs::-webkit-scrollbar{display:none;}
+.tab{padding:10px 13px;font-size:11.5px;font-weight:600;color:var(--mu);cursor:pointer;border-bottom:2px solid transparent;white-space:nowrap;transition:all .2s;background:none;border-top:none;border-left:none;border-right:none;font-family:'Noto Sans KR',sans-serif;}
+.tab.on{color:var(--a1);border-bottom-color:var(--a1);}
+.wrap{padding:18px 24px;max-width:960px;margin:0 auto;}
+.pnl{display:none;}.pnl.on{display:block;}
+.card{background:var(--s1);border:1px solid var(--bdr);border-radius:11px;padding:16px;margin-bottom:12px;}
+.card-h{display:flex;align-items:center;gap:9px;margin-bottom:12px;}
+.ico{width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0;}
+.ip{background:rgba(129,140,248,.15);}.ig{background:rgba(52,211,153,.15);}.iy{background:rgba(251,191,36,.15);}.ir{background:rgba(248,113,113,.15);}.ib{background:rgba(56,189,248,.15);}.io{background:rgba(251,146,60,.15);}.im{background:rgba(232,121,249,.15);}
+.card h3{font-size:13.5px;font-weight:700;}
+.tag{display:inline-block;padding:2px 7px;border-radius:4px;font-size:9.5px;font-weight:600;margin:2px 2px 2px 0;}
+.tp{background:rgba(129,140,248,.12);color:var(--a1);border:1px solid rgba(129,140,248,.25);}
+.tg{background:rgba(52,211,153,.12);color:var(--a2);border:1px solid rgba(52,211,153,.25);}
+.ty{background:rgba(251,191,36,.12);color:var(--a3);border:1px solid rgba(251,191,36,.25);}
+.tr{background:rgba(248,113,113,.12);color:var(--a4);border:1px solid rgba(248,113,113,.25);}
+.tb{background:rgba(56,189,248,.12);color:var(--a5);border:1px solid rgba(56,189,248,.25);}
+.to{background:rgba(251,146,60,.12);color:var(--a6);border:1px solid rgba(251,146,60,.25);}
+.tm{background:rgba(232,121,249,.12);color:var(--a7);border:1px solid rgba(232,121,249,.25);}
+table{width:100%;border-collapse:collapse;font-size:12px;}
+th{background:var(--s2);color:var(--mu);font-weight:700;padding:7px 11px;text-align:left;font-size:9.5px;text-transform:uppercase;letter-spacing:.5px;border-bottom:1px solid var(--bdr);}
+td{padding:8px 11px;border-bottom:1px solid rgba(30,53,96,.5);vertical-align:top;line-height:1.55;}
+tr:last-child td{border-bottom:none;}
+tr:hover td{background:rgba(255,255,255,.02);}
+td strong{color:var(--a3);}
+ul.il{list-style:none;display:flex;flex-direction:column;gap:6px;}
+ul.il li{font-size:12px;padding-left:15px;position:relative;line-height:1.5;}
+ul.il li::before{content:'▸';position:absolute;left:0;color:var(--a1);font-size:9.5px;top:3px;}
+ul.il li strong{color:var(--a3);}
+ul.il li em{color:var(--a2);font-style:normal;}
+.memo{background:linear-gradient(135deg,rgba(129,140,248,.07),rgba(52,211,153,.07));border:1px solid rgba(129,140,248,.22);border-left:3px solid var(--a1);border-radius:7px;padding:9px 13px;font-size:12px;font-weight:600;color:var(--a1);margin:9px 0;}
+.memo::before{content:'🎯 핵심 암기 │ ';color:var(--mu);font-weight:400;}
+.warn{background:rgba(248,113,113,.07);border:1px solid rgba(248,113,113,.25);border-left:3px solid var(--a4);border-radius:7px;padding:9px 13px;font-size:12px;font-weight:600;color:var(--a4);margin:9px 0;}
+.warn::before{content:'⚠️ 시험 포인트 │ ';color:var(--mu);font-weight:400;}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px;}
+@media(max-width:580px){.g2{grid-template-columns:1fr;}}
+.formula{background:var(--s2);border:1px solid rgba(129,140,248,.18);border-radius:6px;padding:10px 12px;font-family:'JetBrains Mono',monospace;font-size:10.5px;margin:8px 0;line-height:1.8;color:var(--a2);}
+.formula .cm{color:var(--mu);}.formula .kw{color:var(--a1);}.formula .val{color:var(--a3);}
+/* algo badge */
+.abadge{display:inline-flex;align-items:center;gap:6px;padding:3px 10px;border-radius:5px;font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:900;margin-bottom:8px;}
+/* acc */
+.acc{background:var(--s2);border:1px solid var(--bdr);border-radius:9px;margin-bottom:8px;overflow:hidden;}
+.acc-h{display:flex;justify-content:space-between;align-items:center;padding:10px 14px;cursor:pointer;user-select:none;}
+.acc-h:hover{background:rgba(255,255,255,.02);}
+.acc-title{font-size:12.5px;font-weight:800;flex:1;}
+.acc-tgl{color:var(--mu);transition:transform .2s;font-size:14px;flex-shrink:0;margin-left:8px;}
+.acc.open .acc-tgl{transform:rotate(180deg);}
+.acc-body{display:none;border-top:1px solid var(--bdr);padding:12px 14px;background:var(--s3);font-size:12px;line-height:1.65;}
+.acc.open .acc-body{display:block;}
+.acc-body strong{color:var(--a3);}
+.acc-body em{color:var(--a2);font-style:normal;}
+/* qa */
+.qa{background:var(--s1);border:1px solid var(--bdr);border-radius:9px;margin-bottom:10px;overflow:hidden;}
+.qa:hover{border-color:rgba(129,140,248,.25);}
+.qa-hd{padding:12px 16px;cursor:pointer;display:flex;justify-content:space-between;align-items:flex-start;gap:9px;user-select:none;}
+.qa-meta{display:flex;align-items:center;gap:5px;margin-bottom:4px;flex-wrap:wrap;}
+.qn{font-family:'JetBrains Mono',monospace;font-size:9.5px;font-weight:700;color:var(--mu);}
+.qq{font-size:12.5px;font-weight:600;line-height:1.5;}
+.tgl{color:var(--mu);font-size:15px;flex-shrink:0;transition:transform .2s;}
+.qa.open .tgl{transform:rotate(180deg);}
+.qa-bd{display:none;border-top:1px solid var(--bdr);padding:12px 16px;background:var(--s2);}
+.qa.open .qa-bd{display:block;}
+.chs{display:flex;flex-direction:column;gap:6px;margin-bottom:10px;}
+.ch{display:flex;align-items:flex-start;gap:9px;padding:8px 12px;border-radius:6px;border:1px solid var(--bdr);font-size:12px;cursor:pointer;background:var(--s1);line-height:1.45;transition:all .15s;}
+.ch:hover:not(.lk){border-color:rgba(129,140,248,.3);background:rgba(129,140,248,.04);}
+.ch.ok{border-color:var(--a2);background:rgba(52,211,153,.1);color:var(--a2);}
+.ch.ng{border-color:var(--a4);background:rgba(248,113,113,.08);color:var(--a4);opacity:.7;}
+.ch.lk{cursor:default;}
+.cnum{font-family:'JetBrains Mono',monospace;font-weight:700;font-size:10.5px;flex-shrink:0;margin-top:1px;color:var(--mu);}
+.ch.ok .cnum{color:var(--a2);}.ch.ng .cnum{color:var(--a4);}
+.exp{background:rgba(129,140,248,.05);border:1px solid rgba(129,140,248,.18);border-radius:7px;padding:11px 13px;font-size:12px;line-height:1.6;display:none;}
+.exp.show{display:block;}
+.exp-t{font-size:9.5px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--a1);margin-bottom:5px;}
+.exp strong{color:var(--a3);}
+.exp em{color:var(--a2);font-style:normal;}
+.ox-wr{display:flex;gap:8px;margin-bottom:10px;}
+.ox{flex:1;padding:10px;border-radius:7px;border:1px solid var(--bdr);font-size:18px;cursor:pointer;background:var(--s1);transition:all .15s;font-family:'Noto Sans KR',sans-serif;color:var(--txt);}
+.ox:hover:not(.lk){transform:scale(1.02);}
+.ox.so{border-color:var(--a2);background:rgba(52,211,153,.15);}
+.ox.sx{border-color:var(--a4);background:rgba(248,113,113,.1);}
+.ox.lk{cursor:default;}
+.diff{display:inline-block;padding:2px 6px;border-radius:9px;font-size:8.5px;font-weight:700;}
+.easy{background:rgba(52,211,153,.2);color:var(--a2);}
+.mid{background:rgba(251,191,36,.2);color:var(--a3);}
+.hard{background:rgba(248,113,113,.2);color:var(--a4);}
+.fb-wr{display:flex;gap:5px;flex-wrap:wrap;margin-bottom:12px;}
+.fb{padding:4px 11px;border-radius:18px;border:1px solid var(--bdr);font-size:10.5px;font-weight:600;cursor:pointer;background:var(--s2);color:var(--mu);transition:all .15s;font-family:'Noto Sans KR',sans-serif;}
+.fb.on{background:rgba(129,140,248,.15);color:var(--a1);border-color:var(--a1);}
+.sc-b{background:var(--s2);border:1px solid var(--bdr);border-radius:7px;padding:4px 12px;font-size:11.5px;color:var(--mu);}
+.sc-b span{color:var(--a1);font-weight:700;}
+</style>
+</head>
+<body>
+<div class="hdr">
+  <div class="hdr-r">
+    <span class="pill p1">데이터 마이닝 10대 알고리즘</span>
+    <span class="pill p2">IEEE ICDM 2006 선정</span>
+    <span class="pill p3">감리사 핵심 출제</span>
+  </div>
+  <h1><span class="h1g">데이터 마이닝 10대 알고리즘 완전 정리</span></h1>
+  <p>C4.5 · K-Means · SVM · Apriori · EM · PageRank · AdaBoost · kNN · Naïve Bayes · CART</p>
+</div>
+<div class="tabs">
+  <button class="tab on" data-p="p1">📋 전체 지도</button>
+  <button class="tab" data-p="p2">🌳 분류 I — C4.5·CART</button>
+  <button class="tab" data-p="p3">⚡ 분류 II — SVM·kNN·NB</button>
+  <button class="tab" data-p="p4">🔵 군집·연관 — K-Means·Apriori</button>
+  <button class="tab" data-p="p5">🚀 고급 — EM·PageRank·AdaBoost</button>
+  <button class="tab" data-p="p6">❓ 예상문제</button>
+</div>
+<div class="wrap">
+
+<!-- P1: 전체 지도 -->
+<div class="pnl on" id="p1">
+  <div class="card">
+    <div class="card-h"><div class="ico ip">📋</div><h3>IEEE ICDM 2006 선정 데이터 마이닝 10대 알고리즘 ⭐</h3></div>
+    <div style="background:var(--s2);border:1px solid rgba(129,140,248,.25);border-radius:9px;padding:12px;margin-bottom:11px;font-size:12px;line-height:1.75;">
+      2006년 IEEE International Conference on Data Mining(ICDM)에서 <em style="color:var(--a3);font-style:normal;">데이터 마이닝 연구자·실무자 투표</em>로 선정한 10대 알고리즘. 감리사 시험에서 각 알고리즘의 원리·특징·적용 분야를 묻는 문제가 자주 출제됨.
+    </div>
+    <table>
+      <thead><tr><th>#</th><th>알고리즘</th><th>유형</th><th>핵심 원리</th><th>대표 활용</th></tr></thead>
+      <tbody>
+        <tr><td><span class="tag tp">01</span></td><td><strong>C4.5</strong></td><td><span class="tag tg">분류</span></td><td>엔트로피·이득 비율(Gain Ratio)로 의사결정 트리 생성</td><td>의료 진단·금융 신용평가</td></tr>
+        <tr><td><span class="tag tg">02</span></td><td><strong>K-Means</strong></td><td><span class="tag ty">군집화</span></td><td>K개 중심점 반복 최적화</td><td>고객 세분화·이미지 압축</td></tr>
+        <tr><td><span class="tag ty">03</span></td><td><strong>SVM</strong></td><td><span class="tag tg">분류</span></td><td>마진 최대화·커널 트릭</td><td>텍스트·이미지 분류</td></tr>
+        <tr><td><span class="tag tb">04</span></td><td><strong>Apriori</strong></td><td><span class="tag tp">연관규칙</span></td><td>최소 지지도 기반 빈발 항목 집합 탐색</td><td>장바구니 분석·추천</td></tr>
+        <tr><td><span class="tag to">05</span></td><td><strong>EM</strong></td><td><span class="tag ty">군집화</span></td><td>E단계(기대)·M단계(최대화) 반복으로 숨겨진 변수 추정</td><td>혼합 분포 추정·결측값</td></tr>
+        <tr><td><span class="tag tm">06</span></td><td><strong>PageRank</strong></td><td><span class="tag tb">링크분석</span></td><td>링크 구조 기반 웹 페이지 중요도 랭킹</td><td>검색 엔진·영향력 분석</td></tr>
+        <tr><td><span class="tag tr">07</span></td><td><strong>AdaBoost</strong></td><td><span class="tag tg">분류</span></td><td>약한 분류기를 순차 결합·오류 샘플 가중치 증가</td><td>얼굴 인식·이상탐지</td></tr>
+        <tr><td><span class="tag tp">08</span></td><td><strong>kNN</strong></td><td><span class="tag tg">분류</span></td><td>K개 최근접 이웃 다수결</td><td>추천 시스템·의료</td></tr>
+        <tr><td><span class="tag tg">09</span></td><td><strong>Naïve Bayes</strong></td><td><span class="tag tg">분류</span></td><td>베이즈 정리 + 조건부 독립 가정</td><td>스팸·텍스트 분류</td></tr>
+        <tr><td><span class="tag ty">10</span></td><td><strong>CART</strong></td><td><span class="tag tg">분류·회귀</span></td><td>지니 불순도로 이진 분할 트리 생성</td><td>의사결정 지원·회귀</td></tr>
+      </tbody>
+    </table>
+    <div class="memo">10대: C4.5·K-Means·SVM·Apriori·EM·PageRank·AdaBoost·kNN·Naïve Bayes·CART (선택 기억법: "씨케이에스에이이피에이케이엔씨")</div>
+  </div>
+
+  <div class="card">
+    <div class="card-h"><div class="ico iy">⚖️</div><h3>알고리즘 유형별 특성 비교 ⭐</h3></div>
+    <table>
+      <thead><tr><th>알고리즘</th><th>학습 유형</th><th>출력</th><th>스케일링 필요</th><th>해석 가능성</th><th>데이터 크기</th></tr></thead>
+      <tbody>
+        <tr><td><strong>C4.5</strong></td><td>지도</td><td>트리·규칙</td><td>불필요</td><td>★★★ 높음</td><td>중소형</td></tr>
+        <tr><td><strong>CART</strong></td><td>지도</td><td>이진트리</td><td>불필요</td><td>★★★ 높음</td><td>중소형</td></tr>
+        <tr><td><strong>K-Means</strong></td><td>비지도</td><td>군집 레이블</td><td><strong>필수</strong></td><td>★★ 중간</td><td>대용량 가능</td></tr>
+        <tr><td><strong>SVM</strong></td><td>지도</td><td>클래스·거리</td><td><strong>필수</strong></td><td>★ 낮음</td><td>중소형(느림)</td></tr>
+        <tr><td><strong>Apriori</strong></td><td>비지도</td><td>규칙(A→B)</td><td>불필요</td><td>★★★ 높음</td><td>중소형(느림)</td></tr>
+        <tr><td><strong>EM</strong></td><td>비지도</td><td>군집·확률</td><td>권장</td><td>★★ 중간</td><td>중소형</td></tr>
+        <tr><td><strong>PageRank</strong></td><td>비지도</td><td>중요도 점수</td><td>불필요</td><td>★★ 중간</td><td>대용량</td></tr>
+        <tr><td><strong>AdaBoost</strong></td><td>지도</td><td>앙상블 분류</td><td>불필요</td><td>★ 낮음</td><td>중형</td></tr>
+        <tr><td><strong>kNN</strong></td><td>지도</td><td>클래스·값</td><td><strong>필수</strong></td><td>★★ 중간</td><td>소형(예측 느림)</td></tr>
+        <tr><td><strong>Naïve Bayes</strong></td><td>지도</td><td>확률·클래스</td><td>불필요</td><td>★★★ 높음</td><td>소형·대용량</td></tr>
+      </tbody>
+    </table>
+    <div class="warn">K-Means·SVM·kNN은 거리/스케일 기반 → 스케일링 필수! / C4.5·CART·Apriori·AdaBoost·NB는 스케일링 불필요</div>
+  </div>
+</div>
+
+<!-- P2: C4.5·CART -->
+<div class="pnl" id="p2">
+  <div class="card">
+    <div class="card-h"><div class="ico ip">🌳</div><h3>① C4.5 — 의사결정 트리 ⭐</h3></div>
+    <div class="abadge" style="background:rgba(129,140,248,.12);color:var(--a1);">ALGORITHM #01 · 분류 · 지도학습 · Ross Quinlan(1993) · ID3 개선판</div>
+
+    <div class="acc open" onclick="this.classList.toggle('open')">
+      <div class="acc-h"><div class="acc-title" style="color:var(--a1);">핵심 원리 — 이득 비율(Gain Ratio) ⭐</div><div class="acc-tgl">▾</div></div>
+      <div class="acc-body">
+        <ul class="il" style="margin-bottom:8px;">
+          <li><strong>ID3의 문제:</strong> 정보 이득(Information Gain)만 사용 → 카디널리티 높은 속성(주민번호 등) 과도하게 선호</li>
+          <li><strong>C4.5 해결책:</strong> <em>이득 비율(Gain Ratio)</em> 사용 = 정보이득 / 분할정보(SplitInfo) → 카디널리티 패널티 부여</li>
+          <li><strong>가지치기:</strong> 오류 기반 사후 가지치기(Error-based Post-Pruning) → 과적합 방지</li>
+          <li><strong>연속형 속성:</strong> 임계값(Threshold) 기반 이진 분할 → 연속형 데이터 처리 가능</li>
+          <li><strong>결측값 처리:</strong> 결측값 있는 샘플도 학습에 활용 (확률적 처리)</li>
+          <li><strong>규칙 생성:</strong> 트리를 IF-THEN 규칙으로 변환 가능 → 해석 용이</li>
+        </ul>
+        <div class="formula"><span class="kw">정보이득</span>  IG(A) = H(D) - Σ|Dᵥ|/|D| · H(Dᵥ)
+<span class="kw">분할정보</span>  SplitInfo(A) = -Σ|Dᵥ|/|D| · log₂(|Dᵥ|/|D|)
+<span class="kw">이득비율</span>  GainRatio(A) = IG(A) / SplitInfo(A)  <span class="cm">← C4.5 핵심</span></div>
+        <div class="warn" style="margin-top:6px;">ID3=정보이득(카디널리티 편향) / C4.5=이득비율(카디널리티 보정) / CART=지니불순도 — 세 알고리즘 비교가 핵심!</div>
+      </div>
+    </div>
+
+    <div class="acc" onclick="this.classList.toggle('open')">
+      <div class="acc-h"><div class="acc-title" style="color:var(--a3);">C4.5 vs ID3 vs CART 비교 ⭐</div><div class="acc-tgl">▾</div></div>
+      <div class="acc-body">
+        <table>
+          <thead><tr><th>항목</th><th>ID3</th><th style="color:var(--a1);">C4.5</th><th style="color:var(--a2);">CART</th></tr></thead>
+          <tbody>
+            <tr><td><strong>분할 기준</strong></td><td>정보 이득</td><td><strong>이득 비율(GainRatio)</strong></td><td>지니 불순도</td></tr>
+            <tr><td><strong>분할 방식</strong></td><td>다지 분할</td><td>다지 분할</td><td><strong>이진 분할만</strong></td></tr>
+            <tr><td><strong>연속형 처리</strong></td><td>불가</td><td><strong>가능(임계값)</strong></td><td><strong>가능</strong></td></tr>
+            <tr><td><strong>결측값</strong></td><td>불가</td><td><strong>가능</strong></td><td>대리분할</td></tr>
+            <tr><td><strong>가지치기</strong></td><td>없음</td><td>사후 가지치기</td><td>비용복잡도</td></tr>
+            <tr><td><strong>출력</strong></td><td>분류</td><td>분류+규칙</td><td><strong>분류+회귀</strong></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div class="memo">C4.5=ID3개선·이득비율(GainRatio)·연속형·결측값처리·사후가지치기 / ID3=정보이득·카디널리티편향 / CART=지니·이진분할·분류+회귀</div>
+  </div>
+
+  <div class="card">
+    <div class="card-h"><div class="ico ig">🌲</div><h3>⑩ CART (Classification And Regression Trees) ⭐</h3></div>
+    <div class="abadge" style="background:rgba(52,211,153,.12);color:var(--a2);">ALGORITHM #10 · 분류+회귀 · 지도학습 · Breiman et al.(1984) · 이진분할</div>
+
+    <div class="acc open" onclick="this.classList.toggle('open')">
+      <div class="acc-h"><div class="acc-title" style="color:var(--a2);">핵심 원리 — 지니 불순도 & 이진 분할 ⭐</div><div class="acc-tgl">▾</div></div>
+      <div class="acc-body">
+        <ul class="il" style="margin-bottom:8px;">
+          <li><strong>지니 불순도:</strong> 노드의 순수도 측정 — 0(완전 순수)~0.5(완전 혼합, 이진 분류)</li>
+          <li><strong>이진 분할만:</strong> 모든 분할이 정확히 두 가지(Yes/No) — 완전 이진 트리 생성</li>
+          <li><strong>회귀 트리:</strong> 연속형 출력값 예측 — 분할 기준으로 분산 감소(MSE) 사용</li>
+          <li><strong>비용복잡도 가지치기(CCP):</strong> α 파라미터로 트리 복잡도 vs 오류율 트레이드오프 조절</li>
+          <li><strong>sklearn 기본:</strong> scikit-learn의 DecisionTreeClassifier/Regressor가 CART 구현</li>
+          <li><strong>랜덤 포레스트·XGBoost의 기반:</strong> 여러 CART 트리를 앙상블</li>
+        </ul>
+        <div class="formula"><span class="kw">지니 불순도</span> G(t) = 1 - Σpᵢ²
+<span class="cm">  → pᵢ: 클래스 i의 비율</span>
+<span class="cm">  → 0에 가까울수록 순수한 노드 (같은 클래스만)</span>
+<span class="kw">분할 이득</span> ΔG = G(부모) - [|왼|/|전체|·G(왼) + |오|/|전체|·G(오)]</div>
+      </div>
+    </div>
+    <div class="memo">CART=지니불순도·이진분할전용·분류+회귀모두·sklearn기본·랜덤포레스트 기반 / 분류트리=지니 / 회귀트리=MSE(분산감소)</div>
+  </div>
+</div>
+
+<!-- P3: SVM·kNN·NB -->
+<div class="pnl" id="p3">
+  <div class="card">
+    <div class="card-h"><div class="ico iy">⚔️</div><h3>③ SVM (Support Vector Machine) ⭐</h3></div>
+    <div class="abadge" style="background:rgba(251,191,36,.12);color:var(--a3);">ALGORITHM #03 · 분류·회귀 · Vapnik(1963/1995) · 마진 최대화</div>
+
+    <div class="acc open" onclick="this.classList.toggle('open')">
+      <div class="acc-h"><div class="acc-title" style="color:var(--a3);">마진 최대화 & 커널 트릭 ⭐</div><div class="acc-tgl">▾</div></div>
+      <div class="acc-body">
+        <ul class="il" style="margin-bottom:8px;">
+          <li><strong>서포트 벡터(Support Vector):</strong> 결정 경계에 가장 가까운 소수의 데이터 포인트 — 이것만으로 결정 경계 결정</li>
+          <li><strong>최대 마진 분류기:</strong> 두 클래스를 가장 넓은 여백으로 분리하는 초평면(Hyperplane) 탐색</li>
+          <li><strong>하드 마진:</strong> 오분류 전혀 허용 안 함 (이상치 민감)</li>
+          <li><strong>소프트 마진(C 파라미터):</strong> 슬랙 변수로 일부 오분류 허용 — C↑=좁은마진·적은오류(과적합) / C↓=넓은마진·허용(과소적합)</li>
+          <li><strong>커널 트릭:</strong> 실제로 고차원 변환하지 않고 커널 함수(내적 계산)로 효율적 분류</li>
+          <li><strong>SVR(Support Vector Regression):</strong> ε-튜브 내 오류를 무시하며 회귀 예측</li>
+        </ul>
+        <table>
+          <thead><tr><th>커널 함수</th><th>수식</th><th>적용 상황</th></tr></thead>
+          <tbody>
+            <tr><td><strong>선형(Linear)</strong></td><td>K(x,z)=xᵀz</td><td>선형 분리 가능·텍스트·고차원 희소</td></tr>
+            <tr><td><strong>다항식(Polynomial)</strong></td><td>K(x,z)=(γxᵀz+r)ᵈ</td><td>이미지·다항 경계</td></tr>
+            <tr><td><strong>RBF(가우시안) ⭐</strong></td><td>K(x,z)=exp(-γ‖x-z‖²)</td><td><strong>범용·가장 많이 사용</strong></td></tr>
+            <tr><td><strong>시그모이드</strong></td><td>K(x,z)=tanh(γxᵀz+r)</td><td>신경망 유사 경계</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div class="memo">SVM=마진최대화·서포트벡터만 사용 / RBF커널=범용·가장 많이 / C↑=과적합·γ↑=복잡경계 / 스케일링 필수 / 대용량 느림</div>
+  </div>
+
+  <div class="card">
+    <div class="card-h"><div class="ico tb">👥</div><h3>⑧ kNN (k-Nearest Neighbors) ⭐</h3></div>
+    <div class="abadge" style="background:rgba(56,189,248,.12);color:var(--a5);">ALGORITHM #08 · 분류·회귀 · 게으른 학습(Lazy Learning) · 인스턴스 기반</div>
+
+    <div class="acc open" onclick="this.classList.toggle('open')">
+      <div class="acc-h"><div class="acc-title" style="color:var(--a5);">동작 원리 & K 선택 ⭐</div><div class="acc-tgl">▾</div></div>
+      <div class="acc-body">
+        <ul class="il">
+          <li><strong>원리:</strong> 새 데이터 → 훈련 데이터 전체와 거리 계산 → 가장 가까운 K개 이웃 선택 → <em>다수결(분류) 또는 평균(회귀)</em></li>
+          <li><strong>게으른 학습(Lazy Learning):</strong> 별도 모델 학습 없음 / 모든 훈련 데이터를 메모리에 보관</li>
+          <li><strong>K=1:</strong> 과적합 (노이즈에 민감) / <strong>K↑:</strong> 과소적합 / <strong>홀수 K 권장</strong> (동점 방지)</li>
+          <li><strong>거리 척도:</strong> 유클리드(기본)·맨해튼·코사인·민코프스키</li>
+          <li><strong>차원의 저주(Curse of Dimensionality):</strong> 고차원 공간에서 모든 점이 비슷한 거리 → 성능 저하</li>
+          <li><strong>가중 kNN:</strong> 가까운 이웃에 더 높은 가중치 부여 → 성능 개선</li>
+          <li><strong>스케일링 필수:</strong> 거리 기반이므로 단위 차이 극복 필요</li>
+        </ul>
+        <div class="formula"><span class="kw">유클리드 거리</span> d(x,y) = √Σ(xᵢ-yᵢ)²
+<span class="kw">맨해튼 거리</span> d(x,y) = Σ|xᵢ-yᵢ|
+<span class="kw">학습 복잡도</span>: O(1) ← 저장만 / <span class="kw">예측 복잡도</span>: O(n·d) ← 느림!</div>
+      </div>
+    </div>
+    <div class="memo">kNN=K이웃다수결·게으른학습·학습없음·예측O(nd)느림 / K홀수권장·스케일링필수 / 고차원=차원의저주 / 추천·의료진단</div>
+  </div>
+
+  <div class="card">
+    <div class="card-h"><div class="ico ir">🧮</div><h3>⑨ Naïve Bayes ⭐</h3></div>
+    <div class="abadge" style="background:rgba(248,113,113,.12);color:var(--a4);">ALGORITHM #09 · 분류 · 확률 기반 · 조건부 독립 가정 · 텍스트 분류 최강</div>
+
+    <div class="acc open" onclick="this.classList.toggle('open')">
+      <div class="acc-h"><div class="acc-title" style="color:var(--a4);">베이즈 정리 & 조건부 독립 ⭐</div><div class="acc-tgl">▾</div></div>
+      <div class="acc-body">
+        <ul class="il" style="margin-bottom:8px;">
+          <li><strong>핵심 가정(Naïve):</strong> 모든 특성이 <em>클래스 주어졌을 때 서로 조건부 독립</em> → 현실에서 위배되지만 실용적으로 우수</li>
+          <li><strong>가우시안 NB:</strong> 연속형 특성이 정규 분포를 따른다고 가정</li>
+          <li><strong>다항식 NB ⭐:</strong> 특성이 다항 분포 (단어 빈도) → 텍스트 분류 표준</li>
+          <li><strong>베르누이 NB:</strong> 이진 특성 (단어 출현 여부)</li>
+          <li><strong>라플라스(Laplace) 스무딩 ⭐:</strong> 훈련 데이터에 없는 단어의 확률=0 방지 → 분자+1, 분모+k(클래스수)</li>
+        </ul>
+        <div class="formula"><span class="kw">P(C|X)</span> ∝ P(C) · ΠP(xᵢ|C)   <span class="cm">← Naïve 가정</span>
+<span class="cm">사후확률    = 사전확률 × 우도(각 특성 조건부 확률 곱)</span>
+<span class="kw">Laplace</span>: P(xᵢ|C) = (count(xᵢ,C)+1) / (count(C)+|V|)</div>
+      </div>
+    </div>
+    <div class="memo">Naïve Bayes=베이즈+조건부독립가정 / 다항식NB=텍스트·단어빈도 / 라플라스스무딩=0확률방지 / 빠름·소규모탁월 / 스팸분류</div>
+  </div>
+</div>
+
+<!-- P4: K-Means·Apriori -->
+<div class="pnl" id="p4">
+  <div class="card">
+    <div class="card-h"><div class="ico ig">🔵</div><h3>② K-Means ⭐</h3></div>
+    <div class="abadge" style="background:rgba(52,211,153,.12);color:var(--a2);">ALGORITHM #02 · 군집화 · 비지도학습 · MacQueen(1967) · 반복 최적화</div>
+
+    <div class="acc open" onclick="this.classList.toggle('open')">
+      <div class="acc-h"><div class="acc-title" style="color:var(--a2);">4단계 알고리즘 & 최적 K 선택 ⭐</div><div class="acc-tgl">▾</div></div>
+      <div class="acc-body">
+        <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-bottom:10px;">
+          <div style="background:rgba(52,211,153,.1);border:1px solid rgba(52,211,153,.3);border-radius:6px;padding:8px;text-align:center;font-size:10.5px;font-weight:700;color:var(--a2);">① K개 중심<br>무작위 초기화</div>
+          <div style="background:rgba(52,211,153,.1);border:1px solid rgba(52,211,153,.3);border-radius:6px;padding:8px;text-align:center;font-size:10.5px;font-weight:700;color:var(--a2);">② 각 점을<br>가장 가까운<br>중심에 할당</div>
+          <div style="background:rgba(52,211,153,.1);border:1px solid rgba(52,211,153,.3);border-radius:6px;padding:8px;text-align:center;font-size:10.5px;font-weight:700;color:var(--a2);">③ 각 군집의<br>평균으로<br>중심 재계산</div>
+          <div style="background:rgba(52,211,153,.1);border:1px solid rgba(52,211,153,.3);border-radius:6px;padding:8px;text-align:center;font-size:10.5px;font-weight:700;color:var(--a2);">④ 중심 변화<br>없을 때까지<br>②③ 반복</div>
+        </div>
+        <ul class="il">
+          <li><strong>목표 함수:</strong> 이너셔(Within-Cluster SSE) 최소화 — 각 점에서 할당된 중심까지 거리의 제곱합</li>
+          <li><strong>엘보우 방법(Elbow Method):</strong> K 증가 시 SSE 감소율이 꺾이는 지점 = 최적 K</li>
+          <li><strong>실루엣 계수:</strong> -1~1 / 자기 군집 응집도 vs 이웃 군집 거리 비교 / 1에 가까울수록 좋음</li>
+          <li><strong>K-Means++ :</strong> 초기 중심을 서로 멀리 떨어지게 선택 → 수렴 안정화·성능 향상</li>
+          <li><strong>단점:</strong> K 사전 지정 필수 / 원형 군집만 / 이상치 민감 / 초기값 의존 / 비볼록 군집 불가</li>
+          <li><strong>대안:</strong> DBSCAN(밀도 기반·K불필요·이상치탐지) / 계층적 군집화</li>
+        </ul>
+        <div class="formula"><span class="kw">이너셔(SSE)</span> = ΣΣ ‖xᵢ - μk‖²   <span class="cm">← 최소화 목표</span>
+<span class="cm">xᵢ: 데이터 포인트 / μk: k번째 군집 중심</span></div>
+      </div>
+    </div>
+    <div class="memo">K-Means=이너셔최소화·반복최적화 / 엘보우=최적K / 실루엣=군집품질 / K-Means++=안정초기화 / 스케일링필수·이상치민감</div>
+  </div>
+
+  <div class="card">
+    <div class="card-h"><div class="ico io">🛒</div><h3>④ Apriori — 연관 규칙 마이닝 ⭐</h3></div>
+    <div class="abadge" style="background:rgba(251,146,60,.12);color:var(--a6);">ALGORITHM #04 · 연관규칙 · 비지도학습 · Agrawal & Srikant(1994) · 장바구니분석</div>
+
+    <div class="acc open" onclick="this.classList.toggle('open')">
+      <div class="acc-h"><div class="acc-title" style="color:var(--a6);">핵심 원리 & 3대 지표 ⭐</div><div class="acc-tgl">▾</div></div>
+      <div class="acc-body">
+        <div class="formula"><span class="kw">지지도(Support)</span>    sup(A→B) = P(A∩B) = |A∩B| / |전체|
+<span class="cm">  → A와 B가 동시에 발생할 비율 (빈도)</span>
+
+<span class="kw">신뢰도(Confidence)</span>  conf(A→B) = P(B|A) = |A∩B| / |A|
+<span class="cm">  → A를 산 사람 중 B도 산 비율 (정확도)</span>
+
+<span class="kw">향상도(Lift)</span>        lift(A→B) = conf(A→B) / P(B) = sup(A∪B) / (sup(A)·sup(B))
+<span class="cm">  → > 1: 양의 연관 (독립보다 B 구매↑)</span>
+<span class="cm">  → = 1: 독립 (무관)  /  < 1: 음의 연관</span></div>
+        <ul class="il" style="margin-top:8px;">
+          <li><strong>Apriori 원칙(Apriori Property) ⭐:</strong> 빈발 항목 집합의 모든 부분 집합도 빈발 → <em>비빈발 집합의 상위 집합은 탐색 불필요</em> (가지치기)</li>
+          <li><strong>동작:</strong> 최소 지지도(min_sup) 이상의 빈발 1-항목 집합 → 빈발 2-항목... 반복 → 연관 규칙 생성 (최소 신뢰도 필터)</li>
+          <li><strong>단점:</strong> 후보 집합 반복 생성·DB 다중 스캔 → 대용량 비효율</li>
+          <li><strong>FP-Growth ⭐:</strong> Apriori 개선 — FP-Tree 구조로 <em>DB 스캔 2회만·후보 생성 없음</em> → 빠름</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="acc" onclick="this.classList.toggle('open')">
+      <div class="acc-h"><div class="acc-title" style="color:var(--a3);">연관 규칙 예시 & FP-Growth 비교</div><div class="acc-tgl">▾</div></div>
+      <div class="acc-body">
+        <div style="background:var(--s2);border:1px solid rgba(251,146,60,.2);border-radius:7px;padding:11px;font-family:'JetBrains Mono',monospace;font-size:10.5px;line-height:1.9;">
+          <span style="color:var(--mu);"># 거래 데이터: 5개 거래, 상품 {A,B,C,D,E}</span><br>
+          T1: {A,B,C}  T2: {A,C}  T3: {B,C,D}  T4: {A,B,D}  T5: {B,C}<br><br>
+          <span style="color:var(--a3);">min_sup=0.6 (3/5거래)</span><br>
+          빈발 1-항목: A(3)·B(4)·C(4)  →  {A:0.6, B:0.8, C:0.8}<br>
+          빈발 2-항목: {A,C}(2) ← 0.4 <span style="color:var(--a4);">제외</span> / {B,C}(3) ← 0.6 <span style="color:var(--a2);">포함</span><br><br>
+          <span style="color:var(--a1);">규칙: B→C  conf=3/4=0.75  lift=0.75/0.8=0.94</span>
+        </div>
+        <table style="margin-top:8px;">
+          <thead><tr><th>비교</th><th>Apriori</th><th style="color:var(--a2);">FP-Growth</th></tr></thead>
+          <tbody>
+            <tr><td><strong>DB 스캔</strong></td><td>k번 (항목 크기마다)</td><td><strong>2번만</strong></td></tr>
+            <tr><td><strong>후보 생성</strong></td><td>반복 생성 (많음)</td><td><strong>없음</strong></td></tr>
+            <tr><td><strong>메모리</strong></td><td>적음</td><td>FP-Tree 필요</td></tr>
+            <tr><td><strong>속도</strong></td><td>느림 (대용량 비효율)</td><td><strong>빠름</strong></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div class="memo">Apriori: 지지도·신뢰도·향상도(>1=양의연관) / Apriori원칙=부분집합도빈발·비빈발가지치기 / FP-Growth=DB2회스캔·후보없음·빠름</div>
+  </div>
+</div>
+
+<!-- P5: EM·PageRank·AdaBoost -->
+<div class="pnl" id="p5">
+  <div class="card">
+    <div class="card-h"><div class="ico ip">🌊</div><h3>⑤ EM (Expectation-Maximization) ⭐</h3></div>
+    <div class="abadge" style="background:rgba(129,140,248,.12);color:var(--a1);">ALGORITHM #05 · 군집화·밀도추정 · Dempster et al.(1977) · 잠재변수 모델</div>
+
+    <div class="acc open" onclick="this.classList.toggle('open')">
+      <div class="acc-h"><div class="acc-title" style="color:var(--a1);">E단계·M단계 반복 원리 ⭐</div><div class="acc-tgl">▾</div></div>
+      <div class="acc-body">
+        <ul class="il" style="margin-bottom:8px;">
+          <li><strong>목적:</strong> 관측 데이터에 숨겨진 잠재 변수(Latent Variable)가 있을 때 최우도 추정(MLE) 수행</li>
+          <li><strong>핵심 응용:</strong> GMM(가우시안 혼합 모델) — 여러 정규 분포의 혼합으로 복잡한 데이터 분포 모델링</li>
+        </ul>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:8px;">
+          <div style="background:rgba(129,140,248,.1);border:1px solid rgba(129,140,248,.3);border-radius:7px;padding:10px;">
+            <p style="font-size:11.5px;font-weight:800;color:var(--a1);margin-bottom:6px;">E단계 (Expectation)</p>
+            <ul class="il">
+              <li>현재 파라미터로 각 데이터가 어느 군집에 속할 <em>확률(책임도, responsibility)</em> 계산</li>
+              <li>소프트 할당 — 하나의 데이터가 여러 군집에 확률적으로 속할 수 있음</li>
+            </ul>
+          </div>
+          <div style="background:rgba(52,211,153,.1);border:1px solid rgba(52,211,153,.3);border-radius:7px;padding:10px;">
+            <p style="font-size:11.5px;font-weight:800;color:var(--a2);margin-bottom:6px;">M단계 (Maximization)</p>
+            <ul class="il">
+              <li>E단계의 책임도를 기반으로 파라미터(μ·σ·π) <em>업데이트</em> (로그 우도 최대화)</li>
+              <li>각 군집의 평균·분산·혼합 비율 재계산</li>
+            </ul>
+          </div>
+        </div>
+        <table>
+          <thead><tr><th>비교 항목</th><th>K-Means</th><th style="color:var(--a1);">EM(GMM)</th></tr></thead>
+          <tbody>
+            <tr><td><strong>할당 방식</strong></td><td>하드 할당 (1개 군집)</td><td><strong>소프트 할당 (확률 분포)</strong></td></tr>
+            <tr><td><strong>군집 형태</strong></td><td>원형만 가정</td><td><strong>타원형·임의 형태</strong></td></tr>
+            <tr><td><strong>결과</strong></td><td>군집 레이블</td><td><strong>확률 분포 파라미터</strong></td></tr>
+            <tr><td><strong>속도</strong></td><td>빠름</td><td>느림 (E·M 반복)</td></tr>
+            <tr><td><strong>결측값</strong></td><td>어려움</td><td><strong>자연스럽게 처리</strong></td></tr>
+          </tbody>
+        </table>
+        <div class="warn" style="margin-top:6px;">EM은 K-Means의 소프트 버전 / K-Means=하드할당·원형 / EM=소프트할당·타원형·불확실성 모델링</div>
+      </div>
+    </div>
+    <div class="memo">EM=E단계(확률계산)·M단계(파라미터업데이트) 반복 / GMM=가우시안혼합·소프트할당·타원군집 / 결측값처리강점 / K-Means보다 유연</div>
+  </div>
+
+  <div class="card">
+    <div class="card-h"><div class="ico im">🌐</div><h3>⑥ PageRank ⭐</h3></div>
+    <div class="abadge" style="background:rgba(232,121,249,.12);color:var(--a7);">ALGORITHM #06 · 링크분석 · 비지도 · Page·Brin(Google,1998) · 그래프 기반 랭킹</div>
+
+    <div class="acc open" onclick="this.classList.toggle('open')">
+      <div class="acc-h"><div class="acc-title" style="color:var(--a7);">핵심 원리 — 링크 기반 중요도 ⭐</div><div class="acc-tgl">▾</div></div>
+      <div class="acc-body">
+        <ul class="il" style="margin-bottom:8px;">
+          <li><strong>핵심 직관:</strong> <em>중요한 페이지로부터 많은 링크를 받을수록 그 페이지도 중요</em> — 민주적 투표 메커니즘</li>
+          <li><strong>랜덤 서퍼 모델:</strong> 웹 사용자가 무작위로 링크를 클릭하는 행동을 시뮬레이션</li>
+          <li><strong>댐핑 팩터(d) ⭐:</strong> 보통 0.85 — 직접 URL 입력(1-d=0.15) vs 링크 클릭(d=0.85) 비율</li>
+          <li><strong>수렴:</strong> 반복 계산으로 PageRank가 수렴 (마르코프 체인 정상 분포)</li>
+          <li><strong>댄글링 노드:</strong> 나가는 링크 없는 페이지 → PageRank 누수 → 모든 페이지로 균등 분배로 처리</li>
+        </ul>
+        <div class="formula"><span class="kw">PR(A)</span> = (1-d) + d · Σ PR(Bᵢ)/L(Bᵢ)
+<span class="cm">  d: 댐핑 팩터 (보통 0.85)</span>
+<span class="cm">  Bᵢ: A에 링크를 가진 페이지</span>
+<span class="cm">  L(Bᵢ): Bᵢ에서 나가는 링크 수</span>
+<span class="cm">  → 행렬 거듭제곱으로 수렴값 계산 (멱 반복법)</span></div>
+        <ul class="il" style="margin-top:8px;">
+          <li><strong>응용:</strong> Google 검색 순위 / 학술 논문 영향력(인용 네트워크) / SNS 영향력 사용자 / 제품 추천</li>
+          <li><strong>HITS 알고리즘:</strong> PageRank의 대안 — Hub(좋은 링크 제공)와 Authority(좋은 링크 받음) 구분</li>
+        </ul>
+      </div>
+    </div>
+    <div class="memo">PageRank=중요한 페이지에서 많은 링크=중요 / 댐핑팩터d=0.85 / 랜덤서퍼모델 / 반복수렴 / Google검색·영향력분석</div>
+  </div>
+
+  <div class="card">
+    <div class="card-h"><div class="ico ir">🚀</div><h3>⑦ AdaBoost (Adaptive Boosting) ⭐</h3></div>
+    <div class="abadge" style="background:rgba(248,113,113,.12);color:var(--a4);">ALGORITHM #07 · 분류 · 지도학습 · Freund & Schapire(1995) · 부스팅 원조</div>
+
+    <div class="acc open" onclick="this.classList.toggle('open')">
+      <div class="acc-h"><div class="acc-title" style="color:var(--a4);">약한 학습기를 강한 분류기로 ⭐</div><div class="acc-tgl">▾</div></div>
+      <div class="acc-body">
+        <ul class="il" style="margin-bottom:8px;">
+          <li><strong>원리:</strong> 틀린 샘플의 가중치를 높여 다음 약한 학습기(Weak Learner)가 그것에 집중 → 순차적으로 보완</li>
+          <li><strong>약한 학습기:</strong> 무작위보다 약간 나은 분류기 (보통 1단계 결정 트리 = Decision Stump)</li>
+          <li><strong>가중 다수결:</strong> 각 약한 학습기에 정확도 비례 가중치(α) 부여 후 결합</li>
+        </ul>
+        <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:8px;">
+          <div style="background:rgba(248,113,113,.1);border:1px solid rgba(248,113,113,.3);border-radius:6px;padding:8px 10px;font-size:10.5px;text-align:center;flex:1;min-width:100px;"><span style="color:var(--a4);font-weight:800;">① 균등 가중치</span><br><span style="color:var(--mu);">초기 모든 샘플 동일</span></div>
+          <div style="display:flex;align-items:center;color:var(--mu);font-size:14px;">→</div>
+          <div style="background:rgba(248,113,113,.1);border:1px solid rgba(248,113,113,.3);border-radius:6px;padding:8px 10px;font-size:10.5px;text-align:center;flex:1;min-width:100px;"><span style="color:var(--a4);font-weight:800;">② 약한 학습기</span><br><span style="color:var(--mu);">오류 최소화 학습</span></div>
+          <div style="display:flex;align-items:center;color:var(--mu);font-size:14px;">→</div>
+          <div style="background:rgba(248,113,113,.1);border:1px solid rgba(248,113,113,.3);border-radius:6px;padding:8px 10px;font-size:10.5px;text-align:center;flex:1;min-width:100px;"><span style="color:var(--a3);font-weight:800;">③ 오류 샘플</span><br><span style="color:var(--mu);">가중치 증가↑</span></div>
+          <div style="display:flex;align-items:center;color:var(--mu);font-size:14px;">→</div>
+          <div style="background:rgba(52,211,153,.1);border:1px solid rgba(52,211,153,.3);border-radius:6px;padding:8px 10px;font-size:10.5px;text-align:center;flex:1;min-width:100px;"><span style="color:var(--a2);font-weight:800;">④ T회 반복</span><br><span style="color:var(--mu);">→ 가중 결합</span></div>
+        </div>
+        <div class="formula"><span class="kw">학습기 가중치</span> αₜ = ½ · ln((1-εₜ)/εₜ)   <span class="cm">← εₜ: 오류율</span>
+<span class="cm">  εₜ < 0.5이면 αₜ > 0  /  오류율 낮을수록 가중치 높음</span>
+<span class="kw">최종 예측</span> H(x) = sign(Σαₜhₜ(x))   <span class="cm">← 가중 다수결</span></div>
+        <table style="margin-top:8px;">
+          <thead><tr><th>비교</th><th style="color:var(--a4);">AdaBoost</th><th style="color:var(--a3);">Gradient Boosting(XGBoost)</th></tr></thead>
+          <tbody>
+            <tr><td><strong>가중치</strong></td><td>샘플 가중치 조정</td><td>잔차(Residual) 예측</td></tr>
+            <tr><td><strong>기본 학습기</strong></td><td>Decision Stump</td><td>더 깊은 트리</td></tr>
+            <tr><td><strong>이상치</strong></td><td>민감 (가중치↑)</td><td>상대적 강인</td></tr>
+            <tr><td><strong>정규화</strong></td><td>없음</td><td>L1·L2 내장</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div class="memo">AdaBoost=약한학습기순차결합·오류샘플가중치↑·가중다수결 / Decision Stump=1단계트리 / 이상치에 민감 / 부스팅 원조</div>
+  </div>
+</div>
+
+<!-- P6: QA -->
+<div class="pnl" id="p6">
+  <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:7px;margin-bottom:12px;">
+    <div class="fb-wr" id="fbar" style="margin:0;">
+      <button class="fb on" data-f="all">전체</button>
+      <button class="fb" data-f="트리">🌳 트리</button>
+      <button class="fb" data-f="분류">⚡ 분류</button>
+      <button class="fb" data-f="연관">🛒 연관·군집</button>
+      <button class="fb" data-f="고급">🚀 EM·PR·Ada</button>
+      <button class="fb" data-f="OX">⭕ OX</button>
+    </div>
+    <div class="sc-b">정답: <span id="sc">0</span>/<span id="st">0</span></div>
+  </div>
+  <div id="ql"></div>
+</div>
+
+</div>
+<script>
+document.querySelectorAll('.tab').forEach(t=>t.addEventListener('click',()=>{
+  document.querySelectorAll('.tab,.pnl').forEach(x=>x.classList.remove('on'));
+  t.classList.add('on');document.getElementById(t.dataset.p).classList.add('on');
+}));
+const QA=[
+  {cat:'트리',diff:'mid',
+   q:'C4.5가 ID3의 정보 이득(Information Gain) 대신 이득 비율(Gain Ratio)을 사용하는 이유로 가장 적절한 것은?',
+   cs:['계산이 더 단순하기 때문에','정보 이득이 카디널리티가 높은 속성(값이 많은 속성)을 과도하게 선호하는 편향을 보정하기 위해','범주형 데이터를 처리할 수 없기 때문에','연속형 데이터를 처리하기 위해'],ans:1,
+   exp:'<strong>ID3의 문제</strong>: 정보 이득만 사용하면 고유값이 많은 속성(주민번호·이름)에 편향됩니다 — 값마다 하나의 노드가 생겨 완벽한 분류처럼 보이나 일반화 불가. <strong>C4.5 해결</strong>: <em>이득비율(GainRatio) = 정보이득/분할정보</em>로 카디널리티에 패널티를 부여합니다. 또한 C4.5는 연속형 속성 처리, 결측값 처리, 사후 가지치기를 추가로 개선했습니다.'},
+  {cat:'트리',diff:'mid',
+   q:'CART 알고리즘의 특징으로 가장 적절하지 않은 것은?',
+   cs:['지니 불순도(Gini Impurity)를 분할 기준으로 사용한다.','항상 이진 분할(Binary Split)만 수행한다.','분류와 회귀 모두에 적용 가능하다.','C4.5와 동일하게 다지 분할(Multi-way Split)을 지원한다.'],ans:3,
+   exp:'<strong>CART의 핵심 특징</strong>: ①지니 불순도 사용(분류)/MSE(회귀) ②<em>이진 분할만</em>(Multi-way 아님) ③분류+회귀 모두. C4.5는 다지 분할을 지원하지만 CART는 이진 분할만 합니다. scikit-learn의 DecisionTreeClassifier가 CART를 구현합니다. 랜덤 포레스트·XGBoost의 기반 알고리즘.'},
+  {cat:'분류',diff:'mid',
+   q:'Naïve Bayes에서 라플라스 스무딩(Laplace Smoothing)을 사용하는 이유로 가장 적절한 것은?',
+   cs:['분류 속도를 높이기 위해','훈련 데이터에 등장하지 않은 단어의 확률이 0이 되어 전체 곱이 0이 되는 문제를 방지하기 위해','이상치를 제거하기 위해','클래스 불균형 문제를 해결하기 위해'],ans:1,
+   exp:'<strong>라플라스 스무딩</strong>: 나이브 베이즈에서 훈련 데이터에 없는 단어가 테스트에 등장하면 해당 확률=0이 되어 <em>전체 곱이 0</em>이 됩니다(곱의 영향). 이를 방지하기 위해 분자에 1을 더하고 분모에 어휘 크기를 더합니다: P(w|C) = (count(w,C)+1)/(count(C)+|V|). 이를 가산 스무딩(Add-1 Smoothing)이라고도 합니다.'},
+  {cat:'연관',diff:'mid',
+   q:'Apriori 알고리즘의 핵심 원칙인 "Apriori Property"의 내용으로 가장 적절한 것은?',
+   cs:['최소 신뢰도 이상의 규칙만 유효하다.','빈발 항목 집합의 모든 부분 집합도 반드시 빈발하므로, 비빈발 집합을 포함하는 상위 집합은 빈발하지 않아 탐색에서 제외할 수 있다.','최소 지지도가 클수록 더 많은 규칙이 생성된다.','Apriori는 신뢰도만으로 규칙을 생성한다.'],ans:1,
+   exp:'<strong>Apriori Property(반단조성)</strong>: 빈발 항목 집합 {A,B}가 빈발하면 부분 집합 {A}, {B}도 반드시 빈발합니다. 반대로 {A}가 비빈발이면 {A}를 포함하는 모든 상위 집합({A,B},{A,C}...)은 탐색할 필요가 없어 <em>가지치기</em> 가능 → 탐색 공간 대폭 축소. FP-Growth는 이 과정을 FP-Tree로 더 효율적으로 수행합니다.'},
+  {cat:'연관',diff:'hard',
+   q:'연관 규칙 A→B의 향상도(Lift)가 1보다 클 때의 의미와, 향상도가 1일 때의 해석으로 가장 적절한 것은?',
+   cs:['향상도>1: 음의 연관, 향상도=1: 강한 양의 연관','향상도>1: A와 B 사이에 양의 연관이 있어 A를 구매하면 B를 독립적 확률보다 더 많이 구매, 향상도=1: A와 B가 독립(무관)','향상도>1: A와 B가 독립, 향상도=1: 양의 연관','향상도의 크기와 관계없이 항상 양의 연관을 의미한다.'],ans:1,
+   exp:'<strong>향상도(Lift)</strong> = Confidence(A→B)/P(B). <em>Lift>1</em>: A 구매 시 B 구매 확률이 B의 기대 확률보다 높음 → 양의 연관. <em>Lift=1</em>: A와 B가 독립(연관 없음). <em>Lift<1</em>: A 구매 시 B 구매 확률 감소 → 음의 연관. 유통업에서 Lift>1인 상품 조합을 함께 진열하거나 번들 구성합니다.'},
+  {cat:'고급',diff:'mid',
+   q:'EM(Expectation-Maximization) 알고리즘의 E단계와 M단계의 역할로 가장 적절한 것은?',
+   cs:['E단계: 모델 파라미터 업데이트, M단계: 각 데이터의 군집 소속 확률 계산','E단계: 현재 파라미터로 잠재 변수(군집 소속)의 기댓값(확률) 계산, M단계: 계산된 기댓값으로 파라미터 최대화(업데이트)','E단계와 M단계 모두 동시에 파라미터와 확률을 업데이트한다.','E단계: 데이터 정제, M단계: 모델 평가'],ans:1,
+   exp:'<strong>EM 알고리즘</strong>: ①<em>E단계(Expectation)</em>: 현재 파라미터(μ,σ,π) 기준으로 각 데이터가 각 군집에 속할 확률(책임도, responsibility) 계산 — 소프트 할당. ②<em>M단계(Maximization)</em>: E단계의 책임도를 기반으로 로그 우도를 최대화하는 새 파라미터 계산. 수렴할 때까지 반복. K-Means와 달리 <em>소프트 할당·타원형 군집·불확실성 모델링</em> 가능.'},
+  {cat:'고급',diff:'mid',
+   q:'PageRank 알고리즘에서 댐핑 팩터(Damping Factor, d)의 역할로 가장 적절한 것은?',
+   cs:['검색 결과의 다양성을 조절하는 파라미터','랜덤 서퍼가 현재 페이지에서 링크를 따라갈 확률로, 보통 0.85를 사용하며 0.15의 확률로 임의 페이지로 이동','페이지의 콘텐츠 품질을 평가하는 가중치','군집의 수를 결정하는 하이퍼파라미터'],ans:1,
+   exp:'<strong>댐핑 팩터(d)</strong>: 랜덤 서퍼가 <em>현재 페이지의 링크를 클릭할 확률</em>. 보통 d=0.85. 나머지 1-d=0.15 확률로 임의 페이지로 직접 이동(URL 입력). 이를 통해 모든 페이지가 최소한의 PageRank를 가지며 댕글링 노드 문제를 완화합니다. PR(A) = (1-d) + d·Σ PR(Bᵢ)/L(Bᵢ).'},
+  {cat:'고급',diff:'hard',
+   q:'AdaBoost에서 이전 분류기가 잘못 분류한 샘플에 가중치를 증가시키는 이유로 가장 적절한 것은?',
+   cs:['잘못 분류된 샘플을 제거하기 위해','다음 약한 학습기가 이전에 틀린 샘플에 더 집중하여 오류를 보완하도록 유도하기 위해','모든 샘플을 동등하게 취급하기 위해','훈련 속도를 높이기 위해'],ans:1,
+   exp:'<strong>AdaBoost의 핵심</strong>: 각 반복마다 이전 분류기가 틀린 샘플의 가중치를 높여, <em>다음 약한 학습기가 어려운 샘플에 더 집중</em>하도록 합니다. 이를 통해 여러 약한 학습기가 서로의 약점을 보완하며 강한 분류기로 결합됩니다. 학습기별 정확도(1-ε)에 비례한 α 가중치를 부여해 최종 가중 다수결을 수행합니다.'},
+  {cat:'분류',diff:'mid',
+   q:'SVM에서 RBF(가우시안) 커널의 γ(감마) 파라미터가 미치는 영향으로 가장 적절한 것은?',
+   cs:['γ가 클수록 마진이 넓어져 과소적합이 발생한다.','γ가 클수록 각 훈련 샘플의 영향 범위가 좁아져 복잡한 결정 경계(과적합), γ가 작을수록 영향 범위가 넓어져 단순한 경계(과소적합)가 생긴다.','γ는 오분류 허용 정도를 조절하는 파라미터이다.','γ와 모델 복잡도는 무관하다.'],ans:1,
+   exp:'<strong>RBF 커널 γ</strong>: K(x,z)=exp(-γ‖x-z‖²)에서 γ는 가우시안 폭을 결정합니다. <em>γ↑</em>: 영향 범위 좁음 → 훈련 데이터에 맞춘 복잡한 경계 → 과적합. <em>γ↓</em>: 영향 범위 넓음 → 단순하고 부드러운 경계 → 과소적합. C 파라미터는 마진과 오분류 트레이드오프 조절. 모두 스케일링 후 그리드 서치로 튜닝합니다.'},
+  {cat:'연관',diff:'mid',
+   q:'FP-Growth 알고리즘이 Apriori보다 빠른 주된 이유로 가장 적절한 것은?',
+   cs:['더 적은 수의 규칙을 생성하기 때문에','FP-Tree 구조를 사용하여 데이터베이스를 2회만 스캔하고 후보 항목 집합을 생성하지 않기 때문에','최소 지지도 기준을 더 높게 설정하기 때문에','병렬 처리를 사용하기 때문에'],ans:1,
+   exp:'<strong>FP-Growth vs Apriori</strong>: Apriori는 빈발 항목 집합 크기마다 DB를 반복 스캔하고 후보를 생성합니다. <strong>FP-Growth</strong>는 ①<em>DB를 2번만 스캔</em>하여 FP-Tree 구축 ②<em>후보 항목 집합 생성 없이</em> 조건부 FP-Tree로 패턴 탐색 → 대용량 DB에서 훨씬 빠릅니다. 결과는 Apriori와 동일한 빈발 패턴을 탐색합니다.'},
+  {cat:'트리',diff:'easy',type:'ox',
+   q:'CART(Classification And Regression Trees)는 C4.5와 달리 이진 분할(Binary Split)만 수행하며 분류와 회귀 모두에 적용 가능하다.',ans:true,
+   exp:'<strong>○</strong> — CART의 핵심 특징: ①<em>이진 분할만</em> (C4.5는 다지 분할 지원) ②<em>분류 + 회귀 모두</em> 적용 가능(분류=지니불순도, 회귀=MSE). scikit-learn의 DecisionTreeClassifier·Regressor가 CART를 구현합니다. 랜덤 포레스트·XGBoost 등 앙상블 알고리즘의 기반 학습기로 사용됩니다.'},
+  {cat:'고급',diff:'mid',type:'ox',
+   q:'EM 알고리즘은 K-Means처럼 각 데이터를 하나의 군집에만 하드 할당하며, 원형 군집에 최적화되어 있다.',ans:false,
+   exp:'<strong>×</strong> — EM 알고리즘(GMM 기반)은 <strong>소프트 할당</strong>을 사용합니다. 각 데이터가 여러 군집에 확률(책임도)로 속할 수 있습니다. 또한 가우시안 혼합 모델은 <em>타원형 등 다양한 군집 형태</em>를 처리할 수 있습니다. K-Means가 하드 할당·원형 군집이고, EM(GMM)은 소프트 할당·다양한 형태·불확실성 모델링이 가능합니다.'},
+  {cat:'분류',diff:'mid',type:'ox',
+   q:'AdaBoost는 배깅(Bagging) 방식의 앙상블 기법으로 여러 분류기를 병렬로 독립 학습한다.',ans:false,
+   exp:'<strong>×</strong> — AdaBoost는 <strong>부스팅(Boosting)</strong> 방식입니다. 이전 분류기의 오류를 보완하기 위해 <em>순차적으로(Sequential)</em> 약한 학습기를 추가합니다. 배깅(Bagging, 예: 랜덤 포레스트)은 독립적인 분류기를 병렬로 학습합니다. 부스팅=순차·오류학습·편향감소 / 배깅=병렬·독립·분산감소.'},
+  {cat:'연관',diff:'easy',type:'ox',
+   q:'연관 규칙 A→B에서 신뢰도(Confidence)는 전체 거래 중 A와 B가 동시에 발생한 비율이다.',ans:false,
+   exp:'<strong>×</strong> — 설명은 <strong>지지도(Support)</strong>입니다. <em>신뢰도(Confidence)</em> = P(B|A) = (A∩B 거래수)/(A 거래수). "A를 구매한 거래 중 B도 구매한 비율". 지지도=P(A∩B)=(A∩B 거래수)/(전체 거래수). 향상도=신뢰도/P(B). 세 지표를 혼동하지 않도록 주의가 필요합니다.'},
+];
+let answered=0,correct=0;
+function renderQ(f){
+  const data=f==='all'?QA:QA.filter(q=>q.cat===f);
+  const list=document.getElementById('ql');list.innerHTML='';
+  answered=0;correct=0;upS();
+  const CATC={'트리':'tp','분류':'tb','연관':'ty','고급':'tm','OX':'tg'};
+  const DLC={'easy':'easy 쉬움','mid':'mid 보통','hard':'hard 어려움'};
+  const NL=['①','②','③','④'];
+  if(!data.length){list.innerHTML='<div style="text-align:center;padding:40px;color:var(--mu)">문제 없음</div>';return;}
+  data.forEach((q,i)=>{
+    const gi=QA.indexOf(q);
+    const el=document.createElement('div');el.className='qa';
+    const tc=CATC[q.cat]||'tp';
+    const [dc,dn]=(DLC[q.diff]||'mid 보통').split(' ');
+    if(q.type==='ox'){
+      el.innerHTML=`<div class="qa-hd" onclick="this.closest('.qa').classList.toggle('open')"><div><div class="qa-meta"><span class="qn">Q${String(i+1).padStart(2,'0')}</span><span class="tag ${tc}">${q.cat}</span><span class="diff ${dc}">${dn}</span><span class="tag tg">O/X</span></div><div class="qq">${q.q}</div></div><span class="tgl">▾</span></div>
+      <div class="qa-bd"><div class="ox-wr"><button class="ox" onclick="pickOX(this,true,${gi})">⭕ 옳다</button><button class="ox" onclick="pickOX(this,false,${gi})">❌ 틀리다</button></div><div class="exp" id="ex-${gi}"><div class="exp-t">💡 해설</div>${q.exp}</div></div>`;
+    } else {
+      el.innerHTML=`<div class="qa-hd" onclick="this.closest('.qa').classList.toggle('open')"><div><div class="qa-meta"><span class="qn">Q${String(i+1).padStart(2,'0')}</span><span class="tag ${tc}">${q.cat}</span><span class="diff ${dc}">${dn}</span></div><div class="qq">${q.q}</div></div><span class="tgl">▾</span></div>
+      <div class="qa-bd"><div class="chs">${q.cs.map((c,ci)=>`<div class="ch" data-ci="${ci}" onclick="pickCh(this,${gi})"><span class="cnum">${NL[ci]}</span><span>${c}</span></div>`).join('')}</div><div class="exp" id="ex-${gi}"><div class="exp-t">💡 해설</div>${q.exp}</div></div>`;
+    }
+    list.appendChild(el);
+  });
+}
+function pickCh(el,gi){
+  const bd=el.closest('.qa-bd');if(bd.querySelector('.ok,.ng'))return;
+  const q=QA[gi];
+  bd.querySelectorAll('.ch').forEach((c,i)=>{c.classList.add('lk');if(i===q.ans)c.classList.add('ok');else if(i===parseInt(el.dataset.ci))c.classList.add('ng');});
+  document.getElementById('ex-'+gi).classList.add('show');
+  answered++;if(parseInt(el.dataset.ci)===q.ans)correct++;upS();
+}
+function pickOX(btn,val,gi){
+  const bd=btn.closest('.qa-bd');if(bd.querySelector('.so,.sx'))return;
+  const q=QA[gi];
+  bd.querySelectorAll('.ox').forEach(b=>b.classList.add('lk'));
+  btn.classList.add(val?'so':'sx');
+  if(val!==q.ans){btn.style.opacity='.5';bd.querySelectorAll('.ox')[val?1:0].classList.add(q.ans?'so':'sx');}
+  document.getElementById('ex-'+gi).classList.add('show');
+  answered++;if(val===q.ans)correct++;upS();
+}
+function upS(){document.getElementById('sc').textContent=correct;document.getElementById('st').textContent=answered;}
+document.getElementById('fbar').addEventListener('click',e=>{
+  const b=e.target.closest('.fb');if(!b)return;
+  document.querySelectorAll('.fb').forEach(x=>x.classList.remove('on'));b.classList.add('on');renderQ(b.dataset.f);
+});
+renderQ('all');
+</script>
+</body>
+</html>

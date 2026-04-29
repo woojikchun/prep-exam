@@ -1,0 +1,398 @@
+
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+.wrap{padding:1rem 0;font-family:var(--font-sans)}
+.tabs{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:1.25rem;border-bottom:0.5px solid var(--color-border-tertiary);padding-bottom:.75rem}
+.tab{padding:5px 14px;border-radius:var(--border-radius-md);border:0.5px solid var(--color-border-tertiary);font-size:13px;cursor:pointer;background:transparent;color:var(--color-text-secondary);transition:all .15s}
+.tab.on{background:var(--color-background-secondary);color:var(--color-text-primary);border-color:var(--color-border-secondary);font-weight:500}
+.panel{display:none}.panel.on{display:block}
+.sec{font-size:12px;font-weight:500;color:var(--color-text-secondary);text-transform:uppercase;letter-spacing:.05em;margin:1.25rem 0 .75rem}
+.sec:first-child{margin-top:0}
+.grid2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin-bottom:1.25rem}
+.grid3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin-bottom:1.25rem}
+.grid4{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin-bottom:1.25rem}
+.card{background:var(--color-background-primary);border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-lg);padding:14px}
+.ct{font-size:13px;font-weight:500;margin-bottom:6px;color:var(--color-text-primary)}
+.cs{font-size:12px;color:var(--color-text-secondary);line-height:1.6}
+.badge{display:inline-block;font-size:11px;padding:2px 8px;border-radius:var(--border-radius-md);margin-bottom:8px}
+.b-blue{background:#E6F1FB;color:#0C447C}
+.b-teal{background:#E1F5EE;color:#085041}
+.b-amber{background:#FAEEDA;color:#633806}
+.b-coral{background:#FAECE7;color:#712B13}
+.b-purple{background:#EEEDFE;color:#3C3489}
+.b-green{background:#EAF3DE;color:#27500A}
+.b-pink{background:#FBEAF0;color:#72243E}
+.b-gray{background:#F1EFE8;color:#444441}
+.tw{border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-lg);overflow:hidden;margin-bottom:1.25rem}
+table{width:100%;border-collapse:collapse;font-size:13px}
+th{background:var(--color-background-secondary);font-weight:500;padding:8px 12px;text-align:left;border-bottom:0.5px solid var(--color-border-tertiary);color:var(--color-text-primary)}
+td{padding:8px 12px;border-bottom:0.5px solid var(--color-border-tertiary);color:var(--color-text-secondary);vertical-align:top;line-height:1.5}
+tr:last-child td{border-bottom:none}
+td:first-child{color:var(--color-text-primary);font-weight:500}
+.tip{border-left:3px solid #1D9E75;border-radius:0 var(--border-radius-md) var(--border-radius-md) 0;padding:10px 14px;font-size:13px;margin-bottom:1rem;line-height:1.6;background:var(--color-background-secondary)}
+.warn{border-left:3px solid #BA7517;border-radius:0 var(--border-radius-md) var(--border-radius-md) 0;padding:10px 14px;font-size:13px;margin-bottom:1rem;line-height:1.6;background:var(--color-background-secondary)}
+.one{background:var(--color-background-secondary);border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-lg);padding:12px 16px;font-size:13px;margin-top:1rem}
+.one span{color:var(--color-text-secondary);font-size:12px;display:block;margin-bottom:4px}
+.fm{background:var(--color-background-secondary);border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-md);padding:9px 14px;font-size:13px;font-family:var(--font-mono);margin-bottom:8px;color:var(--color-text-primary);line-height:1.6}
+.qa-item{border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-lg);margin-bottom:8px;overflow:hidden}
+.qa-q{padding:11px 14px;font-size:13px;cursor:pointer;font-weight:500;display:flex;justify-content:space-between;align-items:center;background:var(--color-background-primary);color:var(--color-text-primary)}
+.qa-a{display:none;padding:10px 14px;font-size:13px;color:var(--color-text-secondary);border-top:0.5px solid var(--color-border-tertiary);line-height:1.65;background:var(--color-background-secondary)}
+.qa-a.open{display:block}
+.icon{font-size:12px;color:var(--color-text-tertiary)}
+.bathtub{width:100%;margin-bottom:1.25rem}
+.chain{display:flex;align-items:stretch;gap:0;margin-bottom:1.25rem;border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-lg);overflow:hidden}
+.chi{flex:1;padding:12px 8px;text-align:center;border-right:0.5px solid var(--color-border-tertiary)}
+.chi:last-child{border-right:none}
+.chl{font-size:11px;color:var(--color-text-secondary);margin-bottom:4px}
+.chv{font-size:12px;font-weight:500;color:var(--color-text-primary)}
+.arr{display:flex;align-items:center;justify-content:center;font-size:16px;color:var(--color-text-tertiary);padding:0 2px;align-self:center;flex-shrink:0}
+.rbd-wrap{display:flex;align-items:center;gap:8px;padding:16px;background:var(--color-background-secondary);border-radius:var(--border-radius-lg);margin-bottom:1.25rem;flex-wrap:wrap}
+.rbd-block{background:var(--color-background-primary);border:0.5px solid var(--color-border-secondary);border-radius:var(--border-radius-md);padding:6px 14px;font-size:12px;font-weight:500;white-space:nowrap}
+.rbd-line{height:1px;flex:1;background:var(--color-border-secondary);min-width:12px}
+.rbd-bracket{display:flex;flex-direction:column;gap:6px;flex:1}
+.rbd-branch{display:flex;align-items:center;gap:6px}
+</style>
+
+<div class="wrap">
+<div class="tabs">
+  <button class="tab on" onclick="sw(0)">기본 개념</button>
+  <button class="tab" onclick="sw(1)">신뢰도 함수</button>
+  <button class="tab" onclick="sw(2)">분포 모델</button>
+  <button class="tab" onclick="sw(3)">시스템 구성</button>
+  <button class="tab" onclick="sw(4)">분석 기법</button>
+  <button class="tab" onclick="sw(5)">유지보수성·가용성</button>
+  <button class="tab" onclick="sw(6)">기출 Q&A</button>
+</div>
+
+<!-- 탭 0 기본 개념 -->
+<div class="panel on" id="p0">
+  <p class="sec">신뢰성 공학 정의 및 범위</p>
+  <div class="card" style="margin-bottom:1.25rem">
+    <div class="cs" style="font-size:13px;line-height:1.75">
+      신뢰성 공학(Reliability Engineering)은 시스템·부품이 <b style="color:var(--color-text-primary)">규정된 조건에서 의도된 기능을 규정 기간 동안 수행할 확률</b>을 분석·설계·개선하는 학문.<br>
+      핵심 목표: 고장을 예방하고, 발생 시 영향을 최소화하며, 생애주기 비용을 최적화.
+    </div>
+  </div>
+
+  <p class="sec">핵심 용어 체계</p>
+  <div class="tw">
+    <table>
+      <tr><th>용어</th><th>정의</th><th>단위/비고</th></tr>
+      <tr><td>신뢰도 R(t)</td><td>시간 t까지 고장 없이 동작할 확률</td><td>0~1, 단조 감소</td></tr>
+      <tr><td>고장률 λ(t)</td><td>단위 시간당 고장 발생 비율 (순간 고장률)</td><td>FIT, %/1000h</td></tr>
+      <tr><td>MTBF</td><td>평균 고장 간격 (수리 가능 시스템)</td><td>= 1/λ (CFR 구간)</td></tr>
+      <tr><td>MTTF</td><td>평균 고장 시간 (비수리 시스템)</td><td>첫 고장까지 평균</td></tr>
+      <tr><td>MTTR</td><td>평균 수리 시간</td><td>복구 능력 지표</td></tr>
+      <tr><td>가용성 A</td><td>임의 시점에 정상 동작 확률</td><td>MTBF/(MTBF+MTTR)</td></tr>
+      <tr><td>위험률 h(t)</td><td>t까지 생존한 조건에서 순간 고장률 (Hazard Rate)</td><td>= f(t)/R(t)</td></tr>
+    </table>
+  </div>
+
+  <p class="sec">욕조 곡선 (Bathtub Curve)</p>
+  <svg class="bathtub" viewBox="0 0 520 160" xmlns="http://www.w3.org/2000/svg">
+    <rect x="0" y="0" width="520" height="160" fill="none"/>
+    <line x1="40" y1="140" x2="500" y2="140" stroke="var(--color-border-secondary)" stroke-width="0.5"/>
+    <line x1="40" y1="10" x2="40" y2="145" stroke="var(--color-border-secondary)" stroke-width="0.5"/>
+    <text x="270" y="155" text-anchor="middle" font-size="11" fill="var(--color-text-secondary)">시간 (t)</text>
+    <text x="18" y="80" text-anchor="middle" font-size="11" fill="var(--color-text-secondary)" transform="rotate(-90,18,80)">고장률 λ(t)</text>
+    <path d="M50,30 Q80,120 140,120 L300,120 Q360,120 470,25" fill="none" stroke="#378ADD" stroke-width="2.5" stroke-linecap="round"/>
+    <line x1="140" y1="20" x2="140" y2="140" stroke="var(--color-border-tertiary)" stroke-width="0.8" stroke-dasharray="4,3"/>
+    <line x1="300" y1="20" x2="300" y2="140" stroke="var(--color-border-tertiary)" stroke-width="0.8" stroke-dasharray="4,3"/>
+    <text x="90" y="16" text-anchor="middle" font-size="11" font-weight="500" fill="#0C447C">유아 사망기</text>
+    <text x="90" y="27" text-anchor="middle" font-size="10" fill="#378ADD">DFR (감소)</text>
+    <text x="220" y="16" text-anchor="middle" font-size="11" font-weight="500" fill="#085041">정상 운영기</text>
+    <text x="220" y="27" text-anchor="middle" font-size="10" fill="#1D9E75">CFR (일정)</text>
+    <text x="390" y="16" text-anchor="middle" font-size="11" font-weight="500" fill="#712B13">노화기</text>
+    <text x="390" y="27" text-anchor="middle" font-size="10" fill="#D85A30">IFR (증가)</text>
+    <text x="90" y="100" text-anchor="middle" font-size="10" fill="var(--color-text-secondary)">번인 테스트</text>
+    <text x="90" y="112" text-anchor="middle" font-size="10" fill="var(--color-text-secondary)">초기 선별로 제거</text>
+    <text x="220" y="108" text-anchor="middle" font-size="10" fill="var(--color-text-secondary)">지수분포 적용</text>
+    <text x="220" y="120" text-anchor="middle" font-size="10" fill="var(--color-text-secondary)">MTBF로 예측</text>
+    <text x="390" y="100" text-anchor="middle" font-size="10" fill="var(--color-text-secondary)">예방 교체</text>
+    <text x="390" y="112" text-anchor="middle" font-size="10" fill="var(--color-text-secondary)">Weibull β>1</text>
+  </svg>
+
+  <div class="tip">정상 운영기(CFR)에서 λ가 일정 → 지수분포 적용, <b>메모리리스(Memoryless) 특성</b> 성립. 즉, 과거 사용 이력이 남은 수명에 영향을 주지 않음. 감리사 단골 문제</div>
+  <div class="one"><span>한 줄 암기</span>욕조 3구간: 초기 DFR(번인 제거) → 중기 CFR(지수·메모리리스·MTBF) → 말기 IFR(Weibull β>1·교체)</div>
+</div>
+
+<!-- 탭 1 신뢰도 함수 -->
+<div class="panel" id="p1">
+  <p class="sec">신뢰도 관련 4대 함수 관계</p>
+  <div class="tw">
+    <table>
+      <tr><th>함수</th><th>기호</th><th>정의·공식</th><th>특징</th></tr>
+      <tr><td>신뢰도 함수</td><td>R(t)</td><td>P(T > t) — t까지 고장 없을 확률</td><td>R(0)=1, R(∞)=0, 단조감소</td></tr>
+      <tr><td>불신뢰도 함수</td><td>F(t)</td><td>1 - R(t) — 누적 고장 확률 (CDF)</td><td>F(0)=0, F(∞)=1, 단조증가</td></tr>
+      <tr><td>고장 밀도 함수</td><td>f(t)</td><td>dF(t)/dt = -dR(t)/dt</td><td>확률밀도. 면적=1</td></tr>
+      <tr><td>위험률 함수</td><td>h(t)</td><td>f(t)/R(t) — 조건부 순간 고장률</td><td>Hazard Rate = λ(t)</td></tr>
+    </table>
+  </div>
+
+  <p class="sec">핵심 공식 정리</p>
+  <div class="fm">R(t) = 1 - F(t) = e^(-λt)  &nbsp;← 지수분포(CFR 구간)</div>
+  <div class="fm">h(t) = f(t) / R(t) = λ  &nbsp;← CFR에서 위험률 = 고장률(상수)</div>
+  <div class="fm">MTTF = ∫₀^∞ R(t) dt = 1/λ  &nbsp;← 지수분포일 때</div>
+  <div class="fm">R(t) = e^(-t/MTTF) = e^(-λt)</div>
+
+  <p class="sec">메모리리스(Memoryless) 특성</p>
+  <div class="card" style="margin-bottom:1.25rem">
+    <div class="cs" style="font-size:13px;line-height:1.75">
+      지수분포의 핵심 성질: <b style="color:var(--color-text-primary)">P(T > s+t | T > s) = P(T > t)</b><br>
+      → 이미 s 시간 동작했어도 앞으로 남은 수명 분포가 처음과 동일.<br>
+      → 시스템의 "나이(age)"가 고장률에 영향 없음. CFR 구간에서만 성립.
+    </div>
+  </div>
+
+  <p class="sec">신뢰도 vs 가용성 수치 예시</p>
+  <div class="tw">
+    <table>
+      <tr><th>시나리오</th><th>MTBF</th><th>MTTR</th><th>가용성</th><th>해석</th></tr>
+      <tr><td>고신뢰·고가용</td><td>1000h</td><td>1h</td><td>99.9%</td><td>이상적 시스템</td></tr>
+      <tr><td>저신뢰·고가용</td><td>10h</td><td>0.01h</td><td>99.9%</td><td>자주 깨지나 즉시 복구</td></tr>
+      <tr><td>고신뢰·저가용</td><td>1000h</td><td>100h</td><td>90.9%</td><td>드물게 깨지나 복구 오래 걸림</td></tr>
+    </table>
+  </div>
+  <div class="warn">저신뢰·고가용 사례: 가용성은 같아도 신뢰성이 다름. 감리 시 단순 가용성만으로 시스템 품질을 평가하면 안 됨</div>
+  <div class="one"><span>한 줄 암기</span>R(t)=e^(-λt), h(t)=λ(상수), MTTF=1/λ — 지수분포에서 위험률=고장률=상수 → 메모리리스</div>
+</div>
+
+<!-- 탭 2 분포 모델 -->
+<div class="panel" id="p2">
+  <p class="sec">신뢰성 분석에 사용하는 주요 확률분포</p>
+  <div class="tw">
+    <table>
+      <tr><th>분포</th><th>모수</th><th>특징</th><th>적용 구간</th></tr>
+      <tr><td>지수분포 (Exponential)</td><td>λ (고장률)</td><td>메모리리스, h(t)=λ(상수), 가장 단순</td><td>CFR — 정상 운영기</td></tr>
+      <tr><td>와이블 분포 (Weibull)</td><td>β(형상), η(척도)</td><td>β<1: DFR, β=1: CFR(지수), β>1: IFR. 가장 범용적</td><td>전 구간 모델링</td></tr>
+      <tr><td>정규분포 (Normal)</td><td>μ, σ</td><td>대칭, 마모·피로 현상 모델. h(t) 단조 증가</td><td>IFR — 노화기</td></tr>
+      <tr><td>대수정규분포 (Log-normal)</td><td>μ_ln, σ_ln</td><td>수리 시간, 피로 수명 모델. 초기엔 h(t) 증가 후 감소</td><td>DFR/IFR 혼합</td></tr>
+      <tr><td>감마분포 (Gamma)</td><td>k(형상), λ</td><td>k개 고장 후 실패하는 시스템. 지수분포 일반화</td><td>대기·수리 시간</td></tr>
+      <tr><td>포아송분포 (Poisson)</td><td>λ</td><td>단위 시간당 고장 횟수 이산 모델</td><td>고장 횟수 분석</td></tr>
+    </table>
+  </div>
+
+  <p class="sec">와이블 분포 — 형상 모수 β의 의미</p>
+  <div class="grid3">
+    <div class="card">
+      <span class="badge b-coral">β < 1</span>
+      <div class="ct">DFR — 고장률 감소</div>
+      <div class="cs">유아 사망기. 초기 결함이 점차 제거됨. 번인 테스트로 대응</div>
+    </div>
+    <div class="card">
+      <span class="badge b-teal">β = 1</span>
+      <div class="ct">CFR — 고장률 일정</div>
+      <div class="cs">지수분포와 동일. 정상 운영기. 메모리리스 특성</div>
+    </div>
+    <div class="card">
+      <span class="badge b-blue">β > 1</span>
+      <div class="ct">IFR — 고장률 증가</div>
+      <div class="cs">노화·마모기. β=2는 레일리분포. 예방 교체 필요</div>
+    </div>
+  </div>
+
+  <p class="sec">와이블 핵심 공식</p>
+  <div class="fm">R(t) = exp[-(t/η)^β]  &nbsp;← η: 특성 수명 (R(η)≈0.368)</div>
+  <div class="fm">h(t) = (β/η)(t/η)^(β-1)  &nbsp;← β=1이면 h(t)=1/η=λ (지수분포)</div>
+  <div class="fm">MTTF = η · Γ(1 + 1/β)  &nbsp;← Γ: 감마함수</div>
+
+  <div class="tip">와이블 분포는 β 하나로 욕조 곡선 전 구간을 표현할 수 있는 가장 범용적인 신뢰성 분포. 감리사 시험에서 β 값의 의미를 묻는 문제 빈출</div>
+  <div class="one"><span>한 줄 암기</span>와이블 β: β<1→DFR(유아), β=1→CFR(지수·메모리리스), β>1→IFR(노화) — β가 욕조를 결정</div>
+</div>
+
+<!-- 탭 3 시스템 구성 -->
+<div class="panel" id="p3">
+  <p class="sec">직렬 시스템 (Series System)</p>
+  <div class="rbd-wrap">
+    <div class="rbd-block">입력</div>
+    <div class="rbd-line"></div>
+    <div class="rbd-block">R₁</div>
+    <div class="rbd-line"></div>
+    <div class="rbd-block">R₂</div>
+    <div class="rbd-line"></div>
+    <div class="rbd-block">R₃</div>
+    <div class="rbd-line"></div>
+    <div class="rbd-block">출력</div>
+  </div>
+  <div class="fm">Rs = R₁ × R₂ × R₃ × ... × Rn</div>
+  <div class="fm">λs = λ₁ + λ₂ + ... + λn  (지수분포·CFR)</div>
+  <div class="cs" style="margin-bottom:1.25rem">모든 구성요소가 정상이어야 시스템 정상. 요소 추가 시 신뢰도 감소. 약한 고리(Weak Link) 원칙.</div>
+
+  <p class="sec">병렬 시스템 (Parallel System — 능동 이중화)</p>
+  <div class="rbd-wrap">
+    <div class="rbd-block">입력</div>
+    <div class="rbd-line" style="max-width:20px"></div>
+    <div class="rbd-bracket">
+      <div class="rbd-branch"><div class="rbd-line" style="max-width:20px"></div><div class="rbd-block">R₁</div><div class="rbd-line" style="max-width:20px"></div></div>
+      <div class="rbd-branch"><div class="rbd-line" style="max-width:20px"></div><div class="rbd-block">R₂</div><div class="rbd-line" style="max-width:20px"></div></div>
+    </div>
+    <div class="rbd-line" style="max-width:20px"></div>
+    <div class="rbd-block">출력</div>
+  </div>
+  <div class="fm">Rp = 1 - (1-R₁)(1-R₂)...(1-Rn)</div>
+  <div class="cs" style="margin-bottom:1.25rem">모든 요소가 동시에 실패해야 시스템 장애. 요소 추가 시 신뢰도 증가. 수동 대기(Standby) 방식도 있음.</div>
+
+  <p class="sec">이중화 유형 비교</p>
+  <div class="tw">
+    <table>
+      <tr><th>유형</th><th>설명</th><th>전환 방식</th><th>신뢰도</th></tr>
+      <tr><td>능동(Active) 이중화</td><td>모든 요소가 동시 동작. 병렬 시스템</td><td>즉시 자동 전환</td><td>가장 높음</td></tr>
+      <tr><td>대기(Standby) 이중화</td><td>주 시스템 장애 시 예비 활성화</td><td>감지 후 전환</td><td>중간</td></tr>
+      <tr><td>Hot Standby</td><td>예비 시스템 전원 켜진 상태로 대기</td><td>수초 이내</td><td>높음</td></tr>
+      <tr><td>Warm Standby</td><td>예비 시스템 절전 상태 대기</td><td>수분 이내</td><td>중간</td></tr>
+      <tr><td>Cold Standby</td><td>예비 시스템 전원 꺼진 상태</td><td>수십 분</td><td>낮음</td></tr>
+      <tr><td>k-out-of-n 시스템</td><td>n개 중 k개 이상 정상이면 동작</td><td>투표(Voting)</td><td>조정 가능</td></tr>
+    </table>
+  </div>
+
+  <p class="sec">수치 예시 — 병렬 효과</p>
+  <div class="tw">
+    <table>
+      <tr><th>구성</th><th>계산</th><th>결과</th></tr>
+      <tr><td>단일 R=0.9</td><td>0.9</td><td>0.9000</td></tr>
+      <tr><td>직렬 2개 R=0.9</td><td>0.9 × 0.9</td><td>0.8100</td></tr>
+      <tr><td>병렬 2개 R=0.9</td><td>1-(0.1×0.1)</td><td>0.9900</td></tr>
+      <tr><td>병렬 3개 R=0.9</td><td>1-(0.1³)</td><td>0.9990</td></tr>
+    </table>
+  </div>
+  <div class="one"><span>한 줄 암기</span>직렬: Rs=R₁×R₂(약한 고리), 병렬: Rp=1-(1-R₁)(1-R₂)(이중화로 증가). 직렬은 곱, 병렬은 보완</div>
+</div>
+
+<!-- 탭 4 분석 기법 -->
+<div class="panel" id="p4">
+  <p class="sec">신뢰성 분석 기법 비교</p>
+  <div class="tw">
+    <table>
+      <tr><th>기법</th><th>방향</th><th>특징</th><th>주요 용도</th></tr>
+      <tr><td>FMEA</td><td>Bottom-Up</td><td>구성요소별 고장 유형→영향 분석. RPN 산출</td><td>설계 검토, 제조</td></tr>
+      <tr><td>FMECA</td><td>Bottom-Up</td><td>FMEA + 치명도(Criticality) 분석 추가</td><td>항공·방산</td></tr>
+      <tr><td>FTA</td><td>Top-Down</td><td>최상위 장애를 AND/OR로 분해. 최소 컷셋 도출</td><td>안전 분석</td></tr>
+      <tr><td>ETA</td><td>Forward</td><td>초기 사건에서 결과 시나리오 도출. 이벤트 트리</td><td>사고 시나리오</td></tr>
+      <tr><td>RBD</td><td>구조적</td><td>신뢰도 블록 다이어그램. 직렬·병렬 구조 시각화</td><td>시스템 신뢰도 계산</td></tr>
+      <tr><td>HAZOP</td><td>귀납적</td><td>이탈어(Guide Word) 사용해 위험 시나리오 도출</td><td>화학·프로세스</td></tr>
+      <tr><td>마르코프 분석</td><td>상태 기반</td><td>상태 전이 확률 행렬로 가용성·신뢰도 계산</td><td>수리 시스템</td></tr>
+    </table>
+  </div>
+
+  <p class="sec">FMEA — RPN 계산</p>
+  <div class="fm">RPN (위험우선순위) = S(심각도) × O(발생도) × D(검출도)</div>
+  <div class="tw">
+    <table>
+      <tr><th>인자</th><th>범위</th><th>설명</th></tr>
+      <tr><td>S (Severity)</td><td>1~10</td><td>고장이 발생했을 때 영향의 심각도</td></tr>
+      <tr><td>O (Occurrence)</td><td>1~10</td><td>고장 발생 빈도·가능성</td></tr>
+      <tr><td>D (Detection)</td><td>1~10</td><td>고장을 사전 검출할 수 없는 정도 (높을수록 검출 어려움)</td></tr>
+      <tr><td>RPN</td><td>1~1000</td><td>RPN ≥ 100 또는 S=9~10이면 우선 개선 필요</td></tr>
+    </table>
+  </div>
+
+  <p class="sec">FTA — 핵심 개념</p>
+  <div class="grid2">
+    <div class="card">
+      <span class="badge b-purple">게이트(Gate) 종류</span>
+      <div class="cs" style="font-size:12px;line-height:1.7">
+        <b style="color:var(--color-text-primary)">AND 게이트</b> — 모든 입력이 발생해야 출력 (직렬 구조)<br>
+        <b style="color:var(--color-text-primary)">OR 게이트</b> — 하나의 입력만 있어도 출력 (병렬 구조)<br>
+        <b style="color:var(--color-text-primary)">NOT 게이트</b> — 입력의 여사건<br>
+        <b style="color:var(--color-text-primary)">Priority AND</b> — 순서가 있는 AND
+      </div>
+    </div>
+    <div class="card">
+      <span class="badge b-blue">최소 컷셋 (Minimal Cut Set)</span>
+      <div class="cs" style="font-size:12px;line-height:1.7">
+        최상위 장애를 유발하는 <b style="color:var(--color-text-primary)">최소한의 기본 사건 집합</b>.<br>
+        컷셋이 작을수록 취약 경로.<br>
+        크기 1인 컷셋 = 단일 장애점(SPOF).<br>
+        SPOF 제거가 최우선 개선 과제.
+      </div>
+    </div>
+  </div>
+
+  <div class="tip">FTA vs FMEA: FTA는 Top-Down(결과→원인), FMEA는 Bottom-Up(원인→결과). 두 기법은 상호 보완적으로 함께 사용하는 것이 이상적</div>
+  <div class="one"><span>한 줄 암기</span>FMEA: Bottom-Up, RPN=S×O×D / FTA: Top-Down, 최소컷셋, SPOF = 크기 1 컷셋</div>
+</div>
+
+<!-- 탭 5 유지보수성·가용성 -->
+<div class="panel" id="p5">
+  <p class="sec">유지보수성 (Maintainability)</p>
+  <div class="tw">
+    <table>
+      <tr><th>개념</th><th>정의·공식</th><th>비고</th></tr>
+      <tr><td>유지보수성 M(t)</td><td>장애 발생 후 시간 t 내 수리 완료 확률</td><td>신뢰도 R(t)와 대칭 개념</td></tr>
+      <tr><td>MTTR</td><td>총 복구시간 / 장애 횟수</td><td>↓ 낮을수록 유지보수성 우수</td></tr>
+      <tr><td>수리율 μ</td><td>μ = 1/MTTR</td><td>λ의 반대 개념</td></tr>
+      <tr><td>M(t) 지수분포</td><td>M(t) = 1 - e^(-μt)</td><td>μ: 수리율</td></tr>
+    </table>
+  </div>
+
+  <p class="sec">가용성 (Availability) 유형</p>
+  <div class="tw">
+    <table>
+      <tr><th>유형</th><th>공식</th><th>포함 범위</th></tr>
+      <tr><td>고유 가용성 (Ai)</td><td>MTBF / (MTBF + MTTR)</td><td>능동 수리 시간만 포함 (이상적)</td></tr>
+      <tr><td>달성 가용성 (Aa)</td><td>MTBM / (MTBM + MMAX)</td><td>예방·사후 보전 모두 포함</td></tr>
+      <tr><td>운용 가용성 (Ao)</td><td>MTBM / (MTBM + MDT)</td><td>대기·물류·행정 지연 포함</td></tr>
+    </table>
+  </div>
+  <div class="cs" style="margin-bottom:1rem;font-size:12px">MTBM: 평균 보전 간격, MMAX: 평균 최대 능동 수리 시간, MDT: 평균 지연 시간(Mean Down Time)</div>
+
+  <p class="sec">RCM (신뢰성 중심 유지보수)</p>
+  <div class="card" style="margin-bottom:1.25rem">
+    <div class="cs" style="font-size:13px;line-height:1.75">
+      <b style="color:var(--color-text-primary)">Reliability Centered Maintenance</b> — 항공기 산업에서 유래. 시스템의 기능·고장 영향을 분석해 최적 유지보수 전략을 결정하는 방법론.
+    </div>
+  </div>
+  <div class="grid4">
+    <div class="card">
+      <span class="badge b-coral">사후 보전 (CM)</span>
+      <div class="cs">고장 발생 후 수리. 비용↓ 가용성↓</div>
+    </div>
+    <div class="card">
+      <span class="badge b-amber">예방 보전 (PM)</span>
+      <div class="cs">정기 교체·점검. 안정적이나 과잉 비용 가능</div>
+    </div>
+    <div class="card">
+      <span class="badge b-teal">예지 보전 (PdM)</span>
+      <div class="cs">상태 모니터링 기반. 센서·AI 활용 최적 개입</div>
+    </div>
+    <div class="card">
+      <span class="badge b-blue">개선 보전 (CBM)</span>
+      <div class="cs">근본 원인 제거해 고장 재발 방지</div>
+    </div>
+  </div>
+
+  <div class="tip">예지 보전(Predictive Maintenance, PdM)은 IoT 센서 + AI 분석으로 고장 직전 개입. 과잉 교체 없애 비용 최적화. 스마트팩토리·클라우드 인프라 감리에서 증가 추세</div>
+  <div class="one"><span>한 줄 암기</span>가용성 3종: 고유(Ai·이상) < 달성(Aa·보전 포함) < 운용(Ao·지연 포함). 보전 전략: 사후→예방→예지→개선 순으로 성숙</div>
+</div>
+
+<!-- 탭 6 기출 Q&A -->
+<div class="panel" id="p6">
+  <p class="sec">기출 예상 Q&A</p>
+
+  <div class="qa-item"><div class="qa-q" onclick="tog(this)">와이블 분포의 형상 모수 β의 의미를 설명하시오 <span class="icon">▾</span></div><div class="qa-a">β는 고장률의 시간적 변화 패턴을 결정. β<1이면 고장률 감소(DFR) — 유아 사망기, 초기 결함 제거 중. β=1이면 고장률 일정(CFR) — 정상 운영기, 지수분포와 동일, 메모리리스 성립. β>1이면 고장률 증가(IFR) — 노화기, 마모·피로 현상. 와이블 분포 하나로 욕조 곡선 전 구간을 표현할 수 있어 신뢰성 분석에서 가장 범용적으로 사용됨.</div></div>
+
+  <div class="qa-item"><div class="qa-q" onclick="tog(this)">지수분포의 메모리리스 특성이란? <span class="icon">▾</span></div><div class="qa-a">P(T > s+t | T > s) = P(T > t) 성질. 이미 s 시간 동안 동작한 시스템의 잔여 수명 분포가, 새 시스템의 수명 분포와 동일함을 의미. 즉, 시스템의 "나이"가 남은 수명에 영향을 주지 않음. CFR(고장률 일정) 구간에서만 성립하며, IFR 구간(노화)에서는 성립하지 않음. 감리사 시험에서 지수분포=메모리리스 연결 문제 빈출.</div></div>
+
+  <div class="qa-item"><div class="qa-q" onclick="tog(this)">FMEA의 RPN 계산 방법과 의미를 설명하시오 <span class="icon">▾</span></div><div class="qa-a">RPN(Risk Priority Number) = S(심각도) × O(발생도) × D(검출도). 각 인자는 1~10 척도. 심각도는 고장 영향의 크기, 발생도는 고장 빈도, 검출도는 고장을 사전에 발견하지 못할 가능성(높을수록 검출 어려움). RPN 최대 1000. 일반적으로 RPN ≥ 100이거나 S가 9~10이면 우선 개선 대상. RPN이 낮아도 S가 극히 높으면 별도 관리 필요.</div></div>
+
+  <div class="qa-item"><div class="qa-q" onclick="tog(this)">FTA에서 최소 컷셋(Minimal Cut Set)의 의미와 중요성은? <span class="icon">▾</span></div><div class="qa-a">최소 컷셋은 최상위 장애(Top Event)를 유발하는 최소한의 기본 사건 집합. 이 집합에서 하나의 사건이라도 제거되면 더 이상 컷셋이 되지 않음. 크기가 1인 최소 컷셋은 단일 장애점(SPOF — Single Point of Failure)을 의미하며, 가장 위험한 취약점. SPOF 제거가 시스템 신뢰성 개선의 최우선 과제임. 감리 시 SPOF 식별 및 이중화 여부 확인 필수.</div></div>
+
+  <div class="qa-item"><div class="qa-q" onclick="tog(this)">직렬 시스템과 병렬 시스템의 신뢰도 계산 차이는? <span class="icon">▾</span></div><div class="qa-a">직렬: Rs = R₁×R₂×...×Rn. 모든 요소가 정상이어야 동작. 요소가 늘수록 신뢰도 감소. 약한 고리 원칙으로 가장 낮은 R이 시스템 신뢰도를 지배. 병렬: Rp = 1-(1-R₁)(1-R₂)...(1-Rn). 모든 요소가 동시 실패해야 시스템 장애. 요소 추가 시 신뢰도 증가. 예: R=0.9인 요소 2개 직렬 → 0.81, 병렬 → 0.99.</div></div>
+
+  <div class="qa-item"><div class="qa-q" onclick="tog(this)">고유 가용성, 달성 가용성, 운용 가용성의 차이는? <span class="icon">▾</span></div><div class="qa-a">고유 가용성(Ai) = MTBF/(MTBF+MTTR). 능동 수리 시간만 고려한 이상적 가용성. 달성 가용성(Aa)은 예방·사후 보전 시간을 포함한 실질 가용성. 운용 가용성(Ao)은 물류·행정 지연 시간(MDT)까지 포함한 현장 실제 가용성. 따라서 Ao ≤ Aa ≤ Ai. 감리에서는 계약·SLA상 명시된 가용성 유형이 무엇인지 확인 필요.</div></div>
+
+  <div class="qa-item"><div class="qa-q" onclick="tog(this)">Hot/Warm/Cold Standby 이중화 유형의 차이는? <span class="icon">▾</span></div><div class="qa-a">Hot Standby: 예비 시스템이 전원 켜진 상태로 실시간 동기화. 장애 시 수초 내 자동 전환. 비용 높음. Warm Standby: 예비 시스템이 절전 상태로 대기. 장애 시 수분 내 전환. 비용·성능 절충. Cold Standby: 예비 시스템이 전원 꺼진 상태. 장애 시 수동 기동 필요, 수십 분 소요. 비용 최소. RTO(복구 시간 목표) 요건에 따라 유형 선택.</div></div>
+</div>
+</div>
+
+<script>
+function sw(i){
+  document.querySelectorAll('.tab').forEach((t,j)=>t.classList.toggle('on',i===j));
+  document.querySelectorAll('.panel').forEach((p,j)=>p.classList.toggle('on',i===j));
+}
+function tog(el){
+  const a=el.nextElementSibling;
+  a.classList.toggle('open');
+  el.querySelector('.icon').textContent=a.classList.contains('open')?'▴':'▾';
+}
+</script>

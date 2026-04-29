@@ -1,0 +1,950 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;900&family=JetBrains+Mono:wght@400;700&display=swap');
+:root{--bg:#040810;--s1:#07101c;--s2:#0b1628;--s3:#101e32;--bdr:#1e3562;--a1:#60a5fa;--a2:#34d399;--a3:#fbbf24;--a4:#f87171;--a5:#a78bfa;--a6:#fb923c;--a7:#f472b6;--a8:#38bdf8;--txt:#e2e8f0;--mu:#64748b;}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Noto Sans KR',sans-serif;background:var(--bg);color:var(--txt);min-height:100vh;}
+.hdr{padding:20px 24px 14px;background:linear-gradient(150deg,#040810,#091322,#040810);border-bottom:1px solid var(--bdr);}
+.hdr-r{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:6px;}
+.pill{padding:3px 10px;border-radius:20px;font-size:10px;font-weight:700;}
+.p1{background:linear-gradient(135deg,#1e3a8a,var(--a1));color:#fff;}
+.p2{background:rgba(52,211,153,.15);color:var(--a2);border:1px solid rgba(52,211,153,.3);}
+.p3{background:rgba(251,191,36,.15);color:var(--a3);border:1px solid rgba(251,191,36,.3);}
+.p4{background:rgba(244,114,182,.15);color:var(--a7);border:1px solid rgba(244,114,182,.3);}
+h1{font-size:18px;font-weight:900;}
+.h1g{background:linear-gradient(90deg,var(--a1),var(--a5),var(--a2),var(--a3),var(--a7));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.hdr p{color:var(--mu);font-size:11.5px;margin-top:3px;}
+.tabs{display:flex;padding:0 24px;background:var(--s1);border-bottom:1px solid var(--bdr);overflow-x:auto;scrollbar-width:none;}
+.tabs::-webkit-scrollbar{display:none;}
+.tab{padding:10px 13px;font-size:11.5px;font-weight:600;color:var(--mu);cursor:pointer;border-bottom:2px solid transparent;white-space:nowrap;transition:all .2s;background:none;border-top:none;border-left:none;border-right:none;font-family:'Noto Sans KR',sans-serif;}
+.tab.on{color:var(--a1);border-bottom-color:var(--a1);}
+.wrap{padding:18px 24px;max-width:960px;margin:0 auto;}
+.pnl{display:none;}.pnl.on{display:block;}
+.card{background:var(--s1);border:1px solid var(--bdr);border-radius:11px;padding:16px;margin-bottom:12px;}
+.card-h{display:flex;align-items:center;gap:9px;margin-bottom:11px;}
+.ico{width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0;}
+.ib{background:rgba(96,165,250,.15);}.ig{background:rgba(52,211,153,.15);}.iy{background:rgba(251,191,36,.15);}.ir{background:rgba(248,113,113,.15);}.ip{background:rgba(167,139,250,.15);}.io{background:rgba(251,146,60,.15);}.im{background:rgba(244,114,182,.15);}.ic{background:rgba(56,189,248,.15);}
+.card h3{font-size:13.5px;font-weight:700;}
+.tag{display:inline-block;padding:2px 7px;border-radius:4px;font-size:9.5px;font-weight:600;margin:2px 2px 2px 0;}
+.tb{background:rgba(96,165,250,.12);color:var(--a1);border:1px solid rgba(96,165,250,.25);}
+.tg{background:rgba(52,211,153,.12);color:var(--a2);border:1px solid rgba(52,211,153,.25);}
+.ty{background:rgba(251,191,36,.12);color:var(--a3);border:1px solid rgba(251,191,36,.25);}
+.tr{background:rgba(248,113,113,.12);color:var(--a4);border:1px solid rgba(248,113,113,.25);}
+.tp{background:rgba(167,139,250,.12);color:var(--a5);border:1px solid rgba(167,139,250,.25);}
+.to{background:rgba(251,146,60,.12);color:var(--a6);border:1px solid rgba(251,146,60,.25);}
+.tm{background:rgba(244,114,182,.12);color:var(--a7);border:1px solid rgba(244,114,182,.25);}
+.tc{background:rgba(56,189,248,.12);color:var(--a8);border:1px solid rgba(56,189,248,.25);}
+table{width:100%;border-collapse:collapse;font-size:12px;}
+th{background:var(--s2);color:var(--mu);font-weight:700;padding:7px 10px;text-align:left;font-size:9.5px;text-transform:uppercase;letter-spacing:.5px;border-bottom:1px solid var(--bdr);}
+td{padding:7px 10px;border-bottom:1px solid rgba(30,53,98,.5);vertical-align:top;line-height:1.55;}
+tr:last-child td{border-bottom:none;}
+tr:hover td{background:rgba(255,255,255,.02);}
+td strong{color:var(--a3);}
+ul.il{list-style:none;display:flex;flex-direction:column;gap:5px;}
+ul.il li{font-size:12px;padding-left:15px;position:relative;line-height:1.5;}
+ul.il li::before{content:'▸';position:absolute;left:0;color:var(--a1);font-size:9.5px;top:3px;}
+ul.il li strong{color:var(--a3);}
+ul.il li em{color:var(--a2);font-style:normal;}
+.memo{background:linear-gradient(135deg,rgba(96,165,250,.07),rgba(52,211,153,.07));border:1px solid rgba(96,165,250,.22);border-left:3px solid var(--a1);border-radius:7px;padding:9px 13px;font-size:12px;font-weight:600;color:var(--a1);margin:9px 0;}
+.memo::before{content:'🎯 핵심 암기 │ ';color:var(--mu);font-weight:400;}
+.warn{background:rgba(248,113,113,.07);border:1px solid rgba(248,113,113,.25);border-left:3px solid var(--a4);border-radius:7px;padding:9px 13px;font-size:12px;font-weight:600;color:var(--a4);margin:9px 0;}
+.warn::before{content:'⚠️ 함정 포인트 │ ';color:var(--mu);font-weight:400;}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px;}
+@media(max-width:580px){.g2{grid-template-columns:1fr;}}
+.code{background:var(--s2);border:1px solid rgba(96,165,250,.18);border-radius:7px;padding:10px 13px;font-family:'JetBrains Mono',monospace;font-size:10px;margin:7px 0;line-height:1.8;overflow-x:auto;}
+.code .cm{color:var(--mu);}.code .kw{color:var(--a1);}.code .cls{color:var(--a3);}.code .g{color:var(--a2);}.code .bad{color:var(--a4);}
+.acc{background:var(--s2);border:1px solid var(--bdr);border-radius:9px;margin-bottom:8px;overflow:hidden;}
+.acc-h{display:flex;justify-content:space-between;align-items:center;padding:10px 14px;cursor:pointer;user-select:none;}
+.acc-h:hover{background:rgba(255,255,255,.02);}
+.acc-title{font-size:12.5px;font-weight:800;flex:1;}
+.acc-tgl{color:var(--mu);transition:transform .2s;font-size:14px;flex-shrink:0;margin-left:8px;}
+.acc.open .acc-tgl{transform:rotate(180deg);}
+.acc-body{display:none;border-top:1px solid var(--bdr);padding:12px 14px;background:var(--s3);font-size:12px;line-height:1.65;}
+.acc.open .acc-body{display:block;}
+.acc-body strong{color:var(--a3);}
+.acc-body em{color:var(--a2);font-style:normal;}
+.qa{background:var(--s1);border:1px solid var(--bdr);border-radius:9px;margin-bottom:10px;overflow:hidden;}
+.qa:hover{border-color:rgba(96,165,250,.25);}
+.qa-hd{padding:12px 16px;cursor:pointer;display:flex;justify-content:space-between;align-items:flex-start;gap:9px;user-select:none;}
+.qa-meta{display:flex;align-items:center;gap:5px;margin-bottom:4px;flex-wrap:wrap;}
+.qn{font-family:'JetBrains Mono',monospace;font-size:9.5px;font-weight:700;color:var(--mu);}
+.qq{font-size:12.5px;font-weight:600;line-height:1.5;}
+.tgl{color:var(--mu);font-size:15px;flex-shrink:0;transition:transform .2s;}
+.qa.open .tgl{transform:rotate(180deg);}
+.qa-bd{display:none;border-top:1px solid var(--bdr);padding:12px 16px;background:var(--s2);}
+.qa.open .qa-bd{display:block;}
+.chs{display:flex;flex-direction:column;gap:6px;margin-bottom:10px;}
+.ch{display:flex;align-items:flex-start;gap:9px;padding:8px 12px;border-radius:6px;border:1px solid var(--bdr);font-size:12px;cursor:pointer;background:var(--s1);line-height:1.45;transition:all .15s;}
+.ch:hover:not(.lk){border-color:rgba(96,165,250,.3);background:rgba(96,165,250,.04);}
+.ch.ok{border-color:var(--a2);background:rgba(52,211,153,.1);color:var(--a2);}
+.ch.ng{border-color:var(--a4);background:rgba(248,113,113,.08);color:var(--a4);opacity:.7;}
+.ch.lk{cursor:default;}
+.cnum{font-family:'JetBrains Mono',monospace;font-weight:700;font-size:10.5px;flex-shrink:0;margin-top:1px;color:var(--mu);}
+.ch.ok .cnum{color:var(--a2);}.ch.ng .cnum{color:var(--a4);}
+.exp{background:rgba(96,165,250,.05);border:1px solid rgba(96,165,250,.18);border-radius:7px;padding:11px 13px;font-size:12px;line-height:1.6;display:none;}
+.exp.show{display:block;}
+.exp-t{font-size:9.5px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--a1);margin-bottom:5px;}
+.exp strong{color:var(--a3);}
+.exp em{color:var(--a2);font-style:normal;}
+.ox-wr{display:flex;gap:8px;margin-bottom:10px;}
+.ox{flex:1;padding:10px;border-radius:7px;border:1px solid var(--bdr);font-size:18px;cursor:pointer;background:var(--s1);transition:all .15s;font-family:'Noto Sans KR',sans-serif;color:var(--txt);}
+.ox:hover:not(.lk){transform:scale(1.02);}
+.ox.so{border-color:var(--a2);background:rgba(52,211,153,.15);}
+.ox.sx{border-color:var(--a4);background:rgba(248,113,113,.1);}
+.ox.lk{cursor:default;}
+.diff{display:inline-block;padding:2px 6px;border-radius:9px;font-size:8.5px;font-weight:700;}
+.easy{background:rgba(52,211,153,.2);color:var(--a2);}
+.mid{background:rgba(251,191,36,.2);color:var(--a3);}
+.hard{background:rgba(248,113,113,.2);color:var(--a4);}
+.fb-wr{display:flex;gap:5px;flex-wrap:wrap;margin-bottom:12px;}
+.fb{padding:4px 11px;border-radius:18px;border:1px solid var(--bdr);font-size:10.5px;font-weight:600;cursor:pointer;background:var(--s2);color:var(--mu);transition:all .15s;font-family:'Noto Sans KR',sans-serif;}
+.fb.on{background:rgba(96,165,250,.15);color:var(--a1);border-color:var(--a1);}
+.sc-b{background:var(--s2);border:1px solid var(--bdr);border-radius:7px;padding:4px 12px;font-size:11.5px;color:var(--mu);}
+.sc-b span{color:var(--a1);font-weight:700;}
+/* DDD 블록 카드 */
+.ddd-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(175px,1fr));gap:7px;margin:8px 0;}
+.ddd-card{background:var(--s2);border-radius:8px;padding:10px 12px;}
+.ddd-name{font-size:12px;font-weight:800;margin-bottom:3px;}
+.ddd-en{font-family:'JetBrains Mono',monospace;font-size:8.5px;color:var(--mu);margin-bottom:4px;}
+.ddd-desc{font-size:10.5px;color:var(--txt);line-height:1.5;}
+/* Reactive 원칙 카드 */
+.react-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:10px 0;}
+.react-card{border-radius:9px;padding:12px;border:2px solid;}
+</style>
+</head>
+<body>
+<div class="hdr">
+  <div class="hdr-r">
+    <span class="pill p1">SW Architecture Pattern</span>
+    <span class="pill p2">계층형·MVC·MSA·EDA·헥사고날·CQRS</span>
+    <span class="pill p3">★NEW DDD·Reactive·공간기반</span>
+    <span class="pill p4">감리사 핵심 출제</span>
+  </div>
+  <h1><span class="h1g">SW 아키텍처 패턴 완전 정리 (DDD·Reactive·공간 기반 추가)</span></h1>
+  <p>계층형 · MVC · MSA · SOA · EDA · 파이프&필터 · 헥사고날 · 클린 · CQRS · 이벤트소싱 · DDD · Reactive · 공간 기반</p>
+</div>
+<div class="tabs">
+  <button class="tab on" data-p="p1">📋 개요·전체 지도</button>
+  <button class="tab" data-p="p2">🏛️ 계층형·MVC 계열</button>
+  <button class="tab" data-p="p3">🔬 MSA·SOA·EDA</button>
+  <button class="tab" data-p="p4">🔷 헥사고날·클린·CQRS·ES</button>
+  <button class="tab" data-p="p5">🏰 DDD ★NEW</button>
+  <button class="tab" data-p="p6">⚡ Reactive·공간 기반 ★NEW</button>
+  <button class="tab" data-p="p7">⚖️ 비교·선택·감리</button>
+  <button class="tab" data-p="p8">❓ 예상문제</button>
+</div>
+<div class="wrap">
+
+<!-- P1: 전체 지도 -->
+<div class="pnl on" id="p1">
+  <div class="card">
+    <div class="card-h"><div class="ico ib">📋</div><h3>SW 아키텍처 패턴 전체 지도 (13종) ⭐</h3></div>
+    <svg viewBox="0 0 720 390" xmlns="http://www.w3.org/2000/svg" style="width:100%;background:var(--s2);border-radius:9px;border:1px solid var(--bdr);margin:8px 0;">
+      <!-- 기존 패턴 -->
+      <rect x="5" y="5" width="340" height="250" fill="rgba(96,165,250,.04)" stroke="#60a5fa" stroke-width="1.5" rx="6"/>
+      <text x="172" y="22" text-anchor="middle" font-size="10" fill="#60a5fa" font-weight="bold" font-family="Noto Sans KR">🏛️ 구조·분해 패턴</text>
+      <!-- 계층형 -->
+      <rect x="12" y="30" width="155" height="34" fill="rgba(96,165,250,.12)" stroke="#60a5fa" stroke-width="1" rx="4"/>
+      <text x="89" y="46" text-anchor="middle" font-size="10" fill="#60a5fa" font-weight="bold" font-family="Noto Sans KR">① 계층형 (Layered)</text>
+      <text x="89" y="59" text-anchor="middle" font-size="8" fill="#64748b" font-family="JetBrains Mono">단방향의존·SinkHole</text>
+      <!-- MVC -->
+      <rect x="177" y="30" width="160" height="34" fill="rgba(96,165,250,.12)" stroke="#60a5fa" stroke-width="1" rx="4"/>
+      <text x="257" y="46" text-anchor="middle" font-size="10" fill="#60a5fa" font-weight="bold" font-family="Noto Sans KR">② MVC/MVP/MVVM</text>
+      <text x="257" y="59" text-anchor="middle" font-size="8" fill="#64748b" font-family="JetBrains Mono">관심사분리·UI패턴</text>
+      <!-- MSA -->
+      <rect x="12" y="72" width="155" height="34" fill="rgba(52,211,153,.12)" stroke="#34d399" stroke-width="1" rx="4"/>
+      <text x="89" y="88" text-anchor="middle" font-size="10" fill="#34d399" font-weight="bold" font-family="Noto Sans KR">③ MSA</text>
+      <text x="89" y="101" text-anchor="middle" font-size="8" fill="#64748b" font-family="JetBrains Mono">독립배포·DB per Svc</text>
+      <!-- SOA -->
+      <rect x="177" y="72" width="160" height="34" fill="rgba(52,211,153,.12)" stroke="#34d399" stroke-width="1" rx="4"/>
+      <text x="257" y="88" text-anchor="middle" font-size="10" fill="#34d399" font-weight="bold" font-family="Noto Sans KR">④ SOA</text>
+      <text x="257" y="101" text-anchor="middle" font-size="8" fill="#64748b" font-family="JetBrains Mono">ESB중앙집중·SOAP</text>
+      <!-- EDA -->
+      <rect x="12" y="114" width="155" height="34" fill="rgba(251,191,36,.1)" stroke="#fbbf24" stroke-width="1" rx="4"/>
+      <text x="89" y="130" text-anchor="middle" font-size="10" fill="#fbbf24" font-weight="bold" font-family="Noto Sans KR">⑤ EDA</text>
+      <text x="89" y="143" text-anchor="middle" font-size="8" fill="#64748b" font-family="JetBrains Mono">Pub/Sub·비동기이벤트</text>
+      <!-- 파이프필터 -->
+      <rect x="177" y="114" width="160" height="34" fill="rgba(251,191,36,.1)" stroke="#fbbf24" stroke-width="1" rx="4"/>
+      <text x="257" y="130" text-anchor="middle" font-size="10" fill="#fbbf24" font-weight="bold" font-family="Noto Sans KR">⑥ 파이프&필터</text>
+      <text x="257" y="143" text-anchor="middle" font-size="8" fill="#64748b" font-family="JetBrains Mono">순차변환·ETL·컴파일러</text>
+      <!-- 헥사고날 -->
+      <rect x="12" y="156" width="155" height="34" fill="rgba(167,139,250,.12)" stroke="#a78bfa" stroke-width="1" rx="4"/>
+      <text x="89" y="172" text-anchor="middle" font-size="10" fill="#a78bfa" font-weight="bold" font-family="Noto Sans KR">⑦ 헥사고날</text>
+      <text x="89" y="185" text-anchor="middle" font-size="8" fill="#64748b" font-family="JetBrains Mono">도메인중심·포트·어댑터</text>
+      <!-- 클린 -->
+      <rect x="177" y="156" width="160" height="34" fill="rgba(167,139,250,.12)" stroke="#a78bfa" stroke-width="1" rx="4"/>
+      <text x="257" y="172" text-anchor="middle" font-size="10" fill="#a78bfa" font-weight="bold" font-family="Noto Sans KR">⑧ 클린 아키텍처</text>
+      <text x="257" y="185" text-anchor="middle" font-size="8" fill="#64748b" font-family="JetBrains Mono">의존성방향=안쪽만</text>
+      <!-- CQRS -->
+      <rect x="12" y="198" width="155" height="34" fill="rgba(248,113,113,.1)" stroke="#f87171" stroke-width="1" rx="4"/>
+      <text x="89" y="214" text-anchor="middle" font-size="10" fill="#f87171" font-weight="bold" font-family="Noto Sans KR">⑨ CQRS</text>
+      <text x="89" y="227" text-anchor="middle" font-size="8" fill="#64748b" font-family="JetBrains Mono">읽기/쓰기 모델 분리</text>
+      <!-- 이벤트소싱 -->
+      <rect x="177" y="198" width="160" height="34" fill="rgba(248,113,113,.1)" stroke="#f87171" stroke-width="1" rx="4"/>
+      <text x="257" y="214" text-anchor="middle" font-size="10" fill="#f87171" font-weight="bold" font-family="Noto Sans KR">⑩ 이벤트 소싱</text>
+      <text x="257" y="227" text-anchor="middle" font-size="8" fill="#64748b" font-family="JetBrains Mono">이벤트저장·재생재구성</text>
+
+      <!-- NEW 패턴들 -->
+      <rect x="355" y="5" width="360" height="250" fill="rgba(244,114,182,.04)" stroke="#f472b6" stroke-width="2" rx="6"/>
+      <text x="535" y="22" text-anchor="middle" font-size="10" fill="#f472b6" font-weight="bold" font-family="Noto Sans KR">★ NEW 추가 패턴</text>
+      <!-- DDD -->
+      <rect x="365" y="30" width="340" height="70" fill="rgba(244,114,182,.12)" stroke="#f472b6" stroke-width="1.5" rx="5"/>
+      <text x="535" y="53" text-anchor="middle" font-size="12" fill="#f472b6" font-weight="bold" font-family="Noto Sans KR">⑪ DDD (도메인 주도 설계)</text>
+      <text x="415" y="72" font-size="8.5" fill="#64748b" font-family="JetBrains Mono">유비쿼터스언어·바운디드컨텍스트·애그리게이트</text>
+      <text x="415" y="86" font-size="8.5" fill="#f472b6" font-family="JetBrains Mono">Entity·VO·Repository·Domain Event</text>
+      <!-- Reactive -->
+      <rect x="365" y="110" width="340" height="70" fill="rgba(56,189,248,.1)" stroke="#38bdf8" stroke-width="1.5" rx="5"/>
+      <text x="535" y="133" text-anchor="middle" font-size="12" fill="#38bdf8" font-weight="bold" font-family="Noto Sans KR">⑫ Reactive 아키텍처 선언</text>
+      <text x="415" y="152" font-size="8.5" fill="#64748b" font-family="JetBrains Mono">응답성·탄력성·유연성·메시지주도</text>
+      <text x="415" y="166" font-size="8.5" fill="#38bdf8" font-family="JetBrains Mono">비동기·논블로킹·Back-Pressure</text>
+      <!-- 공간 기반 -->
+      <rect x="365" y="190" width="340" height="60" fill="rgba(251,146,60,.1)" stroke="#fb923c" stroke-width="1.5" rx="5"/>
+      <text x="535" y="213" text-anchor="middle" font-size="12" fill="#fb923c" font-weight="bold" font-family="Noto Sans KR">⑬ 공간 기반 아키텍처 (SBA)</text>
+      <text x="415" y="232" font-size="8.5" fill="#64748b" font-family="JetBrains Mono">IMDG·처리단위·극한확장성·단일장애점제거</text>
+
+      <!-- 패턴 조합 영역 -->
+      <rect x="5" y="263" width="710" height="120" fill="rgba(52,211,153,.03)" stroke="#34d399" stroke-width="1" rx="6" stroke-dasharray="6,3"/>
+      <text x="360" y="282" text-anchor="middle" font-size="10" fill="#34d399" font-weight="bold" font-family="Noto Sans KR">🔗 자주 사용되는 패턴 조합</text>
+      <rect x="15" y="292" width="165" height="36" fill="rgba(52,211,153,.08)" stroke="#34d399" stroke-width="1" rx="4"/>
+      <text x="97" y="307" text-anchor="middle" font-size="9" fill="#34d399" font-weight="bold" font-family="Noto Sans KR">DDD + 헥사고날 + CQRS</text>
+      <text x="97" y="321" text-anchor="middle" font-size="8" fill="#64748b" font-family="Noto Sans KR">도메인 보호·읽기쓰기 분리</text>
+      <rect x="190" y="292" width="165" height="36" fill="rgba(244,114,182,.08)" stroke="#f472b6" stroke-width="1" rx="4"/>
+      <text x="272" y="307" text-anchor="middle" font-size="9" fill="#f472b6" font-weight="bold" font-family="Noto Sans KR">MSA + EDA + CQRS + ES</text>
+      <text x="272" y="321" text-anchor="middle" font-size="8" fill="#64748b" font-family="Noto Sans KR">대규모 이커머스·금융</text>
+      <rect x="365" y="292" width="165" height="36" fill="rgba(56,189,248,.08)" stroke="#38bdf8" stroke-width="1" rx="4"/>
+      <text x="447" y="307" text-anchor="middle" font-size="9" fill="#38bdf8" font-weight="bold" font-family="Noto Sans KR">Reactive + MSA + EDA</text>
+      <text x="447" y="321" text-anchor="middle" font-size="8" fill="#64748b" font-family="Noto Sans KR">실시간·고성능 스트리밍</text>
+      <rect x="540" y="292" width="168" height="36" fill="rgba(251,146,60,.08)" stroke="#fb923c" stroke-width="1" rx="4"/>
+      <text x="624" y="307" text-anchor="middle" font-size="9" fill="#fb923c" font-weight="bold" font-family="Noto Sans KR">SBA + CQRS</text>
+      <text x="624" y="321" text-anchor="middle" font-size="8" fill="#64748b" font-family="Noto Sans KR">극한 확장·읽기 최적화</text>
+      <!-- 범례 -->
+      <text x="360" y="360" text-anchor="middle" font-size="9" fill="#64748b" font-family="Noto Sans KR">아키텍처 패턴 = 시스템 전체 구조 / 디자인 패턴(GoF) = 클래스·객체 수준</text>
+      <text x="360" y="378" text-anchor="middle" font-size="9" fill="#64748b" font-family="Noto Sans KR">⑪⑫⑬ = 이번에 추가된 패턴</text>
+    </svg>
+
+    <div class="g2">
+      <div>
+        <p style="font-size:11.5px;font-weight:800;color:var(--a3);margin-bottom:7px;">상황별 패턴 선택 가이드 ⭐</p>
+        <table>
+          <thead><tr><th>상황</th><th>권장 패턴</th></tr></thead>
+          <tbody>
+            <tr><td>복잡한 도메인 로직 모델링</td><td><strong>DDD</strong></td></tr>
+            <tr><td>고성능·비동기·실시간 처리</td><td><strong>Reactive 아키텍처</strong></td></tr>
+            <tr><td>극한 확장성·피크 트래픽</td><td><strong>공간 기반 아키텍처(SBA)</strong></td></tr>
+            <tr><td>독립 배포·대규모 팀</td><td><strong>MSA + DDD</strong></td></tr>
+            <tr><td>감사 추적·이벤트 이력</td><td><strong>이벤트 소싱 + CQRS</strong></td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div>
+        <p style="font-size:11.5px;font-weight:800;color:var(--a1);margin-bottom:7px;">감리사 중요도 ⭐</p>
+        <table>
+          <thead><tr><th>패턴</th><th>중요도</th></tr></thead>
+          <tbody>
+            <tr><td>계층형·MVC·MSA·EDA</td><td><span class="tag ty">★★★</span></td></tr>
+            <tr><td>헥사고날·CQRS·이벤트소싱</td><td><span class="tag ty">★★★</span></td></tr>
+            <tr><td><strong>DDD ★NEW</strong></td><td><span class="tag ty">★★★</span></td></tr>
+            <tr><td><strong>Reactive 선언 ★NEW</strong></td><td><span class="tag tg">★★</span></td></tr>
+            <tr><td><strong>공간 기반 아키텍처 ★NEW</strong></td><td><span class="tag tg">★★</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div class="memo">13종 패턴: 기존10종(계층형·MVC·MSA·SOA·EDA·파이프필터·헥사고날·클린·CQRS·이벤트소싱) + NEW 3종(DDD·Reactive·공간기반)</div>
+  </div>
+</div>
+
+<!-- P2: 계층형·MVC -->
+<div class="pnl" id="p2">
+  <div class="card">
+    <div class="card-h"><div class="ico ib">🏛️</div><h3>① 계층형 아키텍처 (Layered / N-Tier) ⭐</h3></div>
+    <div class="g2">
+      <svg viewBox="0 0 220 260" style="width:100%;background:var(--s2);border-radius:8px;border:1px solid var(--bdr);">
+        <text x="110" y="18" text-anchor="middle" font-family="Noto Sans KR" font-size="10" fill="#64748b" font-weight="bold">4계층 아키텍처</text>
+        <rect x="10" y="28" width="200" height="46" fill="rgba(96,165,250,.15)" stroke="#60a5fa" stroke-width="1.5" rx="5"/>
+        <text x="110" y="48" text-anchor="middle" font-family="Noto Sans KR" font-size="11" fill="#60a5fa" font-weight="bold">Presentation Layer</text>
+        <text x="110" y="64" text-anchor="middle" font-family="Noto Sans KR" font-size="9" fill="#64748b">UI / API Controller</text>
+        <text x="110" y="84" text-anchor="middle" font-family="Noto Sans KR" font-size="11" fill="#64748b">↓ 단방향 의존</text>
+        <rect x="10" y="94" width="200" height="46" fill="rgba(52,211,153,.12)" stroke="#34d399" stroke-width="1.5" rx="5"/>
+        <text x="110" y="114" text-anchor="middle" font-family="Noto Sans KR" font-size="11" fill="#34d399" font-weight="bold">Business Logic Layer</text>
+        <text x="110" y="130" text-anchor="middle" font-family="Noto Sans KR" font-size="9" fill="#64748b">Service / Domain</text>
+        <text x="110" y="148" text-anchor="middle" font-family="Noto Sans KR" font-size="11" fill="#64748b">↓</text>
+        <rect x="10" y="158" width="200" height="46" fill="rgba(251,191,36,.1)" stroke="#fbbf24" stroke-width="1.5" rx="5"/>
+        <text x="110" y="178" text-anchor="middle" font-family="Noto Sans KR" font-size="11" fill="#fbbf24" font-weight="bold">Persistence Layer</text>
+        <text x="110" y="194" text-anchor="middle" font-family="Noto Sans KR" font-size="9" fill="#64748b">Repository / DAO</text>
+        <text x="110" y="212" text-anchor="middle" font-family="Noto Sans KR" font-size="11" fill="#64748b">↓</text>
+        <rect x="10" y="222" width="200" height="30" fill="rgba(248,113,113,.1)" stroke="#f87171" stroke-width="1.5" rx="5"/>
+        <text x="110" y="242" text-anchor="middle" font-family="Noto Sans KR" font-size="11" fill="#f87171" font-weight="bold">Database Layer</text>
+      </svg>
+      <div>
+        <ul class="il">
+          <li><strong>단방향 의존 ⭐:</strong> 상위→하위만 의존 (역방향 금지)</li>
+          <li><strong>Layer vs Tier:</strong> Layer=논리적 분리 / Tier=물리적 분리</li>
+          <li><strong>Sinkhole 안티패턴 ⭐:</strong> 처리 없이 단순 통과(pass-through)</li>
+          <li><strong>장점:</strong> 이해 단순·관심사 분리·테스트 용이</li>
+          <li><strong>단점:</strong> 대규모 확장 한계·계층 통과 오버헤드</li>
+        </ul>
+        <p style="font-size:11.5px;font-weight:800;color:var(--a3);margin:10px 0 6px;">MVC / MVP / MVVM 비교 ⭐</p>
+        <table>
+          <thead><tr><th>패턴</th><th>중간자</th><th>특징</th></tr></thead>
+          <tbody>
+            <tr><td><strong>MVC</strong></td><td>Controller</td><td>Model·View 연결 / Spring MVC</td></tr>
+            <tr><td><strong>MVP</strong></td><td>Presenter</td><td>View 수동·직접 업데이트</td></tr>
+            <tr><td><strong>MVVM</strong></td><td>ViewModel</td><td>양방향 데이터바인딩 / Vue·Angular</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div class="memo">계층형: 단방향의존·Layer=논리/Tier=물리·Sinkhole=통과안티패턴 / MVC=Controller연결·MVP=View수동·MVVM=양방향바인딩</div>
+  </div>
+</div>
+
+<!-- P3: MSA·SOA·EDA -->
+<div class="pnl" id="p3">
+  <div class="card">
+    <div class="card-h"><div class="ico ig">🔬</div><h3>③ MSA · ④ SOA · ⑤ EDA · ⑥ 파이프&필터 ⭐</h3></div>
+    <div class="acc open" onclick="this.classList.toggle('open')">
+      <div class="acc-h"><div class="acc-title" style="color:var(--a2);">MSA (마이크로서비스 아키텍처) ⭐⭐</div><div class="acc-tgl">▾</div></div>
+      <div class="acc-body">
+        <div class="g2">
+          <ul class="il">
+            <li><strong>독립 배포 ⭐:</strong> 서비스별 독립 빌드·배포</li>
+            <li><strong>DB per Service ⭐:</strong> 서비스별 독립 DB — 직접 접근 금지</li>
+            <li><strong>API Gateway ⭐:</strong> 단일 진입점 / 인증·라우팅</li>
+            <li><strong>Service Discovery ⭐:</strong> 동적 서비스 탐색 (Eureka)</li>
+            <li><strong>Circuit Breaker ⭐:</strong> 연쇄 장애 방지 (Hystrix)</li>
+            <li><strong>Saga Pattern ⭐:</strong> 분산 트랜잭션 처리</li>
+            <li><strong>단점:</strong> 분산 복잡성·데이터 일관성·운영 복잡</li>
+          </ul>
+          <div>
+            <p style="font-size:11px;font-weight:800;color:var(--a3);margin-bottom:5px;">SOA vs MSA ⭐</p>
+            <table>
+              <thead><tr><th>항목</th><th>SOA</th><th>MSA</th></tr></thead>
+              <tbody>
+                <tr><td>중심 허브</td><td><strong>ESB 중앙집중</strong></td><td>분산·경량</td></tr>
+                <tr><td>통신</td><td>SOAP/XML</td><td><strong>REST·gRPC·이벤트</strong></td></tr>
+                <tr><td>데이터</td><td>공유 DB 허용</td><td><strong>DB per Service</strong></td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="acc" onclick="this.classList.toggle('open')">
+      <div class="acc-h"><div class="acc-title" style="color:var(--a3);">EDA (이벤트 기반) · 파이프&필터 ⭐</div><div class="acc-tgl">▾</div></div>
+      <div class="acc-body">
+        <div class="g2">
+          <div>
+            <p style="font-size:11px;font-weight:800;color:var(--a3);margin-bottom:5px;">EDA 핵심</p>
+            <ul class="il">
+              <li><strong>Producer·Broker·Consumer:</strong> Pub/Sub 구조</li>
+              <li><strong>Saga Pattern:</strong> 이벤트 체인으로 분산 트랜잭션</li>
+              <li><strong>장점:</strong> 느슨한 결합·비동기·확장성</li>
+              <li><strong>단점:</strong> 순서 보장 어려움·최종 일관성</li>
+            </ul>
+          </div>
+          <div>
+            <p style="font-size:11px;font-weight:800;color:var(--a6);margin-bottom:5px;">파이프&필터</p>
+            <ul class="il">
+              <li><strong>필터:</strong> 독립 처리 컴포넌트</li>
+              <li><strong>파이프:</strong> 데이터 전달 채널</li>
+              <li><strong>활용:</strong> Unix파이프·컴파일러·ETL·ML전처리</li>
+              <li><strong>장점:</strong> 필터 재사용·교체·병렬 처리</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="memo">MSA=독립배포·DB per Service·API Gateway·Circuit Breaker·Saga / SOA=ESB중앙·SOAP / EDA=Pub/Sub·비동기 / 파이프필터=순차변환·재사용</div>
+  </div>
+</div>
+
+<!-- P4: 헥사고날·클린·CQRS·ES -->
+<div class="pnl" id="p4">
+  <div class="card">
+    <div class="card-h"><div class="ico ip">🔷</div><h3>⑦ 헥사고날 · ⑧ 클린 · ⑨ CQRS · ⑩ 이벤트소싱 ⭐</h3></div>
+    <div class="acc open" onclick="this.classList.toggle('open')">
+      <div class="acc-h"><div class="acc-title" style="color:var(--a5);">헥사고날 (Ports & Adapters) ⭐⭐</div><div class="acc-tgl">▾</div></div>
+      <div class="acc-body">
+        <div class="g2">
+          <ul class="il">
+            <li><strong>도메인 중심 ⭐:</strong> 도메인이 기술에 의존하지 않음</li>
+            <li><strong>포트(Port) ⭐:</strong> 도메인의 인터페이스(계약)</li>
+            <li><strong>어댑터(Adapter) ⭐:</strong> 포트의 구체 구현체</li>
+            <li><strong>Primary:</strong> 외부→도메인 (REST·CLI)</li>
+            <li><strong>Secondary:</strong> 도메인→외부 (DB·Kafka)</li>
+            <li><strong>DIP 적용 ⭐:</strong> 도메인은 추상화에만 의존</li>
+            <li><strong>클린과 관계:</strong> 동일 철학 — 의존성 역전·도메인 보호</li>
+          </ul>
+          <div>
+            <p style="font-size:11px;font-weight:800;color:var(--a2);margin-bottom:5px;">CQRS + 이벤트소싱 ⭐</p>
+            <table>
+              <thead><tr><th>항목</th><th>CQRS</th><th>이벤트소싱</th></tr></thead>
+              <tbody>
+                <tr><td>핵심</td><td>읽기/쓰기 모델 완전 분리</td><td>상태 대신 이벤트 저장</td></tr>
+                <tr><td>Write DB</td><td>MySQL(정규화)</td><td>이벤트 스토어</td></tr>
+                <tr><td>Read DB</td><td>Redis·ES(최적화)</td><td>Projection(이벤트 재생)</td></tr>
+                <tr><td>장점</td><td>읽기 성능 최적화</td><td>감사추적·시간여행</td></tr>
+                <tr><td>단점</td><td>최종 일관성</td><td>복잡성·스키마진화</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="memo">헥사고날: 포트(인터페이스)·어댑터(구현)·Primary(외부→도메인)·Secondary(도메인→외부) / CQRS=읽기쓰기분리 / ES=이벤트저장·재생</div>
+  </div>
+</div>
+
+<!-- P5: DDD -->
+<div class="pnl" id="p5">
+  <div class="card">
+    <div class="card-h"><div class="ico im">🏰</div><h3>⑪ DDD (Domain-Driven Design, 도메인 주도 설계) ⭐⭐ ★NEW</h3></div>
+    <div style="background:var(--s2);border:1px solid rgba(244,114,182,.28);border-radius:9px;padding:13px;margin-bottom:12px;font-size:12.5px;line-height:1.85;">
+      <strong style="color:var(--a7)">DDD</strong>: Eric Evans가 2003년 저서 <em>«Domain-Driven Design»</em>에서 체계화 — <em style="color:var(--a3);font-style:normal;">복잡한 비즈니스 도메인을 소프트웨어에 충실히 반영</em>하기 위해 도메인 전문가와 개발자가 공유하는 언어·모델로 설계하는 방법론
+    </div>
+
+    <div class="acc open" onclick="this.classList.toggle('open')">
+      <div class="acc-h"><div class="acc-title" style="color:var(--a7);">전략적 설계 (Strategic Design) ⭐⭐</div><div class="acc-tgl">▾</div></div>
+      <div class="acc-body">
+        <div class="g2">
+          <div>
+            <div style="background:rgba(244,114,182,.08);border:1px solid rgba(244,114,182,.25);border-radius:8px;padding:11px;margin-bottom:8px;">
+              <p style="font-size:12px;font-weight:800;color:var(--a7);margin-bottom:5px;">유비쿼터스 언어 (Ubiquitous Language) ⭐</p>
+              <p style="font-size:11.5px;line-height:1.6;">도메인 전문가와 개발자가 <em style="color:var(--a2);">동일한 용어</em>를 사용하여 소통 — 코드·문서·대화에서 일관된 언어 사용. 언어의 차이가 모델과 코드의 불일치를 만든다.</p>
+            </div>
+            <div style="background:rgba(244,114,182,.08);border:1px solid rgba(244,114,182,.25);border-radius:8px;padding:11px;">
+              <p style="font-size:12px;font-weight:800;color:var(--a7);margin-bottom:5px;">바운디드 컨텍스트 (Bounded Context) ⭐⭐</p>
+              <p style="font-size:11.5px;line-height:1.6;">도메인 모델이 <em style="color:var(--a2);">유효한 경계</em> — 동일 용어가 다른 컨텍스트에서 다른 의미를 가질 수 있음. MSA의 서비스 경계와 대응. 예) 주문 컨텍스트의 "상품"과 물류 컨텍스트의 "상품"은 다른 모델.</p>
+            </div>
+          </div>
+          <div>
+            <!-- Bounded Context SVG -->
+            <svg viewBox="0 0 240 180" style="width:100%;background:var(--s3);border-radius:7px;border:1px solid var(--bdr);">
+              <text x="120" y="18" text-anchor="middle" font-family="Noto Sans KR" font-size="9" fill="#64748b" font-weight="bold">Context Map 예시</text>
+              <rect x="10" y="28" width="105" height="65" fill="rgba(244,114,182,.12)" stroke="#f472b6" stroke-width="1.5" rx="5"/>
+              <text x="62" y="50" text-anchor="middle" font-family="Noto Sans KR" font-size="9" fill="#f472b6" font-weight="bold">주문 컨텍스트</text>
+              <text x="62" y="66" text-anchor="middle" font-family="JetBrains Mono" font-size="7.5" fill="#64748b">Order</text>
+              <text x="62" y="79" text-anchor="middle" font-family="JetBrains Mono" font-size="7.5" fill="#64748b">Customer</text>
+              <text x="62" y="92" text-anchor="middle" font-family="JetBrains Mono" font-size="7.5" fill="#64748b">Product(주문용)</text>
+              <rect x="125" y="28" width="105" height="65" fill="rgba(56,189,248,.1)" stroke="#38bdf8" stroke-width="1.5" rx="5"/>
+              <text x="177" y="50" text-anchor="middle" font-family="Noto Sans KR" font-size="9" fill="#38bdf8" font-weight="bold">물류 컨텍스트</text>
+              <text x="177" y="66" text-anchor="middle" font-family="JetBrains Mono" font-size="7.5" fill="#64748b">Shipment</text>
+              <text x="177" y="79" text-anchor="middle" font-family="JetBrains Mono" font-size="7.5" fill="#64748b">Warehouse</text>
+              <text x="177" y="92" text-anchor="middle" font-family="JetBrains Mono" font-size="7.5" fill="#64748b">Item(물류용)</text>
+              <!-- 화살표 (컨텍스트 매핑) -->
+              <line x1="115" y1="60" x2="125" y2="60" stroke="#34d399" stroke-width="1.5"/>
+              <polygon points="125,60 118,56 118,64" fill="#34d399"/>
+              <text x="120" y="75" text-anchor="middle" font-family="Noto Sans KR" font-size="7" fill="#34d399">Anti-Corruption</text>
+              <text x="120" y="85" text-anchor="middle" font-family="Noto Sans KR" font-size="7" fill="#34d399">Layer</text>
+              <rect x="10" y="105" width="220" height="60" fill="rgba(251,191,36,.06)" stroke="#fbbf24" stroke-width="1" rx="5"/>
+              <text x="120" y="122" text-anchor="middle" font-family="Noto Sans KR" font-size="9" fill="#fbbf24" font-weight="bold">결제 컨텍스트</text>
+              <text x="60" y="140" text-anchor="middle" font-family="JetBrains Mono" font-size="7.5" fill="#64748b">Payment</text>
+              <text x="120" y="140" text-anchor="middle" font-family="JetBrains Mono" font-size="7.5" fill="#64748b">Invoice</text>
+              <text x="185" y="140" text-anchor="middle" font-family="JetBrains Mono" font-size="7.5" fill="#64748b">Amount</text>
+            </svg>
+          </div>
+        </div>
+        <div class="acc" onclick="this.classList.toggle('open')">
+          <div class="acc-h"><div class="acc-title" style="color:var(--a3);">Context Map 패턴 ⭐</div><div class="acc-tgl">▾</div></div>
+          <div class="acc-body">
+            <table>
+              <thead><tr><th>패턴</th><th>설명</th></tr></thead>
+              <tbody>
+                <tr><td><strong>Shared Kernel</strong></td><td>두 컨텍스트가 공유하는 코드·모델 영역</td></tr>
+                <tr><td><strong>Customer/Supplier</strong></td><td>Upstream(공급)과 Downstream(소비) 관계</td></tr>
+                <tr><td><strong>ACL (Anti-Corruption Layer) ⭐</strong></td><td>외부 모델이 내부 도메인을 오염시키지 않도록 변환 계층 삽입 — 헥사고날의 Secondary Adapter와 유사</td></tr>
+                <tr><td><strong>Published Language</strong></td><td>컨텍스트 간 표준 공개 언어(프로토콜) 사용</td></tr>
+                <tr><td><strong>Open Host Service</strong></td><td>컨텍스트가 여러 소비자를 위한 공개 API 제공</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="acc" onclick="this.classList.toggle('open')">
+      <div class="acc-h"><div class="acc-title" style="color:var(--a3);">전술적 설계 (Tactical Design) — 빌딩 블록 ⭐⭐</div><div class="acc-tgl">▾</div></div>
+      <div class="acc-body">
+        <div class="ddd-grid">
+          <div class="ddd-card" style="border:1px solid rgba(244,114,182,.3);">
+            <div class="ddd-name" style="color:var(--a7);">엔티티 (Entity) ⭐</div>
+            <div class="ddd-en">식별자(ID)로 구분되는 객체</div>
+            <div class="ddd-desc">동일 ID면 속성이 달라도 같은 객체 / 라이프사이클을 가짐<br><em style="color:var(--a3);">예) Order(주문ID=100)</em></div>
+          </div>
+          <div class="ddd-card" style="border:1px solid rgba(56,189,248,.3);">
+            <div class="ddd-name" style="color:var(--a8);">값 객체 (Value Object) ⭐</div>
+            <div class="ddd-en">속성의 집합, ID 없음·불변</div>
+            <div class="ddd-desc">내용이 같으면 동일 / 불변(Immutable)<br><em style="color:var(--a3);">예) Money(100, "KRW"), Address</em></div>
+          </div>
+          <div class="ddd-card" style="border:1px solid rgba(251,191,36,.3);">
+            <div class="ddd-name" style="color:var(--a3);">애그리게이트 (Aggregate) ⭐⭐</div>
+            <div class="ddd-en">일관성 경계를 가진 엔티티 군집</div>
+            <div class="ddd-desc">Aggregate Root를 통해서만 접근 / 트랜잭션 단위<br><em style="color:var(--a3);">예) Order(Root) + OrderItem</em></div>
+          </div>
+          <div class="ddd-card" style="border:1px solid rgba(96,165,250,.3);">
+            <div class="ddd-name" style="color:var(--a1);">Aggregate Root ⭐⭐</div>
+            <div class="ddd-en">애그리게이트의 진입점(단일 Root)</div>
+            <div class="ddd-desc">외부에서 Aggregate 내부 접근 시 반드시 Root 경유 / ID로 참조<br><em style="color:var(--a3);">예) Order가 Root → OrderItem에 직접 접근 금지</em></div>
+          </div>
+          <div class="ddd-card" style="border:1px solid rgba(52,211,153,.3);">
+            <div class="ddd-name" style="color:var(--a2);">도메인 서비스 (Domain Service)</div>
+            <div class="ddd-en">특정 엔티티에 속하지 않는 도메인 로직</div>
+            <div class="ddd-desc">상태 없음(Stateless) / 여러 엔티티 협력<br><em style="color:var(--a3);">예) TransferService(계좌 간 이체)</em></div>
+          </div>
+          <div class="ddd-card" style="border:1px solid rgba(167,139,250,.3);">
+            <div class="ddd-name" style="color:var(--a5);">도메인 이벤트 (Domain Event) ⭐</div>
+            <div class="ddd-en">도메인에서 발생한 사건</div>
+            <div class="ddd-desc">과거형 이름 / EDA·CQRS·이벤트소싱과 결합<br><em style="color:var(--a3);">예) OrderPlaced, PaymentCompleted</em></div>
+          </div>
+          <div class="ddd-card" style="border:1px solid rgba(251,146,60,.3);">
+            <div class="ddd-name" style="color:var(--a6);">리포지토리 (Repository) ⭐</div>
+            <div class="ddd-en">Aggregate 영속성 관리 추상화</div>
+            <div class="ddd-desc">도메인이 DB 기술을 모르도록 / 인터페이스로 정의<br><em style="color:var(--a3);">예) OrderRepository.findById()</em></div>
+          </div>
+          <div class="ddd-card" style="border:1px solid rgba(248,113,113,.3);">
+            <div class="ddd-name" style="color:var(--a4);">팩토리 (Factory)</div>
+            <div class="ddd-en">복잡한 Aggregate 생성 로직 캡슐화</div>
+            <div class="ddd-desc">생성 로직이 복잡할 때 별도 Factory 사용<br><em style="color:var(--a3);">GoF Factory Method 패턴과 연관</em></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="acc" onclick="this.classList.toggle('open')">
+      <div class="acc-h"><div class="acc-title" style="color:var(--a2);">DDD와 다른 패턴의 관계 ⭐⭐</div><div class="acc-tgl">▾</div></div>
+      <div class="acc-body">
+        <table>
+          <thead><tr><th>연관 패턴</th><th>관계</th></tr></thead>
+          <tbody>
+            <tr><td><strong>헥사고날 아키텍처 ⭐</strong></td><td>도메인을 가장 안쪽에 배치·포트·어댑터가 도메인을 보호 — DDD의 도메인 중심 철학과 완벽 일치</td></tr>
+            <tr><td><strong>CQRS ⭐</strong></td><td>Aggregate의 Command(상태 변경)와 Query(조회) 분리 — DDD Command Model과 Query Model</td></tr>
+            <tr><td><strong>이벤트 소싱 ⭐</strong></td><td>Domain Event를 저장소에 영구 기록 — DDD의 Domain Event를 이벤트 소싱으로 구현</td></tr>
+            <tr><td><strong>MSA ⭐</strong></td><td>Bounded Context = MSA 서비스 경계 — 각 BC가 독립 마이크로서비스로 구현</td></tr>
+            <tr><td><strong>클린 아키텍처</strong></td><td>Entity·Use Case가 DDD의 Entity·Application Service와 대응</td></tr>
+          </tbody>
+        </table>
+        <div class="code" style="margin-top:8px;"><span class="cm">// DDD Aggregate Root 예시</span>
+<span class="kw">class</span> <span class="cls">Order</span> {  <span class="cm">// Aggregate Root</span>
+  <span class="kw">private</span> OrderId id;
+  <span class="kw">private</span> List&lt;OrderItem&gt; items; <span class="cm">// 내부 엔티티</span>
+  <span class="kw">private</span> Money totalAmount;   <span class="cm">// Value Object</span>
+
+  <span class="kw">public void</span> addItem(Product p, Quantity q) {
+    <span class="cm">// 비즈니스 규칙 검증 후 내부 상태 변경</span>
+    items.add(<span class="kw">new</span> OrderItem(p, q));
+    this.totalAmount = calculateTotal();
+    <span class="g">domainEvents.add(new OrderItemAdded(id, p.getId()));</span>
+  }
+  <span class="cm">// 외부에서 OrderItem에 직접 접근 불가 — Root 통해서만!</span>
+}</div>
+      </div>
+    </div>
+    <div class="memo">DDD=Eric Evans 2003 / 전략=유비쿼터스언어·바운디드컨텍스트·ContextMap / 전술=Entity·VO·Aggregate(Root)·Domain Event·Repository / BC=MSA경계</div>
+  </div>
+</div>
+
+<!-- P6: Reactive·공간 기반 -->
+<div class="pnl" id="p6">
+  <div class="card">
+    <div class="card-h"><div class="ico ic">⚡</div><h3>⑫ Reactive 아키텍처 (반응형 선언) ⭐⭐ ★NEW</h3></div>
+    <div style="background:var(--s2);border:1px solid rgba(56,189,248,.28);border-radius:9px;padding:13px;margin-bottom:12px;font-size:12.5px;line-height:1.85;">
+      <strong style="color:var(--a8)">Reactive Manifesto (반응형 선언)</strong>: 2013년 Jonas Bonér 등이 주도하여 발표 — 현대적 분산 시스템의 4가지 핵심 원칙을 정의. 비동기·논블로킹·메시지 기반으로 <em style="color:var(--a3);font-style:normal;">높은 응답성과 탄력성</em>을 달성
+    </div>
+
+    <!-- Reactive 4원칙 -->
+    <div class="react-grid">
+      <div class="react-card" style="border-color:var(--a2);background:rgba(52,211,153,.07);">
+        <p style="font-size:15px;font-weight:900;color:var(--a2);margin-bottom:6px;">Responsive (응답성) ⭐</p>
+        <p style="font-size:11.5px;line-height:1.7;margin-bottom:6px;">요청에 <em style="color:var(--a2);">즉시·일관되게</em> 응답 — 응답 시간 한계를 정의하고 준수. 문제를 빠르게 감지·처리</p>
+        <p style="font-size:10px;color:var(--mu);">→ 고객 신뢰 기반 / 사용 편의성</p>
+      </div>
+      <div class="react-card" style="border-color:var(--a4);background:rgba(248,113,113,.07);">
+        <p style="font-size:15px;font-weight:900;color:var(--a4);margin-bottom:6px;">Resilient (탄력성) ⭐</p>
+        <p style="font-size:11.5px;line-height:1.7;margin-bottom:6px;">장애 발생 시에도 <em style="color:var(--a4);">응답성을 유지</em> — 복제·격리·위임·격납(Containment)으로 장애 격리. Circuit Breaker</p>
+        <p style="font-size:10px;color:var(--mu);">→ 단일 장애점 없음 / 자기 치유</p>
+      </div>
+      <div class="react-card" style="border-color:var(--a3);background:rgba(251,191,36,.07);">
+        <p style="font-size:15px;font-weight:900;color:var(--a3);margin-bottom:6px;">Elastic (유연성) ⭐</p>
+        <p style="font-size:11.5px;line-height:1.7;margin-bottom:6px;">부하 변화에 따라 <em style="color:var(--a3);">자원을 자동 확장·축소</em> — 병목 없음·중복 없음. 예측적·반응적 스케일링</p>
+        <p style="font-size:10px;color:var(--mu);">→ Auto-Scaling / 비용 최적화</p>
+      </div>
+      <div class="react-card" style="border-color:var(--a5);background:rgba(167,139,250,.07);">
+        <p style="font-size:15px;font-weight:900;color:var(--a5);margin-bottom:6px;">Message Driven (메시지 주도) ⭐⭐</p>
+        <p style="font-size:11.5px;line-height:1.7;margin-bottom:6px;">컴포넌트 간 <em style="color:var(--a5);">비동기 메시지 전달</em>로 느슨한 결합 — 위치 투명성·논블로킹·Back-Pressure</p>
+        <p style="font-size:10px;color:var(--mu);">→ 나머지 3원칙의 기반</p>
+      </div>
+    </div>
+
+    <!-- Reactive 화살표 관계 -->
+    <div style="text-align:center;background:var(--s2);border:1px solid rgba(56,189,248,.2);border-radius:8px;padding:10px;margin:8px 0;font-size:11.5px;color:var(--a8);">
+      💡 Message Driven이 <strong style="color:var(--a5)">나머지 3원칙(Responsive·Resilient·Elastic)의 기반</strong> — 메시지 기반이 없으면 나머지 3가지 달성 어려움
+    </div>
+
+    <div class="acc open" onclick="this.classList.toggle('open')">
+      <div class="acc-h"><div class="acc-title" style="color:var(--a8);">Reactive Streams & Back-Pressure · 구현 기술 ⭐</div><div class="acc-tgl">▾</div></div>
+      <div class="acc-body">
+        <div class="g2">
+          <div>
+            <p style="font-size:11px;font-weight:800;color:var(--a8);margin-bottom:6px;">Reactive Streams 핵심 개념 ⭐</p>
+            <ul class="il">
+              <li><strong>비동기·논블로킹 ⭐:</strong> 스레드를 블로킹하지 않고 콜백·이벤트로 처리</li>
+              <li><strong>Back-Pressure ⭐⭐:</strong> 소비자가 처리 속도에 맞게 생산자에게 데이터 요청량 조절 — Publisher가 Subscriber를 압도하지 않도록</li>
+              <li><strong>Publisher:</strong> 데이터 생산자 — subscribe() 요청 대기</li>
+              <li><strong>Subscriber:</strong> 데이터 소비자 — onNext/onError/onComplete</li>
+              <li><strong>Processor:</strong> Publisher + Subscriber 역할 동시</li>
+            </ul>
+          </div>
+          <div>
+            <p style="font-size:11px;font-weight:800;color:var(--a3);margin-bottom:6px;">구현 기술 & 프레임워크</p>
+            <table>
+              <thead><tr><th>기술</th><th>설명</th></tr></thead>
+              <tbody>
+                <tr><td><strong>Project Reactor ⭐</strong></td><td>Spring 기반 / Mono·Flux / Spring WebFlux</td></tr>
+                <tr><td><strong>RxJava ⭐</strong></td><td>Java용 ReactiveX / Observable·Single</td></tr>
+                <tr><td><strong>Akka ⭐</strong></td><td>Scala/Java 액터 모델 / Akka Streams</td></tr>
+                <tr><td><strong>Spring WebFlux</strong></td><td>논블로킹 웹 프레임워크 / Netty 기반</td></tr>
+                <tr><td><strong>Vert.x</strong></td><td>폴리글롯 논블로킹 / 이벤트 루프</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div class="code"><span class="cm">// Project Reactor 예시 (Spring WebFlux)</span>
+<span class="cm">// Flux = 0~N개 비동기 스트림 / Mono = 0~1개</span>
+<span class="kw">public</span> Flux&lt;Order&gt; getOrders() {
+  <span class="kw">return</span> orderRepository.findAll()   <span class="cm">// 논블로킹 DB 조회</span>
+    .filter(order -> order.isActive())
+    .map(order -> order.toDto())
+    .onBackpressureBuffer(1000);      <span class="cm">// Back-Pressure 처리</span>
+}
+<span class="cm">// 전통 방식: 스레드 블로킹 → 동시 요청 스레드 수 제한</span>
+<span class="cm">// Reactive: 이벤트 루프 → 소수 스레드로 수만 요청 처리</span></div>
+      </div>
+    </div>
+
+    <div class="acc" onclick="this.classList.toggle('open')">
+      <div class="acc-h"><div class="acc-title" style="color:var(--a3);">Reactive vs 전통 동기 방식 비교 ⭐</div><div class="acc-tgl">▾</div></div>
+      <div class="acc-body">
+        <table>
+          <thead><tr><th>항목</th><th>전통 동기·블로킹</th><th>Reactive 비동기·논블로킹</th></tr></thead>
+          <tbody>
+            <tr><td><strong>스레드 처리</strong></td><td>요청당 1 스레드 블로킹</td><td><strong>소수 스레드로 수만 요청 처리</strong></td></tr>
+            <tr><td><strong>DB 조회</strong></td><td>결과 올 때까지 스레드 대기</td><td><strong>콜백·이벤트로 비동기 처리</strong></td></tr>
+            <tr><td><strong>적합 상황</strong></td><td>CPU 집약적·단순 CRUD</td><td><strong>I/O 집약적·실시간·고동시성</strong></td></tr>
+            <tr><td><strong>학습 곡선</strong></td><td>낮음</td><td>높음 (함수형·비동기 사고 필요)</td></tr>
+            <tr><td><strong>Back-Pressure</strong></td><td>없음 (큐 폭증 가능)</td><td><strong>있음 (소비자가 속도 조절)</strong></td></tr>
+            <tr><td><strong>대표 기술</strong></td><td>Spring MVC·JDBC</td><td><strong>Spring WebFlux·R2DBC·Reactor</strong></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div class="memo">Reactive 4원칙: 응답성·탄력성·유연성·메시지주도(기반) / Back-Pressure=소비자가 속도조절 / Reactor(Mono·Flux)·RxJava·Akka / 논블로킹=이벤트루프</div>
+  </div>
+
+  <div class="card">
+    <div class="card-h"><div class="ico io">🌌</div><h3>⑬ 공간 기반 아키텍처 (Space-Based Architecture, SBA) ⭐ ★NEW</h3></div>
+    <div style="background:var(--s2);border:1px solid rgba(251,146,60,.28);border-radius:9px;padding:13px;margin-bottom:12px;font-size:12.5px;line-height:1.85;">
+      <strong style="color:var(--a6)">공간 기반 아키텍처(SBA)</strong>: 데이터베이스 병목을 제거하기 위해 <em style="color:var(--a3);font-style:normal;">메모리 내 분산 공유 공간(Tuple Space)에 데이터를 저장·처리</em>하는 아키텍처 — 극한 확장성과 단일 장애점 제거가 목표
+    </div>
+
+    <!-- SBA SVG -->
+    <svg viewBox="0 0 720 220" style="width:100%;background:var(--s2);border-radius:9px;border:1px solid var(--bdr);margin:10px 0;">
+      <!-- 외부 요청 -->
+      <rect x="10" y="80" width="70" height="60" fill="var(--s3)" stroke="#60a5fa" stroke-width="1.5" rx="5"/>
+      <text x="45" y="107" text-anchor="middle" font-family="Noto Sans KR" font-size="9" fill="#60a5fa" font-weight="bold">Client</text>
+      <text x="45" y="122" text-anchor="middle" font-family="JetBrains Mono" font-size="7.5" fill="#64748b">Request</text>
+      <line x1="80" y1="110" x2="100" y2="110" stroke="#60a5fa" stroke-width="1.5"/>
+      <polygon points="100,110 92,106 92,114" fill="#60a5fa"/>
+
+      <!-- Messaging Grid -->
+      <rect x="100" y="20" width="110" height="180" fill="rgba(251,146,60,.06)" stroke="#fb923c" stroke-width="2" rx="5"/>
+      <text x="155" y="42" text-anchor="middle" font-family="Noto Sans KR" font-size="9" fill="#fb923c" font-weight="bold">Messaging Grid</text>
+      <text x="155" y="57" text-anchor="middle" font-family="JetBrains Mono" font-size="7.5" fill="#64748b">요청 라우팅</text>
+      <text x="155" y="70" text-anchor="middle" font-family="JetBrains Mono" font-size="7.5" fill="#64748b">세션 관리</text>
+      <text x="155" y="185" text-anchor="middle" font-family="Noto Sans KR" font-size="7.5" fill="#64748b">✦ Virtualized</text>
+      <text x="155" y="197" text-anchor="middle" font-family="Noto Sans KR" font-size="7.5" fill="#64748b">Middleware</text>
+
+      <!-- Processing Units -->
+      <rect x="230" y="15" width="130" height="60" fill="rgba(52,211,153,.1)" stroke="#34d399" stroke-width="1.5" rx="5"/>
+      <text x="295" y="38" text-anchor="middle" font-family="Noto Sans KR" font-size="9" fill="#34d399" font-weight="bold">Processing Unit 1</text>
+      <text x="295" y="53" text-anchor="middle" font-family="JetBrains Mono" font-size="7.5" fill="#64748b">비즈니스 로직</text>
+      <text x="295" y="66" text-anchor="middle" font-family="JetBrains Mono" font-size="7.5" fill="#34d399">In-Memory Data</text>
+
+      <rect x="230" y="85" width="130" height="60" fill="rgba(52,211,153,.1)" stroke="#34d399" stroke-width="1.5" rx="5"/>
+      <text x="295" y="108" text-anchor="middle" font-family="Noto Sans KR" font-size="9" fill="#34d399" font-weight="bold">Processing Unit 2</text>
+      <text x="295" y="123" text-anchor="middle" font-family="JetBrains Mono" font-size="7.5" fill="#64748b">비즈니스 로직</text>
+      <text x="295" y="136" text-anchor="middle" font-family="JetBrains Mono" font-size="7.5" fill="#34d399">In-Memory Data</text>
+
+      <rect x="230" y="155" width="130" height="60" fill="rgba(52,211,153,.08)" stroke="#34d399" stroke-width="1" rx="5" stroke-dasharray="4,2"/>
+      <text x="295" y="178" text-anchor="middle" font-family="Noto Sans KR" font-size="9" fill="#34d399">Processing Unit N</text>
+      <text x="295" y="196" text-anchor="middle" font-family="Noto Sans KR" font-size="8" fill="#64748b">자동 확장(Scale Out)</text>
+
+      <!-- Data Grid (IMDG) -->
+      <rect x="375" y="40" width="120" height="140" fill="rgba(167,139,250,.1)" stroke="#a78bfa" stroke-width="2" rx="5"/>
+      <text x="435" y="62" text-anchor="middle" font-family="Noto Sans KR" font-size="9" fill="#a78bfa" font-weight="bold">Data Grid</text>
+      <text x="435" y="77" text-anchor="middle" font-family="JetBrains Mono" font-size="8" fill="#a78bfa">IMDG</text>
+      <text x="435" y="95" text-anchor="middle" font-family="JetBrains Mono" font-size="7.5" fill="#64748b">분산 공유 메모리</text>
+      <text x="435" y="110" text-anchor="middle" font-family="JetBrains Mono" font-size="7.5" fill="#64748b">복제·파티셔닝</text>
+      <text x="435" y="125" text-anchor="middle" font-family="JetBrains Mono" font-size="7.5" fill="#64748b">Hazelcast</text>
+      <text x="435" y="138" text-anchor="middle" font-family="JetBrains Mono" font-size="7.5" fill="#64748b">Apache Ignite</text>
+      <text x="435" y="151" text-anchor="middle" font-family="JetBrains Mono" font-size="7.5" fill="#64748b">GemFire</text>
+      <text x="435" y="166" text-anchor="middle" font-family="JetBrains Mono" font-size="7.5" fill="#64748b">Redis Cluster</text>
+
+      <!-- DB Persistence -->
+      <rect x="510" y="40" width="110" height="60" fill="rgba(96,165,250,.08)" stroke="#60a5fa" stroke-width="1.5" rx="5"/>
+      <text x="565" y="62" text-anchor="middle" font-family="Noto Sans KR" font-size="9" fill="#60a5fa" font-weight="bold">DB Persistence</text>
+      <text x="565" y="78" text-anchor="middle" font-family="JetBrains Mono" font-size="7.5" fill="#64748b">비동기 영속화</text>
+      <text x="565" y="91" text-anchor="middle" font-family="JetBrains Mono" font-size="7.5" fill="#64748b">(Background)</text>
+
+      <!-- Deployment Manager -->
+      <rect x="510" y="115" width="110" height="65" fill="rgba(248,113,113,.08)" stroke="#f87171" stroke-width="1.5" rx="5"/>
+      <text x="565" y="138" text-anchor="middle" font-family="Noto Sans KR" font-size="9" fill="#f87171" font-weight="bold">Deployment</text>
+      <text x="565" y="152" text-anchor="middle" font-family="Noto Sans KR" font-size="9" fill="#f87171" font-weight="bold">Manager</text>
+      <text x="565" y="170" text-anchor="middle" font-family="JetBrains Mono" font-size="7.5" fill="#64748b">PU 자동 확장 조율</text>
+
+      <!-- 화살표들 -->
+      <line x1="210" y1="45" x2="230" y2="45" stroke="#fb923c" stroke-width="1.5"/>
+      <polygon points="230,45 222,41 222,49" fill="#fb923c"/>
+      <line x1="210" y1="110" x2="230" y2="115" stroke="#fb923c" stroke-width="1.5"/>
+      <line x1="210" y1="185" x2="230" y2="185" stroke="#fb923c" stroke-width="1" stroke-dasharray="4,2"/>
+      <line x1="360" y1="45" x2="375" y2="100" stroke="#34d399" stroke-width="1.5" stroke-dasharray="4,2"/>
+      <line x1="360" y1="115" x2="375" y2="110" stroke="#34d399" stroke-width="1.5" stroke-dasharray="4,2"/>
+      <line x1="495" y1="110" x2="510" y2="70" stroke="#a78bfa" stroke-width="1.5"/>
+      <polygon points="510,70 503,78 505,65" fill="#a78bfa"/>
+      <line x1="495" y1="130" x2="510" y2="147" stroke="#a78bfa" stroke-width="1"/>
+    </svg>
+
+    <div class="acc open" onclick="this.classList.toggle('open')">
+      <div class="acc-h"><div class="acc-title" style="color:var(--a6);">SBA 핵심 구성 요소 & 특징 ⭐</div><div class="acc-tgl">▾</div></div>
+      <div class="acc-body">
+        <div class="g2">
+          <div>
+            <p style="font-size:11px;font-weight:800;color:var(--a6);margin-bottom:6px;">핵심 구성 요소</p>
+            <table>
+              <thead><tr><th>구성 요소</th><th>역할</th></tr></thead>
+              <tbody>
+                <tr><td><strong>처리 단위 (Processing Unit) ⭐</strong></td><td>비즈니스 로직 + In-Memory 데이터 복사본 포함 / 자동 확장 단위</td></tr>
+                <tr><td><strong>가상화 미들웨어 (VM) ⭐</strong></td><td>메시징·데이터·처리·배포 그리드 통합 관리</td></tr>
+                <tr><td><strong>Messaging Grid ⭐</strong></td><td>요청 라우팅·세션 관리·처리 단위 조율</td></tr>
+                <tr><td><strong>Data Grid (IMDG) ⭐⭐</strong></td><td>분산 In-Memory 데이터 저장·복제·파티셔닝</td></tr>
+                <tr><td><strong>Deployment Manager ⭐</strong></td><td>부하 기반 Processing Unit 자동 확장·축소</td></tr>
+                <tr><td><strong>DB Persistence</strong></td><td>비동기로 In-Memory 데이터를 영구 저장소에 복사</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <div>
+            <p style="font-size:11px;font-weight:800;color:var(--a3);margin-bottom:6px;">SBA 장단점 & 적합 상황</p>
+            <ul class="il" style="margin-bottom:8px;">
+              <li><strong>극한 확장성 ⭐:</strong> DB 병목 없음 — 수평 확장(Scale-Out) 용이</li>
+              <li><strong>단일 장애점 없음 ⭐:</strong> PU 복제로 고가용성</li>
+              <li><strong>낮은 지연 ⭐:</strong> 모든 데이터가 메모리 내 — 빠른 응답</li>
+              <li><strong>단점:</strong> 메모리 비용 높음 / 복잡성↑ / 영속성 관리</li>
+              <li><strong>적합 상황 ⭐:</strong> 피크 트래픽(쇼핑몰·티켓팅) / 금융 거래 / 실시간 경매·게임</li>
+            </ul>
+            <table>
+              <thead><tr><th>IMDG 도구</th><th>특징</th></tr></thead>
+              <tbody>
+                <tr><td><strong>Hazelcast</strong></td><td>Java 오픈소스 / 클러스터 메모리</td></tr>
+                <tr><td><strong>Apache Ignite</strong></td><td>SQL 지원·분산 컴퓨팅</td></tr>
+                <tr><td><strong>Redis Cluster</strong></td><td>경량·고성능·범용</td></tr>
+                <tr><td><strong>GemFire/Geode</strong></td><td>엔터프라이즈급</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="memo">SBA=공간기반아키텍처·튜플스페이스 / 핵심=Processing Unit+Data Grid(IMDG)+Messaging Grid+Deployment Manager / 극한확장성·DB병목제거·메모리기반</div>
+  </div>
+</div>
+
+<!-- P7: 비교·감리 -->
+<div class="pnl" id="p7">
+  <div class="card">
+    <div class="card-h"><div class="ico iy">⚖️</div><h3>13종 패턴 전체 비교 & 상황별 선택 기준 ⭐</h3></div>
+    <table>
+      <thead><tr><th>#</th><th>패턴</th><th>핵심 키워드</th><th>장점</th><th>단점</th><th>적합 상황</th></tr></thead>
+      <tbody>
+        <tr><td><span class="tag tb">①</span></td><td><strong>계층형</strong></td><td>단방향의존·SinkHole</td><td>단순·이해쉬움</td><td>모놀리스한계</td><td>기업 CRUD 시스템</td></tr>
+        <tr><td><span class="tag tb">②</span></td><td><strong>MVC/MVP/MVVM</strong></td><td>관심사분리·UI패턴</td><td>역할 명확</td><td>패턴별 복잡도</td><td>UI 있는 모든 앱</td></tr>
+        <tr><td><span class="tag tg">③</span></td><td><strong>MSA</strong></td><td>독립배포·DB per Svc</td><td>독립확장·장애격리</td><td>분산복잡성</td><td>대규모·다중팀</td></tr>
+        <tr><td><span class="tag tg">④</span></td><td><strong>SOA</strong></td><td>ESB·SOAP·서비스재사용</td><td>레거시통합</td><td>ESB단일장애점</td><td>기업통합·레거시</td></tr>
+        <tr><td><span class="tag ty">⑤</span></td><td><strong>EDA</strong></td><td>Pub/Sub·비동기</td><td>느슨한결합·확장</td><td>순서보장어려움</td><td>실시간·알림</td></tr>
+        <tr><td><span class="tag to">⑥</span></td><td><strong>파이프&필터</strong></td><td>순차변환·필터독립</td><td>재사용·병렬</td><td>공유상태불가</td><td>ETL·컴파일러</td></tr>
+        <tr><td><span class="tag tp">⑦</span></td><td><strong>헥사고날</strong></td><td>포트·어댑터·도메인중심</td><td>기술독립·테스트</td><td>초기복잡</td><td>복잡도메인</td></tr>
+        <tr><td><span class="tag tp">⑧</span></td><td><strong>클린</strong></td><td>의존성안쪽·동심원</td><td>도메인보호</td><td>러닝커브</td><td>장기유지보수</td></tr>
+        <tr><td><span class="tag tr">⑨</span></td><td><strong>CQRS</strong></td><td>읽기쓰기분리</td><td>읽기성능최적화</td><td>최종일관성</td><td>읽기집약시스템</td></tr>
+        <tr><td><span class="tag tm">⑩</span></td><td><strong>이벤트소싱</strong></td><td>이벤트저장·재생</td><td>감사추적·시간여행</td><td>스키마진화</td><td>감사추적필수</td></tr>
+        <tr><td><span class="tag tm" style="background:rgba(244,114,182,.15);color:var(--a7);border-color:rgba(244,114,182,.3);">⑪★</span></td><td><strong>DDD</strong></td><td>BC·유비쿼터스언어·Aggregate</td><td>도메인충실반영</td><td>학습비용높음</td><td>복잡비즈니스규칙</td></tr>
+        <tr><td><span class="tag tc">⑫★</span></td><td><strong>Reactive</strong></td><td>응답성·탄력성·Back-Pressure</td><td>고동시성·낮은지연</td><td>디버깅어려움</td><td>실시간·I/O집약</td></tr>
+        <tr><td><span class="tag to">⑬★</span></td><td><strong>공간기반(SBA)</strong></td><td>IMDG·PU·극한확장성</td><td>DB병목제거·무한확장</td><td>메모리비용</td><td>피크트래픽·금융</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="card">
+    <div class="card-h"><div class="ico ig">🔗</div><h3>패턴 조합 시너지 & 감리 체크포인트 ⭐</h3></div>
+    <div class="acc open" onclick="this.classList.toggle('open')">
+      <div class="acc-h"><div class="acc-title" style="color:var(--a2);">자주 조합되는 패턴 ⭐⭐</div><div class="acc-tgl">▾</div></div>
+      <div class="acc-body">
+        <table>
+          <thead><tr><th>조합</th><th>시너지</th><th>대표 사용</th></tr></thead>
+          <tbody>
+            <tr><td><strong>DDD + 헥사고날 + CQRS ⭐</strong></td><td>BC=서비스경계 / 헥사고날=도메인보호 / CQRS=읽기쓰기분리</td><td>복잡 도메인 마이크로서비스</td></tr>
+            <tr><td><strong>MSA + EDA + DDD ⭐</strong></td><td>BC=서비스경계 / Domain Event=비동기통신 / 느슨한결합</td><td>대규모 이커머스</td></tr>
+            <tr><td><strong>CQRS + 이벤트소싱 ⭐</strong></td><td>Write=이벤트저장 / Read=Projection생성 — 자연스러운 결합</td><td>금융·감사추적</td></tr>
+            <tr><td><strong>Reactive + MSA + EDA</strong></td><td>비동기·논블로킹 / 이벤트기반 / 서비스독립</td><td>실시간 스트리밍</td></tr>
+            <tr><td><strong>SBA + CQRS</strong></td><td>메모리기반 고속 쓰기 / Read Model 별도 최적화</td><td>초고빈도 거래 시스템</td></tr>
+            <tr><td><strong>DDD + 이벤트소싱</strong></td><td>Domain Event를 이벤트 스토어에 영구 기록</td><td>감사추적·이력관리</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div class="acc" onclick="this.classList.toggle('open')">
+      <div class="acc-h"><div class="acc-title" style="color:var(--a4);">감리 체크포인트 ⭐</div><div class="acc-tgl">▾</div></div>
+      <div class="acc-body">
+        <div class="g2">
+          <ul class="il">
+            <li><strong>아키텍처 결정 근거:</strong> 품질 속성 기준 선택 여부</li>
+            <li><strong>DDD:</strong> BC 경계 명확성 / Aggregate Root 준수 / 유비쿼터스 언어 일관성</li>
+            <li><strong>Reactive:</strong> Back-Pressure 처리 방안 / 예외 처리 전략</li>
+            <li><strong>SBA:</strong> 데이터 일관성 보장 방안 / 영속성 동기화 주기</li>
+          </ul>
+          <ul class="il">
+            <li><strong>MSA:</strong> DB per Service 준수 / 서비스 경계 적절성</li>
+            <li><strong>CQRS:</strong> 최종 일관성 허용 범위 / 동기화 지연 관리</li>
+            <li><strong>이벤트소싱:</strong> 이벤트 스키마 버전 관리 방안</li>
+            <li><strong>EDA:</strong> 이벤트 멱등성(Idempotent) 보장 여부</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="memo">DDD+헥사고날+CQRS=복잡도메인의 황금조합 / MSA+EDA+DDD=대규모시스템 / Reactive=I/O집약·고동시성 / SBA=피크트래픽·DB병목제거</div>
+  </div>
+</div>
+
+<!-- P8: QA -->
+<div class="pnl" id="p8">
+  <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:7px;margin-bottom:12px;">
+    <div class="fb-wr" id="fbar" style="margin:0;">
+      <button class="fb on" data-f="all">전체</button>
+      <button class="fb" data-f="계층">🏛️ 계층·MVC</button>
+      <button class="fb" data-f="MSA">🔬 MSA·EDA</button>
+      <button class="fb" data-f="DDD">🏰 DDD</button>
+      <button class="fb" data-f="Reactive">⚡ Reactive</button>
+      <button class="fb" data-f="SBA">🌌 공간기반</button>
+      <button class="fb" data-f="OX">⭕ OX</button>
+    </div>
+    <div class="sc-b">정답: <span id="sc">0</span>/<span id="st">0</span></div>
+  </div>
+  <div id="ql"></div>
+</div>
+
+</div>
+<script>
+document.querySelectorAll('.tab').forEach(t=>t.addEventListener('click',()=>{
+  document.querySelectorAll('.tab,.pnl').forEach(x=>x.classList.remove('on'));
+  t.classList.add('on');document.getElementById(t.dataset.p).classList.add('on');
+}));
+const QA=[
+  {cat:'DDD',diff:'easy',
+   q:'DDD(Domain-Driven Design)에서 "유비쿼터스 언어(Ubiquitous Language)"의 목적으로 가장 적절한 것은?',
+   cs:['모든 시스템이 영어로만 개발되어야 한다는 원칙','도메인 전문가와 개발자가 동일한 용어를 사용하여 소통하고, 코드·문서·대화에서 일관된 언어를 유지한다.','도메인 모델을 UML로만 표현해야 한다는 규칙','개발자가 비즈니스 용어를 배울 필요 없다는 원칙'],ans:1,
+   exp:'<strong>유비쿼터스 언어</strong>: 도메인 전문가와 개발자가 <em>동일한 언어</em>를 사용하는 것이 DDD의 출발점입니다. "주문"·"고객"·"배송"이라는 용어가 대화·문서·코드·DB 스키마에서 동일하게 사용되어야 합니다. 언어의 불일치가 모델과 코드의 불일치를 만들기 때문입니다. Eric Evans(2003)가 강조한 핵심 개념.'},
+  {cat:'DDD',diff:'mid',
+   q:'DDD의 "바운디드 컨텍스트(Bounded Context)"와 MSA의 관계로 가장 적절한 것은?',
+   cs:['바운디드 컨텍스트는 MSA보다 훨씬 큰 단위이므로 서로 관계가 없다.','바운디드 컨텍스트는 도메인 모델이 유효한 경계로, MSA에서 서비스 경계를 결정하는 기준이 된다. 각 BC는 독립 마이크로서비스로 구현될 수 있다.','바운디드 컨텍스트는 하나의 데이터베이스만 가리킨다.','모든 바운디드 컨텍스트는 반드시 하나의 마이크로서비스여야 한다.'],ans:1,
+   exp:'<strong>BC와 MSA 관계</strong>: DDD의 <em>Bounded Context</em>=도메인 모델이 유효한 경계(주문·결제·물류 컨텍스트). MSA의 서비스 경계를 결정할 때 BC를 기준으로 사용합니다. 예) "주문 컨텍스트의 Product"와 "물류 컨텍스트의 Product"는 다른 모델 — 같은 용어지만 다른 의미. BC 경계를 잘 나누면 MSA 서비스 간 결합도가 낮아집니다.'},
+  {cat:'DDD',diff:'mid',
+   q:'DDD에서 "애그리게이트(Aggregate)"와 "애그리게이트 루트(Aggregate Root)"에 대한 설명으로 가장 적절한 것은?',
+   cs:['애그리게이트는 단순히 엔티티들의 집합이며, 외부에서 어느 엔티티에든 직접 접근할 수 있다.','애그리게이트는 일관성 경계를 가진 엔티티 군집이며, 외부에서 애그리게이트 내부에 접근할 때는 반드시 애그리게이트 루트(Root)를 통해서만 접근해야 한다.','애그리게이트 루트는 데이터베이스 테이블의 기본키를 의미한다.','하나의 애그리게이트에는 반드시 하나의 엔티티만 포함되어야 한다.'],ans:1,
+   exp:'<strong>Aggregate & Root</strong>: <em>Aggregate</em>=트랜잭션 일관성 경계 내 엔티티 군집. <em>Aggregate Root</em>=외부 접근의 단일 진입점. 예) Order(Root)와 OrderItem — 외부에서 OrderItem에 직접 접근 금지·반드시 Order를 통해서만 접근. 규칙: ①루트만 외부 참조 가능 ②루트 ID로만 참조 ③루트가 내부 일관성 보장 ④루트 소멸 시 내부도 소멸(합성관계).'},
+  {cat:'DDD',diff:'hard',
+   q:'DDD에서 엔티티(Entity)와 값 객체(Value Object)의 핵심 차이로 가장 적절한 것은?',
+   cs:['엔티티는 데이터베이스에 저장되고, 값 객체는 메모리에만 존재한다.','엔티티는 식별자(ID)로 동일성을 구분하며 라이프사이클을 가지고, 값 객체는 속성의 동등성으로 구분되며 불변(Immutable)이다.','엔티티는 클래스로, 값 객체는 인터페이스로 구현한다.','엔티티는 복잡한 객체이고, 값 객체는 단순한 primitive 타입이다.'],ans:1,
+   exp:'<strong>Entity vs Value Object</strong>: <em>Entity</em>=동일 ID면 속성 달라도 같은 객체 / 라이프사이클 있음 / 가변(Mutable) / 예) Order(ID=100). <em>Value Object</em>=속성이 같으면 동일 / ID 없음 / <em>불변(Immutable)</em> / 복사해서 사용 / 예) Money(100,"KRW")·Address·Color. VO를 불변으로 설계하면 사이드 이펙트가 없어 안전합니다.'},
+  {cat:'Reactive',diff:'mid',
+   q:'Reactive Manifesto(반응형 선언)의 4가지 원칙 중 나머지 3가지 원칙(응답성·탄력성·유연성)의 기반이 되는 핵심 원칙은?',
+   cs:['응답성 (Responsive)','탄력성 (Resilient)','유연성 (Elastic)','메시지 주도 (Message Driven)'],ans:3,
+   exp:'<strong>Reactive 4원칙</strong>: <em>Message Driven(메시지 주도)</em>이 나머지 3원칙의 기반입니다. 비동기 메시지 전달이 있어야 ①응답성(즉시 응답) ②탄력성(장애 격리·전파 차단) ③유연성(독립 확장)을 달성할 수 있습니다. 4원칙: Responsive(응답성)·Resilient(탄력성)·Elastic(유연성)·<em>Message Driven(기반)</em>.'},
+  {cat:'Reactive',diff:'mid',
+   q:'Reactive Streams에서 "Back-Pressure"의 의미로 가장 적절한 것은?',
+   cs:['네트워크 역방향 트래픽을 의미한다.','소비자(Subscriber)가 자신의 처리 속도에 맞게 생산자(Publisher)에게 데이터 요청량을 조절하여 시스템 과부하를 방지하는 메커니즘','데이터베이스의 역압 현상을 의미한다.','HTTP 요청이 서버에서 클라이언트로 역방향으로 전송되는 것'],ans:1,
+   exp:'<strong>Back-Pressure</strong>: Publisher가 데이터를 빠르게 생산할 때 느린 Subscriber가 데이터를 처리하지 못해 메모리가 폭증하는 문제를 방지합니다. Subscriber가 <em>"나는 지금 100개만 처리할 수 있어"</em>라고 Publisher에게 알려 속도를 조절합니다. Project Reactor의 Flux·RxJava의 Observable이 Back-Pressure를 지원합니다.'},
+  {cat:'SBA',diff:'mid',
+   q:'공간 기반 아키텍처(Space-Based Architecture)에서 IMDG(In-Memory Data Grid)의 역할로 가장 적절한 것은?',
+   cs:['영구적인 데이터 저장소로 디스크에 데이터를 저장한다.','모든 처리 단위(Processing Unit) 간에 데이터를 분산하여 메모리 내 공유하며, 복제·파티셔닝으로 데이터 일관성과 고가용성을 제공한다.','HTTP 요청을 라우팅하는 로드 밸런서 역할을 한다.','처리 단위의 자동 확장을 담당한다.'],ans:1,
+   exp:'<strong>IMDG(In-Memory Data Grid)</strong>: SBA의 핵심 — 여러 Processing Unit이 <em>메모리 내 분산 공유 데이터 공간</em>을 통해 상태를 공유합니다. 특징: ①데이터를 메모리에 저장(빠른 접근) ②클러스터 전체에 복제·파티셔닝 ③DB 병목 제거 ④단일 장애점 없음. 대표 도구: Hazelcast·Apache Ignite·Redis Cluster·GemFire.'},
+  {cat:'SBA',diff:'hard',
+   q:'공간 기반 아키텍처(SBA)가 가장 적합한 사용 상황으로 가장 적절한 것은?',
+   cs:['단순한 CRUD 작업이 대부분인 소규모 기업 시스템','일정한 소량의 요청만 처리하는 백오피스 시스템','극단적인 피크 트래픽(명절 쇼핑몰·티켓팅·주식 거래 등)에서 초고속·초확장성이 필요한 시스템','문서 관리 시스템'],ans:2,
+   exp:'<strong>SBA 적합 상황</strong>: SBA는 DB 병목 없이 수평 확장이 가능해 <em>극단적인 피크 트래픽</em>에 최적입니다. 예) 명절 쇼핑몰 폭주·인기 공연 티켓팅·주식 거래·실시간 경매. Processing Unit이 자동으로 확장되고 모든 데이터가 메모리에 있어 응답 속도가 매우 빠릅니다. 단점: 메모리 비용 높음·데이터 영속성 관리 복잡.'},
+  {cat:'MSA',diff:'mid',
+   q:'DDD의 "Anti-Corruption Layer (ACL)"의 역할로 가장 적절한 것은?',
+   cs:['모든 외부 API를 차단하는 보안 계층','외부 시스템이나 다른 바운디드 컨텍스트의 모델이 내부 도메인 모델을 오염시키지 않도록 변환·격리하는 계층','데이터베이스 스키마를 자동으로 생성하는 레이어','마이크로서비스 간 공유 코드를 관리하는 계층'],ans:1,
+   exp:'<strong>ACL (Anti-Corruption Layer)</strong>: 외부 컨텍스트(레거시·타 BC·서드파티)의 모델이 내 도메인을 오염시키지 않도록 <em>변환·격리하는 계층</em>. 예) 레거시 시스템의 "고객" 모델을 내 도메인의 "Customer" 모델로 변환. 헥사고날 아키텍처의 Secondary Adapter와 유사한 개념. Context Map 패턴 중 하나.'},
+  {cat:'Reactive',diff:'mid',type:'ox',
+   q:'Reactive 아키텍처에서 "Elastic(유연성)" 원칙은 요청 부하가 증가하면 시스템 자원을 자동으로 확장(Scale-Out)하고, 부하가 감소하면 자동으로 축소(Scale-In)하는 능력을 의미한다.',ans:true,
+   exp:'<strong>○</strong> — Reactive Manifesto의 <em>Elastic(유연성)</em>: 부하 변화에 따라 처리 능력을 자동으로 늘리거나 줄이는 능력. 병목이 없고 자원 경합이 없는 설계. 클라우드 환경의 Auto-Scaling과 연관됩니다. Kubernetes의 HPA(Horizontal Pod Autoscaler)가 대표적 구현. Reactive 4원칙은 상호 연관되며 Message Driven이 기반입니다.'},
+  {cat:'DDD',diff:'mid',type:'ox',
+   q:'DDD에서 "도메인 이벤트(Domain Event)"는 현재 진행 중인 사건을 나타내므로 이름을 현재형(예: OrderPlacing)으로 작성해야 한다.',ans:false,
+   exp:'<strong>×</strong> — 도메인 이벤트 이름은 <strong>과거형</strong>으로 작성해야 합니다. 도메인 이벤트는 <em>이미 발생한 사건</em>을 나타내기 때문입니다. 올바른 예: OrderPlaced(주문됨)·PaymentCompleted(결제완료)·ItemShipped(배송됨). 현재형 또는 명령형이 아닌 과거형 동사를 사용하는 것이 DDD 컨벤션입니다. 이벤트 소싱과 EDA에서도 동일하게 적용됩니다.'},
+  {cat:'SBA',diff:'easy',type:'ox',
+   q:'공간 기반 아키텍처(SBA)에서 데이터베이스(DB)는 메인 처리 경로에서 제거되며, 영속성은 비동기로 백그라운드에서 처리된다.',ans:true,
+   exp:'<strong>○</strong> — SBA의 핵심 철학: 모든 데이터가 <em>In-Memory Data Grid(IMDG)에 저장</em>되어 메인 처리 경로에서 DB를 거치지 않습니다. DB에 대한 영속성은 비동기 방식으로 백그라운드에서 처리됩니다. 이로 인해 DB 병목이 제거되어 극한 확장성을 달성합니다. 단, 데이터 일관성·영속성 보장을 위한 추가 설계가 필요합니다.'},
+  {cat:'MSA',diff:'hard',type:'ox',
+   q:'DDD의 Aggregate는 여러 트랜잭션에 걸쳐 수정될 수 있으며, 하나의 Aggregate를 수정하면서 동시에 다른 Aggregate도 같은 트랜잭션에서 수정하는 것이 권장된다.',ans:false,
+   exp:'<strong>×</strong> — DDD 원칙: <strong>"하나의 트랜잭션에서 하나의 Aggregate만 수정"</strong>. 여러 Aggregate를 같은 트랜잭션에서 수정하면 결합도가 높아지고 확장성이 떨어집니다. 다른 Aggregate 수정이 필요하면 <em>Domain Event를 발행</em>하고 이벤트 기반으로 처리합니다(최종 일관성). 분산 시스템에서는 Saga 패턴으로 여러 Aggregate에 걸친 비즈니스 프로세스를 처리합니다.'},
+];
+let answered=0,correct=0;
+function renderQ(f){
+  const data=f==='all'?QA:QA.filter(q=>q.cat===f);
+  const list=document.getElementById('ql');list.innerHTML='';
+  answered=0;correct=0;upS();
+  const CATC={'계층':'tb','MSA':'tg','DDD':'tm','Reactive':'tc','SBA':'to','OX':'ty'};
+  const DLC={'easy':'easy 쉬움','mid':'mid 보통','hard':'hard 어려움'};
+  const NL=['①','②','③','④'];
+  if(!data.length){list.innerHTML='<div style="text-align:center;padding:40px;color:var(--mu)">문제 없음</div>';return;}
+  data.forEach((q,i)=>{
+    const gi=QA.indexOf(q);
+    const el=document.createElement('div');el.className='qa';
+    const tc=CATC[q.cat]||'tb';
+    const [dc,dn]=(DLC[q.diff]||'mid 보통').split(' ');
+    if(q.type==='ox'){
+      el.innerHTML=`<div class="qa-hd" onclick="this.closest('.qa').classList.toggle('open')"><div><div class="qa-meta"><span class="qn">Q${String(i+1).padStart(2,'0')}</span><span class="tag ${tc}">${q.cat}</span><span class="diff ${dc}">${dn}</span><span class="tag tg">O/X</span></div><div class="qq">${q.q}</div></div><span class="tgl">▾</span></div>
+      <div class="qa-bd"><div class="ox-wr"><button class="ox" onclick="pickOX(this,true,${gi})">⭕ 옳다</button><button class="ox" onclick="pickOX(this,false,${gi})">❌ 틀리다</button></div><div class="exp" id="ex-${gi}"><div class="exp-t">💡 해설</div>${q.exp}</div></div>`;
+    } else {
+      el.innerHTML=`<div class="qa-hd" onclick="this.closest('.qa').classList.toggle('open')"><div><div class="qa-meta"><span class="qn">Q${String(i+1).padStart(2,'0')}</span><span class="tag ${tc}">${q.cat}</span><span class="diff ${dc}">${dn}</span></div><div class="qq">${q.q}</div></div><span class="tgl">▾</span></div>
+      <div class="qa-bd"><div class="chs">${q.cs.map((c,ci)=>`<div class="ch" data-ci="${ci}" onclick="pickCh(this,${gi})"><span class="cnum">${NL[ci]}</span><span>${c}</span></div>`).join('')}</div><div class="exp" id="ex-${gi}"><div class="exp-t">💡 해설</div>${q.exp}</div></div>`;
+    }
+    list.appendChild(el);
+  });
+}
+function pickCh(el,gi){
+  const bd=el.closest('.qa-bd');if(bd.querySelector('.ok,.ng'))return;
+  const q=QA[gi];
+  bd.querySelectorAll('.ch').forEach((c,i)=>{c.classList.add('lk');if(i===q.ans)c.classList.add('ok');else if(i===parseInt(el.dataset.ci))c.classList.add('ng');});
+  document.getElementById('ex-'+gi).classList.add('show');
+  answered++;if(parseInt(el.dataset.ci)===q.ans)correct++;upS();
+}
+function pickOX(btn,val,gi){
+  const bd=btn.closest('.qa-bd');if(bd.querySelector('.so,.sx'))return;
+  const q=QA[gi];
+  bd.querySelectorAll('.ox').forEach(b=>b.classList.add('lk'));
+  btn.classList.add(val?'so':'sx');
+  if(val!==q.ans){btn.style.opacity='.5';bd.querySelectorAll('.ox')[val?1:0].classList.add(q.ans?'so':'sx');}
+  document.getElementById('ex-'+gi).classList.add('show');
+  answered++;if(val===q.ans)correct++;upS();
+}
+function upS(){document.getElementById('sc').textContent=correct;document.getElementById('st').textContent=answered;}
+document.getElementById('fbar').addEventListener('click',e=>{
+  const b=e.target.closest('.fb');if(!b)return;
+  document.querySelectorAll('.fb').forEach(x=>x.classList.remove('on'));b.classList.add('on');renderQ(b.dataset.f);
+});
+renderQ('all');
+</script>
+</body>
+</html>

@@ -1,0 +1,470 @@
+
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+.wrap{padding:1rem 0;font-family:var(--font-sans)}
+.tabs{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:1.25rem;border-bottom:0.5px solid var(--color-border-tertiary);padding-bottom:.75rem}
+.tab{padding:5px 13px;border-radius:var(--border-radius-md);border:0.5px solid var(--color-border-tertiary);font-size:12px;cursor:pointer;background:transparent;color:var(--color-text-secondary);transition:all .15s}
+.tab.on{background:var(--color-background-secondary);color:var(--color-text-primary);border-color:var(--color-border-secondary);font-weight:500}
+.panel{display:none}.panel.on{display:block}
+.sec{font-size:12px;font-weight:500;color:var(--color-text-secondary);text-transform:uppercase;letter-spacing:.05em;margin:1.5rem 0 .75rem}
+.sec:first-child{margin-top:0}
+.grid2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin-bottom:1.25rem}
+.grid3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin-bottom:1.25rem}
+.card{background:var(--color-background-primary);border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-lg);padding:14px}
+.ct{font-size:13px;font-weight:500;margin-bottom:6px;color:var(--color-text-primary)}
+.cs{font-size:12px;color:var(--color-text-secondary);line-height:1.65}
+.badge{display:inline-block;font-size:11px;padding:2px 8px;border-radius:var(--border-radius-md);margin-bottom:8px}
+.b-blue{background:#E6F1FB;color:#0C447C}
+.b-teal{background:#E1F5EE;color:#085041}
+.b-amber{background:#FAEEDA;color:#633806}
+.b-coral{background:#FAECE7;color:#712B13}
+.b-purple{background:#EEEDFE;color:#3C3489}
+.b-green{background:#EAF3DE;color:#27500A}
+.b-pink{background:#FBEAF0;color:#72243E}
+.b-gray{background:#F1EFE8;color:#444441}
+.tw{border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-lg);overflow:hidden;margin-bottom:1.25rem}
+table{width:100%;border-collapse:collapse;font-size:13px}
+th{background:var(--color-background-secondary);font-weight:500;padding:8px 12px;text-align:left;border-bottom:0.5px solid var(--color-border-tertiary);color:var(--color-text-primary)}
+td{padding:8px 12px;border-bottom:0.5px solid var(--color-border-tertiary);color:var(--color-text-secondary);vertical-align:top;line-height:1.55}
+tr:last-child td{border-bottom:none}
+td:first-child{color:var(--color-text-primary);font-weight:500}
+.tip{border-left:3px solid #1D9E75;border-radius:0 var(--border-radius-md) var(--border-radius-md) 0;padding:10px 14px;font-size:13px;margin-bottom:1rem;line-height:1.65;background:var(--color-background-secondary)}
+.warn{border-left:3px solid #BA7517;border-radius:0 var(--border-radius-md) var(--border-radius-md) 0;padding:10px 14px;font-size:13px;margin-bottom:1rem;line-height:1.65;background:var(--color-background-secondary)}
+.danger{border-left:3px solid #D85A30;border-radius:0 var(--border-radius-md) var(--border-radius-md) 0;padding:10px 14px;font-size:13px;margin-bottom:1rem;line-height:1.65;background:var(--color-background-secondary)}
+.one{background:var(--color-background-secondary);border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-lg);padding:12px 16px;font-size:13px;margin-top:1rem}
+.one span{color:var(--color-text-secondary);font-size:12px;display:block;margin-bottom:4px}
+.qa-item{border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-lg);margin-bottom:8px;overflow:hidden}
+.qa-q{padding:11px 14px;font-size:13px;cursor:pointer;font-weight:500;display:flex;justify-content:space-between;align-items:center;background:var(--color-background-primary);color:var(--color-text-primary)}
+.qa-a{display:none;padding:10px 14px;font-size:13px;color:var(--color-text-secondary);border-top:0.5px solid var(--color-border-tertiary);line-height:1.65;background:var(--color-background-secondary)}
+.qa-a.open{display:block}
+.icon{font-size:12px;color:var(--color-text-tertiary)}
+</style>
+
+<div class="wrap">
+<div class="tabs">
+  <button class="tab on" onclick="sw(0)">개요·비교</button>
+  <button class="tab" onclick="sw(1)">ECB</button>
+  <button class="tab" onclick="sw(2)">CBC</button>
+  <button class="tab" onclick="sw(3)">CFB · OFB</button>
+  <button class="tab" onclick="sw(4)">CTR</button>
+  <button class="tab" onclick="sw(5)">GCM</button>
+  <button class="tab" onclick="sw(6)">기출 Q&A</button>
+</div>
+
+<!-- 탭0 개요 -->
+<div class="panel on" id="p0">
+  <p class="sec">블록 암호 운용 모드란?</p>
+  <div class="card" style="margin-bottom:1.25rem">
+    <div class="cs" style="font-size:13px;line-height:1.8">
+      블록 암호(AES·DES 등)는 <b style="color:var(--color-text-primary)">고정 크기 블록(예: 128비트)</b>만 처리할 수 있음.<br>
+      실제 데이터는 블록보다 길므로, 여러 블록을 <b style="color:var(--color-text-primary)">어떻게 연결·처리할지</b>를 정의하는 것이 운용 모드(Mode of Operation).<br>
+      모드 선택에 따라 보안성·성능·병렬 처리 가능 여부가 달라짐.
+    </div>
+  </div>
+
+  <p class="sec">전체 비교표 (빈출)</p>
+  <div class="tw">
+    <table>
+      <tr><th>모드</th><th>IV 필요</th><th>병렬 암호화</th><th>병렬 복호화</th><th>패딩</th><th>무결성</th><th>권장 여부</th></tr>
+      <tr><td>ECB</td><td>불필요</td><td>가능</td><td>가능</td><td>필요</td><td>없음</td><td style="color:#D85A30;font-weight:500">사용 금지</td></tr>
+      <tr><td>CBC</td><td>필요</td><td>불가</td><td>가능</td><td>필요</td><td>없음</td><td style="color:#BA7517;font-weight:500">주의 사용</td></tr>
+      <tr><td>CFB</td><td>필요</td><td>불가</td><td>가능</td><td>불필요</td><td>없음</td><td style="color:#BA7517;font-weight:500">스트림 대체</td></tr>
+      <tr><td>OFB</td><td>필요</td><td>불가</td><td>불가</td><td>불필요</td><td>없음</td><td style="color:#BA7517;font-weight:500">스트림 대체</td></tr>
+      <tr><td>CTR</td><td>Nonce 필요</td><td>가능</td><td>가능</td><td>불필요</td><td>없음</td><td style="color:#1D9E75;font-weight:500">권장</td></tr>
+      <tr><td>GCM</td><td>Nonce 필요</td><td>가능</td><td>가능</td><td>불필요</td><td>GHASH 태그</td><td style="color:#1D9E75;font-weight:500">강력 권장</td></tr>
+    </table>
+  </div>
+
+  <p class="sec">모드 분류</p>
+  <div class="grid2">
+    <div class="card">
+      <span class="badge b-blue">기밀성 전용 모드</span>
+      <div class="ct">암호화만 제공</div>
+      <div class="cs">ECB, CBC, CFB, OFB, CTR<br>데이터가 변조됐는지 감지 불가. 별도 MAC(HMAC 등) 필요</div>
+    </div>
+    <div class="card">
+      <span class="badge b-teal">인증 암호화 모드 (AEAD)</span>
+      <div class="ct">기밀성 + 무결성 동시 제공</div>
+      <div class="cs">GCM, CCM, EAX<br>암호화와 함께 인증 태그(Authentication Tag) 생성. 변조 감지 가능</div>
+    </div>
+  </div>
+
+  <p class="sec">IV (Initialization Vector) / Nonce 개념</p>
+  <div class="tw">
+    <table>
+      <tr><th>용어</th><th>정의</th><th>요구사항</th></tr>
+      <tr><td>IV (초기화 벡터)</td><td>첫 블록 암호화 시 입력되는 무작위 값. 동일 평문의 반복 패턴 제거</td><td>무작위·예측 불가. 재사용 금지. 비밀 아님(공개 가능)</td></tr>
+      <tr><td>Nonce</td><td>Number used ONCE. CTR·GCM에서 카운터와 결합</td><td>동일 키에서 절대 재사용 금지. GCM에서 재사용은 치명적</td></tr>
+    </table>
+  </div>
+  <div class="one"><span>한 줄 암기</span>ECB=패턴 노출(사용 금지) / CBC=IV+XOR 체인(순차) / CTR=카운터(병렬·스트림화) / GCM=CTR+무결성(AEAD·현재 표준). IV 재사용은 모든 모드에서 치명적</div>
+</div>
+
+<!-- 탭1 ECB -->
+<div class="panel" id="p1">
+  <p class="sec">ECB (Electronic CodeBook) — 전자 코드북</p>
+  <div class="card" style="margin-bottom:1.25rem">
+    <div class="cs" style="font-size:13px;line-height:1.75">
+      가장 단순한 모드. 각 블록을 <b style="color:var(--color-text-primary)">완전히 독립적으로</b> 같은 키로 암호화.<br>
+      동일한 평문 블록 → <b style="color:var(--color-text-primary)">동일한 암호문 블록</b>. 패턴이 암호문에 그대로 드러남.
+    </div>
+  </div>
+
+  <p class="sec">ECB 동작 원리</p>
+  <svg viewBox="0 0 500 130" xmlns="http://www.w3.org/2000/svg" style="width:100%;margin-bottom:1.25rem">
+    <g font-family="var(--font-sans)" font-size="11">
+      <rect x="10" y="10" width="80" height="28" rx="4" fill="#E6F1FB" stroke="#378ADD" stroke-width="0.5"/>
+      <text x="50" y="29" text-anchor="middle" fill="#0C447C" font-weight="500">평문 블록 1</text>
+      <rect x="10" y="60" width="80" height="28" rx="4" fill="#E6F1FB" stroke="#378ADD" stroke-width="0.5"/>
+      <text x="50" y="79" text-anchor="middle" fill="#0C447C" font-weight="500">평문 블록 2</text>
+      <rect x="10" y="110" width="80" height="16" rx="4" fill="#F1EFE8" stroke="#888780" stroke-width="0.5"/>
+      <text x="50" y="122" text-anchor="middle" fill="#444441">평문 블록 n</text>
+
+      <rect x="130" y="10" width="70" height="28" rx="4" fill="#FAEEDA" stroke="#BA7517" stroke-width="0.5"/>
+      <text x="165" y="29" text-anchor="middle" fill="#633806" font-weight="500">블록 암호(키)</text>
+      <rect x="130" y="60" width="70" height="28" rx="4" fill="#FAEEDA" stroke="#BA7517" stroke-width="0.5"/>
+      <text x="165" y="79" text-anchor="middle" fill="#633806" font-weight="500">블록 암호(키)</text>
+      <rect x="130" y="110" width="70" height="16" rx="4" fill="#FAEEDA" stroke="#BA7517" stroke-width="0.5"/>
+      <text x="165" y="122" text-anchor="middle" fill="#633806">블록 암호(키)</text>
+
+      <rect x="240" y="10" width="80" height="28" rx="4" fill="#FAECE7" stroke="#D85A30" stroke-width="0.5"/>
+      <text x="280" y="29" text-anchor="middle" fill="#712B13" font-weight="500">암호문 블록 1</text>
+      <rect x="240" y="60" width="80" height="28" rx="4" fill="#FAECE7" stroke="#D85A30" stroke-width="0.5"/>
+      <text x="280" y="79" text-anchor="middle" fill="#712B13" font-weight="500">암호문 블록 2</text>
+      <rect x="240" y="110" width="80" height="16" rx="4" fill="#F1EFE8" stroke="#888780" stroke-width="0.5"/>
+      <text x="280" y="122" text-anchor="middle" fill="#444441">암호문 블록 n</text>
+
+      <line x1="90" y1="24" x2="130" y2="24" stroke="var(--color-border-secondary)" stroke-width="0.8"/>
+      <line x1="200" y1="24" x2="240" y2="24" stroke="var(--color-border-secondary)" stroke-width="0.8"/>
+      <line x1="90" y1="74" x2="130" y2="74" stroke="var(--color-border-secondary)" stroke-width="0.8"/>
+      <line x1="200" y1="74" x2="240" y2="74" stroke="var(--color-border-secondary)" stroke-width="0.8"/>
+
+      <text x="390" y="24" fill="#D85A30" font-size="11">평문1=평문2이면</text>
+      <text x="390" y="38" fill="#D85A30" font-size="11">암호문1=암호문2</text>
+      <text x="390" y="55" fill="#D85A30" font-size="11">→ 패턴 노출!</text>
+    </g>
+  </svg>
+
+  <p class="sec">ECB의 치명적 취약점</p>
+  <div class="danger">동일한 평문 블록이 동일한 암호문 블록으로 변환됨 → 패턴(반복)이 그대로 노출. 대표 사례: "ECB 펭귄" — 비트맵 이미지를 ECB로 암호화해도 윤곽선이 그대로 보임. 빈도 분석·패턴 공격에 취약. 실무·감리에서 ECB 사용은 즉각 지적 사항.</div>
+
+  <p class="sec">ECB 특성 요약</p>
+  <div class="tw">
+    <table>
+      <tr><th>항목</th><th>내용</th></tr>
+      <tr><td>IV</td><td>불필요 (블록 독립 처리)</td></tr>
+      <tr><td>병렬 처리</td><td>암호화·복호화 모두 가능 (블록 독립)</td></tr>
+      <tr><td>오류 전파</td><td>없음 (한 블록 오류가 다른 블록에 영향 없음)</td></tr>
+      <tr><td>패딩</td><td>필요 (마지막 블록이 블록 크기 미만이면 패딩)</td></tr>
+      <tr><td>사용 적합성</td><td>사실상 사용 금지. 단일 블록(128비트 이하) 암호화에만 제한적 허용</td></tr>
+    </table>
+  </div>
+  <div class="one"><span>한 줄 암기</span>ECB = 블록 독립 암호화. 동일 평문 → 동일 암호문 → 패턴 노출. "ECB 펭귄" = ECB 취약점 상징. 실무·감리에서 ECB는 사용 금지</div>
+</div>
+
+<!-- 탭2 CBC -->
+<div class="panel" id="p2">
+  <p class="sec">CBC (Cipher Block Chaining) — 암호 블록 체이닝</p>
+  <div class="card" style="margin-bottom:1.25rem">
+    <div class="cs" style="font-size:13px;line-height:1.75">
+      각 평문 블록을 암호화하기 전에 <b style="color:var(--color-text-primary)">이전 암호문 블록과 XOR</b>하는 체이닝 방식.<br>
+      첫 번째 블록은 IV(초기화 벡터)와 XOR. 동일 평문이어도 IV가 다르면 다른 암호문 생성.<br>
+      과거 가장 널리 사용된 모드. 현재는 패딩 오라클 공격으로 GCM에 자리를 내줌.
+    </div>
+  </div>
+
+  <p class="sec">CBC 동작 원리</p>
+  <svg viewBox="0 0 520 110" xmlns="http://www.w3.org/2000/svg" style="width:100%;margin-bottom:1.25rem">
+    <g font-family="var(--font-sans)" font-size="10">
+      <rect x="10" y="10" width="60" height="24" rx="3" fill="#E1F5EE" stroke="#1D9E75" stroke-width="0.5"/>
+      <text x="40" y="26" text-anchor="middle" fill="#085041" font-weight="500">IV</text>
+
+      <rect x="10" y="60" width="60" height="24" rx="3" fill="#E6F1FB" stroke="#378ADD" stroke-width="0.5"/>
+      <text x="40" y="76" text-anchor="middle" fill="#0C447C" font-weight="500">평문 1</text>
+
+      <text x="80" y="76" text-anchor="middle" fill="var(--color-text-secondary)" font-size="14">⊕</text>
+
+      <line x1="40" y1="34" x2="40" y2="48" stroke="#1D9E75" stroke-width="0.8"/>
+      <line x1="40" y1="48" x2="80" y2="48" stroke="#1D9E75" stroke-width="0.8"/>
+      <line x1="80" y1="48" x2="80" y2="62" stroke="#1D9E75" stroke-width="0.8"/>
+      <line x1="70" y1="72" x2="80" y2="72" stroke="#378ADD" stroke-width="0.8"/>
+
+      <rect x="100" y="58" width="60" height="24" rx="3" fill="#FAEEDA" stroke="#BA7517" stroke-width="0.5"/>
+      <text x="130" y="74" text-anchor="middle" fill="#633806" font-weight="500">블록암호(키)</text>
+
+      <rect x="180" y="58" width="60" height="24" rx="3" fill="#FAECE7" stroke="#D85A30" stroke-width="0.5"/>
+      <text x="210" y="74" text-anchor="middle" fill="#712B13" font-weight="500">암호문 1</text>
+
+      <line x1="80" y1="72" x2="100" y2="72" stroke="var(--color-border-secondary)" stroke-width="0.8"/>
+      <line x1="160" y1="72" x2="180" y2="72" stroke="var(--color-border-secondary)" stroke-width="0.8"/>
+
+      <line x1="210" y1="58" x2="210" y2="44" stroke="#D85A30" stroke-width="0.8"/>
+      <line x1="210" y1="44" x2="270" y2="44" stroke="#D85A30" stroke-width="0.8"/>
+      <line x1="270" y1="44" x2="270" y2="62" stroke="#D85A30" stroke-width="0.8"/>
+
+      <rect x="240" y="60" width="60" height="24" rx="3" fill="#E6F1FB" stroke="#378ADD" stroke-width="0.5"/>
+      <text x="270" y="76" text-anchor="middle" fill="#0C447C" font-weight="500">평문 2</text>
+      <text x="248" y="76" text-anchor="middle" fill="var(--color-text-secondary)" font-size="14">⊕</text>
+      <line x1="240" y1="72" x2="248" y2="72" stroke="#378ADD" stroke-width="0.8"/>
+
+      <rect x="310" y="58" width="60" height="24" rx="3" fill="#FAEEDA" stroke="#BA7517" stroke-width="0.5"/>
+      <text x="340" y="74" text-anchor="middle" fill="#633806" font-weight="500">블록암호(키)</text>
+
+      <rect x="390" y="58" width="60" height="24" rx="3" fill="#FAECE7" stroke="#D85A30" stroke-width="0.5"/>
+      <text x="420" y="74" text-anchor="middle" fill="#712B13" font-weight="500">암호문 2</text>
+
+      <line x1="248" y1="72" x2="310" y2="72" stroke="var(--color-border-secondary)" stroke-width="0.8"/>
+      <line x1="370" y1="72" x2="390" y2="72" stroke="var(--color-border-secondary)" stroke-width="0.8"/>
+
+      <text x="460" y="70" fill="var(--color-text-tertiary)" font-size="10">→ ···</text>
+
+      <text x="10" y="100" fill="var(--color-text-secondary)" font-size="10">* 암호화: 순차(직렬) | 복호화: 병렬 가능 (이전 암호문 블록 참조)</text>
+    </g>
+  </svg>
+
+  <p class="sec">CBC 특성 및 취약점</p>
+  <div class="tw">
+    <table>
+      <tr><th>항목</th><th>내용</th></tr>
+      <tr><td>IV</td><td>필수. 무작위·예측 불가해야 함. 재사용 금지</td></tr>
+      <tr><td>암호화 병렬</td><td>불가 (이전 암호문 블록 필요 → 순차 처리)</td></tr>
+      <tr><td>복호화 병렬</td><td>가능 (각 블록 복호화 시 이전 암호문만 필요)</td></tr>
+      <tr><td>오류 전파</td><td>암호문 1블록 오류 → 해당 블록 + 다음 블록 2개 영향</td></tr>
+      <tr><td>패딩</td><td>필요 (PKCS#7 등)</td></tr>
+      <tr><td>주요 취약점</td><td>패딩 오라클 공격(POODLE·BEAST), IV 예측 가능 시 선택 평문 공격</td></tr>
+    </table>
+  </div>
+  <div class="warn">패딩 오라클 공격: 복호화 시 패딩 오류 응답으로 평문을 역산. TLS 1.0의 CBC+RC4 취약점(BEAST)과 SSL 3.0의 POODLE 공격 원인. TLS 1.3에서 CBC 모드 제거됨</div>
+  <div class="one"><span>한 줄 암기</span>CBC = 이전 암호문과 XOR 후 암호화. 암호화는 순차, 복호화는 병렬. 오류 전파 2블록. 패딩 오라클(POODLE·BEAST) 취약점 → TLS 1.3에서 퇴출</div>
+</div>
+
+<!-- 탭3 CFB·OFB -->
+<div class="panel" id="p3">
+  <p class="sec">CFB (Cipher FeedBack) — 암호 피드백</p>
+  <div class="card" style="margin-bottom:1rem">
+    <div class="cs" style="font-size:13px;line-height:1.75">
+      이전 암호문을 블록 암호에 입력해 <b style="color:var(--color-text-primary)">키스트림을 생성</b>하고 평문과 XOR.<br>
+      블록 암호를 <b style="color:var(--color-text-primary)">스트림 암호처럼</b> 동작시킴. 패딩 불필요.
+    </div>
+  </div>
+  <div class="tw">
+    <table>
+      <tr><th>항목</th><th>CFB</th></tr>
+      <tr><td>IV</td><td>필요. 무작위</td></tr>
+      <tr><td>암호화 병렬</td><td>불가 (이전 암호문 필요)</td></tr>
+      <tr><td>복호화 병렬</td><td>가능</td></tr>
+      <tr><td>패딩</td><td>불필요 (임의 길이 처리)</td></tr>
+      <tr><td>오류 전파</td><td>1블록 오류 → 해당+다음 블록 영향</td></tr>
+      <tr><td>특징</td><td>실시간 데이터 스트림 암호화 적합. 세그먼트 크기(CFB-8, CFB-128) 설정 가능</td></tr>
+    </table>
+  </div>
+
+  <p class="sec">OFB (Output FeedBack) — 출력 피드백</p>
+  <div class="card" style="margin-bottom:1rem">
+    <div class="cs" style="font-size:13px;line-height:1.75">
+      블록 암호의 출력(키스트림)을 다시 입력으로 피드백. 평문·암호문과 <b style="color:var(--color-text-primary)">독립적인 키스트림</b> 생성.<br>
+      키스트림을 미리 생성 가능. 비트 반전 공격에 취약(무결성 없음).
+    </div>
+  </div>
+  <div class="tw">
+    <table>
+      <tr><th>항목</th><th>OFB</th></tr>
+      <tr><td>IV</td><td>필요. 동일 키에서 재사용 절대 금지</td></tr>
+      <tr><td>암호화 병렬</td><td>불가 (키스트림이 순차 생성)</td></tr>
+      <tr><td>복호화 병렬</td><td>불가</td></tr>
+      <tr><td>패딩</td><td>불필요</td></tr>
+      <tr><td>오류 전파</td><td>없음 (비트 오류가 해당 비트에만 영향)</td></tr>
+      <tr><td>특징</td><td>위성·노이즈 채널에 적합. 키스트림 사전 생성 가능. 비트 반전 공격 취약</td></tr>
+    </table>
+  </div>
+
+  <p class="sec">CFB vs OFB 핵심 차이</p>
+  <div class="grid2">
+    <div class="card">
+      <span class="badge b-blue">CFB</span>
+      <div class="cs">피드백 입력: 이전 <b style="color:var(--color-text-primary)">암호문</b><br>오류 전파: 있음(2블록)<br>복호화: 병렬 가능</div>
+    </div>
+    <div class="card">
+      <span class="badge b-teal">OFB</span>
+      <div class="cs">피드백 입력: 블록 암호 <b style="color:var(--color-text-primary)">출력(키스트림)</b><br>오류 전파: 없음<br>복호화: 병렬 불가</div>
+    </div>
+  </div>
+  <div class="one"><span>한 줄 암기</span>CFB=암호문 피드백(복호화 병렬가능·오류전파有) / OFB=키스트림 피드백(완전 순차·오류전파無). 둘 다 스트림 암호화·패딩 불필요</div>
+</div>
+
+<!-- 탭4 CTR -->
+<div class="panel" id="p4">
+  <p class="sec">CTR (CounTeR) — 카운터 모드</p>
+  <div class="card" style="margin-bottom:1.25rem">
+    <div class="cs" style="font-size:13px;line-height:1.75">
+      Nonce(랜덤값) + 카운터(0,1,2…)를 블록 암호로 암호화해 <b style="color:var(--color-text-primary)">키스트림 생성</b>, 평문과 XOR.<br>
+      블록이 완전히 <b style="color:var(--color-text-primary)">독립적</b> → 암호화·복호화 모두 병렬 처리 가능.<br>
+      스트림 암호처럼 동작. 패딩 불필요. 현재 고성능 암호화의 기반.
+    </div>
+  </div>
+
+  <p class="sec">CTR 동작 원리</p>
+  <svg viewBox="0 0 520 110" xmlns="http://www.w3.org/2000/svg" style="width:100%;margin-bottom:1.25rem">
+    <g font-family="var(--font-sans)" font-size="10">
+      <rect x="10" y="10" width="70" height="22" rx="3" fill="#E1F5EE" stroke="#1D9E75" stroke-width="0.5"/>
+      <text x="45" y="25" text-anchor="middle" fill="#085041" font-weight="500">Nonce‖카운터 0</text>
+      <rect x="10" y="50" width="70" height="22" rx="3" fill="#FAEEDA" stroke="#BA7517" stroke-width="0.5"/>
+      <text x="45" y="65" text-anchor="middle" fill="#633806" font-weight="500">블록암호(키)</text>
+      <rect x="10" y="90" width="70" height="16" rx="3" fill="#EEEDFE" stroke="#534AB7" stroke-width="0.5"/>
+      <text x="45" y="102" text-anchor="middle" fill="#3C3489">키스트림 0</text>
+      <line x1="45" y1="32" x2="45" y2="50" stroke="#1D9E75" stroke-width="0.8"/>
+      <line x1="45" y1="72" x2="45" y2="90" stroke="#534AB7" stroke-width="0.8"/>
+
+      <rect x="110" y="10" width="70" height="22" rx="3" fill="#E1F5EE" stroke="#1D9E75" stroke-width="0.5"/>
+      <text x="145" y="25" text-anchor="middle" fill="#085041" font-weight="500">Nonce‖카운터 1</text>
+      <rect x="110" y="50" width="70" height="22" rx="3" fill="#FAEEDA" stroke="#BA7517" stroke-width="0.5"/>
+      <text x="145" y="65" text-anchor="middle" fill="#633806" font-weight="500">블록암호(키)</text>
+      <rect x="110" y="90" width="70" height="16" rx="3" fill="#EEEDFE" stroke="#534AB7" stroke-width="0.5"/>
+      <text x="145" y="102" text-anchor="middle" fill="#3C3489">키스트림 1</text>
+      <line x1="145" y1="32" x2="145" y2="50" stroke="#1D9E75" stroke-width="0.8"/>
+      <line x1="145" y1="72" x2="145" y2="90" stroke="#534AB7" stroke-width="0.8"/>
+
+      <rect x="210" y="10" width="70" height="22" rx="3" fill="#E1F5EE" stroke="#1D9E75" stroke-width="0.5"/>
+      <text x="245" y="25" text-anchor="middle" fill="#085041" font-weight="500">Nonce‖카운터 2</text>
+      <rect x="210" y="50" width="70" height="22" rx="3" fill="#FAEEDA" stroke="#BA7517" stroke-width="0.5"/>
+      <text x="245" y="65" text-anchor="middle" fill="#633806" font-weight="500">블록암호(키)</text>
+      <rect x="210" y="90" width="70" height="16" rx="3" fill="#EEEDFE" stroke="#534AB7" stroke-width="0.5"/>
+      <text x="245" y="102" text-anchor="middle" fill="#3C3489">키스트림 2</text>
+      <line x1="245" y1="32" x2="245" y2="50" stroke="#1D9E75" stroke-width="0.8"/>
+      <line x1="245" y1="72" x2="245" y2="90" stroke="#534AB7" stroke-width="0.8"/>
+
+      <text x="295" y="65" fill="var(--color-text-tertiary)" font-size="12">···</text>
+
+      <text x="330" y="20" fill="var(--color-text-secondary)">각 블록 독립 → 완전 병렬 처리</text>
+      <text x="330" y="38" fill="var(--color-text-secondary)">키스트림 XOR 평문 = 암호문</text>
+      <text x="330" y="56" fill="var(--color-text-secondary)">오류 전파 없음</text>
+      <text x="330" y="74" fill="#1D9E75" font-weight="500">패딩 불필요</text>
+    </g>
+  </svg>
+
+  <p class="sec">CTR 특성</p>
+  <div class="tw">
+    <table>
+      <tr><th>항목</th><th>내용</th></tr>
+      <tr><td>Nonce</td><td>필수. 동일 키에서 카운터+Nonce 조합 절대 재사용 금지. 재사용 시 키스트림 노출</td></tr>
+      <tr><td>암호화 병렬</td><td>가능 (각 블록 독립. GPU·멀티코어 활용)</td></tr>
+      <tr><td>복호화 병렬</td><td>가능</td></tr>
+      <tr><td>패딩</td><td>불필요 (임의 길이 처리. 마지막 블록 일부만 사용)</td></tr>
+      <tr><td>오류 전파</td><td>없음 (비트 오류가 해당 비트에만 영향)</td></tr>
+      <tr><td>랜덤 접근</td><td>가능 (특정 블록만 암호화·복호화. 파일 임의 위치 접근에 유리)</td></tr>
+    </table>
+  </div>
+
+  <p class="sec">CTR vs CBC 성능 비교</p>
+  <div class="tip">CTR은 병렬 처리로 CBC 대비 암호화 속도가 수 배 빠름. AES-NI(하드웨어 가속) + CTR은 현대 고성능 암호화의 표준 조합. 단, 무결성 보장 없음 → GCM(CTR + GHASH)으로 보완</div>
+  <div class="one"><span>한 줄 암기</span>CTR = Nonce + 카운터 → 키스트림 → XOR. 완전 병렬(암호화·복호화 모두), 패딩 불필요, 랜덤 접근 가능. Nonce 재사용은 치명적(키스트림 동일 → XOR로 평문 노출)</div>
+</div>
+
+<!-- 탭5 GCM -->
+<div class="panel" id="p5">
+  <p class="sec">GCM (Galois/Counter Mode) — 갈루아 카운터 모드</p>
+  <div class="card" style="margin-bottom:1.25rem">
+    <div class="cs" style="font-size:13px;line-height:1.8">
+      <b style="color:var(--color-text-primary)">CTR 모드 + GHASH(갈루아 필드 MAC)</b>의 결합.<br>
+      기밀성(CTR 암호화) + 무결성·인증(Authentication Tag) 동시 제공 → <b style="color:var(--color-text-primary)">AEAD(Authenticated Encryption with Associated Data)</b>.<br>
+      TLS 1.2/1.3, IPSec, SSH 등 현대 보안 프로토콜의 표준 암호 스위트.
+    </div>
+  </div>
+
+  <p class="sec">GCM 동작 구조</p>
+  <svg viewBox="0 0 500 140" xmlns="http://www.w3.org/2000/svg" style="width:100%;margin-bottom:1.25rem">
+    <g font-family="var(--font-sans)" font-size="10">
+      <rect x="10" y="10" width="90" height="22" rx="3" fill="#E1F5EE" stroke="#1D9E75" stroke-width="0.5"/>
+      <text x="55" y="25" text-anchor="middle" fill="#085041" font-weight="500">Nonce‖카운터</text>
+
+      <rect x="10" y="50" width="90" height="22" rx="3" fill="#FAEEDA" stroke="#BA7517" stroke-width="0.5"/>
+      <text x="55" y="65" text-anchor="middle" fill="#633806" font-weight="500">AES 블록 암호</text>
+
+      <rect x="10" y="90" width="90" height="22" rx="3" fill="#EEEDFE" stroke="#534AB7" stroke-width="0.5"/>
+      <text x="55" y="105" text-anchor="middle" fill="#3C3489">키스트림</text>
+
+      <text x="115" y="105" text-anchor="middle" fill="var(--color-text-secondary)" font-size="14">⊕</text>
+
+      <rect x="130" y="90" width="70" height="22" rx="3" fill="#E6F1FB" stroke="#378ADD" stroke-width="0.5"/>
+      <text x="165" y="105" text-anchor="middle" fill="#0C447C" font-weight="500">평문 블록</text>
+
+      <rect x="230" y="90" width="70" height="22" rx="3" fill="#FAECE7" stroke="#D85A30" stroke-width="0.5"/>
+      <text x="265" y="105" text-anchor="middle" fill="#712B13" font-weight="500">암호문 블록</text>
+
+      <line x1="55" y1="32" x2="55" y2="50" stroke="#1D9E75" stroke-width="0.8"/>
+      <line x1="55" y1="72" x2="55" y2="90" stroke="#534AB7" stroke-width="0.8"/>
+      <line x1="100" y1="101" x2="115" y2="101" stroke="var(--color-border-secondary)" stroke-width="0.8"/>
+      <line x1="130" y1="101" x2="115" y2="101" stroke="#378ADD" stroke-width="0.8"/>
+      <line x1="115" y1="108" x2="115" y2="115" stroke="var(--color-border-secondary)" stroke-width="0.8"/>
+      <line x1="200" y1="101" x2="230" y2="101" stroke="var(--color-border-secondary)" stroke-width="0.8"/>
+
+      <line x1="265" y1="90" x2="265" y2="75" stroke="#D85A30" stroke-width="0.8"/>
+      <line x1="265" y1="75" x2="350" y2="75" stroke="#D85A30" stroke-width="0.8"/>
+      <line x1="350" y1="75" x2="350" y2="50" stroke="#D85A30" stroke-width="0.8"/>
+
+      <rect x="310" y="30" width="100" height="22" rx="3" fill="#EAF3DE" stroke="#3B6D11" stroke-width="0.5"/>
+      <text x="360" y="45" text-anchor="middle" fill="#27500A" font-weight="500">GHASH (갈루아 MAC)</text>
+
+      <rect x="310" y="10" width="80" height="18" rx="3" fill="#F1EFE8" stroke="#888780" stroke-width="0.5"/>
+      <text x="350" y="23" text-anchor="middle" fill="#444441">AAD (추가 인증 데이터)</text>
+      <line x1="350" y1="28" x2="350" y2="30" stroke="#888780" stroke-width="0.8"/>
+
+      <rect x="420" y="30" width="70" height="22" rx="3" fill="#FBEAF0" stroke="#993556" stroke-width="0.5"/>
+      <text x="455" y="45" text-anchor="middle" fill="#72243E" font-weight="500">Auth Tag (128bit)</text>
+      <line x1="410" y1="41" x2="420" y2="41" stroke="#3B6D11" stroke-width="0.8"/>
+
+      <text x="10" y="128" fill="var(--color-text-secondary)">CTR = 기밀성(암호화) + GHASH = 무결성(변조 감지). 두 기능을 하나의 패스로 처리</text>
+    </g>
+  </svg>
+
+  <p class="sec">GCM 핵심 개념</p>
+  <div class="tw">
+    <table>
+      <tr><th>개념</th><th>설명</th></tr>
+      <tr><td>AEAD</td><td>Authenticated Encryption with Associated Data. 암호화+인증을 하나로. GCM이 대표 구현</td></tr>
+      <tr><td>Authentication Tag</td><td>128비트 MAC. 수신자가 복호화 전 태그 검증 → 변조 감지. 검증 실패 시 복호화 거부</td></tr>
+      <tr><td>AAD (추가 인증 데이터)</td><td>암호화는 안 하지만 무결성은 보호해야 하는 데이터(IP 헤더·패킷 번호 등). 태그 계산에 포함</td></tr>
+      <tr><td>Nonce (96비트)</td><td>GCM 표준 Nonce 크기. 동일 키에서 Nonce 재사용 시 인증 키가 노출 → 치명적</td></tr>
+    </table>
+  </div>
+
+  <p class="sec">GCM Nonce 재사용의 치명성</p>
+  <div class="danger">GCM에서 동일 (Key, Nonce) 쌍으로 두 번 암호화하면 GHASH 인증 키가 노출되어 공격자가 임의 태그를 위조할 수 있음. 기밀성뿐 아니라 무결성(AEAD의 핵심 장점)까지 붕괴. Nonce를 순차 카운터 또는 암호학적 난수로 관리하고, 절대 재사용 금지</div>
+
+  <p class="sec">GCM 적용 현황</p>
+  <div class="grid3">
+    <div class="card"><span class="badge b-teal">TLS 1.2/1.3</span><div class="cs">AES-128-GCM, AES-256-GCM이 표준 암호 스위트. TLS 1.3에서 CBC 제거 후 GCM·CCM·ChaCha20-Poly1305만 허용</div></div>
+    <div class="card"><span class="badge b-blue">IPSec·SSH</span><div class="cs">터널 암호화에 AES-GCM 적용. 고성능 VPN 게이트웨이에서 AES-NI+GCM 하드웨어 가속</div></div>
+    <div class="card"><span class="badge b-purple">저장 데이터 암호화</span><div class="cs">AWS KMS, HashiCorp Vault 등 키 관리 시스템의 기본 암호화 모드로 AES-256-GCM 채택</div></div>
+  </div>
+  <div class="one"><span>한 줄 암기</span>GCM = CTR(암호화·병렬) + GHASH(무결성·Auth Tag). AEAD의 대표 구현. TLS 1.3 표준. Nonce 재사용 = 인증 키 노출 → 무결성 붕괴. 현재 사실상 최강 모드</div>
+</div>
+
+<!-- 탭6 기출 Q&A -->
+<div class="panel" id="p6">
+  <p class="sec">기출 예상 Q&A</p>
+  <div class="qa-item"><div class="qa-q" onclick="tog(this)">ECB 모드의 취약점을 설명하고 왜 사용하면 안 되는가? <span class="icon">▾</span></div><div class="qa-a">ECB는 동일한 평문 블록이 항상 동일한 암호문 블록으로 변환됨. 암호문에서 패턴(반복)이 그대로 노출되어 평문 구조를 추론 가능. 대표 사례가 "ECB 펭귄" — 비트맵 이미지를 ECB로 암호화해도 이미지 윤곽이 보임. 빈도 분석·블록 치환 공격에 취약. 감리 관점: ECB 사용 발견 시 즉각 지적, AES-CBC 또는 AES-GCM으로 교체 권고.</div></div>
+
+  <div class="qa-item"><div class="qa-q" onclick="tog(this)">CBC 모드의 패딩 오라클 공격이란? <span class="icon">▾</span></div><div class="qa-a">CBC 복호화 시 패딩 오류 여부를 오류 메시지나 응답 시간으로 구분할 수 있을 때, 공격자가 암호문 블록을 조작하며 반복 시도해 패딩 검증 성공/실패 피드백으로 평문을 1바이트씩 역산하는 공격. SSL 3.0의 POODLE, TLS 1.0의 BEAST 공격이 이 원리 기반. 대응: 패딩 오류와 MAC 오류를 동일한 메시지로 응답(오류 구분 금지), MAC-then-Encrypt 대신 Encrypt-then-MAC 또는 AEAD(GCM) 사용.</div></div>
+
+  <div class="qa-item"><div class="qa-q" onclick="tog(this)">CTR 모드에서 Nonce 재사용이 왜 치명적인가? <span class="icon">▾</span></div><div class="qa-a">CTR에서 동일 (Key, Nonce) 쌍으로 두 평문 P1, P2를 암호화하면 C1=P1⊕KS, C2=P2⊕KS(KS는 같은 키스트림). C1⊕C2=P1⊕P2가 되어 두 암호문을 XOR하면 키스트림이 제거된 평문 XOR이 노출됨. 공격자가 P1을 알면 P2를 즉시 복원 가능. 이를 "Two-Time Pad" 공격이라 함(One-Time Pad 재사용과 동일 원리). GCM에서는 Nonce 재사용 시 GHASH 인증 키까지 노출되어 무결성도 붕괴.</div></div>
+
+  <div class="qa-item"><div class="qa-q" onclick="tog(this)">GCM의 AEAD란 무엇이며 Authentication Tag의 역할은? <span class="icon">▾</span></div><div class="qa-a">AEAD(Authenticated Encryption with Associated Data)는 기밀성(암호화)과 무결성·인증을 하나의 알고리즘으로 동시에 제공하는 암호화 방식. GCM은 CTR 모드로 암호화(기밀성)하고, GHASH로 Authentication Tag(128비트)를 생성(무결성·인증). 수신자는 복호화 전 태그를 검증해 데이터 변조 여부를 확인. 태그 불일치 시 복호화 거부. AAD(추가 인증 데이터)는 암호화 없이 태그 계산에만 포함되어 헤더 정보 등의 무결성도 보호.</div></div>
+
+  <div class="qa-item"><div class="qa-q" onclick="tog(this)">각 운용 모드의 병렬 처리 가능 여부와 이유를 설명하시오 <span class="icon">▾</span></div><div class="qa-a">ECB: 암·복호화 모두 병렬 가능. 블록이 완전 독립. CBC: 암호화는 이전 암호문 블록이 필요해 순차(직렬). 복호화는 이전 암호문을 바로 참조 가능해 병렬 가능. CFB: 암호화 순차, 복호화 병렬. OFB: 암·복호화 모두 순차(키스트림이 순차 생성). CTR·GCM: 암·복호화 모두 병렬 가능. 카운터로 각 블록의 키스트림을 독립 생성. 성능 측면에서 CTR·GCM이 가장 유리.</div></div>
+
+  <div class="qa-item"><div class="qa-q" onclick="tog(this)">TLS 1.3에서 CBC 모드를 제거하고 GCM을 선택한 이유는? <span class="icon">▾</span></div><div class="qa-a">CBC 모드는 패딩 오라클 공격(POODLE·BEAST·Lucky13 등) 취약점으로 인해 안전한 구현이 어렵고, 별도 MAC을 추가해도 MAC-then-Encrypt 방식에서 취약점이 남음. GCM은 AEAD로 암호화와 인증을 단일 패스로 처리해 패딩 오라클 공격 불가. CTR 기반 병렬 처리로 성능 우수. Authentication Tag로 무결성 보장. TLS 1.3은 보안성이 검증된 AEAD(AES-128-GCM, AES-256-GCM, ChaCha20-Poly1305)만 허용하고 CBC·RC4·DES 등 취약 모드를 완전 제거.</div></div>
+</div>
+</div>
+
+<script>
+function sw(i){
+  document.querySelectorAll('.tab').forEach((t,j)=>t.classList.toggle('on',i===j));
+  document.querySelectorAll('.panel').forEach((p,j)=>p.classList.toggle('on',i===j));
+}
+function tog(el){
+  const a=el.nextElementSibling;
+  a.classList.toggle('open');
+  el.querySelector('.icon').textContent=a.classList.contains('open')?'▴':'▾';
+}
+</script>

@@ -1,0 +1,381 @@
+
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+.wrap{padding:1rem 0;font-family:var(--font-sans)}
+.tabs{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:1.25rem;border-bottom:0.5px solid var(--color-border-tertiary);padding-bottom:.75rem}
+.tab{padding:5px 14px;border-radius:var(--border-radius-md);border:0.5px solid var(--color-border-tertiary);font-size:13px;cursor:pointer;background:transparent;color:var(--color-text-secondary);transition:all .15s}
+.tab.on{background:var(--color-background-secondary);color:var(--color-text-primary);border-color:var(--color-border-secondary);font-weight:500}
+.panel{display:none}.panel.on{display:block}
+.sec{font-size:12px;font-weight:500;color:var(--color-text-secondary);text-transform:uppercase;letter-spacing:.05em;margin:1.5rem 0 .75rem}
+.sec:first-child{margin-top:0}
+.grid2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin-bottom:1.25rem}
+.grid3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin-bottom:1.25rem}
+.grid4{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin-bottom:1.25rem}
+.card{background:var(--color-background-primary);border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-lg);padding:14px}
+.ct{font-size:13px;font-weight:500;margin-bottom:6px;color:var(--color-text-primary)}
+.cs{font-size:12px;color:var(--color-text-secondary);line-height:1.65}
+.badge{display:inline-block;font-size:11px;padding:2px 8px;border-radius:var(--border-radius-md);margin-bottom:8px}
+.b-blue{background:#E6F1FB;color:#0C447C}
+.b-teal{background:#E1F5EE;color:#085041}
+.b-amber{background:#FAEEDA;color:#633806}
+.b-coral{background:#FAECE7;color:#712B13}
+.b-purple{background:#EEEDFE;color:#3C3489}
+.b-green{background:#EAF3DE;color:#27500A}
+.b-gray{background:#F1EFE8;color:#444441}
+.b-pink{background:#FBEAF0;color:#72243E}
+.tw{border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-lg);overflow:hidden;margin-bottom:1.25rem}
+table{width:100%;border-collapse:collapse;font-size:13px}
+th{background:var(--color-background-secondary);font-weight:500;padding:8px 12px;text-align:left;border-bottom:0.5px solid var(--color-border-tertiary);color:var(--color-text-primary)}
+td{padding:8px 12px;border-bottom:0.5px solid var(--color-border-tertiary);color:var(--color-text-secondary);vertical-align:top;line-height:1.55}
+tr:last-child td{border-bottom:none}
+td:first-child{color:var(--color-text-primary);font-weight:500}
+.tip{border-left:3px solid #1D9E75;border-radius:0 var(--border-radius-md) var(--border-radius-md) 0;padding:10px 14px;font-size:13px;margin-bottom:1rem;line-height:1.65;background:var(--color-background-secondary)}
+.warn{border-left:3px solid #BA7517;border-radius:0 var(--border-radius-md) var(--border-radius-md) 0;padding:10px 14px;font-size:13px;margin-bottom:1rem;line-height:1.65;background:var(--color-background-secondary)}
+.one{background:var(--color-background-secondary);border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-lg);padding:12px 16px;font-size:13px;margin-top:1rem}
+.one span{color:var(--color-text-secondary);font-size:12px;display:block;margin-bottom:4px}
+.code{background:var(--color-background-secondary);border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-md);padding:10px 14px;font-size:12px;font-family:var(--font-mono);margin-bottom:10px;color:var(--color-text-primary);line-height:1.7;white-space:pre}
+.qa-item{border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-lg);margin-bottom:8px;overflow:hidden}
+.qa-q{padding:11px 14px;font-size:13px;cursor:pointer;font-weight:500;display:flex;justify-content:space-between;align-items:center;background:var(--color-background-primary);color:var(--color-text-primary)}
+.qa-a{display:none;padding:10px 14px;font-size:13px;color:var(--color-text-secondary);border-top:0.5px solid var(--color-border-tertiary);line-height:1.65;background:var(--color-background-secondary)}
+.qa-a.open{display:block}
+.icon{font-size:12px;color:var(--color-text-tertiary)}
+</style>
+
+<div class="wrap">
+<div class="tabs">
+  <button class="tab on" onclick="sw(0)">언어 특징</button>
+  <button class="tab" onclick="sw(1)">데이터 타입</button>
+  <button class="tab" onclick="sw(2)">핵심 문법</button>
+  <button class="tab" onclick="sw(3)">OOP</button>
+  <button class="tab" onclick="sw(4)">타 언어 비교</button>
+  <button class="tab" onclick="sw(5)">품질·도구</button>
+  <button class="tab" onclick="sw(6)">기출 Q&A</button>
+</div>
+
+<!-- 탭0 언어 특징 -->
+<div class="panel on" id="p0">
+  <p class="sec">Python 핵심 특징</p>
+  <div class="grid4">
+    <div class="card">
+      <span class="badge b-blue">인터프리터</span>
+      <div class="ct">소스를 한 줄씩 해석·실행</div>
+      <div class="cs">별도 컴파일 불필요. 실행 속도는 컴파일 언어 대비 느림. CPython이 표준 구현체</div>
+    </div>
+    <div class="card">
+      <span class="badge b-teal">동적 타이핑</span>
+      <div class="ct">런타임에 타입 결정</div>
+      <div class="cs">변수 선언 시 타입 명시 불필요. 유연하나 런타임 오류 가능성 증가</div>
+    </div>
+    <div class="card">
+      <span class="badge b-amber">강한 타이핑</span>
+      <div class="ct">암묵적 타입 변환 없음</div>
+      <div class="cs">"1" + 1 → TypeError. 동적이지만 강한 타입. JS(약한)와 구별</div>
+    </div>
+    <div class="card">
+      <span class="badge b-purple">멀티 패러다임</span>
+      <div class="ct">절차·OOP·함수형 지원</div>
+      <div class="cs">하나의 패러다임 강제 없음. 용도에 맞게 혼용 가능</div>
+    </div>
+  </div>
+
+  <div class="grid4">
+    <div class="card">
+      <span class="badge b-coral">GIL</span>
+      <div class="ct">전역 인터프리터 락</div>
+      <div class="cs">CPython에서 한 번에 하나의 스레드만 실행. CPU 멀티코어 활용 제한. I/O 바운드엔 무관</div>
+    </div>
+    <div class="card">
+      <span class="badge b-green">덕 타이핑</span>
+      <div class="ct">"오리처럼 걸으면 오리"</div>
+      <div class="cs">타입이 아닌 메서드·속성 존재 여부로 동작. 인터페이스 없이도 다형성 구현</div>
+    </div>
+    <div class="card">
+      <span class="badge b-pink">가비지 컬렉션</span>
+      <div class="ct">자동 메모리 관리</div>
+      <div class="cs">참조 카운팅 + 순환 참조 GC. 개발자가 메모리 직접 해제 불필요</div>
+    </div>
+    <div class="card">
+      <span class="badge b-gray">들여쓰기 블록</span>
+      <div class="ct">공백으로 블록 구분</div>
+      <div class="cs">중괄호 대신 들여쓰기(4칸)로 코드 블록 결정. 가독성↑, 혼용 시 오류</div>
+    </div>
+  </div>
+
+  <p class="sec">실행 방식 — 내부 동작</p>
+  <div class="tw">
+    <table>
+      <tr><th>단계</th><th>처리</th><th>산출물</th></tr>
+      <tr><td>소스 코드</td><td>.py 파일 작성</td><td>Python 소스</td></tr>
+      <tr><td>컴파일 (내부)</td><td>파이썬 인터프리터가 바이트코드로 변환</td><td>.pyc (바이트코드)</td></tr>
+      <tr><td>실행</td><td>PVM(Python Virtual Machine)이 바이트코드 해석</td><td>실행 결과</td></tr>
+    </table>
+  </div>
+  <div class="warn">GIL은 감리사 시험 빈출. "Python은 진정한 멀티스레딩이 불가하다" — CPU 바운드 작업에는 multiprocessing 모듈 또는 C 확장을 사용해야 함</div>
+  <div class="one"><span>한 줄 암기</span>Python = 인터프리터 + 동적·강한 타이핑 + 멀티패러다임 + GIL(CPython) + 덕타이핑 + 들여쓰기 블록</div>
+</div>
+
+<!-- 탭1 데이터 타입 -->
+<div class="panel" id="p1">
+  <p class="sec">내장 데이터 타입 분류</p>
+  <div class="tw">
+    <table>
+      <tr><th>분류</th><th>타입</th><th>특징</th><th>예시</th></tr>
+      <tr><td rowspan="3">스칼라</td><td>int</td><td>정수. 크기 제한 없음 (임의 정밀도)</td><td>42, -7, 10**100</td></tr>
+      <tr><td>float</td><td>64비트 IEEE 754 부동소수점</td><td>3.14, 1e-5</td></tr>
+      <tr><td>bool</td><td>int의 서브클래스. True=1, False=0</td><td>True, False</td></tr>
+      <tr><td rowspan="2">시퀀스</td><td>str</td><td>불변(Immutable). 유니코드 문자열</td><td>"hello", 'world'</td></tr>
+      <tr><td>list</td><td>가변(Mutable). 순서 있음. 혼합 타입 허용</td><td>[1, "a", 3.0]</td></tr>
+      <tr><td>시퀀스(불변)</td><td>tuple</td><td>불변. 해시 가능 → dict 키로 사용 가능</td><td>(1, 2, 3)</td></tr>
+      <tr><td>집합</td><td>set</td><td>중복 없음, 순서 없음, 가변</td><td>{1, 2, 3}</td></tr>
+      <tr><td>매핑</td><td>dict</td><td>키-값 쌍. 3.7+부터 삽입 순서 보장</td><td>{"k": "v"}</td></tr>
+      <tr><td>없음</td><td>None</td><td>값 없음을 나타내는 싱글턴 객체</td><td>None</td></tr>
+    </table>
+  </div>
+
+  <p class="sec">가변(Mutable) vs 불변(Immutable)</p>
+  <div class="grid2">
+    <div class="card">
+      <span class="badge b-teal">불변 (Immutable)</span>
+      <div class="ct">생성 후 값 변경 불가</div>
+      <div class="cs">int, float, bool, str, tuple, frozenset<br>해시 가능 → dict 키, set 원소로 사용 가능<br>변경 시 새 객체 생성</div>
+    </div>
+    <div class="card">
+      <span class="badge b-coral">가변 (Mutable)</span>
+      <div class="ct">생성 후 값 변경 가능</div>
+      <div class="cs">list, dict, set<br>해시 불가능 → dict 키, set 원소 불가<br>동일 객체 내에서 수정</div>
+    </div>
+  </div>
+
+  <p class="sec">타입 힌팅 (Type Hinting) — Python 3.5+</p>
+  <div class="code">def add(x: int, y: int) -> int:
+    return x + y
+
+from typing import List, Optional
+def greet(names: List[str]) -> Optional[str]:
+    return names[0] if names else None</div>
+  <div class="tip">타입 힌팅은 런타임에 강제되지 않음(선택적). mypy 등 정적 분석 도구와 함께 사용해 타입 안전성 확보. 대규모 프로젝트 유지보수성 향상에 활용</div>
+  <div class="one"><span>한 줄 암기</span>불변=int·str·tuple(해시 가능·dict키 가능) / 가변=list·dict·set(해시 불가). 가변 여부가 함수 인자 전달 방식에도 영향</div>
+</div>
+
+<!-- 탭2 핵심 문법 -->
+<div class="panel" id="p2">
+  <p class="sec">제어 구조</p>
+  <div class="code"># 조건문
+if x > 0:
+    print("양수")
+elif x == 0:
+    print("영")
+else:
+    print("음수")
+
+# 반복문
+for i in range(5):       # 0,1,2,3,4
+    if i == 3: continue  # 건너뜀
+    if i == 4: break     # 종료
+
+while condition:
+    pass                 # 빈 블록 자리표시자</div>
+
+  <p class="sec">함수 정의 — 핵심 개념</p>
+  <div class="tw">
+    <table>
+      <tr><th>개념</th><th>설명</th><th>예시</th></tr>
+      <tr><td>기본 인자</td><td>호출 시 생략 가능한 매개변수</td><td>def f(x, y=10)</td></tr>
+      <tr><td>*args</td><td>위치 인자를 튜플로 수집</td><td>def f(*args)</td></tr>
+      <tr><td>**kwargs</td><td>키워드 인자를 딕셔너리로 수집</td><td>def f(**kwargs)</td></tr>
+      <tr><td>람다(lambda)</td><td>이름 없는 익명 함수. 단일 표현식</td><td>lambda x: x*2</td></tr>
+      <tr><td>클로저</td><td>외부 함수의 변수를 참조하는 내부 함수</td><td>nonlocal 키워드</td></tr>
+      <tr><td>제너레이터</td><td>yield로 값을 하나씩 생성. 메모리 효율</td><td>def gen(): yield x</td></tr>
+      <tr><td>데코레이터</td><td>함수를 감싸 기능 추가. @문법</td><td>@decorator</td></tr>
+    </table>
+  </div>
+
+  <p class="sec">컴프리헨션 (Comprehension)</p>
+  <div class="code"># 리스트 컴프리헨션
+squares = [x**2 for x in range(10) if x % 2 == 0]
+
+# 딕셔너리 컴프리헨션
+inv = {v: k for k, v in original.items()}
+
+# 제너레이터 표현식 (메모리 효율)
+total = sum(x**2 for x in range(1000000))</div>
+
+  <p class="sec">예외 처리</p>
+  <div class="code">try:
+    result = 10 / 0
+except ZeroDivisionError as e:
+    print(f"오류: {e}")
+except (TypeError, ValueError):
+    pass
+else:
+    print("정상 실행")   # 예외 없을 때
+finally:
+    print("항상 실행")   # 정리 코드</div>
+
+  <div class="tip">제너레이터(Generator)는 감리사 시험 출제 빈도 증가. 전체 데이터를 메모리에 올리지 않고 필요할 때마다 생성 — 대용량 데이터 처리·스트리밍 파이프라인에 적합</div>
+  <div class="one"><span>한 줄 암기</span>*args=가변 위치인자(tuple), **kwargs=가변 키워드인자(dict). 제너레이터=yield로 지연 평가(Lazy Evaluation). 데코레이터=@로 횡단 관심사 분리</div>
+</div>
+
+<!-- 탭3 OOP -->
+<div class="panel" id="p3">
+  <p class="sec">Python OOP 핵심 요소</p>
+  <div class="code">class Animal:
+    class_var = "동물"              # 클래스 변수 (공유)
+
+    def __init__(self, name):       # 생성자 (인스턴스 변수)
+        self.name = name
+
+    def speak(self):                # 인스턴스 메서드
+        raise NotImplementedError
+
+    @classmethod
+    def info(cls):                  # 클래스 메서드
+        return cls.class_var
+
+    @staticmethod
+    def breathe():                  # 정적 메서드 (self/cls 없음)
+        return "호흡"
+
+class Dog(Animal):                  # 상속
+    def speak(self):                # 오버라이딩
+        return f"{self.name}: 멍멍"</div>
+
+  <p class="sec">메서드 유형 비교</p>
+  <div class="tw">
+    <table>
+      <tr><th>유형</th><th>첫 인자</th><th>접근 가능</th><th>용도</th></tr>
+      <tr><td>인스턴스 메서드</td><td>self</td><td>인스턴스·클래스 변수</td><td>일반 동작 정의</td></tr>
+      <tr><td>클래스 메서드 @classmethod</td><td>cls</td><td>클래스 변수만</td><td>팩토리 패턴, 대안 생성자</td></tr>
+      <tr><td>정적 메서드 @staticmethod</td><td>없음</td><td>없음</td><td>유틸리티 함수 (네임스페이스 용)</td></tr>
+    </table>
+  </div>
+
+  <p class="sec">Python OOP 특수 메서드 (Magic Method)</p>
+  <div class="tw">
+    <table>
+      <tr><th>메서드</th><th>호출 시점</th><th>용도</th></tr>
+      <tr><td>__init__</td><td>객체 생성 시</td><td>초기화 (생성자)</td></tr>
+      <tr><td>__str__</td><td>str(), print()</td><td>사람 친화적 문자열</td></tr>
+      <tr><td>__repr__</td><td>repr(), 디버거</td><td>개발자용 표현</td></tr>
+      <tr><td>__len__</td><td>len()</td><td>길이 반환</td></tr>
+      <tr><td>__eq__</td><td>== 연산자</td><td>동등 비교</td></tr>
+      <tr><td>__enter__/__exit__</td><td>with문</td><td>컨텍스트 매니저</td></tr>
+    </table>
+  </div>
+
+  <p class="sec">다중 상속 & MRO</p>
+  <div class="tip">Python은 다중 상속 지원. 메서드 탐색 순서(MRO — Method Resolution Order)는 C3 선형화 알고리즘으로 결정. <b>ClassName.__mro__</b>로 확인 가능. 다이아몬드 문제를 MRO로 해결</div>
+  <div class="one"><span>한 줄 암기</span>인스턴스(self)·클래스(cls)·정적(없음) 메서드 구분. 매직 메서드(__xx__)로 연산자 오버로딩. 다중 상속 → C3 MRO로 탐색 순서 결정</div>
+</div>
+
+<!-- 탭4 타 언어 비교 -->
+<div class="panel" id="p4">
+  <p class="sec">Python vs 주요 언어 비교</p>
+  <div class="tw">
+    <table>
+      <tr><th>항목</th><th>Python</th><th>Java</th><th>C/C++</th><th>JavaScript</th></tr>
+      <tr><td>실행 방식</td><td>인터프리터</td><td>JVM 바이트코드</td><td>네이티브 컴파일</td><td>인터프리터(JIT)</td></tr>
+      <tr><td>타이핑</td><td>동적·강함</td><td>정적·강함</td><td>정적·강함</td><td>동적·약함</td></tr>
+      <tr><td>메모리 관리</td><td>GC (참조카운팅)</td><td>GC (JVM)</td><td>수동 (C), RAII (C++)</td><td>GC</td></tr>
+      <tr><td>속도</td><td>느림</td><td>중간</td><td>빠름</td><td>중간 (JIT)</td></tr>
+      <tr><td>다중 상속</td><td>지원 (MRO)</td><td>인터페이스만</td><td>지원</td><td>프로토타입</td></tr>
+      <tr><td>GIL</td><td>있음 (CPython)</td><td>없음</td><td>없음</td><td>단일 스레드 이벤트루프</td></tr>
+      <tr><td>주 용도</td><td>AI/ML, 스크립팅, 웹</td><td>엔터프라이즈, Android</td><td>시스템, 임베디드</td><td>웹 프론트엔드</td></tr>
+    </table>
+  </div>
+
+  <p class="sec">동적·약한 타이핑 vs 동적·강한 타이핑 (빈출 혼동)</p>
+  <div class="grid2">
+    <div class="card">
+      <span class="badge b-amber">JavaScript — 동적·약한</span>
+      <div class="code" style="margin-top:6px;margin-bottom:0">"5" + 1  → "51"  (암묵 변환)
+"5" - 1  → 4     (암묵 변환)</div>
+    </div>
+    <div class="card">
+      <span class="badge b-blue">Python — 동적·강한</span>
+      <div class="code" style="margin-top:6px;margin-bottom:0">"5" + 1  → TypeError  (거부)
+int("5") + 1 → 6  (명시 변환)</div>
+    </div>
+  </div>
+
+  <p class="sec">Python 구현체 종류</p>
+  <div class="tw">
+    <table>
+      <tr><th>구현체</th><th>언어</th><th>특징</th></tr>
+      <tr><td>CPython</td><td>C</td><td>표준·기준 구현체. GIL 존재. 가장 널리 사용</td></tr>
+      <tr><td>PyPy</td><td>Python+RPython</td><td>JIT 컴파일러 내장. CPython 대비 속도 최대 10배↑. GIL 존재</td></tr>
+      <tr><td>Jython</td><td>Java</td><td>JVM 위에서 실행. Java 라이브러리 직접 사용 가능. GIL 없음</td></tr>
+      <tr><td>IronPython</td><td>C#</td><td>.NET CLR 위에서 실행. GIL 없음</td></tr>
+    </table>
+  </div>
+  <div class="one"><span>한 줄 암기</span>Python = 동적(런타임 타입결정) + 강한(암묵변환 거부). JS는 동적+약한. Java는 정적+강한. PyPy = JIT로 CPython보다 빠른 Python 구현체</div>
+</div>
+
+<!-- 탭5 품질·도구 -->
+<div class="panel" id="p5">
+  <p class="sec">Python 품질 관리 도구 (감리 관련)</p>
+  <div class="tw">
+    <table>
+      <tr><th>분류</th><th>도구</th><th>용도</th></tr>
+      <tr><td rowspan="3">정적 분석</td><td>pylint</td><td>코드 품질·스타일 검사. PEP 8 준수 여부</td></tr>
+      <tr><td>flake8</td><td>스타일·문법 오류 검사. pylint보다 경량</td></tr>
+      <tr><td>mypy</td><td>타입 힌팅 기반 정적 타입 검사</td></tr>
+      <tr><td rowspan="2">테스팅</td><td>unittest</td><td>표준 라이브러리 단위 테스트 프레임워크</td></tr>
+      <tr><td>pytest</td><td>단순한 문법, 픽스처, 플러그인 생태계. 사실상 표준</td></tr>
+      <tr><td>커버리지</td><td>coverage.py</td><td>테스트 커버리지(라인·브랜치) 측정</td></tr>
+      <tr><td>포매터</td><td>black / autopep8</td><td>코드 자동 포매팅. PEP 8 준수</td></tr>
+      <tr><td>보안</td><td>bandit</td><td>보안 취약점 정적 분석 (SQL Injection, 하드코딩 시크릿 등)</td></tr>
+      <tr><td>의존성</td><td>pip, pipenv, poetry</td><td>패키지 관리. requirements.txt / pyproject.toml</td></tr>
+    </table>
+  </div>
+
+  <p class="sec">PEP 8 — Python 스타일 가이드 핵심</p>
+  <div class="grid3">
+    <div class="card">
+      <span class="badge b-teal">들여쓰기</span>
+      <div class="cs">공백 4칸 (탭 혼용 금지)</div>
+    </div>
+    <div class="card">
+      <span class="badge b-blue">명명 규칙</span>
+      <div class="cs">변수·함수: snake_case<br>클래스: PascalCase<br>상수: UPPER_SNAKE</div>
+    </div>
+    <div class="card">
+      <span class="badge b-amber">줄 길이</span>
+      <div class="cs">최대 79자 (코드)<br>docstring: 72자</div>
+    </div>
+  </div>
+
+  <p class="sec">가상환경 (Virtual Environment)</p>
+  <div class="tip">프로젝트별 패키지 버전 격리. venv(표준), virtualenv, conda 등. 감리 시 의존성 관리 체계(requirements.txt 또는 pyproject.toml) 존재 여부와 가상환경 사용 여부 확인 필요. 버전 충돌은 재현 불가 버그의 주요 원인</div>
+  <div class="one"><span>한 줄 암기</span>정적분석(pylint·mypy) + 테스팅(pytest·coverage) + 포매팅(black·PEP8) + 보안(bandit) + 가상환경(venv) — 감리 시 도구 체계 구비 여부 확인</div>
+</div>
+
+<!-- 탭6 기출 Q&A -->
+<div class="panel" id="p6">
+  <p class="sec">기출 예상 Q&A</p>
+
+  <div class="qa-item"><div class="qa-q" onclick="tog(this)">Python의 GIL이란 무엇이며, 멀티스레딩에 미치는 영향은? <span class="icon">▾</span></div><div class="qa-a">GIL(Global Interpreter Lock)은 CPython 인터프리터에서 한 번에 하나의 스레드만 파이썬 바이트코드를 실행하도록 제한하는 뮤텍스. I/O 바운드 작업(파일, 네트워크)은 I/O 대기 중 GIL을 해제하므로 멀티스레딩 효과가 있음. CPU 바운드 작업(연산)은 GIL로 인해 멀티스레딩이 오히려 오버헤드 증가. 해결책: multiprocessing 모듈(프로세스 기반), Jython/IronPython(GIL 없음), C 확장(NumPy 등).</div></div>
+
+  <div class="qa-item"><div class="qa-q" onclick="tog(this)">동적 타이핑과 강한 타이핑의 차이를 Python과 JavaScript를 예로 설명하시오 <span class="icon">▾</span></div><div class="qa-a">동적 타이핑: 변수의 타입이 런타임에 결정됨. Python과 JS 모두 해당. 강한 타이핑: 암묵적 타입 변환 없음. Python에서 "5"+1은 TypeError 발생. 약한 타이핑: 암묵적 변환 허용. JS에서 "5"+1은 "51"(문자열 연결), "5"-1은 4(숫자 변환). Python은 동적이지만 강함, JS는 동적이며 약함. Java는 정적이며 강함.</div></div>
+
+  <div class="qa-item"><div class="qa-q" onclick="tog(this)">가변(Mutable)과 불변(Immutable) 객체의 차이와 감리 관점 시사점은? <span class="icon">▾</span></div><div class="qa-a">불변 객체(int, str, tuple)는 생성 후 값 변경 불가. 해시 가능하여 dict 키·set 원소로 사용 가능. 스레드 안전. 가변 객체(list, dict, set)는 생성 후 내부 변경 가능. 해시 불가. 함수 인자로 전달 시 함수 내부에서 수정되면 원본에 영향(참조 전달). 감리 관점: 기본 인자로 가변 객체(mutable default argument) 사용은 함수 호출 간 상태 공유 버그의 주요 원인 — 코드 리뷰 체크리스트 포함 필요.</div></div>
+
+  <div class="qa-item"><div class="qa-q" onclick="tog(this)">제너레이터(Generator)란 무엇이며 언제 사용하는가? <span class="icon">▾</span></div><div class="qa-a">제너레이터는 yield 키워드를 사용해 값을 하나씩 생성하는 함수. 호출 시 즉시 실행되지 않고 이터레이터 객체 반환. next() 호출 시마다 yield까지 실행 후 일시정지(지연 평가, Lazy Evaluation). 전체 데이터를 메모리에 올리지 않아 대용량 파일 처리·스트리밍 데이터 파이프라인에 적합. 예: 수백만 행 로그 파일을 한 줄씩 처리 시 list 대신 generator 사용하면 메모리 사용량 대폭 절감.</div></div>
+
+  <div class="qa-item"><div class="qa-q" onclick="tog(this)">Python의 다중 상속과 MRO(메서드 탐색 순서)를 설명하시오 <span class="icon">▾</span></div><div class="qa-a">Python은 다중 상속을 지원하며, 같은 메서드가 여러 부모 클래스에 존재할 때 다이아몬드 문제가 발생. 이를 C3 선형화 알고리즘으로 MRO를 결정해 해결. MRO는 자식 클래스 → 왼쪽 부모 → 오른쪽 부모 → 공통 조상 순서. ClassName.__mro__ 또는 ClassName.mro()로 확인 가능. Java는 다중 상속 대신 인터페이스(interface)만 허용해 다이아몬드 문제 회피.</div></div>
+
+  <div class="qa-item"><div class="qa-q" onclick="tog(this)">Python 코드 감리 시 주요 확인 항목은? <span class="icon">▾</span></div><div class="qa-a">① 정적 분석 도구(pylint, flake8, mypy) 적용 여부 및 CI 연동. ② 테스트 커버리지(coverage.py) 목표치 설정·준수 여부. ③ 가상환경 및 의존성 관리(requirements.txt/pyproject.toml) 체계. ④ 보안 취약점 분석(bandit) 수행 여부. ⑤ PEP 8 스타일 가이드 준수(black/autopep8 자동화). ⑥ 타입 힌팅 적용 여부(대규모 프로젝트). ⑦ mutable default argument 등 Python 특유의 안티패턴 점검.</div></div>
+</div>
+</div>
+
+<script>
+function sw(i){
+  document.querySelectorAll('.tab').forEach((t,j)=>t.classList.toggle('on',i===j));
+  document.querySelectorAll('.panel').forEach((p,j)=>p.classList.toggle('on',i===j));
+}
+function tog(el){
+  const a=el.nextElementSibling;
+  a.classList.toggle('open');
+  el.querySelector('.icon').textContent=a.classList.contains('open')?'▴':'▾';
+}
+</script>

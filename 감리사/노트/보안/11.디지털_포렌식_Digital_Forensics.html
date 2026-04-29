@@ -1,0 +1,659 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&family=JetBrains+Mono:wght@400;700&display=swap');
+:root{
+  --bg:#06100a;--s1:#0a1810;--s2:#0f2018;--s3:#152a20;
+  --bdr:#1a3d28;--a1:#34d399;--a2:#a78bfa;--a3:#38bdf8;
+  --a4:#fbbf24;--a5:#f87171;--a6:#fb923c;
+  --txt:#e2e8f0;--mu:#64748b;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Noto Sans KR',sans-serif;background:var(--bg);color:var(--txt);min-height:100vh;}
+.hdr{padding:22px 24px 16px;background:linear-gradient(150deg,#06100a 0%,#0d1e14 50%,#06100a 100%);border-bottom:1px solid var(--bdr);position:relative;overflow:hidden;}
+.hdr::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 65% 85% at 80% 30%,rgba(52,211,153,.09),transparent 65%),radial-gradient(ellipse 45% 65% at 20% 80%,rgba(167,139,250,.06),transparent 60%);pointer-events:none;}
+.hdr-r{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:6px;}
+.pill{padding:3px 10px;border-radius:20px;font-size:10px;font-weight:700;letter-spacing:.8px;}
+.p1{background:linear-gradient(135deg,#052e16,var(--a1));color:#fff;}
+.p2{background:rgba(251,191,36,.15);color:var(--a4);border:1px solid rgba(251,191,36,.3);}
+.p3{background:rgba(167,139,250,.15);color:var(--a2);border:1px solid rgba(167,139,250,.3);}
+h1{font-size:19px;font-weight:900;}
+.h1g{background:linear-gradient(90deg,var(--a1),var(--a3),var(--a2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.hdr p{color:var(--mu);font-size:12px;margin-top:3px;}
+.tabs{display:flex;padding:0 24px;background:var(--s1);border-bottom:1px solid var(--bdr);overflow-x:auto;scrollbar-width:none;}
+.tabs::-webkit-scrollbar{display:none;}
+.tab{padding:11px 14px;font-size:12px;font-weight:600;color:var(--mu);cursor:pointer;border-bottom:2px solid transparent;white-space:nowrap;transition:all .2s;background:none;border-top:none;border-left:none;border-right:none;font-family:'Noto Sans KR',sans-serif;}
+.tab:hover{color:var(--txt);}.tab.on{color:var(--a1);border-bottom-color:var(--a1);}
+.wrap{padding:20px 24px;max-width:960px;margin:0 auto;}
+.pnl{display:none;}.pnl.on{display:block;}
+.card{background:var(--s1);border:1px solid var(--bdr);border-radius:12px;padding:18px;margin-bottom:14px;}
+.card-h{display:flex;align-items:center;gap:10px;margin-bottom:14px;}
+.ico{width:34px;height:34px;border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:17px;flex-shrink:0;}
+.ig{background:rgba(52,211,153,.15);}.ib{background:rgba(56,189,248,.15);}.ip{background:rgba(167,139,250,.15);}.iy{background:rgba(251,191,36,.15);}.ir{background:rgba(248,113,113,.15);}.io{background:rgba(251,146,60,.15);}
+.card h3{font-size:14px;font-weight:700;}
+.tag{display:inline-block;padding:2px 8px;border-radius:4px;font-size:10px;font-weight:600;margin:2px 2px 2px 0;}
+.tg{background:rgba(52,211,153,.12);color:var(--a1);border:1px solid rgba(52,211,153,.25);}
+.tb{background:rgba(56,189,248,.12);color:var(--a3);border:1px solid rgba(56,189,248,.25);}
+.tp{background:rgba(167,139,250,.12);color:var(--a2);border:1px solid rgba(167,139,250,.25);}
+.ty{background:rgba(251,191,36,.12);color:var(--a4);border:1px solid rgba(251,191,36,.25);}
+.tr{background:rgba(248,113,113,.12);color:var(--a5);border:1px solid rgba(248,113,113,.25);}
+.to{background:rgba(251,146,60,.12);color:var(--a6);border:1px solid rgba(251,146,60,.25);}
+table{width:100%;border-collapse:collapse;font-size:12.5px;}
+th{background:var(--s2);color:var(--mu);font-weight:700;padding:8px 12px;text-align:left;font-size:10px;text-transform:uppercase;letter-spacing:.5px;border-bottom:1px solid var(--bdr);}
+td{padding:9px 12px;border-bottom:1px solid rgba(26,61,40,.5);vertical-align:top;line-height:1.6;}
+tr:last-child td{border-bottom:none;}
+tr:hover td{background:rgba(255,255,255,.02);}
+td strong{color:var(--a4);}
+ul.il{list-style:none;display:flex;flex-direction:column;gap:7px;}
+ul.il li{font-size:12.5px;padding-left:16px;position:relative;line-height:1.55;}
+ul.il li::before{content:'▸';position:absolute;left:0;color:var(--a1);font-size:10px;top:3px;}
+ul.il li strong{color:var(--a4);}
+ul.il li em{color:var(--a3);font-style:normal;}
+.memo{background:linear-gradient(135deg,rgba(52,211,153,.07),rgba(56,189,248,.07));border:1px solid rgba(52,211,153,.25);border-left:3px solid var(--a1);border-radius:8px;padding:10px 14px;font-size:12.5px;font-weight:600;color:var(--a1);margin:10px 0;}
+.memo::before{content:'🎯 한 줄 암기 │ ';color:var(--mu);font-weight:400;}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:14px;}
+@media(max-width:600px){.g2{grid-template-columns:1fr;}}
+
+/* 절차 타임라인 */
+.proc{display:flex;flex-direction:column;gap:0;}
+.proc-item{display:flex;gap:12px;padding-bottom:12px;}
+.proc-item:last-child{padding-bottom:0;}
+.proc-left{display:flex;flex-direction:column;align-items:center;width:36px;flex-shrink:0;}
+.proc-dot{width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:900;flex-shrink:0;}
+.proc-line{flex:1;width:2px;background:var(--bdr);margin:3px 0;}
+.proc-item:last-child .proc-line{display:none;}
+.proc-content{background:var(--s2);border:1px solid var(--bdr);border-radius:9px;padding:12px 14px;flex:1;}
+.proc-title{font-size:13px;font-weight:800;margin-bottom:4px;}
+.proc-sub{font-size:12px;color:var(--txt);line-height:1.5;}
+.proc-key{font-size:11px;color:var(--mu);margin-top:5px;}
+
+/* 원칙 카드 */
+.prin-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin:10px 0;}
+@media(max-width:560px){.prin-grid{grid-template-columns:1fr;}}
+.prin{border-radius:9px;padding:13px;border:1px solid;}
+
+/* 분야 카드 그리드 */
+.domain-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:10px 0;}
+@media(max-width:600px){.domain-grid{grid-template-columns:1fr 1fr;}}
+.dom{background:var(--s2);border:1px solid var(--bdr);border-radius:9px;padding:12px;text-align:center;}
+.dom-ico{font-size:22px;margin-bottom:5px;}
+.dom-name{font-size:12px;font-weight:800;margin-bottom:3px;}
+.dom-sub{font-size:10.5px;color:var(--mu);line-height:1.4;}
+
+/* QA */
+.qa{background:var(--s1);border:1px solid var(--bdr);border-radius:10px;margin-bottom:11px;overflow:hidden;transition:border-color .2s;}
+.qa:hover{border-color:rgba(52,211,153,.25);}
+.qa-hd{padding:14px 18px;cursor:pointer;display:flex;justify-content:space-between;align-items:flex-start;gap:10px;user-select:none;}
+.qa-meta{display:flex;align-items:center;gap:6px;margin-bottom:5px;flex-wrap:wrap;}
+.qn{font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:700;color:var(--mu);}
+.qq{font-size:13px;font-weight:600;line-height:1.55;}
+.tgl{color:var(--mu);font-size:16px;flex-shrink:0;transition:transform .2s;}
+.qa.open .tgl{transform:rotate(180deg);}
+.qa-bd{display:none;border-top:1px solid var(--bdr);padding:14px 18px;background:var(--s2);}
+.qa.open .qa-bd{display:block;}
+.chs{display:flex;flex-direction:column;gap:7px;margin-bottom:12px;}
+.ch{display:flex;align-items:flex-start;gap:10px;padding:9px 13px;border-radius:7px;border:1px solid var(--bdr);font-size:12.5px;cursor:pointer;background:var(--s1);line-height:1.5;transition:all .15s;}
+.ch:hover:not(.lk){border-color:rgba(52,211,153,.3);background:rgba(52,211,153,.04);}
+.ch.ok{border-color:var(--a1);background:rgba(52,211,153,.1);color:var(--a1);}
+.ch.ng{border-color:var(--a5);background:rgba(248,113,113,.08);color:var(--a5);opacity:.7;}
+.ch.lk{cursor:default;}
+.cnum{font-family:'JetBrains Mono',monospace;font-weight:700;font-size:11px;flex-shrink:0;margin-top:1px;color:var(--mu);}
+.ch.ok .cnum{color:var(--a1);}.ch.ng .cnum{color:var(--a5);}
+.exp{background:rgba(52,211,153,.05);border:1px solid rgba(52,211,153,.18);border-radius:8px;padding:12px 14px;font-size:12.5px;line-height:1.65;display:none;}
+.exp.show{display:block;}
+.exp-t{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--a1);margin-bottom:6px;}
+.exp strong{color:var(--a4);}
+.exp em{color:var(--a3);font-style:normal;}
+.ox-wr{display:flex;gap:10px;margin-bottom:12px;}
+.ox{flex:1;padding:11px;border-radius:8px;border:1px solid var(--bdr);font-size:20px;cursor:pointer;background:var(--s1);transition:all .15s;font-family:'Noto Sans KR',sans-serif;color:var(--txt);}
+.ox:hover:not(.lk){transform:scale(1.02);}
+.ox.so{border-color:var(--a1);background:rgba(52,211,153,.15);}
+.ox.sx{border-color:var(--a5);background:rgba(248,113,113,.1);}
+.ox.lk{cursor:default;}
+.diff{display:inline-block;padding:2px 7px;border-radius:10px;font-size:9px;font-weight:700;}
+.easy{background:rgba(52,211,153,.2);color:var(--a1);}
+.mid{background:rgba(251,191,36,.2);color:var(--a4);}
+.hard{background:rgba(248,113,113,.2);color:var(--a5);}
+.fb-wr{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:14px;}
+.fb{padding:5px 12px;border-radius:20px;border:1px solid var(--bdr);font-size:11px;font-weight:600;cursor:pointer;background:var(--s2);color:var(--mu);transition:all .15s;font-family:'Noto Sans KR',sans-serif;}
+.fb.on{background:rgba(52,211,153,.15);color:var(--a1);border-color:var(--a1);}
+.sc-b{background:var(--s2);border:1px solid var(--bdr);border-radius:8px;padding:5px 14px;font-size:12px;color:var(--mu);}
+.sc-b span{color:var(--a1);font-weight:700;}
+</style>
+</head>
+<body>
+
+<div class="hdr">
+  <div class="hdr-r">
+    <span class="pill p1">디지털 포렌식</span>
+    <span class="pill p2">증거 수집·분석·보전</span>
+    <span class="pill p3">감리사 핵심 출제</span>
+  </div>
+  <h1><span class="h1g">Digital Forensics 완전 정리</span></h1>
+  <p>정의·원칙·절차 · 증거 무결성 · 파일시스템·네트워크·안티포렌식 · 도구 · 법적 요건</p>
+</div>
+
+<div class="tabs">
+  <button class="tab on" data-p="p1">🔍 개요·정의·원칙</button>
+  <button class="tab" data-p="p2">📋 수행 절차</button>
+  <button class="tab" data-p="p3">💾 주요 분야</button>
+  <button class="tab" data-p="p4">🛡️ 증거 무결성·법적 요건</button>
+  <button class="tab" data-p="p5">🔧 도구·안티포렌식</button>
+  <button class="tab" data-p="p6">❓ 예상문제</button>
+</div>
+
+<div class="wrap">
+
+<!-- ===== P1: 개요·원칙 ===== -->
+<div class="pnl on" id="p1">
+  <div class="card">
+    <div class="card-h"><div class="ico ig">🔍</div><h3>디지털 포렌식 (Digital Forensics) 정의</h3></div>
+    <div style="background:var(--s2);border:1px solid rgba(52,211,153,.28);border-radius:10px;padding:14px;margin-bottom:12px;">
+      <p style="font-size:13px;line-height:1.8;font-weight:500;">
+        <strong style="color:var(--a1)">디지털 포렌식</strong>이란 법적 절차에 따라 디지털 장치·시스템에서 <em style="color:var(--a4);font-style:normal;">전자적 증거(Digital Evidence)를 수집·보전·분석·제출</em>하는 과학적·체계적 과정
+      </p>
+    </div>
+    <table>
+      <thead><tr><th>항목</th><th>내용</th></tr></thead>
+      <tbody>
+        <tr><td><strong>목적</strong></td><td>사이버 범죄·침해 사고·내부 비위 조사 시 법적으로 유효한 디지털 증거 확보</td></tr>
+        <tr><td><strong>대상</strong></td><td>PC·서버·모바일·IoT·클라우드·네트워크 장비·저장매체 등 모든 디지털 기기</td></tr>
+        <tr><td><strong>핵심 가치</strong></td><td>증거의 <strong>법적 증거 능력(Admissibility)</strong> 확보 — 수집부터 제출까지 무결성 유지</td></tr>
+        <tr><td><strong>관련 법</strong></td><td>형사소송법(전자증거 규정), 개인정보보호법, 전자금융거래법 등</td></tr>
+      </tbody>
+    </table>
+    <div class="memo">디지털 포렌식 = 법적 절차에 따른 전자 증거 수집·보전·분석·제출 / 법적 증거 능력이 핵심</div>
+  </div>
+
+  <div class="card">
+    <div class="card-h"><div class="ico iy">⚖️</div><h3>디지털 포렌식 5대 원칙 (ACPO 기반)</h3></div>
+    <div class="prin-grid">
+      <div class="prin" style="background:rgba(52,211,153,.07);border-color:rgba(52,211,153,.3);">
+        <div style="font-size:12px;font-weight:800;color:var(--a1);margin-bottom:6px;">① 정당성 원칙</div>
+        <div style="font-size:12px;line-height:1.6;">증거 수집은 적법한 절차와 권한에 따라 수행</div>
+        <div style="font-size:10.5px;color:var(--mu);margin-top:4px;">불법 수집 증거 → 법원에서 증거 능력 배제</div>
+      </div>
+      <div class="prin" style="background:rgba(56,189,248,.07);border-color:rgba(56,189,248,.3);">
+        <div style="font-size:12px;font-weight:800;color:var(--a3);margin-bottom:6px;">② 무결성 원칙</div>
+        <div style="font-size:12px;line-height:1.6;">수집된 증거는 원본과 동일하게 보전 — 어떤 변경도 없어야 함</div>
+        <div style="font-size:10.5px;color:var(--mu);margin-top:4px;">해시값(MD5·SHA-256) 비교로 무결성 검증</div>
+      </div>
+      <div class="prin" style="background:rgba(251,191,36,.07);border-color:rgba(251,191,36,.3);">
+        <div style="font-size:12px;font-weight:800;color:var(--a4);margin-bottom:6px;">③ 재현성 원칙</div>
+        <div style="font-size:12px;line-height:1.6;">동일한 조건에서 분석을 반복하면 동일한 결과가 나와야 함</div>
+        <div style="font-size:10.5px;color:var(--mu);margin-top:4px;">분석 절차·도구·환경의 문서화 필수</div>
+      </div>
+      <div class="prin" style="background:rgba(167,139,250,.07);border-color:rgba(167,139,250,.3);">
+        <div style="font-size:12px;font-weight:800;color:var(--a2);margin-bottom:6px;">④ 신속성 원칙</div>
+        <div style="font-size:12px;line-height:1.6;">휘발성 증거(RAM·프로세스 등)는 최대한 신속하게 수집</div>
+        <div style="font-size:10.5px;color:var(--mu);margin-top:4px;">휘발성 순서에 따른 우선 수집 (Order of Volatility)</div>
+      </div>
+      <div class="prin" style="background:rgba(248,113,113,.07);border-color:rgba(248,113,113,.3);">
+        <div style="font-size:12px;font-weight:800;color:var(--a5);margin-bottom:6px;">⑤ 연계 보관성 원칙 (Chain of Custody)</div>
+        <div style="font-size:12px;line-height:1.6;">증거의 수집부터 법정 제출까지 모든 취급 기록 유지</div>
+        <div style="font-size:10.5px;color:var(--mu);margin-top:4px;">누가·언제·어디서·무엇을 했는지 완전한 이력 문서화</div>
+      </div>
+      <div class="prin" style="background:rgba(251,146,60,.07);border-color:rgba(251,146,60,.3);">
+        <div style="font-size:12px;font-weight:800;color:var(--a6);margin-bottom:6px;">⑥ 객관성 원칙</div>
+        <div style="font-size:12px;line-height:1.6;">분석자의 편견 없이 객관적 사실만 기반으로 결론 도출</div>
+        <div style="font-size:10.5px;color:var(--mu);margin-top:4px;">특정 결론을 유도하는 분석 금지</div>
+      </div>
+    </div>
+    <div class="memo">6대 원칙: ①정당성 ②무결성 ③재현성 ④신속성 ⑤연계보관성(CoC) ⑥객관성</div>
+  </div>
+
+  <div class="card">
+    <div class="card-h"><div class="ico ib">📊</div><h3>휘발성 데이터 수집 우선순위 (Order of Volatility)</h3></div>
+    <table>
+      <thead><tr><th>순위</th><th>데이터 유형</th><th>특징</th></tr></thead>
+      <tbody>
+        <tr><td><span class="tag tg">1순위 (최고 휘발)</span></td><td>CPU 레지스터·캐시</td><td>전원 차단 즉시 소멸</td></tr>
+        <tr><td><span class="tag tg">2순위</span></td><td>RAM (메인 메모리)</td><td>실행 중 프로세스·암호키·네트워크 연결 포함</td></tr>
+        <tr><td><span class="tag tb">3순위</span></td><td>네트워크 상태·ARP 캐시</td><td>현재 연결·세션 정보</td></tr>
+        <tr><td><span class="tag tb">4순위</span></td><td>실행 중 프로세스·열린 파일</td><td>ps, netstat 결과</td></tr>
+        <tr><td><span class="tag ty">5순위</span></td><td>임시 파일·페이지 파일(Swap)</td><td>시스템 재시작 시 소멸 가능</td></tr>
+        <tr><td><span class="tag to">6순위</span></td><td>디스크(HDD·SSD)</td><td>비휘발성 — 전원 꺼도 유지</td></tr>
+        <tr><td><span class="tag tr">7순위 (최저 휘발)</span></td><td>광학 매체·원격 로그</td><td>가장 안정적 보존</td></tr>
+      </tbody>
+    </table>
+    <div class="memo">휘발성 우선 수집: CPU레지스터→RAM→네트워크→프로세스→스왑→디스크→광학매체</div>
+  </div>
+</div>
+
+<!-- ===== P2: 절차 ===== -->
+<div class="pnl" id="p2">
+  <div class="card">
+    <div class="card-h"><div class="ico ig">📋</div><h3>디지털 포렌식 수행 절차 (6단계)</h3></div>
+    <div class="proc">
+      <div class="proc-item">
+        <div class="proc-left">
+          <div class="proc-dot" style="background:rgba(52,211,153,.2);color:var(--a1);">1</div>
+          <div class="proc-line"></div>
+        </div>
+        <div class="proc-content">
+          <div class="proc-title" style="color:var(--a1);">사전 준비 (Preparation)</div>
+          <div class="proc-sub">포렌식 수행 권한 확보, 조사 목적·범위 확정, 도구·장비 준비</div>
+          <div class="proc-key">영장·동의서 확보 / 포렌식 도구 검증 / 조사팀 구성</div>
+        </div>
+      </div>
+      <div class="proc-item">
+        <div class="proc-left">
+          <div class="proc-dot" style="background:rgba(56,189,248,.2);color:var(--a3);">2</div>
+          <div class="proc-line"></div>
+        </div>
+        <div class="proc-content">
+          <div class="proc-title" style="color:var(--a3);">현장 보존 (Identification & Preservation)</div>
+          <div class="proc-sub">현장 접근 통제, 증거 후보 식별, <strong>현장 상태 그대로 보존</strong></div>
+          <div class="proc-key">현장 사진 촬영 / 증거 태깅 / 작동 중인 시스템 상태 유지 판단</div>
+        </div>
+      </div>
+      <div class="proc-item">
+        <div class="proc-left">
+          <div class="proc-dot" style="background:rgba(251,191,36,.2);color:var(--a4);">3</div>
+          <div class="proc-line"></div>
+        </div>
+        <div class="proc-content">
+          <div class="proc-title" style="color:var(--a4);">증거 수집 (Collection)</div>
+          <div class="proc-sub">휘발성 순서에 따라 증거 수집 / 디스크 이미징(Bit-by-Bit 복사)</div>
+          <div class="proc-key">쓰기 방지 장치(Write Blocker) 사용 / 해시값 생성(MD5·SHA-256) / 원본 봉인</div>
+        </div>
+      </div>
+      <div class="proc-item">
+        <div class="proc-left">
+          <div class="proc-dot" style="background:rgba(167,139,250,.2);color:var(--a2);">4</div>
+          <div class="proc-line"></div>
+        </div>
+        <div class="proc-content">
+          <div class="proc-title" style="color:var(--a2);">증거 분석 (Examination & Analysis)</div>
+          <div class="proc-sub">복사본(이미지)으로 분석 수행 — 원본 절대 사용 금지</div>
+          <div class="proc-key">파일 복구·타임라인 분석·키워드 검색·아티팩트 추출 / 로그 분석</div>
+        </div>
+      </div>
+      <div class="proc-item">
+        <div class="proc-left">
+          <div class="proc-dot" style="background:rgba(251,146,60,.2);color:var(--a6);">5</div>
+          <div class="proc-line"></div>
+        </div>
+        <div class="proc-content">
+          <div class="proc-title" style="color:var(--a6);">보고서 작성 (Reporting)</div>
+          <div class="proc-sub">분석 결과를 객관적·명확하게 문서화 / 기술·법적 보고서 작성</div>
+          <div class="proc-key">발견된 증거·분석 과정·결론 기술 / 법정 증언 대비 명확한 기술</div>
+        </div>
+      </div>
+      <div class="proc-item">
+        <div class="proc-left">
+          <div class="proc-dot" style="background:rgba(248,113,113,.2);color:var(--a5);">6</div>
+        </div>
+        <div class="proc-content">
+          <div class="proc-title" style="color:var(--a5);">증거 제출 (Presentation)</div>
+          <div class="proc-sub">법원·수사기관에 Chain of Custody 문서와 함께 증거 제출</div>
+          <div class="proc-key">보고서·증거 원본·복사본·해시값 전달 / 법정 증언</div>
+        </div>
+      </div>
+    </div>
+    <div class="memo">포렌식 6단계: 준비→현장보존→증거수집→분석→보고서→제출 / 복사본으로만 분석!</div>
+  </div>
+
+  <div class="card">
+    <div class="card-h"><div class="ico iy">💡</div><h3>디스크 이미징 (Disk Imaging)</h3></div>
+    <table>
+      <thead><tr><th>항목</th><th>내용</th></tr></thead>
+      <tbody>
+        <tr><td><strong>정의</strong></td><td>원본 저장매체를 <strong>비트 단위(Bit-by-Bit)</strong>로 완전히 복사한 이미지 파일 생성</td></tr>
+        <tr><td><strong>목적</strong></td><td>원본 보존 + 복사본으로 반복 분석 가능 + 무결성 증명</td></tr>
+        <tr><td><strong>쓰기 방지 장치</strong></td><td><strong>Write Blocker</strong>(쓰기 차단기) — 이미징 시 원본 매체에 쓰기 작업이 발생하지 않도록 차단</td></tr>
+        <tr><td><strong>이미지 형식</strong></td><td>RAW/DD, E01(EnCase), AFF, EWF 등</td></tr>
+        <tr><td><strong>해시 검증</strong></td><td>이미징 전·후 MD5·SHA-256 해시 계산 → 일치하면 무결성 입증</td></tr>
+        <tr><td><strong>슬랙 공간</strong></td><td>비트 단위 복사이므로 삭제 파일·슬랙 공간까지 포함</td></tr>
+      </tbody>
+    </table>
+    <div class="memo">이미징 = 비트단위 완전 복사 / Write Blocker 필수 / MD5·SHA-256 해시로 무결성 증명</div>
+  </div>
+</div>
+
+<!-- ===== P3: 주요 분야 ===== -->
+<div class="pnl" id="p3">
+  <div class="card">
+    <div class="card-h"><div class="ico ib">💾</div><h3>디지털 포렌식 주요 분야</h3></div>
+    <div class="domain-grid">
+      <div class="dom">
+        <div class="dom-ico">💻</div>
+        <div class="dom-name" style="color:var(--a1);">컴퓨터 포렌식</div>
+        <div class="dom-sub">HDD·SSD 분석<br>삭제 파일 복구<br>파일시스템 분석</div>
+      </div>
+      <div class="dom">
+        <div class="dom-ico">📱</div>
+        <div class="dom-name" style="color:var(--a3);">모바일 포렌식</div>
+        <div class="dom-sub">스마트폰·태블릿<br>앱 데이터·통화기록<br>위치 정보</div>
+      </div>
+      <div class="dom">
+        <div class="dom-ico">🌐</div>
+        <div class="dom-name" style="color:var(--a4);">네트워크 포렌식</div>
+        <div class="dom-sub">패킷 캡처·분석<br>IDS/IPS 로그<br>트래픽 재구성</div>
+      </div>
+      <div class="dom">
+        <div class="dom-ico">☁️</div>
+        <div class="dom-name" style="color:var(--a2);">클라우드 포렌식</div>
+        <div class="dom-sub">클라우드 로그<br>가상머신 이미지<br>API 호출 기록</div>
+      </div>
+      <div class="dom">
+        <div class="dom-ico">🧠</div>
+        <div class="dom-name" style="color:var(--a6);">메모리 포렌식</div>
+        <div class="dom-sub">RAM 이미지 분석<br>실행 프로세스<br>암호키·악성코드</div>
+      </div>
+      <div class="dom">
+        <div class="dom-ico">📧</div>
+        <div class="dom-name" style="color:var(--a5);">이메일 포렌식</div>
+        <div class="dom-sub">메일 헤더 분석<br>발신 추적<br>첨부파일 검사</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-h"><div class="ico ig">📁</div><h3>파일시스템 포렌식 주요 개념</h3></div>
+    <table>
+      <thead><tr><th>개념</th><th>설명</th></tr></thead>
+      <tbody>
+        <tr><td><strong>삭제 파일 복구</strong></td><td>파일 삭제 시 실제 데이터는 남고 디렉터리 엔트리·FAT만 변경 → 복구 가능<br>SSD는 TRIM 명령으로 데이터 즉시 삭제 → 복구 어려움</td></tr>
+        <tr><td><strong>슬랙 공간<br>(Slack Space)</strong></td><td>파일이 클러스터를 완전히 채우지 못해 생기는 빈 공간 — 이전 파일 데이터 잔존 가능<br><span class="tag ty">파일 슬랙</span> : 마지막 섹터의 빈 공간 / <span class="tag tg">볼륨 슬랙</span> : 파티션 끝의 미사용 영역</td></tr>
+        <tr><td><strong>MFT<br>(Master File Table)</strong></td><td>NTFS 파일시스템의 핵심 — 모든 파일·폴더 메타데이터(생성·접근·수정 시간, 크기, 위치) 저장</td></tr>
+        <tr><td><strong>타임스탬프<br>(Timestamp)</strong></td><td>MACB — <strong>M</strong>odified(수정) / <strong>A</strong>ccessed(접근) / <strong>C</strong>hanged(변경=메타데이터) / <strong>B</strong>orn(생성)<br>타임라인 분석의 핵심 / 안티포렌식으로 조작 가능</td></tr>
+        <tr><td><strong>카빙 (Carving)</strong></td><td>파일 시그니처(헤더·푸터)를 기반으로 파일시스템과 무관하게 데이터 복구<br>포맷된 디스크에서도 파일 복구 가능</td></tr>
+        <tr><td><strong>파일 시그니처</strong></td><td>파일 형식별 고유 매직 넘버(Magic Number) — JPG: FF D8 FF / PDF: %PDF / ZIP: 50 4B 03 04</td></tr>
+      </tbody>
+    </table>
+    <div class="memo">MACB 타임스탬프 / 슬랙공간 = 이전 데이터 잔존 / 카빙 = 시그니처 기반 복구 / MFT = NTFS 핵심</div>
+  </div>
+
+  <div class="card">
+    <div class="card-h"><div class="ico ib">🌐</div><h3>네트워크 포렌식 핵심</h3></div>
+    <table>
+      <thead><tr><th>항목</th><th>내용</th></tr></thead>
+      <tbody>
+        <tr><td><strong>패킷 캡처</strong></td><td>네트워크 상의 패킷을 캡처하여 분석 — <strong>Wireshark</strong>, tcpdump 활용</td></tr>
+        <tr><td><strong>NetFlow</strong></td><td>실제 패킷 내용 없이 흐름(Flow) 정보만 수집 — 출발지·목적지 IP·포트, 전송량</td></tr>
+        <tr><td><strong>PCAP 분석</strong></td><td>pcap 파일 분석 — 세션 재구성, 파일 추출, 악성 트래픽 탐지</td></tr>
+        <tr><td><strong>로그 분석</strong></td><td>방화벽·IDS·웹서버·DNS·DHCP 로그에서 공격 흔적 추적</td></tr>
+        <tr><td><strong>IP 추적</strong></td><td>WHOIS, geoIP, ISP 협조 요청으로 발신지 IP 추적 (VPN·Tor 우회 고려)</td></tr>
+        <tr><td><strong>SIEM 연계</strong></td><td>보안 정보 이벤트 관리(SIEM)에서 수집된 로그로 침해 타임라인 재구성</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- ===== P4: 증거 무결성·법적 요건 ===== -->
+<div class="pnl" id="p4">
+  <div class="card">
+    <div class="card-h"><div class="ico iy">⛓️</div><h3>Chain of Custody (연계 보관성) — 핵심 법적 요건</h3></div>
+    <div style="background:var(--s2);border:1px solid rgba(251,191,36,.28);border-radius:10px;padding:14px;margin-bottom:12px;">
+      <p style="font-size:13px;line-height:1.75;font-weight:500;">
+        <strong style="color:var(--a4)">Chain of Custody(연계 보관성)</strong>: 증거가 수집된 순간부터 법정 제출까지 <em style="color:var(--a3);font-style:normal;">누가·언제·어디서·어떻게 취급했는지</em>를 빠짐없이 기록·유지하는 것
+      </p>
+    </div>
+    <table>
+      <thead><tr><th>기록 항목</th><th>내용</th></tr></thead>
+      <tbody>
+        <tr><td><strong>수집 정보</strong></td><td>수집 일시, 수집자 이름·직위, 수집 장소, 수집 방법</td></tr>
+        <tr><td><strong>증거 식별</strong></td><td>증거 번호, 설명(장치명·모델·SN), 해시값(MD5·SHA-256)</td></tr>
+        <tr><td><strong>이전 기록</strong></td><td>증거 이동·접근 시마다 서명·날짜·사유 기록</td></tr>
+        <tr><td><strong>보관 환경</strong></td><td>봉인 상태, 보관 장소, 온도·습도 조건</td></tr>
+        <tr><td><strong>법적 효과</strong></td><td>Chain of Custody 누락·단절 → 증거 능력 상실 위험</td></tr>
+      </tbody>
+    </table>
+    <div class="memo">CoC = 수집~제출까지 완전한 취급 이력 / 단절 시 법적 증거 능력 상실 위험</div>
+  </div>
+
+  <div class="card">
+    <div class="card-h"><div class="ico ib">🔐</div><h3>해시 무결성 검증</h3></div>
+    <table>
+      <thead><tr><th>해시 알고리즘</th><th>특징</th><th>포렌식 활용</th></tr></thead>
+      <tbody>
+        <tr><td><span class="tag ty">MD5</span></td><td>128비트 / 빠름 / 충돌 취약점 있음</td><td>속도가 중요한 초기 검증 (단독 사용 지양)</td></tr>
+        <tr><td><span class="tag tg">SHA-1</span></td><td>160비트 / MD5보다 안전 / 충돌 가능 확인</td><td>레거시 환경 (단독 사용 지양)</td></tr>
+        <tr><td><span class="tag tb">SHA-256</span></td><td>256비트 / 현재 표준 / 충돌 저항성 높음</td><td><strong>현행 포렌식 표준</strong> — 단독 또는 MD5와 병행</td></tr>
+      </tbody>
+    </table>
+    <ul class="il" style="margin-top:10px;">
+      <li><strong>검증 방법:</strong> 이미징 전 원본 해시 계산 → 이미징 후 복사본 해시 계산 → 일치 시 무결성 입증</li>
+      <li><strong>이중 해시:</strong> MD5 + SHA-256 병행 사용으로 신뢰성 향상</li>
+      <li><strong>해시 불일치:</strong> 데이터 변조 또는 전송 오류 → 해당 증거 사용 불가</li>
+    </ul>
+    <div class="memo">MD5(128비트·빠름) / SHA-256(256비트·현행 표준) / 이중 해시 병행 권장</div>
+  </div>
+
+  <div class="card">
+    <div class="card-h"><div class="ico ir">⚖️</div><h3>법적 증거 능력 요건 (Admissibility)</h3></div>
+    <div class="g2">
+      <div>
+        <p style="font-size:12px;font-weight:700;color:var(--a4);margin-bottom:8px;">법적 증거 요건 4가지</p>
+        <ul class="il">
+          <li><strong>진정성(Authenticity):</strong> 증거가 주장하는 것과 실제로 동일 — 해시 검증</li>
+          <li><strong>무결성(Integrity):</strong> 수집 이후 변경 없음 — Chain of Custody</li>
+          <li><strong>완전성(Completeness):</strong> 사건과 관련된 모든 증거 수집</li>
+          <li><strong>신뢰성(Reliability):</strong> 검증된 도구·방법론 사용</li>
+        </ul>
+      </div>
+      <div>
+        <p style="font-size:12px;font-weight:700;color:var(--a5);margin-bottom:8px;">증거 배제 사유</p>
+        <ul class="il">
+          <li>불법 수집 (영장 없는 압수)</li>
+          <li>Chain of Custody 단절</li>
+          <li>해시 불일치 (무결성 훼손)</li>
+          <li>비검증 도구·방법 사용</li>
+          <li>원본이 아닌 복사본 제출 (적절한 절차 없이)</li>
+        </ul>
+      </div>
+    </div>
+    <div class="memo">법적 증거 요건: 진정성·무결성·완전성·신뢰성 / 불법수집·CoC 단절 → 증거 배제</div>
+  </div>
+</div>
+
+<!-- ===== P5: 도구·안티포렌식 ===== -->
+<div class="pnl" id="p5">
+  <div class="card">
+    <div class="card-h"><div class="ico ig">🔧</div><h3>주요 디지털 포렌식 도구</h3></div>
+    <table>
+      <thead><tr><th>도구</th><th>분류</th><th>주요 기능</th></tr></thead>
+      <tbody>
+        <tr><td><strong>EnCase</strong></td><td><span class="tag tg">상용·종합</span></td><td>디스크 이미징(E01), 파일 분석, 법정 보고서 — 업계 표준</td></tr>
+        <tr><td><strong>FTK (Forensic Toolkit)</strong></td><td><span class="tag tg">상용·종합</span></td><td>빠른 인덱싱·검색, 이메일·레지스트리 분석, 패스워드 크래킹</td></tr>
+        <tr><td><strong>Autopsy</strong></td><td><span class="tag tb">오픈소스</span></td><td>Sleuth Kit 기반 GUI — 파일 복구, 타임라인, 키워드 검색</td></tr>
+        <tr><td><strong>Volatility</strong></td><td><span class="tag tb">오픈소스</span></td><td>메모리(RAM) 포렌식 — 프로세스·네트워크·악성코드 분석</td></tr>
+        <tr><td><strong>Wireshark</strong></td><td><span class="tag tb">오픈소스</span></td><td>패킷 캡처·분석 — 네트워크 포렌식 표준 도구</td></tr>
+        <tr><td><strong>dd / dcfldd</strong></td><td><span class="tag ty">CLI</span></td><td>Unix 기반 디스크 이미징 — dd: 기본 / dcfldd: 해시 자동 계산</td></tr>
+        <tr><td><strong>Cellebrite UFED</strong></td><td><span class="tag tg">상용</span></td><td>모바일 포렌식 특화 — iOS·Android 데이터 추출</td></tr>
+        <tr><td><strong>CAINE</strong></td><td><span class="tag tb">오픈소스</span></td><td>포렌식 특화 Linux 라이브 OS</td></tr>
+      </tbody>
+    </table>
+    <div class="memo">EnCase·FTK(상용 표준) / Autopsy·Volatility(오픈소스) / Wireshark(네트워크) / Cellebrite(모바일)</div>
+  </div>
+
+  <div class="card">
+    <div class="card-h"><div class="ico ir">🚫</div><h3>안티포렌식 (Anti-Forensics)</h3></div>
+    <div style="background:rgba(248,113,113,.07);border:1px solid rgba(248,113,113,.3);border-radius:9px;padding:13px;margin-bottom:12px;font-size:12.5px;line-height:1.7;">
+      <strong style="color:var(--a5)">안티포렌식</strong>: 디지털 증거의 수집·분석·복구를 방해하거나 증거를 위·변조·은닉·삭제하려는 행위
+    </div>
+    <table>
+      <thead><tr><th>기법</th><th>내용</th><th>대응 방법</th></tr></thead>
+      <tbody>
+        <tr><td><strong>데이터 삭제·덮어쓰기</strong></td><td>파일 완전 삭제 도구(DoD 7회 덮어쓰기), SSD TRIM</td><td>이미징 후 카빙 시도 / 슬랙 공간 분석</td></tr>
+        <tr><td><strong>스테가노그래피</strong></td><td>이미지·오디오·파일 내부에 데이터 은닉</td><td>스테가노그래피 탐지 도구(StegDetect)</td></tr>
+        <tr><td><strong>암호화</strong></td><td>BitLocker, VeraCrypt 등으로 데이터 암호화</td><td>메모리 포렌식으로 키 추출 / 비밀번호 크래킹</td></tr>
+        <tr><td><strong>타임스탬프 변조</strong></td><td>MACB 시간 정보 수정(Timestomping)</td><td>MFT·레지스트리·로그와 교차 검증</td></tr>
+        <tr><td><strong>메타데이터 제거</strong></td><td>파일에서 작성자·위치 등 메타데이터 삭제</td><td>원본 파일 분석 / 복구 도구 사용</td></tr>
+        <tr><td><strong>VPN·Tor 사용</strong></td><td>IP 추적 방해</td><td>엔드포인트 포렌식 / ISP 협조 요청</td></tr>
+        <tr><td><strong>루트킷</strong></td><td>운영체제 수준에서 프로세스·파일 은폐</td><td>메모리 포렌식 / 오프라인 분석</td></tr>
+      </tbody>
+    </table>
+    <div class="memo">안티포렌식: 삭제·스테가노그래피·암호화·타임스탬프 변조·루트킷 / 메모리포렌식으로 대응</div>
+  </div>
+
+  <div class="card">
+    <div class="card-h"><div class="ico iy">🔎</div><h3>스테가노그래피 (Steganography) vs 암호화 (Encryption)</h3></div>
+    <table>
+      <thead><tr><th>구분</th><th style="color:var(--a5)">스테가노그래피</th><th style="color:var(--a3)">암호화</th></tr></thead>
+      <tbody>
+        <tr><td><strong>목적</strong></td><td>데이터의 <strong>존재 자체를 숨김</strong></td><td>데이터 내용을 읽을 수 없게 변환</td></tr>
+        <tr><td><strong>외형</strong></td><td>일반 파일처럼 보임 (의심 안 받음)</td><td>암호화 파일임이 드러남</td></tr>
+        <tr><td><strong>발견 어려움</strong></td><td>높음 (숨겨진 사실조차 모를 수 있음)</td><td>낮음 (암호화 파일 식별 쉬움)</td></tr>
+        <tr><td><strong>결합 사용</strong></td><td>스테가노그래피 + 암호화 = 이중 보호</td><td>단독으로도 강력한 보호</td></tr>
+        <tr><td><strong>포렌식 대응</strong></td><td>통계 분석·탐지 도구 필요</td><td>키 확보 또는 크래킹 필요</td></tr>
+      </tbody>
+    </table>
+    <div class="memo">스테가노그래피 = 데이터 존재 자체 은닉 / 암호화 = 내용 변환 / 결합 시 이중 보호</div>
+  </div>
+</div>
+
+<!-- ===== P6: 예상문제 ===== -->
+<div class="pnl" id="p6">
+  <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;margin-bottom:14px;">
+    <div class="fb-wr" id="fbar" style="margin:0;">
+      <button class="fb on" data-f="all">전체</button>
+      <button class="fb" data-f="개요">🔍 개요</button>
+      <button class="fb" data-f="원칙">⚖️ 원칙</button>
+      <button class="fb" data-f="절차">📋 절차</button>
+      <button class="fb" data-f="증거">🔐 증거</button>
+      <button class="fb" data-f="안티">🚫 안티포렌식</button>
+      <button class="fb" data-f="OX">⭕ OX</button>
+    </div>
+    <div class="sc-b">정답: <span id="sc">0</span>/<span id="st">0</span></div>
+  </div>
+  <div id="ql"></div>
+</div>
+
+</div>
+
+<script>
+document.querySelectorAll('.tab').forEach(t=>t.addEventListener('click',()=>{
+  document.querySelectorAll('.tab,.pnl').forEach(x=>x.classList.remove('on'));
+  t.classList.add('on');document.getElementById(t.dataset.p).classList.add('on');
+}));
+
+const QA=[
+  {cat:'개요',diff:'easy',
+   q:'디지털 포렌식의 핵심 목적으로 가장 적절한 것은?',
+   cs:['시스템 성능을 최적화하여 업무 효율을 높이는 것','법적 절차에 따라 디지털 증거를 수집·보전·분석하여 법적으로 유효한 증거를 확보하는 것','악성코드를 탐지·제거하여 시스템을 복구하는 것','네트워크 침입을 실시간으로 차단하는 것'],
+   ans:1,
+   exp:'<strong>디지털 포렌식</strong>의 핵심 목적: 사이버 범죄·침해 사고 조사 시 <em>법적으로 유효한 디지털 증거(법적 증거 능력, Admissibility)를 확보</em>하는 것입니다. 단순한 시스템 복구나 침입 탐지와 달리, 법적 절차에 따른 증거 수집·보전·분석·제출 과정 전체를 포함합니다.'},
+  {cat:'원칙',diff:'mid',
+   q:'디지털 포렌식에서 증거의 수집부터 법정 제출까지 모든 취급 기록을 유지하는 원칙은?',
+   cs:['무결성 원칙','재현성 원칙','연계 보관성 원칙 (Chain of Custody)','정당성 원칙'],
+   ans:2,
+   exp:'<strong>Chain of Custody(연계 보관성)</strong>: 증거가 수집된 순간부터 법정 제출까지 누가·언제·어디서·어떻게 취급했는지를 빠짐없이 기록·유지하는 원칙입니다. CoC가 단절되면 법원에서 해당 증거의 증거 능력이 배제될 수 있습니다.'},
+  {cat:'원칙',diff:'mid',
+   q:'휘발성 데이터 수집 우선순위(Order of Volatility)에서 가장 먼저 수집해야 하는 데이터는?',
+   cs:['하드디스크(HDD) 데이터','RAM(메인 메모리)','CPU 레지스터·캐시','네트워크 연결 상태'],
+   ans:2,
+   exp:'<strong>휘발성 순서</strong>: CPU 레지스터·캐시 > RAM > 네트워크 상태 > 실행 프로세스 > 스왑 파일 > 디스크 > 광학 매체 순으로 휘발성이 낮아집니다. <strong>CPU 레지스터·캐시</strong>는 전원 차단 즉시 소멸하므로 가장 먼저 수집해야 합니다. RAM은 두 번째로 높은 휘발성을 가집니다.'},
+  {cat:'원칙',diff:'hard',
+   q:'디지털 포렌식 원칙 중 "동일한 조건에서 분석을 반복하면 동일한 결과가 나와야 한다"는 원칙은?',
+   cs:['정당성 원칙','무결성 원칙','재현성 원칙','신속성 원칙'],
+   ans:2,
+   exp:'<strong>재현성 원칙</strong>: 동일한 분석 도구·절차·환경에서 동일한 결과가 나와야 합니다. 이를 위해 사용한 도구·버전·분석 절차·환경을 상세히 문서화해야 합니다. 재현 불가능한 분석은 법정에서 신뢰성을 인정받기 어렵습니다.'},
+  {cat:'절차',diff:'mid',
+   q:'디스크 이미징 시 원본 저장매체에 쓰기 작업이 발생하지 않도록 차단하는 장치는?',
+   cs:['방화벽 (Firewall)','쓰기 방지 장치 (Write Blocker)','IDS (침입 탐지 시스템)','암호화 모듈'],
+   ans:1,
+   exp:'<strong>Write Blocker(쓰기 방지 장치)</strong>: 디스크 이미징 과정에서 원본 저장매체에 어떠한 쓰기 작업도 발생하지 않도록 차단하는 하드웨어·소프트웨어 장치입니다. Write Blocker 없이 이미징하면 운영체제가 원본 디스크에 접근 로그 등을 기록하여 증거 무결성이 훼손됩니다.'},
+  {cat:'절차',diff:'mid',
+   q:'디지털 포렌식 분석 시 원본 증거를 사용하지 않고 복사본(이미지)으로 분석하는 이유로 가장 적절한 것은?',
+   cs:['분석 속도를 높이기 위해','원본 증거의 무결성을 보존하고 법적 증거 능력을 유지하기 위해','저장 공간을 절약하기 위해','복사본이 더 정확한 분석 결과를 제공하기 때문에'],
+   ans:1,
+   exp:'원본으로 분석하면 분석 과정에서 파일 접근 시간(Accessed Time) 변경 등 데이터가 변경될 수 있어 <strong>무결성이 훼손</strong>됩니다. <em>비트 단위 복사본(이미지)으로 분석</em>하면 원본은 봉인 상태로 보전되며, 분석 실수가 있어도 재이미징하여 재분석이 가능합니다.'},
+  {cat:'증거',diff:'mid',
+   q:'파일시스템 포렌식에서 MACB 타임스탬프의 구성으로 가장 적절한 것은?',
+   cs:['Modified·Accessed·Created·Backup','Modified·Accessed·Changed·Born','Metadata·Accessed·Copied·Born','Modified·Archived·Changed·Backup'],
+   ans:1,
+   exp:'<strong>MACB 타임스탬프</strong>: <strong>M</strong>odified(파일 내용 수정 시간) / <strong>A</strong>ccessed(마지막 접근 시간) / <strong>C</strong>hanged(메타데이터 변경 시간, ctime) / <strong>B</strong>orn(파일 생성 시간). 타임라인 분석의 핵심 요소이며, 안티포렌식으로 Timestomping(타임스탬프 변조)이 가능하므로 MFT·로그와 교차 검증이 필요합니다.'},
+  {cat:'증거',diff:'hard',
+   q:'파일 카빙(File Carving)에 관한 설명으로 가장 적절한 것은?',
+   cs:['파일시스템 메타데이터(MFT)를 분석하여 파일 목록을 추출하는 기법','파일의 헤더·푸터 시그니처를 기반으로 파일시스템과 무관하게 데이터를 복구하는 기법','네트워크 패킷에서 파일을 재구성하는 기법','암호화된 파일의 키를 추출하는 기법'],
+   ans:1,
+   exp:'<strong>파일 카빙(File Carving)</strong>: 파일의 고유한 <em>매직 넘버(Magic Number)</em>인 헤더와 푸터(끝 시그니처)를 기반으로 파일시스템 구조와 무관하게 데이터를 검색·복구하는 기법입니다. 포맷된 디스크나 파일시스템이 손상된 저장매체에서도 파일을 복구할 수 있습니다. 예: JPG 파일은 FF D8 FF(헤더)와 FF D9(푸터)로 식별합니다.'},
+  {cat:'안티',diff:'mid',
+   q:'스테가노그래피(Steganography)와 암호화(Encryption)의 차이로 가장 적절한 것은?',
+   cs:['스테가노그래피는 데이터 내용을 변환하고, 암호화는 데이터를 숨기는 기법이다.',
+       '스테가노그래피는 데이터의 존재 자체를 숨기고, 암호화는 데이터 내용을 읽을 수 없게 변환한다.',
+       '스테가노그래피는 네트워크 통신에만 사용하고, 암호화는 파일에만 사용한다.',
+       '스테가노그래피와 암호화는 같은 목적으로 사용되는 동일한 기법이다.'],
+   ans:1,
+   exp:'<strong>스테가노그래피</strong>: 데이터의 <em>존재 자체를 숨김</em> — 일반 이미지·오디오 파일처럼 보여 의심받지 않음. <strong>암호화</strong>: 데이터는 보이지만 <em>내용을 읽을 수 없게 변환</em> — 암호화 파일임이 드러남. 두 기법을 결합하면(암호화 후 스테가노그래피 적용) 이중 보호 효과를 얻을 수 있습니다.'},
+  {cat:'안티',diff:'hard',
+   q:'안티포렌식 기법 중 Timestomping에 관한 설명으로 가장 적절한 것은?',
+   cs:['디스크의 모든 데이터를 여러 번 덮어써서 복구를 불가능하게 하는 기법','파일의 MACB 타임스탬프를 변조하여 파일 생성·수정 시간을 은폐하는 기법','네트워크 패킷의 출발지 IP를 위조하는 기법','암호화된 볼륨을 일반 파일처럼 보이게 하는 기법'],
+   ans:1,
+   exp:'<strong>Timestomping</strong>: 파일의 <em>MACB 타임스탬프(생성·수정·접근·변경 시간)를 조작</em>하여 파일이 언제 생성·수정되었는지 은폐하는 안티포렌식 기법입니다. 대응 방법: MFT(Master File Table)의 $STANDARD_INFORMATION과 $FILE_NAME의 타임스탬프를 교차 검증하거나, 레지스트리·이벤트 로그와 비교하여 변조 여부를 탐지합니다.'},
+  // OX
+  {cat:'OX',diff:'easy',type:'ox',
+   q:'디지털 포렌식에서 분석은 원본 증거가 아닌 비트 단위 복사본(이미지)으로 수행해야 한다.',
+   ans:true,
+   exp:'<strong>○</strong> — 포렌식 분석은 반드시 <strong>원본의 비트 단위 복사본(이미지)으로</strong> 수행해야 합니다. 원본으로 분석하면 파일 접근 시간 변경 등 데이터가 변경되어 무결성이 훼손됩니다. 원본은 봉인·보전하고, 이미지 파일로 반복 분석이 가능합니다.'},
+  {cat:'OX',diff:'mid',type:'ox',
+   q:'SHA-256은 MD5보다 해시값 길이가 짧고 충돌 저항성이 낮아 포렌식에서 사용이 권장되지 않는다.',
+   ans:false,
+   exp:'<strong>×</strong> — 정반대입니다. <strong>SHA-256</strong>은 256비트 해시값을 생성하며, 128비트인 MD5보다 <em>충돌 저항성이 훨씬 높습니다</em>. MD5는 충돌 취약점이 발견되어 단독 사용을 지양하고 있으며, SHA-256이 현재 포렌식 표준으로 사용됩니다. SHA-256이 더 길고 더 안전합니다.'},
+  {cat:'OX',diff:'mid',type:'ox',
+   q:'스테가노그래피는 데이터의 존재 자체를 숨기므로, 암호화와 달리 외부에서 보면 일반 파일처럼 보인다.',
+   ans:true,
+   exp:'<strong>○</strong> — <strong>스테가노그래피</strong>의 핵심 특징입니다. 이미지·오디오 파일 내부에 데이터를 은닉하여 겉으로는 일반 파일처럼 보입니다. 반면 암호화된 파일은 암호화 사실이 드러납니다. 이 때문에 스테가노그래피가 더 탐지하기 어렵고, 특수한 통계 분석 도구가 필요합니다.'},
+  {cat:'OX',diff:'hard',type:'ox',
+   q:'Chain of Custody(연계 보관성)가 중간에 단절된 경우에도 해시값이 일치하면 법적 증거 능력은 유지된다.',
+   ans:false,
+   exp:'<strong>×</strong> — Chain of Custody 단절은 <strong>해시값 일치와 무관하게</strong> 법적 증거 능력에 영향을 줄 수 있습니다. CoC는 증거의 취급 이력을 완전히 문서화하여 증거가 오염·변조되지 않았음을 보장하는 것입니다. CoC가 단절되면 누군가 증거를 조작했을 가능성을 배제할 수 없어 법원에서 증거 능력을 부정할 수 있습니다.'},
+  {cat:'OX',diff:'mid',type:'ox',
+   q:'SSD에서 TRIM 명령이 활성화된 경우 삭제된 파일의 복구가 HDD보다 쉽다.',
+   ans:false,
+   exp:'<strong>×</strong> — <strong>TRIM이 활성화된 SSD</strong>는 파일 삭제 시 해당 블록의 데이터를 <em>즉시 완전 소거</em>하므로 파일 복구가 <strong>HDD보다 훨씬 어렵습니다</strong>. HDD는 파일 삭제 시 디렉터리 엔트리만 변경되고 실제 데이터는 남아 있어 복구 가능성이 높습니다. TRIM은 SSD 성능 유지 목적이지만 포렌식 관점에서는 안티포렌식 효과를 가집니다.'},
+];
+
+let answered=0,correct=0;
+function renderQ(f){
+  const data=f==='all'?QA:QA.filter(q=>q.cat===f);
+  const list=document.getElementById('ql');list.innerHTML='';
+  answered=0;correct=0;upS();
+  const CATC={'개요':'tg','원칙':'ty','절차':'tb','증거':'tp','안티':'tr','OX':'to'};
+  const DLC={'easy':'easy 쉬움','mid':'mid 보통','hard':'hard 어려움'};
+  const NL=['①','②','③','④'];
+  if(!data.length){list.innerHTML='<div style="text-align:center;padding:40px;color:var(--mu)">문제 없음</div>';return;}
+  data.forEach((q,i)=>{
+    const gi=QA.indexOf(q);
+    const el=document.createElement('div');el.className='qa';
+    const tc=CATC[q.cat]||'tg';
+    const [dc,dn]=(DLC[q.diff]||'mid 보통').split(' ');
+    if(q.type==='ox'){
+      el.innerHTML=`<div class="qa-hd" onclick="this.closest('.qa').classList.toggle('open')"><div><div class="qa-meta"><span class="qn">Q${String(i+1).padStart(2,'0')}</span><span class="tag ${tc}">${q.cat}</span><span class="diff ${dc}">${dn}</span><span class="tag tp">O/X</span></div><div class="qq">${q.q}</div></div><span class="tgl">▾</span></div>
+      <div class="qa-bd"><div class="ox-wr"><button class="ox" onclick="pickOX(this,true,${gi})">⭕ 옳다</button><button class="ox" onclick="pickOX(this,false,${gi})">❌ 틀리다</button></div><div class="exp" id="ex-${gi}"><div class="exp-t">💡 해설</div>${q.exp}</div></div>`;
+    } else {
+      el.innerHTML=`<div class="qa-hd" onclick="this.closest('.qa').classList.toggle('open')"><div><div class="qa-meta"><span class="qn">Q${String(i+1).padStart(2,'0')}</span><span class="tag ${tc}">${q.cat}</span><span class="diff ${dc}">${dn}</span></div><div class="qq">${q.q}</div></div><span class="tgl">▾</span></div>
+      <div class="qa-bd"><div class="chs">${q.cs.map((c,ci)=>`<div class="ch" data-ci="${ci}" onclick="pickCh(this,${gi})"><span class="cnum">${NL[ci]}</span><span>${c}</span></div>`).join('')}</div><div class="exp" id="ex-${gi}"><div class="exp-t">💡 해설</div>${q.exp}</div></div>`;
+    }
+    list.appendChild(el);
+  });
+}
+function pickCh(el,gi){
+  const bd=el.closest('.qa-bd');if(bd.querySelector('.ok,.ng'))return;
+  const q=QA[gi];
+  bd.querySelectorAll('.ch').forEach((c,i)=>{c.classList.add('lk');if(i===q.ans)c.classList.add('ok');else if(i===parseInt(el.dataset.ci))c.classList.add('ng');});
+  document.getElementById('ex-'+gi).classList.add('show');
+  answered++;if(parseInt(el.dataset.ci)===q.ans)correct++;upS();
+}
+function pickOX(btn,val,gi){
+  const bd=btn.closest('.qa-bd');if(bd.querySelector('.so,.sx'))return;
+  const q=QA[gi];
+  bd.querySelectorAll('.ox').forEach(b=>b.classList.add('lk'));
+  btn.classList.add(val?'so':'sx');
+  if(val!==q.ans){btn.style.opacity='.5';bd.querySelectorAll('.ox')[val?1:0].classList.add(q.ans?'so':'sx');}
+  document.getElementById('ex-'+gi).classList.add('show');
+  answered++;if(val===q.ans)correct++;upS();
+}
+function upS(){document.getElementById('sc').textContent=correct;document.getElementById('st').textContent=answered;}
+document.getElementById('fbar').addEventListener('click',e=>{
+  const b=e.target.closest('.fb');if(!b)return;
+  document.querySelectorAll('.fb').forEach(x=>x.classList.remove('on'));b.classList.add('on');renderQ(b.dataset.f);
+});
+renderQ('all');
+</script>
+</body>
+</html>

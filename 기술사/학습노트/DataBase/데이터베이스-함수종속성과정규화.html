@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>함수 종속성과 정규화 — 컴퓨터시스템응용 기술사 모범 답안</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;500;700&family=Noto+Sans+KR:wght@400;500;700&family=JetBrains+Mono:wght@400;600&display=swap');
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --ink:#1a1a1a;--ink2:#333;--ink3:#666;
+  --line:#c8c8c8;--line2:#e2e0da;--bg:#fdfcf8;
+  --accent:#1a3a6e;--accent2:#7a3010;--green:#2d6a4f;--purple:#4a3080;
+}
+body{background:#dddad2;font-family:'Noto Sans KR',sans-serif;color:var(--ink);padding:20px 0 40px}
+.doc{max-width:800px;margin:0 auto;background:var(--bg);box-shadow:0 4px 32px rgba(0,0,0,.22)}
+
+.hdr{border-bottom:3px double var(--ink);padding:20px 36px 16px;display:flex;align-items:flex-start;gap:16px}
+.hdr-l{flex:1}
+.lbl{font-size:11px;letter-spacing:.14em;color:var(--ink3);font-family:'Noto Serif KR',serif}
+.ttl{font-size:20px;font-weight:700;font-family:'Noto Serif KR',serif;color:var(--accent);line-height:1.35;margin-top:5px}
+.pills{display:flex;gap:8px;margin-top:9px;flex-wrap:wrap}
+.pill{font-size:11px;padding:2px 10px;border:1px solid var(--line);border-radius:2px;color:var(--ink2);background:#fff}
+.score-box{border:1.5px solid var(--ink);padding:10px 16px;text-align:center;min-width:72px}
+.sc-lbl{font-size:10px;color:var(--ink3);letter-spacing:.06em}
+.sc-n{font-size:24px;font-weight:700;font-family:'Noto Serif KR',serif;color:var(--accent);line-height:1.1}
+
+.body{padding:24px 40px 48px}
+
+.qbox{background:#f0efea;border:1px solid #bbb;padding:14px 18px;border-radius:3px;margin-bottom:24px;font-size:12.5px;color:var(--ink2);line-height:1.85}
+.qbox strong{color:var(--ink);font-weight:700}
+
+.sh {font-size:14.5px;font-weight:700;font-family:'Noto Serif KR',serif;color:var(--accent);border-bottom:1.5px solid var(--accent);padding-bottom:5px;margin:0 0 13px}
+.sh2{font-size:13px;font-weight:700;color:var(--ink);margin:13px 0 5px;padding-left:8px;border-left:3px solid var(--accent2)}
+.sh3{font-size:12.5px;font-weight:700;color:var(--ink2);margin:9px 0 4px;padding-left:18px}
+.sec{margin-bottom:22px}
+.txt{font-size:12.5px;line-height:1.92;color:var(--ink2)}
+.txt p{margin-bottom:5px}
+.i1{padding-left:14px}
+.i2{padding-left:28px}
+.kw{font-weight:700;color:var(--ink)}
+
+.tw{margin:10px 0 14px;overflow-x:auto}
+table{width:100%;border-collapse:collapse;font-size:11.5px}
+th{background:var(--accent);color:#fff;padding:6px 9px;text-align:left;font-weight:500;border:1px solid var(--accent)}
+td{padding:6px 9px;border:1px solid var(--line);vertical-align:top;line-height:1.75;color:var(--ink2)}
+tr:nth-child(even) td{background:#f4f3ef}
+.kc{font-weight:700;color:var(--ink)}
+.tc{text-align:center}
+
+/* 릴레이션 테이블 스타일 */
+.rel-wrap{margin:10px 0 6px;overflow-x:auto}
+.rel-title{font-size:11.5px;font-weight:700;color:var(--accent);margin-bottom:4px;padding-left:2px}
+.rel-table{border-collapse:collapse;font-size:11.5px;min-width:100%}
+.rel-table th{background:#2d4f8e;color:#fff;padding:5px 10px;text-align:center;border:1px solid var(--accent);font-weight:600;white-space:nowrap}
+.rel-table td{padding:5px 10px;border:1px solid var(--line);text-align:center;color:var(--ink2);white-space:nowrap}
+.rel-table tr:nth-child(even) td{background:#f4f3ef}
+.pk{background:#FAEEDA!important;font-weight:700;color:#7a3010}
+.fk{background:#EAF3DE!important;font-weight:700;color:#2d6a4f}
+.anom{background:#FCEBEB!important;color:#A32D2D;font-weight:700}
+.ok{background:#EAF3DE!important;color:#2d6a4f;font-weight:700}
+.fd-arrow{font-size:13px;color:var(--accent);font-weight:700}
+
+/* FD 다이어그램 */
+.fig{margin:13px 0 16px;background:#f8f7f3;border:1px solid var(--line2);border-radius:4px;padding:10px 8px}
+.fc{font-size:11px;color:var(--ink3);text-align:center;margin-top:7px;font-style:italic}
+
+/* 정규형 진행 박스 */
+.nf-flow{display:flex;align-items:center;gap:0;margin:12px 0;flex-wrap:wrap}
+.nf-box{flex:1;min-width:80px;padding:8px 6px;text-align:center;border:1px solid var(--line);background:#f8f7f3;border-radius:3px}
+.nf-box.active{background:var(--accent);color:#fff;border-color:var(--accent)}
+.nf-box.cur{background:#7a3010;color:#fff;border-color:#7a3010}
+.nf-label{font-size:11px;font-weight:700}
+.nf-desc{font-size:10px;margin-top:2px;opacity:.85}
+.nf-arr{font-size:16px;color:var(--line);padding:0 4px;flex-shrink:0}
+
+/* Formula */
+.formula{display:inline-block;font-family:'JetBrains Mono',monospace;font-size:12px;background:#f0efea;border:1px solid var(--line2);border-radius:3px;padding:3px 10px;color:#1a3a6e;font-weight:700;margin:3px 0}
+
+.note{margin:16px 0 0;padding:12px 16px;border:1px solid #8b6914;background:#fffbef;border-radius:3px}
+.nt{font-size:12px;font-weight:700;color:#6a4f00;margin-bottom:5px}
+.nb{font-size:12px;color:#4a3800;line-height:1.85}
+
+.pb{border:none;border-top:2px dashed #bbb;margin:24px 0;position:relative}
+.pb::after{content:"— 다음 페이지 —";position:absolute;top:-9px;left:50%;transform:translateX(-50%);background:var(--bg);padding:0 10px;font-size:10px;color:#bbb;white-space:nowrap}
+
+.ftr{border-top:2px solid var(--ink);margin:0 40px;padding:10px 0;display:flex;justify-content:space-between;font-size:10px;color:var(--ink3)}
+
+/* 이상 현상 배지 */
+.badge{display:inline-block;font-size:10.5px;padding:1px 8px;border-radius:2px;font-weight:600;margin:1px 2px}
+.badge-r{background:#FCEBEB;color:#A32D2D;border:1px solid #f0b8b8}
+.badge-g{background:#EAF3DE;color:#2d6a4f;border:1px solid #b0d89a}
+.badge-b{background:#E6F1FB;color:#0C447C;border:1px solid #9dc4f0}
+</style>
+</head>
+<body>
+<div class="doc">
+
+<!-- ── Header ── -->
+<div class="hdr">
+  <div class="hdr-l">
+    <div class="lbl">컴퓨터시스템응용 기술사 · 예상 문제 및 모범 답안</div>
+    <div class="ttl">함수 종속성과 정규화<br>(Functional Dependency &amp; Normalization)</div>
+    <div class="pills">
+      <span class="pill">4교시 · 논술형</span>
+      <span class="pill">데이터베이스 설계</span>
+      <span class="pill">키워드: FD · 이상 현상 · 1NF~BCNF · 무손실 분해</span>
+    </div>
+  </div>
+  <div class="score-box">
+    <div class="sc-lbl">배점</div>
+    <div class="sc-n">25</div>
+    <div class="sc-lbl">점</div>
+  </div>
+</div>
+
+<div class="body">
+
+<!-- 문제 -->
+<div class="qbox">
+  <strong>【 문 제 】</strong><br><br>
+  관계형 데이터베이스 설계의 핵심 이론인 <strong>함수 종속성(Functional Dependency)</strong>과 <strong>정규화(Normalization)</strong>에 대하여 다음을 설명하시오.<br><br>
+  &emsp;(1) 함수 종속성의 개념, 종류 및 이상 현상(Anomaly)과의 관계 &nbsp;(6점)<br>
+  &emsp;(2) 암스트롱 공리(Armstrong's Axioms)와 함수 종속성 추론 &nbsp;(4점)<br>
+  &emsp;(3) 정규형의 단계별 정의 및 정규화 절차 (1NF ~ BCNF) &nbsp;(10점)<br>
+  &emsp;(4) 정규화의 장단점 및 실무 역정규화(Denormalization) 고려사항 &nbsp;(5점)
+</div>
+
+<!-- ─── Ⅰ. 함수 종속성 ─── -->
+<div class="sec">
+  <div class="sh">Ⅰ. 함수 종속성의 개념, 종류 및 이상 현상과의 관계</div>
+
+  <div class="sh2">1. 함수 종속성(Functional Dependency)의 정의</div>
+  <div class="txt i1">
+    <p>릴레이션 R의 두 속성 집합 X, Y에 대해 <span class="kw">X의 값이 결정되면 Y의 값이 유일하게 결정</span>될 때 "Y는 X에 함수적으로 종속된다"라고 하며, <span class="formula">X → Y</span>로 표기한다. X를 <span class="kw">결정자(Determinant)</span>, Y를 <span class="kw">종속자(Dependent)</span>라 한다.</p>
+    <p>함수 종속성은 릴레이션의 <span class="kw">의미(Semantics)와 무결성 제약</span>을 표현하는 핵심 수단이며, 정규화의 이론적 토대가 된다.</p>
+  </div>
+
+  <div class="sh2">2. 함수 종속성의 종류</div>
+  <div class="tw">
+    <table>
+      <tr><th style="width:22%">종류</th><th style="width:36%">정의</th><th>예시</th></tr>
+      <tr>
+        <td><span class="kc">완전 함수 종속<br>(Full FD)</span></td>
+        <td>X → Y 이고, X의 어떤 진부분집합 X'에 대해서도 X' → Y 가 성립하지 않음 (기본키 전체에 종속)</td>
+        <td>{학번, 과목코드} → 성적<br>(학번만으로 성적 결정 불가)</td>
+      </tr>
+      <tr>
+        <td><span class="kc">부분 함수 종속<br>(Partial FD)</span></td>
+        <td>X → Y 이고, X의 진부분집합 X'에 대해 X' → Y 가 성립하는 경우 (복합키의 일부에 종속)</td>
+        <td>{학번, 과목코드} → 학생이름<br>(학번만으로 결정 가능 → 부분 종속)</td>
+      </tr>
+      <tr>
+        <td><span class="kc">이행 함수 종속<br>(Transitive FD)</span></td>
+        <td>X → Y 이고 Y → Z 일 때 X → Z 가 성립하며, Y는 키가 아닌 비주요 속성</td>
+        <td>학번 → 학과코드 → 학과명<br>(학번 → 학과명 이행 종속)</td>
+      </tr>
+      <tr>
+        <td><span class="kc">다치 종속<br>(Multivalued Dep.)</span></td>
+        <td>X →→ Y : X 값에 대해 Y값 집합이 독립적으로 결정됨 (4NF 대상)</td>
+        <td>교수 →→ 강의과목<br>교수 →→ 연구분야</td>
+      </tr>
+      <tr>
+        <td><span class="kc">조인 종속<br>(Join Dependency)</span></td>
+        <td>릴레이션이 특정 분해 후 조인 시 원래 릴레이션으로 복원 가능한 제약 (5NF 대상)</td>
+        <td>복합 관계의 순환 조인 조건</td>
+      </tr>
+    </table>
+  </div>
+  <div class="fc" style="margin-top:-8px;margin-bottom:12px">【표 1】 함수 종속성의 종류</div>
+
+  <div class="sh2">3. 이상 현상(Anomaly)과 함수 종속성의 관계</div>
+  <div class="txt i1">
+    <p>정규화가 되지 않은 릴레이션에 <span class="kw">부분 함수 종속 또는 이행 함수 종속</span>이 존재할 때 다음의 이상 현상이 발생한다.</p>
+  </div>
+
+  <!-- 비정규화 릴레이션 예시 -->
+  <div class="rel-wrap">
+    <div class="rel-title">▶ 비정규 릴레이션 예: 수강(학번, 과목코드, 성적, 학생이름, 학과코드, 학과명)</div>
+    <table class="rel-table">
+      <tr>
+        <th class="pk">학번(PK)</th><th class="pk">과목코드(PK)</th>
+        <th>성적</th><th>학생이름</th><th>학과코드</th><th>학과명</th>
+      </tr>
+      <tr><td>S001</td><td>C01</td><td>A</td><td>김철수</td><td>D10</td><td>컴퓨터공학</td></tr>
+      <tr><td>S001</td><td>C02</td><td>B</td><td>김철수</td><td>D10</td><td>컴퓨터공학</td></tr>
+      <tr><td>S002</td><td>C01</td><td>A+</td><td>이영희</td><td>D20</td><td>전자공학</td></tr>
+      <tr><td class="anom">S003</td><td class="anom">—</td><td class="anom">—</td><td class="anom">박민수</td><td class="anom">D10</td><td class="anom">컴퓨터공학</td></tr>
+    </table>
+  </div>
+
+  <div class="tw" style="margin-top:10px">
+    <table>
+      <tr><th style="width:18%">이상 현상</th><th style="width:38%">발생 원인 및 내용</th><th>위 릴레이션 예시</th></tr>
+      <tr>
+        <td><span class="badge badge-r">삽입 이상</span><br>(Insertion)</td>
+        <td>새 데이터 삽입 시 불필요한 정보를 함께 입력하거나, 특정 속성 없이는 삽입 자체가 불가</td>
+        <td>수강 과목 없는 신입생(S003) 정보를 삽입하려면 과목코드(PK)가 NULL이어야 하나 PK는 NULL 불가</td>
+      </tr>
+      <tr>
+        <td><span class="badge badge-r">삭제 이상</span><br>(Deletion)</td>
+        <td>특정 데이터 삭제 시 의도하지 않은 다른 데이터까지 함께 삭제됨</td>
+        <td>S002의 C01 수강 기록 삭제 시 이영희 학생 정보와 전자공학 학과 정보도 함께 소실</td>
+      </tr>
+      <tr>
+        <td><span class="badge badge-r">갱신 이상</span><br>(Update)</td>
+        <td>중복 저장된 데이터 일부만 갱신 시 데이터 불일치(Inconsistency) 발생</td>
+        <td>컴퓨터공학 학과명 변경 시 S001의 두 튜플을 모두 수정해야 하나 일부만 수정 시 불일치</td>
+      </tr>
+    </table>
+  </div>
+  <div class="fc" style="margin-top:-8px;margin-bottom:12px">【표 2】 이상 현상의 종류 및 발생 원인</div>
+</div>
+
+<hr class="pb">
+
+<!-- ─── Ⅱ. 암스트롱 공리 ─── -->
+<div class="sec">
+  <div class="sh">Ⅱ. 암스트롱 공리(Armstrong's Axioms)와 함수 종속성 추론</div>
+
+  <div class="sh2">1. 암스트롱 공리 (건전성 · 완전성 보장)</div>
+  <div class="tw">
+    <table>
+      <tr><th style="width:20%">공리</th><th style="width:35%">정의</th><th>표기</th></tr>
+      <tr><td><span class="kc">① 반사율<br>(Reflexivity)</span></td><td>Y ⊆ X 이면 X → Y 성립 (자명한 FD)</td><td>Y ⊆ X &nbsp;⟹&nbsp; X → Y</td></tr>
+      <tr><td><span class="kc">② 첨가율<br>(Augmentation)</span></td><td>X → Y 이면, XZ → YZ 성립 (양쪽에 Z 추가)</td><td>X → Y &nbsp;⟹&nbsp; XZ → YZ</td></tr>
+      <tr><td><span class="kc">③ 이행율<br>(Transitivity)</span></td><td>X → Y 이고 Y → Z 이면 X → Z 성립</td><td>X→Y, Y→Z &nbsp;⟹&nbsp; X→Z</td></tr>
+    </table>
+  </div>
+  <div class="fc" style="margin-top:-8px;margin-bottom:6px">【표 3】 암스트롱 3대 공리 (건전·완전)</div>
+
+  <div class="sh2">2. 파생 규칙</div>
+  <div class="tw">
+    <table>
+      <tr><th style="width:20%">규칙</th><th style="width:35%">정의</th><th>도출 근거</th></tr>
+      <tr><td><span class="kc">합집합 규칙</span></td><td>X→Y, X→Z 이면 X→YZ</td><td>첨가율 + 이행율</td></tr>
+      <tr><td><span class="kc">분해 규칙</span></td><td>X→YZ 이면 X→Y, X→Z</td><td>반사율 + 이행율</td></tr>
+      <tr><td><span class="kc">가의율<br>(Pseudotransitivity)</span></td><td>X→Y, WY→Z 이면 WX→Z</td><td>첨가율 + 이행율</td></tr>
+    </table>
+  </div>
+  <div class="fc" style="margin-top:-8px;margin-bottom:10px">【표 4】 암스트롱 공리로부터 파생된 규칙</div>
+
+  <div class="sh2">3. 속성 폐포(Attribute Closure)와 최소 커버</div>
+  <div class="txt i1">
+    <p><span class="kw">속성 폐포(X⁺)</span>: 주어진 FD 집합 F 하에서 X로부터 암스트롱 공리를 반복 적용해 결정할 수 있는 모든 속성의 집합.<br>
+    &emsp;→ X⁺에 모든 속성이 포함되면 X가 <span class="kw">슈퍼키(Superkey)</span>임을 판별 가능</p>
+    <p><span class="kw">최소 커버(Minimal Cover, Fc)</span>: FD 집합에서 중복·불필요 종속성을 제거해 동치이면서 크기가 최소인 FD 집합. 정규화 절차의 기준으로 활용된다.</p>
+  </div>
+</div>
+
+<hr class="pb">
+
+<!-- ─── Ⅲ. 정규형 ─── -->
+<div class="sec">
+  <div class="sh">Ⅲ. 정규형 단계별 정의 및 정규화 절차 (1NF ~ BCNF)</div>
+
+  <div class="sh2">1. 정규형 진행 흐름</div>
+  <div class="nf-flow">
+    <div class="nf-box"><div class="nf-label">비정규형</div><div class="nf-desc">반복 그룹 존재</div></div>
+    <div class="nf-arr">→</div>
+    <div class="nf-box active"><div class="nf-label">1NF</div><div class="nf-desc">원자값</div></div>
+    <div class="nf-arr">→</div>
+    <div class="nf-box active"><div class="nf-label">2NF</div><div class="nf-desc">부분FD제거</div></div>
+    <div class="nf-arr">→</div>
+    <div class="nf-box active"><div class="nf-label">3NF</div><div class="nf-desc">이행FD제거</div></div>
+    <div class="nf-arr">→</div>
+    <div class="nf-box cur"><div class="nf-label">BCNF</div><div class="nf-desc">결정자=후보키</div></div>
+    <div class="nf-arr">→</div>
+    <div class="nf-box"><div class="nf-label">4NF</div><div class="nf-desc">다치종속제거</div></div>
+    <div class="nf-arr">→</div>
+    <div class="nf-box"><div class="nf-label">5NF</div><div class="nf-desc">조인종속제거</div></div>
+  </div>
+  <div class="fc" style="margin-bottom:14px">【그림 1】 정규형 진행 흐름 — 각 단계마다 이전 단계 조건을 포함함</div>
+
+  <div class="sh2">2. 정규화 단계별 상세 — 통합 예제 중심</div>
+  <div class="txt i1"><p>아래 비정규 릴레이션을 단계적으로 분해하며 각 정규형을 설명한다.</p></div>
+
+  <!-- 비정규 원본 -->
+  <div class="rel-wrap">
+    <div class="rel-title">▶ 원본 비정규 릴레이션: 수강({학번, 과목코드, 성적, 학생이름, 학과코드, 학과명})</div>
+    <div class="txt i1" style="margin-bottom:6px;font-size:11.5px">
+      FD 목록: &nbsp;
+      <span class="formula">{학번,과목코드}→성적</span> &nbsp;
+      <span class="formula">학번→학생이름,학과코드</span> &nbsp;
+      <span class="formula">학과코드→학과명</span>
+    </div>
+  </div>
+
+  <!-- 1NF -->
+  <div class="sh3">가. 제1정규형 (1NF) — 원자값(Atomic Value) 보장</div>
+  <div class="txt i2">
+    <p><span class="kw">정의:</span> 모든 속성 값이 원자값(더 이상 분해 불가)이어야 하며, 반복 그룹(Repeating Group)이 존재하지 않아야 한다.</p>
+    <p>위 릴레이션은 모든 속성이 단일값이므로 1NF를 <span class="badge badge-g">만족</span>. 단, 부분 함수 종속이 존재하여 이상 현상 발생.</p>
+    <p><span class="kw">잔존 문제:</span> 학번 → 학생이름(부분 종속), 학과코드 → 학과명(이행 종속)</p>
+  </div>
+
+  <!-- 2NF -->
+  <div class="sh3">나. 제2정규형 (2NF) — 부분 함수 종속 제거</div>
+  <div class="txt i2">
+    <p><span class="kw">정의:</span> 1NF를 만족하고, 기본키에 대한 <span class="kw">부분 함수 종속이 존재하지 않아야</span> 한다. (모든 비주요 속성이 기본키에 완전 함수 종속)</p>
+    <p>학번 → 학생이름, 학과코드는 복합키 {학번, 과목코드}의 일부인 학번에만 종속 → 분리 필요</p>
+  </div>
+  <div class="rel-wrap" style="display:flex;gap:16px;flex-wrap:wrap">
+    <div style="flex:1;min-width:220px">
+      <div class="rel-title">수강2({학번, 과목코드, 성적})</div>
+      <table class="rel-table">
+        <tr><th class="pk">학번</th><th class="pk">과목코드</th><th>성적</th></tr>
+        <tr><td>S001</td><td>C01</td><td class="ok">A</td></tr>
+        <tr><td>S001</td><td>C02</td><td class="ok">B</td></tr>
+        <tr><td>S002</td><td>C01</td><td class="ok">A+</td></tr>
+      </table>
+    </div>
+    <div style="flex:1;min-width:240px">
+      <div class="rel-title">학생({학번, 학생이름, 학과코드, 학과명})</div>
+      <table class="rel-table">
+        <tr><th class="pk">학번</th><th>학생이름</th><th>학과코드</th><th>학과명</th></tr>
+        <tr><td>S001</td><td>김철수</td><td>D10</td><td>컴퓨터공학</td></tr>
+        <tr><td>S002</td><td>이영희</td><td>D20</td><td>전자공학</td></tr>
+      </table>
+    </div>
+  </div>
+  <div class="fc" style="margin-bottom:12px">【그림 2】 2NF 분해 — 부분 종속(학번→학생정보) 제거</div>
+  <div class="txt i2"><p><span class="kw">잔존 문제:</span> 학생 릴레이션에서 학번 → 학과코드 → 학과명 이행 종속 잔존</p></div>
+
+  <!-- 3NF -->
+  <div class="sh3">다. 제3정규형 (3NF) — 이행 함수 종속 제거</div>
+  <div class="txt i2">
+    <p><span class="kw">정의:</span> 2NF를 만족하고, <span class="kw">이행 함수 종속이 존재하지 않아야</span> 한다.<br>
+    즉, 비주요 속성이 기본키를 통하지 않고 다른 비주요 속성에 종속되면 안 된다.<br>
+    → 학과코드는 비주요 속성이지만 결정자(학과코드 → 학과명)이므로 분리 필요</p>
+  </div>
+  <div class="rel-wrap" style="display:flex;gap:16px;flex-wrap:wrap">
+    <div style="flex:1;min-width:200px">
+      <div class="rel-title">학생3({학번, 학생이름, 학과코드})</div>
+      <table class="rel-table">
+        <tr><th class="pk">학번</th><th>학생이름</th><th class="fk">학과코드(FK)</th></tr>
+        <tr><td>S001</td><td>김철수</td><td>D10</td></tr>
+        <tr><td>S002</td><td>이영희</td><td>D20</td></tr>
+        <tr><td>S003</td><td class="ok">박민수</td><td>D10</td></tr>
+      </table>
+    </div>
+    <div style="flex:1;min-width:200px">
+      <div class="rel-title">학과({학과코드, 학과명})</div>
+      <table class="rel-table">
+        <tr><th class="pk">학과코드</th><th>학과명</th></tr>
+        <tr><td>D10</td><td class="ok">컴퓨터공학</td></tr>
+        <tr><td>D20</td><td class="ok">전자공학</td></tr>
+      </table>
+    </div>
+  </div>
+  <div class="fc" style="margin-bottom:12px">【그림 3】 3NF 분해 — 이행 종속(학과코드→학과명) 제거, 삽입 이상(S003) 해결</div>
+
+  <!-- BCNF -->
+  <div class="sh3">라. 보이스-코드 정규형 (BCNF) — 모든 결정자가 후보키</div>
+  <div class="txt i2">
+    <p><span class="kw">정의:</span> 모든 함수 종속 X → Y에서 <span class="kw">X가 반드시 슈퍼키(Superkey)</span>이어야 한다. 3NF보다 강한 조건으로, 3NF를 만족하더라도 후보키가 여럿이고 결정자가 후보키가 아닌 경우 BCNF 위반이 된다.</p>
+  </div>
+  <div class="rel-wrap">
+    <div class="rel-title">▶ BCNF 위반 예: 수강배정({학번, 과목명, 교수명}) — 교수는 1개 과목만 담당</div>
+    <table class="rel-table" style="max-width:400px">
+      <tr><th class="pk">학번</th><th class="pk">과목명</th><th>교수명</th></tr>
+      <tr><td>S001</td><td>데이터베이스</td><td>김교수</td></tr>
+      <tr><td>S001</td><td>운영체제</td><td>이교수</td></tr>
+      <tr><td>S002</td><td>데이터베이스</td><td>박교수</td></tr>
+    </table>
+  </div>
+  <div class="txt i2" style="margin-top:8px">
+    <p>FD: <span class="formula">{학번,과목명}→교수명</span> (후보키①) &nbsp; <span class="formula">{학번,교수명}→과목명</span> (후보키②) &nbsp; <span class="formula">교수명→과목명</span> ← <span class="badge badge-r">BCNF 위반</span> (교수명이 슈퍼키 아님)</p>
+  </div>
+  <div class="rel-wrap" style="display:flex;gap:16px;flex-wrap:wrap;margin-top:8px">
+    <div style="flex:1;min-width:180px">
+      <div class="rel-title">교수과목({교수명, 과목명})</div>
+      <table class="rel-table">
+        <tr><th class="pk">교수명</th><th>과목명</th></tr>
+        <tr><td>김교수</td><td>데이터베이스</td></tr>
+        <tr><td>이교수</td><td>운영체제</td></tr>
+        <tr><td>박교수</td><td>데이터베이스</td></tr>
+      </table>
+    </div>
+    <div style="flex:1;min-width:180px">
+      <div class="rel-title">학생수강({학번, 교수명})</div>
+      <table class="rel-table">
+        <tr><th class="pk">학번</th><th class="pk">교수명</th></tr>
+        <tr><td>S001</td><td>김교수</td></tr>
+        <tr><td>S001</td><td>이교수</td></tr>
+        <tr><td>S002</td><td>박교수</td></tr>
+      </table>
+    </div>
+  </div>
+  <div class="fc" style="margin-bottom:10px">【그림 4】 BCNF 분해 — 교수명→과목명 종속을 별도 릴레이션으로 분리</div>
+
+  <div class="sh2">3. 정규형 비교 요약</div>
+  <div class="tw">
+    <table>
+      <tr><th style="width:10%">정규형</th><th style="width:30%">핵심 조건</th><th style="width:28%">제거 대상</th><th>비고</th></tr>
+      <tr><td class="tc kc">1NF</td><td>모든 속성이 원자값</td><td>반복 그룹, 다중값 속성</td><td>정규화의 시작점</td></tr>
+      <tr><td class="tc kc">2NF</td><td>1NF + 완전 함수 종속</td><td>부분 함수 종속</td><td>복합키 릴레이션 대상</td></tr>
+      <tr><td class="tc kc">3NF</td><td>2NF + 비주요 속성 간 이행 종속 없음</td><td>이행 함수 종속</td><td>실무 목표 정규형</td></tr>
+      <tr><td class="tc kc">BCNF</td><td>모든 결정자가 슈퍼키</td><td>후보키 아닌 결정자</td><td>3NF⊂BCNF, 무손실 분해 필요</td></tr>
+      <tr><td class="tc kc">4NF</td><td>BCNF + 비자명 다치 종속 없음</td><td>다치 종속(MVD)</td><td>독립적 다치 속성 분리</td></tr>
+      <tr><td class="tc kc">5NF</td><td>4NF + 조인 종속 없음</td><td>조인 종속(JD)</td><td>실무 적용 드묾</td></tr>
+    </table>
+  </div>
+  <div class="fc" style="margin-top:-8px;margin-bottom:12px">【표 5】 정규형 단계별 비교 요약</div>
+</div>
+
+<hr class="pb">
+
+<!-- ─── Ⅳ. 장단점 및 역정규화 ─── -->
+<div class="sec">
+  <div class="sh">Ⅳ. 정규화의 장단점 및 역정규화(Denormalization) 고려사항</div>
+
+  <div class="sh2">1. 정규화의 장단점</div>
+  <div class="tw">
+    <table>
+      <tr><th style="width:12%">구분</th><th>내용</th></tr>
+      <tr>
+        <td class="tc"><span class="badge badge-g">장점</span></td>
+        <td>
+          ① <span class="kw">데이터 중복 최소화</span> → 저장 공간 절감<br>
+          ② <span class="kw">이상 현상(삽입·삭제·갱신) 제거</span> → 데이터 일관성 보장<br>
+          ③ <span class="kw">무결성 유지 용이</span> → 갱신 시 한 곳만 수정<br>
+          ④ <span class="kw">구조 유연성</span> → 새로운 요구사항에 대한 스키마 확장 용이
+        </td>
+      </tr>
+      <tr>
+        <td class="tc"><span class="badge badge-r">단점</span></td>
+        <td>
+          ① <span class="kw">조인(JOIN) 연산 증가</span> → 분해된 테이블 재결합 필요로 쿼리 성능 저하<br>
+          ② <span class="kw">복잡한 쿼리</span> → 다수 테이블 참조로 SQL 복잡도 증가<br>
+          ③ <span class="kw">인덱스 관리 부담</span> → 테이블 수 증가에 따른 인덱스 증가
+        </td>
+      </tr>
+    </table>
+  </div>
+  <div class="fc" style="margin-top:-8px;margin-bottom:12px">【표 6】 정규화의 장단점</div>
+
+  <div class="sh2">2. 역정규화(Denormalization) 개념 및 적용 기준</div>
+  <div class="txt i1">
+    <p><span class="kw">역정규화(Denormalization)</span>란 정규화로 분해된 릴레이션을 의도적으로 합치거나 중복 데이터를 추가하여 <span class="kw">조회 성능을 향상</span>시키는 기법이다. 이는 설계 실수가 아닌 <span class="kw">의식적 트레이드오프(Trade-off) 결정</span>이다.</p>
+  </div>
+  <div class="tw">
+    <table>
+      <tr><th style="width:22%">역정규화 기법</th><th style="width:36%">내용</th><th>적용 시 고려사항</th></tr>
+      <tr><td><span class="kc">테이블 병합</span></td><td>자주 조인되는 1:1 또는 1:N 테이블을 하나로 합침</td><td>갱신 이상 재발 가능성 검토 필수</td></tr>
+      <tr><td><span class="kc">컬럼 중복 추가</span></td><td>자주 참조되는 FK 컬럼 값을 해당 테이블에 직접 저장</td><td>원본 변경 시 동기화 로직 필요</td></tr>
+      <tr><td><span class="kc">파생 컬럼 추가</span></td><td>집계값(합계·평균 등)을 미리 계산해 컬럼으로 저장</td><td>데이터 변경 시 자동 갱신(트리거) 설계</td></tr>
+      <tr><td><span class="kc">파티셔닝</span></td><td>대용량 테이블을 수직/수평으로 분할하여 접근 범위 축소</td><td>파티션 키 설계, 쿼리 라우팅 전략 수립</td></tr>
+    </table>
+  </div>
+  <div class="fc" style="margin-top:-8px;margin-bottom:12px">【표 7】 역정규화 기법 및 고려사항</div>
+
+  <div class="sh2">3. 정규화 vs. 역정규화 적용 판단 기준</div>
+  <div class="tw">
+    <table>
+      <tr><th style="width:26%">상황</th><th>권장 전략</th></tr>
+      <tr><td>OLTP (트랜잭션 처리 중심)</td><td><span class="badge badge-g">정규화 우선</span> — 갱신·삽입·삭제 빈도가 높으므로 이상 현상 방지가 핵심</td></tr>
+      <tr><td>OLAP / 데이터 웨어하우스</td><td><span class="badge badge-b">역정규화 적용</span> — 대용량 집계·분석 쿼리 성능이 핵심, 갱신 빈도 낮음</td></tr>
+      <tr><td>읽기 집약 API / 조회 성능 임계 초과</td><td><span class="badge badge-b">선택적 역정규화</span> — 병목 쿼리 분석 후 해당 테이블만 역정규화</td></tr>
+      <tr><td>데이터 무결성·일관성 최우선</td><td><span class="badge badge-g">3NF / BCNF 유지</span> — 금융·의료 등 정합성 요구 강한 도메인</td></tr>
+    </table>
+  </div>
+  <div class="fc" style="margin-top:-8px;margin-bottom:12px">【표 8】 정규화 vs. 역정규화 적용 판단 기준</div>
+</div>
+
+<!-- ─── Ⅴ. 결론 ─── -->
+<div class="sec">
+  <div class="sh">Ⅴ. 결론</div>
+  <div class="txt">
+    <p>함수 종속성 이론은 관계형 데이터베이스 설계의 수학적 토대로, 이를 기반으로 한 정규화는 <span class="kw">데이터 중복 제거와 이상 현상 방지</span>라는 본질적 목표를 달성한다. 실무에서는 <span class="kw">3NF 또는 BCNF를 목표 설계 기준으로 삼되</span>, 성능 임계점에 도달한 특정 경로에 대해서만 역정규화를 선택적으로 적용하는 균형 잡힌 전략이 요구된다. 올바른 정규화 수준의 선택은 시스템의 <span class="kw">유지보수성·확장성·성능</span> 간의 균형을 결정하는 핵심 설계 역량이다.</p>
+  </div>
+</div>
+
+<div class="note">
+  <div class="nt">★ 기술사 핵심 코멘트</div>
+  <div class="nb">
+    정규화의 본질은 <strong>함수 종속성에 의한 이상 현상 제거</strong>이며, DB 설계 감리 시 다음을 중점 검토해야 한다.<br>
+    ① <strong>정규형 적정성:</strong> 핵심 트랜잭션 테이블이 최소 3NF를 만족하는지, BCNF 위반(후보키가 아닌 결정자) 여부 확인<br>
+    ② <strong>무손실 분해(Lossless Decomposition):</strong> 정규화 분해 후 자연 조인으로 원본 릴레이션이 완전 복원되는지 검증<br>
+    ③ <strong>종속성 보존(Dependency Preservation):</strong> 분해 후 원래 FD가 각 분해 릴레이션에서 여전히 검증 가능한지 확인 (BCNF 분해 시 종속성 보존이 불가한 경우 존재)<br>
+    ④ <strong>역정규화 문서화:</strong> 역정규화 적용 시 반드시 사유·동기화 전략·영향 범위를 설계 문서에 명시하여 감리 추적 가능성 확보
+  </div>
+</div>
+
+</div><!-- /body -->
+
+<div class="ftr">
+  <span>컴퓨터시스템응용 기술사 · 모범 답안</span>
+  <span>함수 종속성과 정규화 (1NF ~ BCNF)</span>
+  <span>총 5개 항목 · 표 8개 · 그림 4개 · 릴레이션 예제 포함</span>
+</div>
+
+</div><!-- /doc -->
+</body>
+</html>

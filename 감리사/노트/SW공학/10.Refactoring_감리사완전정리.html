@@ -1,0 +1,951 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;900&family=JetBrains+Mono:wght@400;700&display=swap');
+:root{--bg:#04080d;--s1:#070d18;--s2:#0b1322;--s3:#10192c;--bdr:#1a3050;--a1:#60a5fa;--a2:#34d399;--a3:#fbbf24;--a4:#f87171;--a5:#a78bfa;--a6:#fb923c;--a7:#f472b6;--txt:#e2e8f0;--mu:#64748b;}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Noto Sans KR',sans-serif;background:var(--bg);color:var(--txt);min-height:100vh;}
+.hdr{padding:20px 24px 14px;background:linear-gradient(150deg,#04080d,#091220,#04080d);border-bottom:1px solid var(--bdr);}
+.hdr-r{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:6px;}
+.pill{padding:3px 10px;border-radius:20px;font-size:10px;font-weight:700;}
+.p1{background:linear-gradient(135deg,#1e3a8a,var(--a1));color:#fff;}
+.p2{background:rgba(52,211,153,.15);color:var(--a2);border:1px solid rgba(52,211,153,.3);}
+.p3{background:rgba(251,191,36,.15);color:var(--a3);border:1px solid rgba(251,191,36,.3);}
+h1{font-size:18px;font-weight:900;}
+.h1g{background:linear-gradient(90deg,var(--a1),var(--a2),var(--a3));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.hdr p{color:var(--mu);font-size:11.5px;margin-top:3px;}
+.tabs{display:flex;padding:0 24px;background:var(--s1);border-bottom:1px solid var(--bdr);overflow-x:auto;scrollbar-width:none;}
+.tabs::-webkit-scrollbar{display:none;}
+.tab{padding:10px 13px;font-size:11.5px;font-weight:600;color:var(--mu);cursor:pointer;border-bottom:2px solid transparent;white-space:nowrap;transition:all .2s;background:none;border-top:none;border-left:none;border-right:none;font-family:'Noto Sans KR',sans-serif;}
+.tab.on{color:var(--a1);border-bottom-color:var(--a1);}
+.wrap{padding:18px 24px;max-width:960px;margin:0 auto;}
+.pnl{display:none;}.pnl.on{display:block;}
+.card{background:var(--s1);border:1px solid var(--bdr);border-radius:11px;padding:16px;margin-bottom:12px;}
+.card-h{display:flex;align-items:center;gap:9px;margin-bottom:11px;}
+.ico{width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0;}
+.ib{background:rgba(96,165,250,.15);}.ig{background:rgba(52,211,153,.15);}.iy{background:rgba(251,191,36,.15);}.ir{background:rgba(248,113,113,.15);}.ip{background:rgba(167,139,250,.15);}.io{background:rgba(251,146,60,.15);}
+.card h3{font-size:13.5px;font-weight:700;}
+.tag{display:inline-block;padding:2px 7px;border-radius:4px;font-size:9.5px;font-weight:600;margin:2px 2px 2px 0;}
+.tb{background:rgba(96,165,250,.12);color:var(--a1);border:1px solid rgba(96,165,250,.25);}
+.tg{background:rgba(52,211,153,.12);color:var(--a2);border:1px solid rgba(52,211,153,.25);}
+.ty{background:rgba(251,191,36,.12);color:var(--a3);border:1px solid rgba(251,191,36,.25);}
+.tr{background:rgba(248,113,113,.12);color:var(--a4);border:1px solid rgba(248,113,113,.25);}
+.tp{background:rgba(167,139,250,.12);color:var(--a5);border:1px solid rgba(167,139,250,.25);}
+.to{background:rgba(251,146,60,.12);color:var(--a6);border:1px solid rgba(251,146,60,.25);}
+table{width:100%;border-collapse:collapse;font-size:12px;}
+th{background:var(--s2);color:var(--mu);font-weight:700;padding:7px 10px;text-align:left;font-size:9.5px;text-transform:uppercase;letter-spacing:.5px;border-bottom:1px solid var(--bdr);}
+td{padding:7px 10px;border-bottom:1px solid rgba(26,48,80,.5);vertical-align:top;line-height:1.55;}
+tr:last-child td{border-bottom:none;}
+tr:hover td{background:rgba(255,255,255,.02);}
+td strong{color:var(--a3);}
+ul.il{list-style:none;display:flex;flex-direction:column;gap:6px;}
+ul.il li{font-size:12px;padding-left:15px;position:relative;line-height:1.5;}
+ul.il li::before{content:'▸';position:absolute;left:0;color:var(--a1);font-size:9.5px;top:3px;}
+ul.il li strong{color:var(--a3);}
+ul.il li em{color:var(--a2);font-style:normal;}
+.memo{background:linear-gradient(135deg,rgba(96,165,250,.07),rgba(52,211,153,.07));border:1px solid rgba(96,165,250,.22);border-left:3px solid var(--a1);border-radius:7px;padding:9px 13px;font-size:12px;font-weight:600;color:var(--a1);margin:9px 0;}
+.memo::before{content:'🎯 핵심 암기 │ ';color:var(--mu);font-weight:400;}
+.warn{background:rgba(248,113,113,.07);border:1px solid rgba(248,113,113,.25);border-left:3px solid var(--a4);border-radius:7px;padding:9px 13px;font-size:12px;font-weight:600;color:var(--a4);margin:9px 0;}
+.warn::before{content:'⚠️ 함정 포인트 │ ';color:var(--mu);font-weight:400;}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px;}
+@media(max-width:580px){.g2{grid-template-columns:1fr;}}
+.code{background:var(--s2);border:1px solid rgba(96,165,250,.18);border-radius:7px;padding:10px 13px;font-family:'JetBrains Mono',monospace;font-size:10px;margin:7px 0;line-height:1.8;overflow-x:auto;}
+.code .cm{color:var(--mu);}.code .kw{color:var(--a1);}.code .cls{color:var(--a3);}.code .g{color:var(--a2);}.code .bad{color:var(--a4);}.code .str{color:var(--a6);}
+/* smell card */
+.smell-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:7px;margin:10px 0;}
+.smell{background:var(--s2);border:1px solid rgba(248,113,113,.25);border-radius:8px;padding:10px 12px;}
+.smell-name{font-size:12px;font-weight:800;color:var(--a4);margin-bottom:3px;}
+.smell-en{font-family:'JetBrains Mono',monospace;font-size:8.5px;color:var(--mu);margin-bottom:5px;}
+.smell-desc{font-size:10.5px;color:var(--txt);line-height:1.5;}
+/* tech card */
+.tech-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:7px;margin:10px 0;}
+.tech{background:var(--s2);border:1px solid rgba(52,211,153,.25);border-radius:8px;padding:10px 12px;}
+.tech-name{font-size:12px;font-weight:800;color:var(--a2);margin-bottom:3px;}
+.tech-en{font-family:'JetBrains Mono',monospace;font-size:8.5px;color:var(--mu);margin-bottom:4px;}
+.tech-desc{font-size:10.5px;color:var(--txt);line-height:1.5;}
+/* acc */
+.acc{background:var(--s2);border:1px solid var(--bdr);border-radius:9px;margin-bottom:8px;overflow:hidden;}
+.acc-h{display:flex;justify-content:space-between;align-items:center;padding:10px 14px;cursor:pointer;user-select:none;}
+.acc-h:hover{background:rgba(255,255,255,.02);}
+.acc-title{font-size:12.5px;font-weight:800;flex:1;}
+.acc-tgl{color:var(--mu);transition:transform .2s;font-size:14px;flex-shrink:0;margin-left:8px;}
+.acc.open .acc-tgl{transform:rotate(180deg);}
+.acc-body{display:none;border-top:1px solid var(--bdr);padding:12px 14px;background:var(--s3);font-size:12px;line-height:1.65;}
+.acc.open .acc-body{display:block;}
+.acc-body strong{color:var(--a3);}
+.acc-body em{color:var(--a2);font-style:normal;}
+/* qa */
+.qa{background:var(--s1);border:1px solid var(--bdr);border-radius:9px;margin-bottom:10px;overflow:hidden;}
+.qa:hover{border-color:rgba(96,165,250,.25);}
+.qa-hd{padding:12px 16px;cursor:pointer;display:flex;justify-content:space-between;align-items:flex-start;gap:9px;user-select:none;}
+.qa-meta{display:flex;align-items:center;gap:5px;margin-bottom:4px;flex-wrap:wrap;}
+.qn{font-family:'JetBrains Mono',monospace;font-size:9.5px;font-weight:700;color:var(--mu);}
+.qq{font-size:12.5px;font-weight:600;line-height:1.5;}
+.tgl{color:var(--mu);font-size:15px;flex-shrink:0;transition:transform .2s;}
+.qa.open .tgl{transform:rotate(180deg);}
+.qa-bd{display:none;border-top:1px solid var(--bdr);padding:12px 16px;background:var(--s2);}
+.qa.open .qa-bd{display:block;}
+.chs{display:flex;flex-direction:column;gap:6px;margin-bottom:10px;}
+.ch{display:flex;align-items:flex-start;gap:9px;padding:8px 12px;border-radius:6px;border:1px solid var(--bdr);font-size:12px;cursor:pointer;background:var(--s1);line-height:1.45;transition:all .15s;}
+.ch:hover:not(.lk){border-color:rgba(96,165,250,.3);background:rgba(96,165,250,.04);}
+.ch.ok{border-color:var(--a2);background:rgba(52,211,153,.1);color:var(--a2);}
+.ch.ng{border-color:var(--a4);background:rgba(248,113,113,.08);color:var(--a4);opacity:.7;}
+.ch.lk{cursor:default;}
+.cnum{font-family:'JetBrains Mono',monospace;font-weight:700;font-size:10.5px;flex-shrink:0;margin-top:1px;color:var(--mu);}
+.ch.ok .cnum{color:var(--a2);}.ch.ng .cnum{color:var(--a4);}
+.exp{background:rgba(96,165,250,.05);border:1px solid rgba(96,165,250,.18);border-radius:7px;padding:11px 13px;font-size:12px;line-height:1.6;display:none;}
+.exp.show{display:block;}
+.exp-t{font-size:9.5px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--a1);margin-bottom:5px;}
+.exp strong{color:var(--a3);}
+.exp em{color:var(--a2);font-style:normal;}
+.ox-wr{display:flex;gap:8px;margin-bottom:10px;}
+.ox{flex:1;padding:10px;border-radius:7px;border:1px solid var(--bdr);font-size:18px;cursor:pointer;background:var(--s1);transition:all .15s;font-family:'Noto Sans KR',sans-serif;color:var(--txt);}
+.ox:hover:not(.lk){transform:scale(1.02);}
+.ox.so{border-color:var(--a2);background:rgba(52,211,153,.15);}
+.ox.sx{border-color:var(--a4);background:rgba(248,113,113,.1);}
+.ox.lk{cursor:default;}
+.diff{display:inline-block;padding:2px 6px;border-radius:9px;font-size:8.5px;font-weight:700;}
+.easy{background:rgba(52,211,153,.2);color:var(--a2);}
+.mid{background:rgba(251,191,36,.2);color:var(--a3);}
+.hard{background:rgba(248,113,113,.2);color:var(--a4);}
+.fb-wr{display:flex;gap:5px;flex-wrap:wrap;margin-bottom:12px;}
+.fb{padding:4px 11px;border-radius:18px;border:1px solid var(--bdr);font-size:10.5px;font-weight:600;cursor:pointer;background:var(--s2);color:var(--mu);transition:all .15s;font-family:'Noto Sans KR',sans-serif;}
+.fb.on{background:rgba(96,165,250,.15);color:var(--a1);border-color:var(--a1);}
+.sc-b{background:var(--s2);border:1px solid var(--bdr);border-radius:7px;padding:4px 12px;font-size:11.5px;color:var(--mu);}
+.sc-b span{color:var(--a1);font-weight:700;}
+</style>
+</head>
+<body>
+<div class="hdr">
+  <div class="hdr-r">
+    <span class="pill p1">Refactoring</span>
+    <span class="pill p2">Martin Fowler 기준</span>
+    <span class="pill p3">감리사 핵심 출제</span>
+  </div>
+  <h1><span class="h1g">Refactoring 완전 정리</span></h1>
+  <p>정의·목적·원칙 · 코드 스멜(22종) · 리팩토링 기법(20종) · TDD 연관 · 감리 포인트</p>
+</div>
+<div class="tabs">
+  <button class="tab on" data-p="p1">📋 개요·정의·원칙</button>
+  <button class="tab" data-p="p2">🦨 코드 스멜 (Code Smells)</button>
+  <button class="tab" data-p="p3">🔧 핵심 기법 I (메서드·클래스)</button>
+  <button class="tab" data-p="p4">🔧 핵심 기법 II (조건·데이터·위임)</button>
+  <button class="tab" data-p="p5">🔗 TDD·SOLID·패턴 연관</button>
+  <button class="tab" data-p="p6">⚖️ 비교·감리 포인트</button>
+  <button class="tab" data-p="p7">❓ 예상문제</button>
+</div>
+<div class="wrap">
+
+<!-- P1: 개요 -->
+<div class="pnl on" id="p1">
+  <div class="card">
+    <div class="card-h"><div class="ico ib">📋</div><h3>리팩토링 정의 & 목적 ⭐</h3></div>
+    <div style="background:var(--s2);border:1px solid rgba(96,165,250,.28);border-radius:9px;padding:13px;margin-bottom:12px;font-size:12.5px;line-height:1.85;">
+      <strong style="color:var(--a1)">리팩토링(Refactoring)</strong>: Martin Fowler 정의 — "<em style="color:var(--a3);font-style:normal;">소프트웨어의 외부 동작을 변경하지 않으면서 내부 구조를 개선</em>하는 것" — 코드를 더 이해하기 쉽고 수정하기 쉽게 만드는 규율 있는 기법
+    </div>
+
+    <!-- 리팩토링 핵심 개념 SVG -->
+    <svg viewBox="0 0 720 130" xmlns="http://www.w3.org/2000/svg" style="width:100%;background:var(--s2);border-radius:9px;border:1px solid var(--bdr);margin:10px 0;">
+      <!-- Before -->
+      <rect x="10" y="15" width="200" height="100" fill="rgba(248,113,113,.08)" stroke="#f87171" stroke-width="1.5" rx="7"/>
+      <text x="110" y="35" text-anchor="middle" font-family="Noto Sans KR" font-size="10" fill="#f87171" font-weight="bold">리팩토링 전 (Before)</text>
+      <text x="20" y="56" font-family="JetBrains Mono" font-size="9" fill="#f87171">function calc(d,t,dis) {</text>
+      <text x="20" y="71" font-family="JetBrains Mono" font-size="9" fill="#f87171">  return d * t * (1-dis/100);</text>
+      <text x="20" y="86" font-family="JetBrains Mono" font-size="9" fill="#f87171">}</text>
+      <text x="20" y="108" font-family="Noto Sans KR" font-size="8" fill="#64748b">💢 매직넘버·축약 이름·이해 어려움</text>
+      <!-- 화살표 -->
+      <rect x="225" y="50" width="110" height="30" fill="rgba(52,211,153,.1)" stroke="#34d399" stroke-width="1.5" rx="6"/>
+      <text x="280" y="63" text-anchor="middle" font-family="Noto Sans KR" font-size="9" fill="#34d399" font-weight="bold">Refactoring</text>
+      <text x="280" y="75" text-anchor="middle" font-family="Noto Sans KR" font-size="8" fill="#64748b">동작 변경 없음</text>
+      <polygon points="335,65 348,60 348,70" fill="#34d399"/>
+      <!-- After -->
+      <rect x="350" y="15" width="360" height="100" fill="rgba(52,211,153,.08)" stroke="#34d399" stroke-width="1.5" rx="7"/>
+      <text x="530" y="35" text-anchor="middle" font-family="Noto Sans KR" font-size="10" fill="#34d399" font-weight="bold">리팩토링 후 (After)</text>
+      <text x="360" y="56" font-family="JetBrains Mono" font-size="9" fill="#34d399">function calculateFinalPrice(</text>
+      <text x="360" y="71" font-family="JetBrains Mono" font-size="9" fill="#34d399">  basePrice, taxRate, discountPct) {</text>
+      <text x="360" y="86" font-family="JetBrains Mono" font-size="9" fill="#34d399">  return basePrice * taxRate * (1 - discountPct / 100);</text>
+      <text x="360" y="101" font-family="JetBrains Mono" font-size="9" fill="#34d399">}</text>
+      <text x="360" y="116" font-family="Noto Sans KR" font-size="8" fill="#64748b">✅ 명확한 이름·의도 드러남·동일 동작</text>
+    </svg>
+
+    <div class="g2">
+      <div>
+        <p style="font-size:11.5px;font-weight:800;color:var(--a3);margin-bottom:7px;">리팩토링의 목적 ⭐</p>
+        <ul class="il">
+          <li><strong>가독성(Readability) 향상:</strong> 코드 이해 속도 증가</li>
+          <li><strong>유지보수성(Maintainability) 향상:</strong> 변경 비용 감소</li>
+          <li><strong>기술 부채(Technical Debt) 상환:</strong> 누적된 나쁜 코드 해소</li>
+          <li><strong>결함 발견:</strong> 구조 개선 과정에서 숨은 버그 발견</li>
+          <li><strong>새 기능 추가 준비:</strong> 구조를 개선 후 기능 추가 용이</li>
+          <li><strong>설계 개선:</strong> OOP 원칙·SOLID 준수</li>
+        </ul>
+      </div>
+      <div>
+        <p style="font-size:11.5px;font-weight:800;color:var(--a4);margin-bottom:7px;">리팩토링 ≠ 이것들 ⭐</p>
+        <table>
+          <thead><tr><th>혼동 개념</th><th>차이</th></tr></thead>
+          <tbody>
+            <tr><td><strong>버그 수정</strong></td><td>버그 수정=동작 변경 / 리팩토링=동작 유지</td></tr>
+            <tr><td><strong>성능 최적화</strong></td><td>최적화=동작은 유지·성능 변경 / 구조 악화 허용</td></tr>
+            <tr><td><strong>기능 추가</strong></td><td>새 기능=동작 추가 / 리팩토링은 기능 추가 안 함</td></tr>
+            <tr><td><strong>재작성(Rewrite)</strong></td><td>재작성=처음부터 / 리팩토링=점진적 개선</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-h"><div class="ico ig">📐</div><h3>리팩토링 핵심 원칙 & 언제 해야 하나 ⭐</h3></div>
+    <div class="g2">
+      <div>
+        <p style="font-size:11.5px;font-weight:800;color:var(--a2);margin-bottom:7px;">리팩토링 핵심 원칙 (Martin Fowler)</p>
+        <ul class="il">
+          <li><strong>두 모자(Two Hats) ⭐:</strong> 기능 추가와 리팩토링을 동시에 하지 말 것 — 한 번에 하나만</li>
+          <li><strong>테스트 선행 ⭐:</strong> 리팩토링 전 테스트 코드 확보 (안전망)</li>
+          <li><strong>작은 단계 ⭐:</strong> 한 번에 하나씩 작은 변경 — 빨리 실패하고 빨리 수정</li>
+          <li><strong>지속적 통합(CI):</strong> 리팩토링 후 즉시 테스트·통합</li>
+          <li><strong>Rule of Three ⭐:</strong> 3번 반복되면 리팩토링 신호 (중복 제거)</li>
+        </ul>
+      </div>
+      <div>
+        <p style="font-size:11.5px;font-weight:800;color:var(--a6);margin-bottom:7px;">언제 리팩토링해야 하나</p>
+        <ul class="il">
+          <li><strong>기능 추가 전:</strong> 구조가 기능 추가를 어렵게 할 때</li>
+          <li><strong>버그 수정 중:</strong> 코드를 이해하다가 나쁜 코드 발견 시</li>
+          <li><strong>코드 리뷰 중:</strong> 팀원 코드 검토 시</li>
+          <li><strong>캠핑 규칙 ⭐:</strong> "항상 처음보다 깨끗하게 남겨라" (Boy Scout Rule)</li>
+        </ul>
+        <p style="font-size:11.5px;font-weight:800;color:var(--a4);margin-bottom:5px;margin-top:8px;">언제 하지 말아야 하나</p>
+        <ul class="il">
+          <li>API가 완전히 잘못되어 처음부터 작성해야 할 때</li>
+          <li>배포 마감 직전 (위험 증가)</li>
+        </ul>
+      </div>
+    </div>
+    <div class="warn">리팩토링은 외부 동작을 변경하지 않는다 — 테스트가 통과해야만 올바른 리팩토링!</div>
+    <div class="memo">리팩토링=외부동작유지·내부구조개선 / 두모자=기능추가와리팩토링 동시에 하지 말 것 / Rule of Three=3번반복시리팩토링 / 캠핑규칙</div>
+  </div>
+</div>
+
+<!-- P2: 코드 스멜 -->
+<div class="pnl" id="p2">
+  <div class="card">
+    <div class="card-h"><div class="ico ir">🦨</div><h3>코드 스멜 (Code Smells) — 리팩토링이 필요한 신호 ⭐</h3></div>
+    <div style="background:var(--s2);border:1px solid rgba(248,113,113,.25);border-radius:9px;padding:12px;margin-bottom:11px;font-size:12.5px;line-height:1.8;">
+      <strong style="color:var(--a4)">코드 스멜(Code Smell)</strong>: Kent Beck이 명명, Martin Fowler가 정리 — 코드에서 리팩토링이 필요함을 알려주는 <em style="color:var(--a3);font-style:normal;">나쁜 설계의 징후(Surface Indication)</em>. 즉각적인 버그는 아니지만 유지보수성·가독성을 저하시킴
+    </div>
+
+    <p style="font-size:11.5px;font-weight:800;color:var(--a4);margin-bottom:8px;">📦 긴 코드 관련 스멜 ⭐</p>
+    <div class="smell-grid">
+      <div class="smell">
+        <div class="smell-name">긴 메서드</div>
+        <div class="smell-en">Long Method</div>
+        <div class="smell-desc">너무 많은 일을 하는 메서드 — Extract Method로 분리<br><span style="color:var(--a4)">기준: 10줄 이상 의심</span></div>
+      </div>
+      <div class="smell">
+        <div class="smell-name">거대한 클래스</div>
+        <div class="smell-en">Large Class / God Class</div>
+        <div class="smell-desc">너무 많은 책임·속성·메서드 — Extract Class로 분리<br><span style="color:var(--a4)">SRP 위반의 전형</span></div>
+      </div>
+      <div class="smell">
+        <div class="smell-name">긴 매개변수 목록</div>
+        <div class="smell-en">Long Parameter List</div>
+        <div class="smell-desc">5개 이상의 매개변수 — Introduce Parameter Object로 객체화</div>
+      </div>
+      <div class="smell">
+        <div class="smell-name">중복 코드</div>
+        <div class="smell-en">Duplicate Code ⭐</div>
+        <div class="smell-desc">동일·유사 코드의 반복 — Extract Method·Pull Up Method로 제거</div>
+      </div>
+    </div>
+
+    <p style="font-size:11.5px;font-weight:800;color:var(--a4);margin-bottom:8px;margin-top:12px;">🔀 변경 관련 스멜 ⭐</p>
+    <div class="smell-grid">
+      <div class="smell">
+        <div class="smell-name">산탄총 수술</div>
+        <div class="smell-en">Shotgun Surgery ⭐</div>
+        <div class="smell-desc">하나의 변경이 여러 클래스를 동시에 수정 필요 — Move Method/Field로 응집</div>
+      </div>
+      <div class="smell">
+        <div class="smell-name">변산적 변경</div>
+        <div class="smell-en">Divergent Change</div>
+        <div class="smell-desc">한 클래스가 다른 이유로 자주 변경됨 — Extract Class로 분리 (SRP 위반)</div>
+      </div>
+      <div class="smell">
+        <div class="smell-name">기능 편애</div>
+        <div class="smell-en">Feature Envy ⭐</div>
+        <div class="smell-desc">메서드가 자신보다 다른 클래스 데이터에 더 많이 접근 — Move Method로 이동</div>
+      </div>
+      <div class="smell">
+        <div class="smell-name">데이터 덩어리</div>
+        <div class="smell-en">Data Clumps</div>
+        <div class="smell-desc">항상 같이 다니는 데이터 그룹 — Introduce Parameter Object/Extract Class</div>
+      </div>
+    </div>
+
+    <p style="font-size:11.5px;font-weight:800;color:var(--a4);margin-bottom:8px;margin-top:12px;">🏗️ 구조·상속 관련 스멜 ⭐</p>
+    <div class="smell-grid">
+      <div class="smell">
+        <div class="smell-name">기본형 집착</div>
+        <div class="smell-en">Primitive Obsession ⭐</div>
+        <div class="smell-desc">Money·PhoneNumber 등을 기본형(int·String)으로 표현 — Replace with Object</div>
+      </div>
+      <div class="smell">
+        <div class="smell-name">switch 문</div>
+        <div class="smell-en">Switch Statements ⭐</div>
+        <div class="smell-desc">타입에 따른 switch/if-else 분기 — Replace Conditional with Polymorphism</div>
+      </div>
+      <div class="smell">
+        <div class="smell-name">거부된 유산</div>
+        <div class="smell-en">Refused Bequest</div>
+        <div class="smell-desc">서브클래스가 부모 기능의 일부만 사용 — LSP 위반 신호 / Replace Inheritance with Delegation</div>
+      </div>
+      <div class="smell">
+        <div class="smell-name">평행 상속 계층</div>
+        <div class="smell-en">Parallel Inheritance Hierarchies</div>
+        <div class="smell-desc">A의 서브클래스 추가 시 B도 서브클래스 필요 — Move Method/Field로 통합</div>
+      </div>
+    </div>
+
+    <p style="font-size:11.5px;font-weight:800;color:var(--a4);margin-bottom:8px;margin-top:12px;">🗑️ 불필요한 코드 & 결합 스멜</p>
+    <div class="smell-grid">
+      <div class="smell">
+        <div class="smell-name">게으른 클래스</div>
+        <div class="smell-en">Lazy Class</div>
+        <div class="smell-desc">존재 가치가 없는 너무 단순한 클래스 — Inline Class로 병합</div>
+      </div>
+      <div class="smell">
+        <div class="smell-name">추측성 일반화</div>
+        <div class="smell-en">Speculative Generality</div>
+        <div class="smell-desc">언젠가 필요할 것 같아 만든 사용 안 하는 코드 — 제거 (YAGNI 원칙)</div>
+      </div>
+      <div class="smell">
+        <div class="smell-name">임시 필드</div>
+        <div class="smell-en">Temporary Field</div>
+        <div class="smell-desc">특정 상황에만 값이 있는 필드 — Extract Class로 분리</div>
+      </div>
+      <div class="smell">
+        <div class="smell-name">메시지 체인</div>
+        <div class="smell-en">Message Chains</div>
+        <div class="smell-desc">a.getB().getC().getD() 형태 — Hide Delegate / 디미터 법칙 위반</div>
+      </div>
+      <div class="smell">
+        <div class="smell-name">중간자</div>
+        <div class="smell-en">Middle Man</div>
+        <div class="smell-desc">대부분의 메서드가 다른 클래스에 위임만 — Inline Delegation / Remove Middle Man</div>
+      </div>
+      <div class="smell">
+        <div class="smell-name">과도한 주석</div>
+        <div class="smell-en">Comments ⭐</div>
+        <div class="smell-desc">복잡한 코드를 설명하는 긴 주석 — 주석 대신 명확한 코드로 표현 (Extract Method+Rename)</div>
+      </div>
+    </div>
+    <div class="memo">주요 스멜: 중복코드·긴메서드·거대클래스·기능편애·switch문·기본형집착·산탄총수술·메시지체인 / 스멜=리팩토링신호 (버그 아님)</div>
+  </div>
+</div>
+
+<!-- P3: 핵심 기법 I -->
+<div class="pnl" id="p3">
+  <div class="card">
+    <div class="card-h"><div class="ico ig">🔧</div><h3>핵심 리팩토링 기법 I — 메서드·클래스 추출·인라인 ⭐</h3></div>
+
+    <div class="acc open" onclick="this.classList.toggle('open')">
+      <div class="acc-h"><div class="acc-title" style="color:var(--a2);">① 메서드 추출 (Extract Method) ⭐⭐ — 가장 많이 사용</div><div class="acc-tgl">▾</div></div>
+      <div class="acc-body">
+        <div class="g2">
+          <div>
+            <ul class="il">
+              <li><strong>목적:</strong> 긴 메서드의 일부를 <em>별도 메서드로 분리</em></li>
+              <li><strong>적용 시점:</strong> 메서드가 너무 길 때 / 주석이 필요할 때 / 중복 코드 발견</li>
+              <li><strong>효과:</strong> 코드 재사용 / 가독성↑ / 테스트 용이</li>
+              <li><strong>역방향:</strong> Inline Method (너무 단순한 메서드를 다시 인라인)</li>
+            </ul>
+          </div>
+          <div>
+            <p style="font-size:10.5px;font-weight:700;color:var(--a4);margin-bottom:3px;">Before</p>
+            <div class="code"><span class="kw">void</span> printOrder(order) {
+  <span class="cm">// 헤더 출력</span>
+  console.log(<span class="str">"=== ORDER ==="</span>);
+  console.log(<span class="str">"Name:"</span> + order.name);
+  <span class="cm">// 금액 출력</span>
+  console.log(<span class="str">"Total:"</span> + order.qty*order.price);
+  console.log(<span class="str">"============="</span>);
+}</div>
+            <p style="font-size:10.5px;font-weight:700;color:var(--a2);margin-bottom:3px;margin-top:6px;">After</p>
+            <div class="code"><span class="kw">void</span> printOrder(order) {
+  <span class="g">printHeader();</span>
+  <span class="g">printDetails(order);</span>
+  <span class="g">printFooter();</span>
+}
+<span class="g">void printHeader()  { console.log(<span class="str">"=== ORDER ==="</span>); }</span>
+<span class="g">void printDetails(o){ console.log(o.name + o.qty*o.price); }</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="acc" onclick="this.classList.toggle('open')">
+      <div class="acc-h"><div class="acc-title" style="color:var(--a3);">② 클래스 추출 (Extract Class) ⭐ & 인라인 클래스 (Inline Class)</div><div class="acc-tgl">▾</div></div>
+      <div class="acc-body">
+        <div class="g2">
+          <div>
+            <p style="font-size:11px;font-weight:800;color:var(--a3);margin-bottom:5px;">Extract Class ⭐</p>
+            <ul class="il">
+              <li><strong>목적:</strong> 한 클래스가 두 가지 이상의 책임을 가질 때 분리</li>
+              <li><strong>적용:</strong> God Class 발견 시 / SRP 위반 시</li>
+              <li><strong>방법:</strong> 관련 필드·메서드를 새 클래스로 이동</li>
+            </ul>
+            <div class="code"><span class="cm">// Before: Person이 전화 관련 책임도</span>
+<span class="kw">class</span> <span class="cls">Person</span> {
+  name; areaCode; number;
+  getTelephoneNumber() {...}
+}
+<span class="cm">// After: 전화 책임 분리</span>
+<span class="kw">class</span> <span class="cls">TelephoneNumber</span> { areaCode; number; }
+<span class="kw">class</span> <span class="cls">Person</span> { name; telephone: <span class="cls">TelephoneNumber</span>; }</div>
+          </div>
+          <div>
+            <p style="font-size:11px;font-weight:800;color:var(--a5);margin-bottom:5px;">Inline Class (역방향)</p>
+            <ul class="il">
+              <li><strong>목적:</strong> 하는 일이 거의 없는 클래스를 다른 클래스에 통합</li>
+              <li><strong>적용:</strong> Lazy Class 스멜 해결</li>
+              <li><strong>방법:</strong> 모든 기능을 다른 클래스로 이동 후 삭제</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="acc" onclick="this.classList.toggle('open')">
+      <div class="acc-h"><div class="acc-title" style="color:var(--a1);">③ 메서드 이동 (Move Method) · 필드 이동 (Move Field) ⭐</div><div class="acc-tgl">▾</div></div>
+      <div class="acc-body">
+        <div class="g2">
+          <ul class="il">
+            <li><strong>Move Method:</strong> 메서드가 자신의 클래스보다 다른 클래스의 기능·데이터를 더 많이 사용 → 해당 클래스로 이동</li>
+            <li><strong>적용 스멜:</strong> Feature Envy(기능 편애) 해결</li>
+            <li><strong>Move Field:</strong> 필드가 다른 클래스에서 더 많이 사용될 때 해당 클래스로 이동</li>
+            <li><strong>효과:</strong> 응집도↑ / 불필요한 결합도↓</li>
+          </ul>
+          <div class="code"><span class="cm">// Feature Envy: Account가 AccountType 데이터에 의존</span>
+<span class="kw">class</span> <span class="cls">Account</span> {
+  <span class="bad">overdraftCharge() {</span>
+    <span class="bad">if (this.type.isPremium()) {...}</span> <span class="cm">// AccountType 데이터 과다 접근</span>
+  <span class="bad">}</span>
+}
+<span class="g">// After: AccountType으로 이동</span>
+<span class="kw">class</span> <span class="cls">AccountType</span> {
+  <span class="g">overdraftCharge() { if (this.isPremium()) {...} }</span>
+}</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="acc" onclick="this.classList.toggle('open')">
+      <div class="acc-h"><div class="acc-title" style="color:var(--a5);">④ 변수·필드 이름 변경 (Rename) · 변수 추출 (Extract Variable) ⭐</div><div class="acc-tgl">▾</div></div>
+      <div class="acc-body">
+        <div class="g2">
+          <div>
+            <p style="font-size:11px;font-weight:700;color:var(--a5);margin-bottom:5px;">이름 변경 (Rename)</p>
+            <ul class="il">
+              <li>의도를 드러내지 않는 이름 → 명확한 이름으로</li>
+              <li><strong>가장 비용 대비 효과가 큰 리팩토링 ⭐</strong></li>
+            </ul>
+          </div>
+          <div>
+            <p style="font-size:11px;font-weight:700;color:var(--a3);margin-bottom:5px;">변수 추출 (Extract Variable)</p>
+            <ul class="il">
+              <li>복잡한 표현식을 이름 있는 변수로 분리</li>
+              <li><strong>역방향:</strong> Inline Variable (너무 단순한 변수 제거)</li>
+            </ul>
+          </div>
+        </div>
+        <div class="code"><span class="cm">// Extract Variable — 복잡 표현식에 이름 부여</span>
+<span class="bad">// Before</span>
+<span class="kw">if</span> (order.quantity > 500 && order.itemPrice > 100 && !order.isPriority) {...}
+
+<span class="g">// After — 의도가 명확해짐</span>
+<span class="kw">const</span> isLargeOrder    = order.quantity > 500;
+<span class="kw">const</span> isHighValueItem  = order.itemPrice > 100;
+<span class="kw">const</span> isRegularOrder   = !order.isPriority;
+<span class="kw">if</span> (isLargeOrder && isHighValueItem && isRegularOrder) {...}</div>
+      </div>
+    </div>
+
+    <div class="acc" onclick="this.classList.toggle('open')">
+      <div class="acc-h"><div class="acc-title" style="color:var(--a6);">⑤ 메서드 올리기·내리기 (Pull Up / Push Down Method) ⭐</div><div class="acc-tgl">▾</div></div>
+      <div class="acc-body">
+        <div class="g2">
+          <div>
+            <p style="font-size:11px;font-weight:700;color:var(--a6);margin-bottom:5px;">Pull Up Method ⭐</p>
+            <ul class="il">
+              <li>서브클래스들에 중복된 메서드 → 슈퍼클래스로 올림</li>
+              <li><strong>적용:</strong> 중복 코드(Duplicate Code) 스멜 해결</li>
+              <li><strong>효과:</strong> 중복 제거 / 상속 계층 활용</li>
+            </ul>
+          </div>
+          <div>
+            <p style="font-size:11px;font-weight:700;color:var(--a2);margin-bottom:5px;">Push Down Method</p>
+            <ul class="il">
+              <li>일부 서브클래스만 사용하는 메서드 → 해당 서브클래스로 내림</li>
+              <li><strong>적용:</strong> 불필요한 상속 제거 / 클래스 정리</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="memo">Extract Method=가장 많이 사용·긴메서드 분리 / Extract Class=God Class 분리 / Move Method=Feature Envy 해결 / Rename=비용대비효과최고</div>
+  </div>
+</div>
+
+<!-- P4: 핵심 기법 II -->
+<div class="pnl" id="p4">
+  <div class="card">
+    <div class="card-h"><div class="ico ip">🔧</div><h3>핵심 리팩토링 기법 II — 조건·데이터·위임·캡슐화 ⭐</h3></div>
+
+    <div class="acc open" onclick="this.classList.toggle('open')">
+      <div class="acc-h"><div class="acc-title" style="color:var(--a5);">① 조건문을 다형성으로 대체 (Replace Conditional with Polymorphism) ⭐⭐</div><div class="acc-tgl">▾</div></div>
+      <div class="acc-body">
+        <div class="g2">
+          <ul class="il">
+            <li><strong>목적:</strong> 타입에 따른 switch/if-else → 다형성으로 대체</li>
+            <li><strong>적용 스멜:</strong> Switch Statements 해결 / OCP 달성</li>
+            <li><strong>효과:</strong> 새 타입 추가 시 기존 코드 수정 없이 새 클래스만 추가</li>
+            <li><strong>GoF 연관:</strong> Strategy 패턴·State 패턴 적용</li>
+          </ul>
+          <div>
+            <div class="code"><span class="bad">// Before — switch 스멜</span>
+getSpeed() {
+  <span class="bad">switch (this.type) {</span>
+    <span class="bad">case "EUROPEAN": return baseSpeed();</span>
+    <span class="bad">case "AFRICAN":  return baseSpeed() - loadFactor;</span>
+  <span class="bad">}</span>
+}
+<span class="g">// After — 다형성</span>
+<span class="kw">class</span> <span class="cls">EuropeanSwallow</span> { getSpeed() { <span class="kw">return</span> baseSpeed(); } }
+<span class="kw">class</span> <span class="cls">AfricanSwallow</span>  { getSpeed() { <span class="kw">return</span> baseSpeed()-loadFactor; } }</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="acc" onclick="this.classList.toggle('open')">
+      <div class="acc-h"><div class="acc-title" style="color:var(--a3);">② 조건문 분해 (Decompose Conditional) · Guard Clause ⭐</div><div class="acc-tgl">▾</div></div>
+      <div class="acc-body">
+        <div class="g2">
+          <div>
+            <p style="font-size:11px;font-weight:700;color:var(--a3);margin-bottom:5px;">조건문 분해 (Decompose Conditional)</p>
+            <ul class="il">
+              <li>복잡한 조건문의 각 부분을 메서드로 추출하여 의도 명확화</li>
+            </ul>
+            <div class="code"><span class="bad">if (date.before(SUMMER_START) || date.after(SUMMER_END))</span>
+  charge = qty * winterRate + winterServiceCharge;
+<span class="g">// After</span>
+<span class="kw">if</span> (<span class="g">isWinter(date)</span>) charge = <span class="g">winterCharge(qty)</span>;</div>
+          </div>
+          <div>
+            <p style="font-size:11px;font-weight:700;color:var(--a2);margin-bottom:5px;">Guard Clause로 중첩 제거 ⭐</p>
+            <ul class="il">
+              <li>중첩 if문을 Guard Clause(조기 반환)로 flatten</li>
+            </ul>
+            <div class="code"><span class="bad">// Before — 중첩 if</span>
+<span class="kw">if</span> (isAlive) {
+  <span class="kw">if</span> (isActive) {
+    <span class="kw">if</span> (hasBalance) { process(); }
+  }
+}
+<span class="g">// After — Guard Clause</span>
+<span class="kw">if</span> (!isAlive)   <span class="kw">return</span>;
+<span class="kw">if</span> (!isActive)  <span class="kw">return</span>;
+<span class="kw">if</span> (!hasBalance)<span class="kw">return</span>;
+process();</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="acc" onclick="this.classList.toggle('open')">
+      <div class="acc-h"><div class="acc-title" style="color:var(--a2);">③ 매개변수 객체 도입 (Introduce Parameter Object) · 임시변수→쿼리 ⭐</div><div class="acc-tgl">▾</div></div>
+      <div class="acc-body">
+        <div class="g2">
+          <div>
+            <p style="font-size:11px;font-weight:700;color:var(--a2);margin-bottom:5px;">Introduce Parameter Object ⭐</p>
+            <ul class="il">
+              <li>매개변수가 항상 같이 다닌다면 객체로 묶기</li>
+              <li><strong>적용 스멜:</strong> Long Parameter List·Data Clumps</li>
+            </ul>
+            <div class="code"><span class="bad">amountInvoiced(start, end)  // Long Parameter List</span>
+<span class="bad">amountReceived(start, end)</span>
+<span class="g">// After — DateRange 객체로 묶기</span>
+<span class="g">amountInvoiced(range: DateRange)</span>
+<span class="g">amountReceived(range: DateRange)</span></div>
+          </div>
+          <div>
+            <p style="font-size:11px;font-weight:700;color:var(--a3);margin-bottom:5px;">임시변수를 질의메서드로 (Replace Temp with Query)</p>
+            <ul class="il">
+              <li>임시 변수 대신 메서드 호출로 — 재사용 가능 / 클래스 추출 준비</li>
+            </ul>
+            <div class="code"><span class="bad">const basePrice = qty * price;  // 임시변수</span>
+<span class="bad">if (basePrice > 1000) {...}</span>
+<span class="g">// After — 질의 메서드로</span>
+<span class="g">if (basePrice() > 1000) {...}</span>
+<span class="g">basePrice() { return this.qty * this.price; }</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="acc" onclick="this.classList.toggle('open')">
+      <div class="acc-h"><div class="acc-title" style="color:var(--a4);">④ 마법 수를 기호 상수로 (Replace Magic Number with Symbolic Constant) ⭐</div><div class="acc-tgl">▾</div></div>
+      <div class="acc-body">
+        <div class="code"><span class="bad">// Before — 매직넘버: 9.81이 무엇인지 알 수 없음</span>
+potentialEnergy = mass * height * <span class="bad">9.81</span>;
+
+<span class="g">// After — 의도가 명확한 상수</span>
+<span class="kw">const</span> GRAVITATIONAL_CONSTANT = 9.81;
+potentialEnergy = mass * height * <span class="g">GRAVITATIONAL_CONSTANT</span>;</div>
+        <ul class="il" style="margin-top:8px;">
+          <li><strong>적용 스멜:</strong> 코드에 숫자·문자열 리터럴이 직접 사용될 때</li>
+          <li><strong>효과:</strong> 의도 명확 / 변경 시 한 곳만 수정</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="acc" onclick="this.classList.toggle('open')">
+      <div class="acc-h"><div class="acc-title" style="color:var(--a6);">⑤ 상속을 위임으로 (Replace Inheritance with Delegation) · 위임을 상속으로 ⭐</div><div class="acc-tgl">▾</div></div>
+      <div class="acc-body">
+        <div class="g2">
+          <div>
+            <p style="font-size:11px;font-weight:700;color:var(--a6);margin-bottom:5px;">상속→위임 (Refused Bequest 해결)</p>
+            <ul class="il">
+              <li>서브클래스가 슈퍼클래스 기능의 일부만 사용할 때 (LSP 위반)</li>
+              <li>상속 대신 구성(Composition)으로 리팩토링</li>
+            </ul>
+          </div>
+          <div>
+            <p style="font-size:11px;font-weight:700;color:var(--a2);margin-bottom:5px;">캡슐화: 필드 캡슐화 (Encapsulate Field)</p>
+            <ul class="il">
+              <li>public 필드 → private + getter/setter</li>
+              <li>컬렉션 캡슐화: 반환 시 복사본 제공</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div style="background:var(--s2);border:1px solid var(--bdr);border-radius:8px;padding:11px;margin-top:10px;">
+      <p style="font-size:11.5px;font-weight:800;color:var(--a3);margin-bottom:8px;">주요 리팩토링 기법 종합 정리 ⭐</p>
+      <table>
+        <thead><tr><th>기법</th><th>코드 스멜 해결</th><th>효과</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Extract Method</strong></td><td>Long Method·Duplicate Code</td><td>재사용·가독성·테스트 용이</td></tr>
+          <tr><td><strong>Extract Class</strong></td><td>Large Class·Divergent Change</td><td>SRP 달성·응집도↑</td></tr>
+          <tr><td><strong>Move Method/Field</strong></td><td>Feature Envy·Shotgun Surgery</td><td>응집도↑·결합도↓</td></tr>
+          <tr><td><strong>Replace Conditional with Polymorphism</strong></td><td>Switch Statements</td><td>OCP 달성·확장 용이</td></tr>
+          <tr><td><strong>Introduce Parameter Object</strong></td><td>Long Parameter List·Data Clumps</td><td>매개변수 단순화</td></tr>
+          <tr><td><strong>Replace Magic Number</strong></td><td>매직 리터럴</td><td>의도 명확·변경 용이</td></tr>
+          <tr><td><strong>Decompose Conditional / Guard Clause</strong></td><td>복잡한 조건문</td><td>가독성↑·중첩 제거</td></tr>
+          <tr><td><strong>Pull Up Method</strong></td><td>Duplicate Code (상속 계층)</td><td>중복 제거</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="memo">Replace Conditional with Polymorphism=switch→다형성·OCP / Guard Clause=중첩if 제거 / Introduce Parameter Object=Long Param 해결</div>
+  </div>
+</div>
+
+<!-- P5: TDD·SOLID·패턴 연관 -->
+<div class="pnl" id="p5">
+  <div class="card">
+    <div class="card-h"><div class="ico iy">🔗</div><h3>리팩토링 & TDD 관계 ⭐⭐</h3></div>
+    <div style="background:var(--s2);border:1px solid rgba(251,191,36,.25);border-radius:9px;padding:12px;margin-bottom:10px;font-size:12.5px;line-height:1.8;">
+      TDD의 Red-Green-<strong style="color:var(--a3)">Refactor</strong> 사이클에서 리팩토링은 3단계의 핵심 — 테스트가 통과한 후 코드를 개선하는 단계
+    </div>
+
+    <!-- TDD + Refactoring SVG -->
+    <svg viewBox="0 0 700 120" style="width:100%;background:var(--s2);border-radius:9px;border:1px solid var(--bdr);margin:10px 0;">
+      <!-- Red -->
+      <circle cx="90" cy="60" r="45" fill="rgba(248,113,113,.15)" stroke="#f87171" stroke-width="2"/>
+      <text x="90" y="52" text-anchor="middle" font-family="JetBrains Mono" font-size="14" font-weight="900" fill="#f87171">🔴 Red</text>
+      <text x="90" y="68" text-anchor="middle" font-family="Noto Sans KR" font-size="9" fill="#f87171">실패 테스트 작성</text>
+      <text x="90" y="82" text-anchor="middle" font-family="Noto Sans KR" font-size="8" fill="#64748b">기능 명세</text>
+      <!-- 화살표 -->
+      <line x1="135" y1="60" x2="225" y2="60" stroke="#e2e8f0" stroke-width="1.5"/>
+      <polygon points="225,60 217,56 217,64" fill="#e2e8f0"/>
+      <!-- Green -->
+      <circle cx="270" cy="60" r="45" fill="rgba(52,211,153,.12)" stroke="#34d399" stroke-width="2"/>
+      <text x="270" y="52" text-anchor="middle" font-family="JetBrains Mono" font-size="14" font-weight="900" fill="#34d399">🟢 Green</text>
+      <text x="270" y="68" text-anchor="middle" font-family="Noto Sans KR" font-size="9" fill="#34d399">최소 코드로 통과</text>
+      <text x="270" y="82" text-anchor="middle" font-family="Noto Sans KR" font-size="8" fill="#64748b">빠른 구현 (지저분 허용)</text>
+      <!-- 화살표 -->
+      <line x1="315" y1="60" x2="405" y2="60" stroke="#e2e8f0" stroke-width="1.5"/>
+      <polygon points="405,60 397,56 397,64" fill="#e2e8f0"/>
+      <!-- Refactor -->
+      <circle cx="450" cy="60" r="50" fill="rgba(96,165,250,.12)" stroke="#60a5fa" stroke-width="2.5"/>
+      <text x="450" y="49" text-anchor="middle" font-family="JetBrains Mono" font-size="12" font-weight="900" fill="#60a5fa">🔵 Refactor</text>
+      <text x="450" y="65" text-anchor="middle" font-family="Noto Sans KR" font-size="9" fill="#60a5fa" font-weight="bold">코드 개선·정리</text>
+      <text x="450" y="79" text-anchor="middle" font-family="Noto Sans KR" font-size="8" fill="#64748b">동작 유지·구조 개선</text>
+      <text x="450" y="93" text-anchor="middle" font-family="Noto Sans KR" font-size="7" fill="#64748b">Extract Method·Rename·...</text>
+      <!-- 화살표 반복 -->
+      <path d="M 495 45 Q 600 20 600 60 Q 600 100 500 75" fill="none" stroke="#64748b" stroke-width="1.5" stroke-dasharray="5,3"/>
+      <polygon points="500,75 510,68 510,80" fill="#64748b"/>
+      <text x="610" y="62" font-family="Noto Sans KR" font-size="9" fill="#64748b">반복</text>
+    </svg>
+
+    <div class="g2">
+      <div>
+        <p style="font-size:11.5px;font-weight:800;color:var(--a1);margin-bottom:7px;">리팩토링과 테스트의 관계 ⭐</p>
+        <ul class="il">
+          <li><strong>테스트=리팩토링 안전망 ⭐:</strong> 테스트 없이 리팩토링은 위험 — 실수를 즉시 감지</li>
+          <li><strong>리팩토링=테스트 용이성↑:</strong> 잘 리팩토링된 코드는 테스트하기 쉬움 (의존성 감소)</li>
+          <li><strong>자동화 테스트 필수 ⭐:</strong> 수동 테스트로는 리팩토링 사이클이 너무 느림</li>
+          <li><strong>테스트 커버리지:</strong> 높을수록 안전하게 리팩토링 가능</li>
+          <li><strong>Refactor 단계:</strong> TDD 사이클에서 가장 설계가 이루어지는 단계</li>
+        </ul>
+      </div>
+      <div>
+        <p style="font-size:11.5px;font-weight:800;color:var(--a2);margin-bottom:7px;">리팩토링과 SOLID 원칙 ⭐</p>
+        <table>
+          <thead><tr><th>SOLID</th><th>관련 리팩토링 기법</th></tr></thead>
+          <tbody>
+            <tr><td><span class="tag tb">SRP</span></td><td>Extract Method, Extract Class, Move Method</td></tr>
+            <tr><td><span class="tag tg">OCP</span></td><td>Replace Conditional with Polymorphism</td></tr>
+            <tr><td><span class="tag ty">LSP</span></td><td>Replace Inheritance with Delegation</td></tr>
+            <tr><td><span class="tag tr">ISP</span></td><td>Extract Interface, Interface 분리</td></tr>
+            <tr><td><span class="tag tp">DIP</span></td><td>Extract Interface, Inject Dependencies</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div class="memo">TDD Refactor단계=리팩토링 핵심 / 테스트=리팩토링 안전망 / 리팩토링→SOLID원칙 달성 도구</div>
+  </div>
+
+  <div class="card">
+    <div class="card-h"><div class="ico ig">📏</div><h3>기술 부채 (Technical Debt) & 정적 분석 도구 ⭐</h3></div>
+    <div class="g2">
+      <div>
+        <p style="font-size:11.5px;font-weight:800;color:var(--a4);margin-bottom:7px;">기술 부채 (Technical Debt) ⭐</p>
+        <ul class="il">
+          <li><strong>정의:</strong> Ward Cunningham 제안 — 빠른 개발을 위해 미룬 설계·코드 품질 문제의 누적. 나중에 더 큰 비용(이자)으로 돌아옴</li>
+          <li><strong>원인:</strong> 시간 압박 / 잘못된 설계 / 지식 부족 / 테스트 생략</li>
+          <li><strong>해결:</strong> 리팩토링으로 기술 부채 상환</li>
+          <li><strong>의도적 부채:</strong> 단기 출시 위해 의도적으로 부채 발생시키고 나중에 상환</li>
+        </ul>
+      </div>
+      <div>
+        <p style="font-size:11.5px;font-weight:800;color:var(--a2);margin-bottom:7px;">정적 분석·도구 ⭐</p>
+        <ul class="il">
+          <li><strong>정적 분석(Static Analysis):</strong> 코드 실행 없이 소스를 분석하여 문제 탐지</li>
+          <li><strong>Java:</strong> SonarQube·PMD·CheckStyle·FindBugs</li>
+          <li><strong>JavaScript:</strong> ESLint·TSLint·SonarJS</li>
+          <li><strong>Python:</strong> Pylint·Flake8·Black</li>
+          <li><strong>코드 복잡도 ⭐:</strong> McCabe 순환 복잡도 — 분기가 많을수록 높음 → 리팩토링 필요</li>
+          <li><strong>중복도:</strong> 코드 복제율(Duplication) 측정</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- P6: 비교·감리 -->
+<div class="pnl" id="p6">
+  <div class="card">
+    <div class="card-h"><div class="ico ir">⚖️</div><h3>리팩토링 vs 유사 개념 비교 ⭐</h3></div>
+    <table>
+      <thead><tr><th>비교</th><th>리팩토링</th><th>대상</th><th>핵심 차이</th></tr></thead>
+      <tbody>
+        <tr>
+          <td><strong>리팩토링 vs 재설계(Redesign)</strong></td>
+          <td>점진적·지속적 내부 구조 개선</td>
+          <td>기존 코드 기반 유지</td>
+          <td>리팩토링=작은 단계 / 재설계=큰 변화</td>
+        </tr>
+        <tr>
+          <td><strong>리팩토링 vs 재작성(Rewrite)</strong></td>
+          <td>외부 동작 유지 / 위험 낮음</td>
+          <td>처음부터 새로 작성</td><td>리팩토링=안전·점진 / 재작성=위험·단절</td>
+        </tr>
+        <tr>
+          <td><strong>리팩토링 vs 성능 최적화</strong></td>
+          <td>가독성·구조 개선 / 성능 무관</td>
+          <td>성능 향상 / 구조 악화 허용</td>
+          <td>목표가 다름 — 동시에 하지 말 것</td>
+        </tr>
+        <tr>
+          <td><strong>리팩토링 vs 버그 수정</strong></td>
+          <td>동작을 변경하지 않음</td>
+          <td>잘못된 동작을 올바르게 변경</td>
+          <td>리팩토링 중 버그 발견 시 분리 처리</td>
+        </tr>
+        <tr>
+          <td><strong>리팩토링 vs 기능 추가</strong></td>
+          <td>새 기능 없음 / 구조만 변경</td>
+          <td>새 기능 추가 / 동작 변경</td>
+          <td>두 모자(Two Hats) — 동시에 하지 말 것</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="card">
+    <div class="card-h"><div class="ico ip">📋</div><h3>코드 품질 지표 & 감리 체크포인트 ⭐</h3></div>
+    <div class="g2">
+      <div>
+        <p style="font-size:11.5px;font-weight:800;color:var(--a3);margin-bottom:7px;">코드 품질 지표 ⭐</p>
+        <table>
+          <thead><tr><th>지표</th><th>설명</th><th>권장 기준</th></tr></thead>
+          <tbody>
+            <tr><td><strong>순환 복잡도</strong><br>(Cyclomatic Complexity)</td><td>분기 수 기반 복잡도 / McCabe</td><td><strong>10 이하 권장</strong> / 20 이상 위험</td></tr>
+            <tr><td><strong>코드 중복도</strong><br>(Duplication)</td><td>동일·유사 코드 비율</td><td><strong>5% 이하 권장</strong></td></tr>
+            <tr><td><strong>메서드 길이</strong></td><td>메서드 코드 줄 수</td><td><strong>20줄 이하 권장</strong></td></tr>
+            <tr><td><strong>클래스 크기</strong></td><td>클래스 속성·메서드 수</td><td>속성 7개·메서드 20개 이하</td></tr>
+            <tr><td><strong>테스트 커버리지</strong></td><td>테스트로 실행된 코드 비율</td><td><strong>80% 이상 권장</strong></td></tr>
+            <tr><td><strong>결합도(Coupling)</strong></td><td>모듈 간 의존 정도</td><td>낮을수록 좋음</td></tr>
+            <tr><td><strong>응집도(Cohesion)</strong></td><td>모듈 내 요소들의 관련성</td><td>높을수록 좋음 (LCOM)</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div>
+        <p style="font-size:11.5px;font-weight:800;color:var(--a4);margin-bottom:7px;">감리 체크포인트 ⭐</p>
+        <ul class="il">
+          <li><strong>코드 스멜 식별:</strong> God Class·Duplicate Code·Feature Envy 등 스멜 존재 여부</li>
+          <li><strong>순환 복잡도:</strong> McCabe 복잡도 10 초과 메서드 존재 여부</li>
+          <li><strong>테스트 선행 여부 ⭐:</strong> 리팩토링 전 자동화 테스트 확보 여부</li>
+          <li><strong>소규모 단계:</strong> 리팩토링이 작은 단계로 수행되었는가</li>
+          <li><strong>동작 변경 없음 ⭐:</strong> 기존 테스트가 리팩토링 후에도 모두 통과하는가</li>
+          <li><strong>기술 부채 관리:</strong> 기술 부채 측정·계획적 상환 여부</li>
+          <li><strong>정적 분석 도구:</strong> SonarQube 등 정적 분석 결과 활용 여부</li>
+          <li><strong>코드 리뷰 프로세스:</strong> 리팩토링 결과에 대한 피어 리뷰 수행 여부</li>
+        </ul>
+      </div>
+    </div>
+    <div class="memo">순환복잡도 10이하·메서드 20줄이하·커버리지 80%이상 / 감리=동작변경없음·테스트선행·작은단계·코드스멜식별</div>
+  </div>
+</div>
+
+<!-- P7: QA -->
+<div class="pnl" id="p7">
+  <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:7px;margin-bottom:12px;">
+    <div class="fb-wr" id="fbar" style="margin:0;">
+      <button class="fb on" data-f="all">전체</button>
+      <button class="fb" data-f="개요">📋 개요·원칙</button>
+      <button class="fb" data-f="스멜">🦨 코드스멜</button>
+      <button class="fb" data-f="기법">🔧 리팩토링기법</button>
+      <button class="fb" data-f="연관">🔗 TDD·연관</button>
+      <button class="fb" data-f="OX">⭕ OX</button>
+    </div>
+    <div class="sc-b">정답: <span id="sc">0</span>/<span id="st">0</span></div>
+  </div>
+  <div id="ql"></div>
+</div>
+
+</div>
+<script>
+document.querySelectorAll('.tab').forEach(t=>t.addEventListener('click',()=>{
+  document.querySelectorAll('.tab,.pnl').forEach(x=>x.classList.remove('on'));
+  t.classList.add('on');document.getElementById(t.dataset.p).classList.add('on');
+}));
+const QA=[
+  {cat:'개요',diff:'easy',
+   q:'리팩토링(Refactoring)의 정의로 가장 적절한 것은?',
+   cs:['소프트웨어의 새로운 기능을 추가하는 과정','소프트웨어의 외부 동작(기능)을 변경하지 않으면서 내부 구조를 개선하는 것','소프트웨어의 성능을 최적화하는 과정','발견된 버그를 수정하는 과정'],ans:1,
+   exp:'<strong>리팩토링(Martin Fowler 정의)</strong>: <em>외부 동작을 변경하지 않으면서</em> 내부 구조를 개선하는 규율 있는 기법. 핵심은 기능·동작 유지. 버그 수정·성능 최적화·기능 추가는 리팩토링과 다릅니다. 리팩토링은 코드를 이해하기 쉽고 수정하기 쉽게 만드는 것이 목적. TDD의 Red-Green-<em>Refactor</em> 사이클의 마지막 단계.'},
+  {cat:'개요',diff:'mid',
+   q:'Martin Fowler의 "두 모자(Two Hats)" 원칙의 의미로 가장 적절한 것은?',
+   cs:['리팩토링을 두 명이 함께 수행해야 한다.','기능 추가와 리팩토링을 동시에 하지 말고 한 번에 하나씩 집중해서 수행해야 한다.','리팩토링은 두 단계로 나누어 수행해야 한다.','두 가지 다른 코드 스멜을 동시에 해결해야 한다.'],ans:1,
+   exp:'<strong>두 모자(Two Hats)</strong>: 개발 작업을 두 가지 모자로 구분합니다. ①<em>기능 추가 모자</em>: 새 기능 추가·버그 수정 / 기존 테스트 수정 금지. ②<em>리팩토링 모자</em>: 구조 개선 / 새 기능 추가 금지. 두 모자를 동시에 쓰면 안 됩니다. 리팩토링 중 새 기능이 필요하면 메모해두고 나중에 처리.'},
+  {cat:'스멜',diff:'mid',
+   q:'코드 스멜(Code Smell) 중 "기능 편애(Feature Envy)"를 가장 잘 설명한 것은?',
+   cs:['한 클래스에 너무 많은 메서드와 속성이 집중된 상태','메서드가 자신이 속한 클래스보다 다른 클래스의 데이터와 메서드를 더 많이 참조하는 상태','매개변수 목록이 너무 긴 상태','타입에 따라 분기하는 switch 문이 존재하는 상태'],ans:1,
+   exp:'<strong>Feature Envy(기능 편애)</strong>: 메서드가 <em>자신의 클래스 데이터보다 다른 클래스의 데이터를 더 많이 접근</em>하는 경우. 예) AccountService.calculateInterest()가 Account 클래스의 필드를 대부분 사용 → Account 클래스로 이동해야 함(Move Method). 해결: Move Method로 메서드를 데이터가 있는 클래스로 이동.'},
+  {cat:'스멜',diff:'mid',
+   q:'다음 코드 스멜 중 "산탄총 수술(Shotgun Surgery)"의 설명으로 가장 적절한 것은?',
+   cs:['하나의 클래스가 너무 많은 역할을 하여 다양한 이유로 변경되는 경우','하나의 변경 사항이 여러 클래스를 동시에 수정해야 하는 경우','메서드의 코드 길이가 너무 긴 경우','중복된 코드가 여러 곳에 존재하는 경우'],ans:1,
+   exp:'<strong>산탄총 수술(Shotgun Surgery)</strong>: 하나의 변경 요청이 <em>여러 클래스를 동시에 수정</em>해야 하는 경우. 산탄총을 쏘면 여러 곳에 구멍이 나듯. 해결: Move Method/Field로 관련 기능을 한 클래스에 응집. 변산적 변경(Divergent Change)과 반대: Divergent=한 클래스가 여러 이유로 변경 / Shotgun Surgery=하나의 변경이 여러 클래스에 영향.'},
+  {cat:'기법',diff:'mid',
+   q:'"조건문을 다형성으로 대체(Replace Conditional with Polymorphism)" 리팩토링 기법의 목적으로 가장 적절한 것은?',
+   cs:['조건문을 완전히 제거하기 위해','타입에 따른 if/switch 분기문을 다형성(상속+오버라이딩)으로 대체하여 새 타입 추가 시 기존 코드 수정 없이 확장할 수 있도록 하기 위해','성능을 향상시키기 위해','모든 조건문을 Guard Clause로 변환하기 위해'],ans:1,
+   exp:'<strong>Replace Conditional with Polymorphism</strong>: 타입에 따른 switch/if-else → 각 타입별 서브클래스를 만들어 오버라이드. 예) getSpeed()에서 type="EUROPEAN" 체크 → EuropeanSwallow.getSpeed() 메서드로. OCP 달성: 새 타입 추가 = 새 클래스만 추가, 기존 코드 수정 없음. GoF Strategy·State 패턴과 연관.'},
+  {cat:'기법',diff:'hard',
+   q:'"메서드 추출(Extract Method)" 리팩토링의 주요 적용 상황으로 가장 적절하지 않은 것은?',
+   cs:['메서드가 너무 길어서 한눈에 이해하기 어려울 때','코드의 특정 부분을 설명하는 주석이 필요할 때','두 곳 이상에서 동일한 코드가 반복될 때','메서드가 너무 단순하여 호출 비용이 아깝다고 판단될 때'],ans:3,
+   exp:'<strong>④가 틀린 설명</strong>: 메서드가 너무 단순한 경우 오히려 <em>Inline Method</em>(Extract Method의 역방향)를 사용합니다. Extract Method는 ①긴 메서드 분리 ②주석 대신 명확한 메서드 이름으로 의도 표현 ③중복 코드 통합에 적용합니다. Extract Method는 GoF 리팩토링 기법 중 가장 많이 사용되는 기본 기법입니다.'},
+  {cat:'연관',diff:'mid',
+   q:'TDD의 리팩토링 단계(Refactor)에서 리팩토링이 올바르게 수행되었다고 판단하는 기준으로 가장 적절한 것은?',
+   cs:['코드 줄 수가 줄어들었다면 리팩토링이 성공한 것이다.','리팩토링 전과 후에 모든 기존 테스트가 통과해야 한다 — 외부 동작이 유지되었음을 보장한다.','성능이 향상되었다면 리팩토링이 성공한 것이다.','새로운 기능이 추가되었다면 리팩토링이 성공한 것이다.'],ans:1,
+   exp:'<strong>리팩토링 성공 기준</strong>: 리팩토링은 외부 동작을 변경하지 않으므로 <em>기존 테스트가 모두 통과</em>해야 합니다. 코드 줄 수 감소나 성능 향상은 리팩토링의 목표가 아닙니다(부수 효과일 수 있음). 새 기능 추가는 리팩토링의 반대. 자동화 테스트가 안전망 역할 → 리팩토링 중 실수를 즉시 감지.'},
+  {cat:'스멜',diff:'mid',
+   q:'"기본형 집착(Primitive Obsession)" 코드 스멜과 해결 방법으로 가장 적절한 것은?',
+   cs:['기본 데이터 타입을 사용하는 것 자체가 문제이므로 모두 객체로 변환한다.','금액·전화번호·우편번호 같은 개념을 int·String 등 기본형으로만 표현하는 문제 — "기본형을 객체로 대체(Replace Primitive with Object)" 기법으로 전용 클래스를 만들어 해결한다.','기본형 사용은 성능 문제를 일으키므로 캐싱으로 해결한다.','기본형 집착은 코드 스멜이 아니라 좋은 설계 방식이다.'],ans:1,
+   exp:'<strong>기본형 집착(Primitive Obsession)</strong>: Money·PhoneNumber·PostCode 같은 개념을 int·String으로만 표현하면 ①유효성 검증 중복 ②의미 손실 ③관련 동작 분산. 해결: <em>Replace Primitive with Object</em> — 전용 클래스(Money·PhoneNumber)로 래핑. 장점: 타입 안전성·관련 로직 응집·가독성 향상.'},
+  {cat:'개요',diff:'easy',
+   q:'리팩토링에서 "캠핑 규칙(Boy Scout Rule)"의 의미로 가장 적절한 것은?',
+   cs:['리팩토링은 반드시 팀 전체가 함께 수행해야 한다.','코드를 처음 발견했을 때보다 항상 조금 더 깨끗하게 남겨야 한다 — 점진적으로 지속적 코드 개선을 실천하는 규칙','리팩토링 전에 반드시 캠핑(회의)을 해야 한다.','한 번에 전체 코드를 리팩토링해야 한다.'],ans:1,
+   exp:'<strong>캠핑 규칙(Boy Scout Rule)</strong>: "항상 처음보다 깨끗하게 남겨라" — 코드를 수정할 때마다 조금씩 개선. 대규모 리팩토링 대신 <em>점진적·지속적</em> 개선 문화. 기능 추가·버그 수정 시 주변 코드도 조금 개선. Martin Fowler의 리팩토링 철학: 완벽한 코드가 아니라 조금씩 나아지는 코드.'},
+  {cat:'연관',diff:'hard',
+   q:'McCabe 순환 복잡도(Cyclomatic Complexity)에 대한 설명으로 가장 적절한 것은?',
+   cs:['코드의 실행 속도를 측정하는 지표이다.','프로그램의 독립적인 실행 경로 수를 측정하며, 분기문(if·while·case) 수 + 1로 계산하고 10 이하를 권장한다.','코드의 줄 수를 측정하는 지표이다.','클래스 간 결합도를 측정하는 지표이다.'],ans:1,
+   exp:'<strong>McCabe 순환 복잡도</strong>: 프로그램의 <em>독립적 실행 경로 수</em> = 분기문(if·while·for·case·&&·||) 수 + 1. 예) if가 3개·while이 2개 → 복잡도=6. <em>10 이하 권장</em>, 20 이상은 리팩토링 필요 신호. 높은 복잡도=테스트 어려움·버그 가능성↑·이해 어려움. SonarQube 등 정적 분석 도구로 자동 측정.'},
+  {cat:'개요',diff:'mid',type:'ox',
+   q:'리팩토링은 코드의 성능 향상을 위해 외부 동작을 변경하지 않으면서 내부 구조를 최적화하는 것이다.',ans:false,
+   exp:'<strong>×</strong> — 리팩토링의 목적은 <strong>가독성·유지보수성 향상</strong>이지 성능 최적화가 아닙니다. 성능 최적화는 별도의 활동으로, 종종 코드 구조를 복잡하게 만들기도 합니다. Martin Fowler는 "먼저 동작하게, 그 다음 올바르게, 마지막으로 빠르게(Make it work, Make it right, Make it fast)"를 권장합니다. 리팩토링=가독성·구조 / 최적화=성능.'},
+  {cat:'스멜',diff:'mid',type:'ox',
+   q:'"과도한 주석(Comments)" 코드 스멜은 주석 자체가 문제가 아니라, 복잡한 코드를 설명하기 위해 주석이 필요한 상황 자체가 코드 개선이 필요하다는 신호이다.',ans:true,
+   exp:'<strong>○</strong> — Comments 스멜: 주석 자체가 나쁜 것은 아닙니다. 문제는 <em>복잡한 코드를 설명하기 위해 주석에 의존하는 상황</em>. 해결: Extract Method로 메서드를 분리하고 의미 있는 이름을 부여 → 주석 없이도 의도가 명확해집니다. "좋은 코드는 스스로 말한다(Self-Documenting Code)". 단, 이유(Why)를 설명하는 주석은 여전히 가치 있습니다.'},
+  {cat:'기법',diff:'mid',type:'ox',
+   q:'"임시변수를 질의 메서드로(Replace Temp with Query)" 리팩토링을 적용하면 동일한 계산이 여러 번 수행될 수 있어 성능이 저하될 수 있지만, 코드의 명확성과 클래스 추출 가능성을 높인다.',ans:true,
+   exp:'<strong>○</strong> — Replace Temp with Query: 임시 변수를 메서드 호출로 대체합니다. 장점: 메서드 재사용 가능·클래스 추출(Extract Class) 준비·중복 계산 위험 없음. 단점: 메서드 호출이 반복될 수 있어 성능 저하 가능. 그러나 대부분의 경우 성능 차이는 미미하며, 필요 시 최적화(캐싱 등)를 별도로 적용합니다. 가독성·설계 우선, 성능 최적화는 나중.'},
+  {cat:'연관',diff:'easy',type:'ox',
+   q:'리팩토링은 테스트 없이 수행하면 외부 동작이 변경되었는지 확인할 방법이 없어 위험하므로, 자동화 테스트가 리팩토링의 안전망 역할을 한다.',ans:true,
+   exp:'<strong>○</strong> — 리팩토링과 테스트의 핵심 관계: <em>자동화 테스트 = 리팩토링 안전망</em>. 테스트 없이 리팩토링하면 실수로 동작이 변경되어도 즉시 발견할 수 없습니다. TDD가 권장되는 이유 중 하나: 테스트 코드가 항상 존재하므로 안전하게 리팩토링 가능. 테스트 커버리지가 높을수록 더 안전한 리팩토링. "리팩토링 전 테스트 확보"는 첫 번째 원칙입니다.'},
+];
+let answered=0,correct=0;
+function renderQ(f){
+  const data=f==='all'?QA:QA.filter(q=>q.cat===f);
+  const list=document.getElementById('ql');list.innerHTML='';
+  answered=0;correct=0;upS();
+  const CATC={'개요':'tb','스멜':'tr','기법':'tg','연관':'tp','OX':'ty'};
+  const DLC={'easy':'easy 쉬움','mid':'mid 보통','hard':'hard 어려움'};
+  const NL=['①','②','③','④'];
+  if(!data.length){list.innerHTML='<div style="text-align:center;padding:40px;color:var(--mu)">문제 없음</div>';return;}
+  data.forEach((q,i)=>{
+    const gi=QA.indexOf(q);
+    const el=document.createElement('div');el.className='qa';
+    const tc=CATC[q.cat]||'tb';
+    const [dc,dn]=(DLC[q.diff]||'mid 보통').split(' ');
+    if(q.type==='ox'){
+      el.innerHTML=`<div class="qa-hd" onclick="this.closest('.qa').classList.toggle('open')"><div><div class="qa-meta"><span class="qn">Q${String(i+1).padStart(2,'0')}</span><span class="tag ${tc}">${q.cat}</span><span class="diff ${dc}">${dn}</span><span class="tag tg">O/X</span></div><div class="qq">${q.q}</div></div><span class="tgl">▾</span></div>
+      <div class="qa-bd"><div class="ox-wr"><button class="ox" onclick="pickOX(this,true,${gi})">⭕ 옳다</button><button class="ox" onclick="pickOX(this,false,${gi})">❌ 틀리다</button></div><div class="exp" id="ex-${gi}"><div class="exp-t">💡 해설</div>${q.exp}</div></div>`;
+    } else {
+      el.innerHTML=`<div class="qa-hd" onclick="this.closest('.qa').classList.toggle('open')"><div><div class="qa-meta"><span class="qn">Q${String(i+1).padStart(2,'0')}</span><span class="tag ${tc}">${q.cat}</span><span class="diff ${dc}">${dn}</span></div><div class="qq">${q.q}</div></div><span class="tgl">▾</span></div>
+      <div class="qa-bd"><div class="chs">${q.cs.map((c,ci)=>`<div class="ch" data-ci="${ci}" onclick="pickCh(this,${gi})"><span class="cnum">${NL[ci]}</span><span>${c}</span></div>`).join('')}</div><div class="exp" id="ex-${gi}"><div class="exp-t">💡 해설</div>${q.exp}</div></div>`;
+    }
+    list.appendChild(el);
+  });
+}
+function pickCh(el,gi){
+  const bd=el.closest('.qa-bd');if(bd.querySelector('.ok,.ng'))return;
+  const q=QA[gi];
+  bd.querySelectorAll('.ch').forEach((c,i)=>{c.classList.add('lk');if(i===q.ans)c.classList.add('ok');else if(i===parseInt(el.dataset.ci))c.classList.add('ng');});
+  document.getElementById('ex-'+gi).classList.add('show');
+  answered++;if(parseInt(el.dataset.ci)===q.ans)correct++;upS();
+}
+function pickOX(btn,val,gi){
+  const bd=btn.closest('.qa-bd');if(bd.querySelector('.so,.sx'))return;
+  const q=QA[gi];
+  bd.querySelectorAll('.ox').forEach(b=>b.classList.add('lk'));
+  btn.classList.add(val?'so':'sx');
+  if(val!==q.ans){btn.style.opacity='.5';bd.querySelectorAll('.ox')[val?1:0].classList.add(q.ans?'so':'sx');}
+  document.getElementById('ex-'+gi).classList.add('show');
+  answered++;if(val===q.ans)correct++;upS();
+}
+function upS(){document.getElementById('sc').textContent=correct;document.getElementById('st').textContent=answered;}
+document.getElementById('fbar').addEventListener('click',e=>{
+  const b=e.target.closest('.fb');if(!b)return;
+  document.querySelectorAll('.fb').forEach(x=>x.classList.remove('on'));b.classList.add('on');renderQ(b.dataset.f);
+});
+renderQ('all');
+</script>
+</body>
+</html>

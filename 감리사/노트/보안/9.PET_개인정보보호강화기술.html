@@ -1,0 +1,700 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&family=JetBrains+Mono:wght@400;700&display=swap');
+:root{
+  --bg:#05100a;--s1:#091a0f;--s2:#0d2216;--s3:#112c1d;
+  --bdr:#1a4228;--a1:#34d399;--a2:#a78bfa;--a3:#38bdf8;
+  --a4:#fbbf24;--a5:#f87171;--a6:#fb923c;
+  --txt:#e2e8f0;--mu:#64748b;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Noto Sans KR',sans-serif;background:var(--bg);color:var(--txt);min-height:100vh;}
+.hdr{padding:22px 24px 16px;background:linear-gradient(150deg,#05100a 0%,#0b1e12 50%,#05100a 100%);border-bottom:1px solid var(--bdr);position:relative;overflow:hidden;}
+.hdr::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 65% 85% at 80% 30%,rgba(52,211,153,.09),transparent 65%),radial-gradient(ellipse 45% 65% at 20% 80%,rgba(167,139,250,.06),transparent 60%);pointer-events:none;}
+.hdr-r{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:6px;}
+.pill{padding:3px 10px;border-radius:20px;font-size:10px;font-weight:700;letter-spacing:.8px;}
+.p1{background:linear-gradient(135deg,#052e16,var(--a1));color:#fff;}
+.p2{background:rgba(167,139,250,.15);color:var(--a2);border:1px solid rgba(167,139,250,.3);}
+.p3{background:rgba(251,191,36,.15);color:var(--a4);border:1px solid rgba(251,191,36,.3);}
+h1{font-size:19px;font-weight:900;}
+.h1g{background:linear-gradient(90deg,var(--a1),var(--a3),var(--a2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.hdr p{color:var(--mu);font-size:12px;margin-top:3px;}
+.tabs{display:flex;padding:0 24px;background:var(--s1);border-bottom:1px solid var(--bdr);overflow-x:auto;scrollbar-width:none;}
+.tabs::-webkit-scrollbar{display:none;}
+.tab{padding:11px 14px;font-size:12px;font-weight:600;color:var(--mu);cursor:pointer;border-bottom:2px solid transparent;white-space:nowrap;transition:all .2s;background:none;border-top:none;border-left:none;border-right:none;font-family:'Noto Sans KR',sans-serif;}
+.tab:hover{color:var(--txt);}.tab.on{color:var(--a1);border-bottom-color:var(--a1);}
+.wrap{padding:20px 24px;max-width:960px;margin:0 auto;}
+.pnl{display:none;}.pnl.on{display:block;}
+.card{background:var(--s1);border:1px solid var(--bdr);border-radius:12px;padding:18px;margin-bottom:14px;}
+.card-h{display:flex;align-items:center;gap:10px;margin-bottom:14px;}
+.ico{width:34px;height:34px;border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:17px;flex-shrink:0;}
+.ig{background:rgba(52,211,153,.15);}.ib{background:rgba(56,189,248,.15);}.ip{background:rgba(167,139,250,.15);}.iy{background:rgba(251,191,36,.15);}.ir{background:rgba(248,113,113,.15);}.io{background:rgba(251,146,60,.15);}
+.card h3{font-size:14px;font-weight:700;}
+.tag{display:inline-block;padding:2px 8px;border-radius:4px;font-size:10px;font-weight:600;margin:2px 2px 2px 0;}
+.tg{background:rgba(52,211,153,.12);color:var(--a1);border:1px solid rgba(52,211,153,.25);}
+.tb{background:rgba(56,189,248,.12);color:var(--a3);border:1px solid rgba(56,189,248,.25);}
+.tp{background:rgba(167,139,250,.12);color:var(--a2);border:1px solid rgba(167,139,250,.25);}
+.ty{background:rgba(251,191,36,.12);color:var(--a4);border:1px solid rgba(251,191,36,.25);}
+.tr{background:rgba(248,113,113,.12);color:var(--a5);border:1px solid rgba(248,113,113,.25);}
+.to{background:rgba(251,146,60,.12);color:var(--a6);border:1px solid rgba(251,146,60,.25);}
+table{width:100%;border-collapse:collapse;font-size:12.5px;}
+th{background:var(--s2);color:var(--mu);font-weight:700;padding:8px 12px;text-align:left;font-size:10px;text-transform:uppercase;letter-spacing:.5px;border-bottom:1px solid var(--bdr);}
+td{padding:9px 12px;border-bottom:1px solid rgba(26,66,40,.5);vertical-align:top;line-height:1.6;}
+tr:last-child td{border-bottom:none;}
+tr:hover td{background:rgba(255,255,255,.02);}
+td strong{color:var(--a4);}
+ul.il{list-style:none;display:flex;flex-direction:column;gap:7px;}
+ul.il li{font-size:12.5px;padding-left:16px;position:relative;line-height:1.55;}
+ul.il li::before{content:'▸';position:absolute;left:0;color:var(--a1);font-size:10px;top:3px;}
+ul.il li strong{color:var(--a4);}
+ul.il li em{color:var(--a3);font-style:normal;}
+.memo{background:linear-gradient(135deg,rgba(52,211,153,.07),rgba(56,189,248,.07));border:1px solid rgba(52,211,153,.25);border-left:3px solid var(--a1);border-radius:8px;padding:10px 14px;font-size:12.5px;font-weight:600;color:var(--a1);margin:10px 0;}
+.memo::before{content:'🎯 한 줄 암기 │ ';color:var(--mu);font-weight:400;}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:14px;}
+@media(max-width:600px){.g2{grid-template-columns:1fr;}}
+.code-box{background:var(--s3);border:1px solid rgba(52,211,153,.2);border-radius:8px;padding:12px 14px;font-family:'JetBrains Mono',monospace;font-size:11.5px;margin:10px 0;line-height:1.7;overflow-x:auto;}
+.code-box .cm{color:var(--mu);}
+.code-box .kw{color:var(--a1);}
+.code-box .val{color:var(--a4);}
+
+/* 기술 아코디언 */
+.tech{background:var(--s2);border:1px solid var(--bdr);border-radius:10px;margin-bottom:9px;overflow:hidden;}
+.tech-h{display:flex;justify-content:space-between;align-items:flex-start;padding:12px 16px;cursor:pointer;user-select:none;transition:background .15s;}
+.tech-h:hover{background:rgba(255,255,255,.02);}
+.tech-left{flex:1;}
+.tech-title{font-size:13px;font-weight:800;}
+.tech-en{font-size:10.5px;color:var(--mu);font-family:'JetBrains Mono',monospace;margin-top:2px;}
+.tech-tgl{color:var(--mu);transition:transform .2s;font-size:16px;flex-shrink:0;margin-left:8px;}
+.tech.open .tech-tgl{transform:rotate(180deg);}
+.tech-body{display:none;border-top:1px solid var(--bdr);padding:14px 16px;background:var(--s3);}
+.tech.open .tech-body{display:block;}
+
+/* 비교 그리드 */
+.cmp-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:10px 0;}
+@media(max-width:600px){.cmp-grid{grid-template-columns:1fr 1fr;}}
+.cmp-item{background:var(--s2);border:1px solid var(--bdr);border-radius:9px;padding:12px;text-align:center;}
+.cmp-ico{font-size:22px;margin-bottom:5px;}
+.cmp-name{font-size:12px;font-weight:800;margin-bottom:3px;}
+.cmp-sub{font-size:10.5px;color:var(--mu);line-height:1.4;}
+
+/* 법률 박스 */
+.law-box{background:rgba(251,191,36,.07);border:1px solid rgba(251,191,36,.28);border-left:4px solid var(--a4);border-radius:8px;padding:12px 16px;margin:10px 0;font-size:12.5px;line-height:1.7;}
+.law-box strong{color:var(--a4);}
+
+/* QA */
+.qa{background:var(--s1);border:1px solid var(--bdr);border-radius:10px;margin-bottom:11px;overflow:hidden;transition:border-color .2s;}
+.qa:hover{border-color:rgba(52,211,153,.25);}
+.qa-hd{padding:14px 18px;cursor:pointer;display:flex;justify-content:space-between;align-items:flex-start;gap:10px;user-select:none;}
+.qa-meta{display:flex;align-items:center;gap:6px;margin-bottom:5px;flex-wrap:wrap;}
+.qn{font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:700;color:var(--mu);}
+.qq{font-size:13px;font-weight:600;line-height:1.55;}
+.tgl{color:var(--mu);font-size:16px;flex-shrink:0;transition:transform .2s;}
+.qa.open .tgl{transform:rotate(180deg);}
+.qa-bd{display:none;border-top:1px solid var(--bdr);padding:14px 18px;background:var(--s2);}
+.qa.open .qa-bd{display:block;}
+.chs{display:flex;flex-direction:column;gap:7px;margin-bottom:12px;}
+.ch{display:flex;align-items:flex-start;gap:10px;padding:9px 13px;border-radius:7px;border:1px solid var(--bdr);font-size:12.5px;cursor:pointer;background:var(--s1);line-height:1.5;transition:all .15s;}
+.ch:hover:not(.lk){border-color:rgba(52,211,153,.3);background:rgba(52,211,153,.04);}
+.ch.ok{border-color:var(--a1);background:rgba(52,211,153,.1);color:var(--a1);}
+.ch.ng{border-color:var(--a5);background:rgba(248,113,113,.08);color:var(--a5);opacity:.7;}
+.ch.lk{cursor:default;}
+.cnum{font-family:'JetBrains Mono',monospace;font-weight:700;font-size:11px;flex-shrink:0;margin-top:1px;color:var(--mu);}
+.ch.ok .cnum{color:var(--a1);}.ch.ng .cnum{color:var(--a5);}
+.exp{background:rgba(52,211,153,.05);border:1px solid rgba(52,211,153,.18);border-radius:8px;padding:12px 14px;font-size:12.5px;line-height:1.65;display:none;}
+.exp.show{display:block;}
+.exp-t{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--a1);margin-bottom:6px;}
+.exp strong{color:var(--a4);}
+.exp em{color:var(--a3);font-style:normal;}
+.ox-wr{display:flex;gap:10px;margin-bottom:12px;}
+.ox{flex:1;padding:11px;border-radius:8px;border:1px solid var(--bdr);font-size:20px;cursor:pointer;background:var(--s1);transition:all .15s;font-family:'Noto Sans KR',sans-serif;color:var(--txt);}
+.ox:hover:not(.lk){transform:scale(1.02);}
+.ox.so{border-color:var(--a1);background:rgba(52,211,153,.15);}
+.ox.sx{border-color:var(--a5);background:rgba(248,113,113,.1);}
+.ox.lk{cursor:default;}
+.diff{display:inline-block;padding:2px 7px;border-radius:10px;font-size:9px;font-weight:700;}
+.easy{background:rgba(52,211,153,.2);color:var(--a1);}
+.mid{background:rgba(251,191,36,.2);color:var(--a4);}
+.hard{background:rgba(248,113,113,.2);color:var(--a5);}
+.fb-wr{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:14px;}
+.fb{padding:5px 12px;border-radius:20px;border:1px solid var(--bdr);font-size:11px;font-weight:600;cursor:pointer;background:var(--s2);color:var(--mu);transition:all .15s;font-family:'Noto Sans KR',sans-serif;}
+.fb.on{background:rgba(52,211,153,.15);color:var(--a1);border-color:var(--a1);}
+.sc-b{background:var(--s2);border:1px solid var(--bdr);border-radius:8px;padding:5px 14px;font-size:12px;color:var(--mu);}
+.sc-b span{color:var(--a1);font-weight:700;}
+</style>
+</head>
+<body>
+
+<div class="hdr">
+  <div class="hdr-r">
+    <span class="pill p1">PET — Privacy Enhancing Technologies</span>
+    <span class="pill p2">개인정보 보호 강화 기술</span>
+    <span class="pill p3">감리사 핵심 출제</span>
+  </div>
+  <h1><span class="h1g">개인정보 보호 강화 기술 (PET)</span></h1>
+  <p>가명화·익명화·차분프라이버시·동형암호·영지식증명·연합학습·MPC·PIMS 완전 정리</p>
+</div>
+
+<div class="tabs">
+  <button class="tab on" data-p="p1">🔒 PET 개요·분류</button>
+  <button class="tab" data-p="p2">🎭 비식별화 기술</button>
+  <button class="tab" data-p="p3">🔐 암호·계산 기술</button>
+  <button class="tab" data-p="p4">📊 데이터 활용 기술</button>
+  <button class="tab" data-p="p5">⚖️ 법·제도·PIMS</button>
+  <button class="tab" data-p="p6">❓ 예상문제</button>
+</div>
+
+<div class="wrap">
+
+<!-- ===== P1: 개요 ===== -->
+<div class="pnl on" id="p1">
+  <div class="card">
+    <div class="card-h"><div class="ico ig">🔒</div><h3>PET (Privacy Enhancing Technologies) 정의</h3></div>
+    <div style="background:var(--s2);border:1px solid rgba(52,211,153,.28);border-radius:10px;padding:14px;margin-bottom:12px;">
+      <p style="font-size:13px;line-height:1.8;font-weight:500;">
+        <strong style="color:var(--a1)">PET(개인정보 보호 강화 기술)</strong>란 개인정보를 수집·활용하면서도 <em style="color:var(--a4);font-style:normal;">개인을 식별할 수 없도록</em> 하거나, 개인정보를 <em style="color:var(--a3);font-style:normal;">노출하지 않고 연산·분석</em>을 가능하게 하는 기술 체계
+      </p>
+    </div>
+    <table>
+      <thead><tr><th>항목</th><th>내용</th></tr></thead>
+      <tbody>
+        <tr><td><strong>목적</strong></td><td>개인정보의 <strong>데이터 활용성(Utility)과 프라이버시 보호</strong>를 동시에 달성</td></tr>
+        <tr><td><strong>배경</strong></td><td>빅데이터·AI 시대 데이터 활용 수요 ↑, 개인정보보호법·GDPR 등 규제 강화</td></tr>
+        <tr><td><strong>핵심 딜레마</strong></td><td>데이터 활용성 ↑ ↔ 프라이버시 보호 ↑ — 두 목표가 서로 상충</td></tr>
+        <tr><td><strong>관련 법령</strong></td><td>개인정보보호법(§28조의2~§28조의7), 데이터 3법, GDPR(Article 25 Privacy by Design)</td></tr>
+      </tbody>
+    </table>
+    <div class="memo">PET = 데이터 활용성 ↑과 프라이버시 보호 ↑를 동시 달성하는 기술 체계</div>
+  </div>
+
+  <div class="card">
+    <div class="card-h"><div class="ico iy">📊</div><h3>PET 기술 분류 체계</h3></div>
+    <div class="cmp-grid">
+      <div class="cmp-item">
+        <div class="cmp-ico">🎭</div>
+        <div class="cmp-name" style="color:var(--a1);">비식별화</div>
+        <div class="cmp-sub">가명처리·익명처리<br>가명화·익명화<br>마스킹·집계</div>
+      </div>
+      <div class="cmp-item">
+        <div class="cmp-ico">📊</div>
+        <div class="cmp-name" style="color:var(--a4);">통계적 기법</div>
+        <div class="cmp-sub">차분 프라이버시<br>k-익명성·l-다양성<br>t-근접성</div>
+      </div>
+      <div class="cmp-item">
+        <div class="cmp-ico">🔐</div>
+        <div class="cmp-name" style="color:var(--a3);">암호 기반</div>
+        <div class="cmp-sub">동형암호(HE)<br>영지식증명(ZKP)<br>안전한 다자간계산(MPC)</div>
+      </div>
+      <div class="cmp-item">
+        <div class="cmp-ico">🤝</div>
+        <div class="cmp-name" style="color:var(--a2);">분산 학습</div>
+        <div class="cmp-sub">연합학습(FL)<br>분산 AI<br>차분 프라이버시+FL</div>
+      </div>
+      <div class="cmp-item">
+        <div class="cmp-ico">📝</div>
+        <div class="cmp-name" style="color:var(--a6);">동의·접근제어</div>
+        <div class="cmp-sub">PIMS·MyData<br>개인정보 동의 관리<br>데이터 최소화</div>
+      </div>
+      <div class="cmp-item">
+        <div class="cmp-ico">🔍</div>
+        <div class="cmp-name" style="color:var(--a5);">감사·투명성</div>
+        <div class="cmp-sub">프라이버시 감사<br>데이터 출처 추적<br>DPIA</div>
+      </div>
+    </div>
+    <div class="memo">PET 6분류: 비식별화·통계적기법·암호기반·분산학습·동의접근제어·감사투명성</div>
+  </div>
+
+  <div class="card">
+    <div class="card-h"><div class="ico ib">⚖️</div><h3>프라이버시 by Design (PbD) 7원칙 — Ann Cavoukian</h3></div>
+    <table>
+      <thead><tr><th>원칙</th><th>내용</th></tr></thead>
+      <tbody>
+        <tr><td><strong>① 사전 예방</strong></td><td>사전에 프라이버시 위험을 예방 (사후 치료 아님)</td></tr>
+        <tr><td><strong>② 기본값으로 프라이버시</strong></td><td>별도 조치 없어도 자동으로 프라이버시 보호 (Privacy as Default)</td></tr>
+        <tr><td><strong>③ 설계에 내재화</strong></td><td>시스템 설계 단계부터 프라이버시 내장 (Add-on 아님)</td></tr>
+        <tr><td><strong>④ 전합 기능</strong></td><td>프라이버시 vs 보안 이분법 거부 — 둘 다 달성 (Positive-Sum)</td></tr>
+        <tr><td><strong>⑤ 종단간 보안</strong></td><td>데이터 수명 전 주기에 걸쳐 보안 유지</td></tr>
+        <tr><td><strong>⑥ 가시성·투명성</strong></td><td>공개·투명하게 운영 (Openness)</td></tr>
+        <tr><td><strong>⑦ 사용자 중심</strong></td><td>사용자 프라이버시 이익 최우선 (User Centricity)</td></tr>
+      </tbody>
+    </table>
+    <div class="memo">PbD 핵심 = 기본값 프라이버시 + 설계 내재화 + Positive-Sum (보안과 프라이버시 동시 달성)</div>
+  </div>
+</div>
+
+<!-- ===== P2: 비식별화 ===== -->
+<div class="pnl" id="p2">
+  <div class="card">
+    <div class="card-h"><div class="ico iy">⭐</div><h3>가명처리 vs 익명처리 — 개인정보보호법 핵심 구분</h3></div>
+    <div class="law-box">
+      <strong>개인정보보호법 제28조의2~7 (2020 데이터 3법 개정)</strong>: 가명정보는 통계작성·과학적 연구·공익적 기록보존 목적으로 정보주체 동의 없이 활용 가능
+    </div>
+    <table>
+      <thead><tr><th>구분</th><th style="color:var(--a4)">가명처리 (Pseudonymization)</th><th style="color:var(--a1)">익명처리 (Anonymization)</th></tr></thead>
+      <tbody>
+        <tr><td><strong>정의</strong></td><td>추가 정보 없이는 특정 개인을 알아볼 수 없도록 처리 (복원 가능)</td><td>시간·비용·기술을 합리적으로 고려할 때 복원이 <strong>불가능</strong>한 처리</td></tr>
+        <tr><td><strong>복원 가능성</strong></td><td><strong>가능</strong> (키 테이블 등 추가 정보 있으면)</td><td><strong>불가능</strong> (실질적으로)</td></tr>
+        <tr><td><strong>법적 지위</strong></td><td>개인정보 (규제 적용, 특례 있음)</td><td><strong>개인정보 아님</strong> (규제 미적용)</td></tr>
+        <tr><td><strong>활용</strong></td><td>동의 없이 과학연구·통계·공익 목적 활용 가능</td><td>제한 없이 자유롭게 활용 가능</td></tr>
+        <tr><td><strong>기술 예시</strong></td><td>암호화, 토큰화, 일관된 대체값</td><td>k-익명성, 차분프라이버시, 집계</td></tr>
+        <tr><td><strong>추가 정보 관리</strong></td><td><strong>분리 보관 필수</strong> (결합 방지)</td><td>별도 관리 불필요</td></tr>
+        <tr><td><strong>GDPR 관련</strong></td><td>Article 4(5) — 여전히 개인정보</td><td>GDPR 적용 제외</td></tr>
+      </tbody>
+    </table>
+    <div class="memo">⭐가명처리=복원가능·개인정보·특례활용 / 익명처리=복원불가·개인정보아님·자유활용</div>
+  </div>
+
+  <div class="card">
+    <div class="card-h"><div class="ico ib">🔢</div><h3>비식별화 기법 (개인정보보호위원회 가이드)</h3></div>
+
+    <div class="tech open" onclick="this.classList.toggle('open')">
+      <div class="tech-h">
+        <div class="tech-left"><div class="tech-title" style="color:var(--a1);">데이터 마스킹 (Data Masking)</div><div class="tech-en">개인 식별 값을 숨김 문자로 대체</div></div>
+        <div style="display:flex;align-items:center;gap:6px;"><span class="tag tg">직관적</span><div class="tech-tgl">▾</div></div>
+      </div>
+      <div class="tech-body">
+        <ul class="il">
+          <li><strong>부분 마스킹:</strong> 홍*동, 010-****-1234 — 일부만 숨김</li>
+          <li><strong>전체 마스킹:</strong> *****, XXXXXXXX — 전체 숨김</li>
+          <li><strong>랜덤 노이즈:</strong> 숫자에 랜덤 값 추가 (나이 27 → 24~30 범위로 교란)</li>
+          <li><strong>데이터 스크램블링:</strong> 개인 속성값을 레코드 간 섞음</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="tech" onclick="this.classList.toggle('open')">
+      <div class="tech-h">
+        <div class="tech-left"><div class="tech-title" style="color:var(--a3);">일반화 (Generalization)</div><div class="tech-en">값을 더 넓은 범주로 대체</div></div>
+        <div style="display:flex;align-items:center;gap:6px;"><span class="tag tb">범주화</span><div class="tech-tgl">▾</div></div>
+      </div>
+      <div class="tech-body">
+        <ul class="il">
+          <li><strong>수치 범주화:</strong> 나이 27세 → 20대, 소득 350만원 → 300~400만원</li>
+          <li><strong>지역 일반화:</strong> 서울시 강남구 역삼동 → 서울시 강남구</li>
+          <li><strong>날짜 일반화:</strong> 1995.03.15 → 1995년 3월 (또는 1990년대)</li>
+          <li><strong>Top/Bottom Coding:</strong> 극단값을 최대·최솟값 이상/이하로 처리</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="tech" onclick="this.classList.toggle('open')">
+      <div class="tech-h">
+        <div class="tech-left"><div class="tech-title" style="color:var(--a4);">데이터 삭제·집계</div><div class="tech-en">식별자 제거 및 통계 집계</div></div>
+        <div style="display:flex;align-items:center;gap:6px;"><span class="tag ty">삭제</span><div class="tech-tgl">▾</div></div>
+      </div>
+      <div class="tech-body">
+        <ul class="il">
+          <li><strong>식별자 삭제:</strong> 이름·주민번호·연락처 등 직접 식별자 제거</li>
+          <li><strong>레코드 삭제:</strong> 소수의 특이한 속성 조합의 레코드 전체 삭제</li>
+          <li><strong>집계(Aggregation):</strong> 개별 값 대신 합계·평균·빈도 제공</li>
+          <li><strong>마이크로집계:</strong> 유사한 레코드를 그룹화 후 그룹 평균으로 대체</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="memo">비식별화 기법: 마스킹(숨김)·일반화(범주화)·삭제·집계·가명화(대체값) 5가지</div>
+  </div>
+
+  <div class="card">
+    <div class="card-h"><div class="ico ip">📐</div><h3>k-익명성 · l-다양성 · t-근접성</h3></div>
+    <table>
+      <thead><tr><th>모델</th><th>정의</th><th>보호 대상</th><th>한계</th></tr></thead>
+      <tbody>
+        <tr><td><strong>k-익명성</strong><br>(k-Anonymity)</td><td>준식별자 속성의 동일한 조합이 <strong>최소 k개 이상</strong>의 레코드에 존재</td><td>개인 재식별 방지</td><td>민감 속성의 동질성 공격에 취약 (k명 모두 같은 질병)</td></tr>
+        <tr><td><strong>l-다양성</strong><br>(l-Diversity)</td><td>동일 준식별자 그룹 내 민감 속성이 <strong>최소 l가지 이상</strong> 존재</td><td>동질성·배경지식 공격</td><td>민감 속성 분포가 실제와 크게 다를 수 있음 (skewness)</td></tr>
+        <tr><td><strong>t-근접성</strong><br>(t-Closeness)</td><td>그룹 내 민감 속성 분포가 전체 데이터 분포와의 차이가 <strong>t 이하</strong></td><td>속성 추론 공격</td><td>데이터 유용성(Utility) 감소</td></tr>
+      </tbody>
+    </table>
+    <div class="code-box">
+<span class="cm">// k=3 익명성 예시 (나이·지역이 동일한 레코드가 3개 이상)</span>
+<span class="kw">나이     지역   질병</span>
+<span class="val">20~29   서울   고혈압</span>   ← 3개 이상의 레코드가 동일한
+<span class="val">20~29   서울   당뇨</span>      ← 준식별자(나이+지역) 조합을 가져야
+<span class="val">20~29   서울   암</span>        ← k-익명성 만족
+    </div>
+    <div class="memo">k-익명성(k개 동일 준식별자) → l-다양성(민감속성 l종) → t-근접성(분포 차이 t이하) 순으로 강화</div>
+  </div>
+</div>
+
+<!-- ===== P3: 암호·계산 기술 ===== -->
+<div class="pnl" id="p3">
+  <div class="card">
+    <div class="card-h"><div class="ico ig">🔐</div><h3>암호 기반 PET 핵심 3종</h3></div>
+
+    <div class="tech open" onclick="this.classList.toggle('open')">
+      <div class="tech-h">
+        <div class="tech-left">
+          <div class="tech-title" style="color:var(--a1);">동형암호 (Homomorphic Encryption, HE)</div>
+          <div class="tech-en">암호화된 상태에서 연산 가능 — 복호화 없이 분석</div>
+        </div>
+        <div style="display:flex;align-items:center;gap:6px;"><span class="tag tg">⭐핵심</span><div class="tech-tgl">▾</div></div>
+      </div>
+      <div class="tech-body">
+        <ul class="il" style="margin-bottom:10px;">
+          <li><strong>정의:</strong> 암호문(Ciphertext)에 대해 연산을 수행해도, 복호화한 결과가 원문에 같은 연산을 수행한 결과와 동일</li>
+          <li><strong>핵심:</strong> 데이터를 <em>복호화하지 않고 클라우드에서 연산</em> 가능 → 클라우드 서버가 데이터 내용을 모름</li>
+          <li><strong>부분 동형(PHE):</strong> 덧셈 또는 곱셈 중 하나만 지원 (RSA: 곱셈, Paillier: 덧셈)</li>
+          <li><strong>완전 동형(FHE):</strong> 덧셈·곱셈 모두 지원 — 임의의 함수 계산 가능 (속도 느림)</li>
+          <li><strong>실제 활용:</strong> 클라우드 암호화 데이터 분석, 의료 데이터 AI 분석, 금융 데이터 공동 분석</li>
+        </ul>
+        <div class="code-box">
+<span class="cm">// 동형암호 특성</span>
+<span class="kw">E(a) + E(b) = E(a+b)</span>  <span class="cm">// 암호문 덧셈 = 원문 합계의 암호문</span>
+<span class="kw">E(a) × E(b) = E(a×b)</span>  <span class="cm">// 암호문 곱셈 = 원문 곱의 암호문</span>
+<span class="cm">// → 서버는 암호문만 보고 연산하지만 결과는 정확</span>
+        </div>
+        <p style="font-size:11.5px;color:var(--a4);font-weight:700;margin-top:6px;">주요 FHE 스킴: CKKS(실수), BFV/BGV(정수) / 라이브러리: HElib, Microsoft SEAL, OpenFHE</p>
+      </div>
+    </div>
+
+    <div class="tech" onclick="this.classList.toggle('open')">
+      <div class="tech-h">
+        <div class="tech-left">
+          <div class="tech-title" style="color:var(--a2);">영지식 증명 (Zero-Knowledge Proof, ZKP)</div>
+          <div class="tech-en">정보를 공개하지 않고 사실 증명 — 알리지 않고 증명</div>
+        </div>
+        <div style="display:flex;align-items:center;gap:6px;"><span class="tag tp">⭐핵심</span><div class="tech-tgl">▾</div></div>
+      </div>
+      <div class="tech-body">
+        <ul class="il" style="margin-bottom:10px;">
+          <li><strong>정의:</strong> 증명자(Prover)가 검증자(Verifier)에게 특정 사실이 참임을 <em>해당 정보 자체를 공개하지 않고</em> 증명</li>
+          <li><strong>3대 요건:</strong> ①완전성(Completeness) ②건전성(Soundness) ③영지식성(Zero-Knowledge)</li>
+          <li><strong>활용 예시:</strong> "나이가 19세 이상임"을 생년월일 공개 없이 증명 / 소득 조건 충족을 실제 소득 미공개로 증명</li>
+          <li><strong>종류:</strong> zk-SNARKs(짧은 증명·비인터랙티브) / zk-STARKs(양자 내성·투명 설정) / Groth16</li>
+          <li><strong>블록체인 활용:</strong> Zcash(개인정보 거래), zkEVM(이더리움 확장성), Polygon zkEVM</li>
+        </ul>
+        <div class="code-box">
+<span class="cm">// ZKP 활용 예시</span>
+<span class="kw">나이 증명:</span> "저는 19세 이상입니다" <span class="cm">← 생년월일 공개 없이</span>
+<span class="kw">자산 증명:</span> "저는 100만원 이상 보유"  <span class="cm">← 정확한 금액 미공개</span>
+<span class="kw">비밀번호:</span> "맞는 비밀번호 알고 있음"  <span class="cm">← 비밀번호 자체 미전송</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="tech" onclick="this.classList.toggle('open')">
+      <div class="tech-h">
+        <div class="tech-left">
+          <div class="tech-title" style="color:var(--a3);">안전한 다자간 계산 (Secure Multi-Party Computation, MPC)</div>
+          <div class="tech-en">여러 참여자가 각자 데이터 비공개로 공동 연산</div>
+        </div>
+        <div style="display:flex;align-items:center;gap:6px;"><span class="tag tb">⭐핵심</span><div class="tech-tgl">▾</div></div>
+      </div>
+      <div class="tech-body">
+        <ul class="il">
+          <li><strong>정의:</strong> 여러 참여자가 각자의 데이터를 <em>공유하지 않고</em> 공동으로 함수를 계산하고 결과만 얻음</li>
+          <li><strong>예시:</strong> A·B·C 세 회사가 각자 급여 데이터를 공개하지 않고 업계 평균 급여를 계산</li>
+          <li><strong>활용:</strong> 금융 데이터 공동 분석, 의료 데이터 연합 연구, 광고 효과 측정</li>
+          <li><strong>주요 프로토콜:</strong> 비밀 분산(Secret Sharing), 조작 방지 회로(GMW), OT(Oblivious Transfer)</li>
+          <li><strong>MPC vs 동형암호:</strong> MPC = 여러 참여자 간 분산 계산 / HE = 단일 클라우드에서 암호문 연산</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="memo">동형암호=암호화 상태에서 연산 / ZKP=공개없이 증명 / MPC=여러 참여자 데이터 비공개 공동연산</div>
+  </div>
+</div>
+
+<!-- ===== P4: 데이터 활용 기술 ===== -->
+<div class="pnl" id="p4">
+  <div class="card">
+    <div class="card-h"><div class="ico ig">📊</div><h3>차분 프라이버시 (Differential Privacy, DP)</h3></div>
+    <div style="background:var(--s2);border:1px solid rgba(52,211,153,.25);border-radius:9px;padding:13px;margin-bottom:12px;font-size:12.5px;line-height:1.8;">
+      <strong style="color:var(--a1)">차분 프라이버시</strong>: 쿼리 결과에 <em style="color:var(--a4);font-style:normal;">랜덤 노이즈(Random Noise)</em>를 추가하여 특정 개인의 데이터가 포함되었는지 추론 불가능하게 하는 기법
+    </div>
+    <table>
+      <thead><tr><th>항목</th><th>내용</th></tr></thead>
+      <tbody>
+        <tr><td><strong>ε (엡실론)</strong></td><td>프라이버시 예산(Privacy Budget) — 값이 <strong>작을수록 프라이버시 강</strong>하지만 데이터 정확도 낮음</td></tr>
+        <tr><td><strong>노이즈 메커니즘</strong></td><td>라플라스 메커니즘(연속값), 가우시안 메커니즘, 지수 메커니즘(범주값)</td></tr>
+        <tr><td><strong>글로벌 DP</strong></td><td>신뢰할 수 있는 중앙 서버가 집계 후 노이즈 추가 (Apple 통계 수집)</td></tr>
+        <tr><td><strong>로컬 DP</strong></td><td>각 사용자가 디바이스에서 직접 노이즈 추가 후 전송 (서버 불신 환경)</td></tr>
+        <tr><td><strong>활용 사례</strong></td><td>Apple(사용자 통계), Google RAPPOR, 미국 인구조사, 연합학습 결합</td></tr>
+        <tr><td><strong>합성 민감도</strong></td><td>한 레코드가 빠졌을 때 쿼리 결과가 최대로 달라지는 값 (노이즈 크기 결정)</td></tr>
+      </tbody>
+    </table>
+    <div class="code-box">
+<span class="cm">// 차분 프라이버시 예시 (평균 나이 계산)</span>
+<span class="kw">실제 평균 나이:</span> <span class="val">35.2세</span>
+<span class="kw">노이즈 추가 후:</span> <span class="val">35.2 + Laplace(0, 1/ε) = 34.7세</span>
+<span class="cm">// 개인 특정 불가하지만 통계적 유용성 유지</span>
+<span class="cm">// ε 작을수록 노이즈 크고 프라이버시 보호 강함</span>
+    </div>
+    <div class="memo">차분프라이버시 = 랜덤 노이즈 추가 / ε(엡실론) 작을수록 보호 강함 / 글로벌DP vs 로컬DP</div>
+  </div>
+
+  <div class="card">
+    <div class="card-h"><div class="ico ib">🤝</div><h3>연합학습 (Federated Learning, FL)</h3></div>
+    <div style="background:var(--s2);border:1px solid rgba(56,189,248,.25);border-radius:9px;padding:13px;margin-bottom:12px;font-size:12.5px;line-height:1.8;">
+      <strong style="color:var(--a3)">연합학습</strong>: 원시 데이터를 중앙 서버로 전송하지 않고, <em style="color:var(--a4);font-style:normal;">각 기기에서 로컬 학습 후 모델 파라미터(기울기)만 공유</em>하여 글로벌 AI 모델을 학습하는 방식
+    </div>
+    <table>
+      <thead><tr><th>항목</th><th>내용</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Google 제안</strong></td><td>2017년 Google이 스마트폰 키보드(Gboard) 개선에 최초 적용</td></tr>
+        <tr><td><strong>동작 흐름</strong></td><td>글로벌 모델 배포 → 로컬 데이터로 학습 → 파라미터(gradient) 업로드 → 중앙 서버 집계 → 모델 갱신</td></tr>
+        <tr><td><strong>장점</strong></td><td>원시 개인정보 중앙 집중 불필요 / 네트워크 부하 감소 / 다양한 데이터로 학습</td></tr>
+        <tr><td><strong>한계</strong></td><td>모델 파라미터에서 개인정보 역추론 가능 (Gradient Inversion) / 비잔틴 공격(악의적 참여자)</td></tr>
+        <tr><td><strong>결합 기술</strong></td><td>차분 프라이버시(DP) + 연합학습 / MPC + 연합학습 / SecAgg(보안 집계)</td></tr>
+        <tr><td><strong>수직/수평 FL</strong></td><td>수평 FL: 동일 특성, 다른 사용자 / 수직 FL: 동일 사용자, 다른 특성 (기관 간 협력)</td></tr>
+        <tr><td><strong>활용</strong></td><td>의료 AI(병원 간 협력), 금융 사기 탐지, 스마트폰 AI 학습</td></tr>
+      </tbody>
+    </table>
+    <div class="memo">연합학습 = 원시 데이터 미전송 + 파라미터만 공유 / DP+FL 결합으로 기울기 역추론 방어</div>
+  </div>
+
+  <div class="card">
+    <div class="card-h"><div class="ico ip">🔐</div><h3>합성 데이터 (Synthetic Data) · 토큰화</h3></div>
+    <div class="g2">
+      <div>
+        <p style="font-size:12px;font-weight:700;color:var(--a2);margin-bottom:8px;">합성 데이터</p>
+        <ul class="il">
+          <li><strong>정의:</strong> 실제 데이터의 통계적 특성을 유지하면서 <em>인공적으로 생성</em>한 가상 데이터</li>
+          <li><strong>생성 방법:</strong> GAN(적대적 생성 네트워크), VAE, 통계 모델 기반</li>
+          <li><strong>장점:</strong> 민감 정보 없음 / 대용량 생성 가능 / AI 학습 데이터 증강</li>
+          <li><strong>한계:</strong> 실제 데이터와 완전 동일하지 않음 / 멤버십 추론 공격 가능</li>
+        </ul>
+      </div>
+      <div>
+        <p style="font-size:12px;font-weight:700;color:var(--a6);margin-bottom:8px;">토큰화 (Tokenization)</p>
+        <ul class="il">
+          <li><strong>정의:</strong> 민감 데이터를 <em>의미 없는 토큰(Token)으로 대체</em> — 원본과 토큰 매핑 테이블은 별도 보관</li>
+          <li><strong>예시:</strong> 신용카드 번호 → 4532-xxxx-xxxx-7891 토큰</li>
+          <li><strong>vs 암호화:</strong> 토큰은 수학적 관계 없음 / 암호화는 수학적으로 변환</li>
+          <li><strong>활용:</strong> PCI DSS 결제 데이터 보호, 의료 ID 관리</li>
+        </ul>
+      </div>
+    </div>
+    <div class="memo">합성데이터=GAN으로 통계적 특성 유지 가상 생성 / 토큰화=의미없는 토큰 대체+매핑테이블 분리</div>
+  </div>
+</div>
+
+<!-- ===== P5: 법·제도·PIMS ===== -->
+<div class="pnl" id="p5">
+  <div class="card">
+    <div class="card-h"><div class="ico iy">📝</div><h3>PIMS (Personal Information Management System) / MyData</h3></div>
+    <table>
+      <thead><tr><th>항목</th><th>내용</th></tr></thead>
+      <tbody>
+        <tr><td><strong>PIMS 정의</strong></td><td>개인이 자신의 개인정보를 능동적으로 관리·통제하고 필요한 서비스에 선택적으로 제공하는 시스템</td></tr>
+        <tr><td><strong>MyData 개념</strong></td><td>개인이 자신의 데이터에 대한 결정권을 갖고, 제3자에게 데이터 제공·이동을 스스로 통제 (Data Sovereignty)</td></tr>
+        <tr><td><strong>국내 마이데이터</strong></td><td>신용정보법 개정(2020) — 금융분야 마이데이터 사업 도입 / 개인이 금융 데이터 이동권 행사</td></tr>
+        <tr><td><strong>데이터 이동권</strong></td><td>GDPR Article 20 (Right to Data Portability) — 처리자로부터 자신의 데이터를 기계 판독 가능 형식으로 받을 권리</td></tr>
+        <tr><td><strong>동의 관리</strong></td><td>Consent Management Platform(CMP) — 쿠키 동의, 마케팅 수신 동의 등 세분화된 동의 관리</td></tr>
+        <tr><td><strong>국내 인증</strong></td><td>PIMS 인증 → ISMS-P(정보보호 및 개인정보보호 관리체계) 인증으로 통합 (2019년)</td></tr>
+      </tbody>
+    </table>
+    <div class="memo">MyData = 개인 데이터 주권(Data Sovereignty) / GDPR Article 20 데이터 이동권 / ISMS-P로 통합인증</div>
+  </div>
+
+  <div class="card">
+    <div class="card-h"><div class="ico ib">⚖️</div><h3>DPIA (개인정보 영향평가) · 개인정보 보호법 주요 조항</h3></div>
+
+    <div class="tech" onclick="this.classList.toggle('open')">
+      <div class="tech-h">
+        <div class="tech-left">
+          <div class="tech-title" style="color:var(--a4);">DPIA (Data Protection Impact Assessment)</div>
+          <div class="tech-en">개인정보 영향평가 / 개인정보보호법 §33</div>
+        </div>
+        <div style="display:flex;align-items:center;gap:6px;"><span class="tag ty">⭐핵심</span><div class="tech-tgl">▾</div></div>
+      </div>
+      <div class="tech-body">
+        <ul class="il">
+          <li><strong>정의:</strong> 개인정보 처리 시스템 구축·변경 시 프라이버시 위험을 사전에 식별·평가·완화하는 절차</li>
+          <li><strong>국내 의무 대상:</strong> 5만 명 이상 정보주체 민감정보·고유식별정보 처리 / 공공기관 시스템 구축·변경 시</li>
+          <li><strong>GDPR Article 35:</strong> 고위험 처리 시 DPIA 의무 — 자동화 의사결정, 대규모 민감정보, 대규모 공개 장소 모니터링</li>
+          <li><strong>단계:</strong> 위험 식별 → 위험 평가 → 완화 방안 수립 → DPA 사전 협의 (필요시)</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="law-box">
+      <strong>개인정보보호법 주요 PET 관련 조항</strong><br>
+      §28조의2 (가명정보의 처리): 과학적 연구·통계·공익목적 → 동의 없이 가명정보 활용 가능<br>
+      §28조의3 (가명정보 결합): 결합전문기관을 통해서만 가명정보 결합 허용<br>
+      §28조의7 (적용 제외): 익명정보는 개인정보보호법 적용 제외<br>
+      §33조 (개인정보 영향평가): DPIA 의무화<br>
+      §39조의3 (개인정보 이동권): 금융·의료 등 이동권 행사 가능
+    </div>
+
+    <div class="memo">DPIA = 개인정보보호법 §33 / 5만 명↑ 민감정보 처리 시 의무 / GDPR Article 35 고위험 처리 필수</div>
+  </div>
+
+  <div class="card">
+    <div class="card-h"><div class="ico ig">🌍</div><h3>GDPR 주요 프라이버시 원칙</h3></div>
+    <table>
+      <thead><tr><th>원칙</th><th>내용</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Privacy by Design</strong><br>(Article 25)</td><td>설계 단계부터 프라이버시 내장 / 기본값으로 프라이버시 보호</td></tr>
+        <tr><td><strong>데이터 최소화</strong><br>(Article 5(1)(c))</td><td>수집·처리 데이터는 목적 달성에 적합하고 필요한 최소한으로 제한</td></tr>
+        <tr><td><strong>목적 제한</strong><br>(Article 5(1)(b))</td><td>명시된 목적 이외의 용도로 개인정보 처리 금지</td></tr>
+        <tr><td><strong>저장 기간 제한</strong></td><td>목적 달성 후 개인정보 삭제 또는 익명화</td></tr>
+        <tr><td><strong>정보주체 권리</strong></td><td>열람권·정정권·삭제권(잊혀질 권리)·제한권·이동권·반대권</td></tr>
+        <tr><td><strong>잊혀질 권리</strong><br>(Article 17)</td><td>정보주체가 자신의 개인정보 삭제를 요청할 수 있는 권리</td></tr>
+      </tbody>
+    </table>
+    <div class="memo">GDPR 핵심: Privacy by Design(§25) + 데이터 최소화 + 잊혀질 권리(§17) + 데이터 이동권(§20)</div>
+  </div>
+</div>
+
+<!-- ===== P6: 예상문제 ===== -->
+<div class="pnl" id="p6">
+  <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;margin-bottom:14px;">
+    <div class="fb-wr" id="fbar" style="margin:0;">
+      <button class="fb on" data-f="all">전체</button>
+      <button class="fb" data-f="비식별">🎭 비식별화</button>
+      <button class="fb" data-f="암호">🔐 암호기술</button>
+      <button class="fb" data-f="차분">📊 차분·연합</button>
+      <button class="fb" data-f="법제">⚖️ 법·제도</button>
+      <button class="fb" data-f="OX">⭕ OX</button>
+    </div>
+    <div class="sc-b">정답: <span id="sc">0</span>/<span id="st">0</span></div>
+  </div>
+  <div id="ql"></div>
+</div>
+
+</div>
+
+<script>
+document.querySelectorAll('.tab').forEach(t=>t.addEventListener('click',()=>{
+  document.querySelectorAll('.tab,.pnl').forEach(x=>x.classList.remove('on'));
+  t.classList.add('on');document.getElementById(t.dataset.p).classList.add('on');
+}));
+
+const QA=[
+  {cat:'비식별',diff:'easy',
+   q:'개인정보보호법상 가명처리와 익명처리의 차이로 가장 적절한 것은?',
+   cs:['가명처리는 복원이 불가능하고, 익명처리는 복원이 가능하다.',
+       '가명처리는 추가 정보를 이용하면 복원 가능하고 개인정보에 해당하지만, 익명처리는 복원이 불가능하여 개인정보로 보지 않는다.',
+       '가명처리와 익명처리 모두 개인정보로 분류되어 동일한 규제가 적용된다.',
+       '익명처리된 데이터는 과학적 연구 목적으로만 활용 가능하다.'],
+   ans:1,
+   exp:'<strong>가명처리</strong>: 추가 정보 없이는 식별 불가하지만 추가 정보가 있으면 <em>복원 가능</em> → 개인정보에 해당, 특례 적용(과학연구·통계·공익 목적 동의 없이 활용 가능). <strong>익명처리</strong>: 시간·비용·기술을 합리적으로 고려할 때 복원 <em>불가능</em> → 개인정보 아님, 규제 미적용, 자유 활용 가능.'},
+  {cat:'비식별',diff:'mid',
+   q:'k-익명성(k-Anonymity)의 정의로 가장 적절한 것은?',
+   cs:['데이터셋에서 민감 속성이 최소 k가지 이상 존재하는 것','준식별자 속성의 동일한 조합이 최소 k개 이상의 레코드에 존재하는 것','전체 데이터 분포와 그룹 내 분포 차이가 k 이하인 것','k개 이상의 노이즈를 추가하여 개인 식별을 방지하는 것'],
+   ans:1,
+   exp:'<strong>k-익명성</strong>: 데이터셋에서 준식별자(나이·지역·성별 등) 속성의 동일한 조합이 <em>최소 k개 이상의 레코드</em>에 존재해야 합니다. 특정 개인을 찾으려면 최소 k명 중 하나일 뿐임을 보장. <strong>l-다양성</strong>은 민감 속성의 다양성(l가지 이상), <strong>t-근접성</strong>은 분포 차이(t이하)를 보장합니다.'},
+  {cat:'비식별',diff:'hard',
+   q:'k-익명성의 한계를 보완하기 위해 제안된 l-다양성이 해결하려는 공격은?',
+   cs:['재식별 공격 (Re-identification Attack)','동질성 공격과 배경지식 공격','타이밍 공격 (Timing Attack)','중간자 공격 (MITM Attack)'],
+   ans:1,
+   exp:'<strong>k-익명성의 한계</strong>: k명이 모두 같은 민감 속성(예: 같은 질병)을 가지면 개인을 특정하지 않아도 그 속성을 알 수 있는 <em>동질성 공격</em>에 취약합니다. 또한 배경 지식으로 후보를 좁히는 <em>배경지식 공격</em>에도 취약합니다. <strong>l-다양성</strong>은 동일 준식별자 그룹 내 민감 속성이 l가지 이상이 되도록 요구합니다.'},
+  {cat:'암호',diff:'mid',
+   q:'동형암호(Homomorphic Encryption)의 핵심 특징으로 가장 적절한 것은?',
+   cs:['데이터를 암호화한 후 복호화하여 연산하고 다시 암호화하는 방식','암호화된 상태에서 연산을 수행해도 복호화 결과가 원문에 같은 연산을 수행한 결과와 동일한 암호 방식','여러 참여자가 각자의 데이터를 공유하지 않고 공동으로 계산하는 방식','특정 사실을 정보 공개 없이 증명할 수 있는 암호 방식'],
+   ans:1,
+   exp:'<strong>동형암호(HE)</strong>: E(a) ⊕ E(b) = E(a⊕b) 형태로 <em>암호문에 직접 연산이 가능</em>합니다. 데이터를 복호화하지 않고 클라우드에서 분석 가능 → 클라우드 서버가 원본 데이터를 보지 않고도 연산 결과 제공. 나머지 보기: MPC(여러 참여자 공동 계산), ZKP(공개 없이 증명).'},
+  {cat:'암호',diff:'mid',
+   q:'영지식 증명(Zero-Knowledge Proof)이 만족해야 하는 3가지 요건으로 가장 적절한 것은?',
+   cs:['기밀성, 무결성, 가용성','완전성(Completeness), 건전성(Soundness), 영지식성(Zero-Knowledge)','인증, 인가, 감사','암호화, 복호화, 키 교환'],
+   ans:1,
+   exp:'<strong>ZKP의 3대 요건</strong>: ①<em>완전성(Completeness)</em>: 명제가 참이면 정직한 증명자는 검증자를 납득시킬 수 있음, ②<em>건전성(Soundness)</em>: 명제가 거짓이면 부정직한 증명자가 검증자를 납득시킬 수 없음, ③<em>영지식성(Zero-Knowledge)</em>: 검증자는 명제의 참/거짓 외에 아무 정보도 얻지 못함.'},
+  {cat:'암호',diff:'hard',
+   q:'MPC(안전한 다자간 계산)와 동형암호(HE)의 차이점으로 가장 적절한 것은?',
+   cs:['MPC는 암호화를 사용하지 않고, HE는 암호화를 사용한다.',
+       'MPC는 여러 참여자가 각자의 데이터를 비공개로 공동 연산하는 방식이고, HE는 단일 서버에서 암호화된 상태로 연산하는 방식이다.',
+       'MPC는 클라우드 환경에만 사용하고, HE는 에지 컴퓨팅에만 사용한다.',
+       'MPC와 HE는 동일한 기술로 사용 목적이 같다.'],
+   ans:1,
+   exp:'<strong>MPC</strong>: <em>여러 참여자</em>가 각자 데이터를 비공개로 유지하면서 공동으로 함수를 계산 (예: A·B·C 회사가 급여 데이터 공개 없이 평균 계산). <strong>동형암호(HE)</strong>: <em>단일 클라우드</em> 서버에서 사용자의 암호화된 데이터로 연산 수행 → 서버가 원본 데이터를 모름. 두 기술은 상호 보완적으로 함께 사용되기도 합니다.'},
+  {cat:'차분',diff:'mid',
+   q:'차분 프라이버시(Differential Privacy)에서 ε(엡실론)의 역할로 가장 적절한 것은?',
+   cs:['추가하는 노이즈의 정확한 값을 나타내는 상수','프라이버시 예산으로, 값이 작을수록 더 강한 프라이버시 보호를 제공하지만 데이터 정확도는 낮아진다.','암호화 강도를 나타내는 키 길이','k-익명성에서 동일 준식별자 그룹의 최소 크기'],
+   ans:1,
+   exp:'차분 프라이버시의 <strong>ε(엡실론, 프라이버시 예산)</strong>: 값이 <em>작을수록</em> → 추가하는 노이즈가 커짐 → 프라이버시 보호 강함 but 데이터 정확도(유용성) 낮음. 값이 <em>클수록</em> → 노이즈 작음 → 정확도 높음 but 프라이버시 보호 약함. 일반적으로 ε≤1이면 강한 보호, ε>10이면 약한 보호로 봅니다.'},
+  {cat:'차분',diff:'mid',
+   q:'연합학습(Federated Learning)의 핵심 프라이버시 보호 방식으로 가장 적절한 것은?',
+   cs:['모든 데이터를 중앙 서버로 전송하여 암호화된 상태에서 학습한다.',
+       '원시 데이터를 각 기기에 유지하고 모델 파라미터(기울기)만 중앙 서버로 전송하여 글로벌 모델을 학습한다.',
+       '각 기기에서 학습된 모델을 블록체인에 저장하여 분산 관리한다.',
+       '중앙 서버 없이 P2P 방식으로 직접 데이터를 교환하여 학습한다.'],
+   ans:1,
+   exp:'<strong>연합학습(FL)</strong>: <em>원시 데이터는 각 기기(스마트폰·병원 서버 등)에 보관</em>하고, 로컬 학습 후 <em>모델 파라미터(gradient, 기울기)만</em> 중앙 서버로 전송 → 중앙 서버가 집계하여 글로벌 모델 갱신 → 다시 배포. 원시 개인정보가 중앙 서버로 전송되지 않아 프라이버시 보호. 단, 기울기에서 원본 데이터 역추론(Gradient Inversion) 위험 존재.'},
+  {cat:'법제',diff:'mid',
+   q:'개인정보 영향평가(DPIA)의 국내 의무 대상으로 가장 적절한 것은?',
+   cs:['모든 공공기관이 어떠한 시스템이든 구축할 때 반드시 실시해야 한다.',
+       '5만 명 이상 정보주체의 민감정보·고유식별정보를 처리하는 시스템 구축·변경 시 등',
+       '민간 기업이 1만 명 이상의 고객 데이터를 처리할 때만 적용된다.',
+       'DPIA는 GDPR에만 있는 제도로 국내 개인정보보호법에는 없다.'],
+   ans:1,
+   exp:'<strong>DPIA(개인정보 영향평가, 개인정보보호법 §33)</strong> 국내 의무 대상: ①5만 명 이상 정보주체의 민감정보·고유식별정보 처리, ②공공기관이 대규모 개인정보 처리 시스템을 구축·변경하는 경우 등. GDPR(Article 35)에서는 고위험 처리 시 의무화됩니다. DPIA는 국내 개인정보보호법 제33조에도 명시되어 있습니다.'},
+  {cat:'법제',diff:'hard',
+   q:'GDPR의 "잊혀질 권리(Right to be Forgotten)"에 해당하는 조항과 내용으로 가장 적절한 것은?',
+   cs:['Article 20 — 개인정보를 기계 판독 가능한 형식으로 받을 권리','Article 17 — 정보주체가 자신의 개인정보 삭제를 요청할 수 있는 권리','Article 25 — 설계 단계부터 프라이버시를 내장하는 원칙','Article 35 — 고위험 처리 시 DPIA 의무화'],
+   ans:1,
+   exp:'<strong>GDPR Article 17 - Right to Erasure(잊혀질 권리)</strong>: 정보주체는 ①수집 목적 달성 후, ②동의 철회 시, ③처리에 반대 시 등 특정 조건에서 개인정보 <em>삭제를 요청</em>할 수 있습니다. <em>Article 20</em>: 데이터 이동권(Portability), <em>Article 25</em>: Privacy by Design, <em>Article 35</em>: DPIA.'},
+  // OX
+  {cat:'OX',diff:'easy',type:'ox',
+   q:'가명처리된 개인정보는 개인정보보호법상 개인정보로 보지 않아 규제가 적용되지 않는다.',
+   ans:false,
+   exp:'<strong>×</strong> — <strong>가명처리된 정보(가명정보)</strong>는 여전히 <em>개인정보로 분류</em>되며 개인정보보호법의 규제가 적용됩니다. 다만 과학적 연구·통계·공익목적으로는 정보주체 동의 없이 활용할 수 있는 <em>특례</em>가 인정됩니다. 개인정보가 아닌 것은 <strong>익명처리된 정보(익명정보)</strong>입니다.'},
+  {cat:'OX',diff:'mid',type:'ox',
+   q:'동형암호(Homomorphic Encryption)를 사용하면 데이터를 복호화하지 않고도 암호화된 상태에서 연산이 가능하다.',
+   ans:true,
+   exp:'<strong>○</strong> — <strong>동형암호</strong>의 핵심 특성: E(a) ⊕ E(b) = E(a ⊕ b) — 암호문에 직접 연산을 수행해도 복호화한 결과가 원문에 같은 연산을 수행한 결과와 동일합니다. 이를 통해 클라우드 서버가 원본 데이터를 보지 않고도 암호화된 데이터를 분석할 수 있습니다.'},
+  {cat:'OX',diff:'mid',type:'ox',
+   q:'차분 프라이버시에서 ε(엡실론) 값이 클수록 프라이버시 보호가 더 강하다.',
+   ans:false,
+   exp:'<strong>×</strong> — <strong>ε(엡실론, 프라이버시 예산)</strong>: 값이 <em>작을수록</em> 더 많은 노이즈를 추가 → <em>프라이버시 보호 강함</em>. 값이 클수록 노이즈가 작아 데이터 정확도는 높지만 프라이버시 보호는 약해집니다. ε→0이면 완벽한 프라이버시, ε→∞이면 보호 없음.'},
+  {cat:'OX',diff:'hard',type:'ox',
+   q:'연합학습(Federated Learning)은 원시 데이터를 중앙 서버로 전송하지 않으므로 모델 파라미터(기울기)에서도 개인정보가 역추론되는 위험은 없다.',
+   ans:false,
+   exp:'<strong>×</strong> — 연합학습에서 전송되는 <strong>모델 파라미터(gradient, 기울기)</strong>에서 원본 훈련 데이터를 역추론하는 <em>Gradient Inversion 공격</em>이 가능합니다. 이를 해결하기 위해 <strong>차분 프라이버시(DP)</strong>를 기울기에 적용하거나, <strong>보안 집계(Secure Aggregation, SecAgg)</strong>를 사용하여 개별 기울기를 서버가 볼 수 없게 합니다.'},
+  {cat:'OX',diff:'mid',type:'ox',
+   q:'GDPR Article 20의 데이터 이동권(Right to Data Portability)에 따라 정보주체는 자신의 개인정보를 기계 판독 가능한 형식으로 받을 수 있다.',
+   ans:true,
+   exp:'<strong>○</strong> — <strong>GDPR Article 20 (데이터 이동권)</strong>: 정보주체는 자신이 제공한 개인정보를 처리자로부터 <em>구조화된 기계 판독 가능한 형식(JSON, CSV 등)</em>으로 받을 수 있으며, 다른 처리자에게 직접 이전을 요청할 수 있습니다. 국내에서는 신용정보법 개정으로 금융 마이데이터 서비스에서 이 권리가 구현되었습니다.'},
+];
+
+let answered=0,correct=0;
+function renderQ(f){
+  const data=f==='all'?QA:QA.filter(q=>q.cat===f);
+  const list=document.getElementById('ql');list.innerHTML='';
+  answered=0;correct=0;upS();
+  const CATC={'비식별':'ty','암호':'tb','차분':'tg','법제':'tp','OX':'to'};
+  const DLC={'easy':'easy 쉬움','mid':'mid 보통','hard':'hard 어려움'};
+  const NL=['①','②','③','④'];
+  if(!data.length){list.innerHTML='<div style="text-align:center;padding:40px;color:var(--mu)">문제 없음</div>';return;}
+  data.forEach((q,i)=>{
+    const gi=QA.indexOf(q);
+    const el=document.createElement('div');el.className='qa';
+    const tc=CATC[q.cat]||'tg';
+    const [dc,dn]=(DLC[q.diff]||'mid 보통').split(' ');
+    if(q.type==='ox'){
+      el.innerHTML=`<div class="qa-hd" onclick="this.closest('.qa').classList.toggle('open')"><div><div class="qa-meta"><span class="qn">Q${String(i+1).padStart(2,'0')}</span><span class="tag ${tc}">${q.cat}</span><span class="diff ${dc}">${dn}</span><span class="tag tp">O/X</span></div><div class="qq">${q.q}</div></div><span class="tgl">▾</span></div>
+      <div class="qa-bd"><div class="ox-wr"><button class="ox" onclick="pickOX(this,true,${gi})">⭕ 옳다</button><button class="ox" onclick="pickOX(this,false,${gi})">❌ 틀리다</button></div><div class="exp" id="ex-${gi}"><div class="exp-t">💡 해설</div>${q.exp}</div></div>`;
+    } else {
+      el.innerHTML=`<div class="qa-hd" onclick="this.closest('.qa').classList.toggle('open')"><div><div class="qa-meta"><span class="qn">Q${String(i+1).padStart(2,'0')}</span><span class="tag ${tc}">${q.cat}</span><span class="diff ${dc}">${dn}</span></div><div class="qq">${q.q}</div></div><span class="tgl">▾</span></div>
+      <div class="qa-bd"><div class="chs">${q.cs.map((c,ci)=>`<div class="ch" data-ci="${ci}" onclick="pickCh(this,${gi})"><span class="cnum">${NL[ci]}</span><span>${c}</span></div>`).join('')}</div><div class="exp" id="ex-${gi}"><div class="exp-t">💡 해설</div>${q.exp}</div></div>`;
+    }
+    list.appendChild(el);
+  });
+}
+function pickCh(el,gi){
+  const bd=el.closest('.qa-bd');if(bd.querySelector('.ok,.ng'))return;
+  const q=QA[gi];
+  bd.querySelectorAll('.ch').forEach((c,i)=>{c.classList.add('lk');if(i===q.ans)c.classList.add('ok');else if(i===parseInt(el.dataset.ci))c.classList.add('ng');});
+  document.getElementById('ex-'+gi).classList.add('show');
+  answered++;if(parseInt(el.dataset.ci)===q.ans)correct++;upS();
+}
+function pickOX(btn,val,gi){
+  const bd=btn.closest('.qa-bd');if(bd.querySelector('.so,.sx'))return;
+  const q=QA[gi];
+  bd.querySelectorAll('.ox').forEach(b=>b.classList.add('lk'));
+  btn.classList.add(val?'so':'sx');
+  if(val!==q.ans){btn.style.opacity='.5';bd.querySelectorAll('.ox')[val?1:0].classList.add(q.ans?'so':'sx');}
+  document.getElementById('ex-'+gi).classList.add('show');
+  answered++;if(val===q.ans)correct++;upS();
+}
+function upS(){document.getElementById('sc').textContent=correct;document.getElementById('st').textContent=answered;}
+document.getElementById('fbar').addEventListener('click',e=>{
+  const b=e.target.closest('.fb');if(!b)return;
+  document.querySelectorAll('.fb').forEach(x=>x.classList.remove('on'));b.classList.add('on');renderQ(b.dataset.f);
+});
+renderQ('all');
+</script>
+</body>
+</html>

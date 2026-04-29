@@ -1,0 +1,713 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;900&family=JetBrains+Mono:wght@400;700&display=swap');
+:root{--bg:#04080f;--s1:#070e1c;--s2:#0b1428;--s3:#101c34;--bdr:#1e3560;--a1:#818cf8;--a2:#34d399;--a3:#fbbf24;--a4:#f87171;--a5:#38bdf8;--a6:#fb923c;--txt:#e2e8f0;--mu:#64748b;}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Noto Sans KR',sans-serif;background:var(--bg);color:var(--txt);min-height:100vh;}
+.hdr{padding:20px 24px 14px;background:linear-gradient(150deg,#04080f,#09102a,#04080f);border-bottom:1px solid var(--bdr);}
+.hdr-r{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:6px;}
+.pill{padding:3px 10px;border-radius:20px;font-size:10px;font-weight:700;}
+.p1{background:linear-gradient(135deg,#1e1b4b,var(--a1));color:#fff;}
+.p2{background:rgba(52,211,153,.15);color:var(--a2);border:1px solid rgba(52,211,153,.3);}
+.p3{background:rgba(251,191,36,.15);color:var(--a3);border:1px solid rgba(251,191,36,.3);}
+h1{font-size:18px;font-weight:900;}
+.h1g{background:linear-gradient(90deg,var(--a1),var(--a5),var(--a2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.hdr p{color:var(--mu);font-size:11.5px;margin-top:3px;}
+.tabs{display:flex;padding:0 24px;background:var(--s1);border-bottom:1px solid var(--bdr);overflow-x:auto;scrollbar-width:none;}
+.tabs::-webkit-scrollbar{display:none;}
+.tab{padding:10px 13px;font-size:11.5px;font-weight:600;color:var(--mu);cursor:pointer;border-bottom:2px solid transparent;white-space:nowrap;transition:all .2s;background:none;border-top:none;border-left:none;border-right:none;font-family:'Noto Sans KR',sans-serif;}
+.tab.on{color:var(--a1);border-bottom-color:var(--a1);}
+.wrap{padding:18px 24px;max-width:960px;margin:0 auto;}
+.pnl{display:none;}.pnl.on{display:block;}
+.card{background:var(--s1);border:1px solid var(--bdr);border-radius:11px;padding:16px;margin-bottom:12px;}
+.card-h{display:flex;align-items:center;gap:9px;margin-bottom:12px;}
+.ico{width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0;}
+.ip{background:rgba(129,140,248,.15);}.ig{background:rgba(52,211,153,.15);}.iy{background:rgba(251,191,36,.15);}.ir{background:rgba(248,113,113,.15);}.ib{background:rgba(56,189,248,.15);}.io{background:rgba(251,146,60,.15);}
+.card h3{font-size:13.5px;font-weight:700;}
+.tag{display:inline-block;padding:2px 7px;border-radius:4px;font-size:9.5px;font-weight:600;margin:2px 2px 2px 0;}
+.tp{background:rgba(129,140,248,.12);color:var(--a1);border:1px solid rgba(129,140,248,.25);}
+.tg{background:rgba(52,211,153,.12);color:var(--a2);border:1px solid rgba(52,211,153,.25);}
+.ty{background:rgba(251,191,36,.12);color:var(--a3);border:1px solid rgba(251,191,36,.25);}
+.tr{background:rgba(248,113,113,.12);color:var(--a4);border:1px solid rgba(248,113,113,.25);}
+.tb{background:rgba(56,189,248,.12);color:var(--a5);border:1px solid rgba(56,189,248,.25);}
+.to{background:rgba(251,146,60,.12);color:var(--a6);border:1px solid rgba(251,146,60,.25);}
+table{width:100%;border-collapse:collapse;font-size:12px;}
+th{background:var(--s2);color:var(--mu);font-weight:700;padding:7px 11px;text-align:left;font-size:9.5px;text-transform:uppercase;letter-spacing:.5px;border-bottom:1px solid var(--bdr);}
+td{padding:8px 11px;border-bottom:1px solid rgba(30,53,96,.5);vertical-align:top;line-height:1.55;}
+tr:last-child td{border-bottom:none;}
+tr:hover td{background:rgba(255,255,255,.02);}
+td strong{color:var(--a3);}
+ul.il{list-style:none;display:flex;flex-direction:column;gap:6px;}
+ul.il li{font-size:12px;padding-left:15px;position:relative;line-height:1.5;}
+ul.il li::before{content:'▸';position:absolute;left:0;color:var(--a1);font-size:9.5px;top:3px;}
+ul.il li strong{color:var(--a3);}
+ul.il li em{color:var(--a2);font-style:normal;}
+.memo{background:linear-gradient(135deg,rgba(129,140,248,.07),rgba(52,211,153,.07));border:1px solid rgba(129,140,248,.22);border-left:3px solid var(--a1);border-radius:7px;padding:9px 13px;font-size:12px;font-weight:600;color:var(--a1);margin:9px 0;}
+.memo::before{content:'🎯 핵심 암기 │ ';color:var(--mu);font-weight:400;}
+.warn{background:rgba(248,113,113,.07);border:1px solid rgba(248,113,113,.25);border-left:3px solid var(--a4);border-radius:7px;padding:9px 13px;font-size:12px;font-weight:600;color:var(--a4);margin:9px 0;}
+.warn::before{content:'⚠️ 함정 포인트 │ ';color:var(--mu);font-weight:400;}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px;}
+@media(max-width:580px){.g2{grid-template-columns:1fr;}}
+/* schema visual */
+.schema-box{background:var(--s2);border:1px solid var(--bdr);border-radius:9px;padding:13px;margin:10px 0;}
+.fact-tbl{background:rgba(129,140,248,.13);border:2px solid rgba(129,140,248,.5);border-radius:8px;padding:10px 14px;text-align:center;font-weight:900;font-size:13px;color:var(--a1);}
+.dim-tbl{background:rgba(52,211,153,.1);border:1px solid rgba(52,211,153,.35);border-radius:7px;padding:8px 12px;text-align:center;font-weight:700;font-size:11.5px;color:var(--a2);}
+.dim-tbl2{background:rgba(251,191,36,.08);border:1px solid rgba(251,191,36,.3);border-radius:6px;padding:7px 10px;text-align:center;font-weight:600;font-size:11px;color:var(--a3);}
+.conn{color:var(--mu);font-size:14px;display:flex;align-items:center;justify-content:center;}
+.grid-star{display:grid;grid-template-columns:1fr auto 1fr;grid-template-rows:auto auto auto;gap:8px;align-items:center;}
+/* olap ops */
+.olap-grid{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin:10px 0;}
+.olap-card{background:var(--s2);border:1px solid var(--bdr);border-radius:8px;padding:12px;}
+.olap-ico{font-size:20px;margin-bottom:5px;}
+.olap-name{font-size:13px;font-weight:900;margin-bottom:4px;}
+.olap-sub{font-size:11px;color:var(--mu);line-height:1.4;}
+/* acc */
+.acc{background:var(--s2);border:1px solid var(--bdr);border-radius:9px;margin-bottom:8px;overflow:hidden;}
+.acc-h{display:flex;justify-content:space-between;align-items:center;padding:10px 14px;cursor:pointer;user-select:none;}
+.acc-h:hover{background:rgba(255,255,255,.02);}
+.acc-title{font-size:12.5px;font-weight:800;flex:1;}
+.acc-tgl{color:var(--mu);transition:transform .2s;font-size:14px;flex-shrink:0;margin-left:8px;}
+.acc.open .acc-tgl{transform:rotate(180deg);}
+.acc-body{display:none;border-top:1px solid var(--bdr);padding:12px 14px;background:var(--s3);font-size:12px;line-height:1.65;}
+.acc.open .acc-body{display:block;}
+.acc-body strong{color:var(--a3);}
+.acc-body em{color:var(--a2);font-style:normal;}
+/* qa */
+.qa{background:var(--s1);border:1px solid var(--bdr);border-radius:9px;margin-bottom:10px;overflow:hidden;}
+.qa:hover{border-color:rgba(129,140,248,.25);}
+.qa-hd{padding:12px 16px;cursor:pointer;display:flex;justify-content:space-between;align-items:flex-start;gap:9px;user-select:none;}
+.qa-meta{display:flex;align-items:center;gap:5px;margin-bottom:4px;flex-wrap:wrap;}
+.qn{font-family:'JetBrains Mono',monospace;font-size:9.5px;font-weight:700;color:var(--mu);}
+.qq{font-size:12.5px;font-weight:600;line-height:1.5;}
+.tgl{color:var(--mu);font-size:15px;flex-shrink:0;transition:transform .2s;}
+.qa.open .tgl{transform:rotate(180deg);}
+.qa-bd{display:none;border-top:1px solid var(--bdr);padding:12px 16px;background:var(--s2);}
+.qa.open .qa-bd{display:block;}
+.chs{display:flex;flex-direction:column;gap:6px;margin-bottom:10px;}
+.ch{display:flex;align-items:flex-start;gap:9px;padding:8px 12px;border-radius:6px;border:1px solid var(--bdr);font-size:12px;cursor:pointer;background:var(--s1);line-height:1.45;transition:all .15s;}
+.ch:hover:not(.lk){border-color:rgba(129,140,248,.3);background:rgba(129,140,248,.04);}
+.ch.ok{border-color:var(--a2);background:rgba(52,211,153,.1);color:var(--a2);}
+.ch.ng{border-color:var(--a4);background:rgba(248,113,113,.08);color:var(--a4);opacity:.7;}
+.ch.lk{cursor:default;}
+.cnum{font-family:'JetBrains Mono',monospace;font-weight:700;font-size:10.5px;flex-shrink:0;margin-top:1px;color:var(--mu);}
+.ch.ok .cnum{color:var(--a2);}.ch.ng .cnum{color:var(--a4);}
+.exp{background:rgba(129,140,248,.05);border:1px solid rgba(129,140,248,.18);border-radius:7px;padding:11px 13px;font-size:12px;line-height:1.6;display:none;}
+.exp.show{display:block;}
+.exp-t{font-size:9.5px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--a1);margin-bottom:5px;}
+.exp strong{color:var(--a3);}
+.exp em{color:var(--a2);font-style:normal;}
+.ox-wr{display:flex;gap:8px;margin-bottom:10px;}
+.ox{flex:1;padding:10px;border-radius:7px;border:1px solid var(--bdr);font-size:18px;cursor:pointer;background:var(--s1);transition:all .15s;font-family:'Noto Sans KR',sans-serif;color:var(--txt);}
+.ox:hover:not(.lk){transform:scale(1.02);}
+.ox.so{border-color:var(--a2);background:rgba(52,211,153,.15);}
+.ox.sx{border-color:var(--a4);background:rgba(248,113,113,.1);}
+.ox.lk{cursor:default;}
+.diff{display:inline-block;padding:2px 6px;border-radius:9px;font-size:8.5px;font-weight:700;}
+.easy{background:rgba(52,211,153,.2);color:var(--a2);}
+.mid{background:rgba(251,191,36,.2);color:var(--a3);}
+.hard{background:rgba(248,113,113,.2);color:var(--a4);}
+.fb-wr{display:flex;gap:5px;flex-wrap:wrap;margin-bottom:12px;}
+.fb{padding:4px 11px;border-radius:18px;border:1px solid var(--bdr);font-size:10.5px;font-weight:600;cursor:pointer;background:var(--s2);color:var(--mu);transition:all .15s;font-family:'Noto Sans KR',sans-serif;}
+.fb.on{background:rgba(129,140,248,.15);color:var(--a1);border-color:var(--a1);}
+.sc-b{background:var(--s2);border:1px solid var(--bdr);border-radius:7px;padding:4px 12px;font-size:11.5px;color:var(--mu);}
+.sc-b span{color:var(--a1);font-weight:700;}
+</style>
+</head>
+<body>
+<div class="hdr">
+  <div class="hdr-r">
+    <span class="pill p1">DW · OLAP · 정보분석</span>
+    <span class="pill p2">데이터 웨어하우스 · 다차원분석</span>
+    <span class="pill p3">감리사 핵심 출제</span>
+  </div>
+  <h1><span class="h1g">DW · OLAP · 정보분석 완전 정리</span></h1>
+  <p>DW 아키텍처 · ETL · 스타·눈꽃·갤럭시 스키마 · OLAP 연산 · 데이터 마트 · 데이터 마이닝</p>
+</div>
+<div class="tabs">
+  <button class="tab on" data-p="p1">🏛️ DW 개요·아키텍처</button>
+  <button class="tab" data-p="p2">📐 스키마·모델링</button>
+  <button class="tab" data-p="p3">⚙️ ETL 프로세스</button>
+  <button class="tab" data-p="p4">📊 OLAP·다차원 분석</button>
+  <button class="tab" data-p="p5">🔍 데이터 마이닝</button>
+  <button class="tab" data-p="p6">❓ 예상문제</button>
+</div>
+<div class="wrap">
+
+<!-- P1: DW 개요 -->
+<div class="pnl on" id="p1">
+  <div class="card">
+    <div class="card-h"><div class="ico ip">🏛️</div><h3>데이터 웨어하우스 (Data Warehouse) 정의 ⭐</h3></div>
+    <div style="background:var(--s2);border:1px solid rgba(129,140,248,.28);border-radius:9px;padding:13px;margin-bottom:11px;font-size:12.5px;line-height:1.85;">
+      <strong style="color:var(--a1)">데이터 웨어하우스(DW)</strong>: 조직의 의사결정 지원을 위해 <em style="color:var(--a3);font-style:normal;">다양한 소스에서 통합·정제된 대용량 데이터</em>를 저장하는 주제 지향적·통합적·비휘발적·시간적 데이터베이스 (W. H. Inmon 정의, 1990)
+    </div>
+    <div class="g2">
+      <div>
+        <p style="font-size:11.5px;font-weight:800;color:var(--a1);margin-bottom:7px;">DW 4대 특성 (Inmon) ⭐</p>
+        <table>
+          <thead><tr><th>특성</th><th>설명</th></tr></thead>
+          <tbody>
+            <tr><td><strong>주제 지향적 (Subject-Oriented)</strong></td><td>업무 기능이 아닌 <em>분석 주제(고객·제품·판매)</em> 중심으로 구성</td></tr>
+            <tr><td><strong>통합적 (Integrated)</strong></td><td>이기종 소스 데이터를 일관된 형식으로 통합</td></tr>
+            <tr><td><strong>비휘발적 (Non-Volatile) ⭐</strong></td><td>한 번 적재된 데이터는 <em>삭제·수정하지 않음</em> — 조회·추가만</td></tr>
+            <tr><td><strong>시간적 (Time-Variant) ⭐</strong></td><td>시점 정보를 포함하여 <em>역사적 데이터</em> 보관 (5~10년)</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div>
+        <p style="font-size:11.5px;font-weight:800;color:var(--a3);margin-bottom:7px;">OLTP vs DW(OLAP) 비교 ⭐</p>
+        <table>
+          <thead><tr><th>항목</th><th>OLTP</th><th>DW(OLAP)</th></tr></thead>
+          <tbody>
+            <tr><td><strong>목적</strong></td><td>트랜잭션 처리</td><td>분석·의사결정</td></tr>
+            <tr><td><strong>데이터</strong></td><td>현재 데이터</td><td>역사적 데이터</td></tr>
+            <tr><td><strong>쿼리</strong></td><td>단순·짧음</td><td>복잡·집계</td></tr>
+            <tr><td><strong>갱신</strong></td><td>빈번한 UPDATE</td><td>주기적 LOAD (비휘발)</td></tr>
+            <tr><td><strong>정규화</strong></td><td>높음 (3NF)</td><td>낮음 (역정규화)</td></tr>
+            <tr><td><strong>응답시간</strong></td><td>밀리초</td><td>초~분</td></tr>
+            <tr><td><strong>사용자</strong></td><td>운영 직원</td><td>분석가·경영진</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div class="memo">DW 4특성: 주제지향·통합·비휘발(삭제안됨)·시간적(역사데이터) / OLTP=현재·트랜잭션 / DW=역사·분석·비정규화</div>
+  </div>
+
+  <div class="card">
+    <div class="card-h"><div class="ico ib">🏗️</div><h3>DW 아키텍처 ⭐</h3></div>
+    <div style="display:flex;gap:6px;align-items:center;overflow-x:auto;margin:10px 0;padding-bottom:4px;flex-wrap:wrap;">
+      <div style="background:rgba(248,113,113,.1);border:1px solid rgba(248,113,113,.35);border-radius:7px;padding:10px 12px;text-align:center;min-width:100px;">
+        <div style="font-size:16px;margin-bottom:4px;">🗃️</div>
+        <div style="font-size:11px;font-weight:800;color:var(--a4);">소스 시스템</div>
+        <div style="font-size:10px;color:var(--mu);margin-top:2px;">ERP·CRM·SCM<br>외부데이터·파일</div>
+      </div>
+      <div style="color:var(--mu);font-size:18px;flex-shrink:0;">→</div>
+      <div style="background:rgba(251,191,36,.1);border:1px solid rgba(251,191,36,.35);border-radius:7px;padding:10px 12px;text-align:center;min-width:100px;">
+        <div style="font-size:16px;margin-bottom:4px;">⚙️</div>
+        <div style="font-size:11px;font-weight:800;color:var(--a3);">ETL 레이어</div>
+        <div style="font-size:10px;color:var(--mu);margin-top:2px;">추출·변환·적재<br>스테이징 영역</div>
+      </div>
+      <div style="color:var(--mu);font-size:18px;flex-shrink:0;">→</div>
+      <div style="background:rgba(129,140,248,.12);border:2px solid rgba(129,140,248,.45);border-radius:7px;padding:10px 12px;text-align:center;min-width:110px;">
+        <div style="font-size:16px;margin-bottom:4px;">🏛️</div>
+        <div style="font-size:11px;font-weight:800;color:var(--a1);">데이터 웨어하우스</div>
+        <div style="font-size:10px;color:var(--mu);margin-top:2px;">통합·역사 데이터<br>스타·눈꽃 스키마</div>
+      </div>
+      <div style="color:var(--mu);font-size:18px;flex-shrink:0;">→</div>
+      <div style="background:rgba(52,211,153,.1);border:1px solid rgba(52,211,153,.35);border-radius:7px;padding:10px 12px;text-align:center;min-width:100px;">
+        <div style="font-size:16px;margin-bottom:4px;">📦</div>
+        <div style="font-size:11px;font-weight:800;color:var(--a2);">데이터 마트</div>
+        <div style="font-size:10px;color:var(--mu);margin-top:2px;">부서별 특화<br>하위 집합</div>
+      </div>
+      <div style="color:var(--mu);font-size:18px;flex-shrink:0;">→</div>
+      <div style="background:rgba(56,189,248,.1);border:1px solid rgba(56,189,248,.35);border-radius:7px;padding:10px 12px;text-align:center;min-width:100px;">
+        <div style="font-size:16px;margin-bottom:4px;">📊</div>
+        <div style="font-size:11px;font-weight:800;color:var(--a5);">분석 도구</div>
+        <div style="font-size:10px;color:var(--mu);margin-top:2px;">OLAP·데이터마이닝<br>BI·대시보드</div>
+      </div>
+    </div>
+
+    <div class="acc open" onclick="this.classList.toggle('open')">
+      <div class="acc-h"><div class="acc-title" style="color:var(--a2);">데이터 마트 (Data Mart) ⭐</div><div class="acc-tgl">▾</div></div>
+      <div class="acc-body">
+        <ul class="il">
+          <li><strong>정의:</strong> DW의 <em>부분 집합</em> — 특정 부서·주제·사용자 그룹을 위한 소규모 DW</li>
+          <li><strong>종속 데이터 마트:</strong> DW에서 데이터를 가져오는 방식 (Top-down — Bill Inmon 방식)</li>
+          <li><strong>독립 데이터 마트:</strong> DW 없이 직접 소스에서 구성 (Bottom-up — Ralph Kimball 방식)</li>
+          <li><strong>장점:</strong> 구축 빠름·비용 적음·특정 부서 요구 신속 대응</li>
+          <li><strong>단점:</strong> 독립 마트 증가 시 데이터 불일치·사일로(Silo) 문제</li>
+          <li><strong>예시:</strong> 영업 마트, 재무 마트, 인사 마트 (전사 DW의 하위)</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="acc" onclick="this.classList.toggle('open')">
+      <div class="acc-h"><div class="acc-title" style="color:var(--a3);">ODS (Operational Data Store) & 데이터 레이크</div><div class="acc-tgl">▾</div></div>
+      <div class="acc-body">
+        <table>
+          <thead><tr><th>구분</th><th>ODS</th><th>DW</th><th>데이터 레이크</th></tr></thead>
+          <tbody>
+            <tr><td><strong>데이터</strong></td><td>현재·통합 운영 데이터</td><td>역사·집계 데이터</td><td>원시·모든 형태</td></tr>
+            <tr><td><strong>갱신</strong></td><td>실시간·잦은 갱신</td><td>주기적 배치 적재</td><td>스트리밍·배치 모두</td></tr>
+            <tr><td><strong>스키마</strong></td><td>Schema-on-Write</td><td>Schema-on-Write</td><td><strong>Schema-on-Read</strong></td></tr>
+            <tr><td><strong>목적</strong></td><td>운영 보고·단기 분석</td><td>전략적 의사결정</td><td>ML·탐색 분석</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div class="memo">DW: 소스→ETL→DW→데이터마트→OLAP/마이닝 / 데이터마트=DW 부분집합 / ODS=현재운영데이터·잦은갱신</div>
+  </div>
+</div>
+
+<!-- P2: 스키마 모델링 -->
+<div class="pnl" id="p2">
+  <div class="card">
+    <div class="card-h"><div class="ico iy">📐</div><h3>DW 스키마 설계 3종 ⭐</h3></div>
+
+    <div class="acc open" onclick="this.classList.toggle('open')">
+      <div class="acc-h"><div class="acc-title" style="color:var(--a1);">① 스타 스키마 (Star Schema) ⭐ — DW 기본</div><div class="acc-tgl">▾</div></div>
+      <div class="acc-body">
+        <div style="display:grid;grid-template-columns:1fr auto 1fr;grid-template-rows:auto auto auto;gap:8px;align-items:center;margin-bottom:10px;">
+          <div></div>
+          <div class="dim-tbl">시간 차원<br><small style="color:var(--mu);">날짜·월·분기·연도</small></div>
+          <div></div>
+          <div class="dim-tbl">고객 차원<br><small style="color:var(--mu);">고객ID·이름·지역</small></div>
+          <div style="display:flex;flex-direction:column;align-items:center;gap:6px;">
+            <div style="font-size:11px;color:var(--mu);">←FK</div>
+            <div class="fact-tbl">판매 사실 테이블<br><small style="color:var(--a5);font-size:10px;">매출액·수량·비용<br>(집계 수치 데이터)</small></div>
+            <div style="font-size:11px;color:var(--mu);">FK→</div>
+          </div>
+          <div class="dim-tbl">제품 차원<br><small style="color:var(--mu);">제품ID·이름·카테고리</small></div>
+          <div></div>
+          <div class="dim-tbl">지역 차원<br><small style="color:var(--mu);">지역ID·도시·국가</small></div>
+          <div></div>
+        </div>
+        <ul class="il">
+          <li><strong>구조:</strong> 중심의 <em>사실 테이블(Fact Table)</em> + 주변의 <em>차원 테이블(Dimension Table)</em> — 별 모양</li>
+          <li><strong>사실 테이블:</strong> 측정값(매출·수량·비용 등 수치) + 차원 FK — 행이 많고 컬럼은 적음</li>
+          <li><strong>차원 테이블:</strong> 분석 관점(시간·고객·제품·지역) + 상세 속성 — 역정규화됨</li>
+          <li><strong>장점:</strong> 쿼리 단순·빠름 / JOIN 횟수 적음 / 이해 용이</li>
+          <li><strong>단점:</strong> 차원 테이블 중복 데이터 많음 / 데이터 일관성 문제</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="acc" onclick="this.classList.toggle('open')">
+      <div class="acc-h"><div class="acc-title" style="color:var(--a2);">② 눈꽃 스키마 (Snowflake Schema) ⭐</div><div class="acc-tgl">▾</div></div>
+      <div class="acc-body">
+        <div style="display:grid;grid-template-columns:1fr auto 1fr;gap:8px;align-items:center;margin-bottom:10px;">
+          <div style="display:flex;flex-direction:column;gap:6px;align-items:flex-end;">
+            <div class="dim-tbl2">카테고리</div>
+            <div class="dim-tbl">제품 차원 ←</div>
+          </div>
+          <div class="fact-tbl" style="min-width:100px;">판매<br>사실 테이블</div>
+          <div style="display:flex;flex-direction:column;gap:6px;">
+            <div class="dim-tbl">→ 고객 차원</div>
+            <div class="dim-tbl2" style="margin-left:16px;">지역</div>
+            <div class="dim-tbl2" style="margin-left:32px;">도시</div>
+          </div>
+        </div>
+        <ul class="il">
+          <li><strong>구조:</strong> 스타 스키마의 <em>차원 테이블을 정규화</em>하여 계층적으로 분리 — 눈꽃 모양</li>
+          <li><strong>장점:</strong> 중복 제거·저장 공간 절약 / 데이터 일관성 향상</li>
+          <li><strong>단점:</strong> JOIN 횟수 증가 → 쿼리 복잡·성능 저하</li>
+          <li><strong>vs 스타 스키마:</strong> 스타=역정규화·단순 / 눈꽃=정규화·복잡 / DW에선 보통 스타 선호</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="acc" onclick="this.classList.toggle('open')">
+      <div class="acc-h"><div class="acc-title" style="color:var(--a3);">③ 갤럭시 스키마 (Galaxy Schema / Fact Constellation)</div><div class="acc-tgl">▾</div></div>
+      <div class="acc-body">
+        <ul class="il">
+          <li><strong>구조:</strong> <em>여러 사실 테이블</em>이 차원 테이블을 <em>공유</em>하는 복합 스키마 — 사실 집단(Fact Constellation)</li>
+          <li><strong>예시:</strong> 판매 사실 테이블 + 재고 사실 테이블 → 제품·시간 차원 공유</li>
+          <li><strong>공유 차원:</strong> 두 사실 테이블에서 동일한 차원 테이블 참조 → 통합 분석 가능</li>
+          <li><strong>장점:</strong> 여러 비즈니스 프로세스 통합 분석</li>
+          <li><strong>단점:</strong> 설계·관리 복잡성 증가</li>
+        </ul>
+      </div>
+    </div>
+
+    <table style="margin-top:10px;">
+      <thead><tr><th>스키마</th><th>정규화</th><th>JOIN 수</th><th>성능</th><th>공간</th><th>DW 선호도</th></tr></thead>
+      <tbody>
+        <tr><td><strong>스타 ⭐</strong></td><td>역정규화 (낮음)</td><td>적음</td><td>빠름</td><td>많음</td><td><strong>높음 (기본)</strong></td></tr>
+        <tr><td><strong>눈꽃</strong></td><td>정규화 (높음)</td><td>많음</td><td>느림</td><td>적음</td><td>중간</td></tr>
+        <tr><td><strong>갤럭시</strong></td><td>혼합</td><td>많음</td><td>중간</td><td>중간</td><td>복잡한 환경</td></tr>
+      </tbody>
+    </table>
+    <div class="memo">스타=사실테이블(중심)+차원테이블(주변)·역정규화·빠름 / 눈꽃=차원정규화·JOIN多·느림 / 갤럭시=여러사실테이블·차원공유</div>
+  </div>
+
+  <div class="card">
+    <div class="card-h"><div class="ico ig">🔑</div><h3>사실 테이블 & 차원 테이블 핵심 ⭐</h3></div>
+    <div class="g2">
+      <div>
+        <p style="font-size:11.5px;font-weight:800;color:var(--a1);margin-bottom:7px;">사실 테이블 (Fact Table)</p>
+        <ul class="il">
+          <li><strong>측정값(Measure):</strong> 분석 대상 수치 — 매출·수량·비용·이익</li>
+          <li><strong>가산적(Additive):</strong> 모든 차원에서 합산 가능 (매출액)</li>
+          <li><strong>반가산적(Semi-Additive):</strong> 일부 차원에서만 합산 (재고 수량은 시간 차원 합산 불가)</li>
+          <li><strong>비가산적(Non-Additive):</strong> 어떤 차원도 합산 불가 (비율·퍼센트)</li>
+          <li><strong>Degenerate Dimension:</strong> 차원 테이블 없이 사실 테이블에 있는 차원 키 (주문번호)</li>
+          <li><strong>팩트리스 사실 테이블:</strong> 측정값 없이 이벤트 발생 사실만 기록 (출석·커버리지)</li>
+        </ul>
+      </div>
+      <div>
+        <p style="font-size:11.5px;font-weight:800;color:var(--a3);margin-bottom:7px;">차원 테이블 (Dimension Table)</p>
+        <ul class="il">
+          <li><strong>분석 관점:</strong> 사실을 분류·필터·그룹화하는 기준</li>
+          <li><strong>서로게이트 키(Surrogate Key):</strong> DW 내부에서 생성한 인조 PK (소스 키와 독립)</li>
+          <li><strong>SCD (Slowly Changing Dimension) ⭐:</strong> 시간에 따라 변하는 차원 처리</li>
+          <li>SCD Type 1: 덮어쓰기 (이력 없음)</li>
+          <li>SCD Type 2: 새 행 추가 (이력 유지 — 가장 일반적)</li>
+          <li>SCD Type 3: 이전값 컬럼 추가 (제한적 이력)</li>
+        </ul>
+      </div>
+    </div>
+    <div class="memo">사실테이블=수치(측정값)+차원FK / 차원테이블=분석관점 / SCD Type2=새행추가로 이력유지(가장 일반적) / 서로게이트키=DW 인조PK</div>
+  </div>
+</div>
+
+<!-- P3: ETL -->
+<div class="pnl" id="p3">
+  <div class="card">
+    <div class="card-h"><div class="ico iy">⚙️</div><h3>ETL 프로세스 ⭐ (Extract · Transform · Load)</h3></div>
+    <div style="display:flex;gap:8px;margin:10px 0;flex-wrap:wrap;">
+      <div style="flex:1;min-width:150px;background:rgba(248,113,113,.08);border:1px solid rgba(248,113,113,.3);border-radius:8px;padding:12px;">
+        <div style="font-size:22px;margin-bottom:5px;">📤</div>
+        <div style="font-size:13px;font-weight:900;color:var(--a4);margin-bottom:6px;">① Extract (추출)</div>
+        <ul class="il">
+          <li>소스 시스템(OLTP·파일·외부)에서 <em>원시 데이터 추출</em></li>
+          <li>전체 추출(Full) / 증분 추출(Incremental)</li>
+          <li>CDC(Change Data Capture): 변경된 데이터만 추출</li>
+          <li>스테이징 영역에 임시 저장</li>
+        </ul>
+      </div>
+      <div style="display:flex;align-items:center;color:var(--mu);font-size:22px;padding:0 2px;">→</div>
+      <div style="flex:1;min-width:150px;background:rgba(251,191,36,.08);border:1px solid rgba(251,191,36,.3);border-radius:8px;padding:12px;">
+        <div style="font-size:22px;margin-bottom:5px;">⚙️</div>
+        <div style="font-size:13px;font-weight:900;color:var(--a3);margin-bottom:6px;">② Transform (변환) ⭐</div>
+        <ul class="il">
+          <li>데이터 정제(Cleansing): 오류·중복 제거</li>
+          <li>표준화: 코드·날짜·단위 통일</li>
+          <li>집계·계산: 파생 지표 생성</li>
+          <li>조인·병합: 여러 소스 통합</li>
+          <li>비즈니스 규칙 적용</li>
+        </ul>
+      </div>
+      <div style="display:flex;align-items:center;color:var(--mu);font-size:22px;padding:0 2px;">→</div>
+      <div style="flex:1;min-width:150px;background:rgba(129,140,248,.08);border:1px solid rgba(129,140,248,.3);border-radius:8px;padding:12px;">
+        <div style="font-size:22px;margin-bottom:5px;">📥</div>
+        <div style="font-size:13px;font-weight:900;color:var(--a1);margin-bottom:6px;">③ Load (적재)</div>
+        <ul class="il">
+          <li>DW·데이터 마트에 데이터 적재</li>
+          <li>전체 적재(Full Refresh) vs 증분 적재</li>
+          <li>Upsert(Insert+Update) 처리</li>
+          <li>서로게이트 키 생성</li>
+          <li>인덱스 재구성</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="acc" onclick="this.classList.toggle('open')">
+      <div class="acc-h"><div class="acc-title" style="color:var(--a5);">ELT vs ETL · 데이터 품질 ⭐</div><div class="acc-tgl">▾</div></div>
+      <div class="acc-body">
+        <table>
+          <thead><tr><th>구분</th><th>ETL</th><th>ELT</th></tr></thead>
+          <tbody>
+            <tr><td><strong>변환 위치</strong></td><td>중간 서버(스테이징)에서 변환 후 적재</td><td>목적지(DW·DL)에 적재 후 변환</td></tr>
+            <tr><td><strong>적합 환경</strong></td><td>전통적 DW / 민감 데이터 보안</td><td>클라우드 DW / 빅데이터 환경</td></tr>
+            <tr><td><strong>대표 도구</strong></td><td>Informatica, SSIS, Talend</td><td>dbt, Spark, Snowflake</td></tr>
+          </tbody>
+        </table>
+        <p style="font-size:11.5px;font-weight:800;color:var(--a3);margin:8px 0 5px;">데이터 품질 6대 기준</p>
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;">
+          <div style="background:var(--s2);border:1px solid var(--bdr);border-radius:6px;padding:8px;font-size:11px;"><strong style="color:var(--a3);">정확성</strong><br><span style="color:var(--mu);">올바른 값</span></div>
+          <div style="background:var(--s2);border:1px solid var(--bdr);border-radius:6px;padding:8px;font-size:11px;"><strong style="color:var(--a1);">완전성</strong><br><span style="color:var(--mu);">누락 없음</span></div>
+          <div style="background:var(--s2);border:1px solid var(--bdr);border-radius:6px;padding:8px;font-size:11px;"><strong style="color:var(--a2);">일관성</strong><br><span style="color:var(--mu);">모순 없음</span></div>
+          <div style="background:var(--s2);border:1px solid var(--bdr);border-radius:6px;padding:8px;font-size:11px;"><strong style="color:var(--a5);">적시성</strong><br><span style="color:var(--mu);">최신 상태</span></div>
+          <div style="background:var(--s2);border:1px solid var(--bdr);border-radius:6px;padding:8px;font-size:11px;"><strong style="color:var(--a6);">유일성</strong><br><span style="color:var(--mu);">중복 없음</span></div>
+          <div style="background:var(--s2);border:1px solid var(--bdr);border-radius:6px;padding:8px;font-size:11px;"><strong style="color:var(--a4);">유효성</strong><br><span style="color:var(--mu);">규칙 준수</span></div>
+        </div>
+      </div>
+    </div>
+    <div class="memo">ETL: 추출(소스→스테이징)→변환(정제·표준화·집계)→적재(DW) / CDC=변경데이터만추출 / ELT=클라우드DW에서 적재후변환</div>
+  </div>
+</div>
+
+<!-- P4: OLAP -->
+<div class="pnl" id="p4">
+  <div class="card">
+    <div class="card-h"><div class="ico ip">📊</div><h3>OLAP (Online Analytical Processing) ⭐</h3></div>
+    <div style="background:var(--s2);border:1px solid rgba(129,140,248,.25);border-radius:9px;padding:12px;margin-bottom:11px;font-size:12.5px;line-height:1.8;">
+      <strong style="color:var(--a1)">OLAP</strong>: DW의 다차원 데이터를 <em style="color:var(--a3);font-style:normal;">다양한 관점과 집계 수준</em>에서 빠르게 분석하는 기술 — E.F. Codd(관계형 DB 창시자)가 1993년 정의
+    </div>
+
+    <p style="font-size:11.5px;font-weight:800;color:var(--a3);margin-bottom:8px;">OLAP 다차원 데이터 큐브 (OLAP Cube)</p>
+    <div style="background:var(--s2);border:1px solid rgba(251,191,36,.22);border-radius:8px;padding:12px;margin-bottom:10px;font-size:12px;line-height:1.7;">
+      <strong style="color:var(--a3)">OLAP Cube</strong>: 여러 차원(시간·지역·제품)으로 구성된 다차원 데이터 구조 — 각 셀에 측정값(매출·수량) 저장. 3차원을 초과하면 Hypercube
+    </div>
+
+    <p style="font-size:11.5px;font-weight:800;color:var(--a1);margin-bottom:8px;">OLAP 6대 기본 연산 ⭐</p>
+    <div class="olap-grid">
+      <div class="olap-card">
+        <div class="olap-ico">🔎</div>
+        <div class="olap-name" style="color:var(--a1);">Roll-Up (롤업) ⭐</div>
+        <div class="olap-sub"><strong style="color:var(--a3);">세부 → 요약</strong> 방향으로 집계<br>하위 계층 → 상위 계층<br>예: 월별 → 분기별 → 연도별 매출</div>
+      </div>
+      <div class="olap-card">
+        <div class="olap-ico">🔬</div>
+        <div class="olap-name" style="color:var(--a2);">Drill-Down (드릴다운) ⭐</div>
+        <div class="olap-sub"><strong style="color:var(--a3);">요약 → 세부</strong> 방향으로 상세화<br>Roll-Up의 반대 방향<br>예: 연도별 → 분기별 → 월별</div>
+      </div>
+      <div class="olap-card">
+        <div class="olap-ico">↔️</div>
+        <div class="olap-name" style="color:var(--a3);">Drill-Across (드릴어크로스)</div>
+        <div class="olap-sub">동일 레벨에서 <strong style="color:var(--a3);">다른 사실 테이블</strong>로 이동<br>예: 판매 큐브 → 재고 큐브<br>여러 사실 테이블 간 이동</div>
+      </div>
+      <div class="olap-card">
+        <div class="olap-ico">📋</div>
+        <div class="olap-name" style="color:var(--a5);">Slice (슬라이스) ⭐</div>
+        <div class="olap-sub">하나의 차원을 <strong style="color:var(--a3);">특정 값으로 고정</strong><br>3D → 2D (하나의 평면)<br>예: 시간=2024년으로 고정</div>
+      </div>
+      <div class="olap-card">
+        <div class="olap-ico">🎯</div>
+        <div class="olap-name" style="color:var(--a4);">Dice (다이스) ⭐</div>
+        <div class="olap-sub">여러 차원을 <strong style="color:var(--a3);">범위로 선택</strong><br>큐브에서 작은 부분 큐브 추출<br>예: 시간=2024Q1, 지역=서울·부산</div>
+      </div>
+      <div class="olap-card">
+        <div class="olap-ico">🔄</div>
+        <div class="olap-name" style="color:var(--a6);">Pivot (피봇) / Rotate ⭐</div>
+        <div class="olap-sub">차원 축을 <strong style="color:var(--a3);">회전</strong>하여 다른 관점으로 조망<br>행/열 차원 교체<br>예: 행=제품, 열=지역 ↔ 행=지역, 열=제품</div>
+      </div>
+    </div>
+    <div class="memo">Roll-Up=세부→요약(월→분기→연) / Drill-Down=요약→세부(반대) / Slice=1차원고정 / Dice=여러차원범위선택 / Pivot=축회전</div>
+  </div>
+
+  <div class="card">
+    <div class="card-h"><div class="ico ib">🗂️</div><h3>OLAP 구현 유형 ⭐</h3></div>
+    <table>
+      <thead><tr><th>유형</th><th>저장소</th><th>특징</th><th>장점</th><th>단점</th></tr></thead>
+      <tbody>
+        <tr><td><strong>MOLAP ⭐</strong><br>(Multidimensional)</td><td>다차원 배열(큐브)</td><td>데이터를 전용 다차원 구조에 미리 계산·저장</td><td><strong>가장 빠른 쿼리</strong> / 압축 효율</td><td>대용량 희소 데이터 비효율 / 유연성↓</td></tr>
+        <tr><td><strong>ROLAP ⭐</strong><br>(Relational)</td><td>관계형 DB(DW)</td><td>RDB 위에서 SQL로 OLAP 구현 — 집계 테이블·Materialized View 활용</td><td>대용량 데이터 처리 / 유연성↑</td><td>쿼리 느림 / SQL 복잡</td></tr>
+        <tr><td><strong>HOLAP</strong><br>(Hybrid)</td><td>MOLAP+ROLAP 혼합</td><td>세부 데이터는 ROLAP, 집계 데이터는 MOLAP</td><td>MOLAP 속도 + ROLAP 유연성</td><td>구조 복잡</td></tr>
+        <tr><td><strong>DOLAP</strong><br>(Desktop)</td><td>클라이언트 PC</td><td>소규모 큐브를 PC에 다운로드하여 분석</td><td>오프라인 분석 / 빠른 응답</td><td>소규모만 가능</td></tr>
+      </tbody>
+    </table>
+    <div class="warn">MOLAP=속도최고·대용량불리 / ROLAP=대용량·유연·느림 / HOLAP=혼합 / 시험에서 MOLAP vs ROLAP 비교 자주 출제!</div>
+
+    <p style="font-size:11.5px;font-weight:800;color:var(--a2);margin-top:12px;margin-bottom:7px;">집계 함수 & SQL 확장 ⭐</p>
+    <table>
+      <thead><tr><th>SQL 구문</th><th>기능</th><th>결과</th></tr></thead>
+      <tbody>
+        <tr><td><strong>ROLLUP(A,B)</strong></td><td>A·B 조합 + A 소계 + 전체 합계 자동 생성</td><td>그룹 수 + 소계행 + 전체합계행</td></tr>
+        <tr><td><strong>CUBE(A,B)</strong></td><td>가능한 모든 조합(2ⁿ)의 소계 생성</td><td>ROLLUP보다 더 많은 소계 행</td></tr>
+        <tr><td><strong>GROUPING SETS</strong></td><td>원하는 그룹화 조합만 선택적으로 생성</td><td>유연한 소계 제어</td></tr>
+        <tr><td><strong>GROUPING(col)</strong></td><td>소계 행인지 구분 (소계=1, 일반=0)</td><td>NULL 소계와 실제 NULL 구분</td></tr>
+      </tbody>
+    </table>
+    <div class="memo">MOLAP=다차원배열·최고속도 / ROLAP=관계형DB·대용량 / ROLLUP=소계+합계 / CUBE=모든조합소계(2ⁿ) / GROUPING SETS=선택적소계</div>
+  </div>
+</div>
+
+<!-- P5: 데이터 마이닝 -->
+<div class="pnl" id="p5">
+  <div class="card">
+    <div class="card-h"><div class="ico ig">🔍</div><h3>데이터 마이닝 (Data Mining) ⭐</h3></div>
+    <div style="background:var(--s2);border:1px solid rgba(52,211,153,.25);border-radius:9px;padding:12px;margin-bottom:11px;font-size:12.5px;line-height:1.8;">
+      <strong style="color:var(--a2)">데이터 마이닝</strong>: 대용량 데이터에서 <em style="color:var(--a3);font-style:normal;">통계·기계학습·패턴 인식</em> 기법으로 숨겨진 패턴·지식·규칙을 발견하는 과정 — KDD(Knowledge Discovery in Databases)의 핵심 단계
+    </div>
+
+    <div class="acc open" onclick="this.classList.toggle('open')">
+      <div class="acc-h"><div class="acc-title" style="color:var(--a2);">데이터 마이닝 주요 기법 ⭐</div><div class="acc-tgl">▾</div></div>
+      <div class="acc-body">
+        <table>
+          <thead><tr><th>기법</th><th>유형</th><th>설명</th><th>활용 예시</th></tr></thead>
+          <tbody>
+            <tr><td><strong>분류 (Classification) ⭐</strong></td><td>지도학습</td><td>미리 정의된 클래스로 데이터 분류 — 결정 트리·나이브베이즈·SVM</td><td>신용 평가·스팸 필터·이탈 예측</td></tr>
+            <tr><td><strong>군집화 (Clustering) ⭐</strong></td><td>비지도학습</td><td>유사한 데이터끼리 그룹 형성 — K-Means·계층적 군집화</td><td>고객 세분화·시장 세분화</td></tr>
+            <tr><td><strong>연관 규칙 (Association) ⭐</strong></td><td>비지도학습</td><td>항목 간 동시 발생 패턴 발견 — Apriori·FP-Growth</td><td>장바구니 분석·추천 시스템</td></tr>
+            <tr><td><strong>회귀 (Regression)</strong></td><td>지도학습</td><td>연속적 수치 예측 — 선형·다항·로지스틱 회귀</td><td>매출 예측·부동산 가격</td></tr>
+            <tr><td><strong>이상 탐지 (Anomaly Detection)</strong></td><td>비지도·지도</td><td>정상 패턴에서 벗어난 이상 데이터 탐지</td><td>사기 탐지·네트워크 침입</td></tr>
+            <tr><td><strong>순서 패턴 (Sequence Pattern)</strong></td><td>비지도학습</td><td>시간 순서에 따른 패턴 발견</td><td>구매 순서·웹 탐색 패턴</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="acc" onclick="this.classList.toggle('open')">
+      <div class="acc-h"><div class="acc-title" style="color:var(--a3);">연관 규칙 (Association Rule) 핵심 지표 ⭐</div><div class="acc-tgl">▾</div></div>
+      <div class="acc-body">
+        <div style="background:var(--s3);border:1px solid rgba(251,191,36,.2);border-radius:7px;padding:11px;margin-bottom:8px;font-family:'JetBrains Mono',monospace;font-size:10.5px;line-height:2;">
+          <span style="color:var(--a1);">규칙 형태</span>: A → B (A를 구매하면 B도 구매)<br>
+          <span style="color:var(--a3);">지지도(Support)</span> = P(A∩B) = (A와 B 동시 구매 건수) / 전체 거래 수<br>
+          <span style="color:var(--a2);">신뢰도(Confidence)</span> = P(B|A) = (A와 B 동시) / A 구매 건수<br>
+          <span style="color:var(--a5);">향상도(Lift)</span> = Confidence(A→B) / P(B) = 독립일 때 대비 연관 정도<br>
+          <span style="color:var(--mu);">향상도 > 1: 양의 연관 / = 1: 독립 / &lt; 1: 음의 연관</span>
+        </div>
+        <ul class="il">
+          <li><strong>Apriori 알고리즘:</strong> 최소 지지도 이상의 빈발 항목 집합 탐색 → 연관 규칙 생성 / 후보 집합 생성·검증 반복</li>
+          <li><strong>FP-Growth:</strong> Apriori 개선 — FP-Tree 구조로 후보 생성 없이 빈발 패턴 탐색 (빠름)</li>
+          <li><strong>장바구니 분석:</strong> "기저귀를 사면 맥주도 산다" — 유통업 진열·추천에 활용</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="acc" onclick="this.classList.toggle('open')">
+      <div class="acc-h"><div class="acc-title" style="color:var(--a1);">KDD 프로세스 & CRISP-DM ⭐</div><div class="acc-tgl">▾</div></div>
+      <div class="acc-body">
+        <div style="display:flex;gap:4px;overflow-x:auto;margin-bottom:8px;padding-bottom:4px;">
+          <div style="background:rgba(248,113,113,.1);border:1px solid rgba(248,113,113,.3);border-radius:6px;padding:7px 10px;font-size:10.5px;font-weight:700;text-align:center;min-width:80px;color:var(--a4);">데이터<br>선택</div>
+          <div style="display:flex;align-items:center;color:var(--mu);">→</div>
+          <div style="background:rgba(251,191,36,.1);border:1px solid rgba(251,191,36,.3);border-radius:6px;padding:7px 10px;font-size:10.5px;font-weight:700;text-align:center;min-width:80px;color:var(--a3);">전처리<br>정제</div>
+          <div style="display:flex;align-items:center;color:var(--mu);">→</div>
+          <div style="background:rgba(129,140,248,.1);border:1px solid rgba(129,140,248,.3);border-radius:6px;padding:7px 10px;font-size:10.5px;font-weight:700;text-align:center;min-width:80px;color:var(--a1);">변환<br>특성추출</div>
+          <div style="display:flex;align-items:center;color:var(--mu);">→</div>
+          <div style="background:rgba(52,211,153,.1);border:1px solid rgba(52,211,153,.3);border-radius:6px;padding:7px 10px;font-size:10.5px;font-weight:700;text-align:center;min-width:80px;color:var(--a2);">데이터<br>마이닝</div>
+          <div style="display:flex;align-items:center;color:var(--mu);">→</div>
+          <div style="background:rgba(56,189,248,.1);border:1px solid rgba(56,189,248,.3);border-radius:6px;padding:7px 10px;font-size:10.5px;font-weight:700;text-align:center;min-width:80px;color:var(--a5);">해석<br>평가</div>
+          <div style="display:flex;align-items:center;color:var(--mu);">→</div>
+          <div style="background:rgba(251,146,60,.1);border:1px solid rgba(251,146,60,.3);border-radius:6px;padding:7px 10px;font-size:10.5px;font-weight:700;text-align:center;min-width:80px;color:var(--a6);">지식<br>활용</div>
+        </div>
+        <ul class="il">
+          <li><strong>CRISP-DM 6단계:</strong> 비즈니스이해→데이터이해→데이터준비→모델링→평가→배포 (순환 반복)</li>
+          <li><strong>과적합(Overfitting):</strong> 훈련 데이터에 너무 맞아 새 데이터에서 성능 저하 → 교차 검증·정규화로 대응</li>
+          <li><strong>홀드아웃·k-겹 교차검증:</strong> 훈련·검증·테스트 세트 분리로 성능 평가</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="acc" onclick="this.classList.toggle('open')">
+      <div class="acc-h"><div class="acc-title" style="color:var(--a5);">BI (Business Intelligence) & 정보 분석 도구</div><div class="acc-tgl">▾</div></div>
+      <div class="acc-body">
+        <table>
+          <thead><tr><th>구분</th><th>설명</th><th>도구·기술</th></tr></thead>
+          <tbody>
+            <tr><td><strong>대시보드</strong></td><td>KPI·지표를 시각화하여 실시간 모니터링</td><td>Tableau, Power BI, Grafana</td></tr>
+            <tr><td><strong>보고서(Report)</strong></td><td>정형화된 분석 결과 문서 자동 생성</td><td>SSRS, Crystal Reports</td></tr>
+            <tr><td><strong>OLAP 분석</strong></td><td>다차원 데이터 드릴다운·롤업·슬라이싱</td><td>Cognos, MicroStrategy</td></tr>
+            <tr><td><strong>셀프서비스 BI</strong></td><td>비기술 사용자가 직접 분석·시각화</td><td>Power BI, Tableau, Looker</td></tr>
+            <tr><td><strong>예측 분석</strong></td><td>머신러닝 기반 미래 예측</td><td>SAS, Python, R</td></tr>
+            <tr><td><strong>텍스트 마이닝</strong></td><td>비정형 텍스트에서 패턴·감성 추출</td><td>NLTK, 감성분석, 토픽모델링</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div class="memo">데이터마이닝: 분류(지도)·군집화(비지도)·연관규칙(Apriori·지지도·신뢰도·향상도) / KDD=선택→정제→변환→마이닝→해석</div>
+  </div>
+</div>
+
+<!-- P6: QA -->
+<div class="pnl" id="p6">
+  <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:7px;margin-bottom:12px;">
+    <div class="fb-wr" id="fbar" style="margin:0;">
+      <button class="fb on" data-f="all">전체</button>
+      <button class="fb" data-f="DW">🏛️ DW</button>
+      <button class="fb" data-f="스키마">📐 스키마</button>
+      <button class="fb" data-f="ETL">⚙️ ETL</button>
+      <button class="fb" data-f="OLAP">📊 OLAP</button>
+      <button class="fb" data-f="마이닝">🔍 마이닝</button>
+      <button class="fb" data-f="OX">⭕ OX</button>
+    </div>
+    <div class="sc-b">정답: <span id="sc">0</span>/<span id="st">0</span></div>
+  </div>
+  <div id="ql"></div>
+</div>
+
+</div>
+<script>
+document.querySelectorAll('.tab').forEach(t=>t.addEventListener('click',()=>{
+  document.querySelectorAll('.tab,.pnl').forEach(x=>x.classList.remove('on'));
+  t.classList.add('on');document.getElementById(t.dataset.p).classList.add('on');
+}));
+const QA=[
+  {cat:'DW',diff:'easy',
+   q:'데이터 웨어하우스(DW)의 4대 특성(Inmon 정의) 중 "한 번 적재된 데이터는 삭제·수정하지 않고 조회와 추가만 가능하다"는 특성은?',
+   cs:['주제 지향적 (Subject-Oriented)','통합적 (Integrated)','비휘발적 (Non-Volatile)','시간적 (Time-Variant)'],ans:2,
+   exp:'<strong>비휘발적(Non-Volatile)</strong>: DW에 한 번 적재된 데이터는 <em>삭제하거나 수정하지 않습니다</em>. 새로운 데이터를 추가(적재)하거나 조회만 가능합니다. OLTP가 빈번한 UPDATE·DELETE를 하는 것과 대비됩니다. 시간적 특성은 시점 정보 포함으로 역사적 데이터를 보관하는 특성입니다.'},
+  {cat:'DW',diff:'mid',
+   q:'OLTP와 데이터 웨어하우스(DW/OLAP)를 비교한 내용으로 가장 적절하지 않은 것은?',
+   cs:['OLTP는 현재 데이터를 다루고, DW는 역사적 데이터를 보관한다.','OLTP는 높은 정규화(3NF)를 사용하고, DW는 역정규화를 사용한다.','OLTP는 복잡한 집계 쿼리에 최적화되어 있고, DW는 단순 트랜잭션에 최적화되어 있다.','OLTP의 응답 시간은 밀리초 단위이고, DW는 초~분 단위이다.'],ans:2,
+   exp:'<strong>OLTP</strong>는 <em>단순·짧은 트랜잭션 쿼리</em>에 최적화, <strong>DW(OLAP)</strong>는 <em>복잡한 집계·분석 쿼리</em>에 최적화됩니다. 나머지는 모두 올바른 설명입니다. OLTP=현재·정규화·밀리초·트랜잭션 vs DW=역사·역정규화·초~분·집계분석.'},
+  {cat:'스키마',diff:'mid',
+   q:'스타 스키마(Star Schema)와 눈꽃 스키마(Snowflake Schema)의 차이로 가장 적절한 것은?',
+   cs:['스타 스키마는 차원 테이블을 정규화하고, 눈꽃 스키마는 역정규화한다.','스타 스키마는 차원 테이블을 역정규화하여 JOIN이 적고 빠르며, 눈꽃 스키마는 차원 테이블을 정규화하여 저장 공간은 절약되지만 JOIN이 많아진다.','두 스키마는 구조가 동일하며 이름만 다르다.','눈꽃 스키마는 사실 테이블이 없고 차원 테이블만 있다.'],ans:1,
+   exp:'<strong>스타 스키마</strong>: 차원 테이블 <em>역정규화</em> → JOIN 적음·쿼리 빠름·DW에서 선호. <strong>눈꽃 스키마</strong>: 차원 테이블 <em>정규화</em>(계층적 분리) → 중복 제거·저장 공간 절약·JOIN 많아 쿼리 복잡·느림. DW에서는 일반적으로 쿼리 성능이 중요하므로 스타 스키마를 더 선호합니다.'},
+  {cat:'스키마',diff:'hard',
+   q:'사실 테이블의 측정값 유형 중 "반가산적(Semi-Additive)" 측정값의 예로 가장 적절한 것은?',
+   cs:['매출액 — 모든 차원에서 합산 가능','재고 수량 — 시간 차원에서는 합산 의미 없지만 다른 차원에서는 합산 가능','할인율 — 어떤 차원에서도 합산 불가','주문번호 — 차원 테이블 없이 사실 테이블에 존재'],ans:1,
+   exp:'<strong>반가산적(Semi-Additive)</strong>: 일부 차원에서만 합산이 의미 있는 측정값. <em>재고 수량</em>은 지역·제품 차원에서는 합산 가능하지만, <em>시간 차원</em>에서는 1월+2월+3월 재고를 합하면 의미가 없습니다. 가산적=매출액(모든 차원 합산 가능), 비가산적=비율·퍼센트(어떤 차원도 합산 불가), 주문번호=Degenerate Dimension.'},
+  {cat:'ETL',diff:'mid',
+   q:'ETL 프로세스에서 Transform(변환) 단계의 작업으로 가장 적절하지 않은 것은?',
+   cs:['소스 시스템의 데이터 정제(오류·중복 제거)','코드·날짜·단위 표준화','데이터를 DW에 적재하고 인덱스를 재구성','비즈니스 규칙에 따른 파생 지표 계산'],ans:2,
+   exp:'<strong>데이터 DW 적재·인덱스 재구성</strong>은 <em>Load(적재) 단계</em>의 작업입니다. Transform(변환) 단계: 데이터 정제(오류·중복 제거), 표준화(코드·날짜·단위 통일), 파생 지표 계산, 여러 소스 조인·병합, 비즈니스 규칙 적용 등. ETL = Extract(추출)→Transform(변환)→Load(적재).'},
+  {cat:'OLAP',diff:'mid',
+   q:'OLAP 연산 중 "연도별 매출에서 분기별, 월별로 점차 세부적인 수준으로 분석하는" 연산은?',
+   cs:['Roll-Up (롤업)','Drill-Down (드릴다운)','Slice (슬라이스)','Pivot (피봇)'],ans:1,
+   exp:'<strong>Drill-Down(드릴다운)</strong>: 요약 수준에서 <em>점점 더 세부적인 수준</em>으로 내려가는 분석. 연도→분기→월→일 방향이 드릴다운. <strong>Roll-Up</strong>은 반대(세부→요약). Slice=하나의 차원을 특정 값으로 고정(3D→2D). Dice=여러 차원을 범위로 선택하여 부분 큐브 추출. Pivot=축 회전·행열 교체.'},
+  {cat:'OLAP',diff:'mid',
+   q:'MOLAP과 ROLAP의 차이로 가장 적절한 것은?',
+   cs:['MOLAP은 관계형 DB를 사용하고, ROLAP은 다차원 배열을 사용한다.','MOLAP은 다차원 배열에 미리 계산·저장하여 쿼리가 빠르고, ROLAP은 관계형 DB를 사용하여 대용량에 유리하다.','MOLAP과 ROLAP은 동일한 기술이며 이름만 다르다.','ROLAP은 MOLAP보다 항상 빠른 쿼리를 제공한다.'],ans:1,
+   exp:'<strong>MOLAP</strong>: 다차원 배열(Hypercube)에 데이터를 미리 집계·저장 → 쿼리 <em>가장 빠름</em> / 희소 데이터·대용량에 비효율. <strong>ROLAP</strong>: 관계형 DB + SQL로 OLAP 구현 → <em>대용량 유리·유연</em> / 쿼리 느림. HOLAP=혼합(세부=ROLAP·집계=MOLAP).'},
+  {cat:'OLAP',diff:'hard',
+   q:'SQL의 ROLLUP과 CUBE 집계 함수의 차이로 가장 적절한 것은?',
+   cs:['ROLLUP과 CUBE는 동일한 결과를 반환한다.','ROLLUP은 계층적 소계와 전체 합계를 생성하고, CUBE는 가능한 모든 차원 조합의 소계를 생성한다.','CUBE는 계층적 소계만, ROLLUP은 모든 조합의 소계를 생성한다.','ROLLUP은 GROUP BY를 대체하고, CUBE는 ORDER BY를 대체한다.'],ans:1,
+   exp:'<strong>ROLLUP(A,B)</strong>: A·B 상세, A 소계, 전체 합계 — <em>계층적</em>으로 생성 (순서 의존). <strong>CUBE(A,B)</strong>: A·B 상세, A 소계, B 소계, 전체 합계 — <em>가능한 모든 조합</em>(2ⁿ개) 소계 생성 (순서 무관). GROUPING SETS는 원하는 조합만 선택적으로 지정. DW 보고서의 소계·합계 행 생성에 핵심 구문입니다.'},
+  {cat:'마이닝',diff:'mid',
+   q:'연관 규칙(Association Rule) 마이닝에서 신뢰도(Confidence)의 의미로 가장 적절한 것은?',
+   cs:['전체 거래 중 A와 B가 동시에 포함된 비율','A를 구매한 거래 중 B도 구매한 거래의 비율 — P(B|A)','A → B 규칙의 전체 거래 대비 발생 빈도','독립일 때 대비 A와 B의 연관 정도를 나타내는 비율'],ans:1,
+   exp:'<strong>신뢰도(Confidence)</strong>: A → B 규칙에서 <em>A를 구매한 거래 중 B도 구매한 비율</em> = P(B|A) = (A∩B 거래수)/(A 거래수). 지지도(Support) = P(A∩B) = (A∩B 거래수)/(전체 거래수). 향상도(Lift) = Confidence(A→B)/P(B) — 1보다 크면 양의 연관. 장바구니 분석에서 규칙의 신뢰성을 측정합니다.'},
+  {cat:'마이닝',diff:'hard',
+   q:'데이터 마이닝 기법 중 "고객 세분화"에 가장 적합한 기법으로 가장 적절한 것은?',
+   cs:['분류 (Classification)','군집화 (Clustering)','연관 규칙 (Association Rule)','회귀 (Regression)'],ans:1,
+   exp:'<strong>군집화(Clustering)</strong>: 레이블 없이 데이터의 유사성을 기반으로 <em>자연스러운 그룹을 자동 형성</em>하는 비지도 학습. 고객 세분화·시장 세분화에 최적. 분류=미리 정의된 클래스로 분류(지도학습), 연관 규칙=동시 발생 패턴, 회귀=연속 수치 예측. K-Means·DBSCAN·계층적 군집화가 대표 알고리즘.'},
+  {cat:'OX',diff:'easy',type:'ox',
+   q:'데이터 웨어하우스의 "비휘발적(Non-Volatile)" 특성은 한 번 적재된 데이터를 UPDATE나 DELETE 없이 조회와 INSERT만 허용한다는 의미이다.',ans:true,
+   exp:'<strong>○</strong> — 비휘발적(Non-Volatile): DW는 읽기 중심 분석 시스템으로, 한 번 적재된 데이터는 <em>수정·삭제하지 않습니다</em>. 새 시점의 데이터는 추가(INSERT)하고 이전 데이터는 그대로 보관하여 역사적 분석이 가능합니다. OLTP의 빈번한 UPDATE·DELETE와 근본적인 차이입니다.'},
+  {cat:'스키마',diff:'mid',type:'ox',
+   q:'스타 스키마에서 차원 테이블(Dimension Table)은 높은 정규화(3NF)가 적용되어 중복 데이터가 없는 것이 특징이다.',ans:false,
+   exp:'<strong>×</strong> — 스타 스키마의 차원 테이블은 <strong>역정규화(Denormalization)</strong>되어 있습니다. 중복 데이터가 존재하더라도 JOIN 횟수를 줄여 쿼리 성능을 높이는 것이 목적입니다. 차원 테이블을 정규화하면 <em>눈꽃 스키마(Snowflake Schema)</em>가 됩니다. DW에서는 성능을 위해 일반적으로 역정규화를 선택합니다.'},
+  {cat:'OLAP',diff:'mid',type:'ox',
+   q:'OLAP 연산 중 Slice는 하나의 차원을 특정 값으로 고정하여 3차원 큐브에서 2차원 평면 데이터를 얻는 연산이다.',ans:true,
+   exp:'<strong>○</strong> — Slice: 하나의 차원을 <em>특정 단일 값으로 고정</em>하여 차원을 하나 줄이는 연산. 3차원(시간·지역·제품) 큐브에서 시간=2024년으로 고정 → 지역×제품 2차원 평면. Dice는 여러 차원을 <em>범위</em>로 선택하여 더 작은 부분 큐브(Sub-cube) 추출. Pivot은 행·열 축을 교체(회전).'},
+  {cat:'마이닝',diff:'hard',type:'ox',
+   q:'연관 규칙에서 향상도(Lift)가 1보다 클 경우, A와 B 항목 간에 양의 연관관계가 있어 A를 구매하면 B를 구매할 가능성이 독립적인 경우보다 높다.',ans:true,
+   exp:'<strong>○</strong> — <strong>향상도(Lift)</strong> = Confidence(A→B) / P(B). Lift > 1: <em>A와 B가 양의 연관</em>(A 구매 시 B 구매 확률이 B의 기대 확률보다 높음). Lift = 1: A와 B가 독립(연관 없음). Lift < 1: 음의 연관(A 구매 시 B 구매 확률↓). 유통업에서 Lift > 1인 상품 조합을 함께 진열하거나 번들 상품으로 구성합니다.'},
+  {cat:'ETL',diff:'mid',type:'ox',
+   q:'SCD(Slowly Changing Dimension) Type 2는 차원 값이 변경될 때 기존 행을 덮어쓰는 방식으로, 변경 이력을 보관하지 않는다.',ans:false,
+   exp:'<strong>×</strong> — 설명은 <strong>SCD Type 1</strong>입니다. <strong>SCD Type 2</strong>는 차원 값이 변경될 때 <em>기존 행을 유지하고 새로운 행을 추가</em>하여 변경 이력을 보관합니다. 유효 기간(시작일·종료일)이나 버전 번호로 현재·과거 행을 구분합니다. DW에서 가장 일반적으로 사용되는 SCD 방식입니다.'},
+];
+let answered=0,correct=0;
+function renderQ(f){
+  const data=f==='all'?QA:QA.filter(q=>q.cat===f);
+  const list=document.getElementById('ql');list.innerHTML='';
+  answered=0;correct=0;upS();
+  const CATC={'DW':'tp','스키마':'ty','ETL':'to','OLAP':'tb','마이닝':'tg','OX':'tr'};
+  const DLC={'easy':'easy 쉬움','mid':'mid 보통','hard':'hard 어려움'};
+  const NL=['①','②','③','④'];
+  if(!data.length){list.innerHTML='<div style="text-align:center;padding:40px;color:var(--mu)">문제 없음</div>';return;}
+  data.forEach((q,i)=>{
+    const gi=QA.indexOf(q);
+    const el=document.createElement('div');el.className='qa';
+    const tc=CATC[q.cat]||'tp';
+    const [dc,dn]=(DLC[q.diff]||'mid 보통').split(' ');
+    if(q.type==='ox'){
+      el.innerHTML=`<div class="qa-hd" onclick="this.closest('.qa').classList.toggle('open')"><div><div class="qa-meta"><span class="qn">Q${String(i+1).padStart(2,'0')}</span><span class="tag ${tc}">${q.cat}</span><span class="diff ${dc}">${dn}</span><span class="tag tg">O/X</span></div><div class="qq">${q.q}</div></div><span class="tgl">▾</span></div>
+      <div class="qa-bd"><div class="ox-wr"><button class="ox" onclick="pickOX(this,true,${gi})">⭕ 옳다</button><button class="ox" onclick="pickOX(this,false,${gi})">❌ 틀리다</button></div><div class="exp" id="ex-${gi}"><div class="exp-t">💡 해설</div>${q.exp}</div></div>`;
+    } else {
+      el.innerHTML=`<div class="qa-hd" onclick="this.closest('.qa').classList.toggle('open')"><div><div class="qa-meta"><span class="qn">Q${String(i+1).padStart(2,'0')}</span><span class="tag ${tc}">${q.cat}</span><span class="diff ${dc}">${dn}</span></div><div class="qq">${q.q}</div></div><span class="tgl">▾</span></div>
+      <div class="qa-bd"><div class="chs">${q.cs.map((c,ci)=>`<div class="ch" data-ci="${ci}" onclick="pickCh(this,${gi})"><span class="cnum">${NL[ci]}</span><span>${c}</span></div>`).join('')}</div><div class="exp" id="ex-${gi}"><div class="exp-t">💡 해설</div>${q.exp}</div></div>`;
+    }
+    list.appendChild(el);
+  });
+}
+function pickCh(el,gi){
+  const bd=el.closest('.qa-bd');if(bd.querySelector('.ok,.ng'))return;
+  const q=QA[gi];
+  bd.querySelectorAll('.ch').forEach((c,i)=>{c.classList.add('lk');if(i===q.ans)c.classList.add('ok');else if(i===parseInt(el.dataset.ci))c.classList.add('ng');});
+  document.getElementById('ex-'+gi).classList.add('show');
+  answered++;if(parseInt(el.dataset.ci)===q.ans)correct++;upS();
+}
+function pickOX(btn,val,gi){
+  const bd=btn.closest('.qa-bd');if(bd.querySelector('.so,.sx'))return;
+  const q=QA[gi];
+  bd.querySelectorAll('.ox').forEach(b=>b.classList.add('lk'));
+  btn.classList.add(val?'so':'sx');
+  if(val!==q.ans){btn.style.opacity='.5';bd.querySelectorAll('.ox')[val?1:0].classList.add(q.ans?'so':'sx');}
+  document.getElementById('ex-'+gi).classList.add('show');
+  answered++;if(val===q.ans)correct++;upS();
+}
+function upS(){document.getElementById('sc').textContent=correct;document.getElementById('st').textContent=answered;}
+document.getElementById('fbar').addEventListener('click',e=>{
+  const b=e.target.closest('.fb');if(!b)return;
+  document.querySelectorAll('.fb').forEach(x=>x.classList.remove('on'));b.classList.add('on');renderQ(b.dataset.f);
+});
+renderQ('all');
+</script>
+</body>
+</html>

@@ -1,0 +1,823 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;900&family=JetBrains+Mono:wght@400;700&display=swap');
+:root{--bg:#040a0f;--s1:#070f1a;--s2:#0b1524;--s3:#101c2e;--bdr:#1a3555;--a1:#60a5fa;--a2:#34d399;--a3:#fbbf24;--a4:#f87171;--a5:#a78bfa;--a6:#fb923c;--a7:#f472b6;--txt:#e2e8f0;--mu:#64748b;}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Noto Sans KR',sans-serif;background:var(--bg);color:var(--txt);min-height:100vh;}
+.hdr{padding:20px 24px 14px;background:linear-gradient(150deg,#040a0f,#091222,#040a0f);border-bottom:1px solid var(--bdr);}
+.hdr-r{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:6px;}
+.pill{padding:3px 10px;border-radius:20px;font-size:10px;font-weight:700;}
+.p1{background:linear-gradient(135deg,#1e3a8a,var(--a1));color:#fff;}
+.p2{background:rgba(52,211,153,.15);color:var(--a2);border:1px solid rgba(52,211,153,.3);}
+.p3{background:rgba(251,191,36,.15);color:var(--a3);border:1px solid rgba(251,191,36,.3);}
+h1{font-size:18px;font-weight:900;}
+.h1g{background:linear-gradient(90deg,var(--a1),var(--a2),var(--a3));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.hdr p{color:var(--mu);font-size:11.5px;margin-top:3px;}
+.tabs{display:flex;padding:0 24px;background:var(--s1);border-bottom:1px solid var(--bdr);overflow-x:auto;scrollbar-width:none;}
+.tabs::-webkit-scrollbar{display:none;}
+.tab{padding:10px 13px;font-size:11.5px;font-weight:600;color:var(--mu);cursor:pointer;border-bottom:2px solid transparent;white-space:nowrap;transition:all .2s;background:none;border-top:none;border-left:none;border-right:none;font-family:'Noto Sans KR',sans-serif;}
+.tab.on{color:var(--a1);border-bottom-color:var(--a1);}
+.wrap{padding:18px 24px;max-width:960px;margin:0 auto;}
+.pnl{display:none;}.pnl.on{display:block;}
+.card{background:var(--s1);border:1px solid var(--bdr);border-radius:11px;padding:16px;margin-bottom:12px;}
+.card-h{display:flex;align-items:center;gap:9px;margin-bottom:11px;}
+.ico{width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0;}
+.ib{background:rgba(96,165,250,.15);}.ig{background:rgba(52,211,153,.15);}.iy{background:rgba(251,191,36,.15);}.ir{background:rgba(248,113,113,.15);}.ip{background:rgba(167,139,250,.15);}.io{background:rgba(251,146,60,.15);}
+.card h3{font-size:13.5px;font-weight:700;}
+.tag{display:inline-block;padding:2px 7px;border-radius:4px;font-size:9.5px;font-weight:600;margin:2px 2px 2px 0;}
+.tb{background:rgba(96,165,250,.12);color:var(--a1);border:1px solid rgba(96,165,250,.25);}
+.tg{background:rgba(52,211,153,.12);color:var(--a2);border:1px solid rgba(52,211,153,.25);}
+.ty{background:rgba(251,191,36,.12);color:var(--a3);border:1px solid rgba(251,191,36,.25);}
+.tr{background:rgba(248,113,113,.12);color:var(--a4);border:1px solid rgba(248,113,113,.25);}
+.tp{background:rgba(167,139,250,.12);color:var(--a5);border:1px solid rgba(167,139,250,.25);}
+.to{background:rgba(251,146,60,.12);color:var(--a6);border:1px solid rgba(251,146,60,.25);}
+table{width:100%;border-collapse:collapse;font-size:12px;}
+th{background:var(--s2);color:var(--mu);font-weight:700;padding:7px 10px;text-align:left;font-size:9.5px;text-transform:uppercase;letter-spacing:.5px;border-bottom:1px solid var(--bdr);}
+td{padding:7px 10px;border-bottom:1px solid rgba(26,53,85,.5);vertical-align:top;line-height:1.55;}
+tr:last-child td{border-bottom:none;}
+tr:hover td{background:rgba(255,255,255,.02);}
+td strong{color:var(--a3);}
+ul.il{list-style:none;display:flex;flex-direction:column;gap:6px;}
+ul.il li{font-size:12px;padding-left:15px;position:relative;line-height:1.5;}
+ul.il li::before{content:'▸';position:absolute;left:0;color:var(--a1);font-size:9.5px;top:3px;}
+ul.il li strong{color:var(--a3);}
+ul.il li em{color:var(--a2);font-style:normal;}
+.memo{background:linear-gradient(135deg,rgba(96,165,250,.07),rgba(52,211,153,.07));border:1px solid rgba(96,165,250,.22);border-left:3px solid var(--a1);border-radius:7px;padding:9px 13px;font-size:12px;font-weight:600;color:var(--a1);margin:9px 0;}
+.memo::before{content:'🎯 핵심 암기 │ ';color:var(--mu);font-weight:400;}
+.warn{background:rgba(248,113,113,.07);border:1px solid rgba(248,113,113,.25);border-left:3px solid var(--a4);border-radius:7px;padding:9px 13px;font-size:12px;font-weight:600;color:var(--a4);margin:9px 0;}
+.warn::before{content:'⚠️ 나쁜 코드 │ ';color:var(--mu);font-weight:400;}
+.good{background:rgba(52,211,153,.07);border:1px solid rgba(52,211,153,.25);border-left:3px solid var(--a2);border-radius:7px;padding:9px 13px;font-size:12px;font-weight:600;color:var(--a2);margin:9px 0;}
+.good::before{content:'✅ 좋은 코드 │ ';color:var(--mu);font-weight:400;}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px;}
+@media(max-width:580px){.g2{grid-template-columns:1fr;}}
+.code{background:var(--s2);border:1px solid rgba(96,165,250,.18);border-radius:7px;padding:10px 13px;font-family:'JetBrains Mono',monospace;font-size:10px;margin:7px 0;line-height:1.8;overflow-x:auto;}
+.code .cm{color:var(--mu);}.code .kw{color:var(--a1);}.code .cls{color:var(--a3);}.code .g{color:var(--a2);}.code .bad{color:var(--a4);}.code .str{color:var(--a6);}
+/* rule card */
+.rule-card{background:var(--s2);border-left:3px solid;border-radius:7px;padding:10px 13px;margin-bottom:8px;}
+/* acc */
+.acc{background:var(--s2);border:1px solid var(--bdr);border-radius:9px;margin-bottom:8px;overflow:hidden;}
+.acc-h{display:flex;justify-content:space-between;align-items:center;padding:10px 14px;cursor:pointer;user-select:none;}
+.acc-h:hover{background:rgba(255,255,255,.02);}
+.acc-title{font-size:12.5px;font-weight:800;flex:1;}
+.acc-tgl{color:var(--mu);transition:transform .2s;font-size:14px;flex-shrink:0;margin-left:8px;}
+.acc.open .acc-tgl{transform:rotate(180deg);}
+.acc-body{display:none;border-top:1px solid var(--bdr);padding:12px 14px;background:var(--s3);font-size:12px;line-height:1.65;}
+.acc.open .acc-body{display:block;}
+.acc-body strong{color:var(--a3);}
+.acc-body em{color:var(--a2);font-style:normal;}
+/* qa */
+.qa{background:var(--s1);border:1px solid var(--bdr);border-radius:9px;margin-bottom:10px;overflow:hidden;}
+.qa:hover{border-color:rgba(96,165,250,.25);}
+.qa-hd{padding:12px 16px;cursor:pointer;display:flex;justify-content:space-between;align-items:flex-start;gap:9px;user-select:none;}
+.qa-meta{display:flex;align-items:center;gap:5px;margin-bottom:4px;flex-wrap:wrap;}
+.qn{font-family:'JetBrains Mono',monospace;font-size:9.5px;font-weight:700;color:var(--mu);}
+.qq{font-size:12.5px;font-weight:600;line-height:1.5;}
+.tgl{color:var(--mu);font-size:15px;flex-shrink:0;transition:transform .2s;}
+.qa.open .tgl{transform:rotate(180deg);}
+.qa-bd{display:none;border-top:1px solid var(--bdr);padding:12px 16px;background:var(--s2);}
+.qa.open .qa-bd{display:block;}
+.chs{display:flex;flex-direction:column;gap:6px;margin-bottom:10px;}
+.ch{display:flex;align-items:flex-start;gap:9px;padding:8px 12px;border-radius:6px;border:1px solid var(--bdr);font-size:12px;cursor:pointer;background:var(--s1);line-height:1.45;transition:all .15s;}
+.ch:hover:not(.lk){border-color:rgba(96,165,250,.3);background:rgba(96,165,250,.04);}
+.ch.ok{border-color:var(--a2);background:rgba(52,211,153,.1);color:var(--a2);}
+.ch.ng{border-color:var(--a4);background:rgba(248,113,113,.08);color:var(--a4);opacity:.7;}
+.ch.lk{cursor:default;}
+.cnum{font-family:'JetBrains Mono',monospace;font-weight:700;font-size:10.5px;flex-shrink:0;margin-top:1px;color:var(--mu);}
+.ch.ok .cnum{color:var(--a2);}.ch.ng .cnum{color:var(--a4);}
+.exp{background:rgba(96,165,250,.05);border:1px solid rgba(96,165,250,.18);border-radius:7px;padding:11px 13px;font-size:12px;line-height:1.6;display:none;}
+.exp.show{display:block;}
+.exp-t{font-size:9.5px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--a1);margin-bottom:5px;}
+.exp strong{color:var(--a3);}
+.exp em{color:var(--a2);font-style:normal;}
+.ox-wr{display:flex;gap:8px;margin-bottom:10px;}
+.ox{flex:1;padding:10px;border-radius:7px;border:1px solid var(--bdr);font-size:18px;cursor:pointer;background:var(--s1);transition:all .15s;font-family:'Noto Sans KR',sans-serif;color:var(--txt);}
+.ox:hover:not(.lk){transform:scale(1.02);}
+.ox.so{border-color:var(--a2);background:rgba(52,211,153,.15);}
+.ox.sx{border-color:var(--a4);background:rgba(248,113,113,.1);}
+.ox.lk{cursor:default;}
+.diff{display:inline-block;padding:2px 6px;border-radius:9px;font-size:8.5px;font-weight:700;}
+.easy{background:rgba(52,211,153,.2);color:var(--a2);}
+.mid{background:rgba(251,191,36,.2);color:var(--a3);}
+.hard{background:rgba(248,113,113,.2);color:var(--a4);}
+.fb-wr{display:flex;gap:5px;flex-wrap:wrap;margin-bottom:12px;}
+.fb{padding:4px 11px;border-radius:18px;border:1px solid var(--bdr);font-size:10.5px;font-weight:600;cursor:pointer;background:var(--s2);color:var(--mu);transition:all .15s;font-family:'Noto Sans KR',sans-serif;}
+.fb.on{background:rgba(96,165,250,.15);color:var(--a1);border-color:var(--a1);}
+.sc-b{background:var(--s2);border:1px solid var(--bdr);border-radius:7px;padding:4px 12px;font-size:11.5px;color:var(--mu);}
+.sc-b span{color:var(--a1);font-weight:700;}
+</style>
+</head>
+<body>
+<div class="hdr">
+  <div class="hdr-r">
+    <span class="pill p1">Clean Code</span>
+    <span class="pill p2">Robert C. Martin (Uncle Bob)</span>
+    <span class="pill p3">감리사 핵심 출제</span>
+  </div>
+  <h1><span class="h1g">Clean Code 완전 정리</span></h1>
+  <p>명명 · 함수 · 주석 · 형식 · 오류처리 · 단위테스트(FIRST) · 클래스 · 창발성(4규칙) · SOLID 연관</p>
+</div>
+<div class="tabs">
+  <button class="tab on" data-p="p1">📋 개요·정의</button>
+  <button class="tab" data-p="p2">🏷️ 명명(Naming) 규칙</button>
+  <button class="tab" data-p="p3">⚙️ 함수·주석·형식</button>
+  <button class="tab" data-p="p4">🚨 오류 처리·경계</button>
+  <button class="tab" data-p="p5">🧪 단위 테스트 (FIRST)</button>
+  <button class="tab" data-p="p6">🏛️ 클래스·창발성 4규칙</button>
+  <button class="tab" data-p="p7">❓ 예상문제</button>
+</div>
+<div class="wrap">
+
+<!-- P1: 개요 -->
+<div class="pnl on" id="p1">
+  <div class="card">
+    <div class="card-h"><div class="ico ib">📋</div><h3>클린 코드 정의 & 핵심 철학 ⭐</h3></div>
+    <div style="background:var(--s2);border:1px solid rgba(96,165,250,.28);border-radius:9px;padding:13px;margin-bottom:12px;font-size:12.5px;line-height:1.9;">
+      <strong style="color:var(--a1)">Clean Code</strong>: Robert C. Martin(Uncle Bob)이 2008년 정리한 소프트웨어 장인 정신 — 읽기 쉽고, 이해하기 쉽고, 유지보수하기 쉬운 코드를 작성하는 원칙과 실천법의 집합
+    </div>
+
+    <!-- 명언 카드들 -->
+    <p style="font-size:11.5px;font-weight:800;color:var(--a3);margin-bottom:8px;">저명한 개발자들의 클린 코드 정의 ⭐</p>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px;">
+      <div style="background:var(--s2);border:1px solid rgba(96,165,250,.2);border-radius:8px;padding:11px;">
+        <p style="font-size:10px;color:var(--mu);margin-bottom:4px;">Bjarne Stroustrup (C++ 창시자)</p>
+        <p style="font-size:11.5px;line-height:1.6;color:var(--txt);">"<em style="color:var(--a2);font-style:normal;">우아하고 효율적인</em> 코드를 좋아한다. 논리가 간단해야 버그가 숨어들기 힘들다. <em style="color:var(--a2);font-style:normal;">한 가지 일만 제대로</em> 한다."</p>
+      </div>
+      <div style="background:var(--s2);border:1px solid rgba(52,211,153,.2);border-radius:8px;padding:11px;">
+        <p style="font-size:10px;color:var(--mu);margin-bottom:4px;">Grady Booch (OOA/OOD)</p>
+        <p style="font-size:11.5px;line-height:1.6;color:var(--txt);">"<em style="color:var(--a2);font-style:normal;">단순하고 직접적</em>이다. 설계자의 의도를 숨기지 않는다. <em style="color:var(--a2);font-style:normal;">명확한 추상화</em>로 가득하다."</p>
+      </div>
+      <div style="background:var(--s2);border:1px solid rgba(251,191,36,.2);border-radius:8px;padding:11px;">
+        <p style="font-size:10px;color:var(--mu);margin-bottom:4px;">Ward Cunningham (기술부채 창시자)</p>
+        <p style="font-size:11.5px;line-height:1.6;color:var(--txt);">"코드를 읽으면서 짐작했던 대로 <em style="color:var(--a2);font-style:normal;">돌아가는</em> 코드. 아름다운 코드는 당신을 가장 <em style="color:var(--a2);font-style:normal;">단순한 방법</em>으로 이끈다."</p>
+      </div>
+      <div style="background:var(--s2);border:1px solid rgba(248,113,113,.2);border-radius:8px;padding:11px;">
+        <p style="font-size:10px;color:var(--mu);margin-bottom:4px;">Robert C. Martin (Clean Code 저자)</p>
+        <p style="font-size:11.5px;line-height:1.6;color:var(--txt);">"나중에 코드를 읽는 사람이 자신이라는 사실을 기억하라. <em style="color:var(--a2);font-style:normal;">읽기 쉬운 코드</em>를 작성하는 것이 전문가의 의무다."</p>
+      </div>
+    </div>
+
+    <div class="g2">
+      <div>
+        <p style="font-size:11.5px;font-weight:800;color:var(--a1);margin-bottom:7px;">클린 코드의 핵심 가치 ⭐</p>
+        <ul class="il">
+          <li><strong>가독성(Readability) ⭐:</strong> 코드는 쓰는 것보다 읽는 시간이 10:1 — 읽기 쉬운 코드가 좋은 코드</li>
+          <li><strong>단순성(Simplicity):</strong> 복잡성은 모든 문제의 근원 — KISS(Keep It Simple Stupid)</li>
+          <li><strong>의도 표현(Expressive):</strong> 코드가 개발자의 의도를 명확히 전달</li>
+          <li><strong>유지보수성:</strong> 변경하기 쉬운 코드 — 수정 비용 최소화</li>
+          <li><strong>중복 제거 ⭐:</strong> DRY(Don't Repeat Yourself) 원칙</li>
+        </ul>
+      </div>
+      <div>
+        <p style="font-size:11.5px;font-weight:800;color:var(--a4);margin-bottom:7px;">나쁜 코드의 비용 ⭐</p>
+        <ul class="il">
+          <li><strong>생산성 저하:</strong> 레거시 코드 이해에 시간 대부분 소비</li>
+          <li><strong>나쁜 코드가 나쁜 코드를 낳음:</strong> 급히 작성한 코드에 급히 코드 추가</li>
+          <li><strong>기술 부채 누적:</strong> 리팩토링 없이 기능만 추가 시 복잡도 급증</li>
+          <li><strong>재작성 유혹:</strong> 처음부터 다시 짜고 싶은 충동 → 더 나빠지는 경우 多</li>
+          <li><strong>LeBlanc의 법칙 ⭐:</strong> "나중은 결코 오지 않는다(Later equals never)"</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- 클린코드 전체 원칙 SVG -->
+    <svg viewBox="0 0 720 80" style="width:100%;background:var(--s2);border-radius:9px;border:1px solid var(--bdr);margin:10px 0;">
+      <rect x="8"   y="8" width="95" height="64" fill="rgba(96,165,250,.08)"  stroke="#60a5fa" stroke-width="1.5" rx="6"/>
+      <text x="55"  y="32" text-anchor="middle" font-family="Noto Sans KR" font-size="11" fill="#60a5fa" font-weight="bold">🏷️ 명명</text>
+      <text x="55"  y="48" text-anchor="middle" font-family="Noto Sans KR" font-size="9"  fill="#64748b">의도를 드러내는</text>
+      <text x="55"  y="62" text-anchor="middle" font-family="Noto Sans KR" font-size="9"  fill="#64748b">이름</text>
+      <rect x="112" y="8" width="95" height="64" fill="rgba(52,211,153,.08)"  stroke="#34d399" stroke-width="1.5" rx="6"/>
+      <text x="159" y="32" text-anchor="middle" font-family="Noto Sans KR" font-size="11" fill="#34d399" font-weight="bold">⚙️ 함수</text>
+      <text x="159" y="48" text-anchor="middle" font-family="Noto Sans KR" font-size="9"  fill="#64748b">작게·한 가지만</text>
+      <text x="159" y="62" text-anchor="middle" font-family="Noto Sans KR" font-size="9"  fill="#64748b">·추상화 수준</text>
+      <rect x="216" y="8" width="95" height="64" fill="rgba(251,191,36,.07)"  stroke="#fbbf24" stroke-width="1.5" rx="6"/>
+      <text x="263" y="32" text-anchor="middle" font-family="Noto Sans KR" font-size="11" fill="#fbbf24" font-weight="bold">💬 주석</text>
+      <text x="263" y="48" text-anchor="middle" font-family="Noto Sans KR" font-size="9"  fill="#64748b">코드로 표현</text>
+      <text x="263" y="62" text-anchor="middle" font-family="Noto Sans KR" font-size="9"  fill="#64748b">최소화</text>
+      <rect x="320" y="8" width="95" height="64" fill="rgba(248,113,113,.07)"  stroke="#f87171" stroke-width="1.5" rx="6"/>
+      <text x="367" y="32" text-anchor="middle" font-family="Noto Sans KR" font-size="11" fill="#f87171" font-weight="bold">🚨 오류</text>
+      <text x="367" y="48" text-anchor="middle" font-family="Noto Sans KR" font-size="9"  fill="#64748b">예외·null 지양</text>
+      <text x="367" y="62" text-anchor="middle" font-family="Noto Sans KR" font-size="9"  fill="#64748b">Try-Catch</text>
+      <rect x="424" y="8" width="95" height="64" fill="rgba(167,139,250,.07)"  stroke="#a78bfa" stroke-width="1.5" rx="6"/>
+      <text x="471" y="32" text-anchor="middle" font-family="Noto Sans KR" font-size="11" fill="#a78bfa" font-weight="bold">🧪 테스트</text>
+      <text x="471" y="48" text-anchor="middle" font-family="Noto Sans KR" font-size="9"  fill="#64748b">FIRST 원칙</text>
+      <text x="471" y="62" text-anchor="middle" font-family="Noto Sans KR" font-size="9"  fill="#64748b">TDD</text>
+      <rect x="528" y="8" width="95" height="64" fill="rgba(251,146,60,.07)"  stroke="#fb923c" stroke-width="1.5" rx="6"/>
+      <text x="575" y="32" text-anchor="middle" font-family="Noto Sans KR" font-size="11" fill="#fb923c" font-weight="bold">🏛️ 클래스</text>
+      <text x="575" y="48" text-anchor="middle" font-family="Noto Sans KR" font-size="9"  fill="#64748b">작게·SRP</text>
+      <text x="575" y="62" text-anchor="middle" font-family="Noto Sans KR" font-size="9"  fill="#64748b">높은 응집도</text>
+      <rect x="632" y="8" width="82" height="64" fill="rgba(244,114,182,.07)"  stroke="#f472b6" stroke-width="1.5" rx="6"/>
+      <text x="673" y="32" text-anchor="middle" font-family="Noto Sans KR" font-size="11" fill="#f472b6" font-weight="bold">✨ 창발성</text>
+      <text x="673" y="48" text-anchor="middle" font-family="Noto Sans KR" font-size="9"  fill="#64748b">4규칙</text>
+      <text x="673" y="62" text-anchor="middle" font-family="Noto Sans KR" font-size="9"  fill="#64748b">Kent Beck</text>
+    </svg>
+    <div class="memo">클린코드=가독성·단순성·의도표현·DRY / LeBlanc의법칙="나중은 결코 오지 않는다" / 코드 읽기:쓰기=10:1</div>
+  </div>
+</div>
+
+<!-- P2: 명명 규칙 -->
+<div class="pnl" id="p2">
+  <div class="card">
+    <div class="card-h"><div class="ico ib">🏷️</div><h3>의미 있는 이름 (Meaningful Names) ⭐⭐</h3></div>
+    <div style="background:var(--s2);border:1px solid rgba(96,165,250,.25);border-radius:9px;padding:12px;margin-bottom:10px;font-size:12.5px;line-height:1.8;">
+      "이름 짓기는 소프트웨어에서 가장 어려운 일 중 하나" — 좋은 이름은 <em style="color:var(--a3);font-style:normal;">의도를 드러내고</em>, 코드를 읽는 사람이 혼란 없이 이해할 수 있게 해야 함
+    </div>
+
+    <div class="acc open" onclick="this.classList.toggle('open')">
+      <div class="acc-h"><div class="acc-title" style="color:var(--a1);">① 의도를 드러내는 이름 (Intention-Revealing Names) ⭐</div><div class="acc-tgl">▾</div></div>
+      <div class="acc-body">
+        <div class="g2">
+          <div>
+            <p style="font-size:10.5px;font-weight:700;color:var(--a4);margin-bottom:4px;">❌ 나쁜 이름</p>
+            <div class="code"><span class="bad">int d;              // 경과 시간 (일)?</span>
+<span class="bad">int[] a;            // 무엇의 배열?</span>
+<span class="bad">void proc(int x){...} // proc? x?</span>
+<span class="bad">boolean flag;       // 어떤 상태?</span>
+<span class="bad">String str;         // 무슨 문자열?</span>
+<span class="bad">Object o;           // 의미 없음</span></div>
+          </div>
+          <div>
+            <p style="font-size:10.5px;font-weight:700;color:var(--a2);margin-bottom:4px;">✅ 좋은 이름</p>
+            <div class="code"><span class="g">int elapsedDays;    // 경과 일수</span>
+<span class="g">int[] activeUsers;  // 활성 사용자 목록</span>
+<span class="g">void sendEmail(String recipient)</span>
+<span class="g">boolean isLoggedIn; // 로그인 상태</span>
+<span class="g">String customerName; // 고객 이름</span>
+<span class="g">Order pendingOrder; // 대기 중인 주문</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="acc" onclick="this.classList.toggle('open')">
+      <div class="acc-h"><div class="acc-title" style="color:var(--a3);">② 그릇된 정보·의미 있는 구분·발음·검색 가능한 이름 ⭐</div><div class="acc-tgl">▾</div></div>
+      <div class="acc-body">
+        <table>
+          <thead><tr><th>원칙</th><th>나쁜 예</th><th>좋은 예</th><th>이유</th></tr></thead>
+          <tbody>
+            <tr><td><strong>그릇된 정보 회피 ⭐</strong></td><td><span class="code" style="display:inline;padding:1px 4px;">accountList</span> (List 아님)</td><td><span class="code" style="display:inline;padding:1px 4px;">accounts</span></td><td>List가 아닌데 List → 혼동</td></tr>
+            <tr><td><strong>의미 있는 구분</strong></td><td><span class="code" style="display:inline;padding:1px 4px;">ProductData vs ProductInfo</span></td><td><span class="code" style="display:inline;padding:1px 4px;">Product</span></td><td>Data·Info는 의미 없는 구분</td></tr>
+            <tr><td><strong>발음 가능한 이름</strong></td><td><span class="code" style="display:inline;padding:1px 4px;">genymdhms</span></td><td><span class="code" style="display:inline;padding:1px 4px;">generationTimestamp</span></td><td>발음할 수 없으면 논의 불가</td></tr>
+            <tr><td><strong>검색 가능한 이름 ⭐</strong></td><td><span class="code" style="display:inline;padding:1px 4px;">7 (magic number)</span></td><td><span class="code" style="display:inline;padding:1px 4px;">MAX_WORK_DAYS = 7</span></td><td>숫자는 검색 불가·의미 불명확</td></tr>
+            <tr><td><strong>인코딩 지양 ⭐</strong></td><td><span class="code" style="display:inline;padding:1px 4px;">m_name, strName, IInterface</span></td><td><span class="code" style="display:inline;padding:1px 4px;">name, Interface명 그대로</span></td><td>헝가리안 표기법 지양</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="acc" onclick="this.classList.toggle('open')">
+      <div class="acc-h"><div class="acc-title" style="color:var(--a2);">③ 클래스·메서드·범위별 명명 규칙 ⭐</div><div class="acc-tgl">▾</div></div>
+      <div class="acc-body">
+        <div class="g2">
+          <div>
+            <table>
+              <thead><tr><th>대상</th><th>규칙</th><th>예시</th></tr></thead>
+              <tbody>
+                <tr><td><strong>클래스명 ⭐</strong></td><td>명사·명사구 / 동사 금지</td><td>Customer, OrderService, WikiPage</td></tr>
+                <tr><td><strong>메서드명 ⭐</strong></td><td>동사·동사구</td><td>postPayment(), deletePage(), save()</td></tr>
+                <tr><td><strong>접근자(Getter)</strong></td><td>get 접두사</td><td>getName(), getAge()</td></tr>
+                <tr><td><strong>변경자(Setter)</strong></td><td>set 접두사</td><td>setName(), setAge()</td></tr>
+                <tr><td><strong>불리언 반환</strong></td><td>is·has·can 접두사</td><td>isLoggedIn(), hasPermission()</td></tr>
+                <tr><td><strong>상수</strong></td><td>UPPER_SNAKE_CASE</td><td>MAX_RETRY_COUNT</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <div>
+            <p style="font-size:11px;font-weight:800;color:var(--a5);margin-bottom:6px;">범위(Scope) 별 이름 길이</p>
+            <ul class="il">
+              <li><strong>넓은 범위(전역·클래스):</strong> 긴 이름 — 의미 명확히</li>
+              <li><strong>좁은 범위(지역변수·루프):</strong> 짧은 이름 허용 — i, j, k</li>
+              <li><strong>개념에 맞는 한 단어:</strong> fetch·retrieve·get 중 하나만 일관성 있게</li>
+              <li><strong>해법 영역 이름 ⭐:</strong> CS 용어 허용 (JobQueue, AccountVisitor)</li>
+              <li><strong>문제 영역 이름:</strong> 도메인 용어 우선 (Order, Invoice, Customer)</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="memo">클래스=명사 / 메서드=동사 / is·has·can=불리언 / 검색가능이름(매직넘버→상수) / 인코딩(헝가리안) 지양 / 범위넓을수록 긴이름</div>
+  </div>
+</div>
+
+<!-- P3: 함수·주석·형식 -->
+<div class="pnl" id="p3">
+  <div class="card">
+    <div class="card-h"><div class="ico ig">⚙️</div><h3>함수 (Functions) 원칙 ⭐⭐</h3></div>
+
+    <div class="acc open" onclick="this.classList.toggle('open')">
+      <div class="acc-h"><div class="acc-title" style="color:var(--a2);">함수 핵심 원칙 7가지 ⭐</div><div class="acc-tgl">▾</div></div>
+      <div class="acc-body">
+        <div style="display:flex;flex-direction:column;gap:7px;">
+          <div class="rule-card" style="border-color:var(--a2);">
+            <p style="font-size:12px;font-weight:800;color:var(--a2);">① 작게 만들어라 (Small) ⭐</p>
+            <p style="font-size:11.5px;margin-top:3px;line-height:1.5;">함수는 작을수록 좋다 — <strong>20줄 이하</strong> 권장. if/else·while 문 안의 블록은 1줄(함수 호출)이어야 한다. 들여쓰기는 1~2단계가 최대.</p>
+          </div>
+          <div class="rule-card" style="border-color:var(--a3);">
+            <p style="font-size:12px;font-weight:800;color:var(--a3);">② 한 가지만 해라 (Do One Thing) ⭐⭐</p>
+            <p style="font-size:11.5px;margin-top:3px;line-height:1.5;">"함수는 한 가지를 해야 한다. 그 한 가지를 잘 해야 한다. 그 한 가지만을 해야 한다." — 함수 내부를 여러 섹션으로 나눌 수 있다면 한 가지 이상 하는 것</p>
+          </div>
+          <div class="rule-card" style="border-color:var(--a1);">
+            <p style="font-size:12px;font-weight:800;color:var(--a1);">③ 추상화 수준을 일치시켜라 (One Level of Abstraction) ⭐</p>
+            <p style="font-size:11.5px;margin-top:3px;line-height:1.5;">한 함수 내의 모든 문장은 동일한 추상화 수준을 유지해야 한다 — 고수준(getHtml())과 저수준(buffer.append("\n"))을 섞지 않기</p>
+          </div>
+          <div class="rule-card" style="border-color:var(--a5);">
+            <p style="font-size:12px;font-weight:800;color:var(--a5);">④ 내려가기 규칙 (The Stepdown Rule)</p>
+            <p style="font-size:11.5px;margin-top:3px;line-height:1.5;">코드는 신문처럼 위에서 아래로 읽혀야 한다 — 함수 추상화 수준이 위→아래로 낮아짐</p>
+          </div>
+          <div class="rule-card" style="border-color:var(--a4);">
+            <p style="font-size:12px;font-weight:800;color:var(--a4);">⑤ 매개변수 최소화 ⭐</p>
+            <p style="font-size:11.5px;margin-top:3px;line-height:1.5;"><strong>0개가 이상적</strong>, 1개(단항), 2개(이항), 3개 이상은 피하라. 플래그 매개변수(boolean)는 금지 — 함수가 2가지 일을 한다는 신호</p>
+            <div class="code" style="margin-top:5px;"><span class="bad">render(bool isSuite)  // 금지! 2가지 일</span>
+<span class="g">renderForSuite();     // 두 함수로 분리</span>
+<span class="g">renderForSingleTest();</span></div>
+          </div>
+          <div class="rule-card" style="border-color:var(--a6);">
+            <p style="font-size:12px;font-weight:800;color:var(--a6);">⑥ 부수 효과 없애라 (No Side Effects) ⭐</p>
+            <p style="font-size:11.5px;margin-top:3px;line-height:1.5;">함수 이름과 다른 숨겨진 동작 금지 — checkPassword()가 세션도 초기화하면 안 됨</p>
+          </div>
+          <div class="rule-card" style="border-color:var(--a2);">
+            <p style="font-size:12px;font-weight:800;color:var(--a2);">⑦ 명령과 조회 분리 (CQS: Command-Query Separation) ⭐</p>
+            <p style="font-size:11.5px;margin-top:3px;line-height:1.5;">함수는 무언가를 수행하거나(Command) 대답하거나(Query) 둘 중 하나만 — 둘 다 하면 혼란<br>
+            <span style="font-family:'JetBrains Mono',monospace;font-size:9.5px;color:var(--a4);">if (set("username","bob")) // 설정하고 성공여부도?</span></p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="memo">함수: ①작게(20줄) ②한가지만 ③추상화수준일치 ④내려가기규칙 ⑤매개변수최소화(플래그금지) ⑥부수효과없음 ⑦CQS(명령조회분리)</div>
+  </div>
+
+  <div class="card">
+    <div class="card-h"><div class="ico iy">💬</div><h3>주석 (Comments) 원칙 ⭐</h3></div>
+    <div style="background:var(--s2);border:1px solid rgba(251,191,36,.25);border-radius:9px;padding:12px;margin-bottom:10px;font-size:12.5px;line-height:1.8;">
+      "주석은 나쁜 코드를 보완하지 못한다. 코드로 의도를 표현하라." — 좋은 코드는 주석이 필요 없다. 주석을 달아야 한다면 먼저 코드를 개선할 방법을 찾아라.
+    </div>
+    <div class="g2">
+      <div>
+        <p style="font-size:11.5px;font-weight:800;color:var(--a2);margin-bottom:6px;">✅ 좋은 주석 (허용)</p>
+        <ul class="il">
+          <li><strong>법적 주석:</strong> 저작권·라이선스 등</li>
+          <li><strong>TODO 주석:</strong> 아직 구현 안 된 것 표시</li>
+          <li><strong>경고 주석:</strong> 특정 이유로 결과가 다를 수 있음</li>
+          <li><strong>의도 설명:</strong> 코드로 표현 불가한 결정 이유</li>
+          <li><strong>공개 API JavaDoc:</strong> 공개 API는 문서 필요</li>
+        </ul>
+      </div>
+      <div>
+        <p style="font-size:11.5px;font-weight:800;color:var(--a4);margin-bottom:6px;">❌ 나쁜 주석 (제거 대상)</p>
+        <ul class="il">
+          <li><strong>코드 자체 반복 ⭐:</strong> 코드를 그대로 주석으로</li>
+          <li><strong>주석 처리한 코드 ⭐:</strong> git이 있으므로 삭제하면 됨</li>
+          <li><strong>너무 많은 설명:</strong> 한 줄 코드에 10줄 주석</li>
+          <li><strong>오래된 주석:</strong> 코드와 맞지 않는 주석</li>
+          <li><strong>의무적 JavaDoc:</strong> 모든 함수에 자동 생성 주석</li>
+          <li><strong>위치 표시:</strong> // Actions ///////////// 구분선</li>
+        </ul>
+      </div>
+    </div>
+    <div class="code"><span class="bad">// 나쁜 주석 예시</span>
+<span class="bad">// 직원이 복지 혜택을 받을 수 있는지 검사한다</span>
+<span class="bad">if ((employee.flags & HOURLY_FLAG) && (employee.age > 65))</span>
+
+<span class="g">// 좋은 코드 — 주석 필요 없음</span>
+<span class="g">if (employee.isEligibleForFullBenefits())</span></div>
+    <div class="memo">주석=나쁜 코드를 보완 못함 / 코드로 의도 표현 / 주석 처리한 코드=즉시 삭제 / 좋은주석=법적·TODO·경고·의도 / 나쁜주석=반복·오래됨</div>
+  </div>
+
+  <div class="card">
+    <div class="card-h"><div class="ico ip">📐</div><h3>형식 (Formatting) 원칙 ⭐</h3></div>
+    <div class="g2">
+      <div>
+        <p style="font-size:11.5px;font-weight:800;color:var(--a5);margin-bottom:6px;">세로 형식</p>
+        <ul class="il">
+          <li><strong>신문 기사처럼 ⭐:</strong> 위쪽=고수준 요약, 아래=세부 사항</li>
+          <li><strong>개념 분리:</strong> 빈 줄로 관련 코드 그룹 구분</li>
+          <li><strong>관련 코드 밀집:</strong> 관련 있는 코드는 세로로 가까이</li>
+          <li><strong>변수 선언:</strong> 사용 위치에 가깝게 선언</li>
+          <li><strong>인스턴스 변수:</strong> 클래스 맨 위에 선언</li>
+          <li><strong>종속 함수:</strong> 호출하는 함수를 호출되는 함수 위에</li>
+        </ul>
+      </div>
+      <div>
+        <p style="font-size:11.5px;font-weight:800;color:var(--a6);margin-bottom:6px;">가로 형식</p>
+        <ul class="il">
+          <li><strong>짧은 행 ⭐:</strong> 80~120자 이내 권장</li>
+          <li><strong>가로 정렬 지양:</strong> 타입 정렬 위해 공백 과용 금지</li>
+          <li><strong>들여쓰기 ⭐:</strong> 범위(Scope)를 시각적으로 표현 — 들여쓰기 생략 금지</li>
+          <li><strong>팀 규칙 ⭐:</strong> 개인 취향보다 팀 규칙 우선 — 일관성이 핵심</li>
+        </ul>
+      </div>
+    </div>
+    <div class="memo">형식: 신문기사처럼(위=요약·아래=세부) / 빈줄=개념분리 / 행길이 80~120자 / 들여쓰기생략금지 / 팀규칙우선</div>
+  </div>
+</div>
+
+<!-- P4: 오류 처리·경계 -->
+<div class="pnl" id="p4">
+  <div class="card">
+    <div class="card-h"><div class="ico ir">🚨</div><h3>오류 처리 (Error Handling) 원칙 ⭐</h3></div>
+    <div style="background:var(--s2);border:1px solid rgba(248,113,113,.25);border-radius:9px;padding:12px;margin-bottom:10px;font-size:12.5px;line-height:1.8;">
+      "오류 처리는 중요하다. 하지만 오류 처리 코드로 인해 프로그램 논리를 이해하기 어려워진다면 깨끗한 코드라 부르기 어렵다."
+    </div>
+
+    <div class="acc open" onclick="this.classList.toggle('open')">
+      <div class="acc-h"><div class="acc-title" style="color:var(--a4);">오류 처리 핵심 원칙 ⭐</div><div class="acc-tgl">▾</div></div>
+      <div class="acc-body">
+        <div style="display:flex;flex-direction:column;gap:7px;">
+          <div class="rule-card" style="border-color:var(--a4);">
+            <p style="font-size:12px;font-weight:800;color:var(--a4);">① 오류 코드보다 예외를 사용하라 ⭐</p>
+            <div class="code"><span class="bad">// 나쁨 — 오류 코드 확인 강제</span>
+<span class="bad">if (deletePage(page) == ERROR_RESPONSE) {</span>
+<span class="bad">  if (registry.delete(page.name) == ERROR_RESPONSE) { ... }</span>
+<span class="bad">}</span>
+<span class="g">// 좋음 — 예외로 분리</span>
+<span class="kw">try</span> {
+  deletePage(page);
+  registry.delete(page.name);
+} <span class="kw">catch</span> (Exception e) {
+  logger.log(e.getMessage());
+}</div>
+          </div>
+          <div class="rule-card" style="border-color:var(--a3);">
+            <p style="font-size:12px;font-weight:800;color:var(--a3);">② Try-Catch-Finally를 먼저 작성하라 ⭐</p>
+            <p style="font-size:11.5px;margin-top:3px;">예외가 발생할 코드를 먼저 try-catch로 작성 — 어떤 상태든 일관성 있게 동작하도록 범위 정의</p>
+          </div>
+          <div class="rule-card" style="border-color:var(--a4);">
+            <p style="font-size:12px;font-weight:800;color:var(--a4);">③ null을 반환하지 마라 ⭐⭐</p>
+            <p style="font-size:11.5px;margin-top:3px;">null 반환 시 호출자가 null 체크 강제 — NullPointerException의 근원. 대신 빈 컬렉션·Optional·Null Object 패턴 사용</p>
+            <div class="code"><span class="bad">// 나쁨</span>
+<span class="bad">List&lt;Employee&gt; getEmployees() { return null; } // null 반환 금지!</span>
+<span class="g">// 좋음</span>
+<span class="g">List&lt;Employee&gt; getEmployees() { return Collections.emptyList(); }</span></div>
+          </div>
+          <div class="rule-card" style="border-color:var(--a4);">
+            <p style="font-size:12px;font-weight:800;color:var(--a4);">④ null을 전달하지 마라 ⭐</p>
+            <p style="font-size:11.5px;margin-top:3px;">함수 호출 시 null을 인수로 전달 금지 — null 전달이 필요하다면 설계 자체가 잘못된 것. 방어적 프로그래밍으로 null 체크보다 null을 원천 차단</p>
+          </div>
+          <div class="rule-card" style="border-color:var(--a2);">
+            <p style="font-size:12px;font-weight:800;color:var(--a2);">⑤ 미확인(Unchecked) 예외를 사용하라 ⭐</p>
+            <p style="font-size:11.5px;margin-top:3px;">확인(Checked) 예외는 OCP 위반 — 저수준 메서드의 예외를 고수준 메서드 시그니처에 추가 강제. RuntimeException(Unchecked) 사용 권장</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="memo">오류처리: 오류코드→예외 / null반환금지(emptyList·Optional) / null전달금지 / Unchecked예외 사용 / Try-Catch-Finally 먼저 작성</div>
+  </div>
+
+  <div class="card">
+    <div class="card-h"><div class="ico ig">🔗</div><h3>경계 (Boundaries) & 디미터 법칙 ⭐</h3></div>
+    <div class="g2">
+      <div>
+        <p style="font-size:11.5px;font-weight:800;color:var(--a2);margin-bottom:7px;">외부 코드 경계 관리 ⭐</p>
+        <ul class="il">
+          <li><strong>경계 패키지 학습 테스트:</strong> 외부 API를 사용하기 전에 테스트 코드로 먼저 학습</li>
+          <li><strong>Adapter 패턴 ⭐:</strong> 외부 라이브러리를 Adapter로 감싸서 인터페이스 변환 → 교체 용이</li>
+          <li><strong>경계 격리:</strong> 외부 코드와 내부 코드 사이에 명확한 경계 설정</li>
+          <li><strong>Map 노출 금지 ⭐:</strong> Map을 공개 API에 노출하지 말고 클래스로 감싸기</li>
+        </ul>
+      </div>
+      <div>
+        <p style="font-size:11.5px;font-weight:800;color:var(--a3);margin-bottom:7px;">디미터 법칙 (Law of Demeter) ⭐⭐</p>
+        <p style="font-size:11px;line-height:1.6;margin-bottom:6px;">모듈은 자신이 직접 아는 객체의 메서드만 호출해야 한다 — "친구 친구에게 말을 걸지 마라"</p>
+        <div class="code"><span class="bad">// 위반 — 기차 충돌(Train Wreck)</span>
+<span class="bad">String output = ctxt.getOptions().getScratchDir().getAbsolutePath();</span>
+<span class="g">// 준수 — 직접 원하는 것을 요청</span>
+<span class="g">String output = ctxt.createScratchFileDirectory();</span></div>
+        <ul class="il" style="margin-top:6px;">
+          <li><strong>허용:</strong> 자신·매개변수·생성 객체·직접 필드 객체의 메서드</li>
+          <li><strong>기차 충돌(Train Wreck) ⭐:</strong> a.getB().getC().getD() 형태 → 위반</li>
+        </ul>
+      </div>
+    </div>
+    <div class="memo">경계: Adapter로 외부라이브러리 감싸기·Map공개금지 / 디미터법칙=친구친구금지 / 기차충돌=a.getB().getC()형태 위반</div>
+  </div>
+</div>
+
+<!-- P5: 단위 테스트 FIRST -->
+<div class="pnl" id="p5">
+  <div class="card">
+    <div class="card-h"><div class="ico ip">🧪</div><h3>단위 테스트 & FIRST 원칙 ⭐⭐</h3></div>
+    <div style="background:var(--s2);border:1px solid rgba(167,139,250,.25);border-radius:9px;padding:12px;margin-bottom:10px;font-size:12.5px;line-height:1.8;">
+      "테스트 코드는 실제 코드만큼 중요하다." — 테스트 코드가 지저분하면 변경 어려움 → 테스트가 없으면 코드 변경이 두려움 → 경직된 시스템
+    </div>
+
+    <!-- FIRST 원칙 SVG -->
+    <svg viewBox="0 0 720 110" style="width:100%;background:var(--s2);border-radius:9px;border:1px solid var(--bdr);margin:10px 0;">
+      <rect x="8"   y="10" width="130" height="90" fill="rgba(96,165,250,.08)"  stroke="#60a5fa" stroke-width="2" rx="7"/>
+      <text x="73"  y="40" text-anchor="middle" font-family="JetBrains Mono" font-size="22" font-weight="900" fill="#60a5fa">F</text>
+      <text x="73"  y="60" text-anchor="middle" font-family="Noto Sans KR" font-size="11" fill="#60a5fa" font-weight="bold">Fast</text>
+      <text x="73"  y="76" text-anchor="middle" font-family="Noto Sans KR" font-size="9"  fill="#64748b">빠른 실행</text>
+      <text x="73"  y="91" text-anchor="middle" font-family="Noto Sans KR" font-size="8"  fill="#64748b">느리면 실행 안 함</text>
+      <rect x="150" y="10" width="130" height="90" fill="rgba(52,211,153,.08)"  stroke="#34d399" stroke-width="2" rx="7"/>
+      <text x="215" y="40" text-anchor="middle" font-family="JetBrains Mono" font-size="22" font-weight="900" fill="#34d399">I</text>
+      <text x="215" y="60" text-anchor="middle" font-family="Noto Sans KR" font-size="11" fill="#34d399" font-weight="bold">Independent</text>
+      <text x="215" y="76" text-anchor="middle" font-family="Noto Sans KR" font-size="9"  fill="#64748b">독립적</text>
+      <text x="215" y="91" text-anchor="middle" font-family="Noto Sans KR" font-size="8"  fill="#64748b">테스트끼리 의존 금지</text>
+      <rect x="292" y="10" width="130" height="90" fill="rgba(251,191,36,.07)"  stroke="#fbbf24" stroke-width="2" rx="7"/>
+      <text x="357" y="40" text-anchor="middle" font-family="JetBrains Mono" font-size="22" font-weight="900" fill="#fbbf24">R</text>
+      <text x="357" y="60" text-anchor="middle" font-family="Noto Sans KR" font-size="11" fill="#fbbf24" font-weight="bold">Repeatable</text>
+      <text x="357" y="76" text-anchor="middle" font-family="Noto Sans KR" font-size="9"  fill="#64748b">반복 가능</text>
+      <text x="357" y="91" text-anchor="middle" font-family="Noto Sans KR" font-size="8"  fill="#64748b">어떤 환경에서도 동일</text>
+      <rect x="434" y="10" width="130" height="90" fill="rgba(248,113,113,.07)"  stroke="#f87171" stroke-width="2" rx="7"/>
+      <text x="499" y="40" text-anchor="middle" font-family="JetBrains Mono" font-size="22" font-weight="900" fill="#f87171">S</text>
+      <text x="499" y="60" text-anchor="middle" font-family="Noto Sans KR" font-size="11" fill="#f87171" font-weight="bold">Self-Validating</text>
+      <text x="499" y="76" text-anchor="middle" font-family="Noto Sans KR" font-size="9"  fill="#64748b">자가 검증</text>
+      <text x="499" y="91" text-anchor="middle" font-family="Noto Sans KR" font-size="8"  fill="#64748b">결과가 bool</text>
+      <rect x="576" y="10" width="136" height="90" fill="rgba(167,139,250,.07)"  stroke="#a78bfa" stroke-width="2" rx="7"/>
+      <text x="644" y="40" text-anchor="middle" font-family="JetBrains Mono" font-size="22" font-weight="900" fill="#a78bfa">T</text>
+      <text x="644" y="60" text-anchor="middle" font-family="Noto Sans KR" font-size="11" fill="#a78bfa" font-weight="bold">Timely</text>
+      <text x="644" y="76" text-anchor="middle" font-family="Noto Sans KR" font-size="9"  fill="#64748b">적시에 작성</text>
+      <text x="644" y="91" text-anchor="middle" font-family="Noto Sans KR" font-size="8"  fill="#64748b">코드 직전에 (TDD)</text>
+    </svg>
+
+    <div class="acc open" onclick="this.classList.toggle('open')">
+      <div class="acc-h"><div class="acc-title" style="color:var(--a5);">FIRST 원칙 상세 & 깨끗한 테스트 규칙 ⭐</div><div class="acc-tgl">▾</div></div>
+      <div class="acc-body">
+        <table>
+          <thead><tr><th>원칙</th><th>전체 이름</th><th>의미</th><th>위반 시</th></tr></thead>
+          <tbody>
+            <tr><td><strong style="color:var(--a1);">F — Fast</strong></td><td>빠른 실행</td><td>테스트가 빨리 실행되어야 함</td><td>느리면 자주 실행 안 함 → 문제 늦게 발견</td></tr>
+            <tr><td><strong style="color:var(--a2);">I — Independent</strong></td><td>독립적</td><td>테스트들이 서로 의존하지 않음 / 순서 무관</td><td>한 테스트 실패가 다른 테스트 연쇄 실패</td></tr>
+            <tr><td><strong style="color:var(--a3);">R — Repeatable</strong></td><td>반복 가능</td><td>어떤 환경(로컬·CI·운영)에서도 동일 결과</td><td>환경 의존 시 테스트 신뢰 불가</td></tr>
+            <tr><td><strong style="color:var(--a4);">S — Self-Validating</strong></td><td>자가 검증</td><td>실행 결과가 boolean(Pass/Fail) — 수동 확인 불필요</td><td>로그를 수동으로 읽어야 한다면 오류</td></tr>
+            <tr><td><strong style="color:var(--a5);">T — Timely</strong></td><td>적시에</td><td>테스트는 실제 코드 작성 직전에 작성 (TDD)</td><td>코드 작성 후 테스트 → 테스트하기 어려운 설계</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="acc" onclick="this.classList.toggle('open')">
+      <div class="acc-h"><div class="acc-title" style="color:var(--a3);">깨끗한 테스트 코드 & 테스트 당 assert 하나 ⭐</div><div class="acc-tgl">▾</div></div>
+      <div class="acc-body">
+        <div class="g2">
+          <div>
+            <ul class="il">
+              <li><strong>테스트 당 개념 하나 ⭐:</strong> 테스트 함수에서 하나의 개념만 검증 — assert가 여러 개여도 같은 개념이면 괜찮음</li>
+              <li><strong>Build-Operate-Check 패턴:</strong> 테스트 자료 만들고(Build) → 조작하고(Operate) → 검증(Check)</li>
+              <li><strong>Given-When-Then ⭐:</strong> 사전조건(Given) → 행동(When) → 검증(Then) — BDD 스타일</li>
+              <li><strong>테스트 코드도 리팩토링 ⭐:</strong> 중복 제거·명확한 이름·간결하게</li>
+            </ul>
+          </div>
+          <div class="code"><span class="cm">// 좋은 테스트 — Given-When-Then</span>
+@Test
+<span class="kw">void</span> <span class="cls">calculateTotalPrice_withDiscount</span>() {
+  <span class="cm">// Given</span>
+  Order order = <span class="kw">new</span> Order(100, 2);
+  DiscountPolicy policy = <span class="kw">new</span> TenPercentDiscount();
+
+  <span class="cm">// When</span>
+  <span class="kw">int</span> total = order.calculateTotal(policy);
+
+  <span class="cm">// Then</span>
+  assertEquals(180, total);
+}</div>
+        </div>
+      </div>
+    </div>
+    <div class="memo">FIRST=Fast(빠름)·Independent(독립)·Repeatable(반복)·Self-Validating(자가검증)·Timely(적시) / 테스트당 개념하나 / Given-When-Then</div>
+  </div>
+</div>
+
+<!-- P6: 클래스·창발성 -->
+<div class="pnl" id="p6">
+  <div class="card">
+    <div class="card-h"><div class="ico io">🏛️</div><h3>클래스 (Classes) 원칙 ⭐</h3></div>
+    <div class="g2">
+      <div>
+        <p style="font-size:11.5px;font-weight:800;color:var(--a6);margin-bottom:7px;">클래스 핵심 원칙</p>
+        <ul class="il">
+          <li><strong>클래스도 작게 ⭐:</strong> 클래스는 작아야 한다 — 함수와 동일한 원칙</li>
+          <li><strong>단일 책임 원칙(SRP) ⭐:</strong> 변경의 이유가 하나여야 한다</li>
+          <li><strong>높은 응집도(Cohesion) ⭐:</strong> 클래스의 메서드와 변수가 서로 관련되어 있어야 함</li>
+          <li><strong>낮은 결합도(Coupling):</strong> 클래스 간 의존도 최소화</li>
+          <li><strong>변경으로부터 격리 ⭐:</strong> 구체적인 클래스에 의존하지 말고 추상화에 의존 (DIP)</li>
+        </ul>
+      </div>
+      <div>
+        <p style="font-size:11.5px;font-weight:800;color:var(--a3);margin-bottom:7px;">응집도 & 클래스 크기 ⭐</p>
+        <div class="code"><span class="cm">// 응집도 낮은 클래스 (나쁨)</span>
+<span class="kw">class</span> <span class="cls">SuperDashboard</span> {
+  <span class="bad">// 700줄, 65개 메서드</span>
+  <span class="bad">// 보안·렌더링·비즈니스·DB 모두 담당</span>
+}
+
+<span class="cm">// 응집도 높은 클래스 (좋음)</span>
+<span class="kw">class</span> <span class="cls">Version</span> {
+  <span class="g">getMajorVersionNumber();</span>
+  <span class="g">getMinorVersionNumber();</span>
+  <span class="g">getBuildNumber();</span>
+  <span class="cm">// 버전 정보만 — 응집도 높음</span>
+}</div>
+        <ul class="il" style="margin-top:6px;">
+          <li><strong>LCOM (응집도 결여) ⭐:</strong> 낮을수록 좋음 — 메서드들이 같은 필드 사용</li>
+        </ul>
+      </div>
+    </div>
+    <div class="memo">클래스: 작게·SRP·높은응집도·낮은결합도·변경격리(DIP) / 응집도=클래스내 메서드·변수 관련성 / LCOM 낮을수록 좋음</div>
+  </div>
+
+  <div class="card">
+    <div class="card-h"><div class="ico ip">✨</div><h3>창발성 (Emergence) — Kent Beck의 단순한 설계 4규칙 ⭐⭐</h3></div>
+    <div style="background:var(--s2);border:1px solid rgba(167,139,250,.25);border-radius:9px;padding:12px;margin-bottom:10px;font-size:12.5px;line-height:1.8;">
+      <strong style="color:var(--a5)">창발적 설계</strong>: Kent Beck이 제안한 단순한 설계 4가지 규칙을 따르면 우수한 설계가 <em style="color:var(--a3);font-style:normal;">자연스럽게 창발(Emerge)</em>된다 — 각 규칙은 중요도 순서로 나열
+    </div>
+
+    <!-- 4규칙 SVG -->
+    <svg viewBox="0 0 720 200" style="width:100%;background:var(--s2);border-radius:9px;border:1px solid var(--bdr);margin:10px 0;">
+      <!-- 규칙 1 -->
+      <rect x="8" y="8" width="335" height="88" fill="rgba(248,113,113,.08)" stroke="#f87171" stroke-width="2" rx="7"/>
+      <text x="30" y="32" font-family="JetBrains Mono" font-size="11" fill="#f87171" font-weight="900">규칙 1 ★★★★★ (최우선)</text>
+      <text x="30" y="52" font-family="Noto Sans KR" font-size="14" fill="#f87171" font-weight="900">모든 테스트를 실행하라</text>
+      <text x="30" y="70" font-family="Noto Sans KR" font-size="10" fill="#64748b">테스트 없는 시스템 = 제대로 검증 불가</text>
+      <text x="30" y="86" font-family="Noto Sans KR" font-size="10" fill="#64748b">테스트 가능한 설계 → 자연스럽게 클린 코드</text>
+      <!-- 규칙 2 -->
+      <rect x="353" y="8" width="360" height="88" fill="rgba(52,211,153,.07)" stroke="#34d399" stroke-width="2" rx="7"/>
+      <text x="375" y="32" font-family="JetBrains Mono" font-size="11" fill="#34d399" font-weight="900">규칙 2 (리팩토링)</text>
+      <text x="375" y="52" font-family="Noto Sans KR" font-size="14" fill="#34d399" font-weight="900">중복을 없애라</text>
+      <text x="375" y="70" font-family="Noto Sans KR" font-size="10" fill="#64748b">소규모 재사용 → Extract Method·Pull Up</text>
+      <text x="375" y="86" font-family="Noto Sans KR" font-size="10" fill="#64748b">공통 기능은 추상화로 — Template Method·Strategy</text>
+      <!-- 규칙 3 -->
+      <rect x="8" y="106" width="335" height="88" fill="rgba(96,165,250,.07)" stroke="#60a5fa" stroke-width="2" rx="7"/>
+      <text x="30" y="130" font-family="JetBrains Mono" font-size="11" fill="#60a5fa" font-weight="900">규칙 3 (리팩토링)</text>
+      <text x="30" y="150" font-family="Noto Sans KR" font-size="14" fill="#60a5fa" font-weight="900">프로그래머 의도를 표현하라</text>
+      <text x="30" y="168" font-family="Noto Sans KR" font-size="10" fill="#64748b">좋은 이름·작은 함수·주석 최소화</td>
+      <text x="30" y="184" font-family="Noto Sans KR" font-size="10" fill="#64748b">표준 명칭 사용 (Pattern 이름: Command, Visitor...)</text>
+      <!-- 규칙 4 -->
+      <rect x="353" y="106" width="360" height="88" fill="rgba(251,191,36,.06)" stroke="#fbbf24" stroke-width="2" rx="7"/>
+      <text x="375" y="130" font-family="JetBrains Mono" font-size="11" fill="#fbbf24" font-weight="900">규칙 4 (리팩토링)</text>
+      <text x="375" y="150" font-family="Noto Sans KR" font-size="14" fill="#fbbf24" font-weight="900">클래스와 메서드를 최소로</text>
+      <text x="375" y="168" font-family="Noto Sans KR" font-size="10" fill="#64748b">규칙 2·3을 지키되 불필요한 클래스·메서드 금지</text>
+      <text x="375" y="184" font-family="Noto Sans KR" font-size="10" fill="#64748b">독단적 규칙(모든 클래스에 인터페이스)은 지양</text>
+    </svg>
+
+    <div class="acc open" onclick="this.classList.toggle('open')">
+      <div class="acc-h"><div class="acc-title" style="color:var(--a5);">4규칙 상세 & 클린 코드 전체 연결 ⭐</div><div class="acc-tgl">▾</div></div>
+      <div class="acc-body">
+        <table>
+          <thead><tr><th>규칙 (우선순위 순)</th><th>세부 내용</th><th>관련 원칙</th></tr></thead>
+          <tbody>
+            <tr>
+              <td><strong style="color:var(--a4);">규칙 1: 테스트 실행 ⭐⭐</strong></td>
+              <td>테스트 없는 시스템은 검증 불가 / 테스트가 가능한 시스템을 만들면 → SRP·DIP 자연히 달성 / 테스트가 많을수록 리팩토링 두려움 감소</td>
+              <td>TDD·FIRST·SRP·DIP</td>
+            </tr>
+            <tr>
+              <td><strong style="color:var(--a2);">규칙 2: 중복 제거 ⭐</strong></td>
+              <td>코드 중복은 추가 작업·위험·불필요한 복잡도 / 소규모 중복도 적극 제거 / 규칙 1 통과 후 안전하게 리팩토링</td>
+              <td>DRY·Extract Method·Pull Up·Template</td>
+            </tr>
+            <tr>
+              <td><strong style="color:var(--a1);">규칙 3: 의도 표현 ⭐</strong></td>
+              <td>코드 작성자의 의도를 분명히 표현 / 좋은 이름·작은 함수·표준 패턴 명칭 / 주석보다 코드로</td>
+              <td>명명규칙·함수규칙·GoF패턴명</td>
+            </tr>
+            <tr>
+              <td><strong style="color:var(--a3);">규칙 4: 클래스·메서드 최소화</strong></td>
+              <td>과한 설계(Over Engineering) 방지 / 불필요한 추상화·클래스 생성 지양 / 실용적 관점 유지</td>
+              <td>YAGNI·KISS·SRP</td>
+            </tr>
+          </tbody>
+        </table>
+        <div style="background:rgba(167,139,250,.08);border:1px solid rgba(167,139,250,.25);border-radius:7px;padding:10px;margin-top:8px;">
+          <p style="font-size:11px;font-weight:700;color:var(--a5);margin-bottom:5px;">Clean Code 전체 원칙 연결 고리 ⭐</p>
+          <p style="font-size:11px;line-height:1.7;color:var(--txt);">
+            좋은 <strong style="color:var(--a3)">이름(명명)</strong> → 코드가 의도를 표현 → 주석 최소화 가능<br>
+            작은 <strong style="color:var(--a2)">함수</strong>(한 가지) → SRP 달성 → 클래스도 작아짐<br>
+            <strong style="color:var(--a4)">오류처리</strong>로 null 제거 → 디미터 법칙 준수 쉬워짐<br>
+            <strong style="color:var(--a5)">FIRST 테스트</strong> → 창발성 규칙 1 달성 → 안전한 리팩토링 → 중복 제거(규칙 2)<br>
+            <strong style="color:var(--a1)">SOLID 원칙</strong> + 창발성 4규칙 = 클린한 설계의 자연스러운 달성
+          </p>
+        </div>
+      </div>
+    </div>
+    <div class="memo">창발성 4규칙(Kent Beck): ①테스트실행(최우선) ②중복제거 ③의도표현 ④클래스·메서드최소 / 4규칙을 지키면 좋은 설계가 창발!</div>
+  </div>
+</div>
+
+<!-- P7: QA -->
+<div class="pnl" id="p7">
+  <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:7px;margin-bottom:12px;">
+    <div class="fb-wr" id="fbar" style="margin:0;">
+      <button class="fb on" data-f="all">전체</button>
+      <button class="fb" data-f="명명">🏷️ 명명</button>
+      <button class="fb" data-f="함수">⚙️ 함수</button>
+      <button class="fb" data-f="오류">🚨 오류·경계</button>
+      <button class="fb" data-f="테스트">🧪 FIRST</button>
+      <button class="fb" data-f="창발">✨ 창발성</button>
+      <button class="fb" data-f="OX">⭕ OX</button>
+    </div>
+    <div class="sc-b">정답: <span id="sc">0</span>/<span id="st">0</span></div>
+  </div>
+  <div id="ql"></div>
+</div>
+
+</div>
+<script>
+document.querySelectorAll('.tab').forEach(t=>t.addEventListener('click',()=>{
+  document.querySelectorAll('.tab,.pnl').forEach(x=>x.classList.remove('on'));
+  t.classList.add('on');document.getElementById(t.dataset.p).classList.add('on');
+}));
+const QA=[
+  {cat:'명명',diff:'easy',
+   q:'Clean Code의 명명 원칙에서 클래스 이름과 메서드 이름 작성 규칙으로 가장 적절한 것은?',
+   cs:['클래스 이름은 동사, 메서드 이름은 명사로 작성한다.','클래스 이름은 명사 또는 명사구로, 메서드 이름은 동사 또는 동사구로 작성한다.','클래스와 메서드 모두 동사로 작성한다.','이름 길이는 항상 5자 이하로 유지한다.'],ans:1,
+   exp:'<strong>명명 규칙</strong>: <em>클래스</em>=명사/명사구(Customer, OrderService, WikiPage). <em>메서드</em>=동사/동사구(postPayment, deletePage, save). 불리언 반환 메서드는 is·has·can 접두사(isLoggedIn, hasPermission). 접근자=get 접두사, 변경자=set 접두사. 상수=UPPER_SNAKE_CASE(MAX_RETRY_COUNT).'},
+  {cat:'명명',diff:'mid',
+   q:'"검색 가능한 이름(Searchable Names)"을 사용해야 하는 이유로 가장 적절한 것은?',
+   cs:['이름이 길수록 검색 엔진에서 잘 찾을 수 있기 때문에','숫자나 단일 문자는 코드에서 검색하기 어렵고 의미를 알 수 없으므로, MAX_WORK_DAYS처럼 의미 있는 상수명을 사용해야 하기 때문에','짧은 이름이 메모리를 적게 사용하기 때문에','영어로 된 이름만 검색 가능하기 때문에'],ans:1,
+   exp:'<strong>검색 가능한 이름</strong>: 코드에서 숫자 7이나 변수 e를 검색하면 수백 개가 검색되어 원하는 것을 찾기 어렵습니다. <em>MAX_WORK_DAYS = 7</em>처럼 의미 있는 이름은 검색이 쉽고 의도도 명확합니다. "이름 길이는 범위에 비례해야 한다" — 단일 문자 변수는 작은 범위(루프 내 i, j)에서만 허용.'},
+  {cat:'함수',diff:'mid',
+   q:'Clean Code에서 함수의 매개변수 수에 대한 원칙으로 가장 적절한 것은?',
+   cs:['매개변수는 최대 10개까지 허용된다.','이상적인 매개변수 수는 0개이며, 3개 이상은 피하고 플래그(boolean) 매개변수는 금지한다.','매개변수 수는 성능에 영향을 주므로 5개 이상은 금지한다.','매개변수가 많을수록 함수가 더 유연해지므로 권장된다.'],ans:1,
+   exp:'<strong>매개변수 원칙</strong>: <em>0개(무항)가 이상적</em>, 1개(단항)·2개(이항)까지는 괜찮음, 3개(삼항) 이상은 가능한 피하고, 4개 이상은 특별한 이유가 없는 한 사용 금지. <em>플래그(boolean) 매개변수 금지</em> — 함수가 2가지 일을 한다는 신호. 대신 두 개의 함수로 분리: renderForSuite()·renderForSingleTest().'},
+  {cat:'함수',diff:'hard',
+   q:'CQS(Command-Query Separation, 명령-조회 분리) 원칙의 내용으로 가장 적절한 것은?',
+   cs:['명령과 조회는 반드시 하나의 함수에서 처리해야 효율적이다.','함수는 무언가를 수행하거나(Command·상태 변경) 대답하거나(Query·값 반환) 둘 중 하나만 해야 하며 둘 다 해서는 안 된다.','조회 함수는 데이터베이스를 수정할 수 있다.','명령 함수는 반드시 반환값이 있어야 한다.'],ans:1,
+   exp:'<strong>CQS(명령-조회 분리)</strong>: <em>Command</em>=상태를 변경하지만 반환값 없음. <em>Query</em>=값을 반환하지만 상태 변경 없음. 혼합 금지: if (set("username","bob")) → set이 설정도 하고 성공 여부도 반환하면 혼란. 분리: boolean attributeExists("username"); / setAttribute("username","bob");. CQRS 패턴의 기반 원칙.'},
+  {cat:'오류',diff:'mid',
+   q:'Clean Code에서 null을 반환하지 말라는 원칙의 이유와 대안으로 가장 적절한 것은?',
+   cs:['null 값이 메모리를 낭비하기 때문에, null 대신 0을 반환한다.','null 반환은 호출자에게 null 체크를 강제하고 NullPointerException의 근원이 되므로, 빈 컬렉션·Optional·Null Object 패턴을 대신 사용한다.','null은 오류를 숨기는 효과가 있으므로 제거해야 한다.','null은 보안 위험이 있으므로 항상 예외를 던진다.'],ans:1,
+   exp:'<strong>null 반환 금지</strong>: null을 반환하면 ①호출자마다 null 체크 강제 ②NullPointerException 위험 ③코드 복잡도 증가. 대안: ①<em>빈 컬렉션</em> 반환(Collections.emptyList()) ②<em>Optional</em>&lt;T&gt; ③<em>Null Object 패턴</em>(기본 동작을 하는 특수 객체). null 전달도 금지 — 함수가 null 인수를 받는다면 설계 자체가 잘못된 것.'},
+  {cat:'오류',diff:'mid',
+   q:'디미터 법칙(Law of Demeter)을 위반하는 코드 패턴으로 가장 적절한 것은?',
+   cs:['employee.getName()','orderService.createOrder(product)','ctxt.getOptions().getScratchDir().getAbsolutePath()','customer.calculateTotalPurchase()'],ans:2,
+   exp:'<strong>디미터 법칙 위반 — 기차 충돌(Train Wreck)</strong>: <em>ctxt.getOptions().getScratchDir().getAbsolutePath()</em>처럼 여러 객체를 연쇄 접근하는 패턴. 디미터 법칙: "모듈은 자신이 직접 아는 객체의 메서드만 호출해야 한다". 허용 대상: 자신·매개변수·생성한 객체·직접 소유 필드. 수정: ctxt.createScratchFileDirectory() → 원하는 것을 직접 요청.'},
+  {cat:'테스트',diff:'easy',
+   q:'FIRST 원칙에서 "I"가 의미하는 것으로 가장 적절한 것은?',
+   cs:['Isolated — 외부 시스템과 완전히 격리되어야 한다.','Independent — 각 테스트는 서로 의존하지 않으며 실행 순서에 무관하게 동일한 결과를 내야 한다.','Integrated — 통합 테스트를 포함해야 한다.','Instant — 즉시 실행되어야 한다.'],ans:1,
+   exp:'<strong>FIRST의 I = Independent(독립적)</strong>: 각 테스트는 <em>다른 테스트에 의존하지 않아야</em> 합니다. 테스트 실행 순서가 바뀌어도 동일한 결과. 한 테스트 실패가 다른 테스트 연쇄 실패를 만들면 안 됩니다. FIRST: Fast(빠름)·Independent(독립)·Repeatable(반복가능)·Self-Validating(자가검증)·Timely(적시에).'},
+  {cat:'창발',diff:'mid',
+   q:'Kent Beck의 단순한 설계 4규칙 중 가장 중요한(최우선) 규칙으로 가장 적절한 것은?',
+   cs:['중복을 없애라','클래스와 메서드 수를 최소로 줄여라','프로그래머 의도를 표현하라','모든 테스트를 실행하라'],ans:3,
+   exp:'<strong>창발성 4규칙 우선순위</strong>: ①<em>모든 테스트를 실행하라</em>(최우선) ②중복을 없애라 ③의도를 표현하라 ④클래스·메서드 최소화. 규칙 1이 최우선인 이유: 테스트할 수 없는 시스템은 검증이 불가하고, 테스트 가능한 시스템을 만들면 자연히 SRP·DIP를 달성하게 됩니다. 4규칙을 지키면 좋은 설계가 창발(Emerge)됩니다.'},
+  {cat:'창발',diff:'hard',
+   q:'창발성(Emergence)에서 "중복을 없애라" 규칙이 중요한 이유로 가장 적절한 것은?',
+   cs:['파일 크기를 줄이기 위해','중복 코드는 추가 작업·추가 위험·불필요한 복잡도를 만들기 때문에 — 공통 로직을 추상화로 끌어올리면 자연히 좋은 설계가 창발된다.','컴파일 속도를 높이기 위해','중복 코드는 보안 취약점을 만들기 때문에'],ans:1,
+   exp:'<strong>중복 제거 규칙</strong>: 소규모 중복도 적극 제거. 예) 비슷한 for 루프 → Extract Method로 통합. 공통 구현이 추상화로 올라가면 → Template Method 패턴 창발. 중복 제거가 OCP·SRP·DIP 달성의 자연스러운 경로가 됩니다. DRY(Don\'t Repeat Yourself) 원칙과 동일. 규칙 1(테스트) 이후 안전하게 리팩토링하여 중복 제거.'},
+  {cat:'함수',diff:'mid',
+   q:'Clean Code에서 함수 내 추상화 수준의 원칙으로 가장 적절한 것은?',
+   cs:['함수 내에서 고수준과 저수준 개념을 함께 사용하여 효율성을 높인다.','한 함수 내의 모든 문장은 동일한 추상화 수준을 유지해야 하며, 고수준과 저수준 개념을 섞지 않는다.','추상화 수준은 성능에만 영향을 주므로 유지보수와는 무관하다.','추상화 수준이 낮을수록 좋은 코드이다.'],ans:1,
+   exp:'<strong>추상화 수준 일치</strong>: 한 함수에 getHtml()(고수준)과 buffer.append("\\n")(저수준)을 섞으면 안 됩니다. 각 수준을 별도 함수로 분리. <em>내려가기 규칙</em>: 함수는 신문처럼 위→아래로 읽을 수 있도록 추상화 수준이 점차 낮아져야 합니다. 예) 주문처리() → 재고확인() → DB에서 재고 조회() 순서.'},
+  {cat:'명명',diff:'mid',type:'ox',
+   q:'Clean Code에서 헝가리안 표기법(Hungarian Notation)과 같이 이름에 타입 정보를 인코딩하는 것(예: strName, m_name, IInterface)을 권장한다.',ans:false,
+   exp:'<strong>×</strong> — Clean Code에서는 <strong>인코딩을 지양</strong>합니다. IDE가 타입 정보를 제공하므로 이름에 타입을 붙이는 것은 불필요합니다. 예) strName → name, IShapeFactory → ShapeFactory. 헝가리안 표기법은 과거 타입 정보가 부족한 환경에서 생긴 관행이지만, 현대 IDE에서는 오히려 노이즈가 됩니다.'},
+  {cat:'테스트',diff:'mid',type:'ox',
+   q:'FIRST 원칙에서 "T(Timely)"는 테스트를 실제 코드 작성 직전에 작성해야 한다는 의미이며, 이는 TDD 원칙과 일치한다.',ans:true,
+   exp:'<strong>○</strong> — FIRST의 <em>T = Timely(적시에)</em>: 테스트는 <em>실제 코드 작성 직전</em>에 작성해야 합니다. 이는 TDD의 Red-Green-Refactor 사이클과 일치합니다. 코드 작성 후 테스트를 작성하면 테스트하기 어렵게 설계된 코드를 발견하는 경우가 많습니다. 테스트 먼저 작성하면 테스트 가능한 설계로 자연히 유도됩니다.'},
+  {cat:'오류',diff:'easy',type:'ox',
+   q:'Clean Code에서 주석 처리된 코드(commented-out code)는 나중에 필요할 수 있으므로 보존해야 한다.',ans:false,
+   exp:'<strong>×</strong> — 주석 처리된 코드는 <strong>즉시 삭제</strong>해야 합니다. 이유: 버전 관리 시스템(Git)이 코드 이력을 보존하므로 주석으로 보존할 필요가 없습니다. 주석 처리된 코드는 다른 개발자에게 혼란을 주고("왜 남겼지? 중요한 코드인가?"), 코드를 지저분하게 만듭니다. 삭제해도 git으로 언제든 복구 가능합니다.'},
+  {cat:'창발',diff:'mid',type:'ox',
+   q:'Kent Beck의 창발성 4규칙에서 "클래스와 메서드 수를 최소로 줄여라"가 가장 중요한(최우선) 규칙이다.',ans:false,
+   exp:'<strong>×</strong> — 최우선 규칙은 <strong>"모든 테스트를 실행하라"</strong>(규칙 1)입니다. 창발성 4규칙 우선순위: ①모든 테스트 실행 ②중복 제거 ③의도 표현 ④클래스·메서드 최소화. "클래스·메서드 최소화"는 4번째(최하위) 규칙입니다. 2·3·4번 규칙은 리팩토링 관련 규칙으로, 규칙 1(테스트)이 확보된 이후 안전하게 적용합니다.'},
+];
+let answered=0,correct=0;
+function renderQ(f){
+  const data=f==='all'?QA:QA.filter(q=>q.cat===f);
+  const list=document.getElementById('ql');list.innerHTML='';
+  answered=0;correct=0;upS();
+  const CATC={'명명':'tb','함수':'tg','오류':'tr','테스트':'tp','창발':'ty','OX':'to'};
+  const DLC={'easy':'easy 쉬움','mid':'mid 보통','hard':'hard 어려움'};
+  const NL=['①','②','③','④'];
+  if(!data.length){list.innerHTML='<div style="text-align:center;padding:40px;color:var(--mu)">문제 없음</div>';return;}
+  data.forEach((q,i)=>{
+    const gi=QA.indexOf(q);
+    const el=document.createElement('div');el.className='qa';
+    const tc=CATC[q.cat]||'tb';
+    const [dc,dn]=(DLC[q.diff]||'mid 보통').split(' ');
+    if(q.type==='ox'){
+      el.innerHTML=`<div class="qa-hd" onclick="this.closest('.qa').classList.toggle('open')"><div><div class="qa-meta"><span class="qn">Q${String(i+1).padStart(2,'0')}</span><span class="tag ${tc}">${q.cat}</span><span class="diff ${dc}">${dn}</span><span class="tag tg">O/X</span></div><div class="qq">${q.q}</div></div><span class="tgl">▾</span></div>
+      <div class="qa-bd"><div class="ox-wr"><button class="ox" onclick="pickOX(this,true,${gi})">⭕ 옳다</button><button class="ox" onclick="pickOX(this,false,${gi})">❌ 틀리다</button></div><div class="exp" id="ex-${gi}"><div class="exp-t">💡 해설</div>${q.exp}</div></div>`;
+    } else {
+      el.innerHTML=`<div class="qa-hd" onclick="this.closest('.qa').classList.toggle('open')"><div><div class="qa-meta"><span class="qn">Q${String(i+1).padStart(2,'0')}</span><span class="tag ${tc}">${q.cat}</span><span class="diff ${dc}">${dn}</span></div><div class="qq">${q.q}</div></div><span class="tgl">▾</span></div>
+      <div class="qa-bd"><div class="chs">${q.cs.map((c,ci)=>`<div class="ch" data-ci="${ci}" onclick="pickCh(this,${gi})"><span class="cnum">${NL[ci]}</span><span>${c}</span></div>`).join('')}</div><div class="exp" id="ex-${gi}"><div class="exp-t">💡 해설</div>${q.exp}</div></div>`;
+    }
+    list.appendChild(el);
+  });
+}
+function pickCh(el,gi){
+  const bd=el.closest('.qa-bd');if(bd.querySelector('.ok,.ng'))return;
+  const q=QA[gi];
+  bd.querySelectorAll('.ch').forEach((c,i)=>{c.classList.add('lk');if(i===q.ans)c.classList.add('ok');else if(i===parseInt(el.dataset.ci))c.classList.add('ng');});
+  document.getElementById('ex-'+gi).classList.add('show');
+  answered++;if(parseInt(el.dataset.ci)===q.ans)correct++;upS();
+}
+function pickOX(btn,val,gi){
+  const bd=btn.closest('.qa-bd');if(bd.querySelector('.so,.sx'))return;
+  const q=QA[gi];
+  bd.querySelectorAll('.ox').forEach(b=>b.classList.add('lk'));
+  btn.classList.add(val?'so':'sx');
+  if(val!==q.ans){btn.style.opacity='.5';bd.querySelectorAll('.ox')[val?1:0].classList.add(q.ans?'so':'sx');}
+  document.getElementById('ex-'+gi).classList.add('show');
+  answered++;if(val===q.ans)correct++;upS();
+}
+function upS(){document.getElementById('sc').textContent=correct;document.getElementById('st').textContent=answered;}
+document.getElementById('fbar').addEventListener('click',e=>{
+  const b=e.target.closest('.fb');if(!b)return;
+  document.querySelectorAll('.fb').forEach(x=>x.classList.remove('on'));b.classList.add('on');renderQ(b.dataset.f);
+});
+renderQ('all');
+</script>
+</body>
+</html>

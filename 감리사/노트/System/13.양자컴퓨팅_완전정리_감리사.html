@@ -1,0 +1,604 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;900&family=JetBrains+Mono:wght@400;700&display=swap');
+:root{--bg:#05030f;--s1:#0a0720;--s2:#0e0b2c;--s3:#130f36;--bdr:#2a1a6e;--a1:#e879f9;--a2:#38bdf8;--a3:#fbbf24;--a4:#f87171;--a5:#34d399;--a6:#fb923c;--txt:#e2e8f0;--mu:#64748b;}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Noto Sans KR',sans-serif;background:var(--bg);color:var(--txt);min-height:100vh;}
+.hdr{padding:20px 24px 14px;background:linear-gradient(150deg,#05030f,#0d0820,#05030f);border-bottom:1px solid var(--bdr);}
+.hdr-r{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:6px;}
+.pill{padding:3px 10px;border-radius:20px;font-size:10px;font-weight:700;}
+.p1{background:linear-gradient(135deg,#4a0764,var(--a1));color:#fff;}
+.p2{background:rgba(56,189,248,.15);color:var(--a2);border:1px solid rgba(56,189,248,.3);}
+.p3{background:rgba(251,191,36,.15);color:var(--a3);border:1px solid rgba(251,191,36,.3);}
+h1{font-size:18px;font-weight:900;}
+.h1g{background:linear-gradient(90deg,var(--a1),var(--a2),var(--a5));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.hdr p{color:var(--mu);font-size:11.5px;margin-top:3px;}
+.tabs{display:flex;padding:0 24px;background:var(--s1);border-bottom:1px solid var(--bdr);overflow-x:auto;scrollbar-width:none;}
+.tabs::-webkit-scrollbar{display:none;}
+.tab{padding:10px 13px;font-size:11.5px;font-weight:600;color:var(--mu);cursor:pointer;border-bottom:2px solid transparent;white-space:nowrap;transition:all .2s;background:none;border-top:none;border-left:none;border-right:none;font-family:'Noto Sans KR',sans-serif;}
+.tab.on{color:var(--a1);border-bottom-color:var(--a1);}
+.wrap{padding:18px 24px;max-width:960px;margin:0 auto;}
+.pnl{display:none;}.pnl.on{display:block;}
+.card{background:var(--s1);border:1px solid var(--bdr);border-radius:11px;padding:16px;margin-bottom:12px;}
+.card-h{display:flex;align-items:center;gap:9px;margin-bottom:12px;}
+.ico{width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0;}
+.ip{background:rgba(232,121,249,.15);}.ib{background:rgba(56,189,248,.15);}.iy{background:rgba(251,191,36,.15);}.ir{background:rgba(248,113,113,.15);}.ig{background:rgba(52,211,153,.15);}.io{background:rgba(251,146,60,.15);}
+.card h3{font-size:13.5px;font-weight:700;}
+.tag{display:inline-block;padding:2px 7px;border-radius:4px;font-size:9.5px;font-weight:600;margin:2px 2px 2px 0;}
+.tp{background:rgba(232,121,249,.12);color:var(--a1);border:1px solid rgba(232,121,249,.25);}
+.tb{background:rgba(56,189,248,.12);color:var(--a2);border:1px solid rgba(56,189,248,.25);}
+.ty{background:rgba(251,191,36,.12);color:var(--a3);border:1px solid rgba(251,191,36,.25);}
+.tr{background:rgba(248,113,113,.12);color:var(--a4);border:1px solid rgba(248,113,113,.25);}
+.tg{background:rgba(52,211,153,.12);color:var(--a5);border:1px solid rgba(52,211,153,.25);}
+.to{background:rgba(251,146,60,.12);color:var(--a6);border:1px solid rgba(251,146,60,.25);}
+table{width:100%;border-collapse:collapse;font-size:12px;}
+th{background:var(--s2);color:var(--mu);font-weight:700;padding:7px 11px;text-align:left;font-size:9.5px;text-transform:uppercase;letter-spacing:.5px;border-bottom:1px solid var(--bdr);}
+td{padding:8px 11px;border-bottom:1px solid rgba(42,26,110,.5);vertical-align:top;line-height:1.55;}
+tr:last-child td{border-bottom:none;}
+tr:hover td{background:rgba(255,255,255,.02);}
+td strong{color:var(--a3);}
+ul.il{list-style:none;display:flex;flex-direction:column;gap:6px;}
+ul.il li{font-size:12px;padding-left:15px;position:relative;line-height:1.5;}
+ul.il li::before{content:'▸';position:absolute;left:0;color:var(--a1);font-size:9.5px;top:3px;}
+ul.il li strong{color:var(--a3);}
+ul.il li em{color:var(--a2);font-style:normal;}
+.memo{background:linear-gradient(135deg,rgba(232,121,249,.07),rgba(56,189,248,.07));border:1px solid rgba(232,121,249,.22);border-left:3px solid var(--a1);border-radius:7px;padding:9px 13px;font-size:12px;font-weight:600;color:var(--a1);margin:9px 0;}
+.memo::before{content:'🎯 한 줄 암기 │ ';color:var(--mu);font-weight:400;}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px;}
+@media(max-width:580px){.g2{grid-template-columns:1fr;}}
+.formula{background:var(--s2);border:1px solid rgba(232,121,249,.18);border-radius:6px;padding:10px 12px;font-family:'JetBrains Mono',monospace;font-size:10.5px;margin:8px 0;line-height:1.8;color:var(--a2);}
+.formula .cm{color:var(--mu);}
+.formula .kw{color:var(--a1);}
+.formula .val{color:var(--a3);}
+/* qubit visual */
+.qubit-compare{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:10px 0;}
+.qbox{border-radius:9px;padding:14px;border:1px solid;text-align:center;}
+/* concept cards */
+.concept-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:10px 0;}
+@media(max-width:580px){.concept-grid{grid-template-columns:1fr 1fr;}}
+.cc{background:var(--s2);border:1px solid var(--bdr);border-radius:8px;padding:12px;}
+.cc-ico{font-size:20px;margin-bottom:5px;}
+.cc-name{font-size:12px;font-weight:800;margin-bottom:4px;}
+.cc-sub{font-size:10.5px;color:var(--mu);line-height:1.4;}
+/* circuit diagram */
+.circuit{background:var(--s2);border:1px solid rgba(232,121,249,.2);border-radius:8px;padding:12px;margin:8px 0;font-family:'JetBrains Mono',monospace;font-size:11px;line-height:2;color:var(--a2);}
+/* acc */
+.acc{background:var(--s2);border:1px solid var(--bdr);border-radius:9px;margin-bottom:8px;overflow:hidden;}
+.acc-h{display:flex;justify-content:space-between;align-items:center;padding:10px 14px;cursor:pointer;user-select:none;}
+.acc-h:hover{background:rgba(255,255,255,.02);}
+.acc-title{font-size:12.5px;font-weight:800;flex:1;}
+.acc-tgl{color:var(--mu);transition:transform .2s;font-size:14px;flex-shrink:0;margin-left:8px;}
+.acc.open .acc-tgl{transform:rotate(180deg);}
+.acc-body{display:none;border-top:1px solid var(--bdr);padding:12px 14px;background:var(--s3);font-size:12px;line-height:1.65;}
+.acc.open .acc-body{display:block;}
+.acc-body strong{color:var(--a3);}
+.acc-body em{color:var(--a2);font-style:normal;}
+/* qa */
+.qa{background:var(--s1);border:1px solid var(--bdr);border-radius:9px;margin-bottom:10px;overflow:hidden;}
+.qa:hover{border-color:rgba(232,121,249,.25);}
+.qa-hd{padding:12px 16px;cursor:pointer;display:flex;justify-content:space-between;align-items:flex-start;gap:9px;user-select:none;}
+.qa-meta{display:flex;align-items:center;gap:5px;margin-bottom:4px;flex-wrap:wrap;}
+.qn{font-family:'JetBrains Mono',monospace;font-size:9.5px;font-weight:700;color:var(--mu);}
+.qq{font-size:12.5px;font-weight:600;line-height:1.5;}
+.tgl{color:var(--mu);font-size:15px;flex-shrink:0;transition:transform .2s;}
+.qa.open .tgl{transform:rotate(180deg);}
+.qa-bd{display:none;border-top:1px solid var(--bdr);padding:12px 16px;background:var(--s2);}
+.qa.open .qa-bd{display:block;}
+.chs{display:flex;flex-direction:column;gap:6px;margin-bottom:10px;}
+.ch{display:flex;align-items:flex-start;gap:9px;padding:8px 12px;border-radius:6px;border:1px solid var(--bdr);font-size:12px;cursor:pointer;background:var(--s1);line-height:1.45;transition:all .15s;}
+.ch:hover:not(.lk){border-color:rgba(232,121,249,.3);background:rgba(232,121,249,.04);}
+.ch.ok{border-color:var(--a5);background:rgba(52,211,153,.1);color:var(--a5);}
+.ch.ng{border-color:var(--a4);background:rgba(248,113,113,.08);color:var(--a4);opacity:.7;}
+.ch.lk{cursor:default;}
+.cnum{font-family:'JetBrains Mono',monospace;font-weight:700;font-size:10.5px;flex-shrink:0;margin-top:1px;color:var(--mu);}
+.ch.ok .cnum{color:var(--a5);}.ch.ng .cnum{color:var(--a4);}
+.exp{background:rgba(232,121,249,.05);border:1px solid rgba(232,121,249,.18);border-radius:7px;padding:11px 13px;font-size:12px;line-height:1.6;display:none;}
+.exp.show{display:block;}
+.exp-t{font-size:9.5px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--a1);margin-bottom:5px;}
+.exp strong{color:var(--a3);}
+.exp em{color:var(--a2);font-style:normal;}
+.ox-wr{display:flex;gap:8px;margin-bottom:10px;}
+.ox{flex:1;padding:10px;border-radius:7px;border:1px solid var(--bdr);font-size:18px;cursor:pointer;background:var(--s1);transition:all .15s;font-family:'Noto Sans KR',sans-serif;color:var(--txt);}
+.ox:hover:not(.lk){transform:scale(1.02);}
+.ox.so{border-color:var(--a5);background:rgba(52,211,153,.15);}
+.ox.sx{border-color:var(--a4);background:rgba(248,113,113,.1);}
+.ox.lk{cursor:default;}
+.diff{display:inline-block;padding:2px 6px;border-radius:9px;font-size:8.5px;font-weight:700;}
+.easy{background:rgba(52,211,153,.2);color:var(--a5);}
+.mid{background:rgba(251,191,36,.2);color:var(--a3);}
+.hard{background:rgba(248,113,113,.2);color:var(--a4);}
+.fb-wr{display:flex;gap:5px;flex-wrap:wrap;margin-bottom:12px;}
+.fb{padding:4px 11px;border-radius:18px;border:1px solid var(--bdr);font-size:10.5px;font-weight:600;cursor:pointer;background:var(--s2);color:var(--mu);transition:all .15s;font-family:'Noto Sans KR',sans-serif;}
+.fb.on{background:rgba(232,121,249,.15);color:var(--a1);border-color:var(--a1);}
+.sc-b{background:var(--s2);border:1px solid var(--bdr);border-radius:7px;padding:4px 12px;font-size:11.5px;color:var(--mu);}
+.sc-b span{color:var(--a1);font-weight:700;}
+</style>
+</head>
+<body>
+<div class="hdr">
+  <div class="hdr-r">
+    <span class="pill p1">⚛️ 양자 컴퓨팅 (Quantum Computing)</span>
+    <span class="pill p2">큐비트·중첩·얽힘·양자암호</span>
+    <span class="pill p3">감리사 핵심 출제</span>
+  </div>
+  <h1><span class="h1g">양자 컴퓨팅 완전 정리</span></h1>
+  <p>양자역학 기초 · 큐비트 · 양자 게이트 · 양자 알고리즘 · 양자 암호 · 양자 우월성 · 보안 위협</p>
+</div>
+<div class="tabs">
+  <button class="tab on" data-p="p1">⚛️ 기초 개념·큐비트</button>
+  <button class="tab" data-p="p2">🔬 양자 게이트·회로</button>
+  <button class="tab" data-p="p3">🚀 양자 알고리즘</button>
+  <button class="tab" data-p="p4">🔐 양자 암호·보안</button>
+  <button class="tab" data-p="p5">🖥️ 구현·플랫폼·현황</button>
+  <button class="tab" data-p="p6">❓ 예상문제</button>
+</div>
+<div class="wrap">
+
+<!-- P1: 기초 개념 -->
+<div class="pnl on" id="p1">
+  <div class="card">
+    <div class="card-h"><div class="ico ip">⚛️</div><h3>고전 컴퓨터 vs 양자 컴퓨터 ⭐</h3></div>
+    <div class="qubit-compare">
+      <div class="qbox" style="background:rgba(56,189,248,.07);border-color:rgba(56,189,248,.3);">
+        <div style="font-size:24px;margin-bottom:6px;">💻</div>
+        <div style="font-size:13px;font-weight:900;color:var(--a2);margin-bottom:8px;">고전 컴퓨터</div>
+        <div style="font-size:11.5px;color:var(--txt);line-height:1.7;">
+          기본 단위: <strong style="color:var(--a3);">비트 (Bit)</strong><br>
+          상태: <strong style="color:var(--a3);">0 또는 1</strong> (확정)<br>
+          연산: 순차·병렬 처리<br>
+          n비트 = 2ⁿ 중 <strong style="color:var(--a3);">1가지 상태</strong><br>
+          안정적·현재 상용화
+        </div>
+      </div>
+      <div class="qbox" style="background:rgba(232,121,249,.07);border-color:rgba(232,121,249,.3);">
+        <div style="font-size:24px;margin-bottom:6px;">⚛️</div>
+        <div style="font-size:13px;font-weight:900;color:var(--a1);margin-bottom:8px;">양자 컴퓨터</div>
+        <div style="font-size:11.5px;color:var(--txt);line-height:1.7;">
+          기본 단위: <strong style="color:var(--a3);">큐비트 (Qubit)</strong><br>
+          상태: <strong style="color:var(--a3);">0과 1의 중첩</strong> (확률)<br>
+          연산: 중첩·얽힘·간섭 활용<br>
+          n큐비트 = 2ⁿ 상태 <strong style="color:var(--a3);">동시 표현</strong><br>
+          특수 문제에서 지수적 우위
+        </div>
+      </div>
+    </div>
+    <div class="memo">비트=0 또는 1 확정 / 큐비트=0과 1의 확률적 중첩 / n큐비트=2ⁿ 상태 동시 표현 → 지수적 병렬성</div>
+  </div>
+
+  <div class="card">
+    <div class="card-h"><div class="ico ip">🌀</div><h3>양자역학 3대 핵심 원리 ⭐</h3></div>
+    <div class="concept-grid">
+      <div class="cc">
+        <div class="cc-ico">🌊</div>
+        <div class="cc-name" style="color:var(--a1);">중첩 (Superposition) ⭐</div>
+        <div class="cc-sub">큐비트는 측정 전까지<br>|0⟩과 |1⟩ 두 상태를 동시에 가짐<br>측정 시 확률적으로 하나로 붕괴<br>→ n큐비트=2ⁿ 상태 동시처리</div>
+      </div>
+      <div class="cc">
+        <div class="cc-ico">🔗</div>
+        <div class="cc-name" style="color:var(--a2);">얽힘 (Entanglement) ⭐</div>
+        <div class="cc-sub">두 큐비트가 상관 관계로 연결<br>하나 측정 시 다른 큐비트 상태<br>즉시 결정 (비국소 상관)<br>→ 양자 통신·암호 기반</div>
+      </div>
+      <div class="cc">
+        <div class="cc-ico">🌊</div>
+        <div class="cc-name" style="color:var(--a3);">간섭 (Interference) ⭐</div>
+        <div class="cc-sub">양자 상태의 파동 특성<br>올바른 답의 확률 진폭↑<br>틀린 답의 확률 진폭↓<br>→ 양자 알고리즘 가속의 핵심</div>
+      </div>
+      <div class="cc">
+        <div class="cc-ico">🎲</div>
+        <div class="cc-name" style="color:var(--a5);">측정 (Measurement)</div>
+        <div class="cc-sub">양자 상태를 관찰하면<br>중첩이 붕괴(Collapse)되어<br>0 또는 1로 확정됨<br>측정이 상태를 변화시킴</div>
+      </div>
+      <div class="cc">
+        <div class="cc-ico">🚫</div>
+        <div class="cc-name" style="color:var(--a4);">비복제 정리 (No-Cloning)</div>
+        <div class="cc-sub">임의의 양자 상태를 복사 불가<br>→ 양자 통신의 보안 보장<br>도청 시 상태 붕괴로 탐지 가능<br>QKD의 보안 근거</div>
+      </div>
+      <div class="cc">
+        <div class="cc-ico">❄️</div>
+        <div class="cc-name" style="color:var(--a6);">결맞음 (Coherence)</div>
+        <div class="cc-sub">큐비트가 양자 상태 유지<br>결어긋남(Decoherence):<br>환경 간섭으로 양자 상태 손실<br>→ 극저온(-273°C) 필요</div>
+      </div>
+    </div>
+
+    <div style="background:var(--s2);border:1px solid rgba(232,121,249,.2);border-radius:9px;padding:12px;margin-top:4px;">
+      <p style="font-size:11.5px;font-weight:800;color:var(--a1);margin-bottom:8px;">큐비트 수학적 표현 (디랙 표기법·브라-켓)</p>
+      <div class="formula"><span class="cm"># 단일 큐비트 상태</span>
+|ψ⟩ = <span class="val">α</span>|0⟩ + <span class="val">β</span>|1⟩
+<span class="cm"># α, β: 복소수 진폭 / |α|² + |β|² = 1 (확률의 합=1)</span>
+<span class="cm"># 측정 시: |0⟩으로 붕괴될 확률 = |α|², |1⟩ 확률 = |β|²</span>
+
+<span class="cm"># 벨 상태 (최대 얽힘 상태) — 양자 암호·텔레포테이션에 사용</span>
+|Φ⁺⟩ = (|00⟩ + |11⟩) / √2
+<span class="cm"># → 두 큐비트가 항상 같은 값으로 측정됨</span></div>
+    </div>
+    <div class="memo">중첩=0과1 동시(측정시붕괴) / 얽힘=두큐비트 상관(비국소) / 간섭=올바른답 확률↑ / 비복제=양자상태 복사불가</div>
+  </div>
+</div>
+
+<!-- P2: 양자 게이트 -->
+<div class="pnl" id="p2">
+  <div class="card">
+    <div class="card-h"><div class="ico ib">🔬</div><h3>양자 게이트 (Quantum Gates) ⭐</h3></div>
+    <div style="background:var(--s2);border:1px solid rgba(56,189,248,.22);border-radius:9px;padding:12px;margin-bottom:11px;font-size:12px;line-height:1.75;">
+      <strong style="color:var(--a2)">양자 게이트</strong>: 큐비트의 상태를 변환하는 <em style="color:var(--a3);font-style:normal;">유니터리 연산자</em> — 고전 로직 게이트와 달리 <strong>가역적(Reversible)</strong>이며 확률 진폭을 회전시킴
+    </div>
+    <table>
+      <thead><tr><th>게이트</th><th>기호</th><th>역할</th><th>효과</th></tr></thead>
+      <tbody>
+        <tr><td><strong>파울리-X (NOT) ⭐</strong></td><td style="font-family:monospace;">X</td><td>큐비트 반전 — 고전 NOT 게이트와 동일</td><td>|0⟩→|1⟩, |1⟩→|0⟩</td></tr>
+        <tr><td><strong>아다마르 (H) ⭐</strong></td><td style="font-family:monospace;">H</td><td><strong>중첩 상태 생성</strong> — 가장 중요한 게이트</td><td>|0⟩→(|0⟩+|1⟩)/√2<br>|1⟩→(|0⟩-|1⟩)/√2</td></tr>
+        <tr><td><strong>파울리-Y</strong></td><td style="font-family:monospace;">Y</td><td>X+Z 결합 회전</td><td>|0⟩→i|1⟩, |1⟩→-i|0⟩</td></tr>
+        <tr><td><strong>파울리-Z</strong></td><td style="font-family:monospace;">Z</td><td>위상(Phase) 반전</td><td>|0⟩→|0⟩, |1⟩→-|1⟩</td></tr>
+        <tr><td><strong>CNOT (CX) ⭐</strong></td><td style="font-family:monospace;">⊕</td><td>제어 큐비트가 |1⟩일 때 목표 큐비트 반전<br><strong>얽힘 생성의 핵심 게이트</strong></td><td>|00⟩→|00⟩, |01⟩→|01⟩<br>|10⟩→|11⟩, |11⟩→|10⟩</td></tr>
+        <tr><td><strong>위상 게이트 (S, T)</strong></td><td style="font-family:monospace;">S, T</td><td>상대 위상 회전 — 간섭 조작</td><td>S: 90°, T: 45° 위상 회전</td></tr>
+        <tr><td><strong>Toffoli (CCX)</strong></td><td style="font-family:monospace;">CCX</td><td>2개 제어 큐비트가 모두 |1⟩일 때 목표 반전<br>양자 범용 계산의 기반</td><td>고전 AND+NOT 조합</td></tr>
+      </tbody>
+    </table>
+
+    <div class="acc open" onclick="this.classList.toggle('open')">
+      <div class="acc-h"><div class="acc-title" style="color:var(--a1);">아다마르 게이트 — 중첩 생성의 핵심 ⭐</div><div class="acc-tgl">▾</div></div>
+      <div class="acc-body">
+        <div class="circuit">|0⟩ ──[H]──── <span style="color:var(--a3);">(|0⟩+|1⟩)/√2</span>  ← 균등 중첩 (50:50)
+|1⟩ ──[H]──── <span style="color:var(--a3);">(|0⟩-|1⟩)/√2</span>  ← 위상 다른 중첩
+<span style="color:var(--mu);">
+── n개의 H 게이트 적용 → 2ⁿ 상태 동시 중첩 ──</span></div>
+        <ul class="il">
+          <li><strong>핵심 역할:</strong> 고전 0을 양자 중첩 상태로 변환 — 양자 알고리즘의 시작점</li>
+          <li><strong>H² = I:</strong> 아다마르 게이트를 두 번 적용하면 원래 상태로 복귀 (자기역원)</li>
+          <li>H를 n큐비트에 적용 → 2ⁿ 개의 가능한 입력을 <em>동시에</em> 탐색 가능</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="acc" onclick="this.classList.toggle('open')">
+      <div class="acc-h"><div class="acc-title" style="color:var(--a3);">양자 회로 (Quantum Circuit) 구조</div><div class="acc-tgl">▾</div></div>
+      <div class="acc-body">
+        <div class="circuit"><span style="color:var(--mu);"># 벨 상태 생성 회로 (얽힘 생성)</span>
+q₀: |0⟩ ──[H]──●──── 
+                 │     → <span style="color:var(--a3);">(|00⟩+|11⟩)/√2</span>
+q₁: |0⟩ ────[X]──── 
+<span style="color:var(--mu);"># H로 q₀ 중첩 → CNOT으로 얽힘 생성</span></div>
+        <ul class="il">
+          <li><strong>회로 구성:</strong> 초기화(|0⟩) → 게이트 적용 → 측정(M) 순서</li>
+          <li><strong>가역성:</strong> 모든 양자 게이트는 유니터리 → 역연산 존재 (정보 손실 없음)</li>
+          <li><strong>범용 게이트 집합:</strong> {H, T, CNOT} 조합으로 모든 양자 연산 구현 가능</li>
+          <li><strong>회로 깊이(Circuit Depth):</strong> 연속 게이트 수 → 노이즈·오류 영향</li>
+        </ul>
+      </div>
+    </div>
+    <div class="memo">아다마르(H)=중첩생성·양자알고리즘 시작 / CNOT=얽힘생성 / 양자게이트=가역적·유니터리 / {H·T·CNOT}=범용게이트집합</div>
+  </div>
+</div>
+
+<!-- P3: 양자 알고리즘 -->
+<div class="pnl" id="p3">
+  <div class="card">
+    <div class="card-h"><div class="ico iy">🚀</div><h3>주요 양자 알고리즘 ⭐</h3></div>
+
+    <div class="acc open" onclick="this.classList.toggle('open')">
+      <div class="acc-h"><div class="acc-title" style="color:var(--a1);">쇼어 알고리즘 (Shor's Algorithm, 1994) ⭐ — 소인수분해</div><div class="acc-tgl">▾</div></div>
+      <div class="acc-body">
+        <ul class="il">
+          <li><strong>목적:</strong> 큰 정수(N)를 소인수분해 — RSA 암호 해독의 핵심</li>
+          <li><strong>고전 vs 양자 복잡도:</strong>
+            고전=지수 시간 O(exp(n^1/3)) / 양자=<em>다항 시간 O(n³)</em> → 지수적 가속</li>
+          <li><strong>원리:</strong> 양자 푸리에 변환(QFT)으로 주기 함수의 주기를 빠르게 탐색 → 소인수 도출</li>
+          <li><strong>보안 위협:</strong> 2048-bit RSA → 현재 고전 컴퓨터=불가능 / 충분한 양자 컴퓨터=수 시간 내 해독</li>
+          <li><strong>필요 큐비트:</strong> RSA-2048 해독에 약 <em>4000개 이상의 논리 큐비트</em> 필요 (오류 수정 포함 수백만)</li>
+          <li><strong>대응:</strong> 양자 내성 암호(PQC) 도입 — NIST PQC 표준화 완료 (2024)</li>
+        </ul>
+        <div class="formula"><span class="cm"># 쇼어 알고리즘 흐름</span>
+N 소인수분해 목표
+① 무작위 a 선택 (1 < a < N)
+② gcd(a, N) ≠ 1 이면 인수 발견 (완료)
+③ <span class="kw">양자 푸리에 변환</span>으로 f(x)=aˣ mod N 의 주기 r 탐색
+④ r이 짝수이고 a^(r/2) ≢ -1 (mod N) 이면
+⑤ gcd(a^(r/2)±1, N) 으로 소인수 도출</div>
+      </div>
+    </div>
+
+    <div class="acc" onclick="this.classList.toggle('open')">
+      <div class="acc-h"><div class="acc-title" style="color:var(--a2);">그로버 알고리즘 (Grover's Algorithm, 1996) ⭐ — 탐색</div><div class="acc-tgl">▾</div></div>
+      <div class="acc-body">
+        <ul class="il">
+          <li><strong>목적:</strong> 비정렬 데이터베이스에서 특정 항목 탐색</li>
+          <li><strong>고전 vs 양자 복잡도:</strong>
+            고전=O(N) 선형 / 양자=<em>O(√N) 제곱근 가속</em></li>
+          <li><strong>원리:</strong> 오라클(Oracle) + 진폭 증폭(Amplitude Amplification) — √N번 반복으로 정답 확률↑</li>
+          <li><strong>보안 위협:</strong> 대칭키 암호(AES)의 브루트포스 공격 가속 → AES-128=보안 강도 64비트로 감소</li>
+          <li><strong>대응:</strong> 대칭키 길이 2배 증가 (AES-128→AES-256)</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="acc" onclick="this.classList.toggle('open')">
+      <div class="acc-h"><div class="acc-title" style="color:var(--a5);">기타 주요 양자 알고리즘</div><div class="acc-tgl">▾</div></div>
+      <div class="acc-body">
+        <table>
+          <thead><tr><th>알고리즘</th><th>응용 분야</th><th>가속 효과</th></tr></thead>
+          <tbody>
+            <tr><td><strong>양자 푸리에 변환 (QFT)</strong></td><td>쇼어 알고리즘 기반 / 신호 처리</td><td>고전 FFT: O(n2ⁿ) → 양자: O(n²)</td></tr>
+            <tr><td><strong>HHL 알고리즘</strong></td><td>선형 방정식 시스템 풀기 (머신러닝·시뮬레이션)</td><td>지수적 가속 (특정 조건)</td></tr>
+            <tr><td><strong>QAOA</strong></td><td>최적화 문제 (조합 최적화·물류·금융)</td><td>노이즈 양자 컴퓨터(NISQ)에 적합</td></tr>
+            <tr><td><strong>VQE (변분 양자 고유값)</strong></td><td>분자·재료 시뮬레이션 (화학·신약)</td><td>NISQ 시대 대표 알고리즘</td></tr>
+            <tr><td><strong>양자 시뮬레이션</strong></td><td>양자 물리·화학 반응·재료 설계</td><td>고전 시뮬레이션 한계 극복</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="card-h" style="margin-top:14px;margin-bottom:8px;"><div class="ico ig">🏆</div><h3>양자 우월성 (Quantum Supremacy / Quantum Advantage) ⭐</h3></div>
+    <table>
+      <thead><tr><th>항목</th><th>내용</th></tr></thead>
+      <tbody>
+        <tr><td><strong>양자 우월성 정의</strong></td><td>양자 컴퓨터가 <strong>최고 성능 고전 컴퓨터도 현실적으로 풀 수 없는</strong> 특정 문제를 해결하는 시점</td></tr>
+        <tr><td><strong>Google (2019)</strong></td><td>Sycamore 54큐비트로 특정 샘플링 문제를 <strong>200초</strong>에 완료 — 고전 컴퓨터=1만 년 추정 (IBM 반박: 2.5일 가능)</td></tr>
+        <tr><td><strong>중국 USTC (2020~)</strong></td><td>광자 기반 Jiuzhang으로 보손 샘플링 — Zuchongzhi 66큐비트</td></tr>
+        <tr><td><strong>양자 유용성</strong></td><td>실용적으로 의미 있는 문제에서 양자 우위 달성 — 현재 목표</td></tr>
+        <tr><td><strong>NISQ 시대</strong></td><td>Noisy Intermediate-Scale Quantum — 현재 단계 (50~수백 큐비트, 오류 많음)</td></tr>
+        <tr><td><strong>내결함성 양자 컴퓨터</strong></td><td>오류 수정이 완전한 양자 컴퓨터 — 쇼어 알고리즘 실용화 가능 단계 (미래)</td></tr>
+      </tbody>
+    </table>
+    <div class="memo">쇼어=소인수분해·RSA위협·다항시간 / 그로버=비정렬탐색·√N가속·대칭키약화 / 양자우월성=구글2019 Sycamore 200초</div>
+  </div>
+</div>
+
+<!-- P4: 양자 암호·보안 -->
+<div class="pnl" id="p4">
+  <div class="card">
+    <div class="card-h"><div class="ico ir">🔐</div><h3>양자 암호 기술 체계 ⭐</h3></div>
+
+    <div class="acc open" onclick="this.classList.toggle('open')">
+      <div class="acc-h"><div class="acc-title" style="color:var(--a1);">QKD (양자 키 분배) — BB84 프로토콜 ⭐</div><div class="acc-tgl">▾</div></div>
+      <div class="acc-body">
+        <div style="background:var(--s2);border:1px solid rgba(232,121,249,.2);border-radius:8px;padding:11px;margin-bottom:8px;font-size:12px;line-height:1.75;">
+          <strong style="color:var(--a1)">QKD(Quantum Key Distribution)</strong>: 양자역학 원리(비복제 정리·측정 붕괴)를 이용하여 <em style="color:var(--a3);font-style:normal;">도청이 물리적으로 불가능한</em> 암호 키를 분배
+        </div>
+        <p style="font-size:11.5px;font-weight:800;color:var(--a3);margin-bottom:7px;">BB84 프로토콜 4단계 (Bennett & Brassard, 1984)</p>
+        <table>
+          <thead><tr><th>단계</th><th>내용</th></tr></thead>
+          <tbody>
+            <tr><td><strong>① 양자 채널 전송</strong></td><td>Alice가 무작위 비트(0/1)를 무작위 기저(+/×)로 인코딩한 광자 전송</td></tr>
+            <tr><td><strong>② Bob 측정</strong></td><td>Bob이 무작위로 기저(+/×) 선택하여 광자 측정 — 50% 확률로 같은 기저 선택</td></tr>
+            <tr><td><strong>③ 기저 비교 (고전 채널)</strong></td><td>공개 채널로 기저 선택 정보 교환 → 같은 기저를 선택한 비트만 유지 (Sifting)</td></tr>
+            <tr><td><strong>④ 도청 검출</strong></td><td>일부 비트 비교 → 오류율이 임계값(11%) 초과 시 도청 발생 → 키 폐기 후 재시도</td></tr>
+          </tbody>
+        </table>
+        <ul class="il" style="margin-top:8px;">
+          <li><strong>도청 탐지 원리:</strong> 도청자(Eve)가 측정하면 <em>양자 상태가 붕괴</em>되어 오류 발생 → 통계적으로 탐지 가능</li>
+          <li><strong>무조건 안전성(Unconditional Security):</strong> 계산량이 아닌 물리 법칙에 기반 → 미래 양자 컴퓨터도 해독 불가</li>
+          <li><strong>한계:</strong> 거리 제한(수백 km) / 광자 손실 / 양자 중계기 필요</li>
+          <li><strong>상용 현황:</strong> 도시 규모 QKD 네트워크 (중국·한국·일본·유럽) / 위성 QKD (중국 묵자호)</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="acc" onclick="this.classList.toggle('open')">
+      <div class="acc-h"><div class="acc-title" style="color:var(--a3);">양자 내성 암호 (PQC — Post-Quantum Cryptography) ⭐</div><div class="acc-tgl">▾</div></div>
+      <div class="acc-body">
+        <div style="background:var(--s3);border:1px solid rgba(251,191,36,.2);border-radius:7px;padding:10px;margin-bottom:8px;font-size:12px;line-height:1.7;">
+          <strong style="color:var(--a3)">PQC</strong>: 양자 컴퓨터로도 해독이 어려운 수학 문제 기반의 <em style="color:var(--a2);font-style:normal;">고전 알고리즘</em> — 기존 인프라에서 소프트웨어만 교체
+        </div>
+        <table>
+          <thead><tr><th>수학적 기반</th><th>대표 알고리즘</th><th>특징</th></tr></thead>
+          <tbody>
+            <tr><td><strong>격자 기반 (Lattice)</strong></td><td><strong>CRYSTALS-Kyber ⭐</strong> (KEM)<br>CRYSTALS-Dilithium (서명)</td><td>NIST 표준화 완료(2024) / 가장 유망 / 빠른 속도</td></tr>
+            <tr><td><strong>해시 기반 (Hash)</strong></td><td><strong>SPHINCS+</strong></td><td>검증된 안전성 / 서명 크기 큼 / NIST 표준화</td></tr>
+            <tr><td><strong>코드 기반 (Code)</strong></td><td>BIKE, HQC</td><td>긴 역사·높은 신뢰 / 키 크기 큼</td></tr>
+            <tr><td><strong>다변수 다항식</strong></td><td>GeMSS</td><td>빠른 검증 / 큰 공개키</td></tr>
+          </tbody>
+        </table>
+        <ul class="il" style="margin-top:8px;">
+          <li><strong>NIST PQC 표준화 (2024):</strong> ML-KEM(Kyber)·ML-DSA(Dilithium)·SLH-DSA(SPHINCS+) 최종 선정</li>
+          <li><strong>Harvest Now, Decrypt Later (지금 수집·나중 해독):</strong> 현재 암호화된 데이터를 저장해 두었다가 미래 양자 컴퓨터로 해독하는 위협 → 지금부터 PQC 전환 시급</li>
+          <li><strong>암호 민첩성(Crypto-Agility):</strong> 알고리즘을 빠르게 교체할 수 있는 설계 능력 — PQC 전환 핵심</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="acc" onclick="this.classList.toggle('open')">
+      <div class="acc-h"><div class="acc-title" style="color:var(--a2);">양자 컴퓨터의 현재 암호 위협 ⭐</div><div class="acc-tgl">▾</div></div>
+      <div class="acc-body">
+        <table>
+          <thead><tr><th>암호 유형</th><th>현재 알고리즘</th><th>양자 위협</th><th>대응</th></tr></thead>
+          <tbody>
+            <tr><td><strong>공개키 암호 (PKC)</strong></td><td>RSA, ECC, DH</td><td><span class="tag tr">⭐위험</span> 쇼어 알고리즘 → 다항 시간 해독</td><td>PQC(Kyber·Dilithium)로 교체</td></tr>
+            <tr><td><strong>대칭키 암호</strong></td><td>AES-128/256</td><td><span class="tag ty">부분 위협</span> 그로버 → 보안 강도 절반</td><td>키 길이 2배 (AES-256)</td></tr>
+            <tr><td><strong>해시 함수</strong></td><td>SHA-256, SHA-3</td><td><span class="tag ty">부분 위협</span> 그로버 → 충돌 저항 감소</td><td>출력 길이 2배 (SHA-384↑)</td></tr>
+            <tr><td><strong>전자 서명</strong></td><td>ECDSA, RSA-PSS</td><td><span class="tag tr">⭐위험</span> 쇼어 → 완전 해독</td><td>양자 내성 서명(Dilithium·SPHINCS+)</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div class="memo">QKD=양자키분배·물리법칙기반·도청탐지 / BB84=4단계·기저비교·도청시오류발생 / PQC=NIST표준Kyber·Dilithium·SPHINCS+ / RSA=쇼어로위험</div>
+  </div>
+</div>
+
+<!-- P5: 구현·플랫폼 -->
+<div class="pnl" id="p5">
+  <div class="card">
+    <div class="card-h"><div class="ico ib">🖥️</div><h3>양자 컴퓨터 구현 기술 ⭐</h3></div>
+    <table>
+      <thead><tr><th>구현 방식</th><th>원리</th><th>장점</th><th>단점</th><th>대표 기업</th></tr></thead>
+      <tbody>
+        <tr><td><strong>초전도 큐비트 ⭐</strong></td><td>초전도 회로의 전자 상태 활용 — 조셉슨 접합</td><td>빠른 게이트·높은 확장성</td><td>극저온 필요(-273°C)<br>결어긋남 취약</td><td><strong>IBM, Google, Rigetti</strong></td></tr>
+        <tr><td><strong>이온 트랩 (Ion Trap)</strong></td><td>전자기장으로 이온을 포획·레이저로 제어</td><td>높은 충실도·긴 결맞음</td><td>게이트 속도 느림<br>확장성 어려움</td><td><strong>IonQ, Quantinuum(Honeywell)</strong></td></tr>
+        <tr><td><strong>광자 기반</strong></td><td>광자의 편광·경로 상태를 큐비트로 사용</td><td>상온 동작·네트워크 친화</td><td>광자 손실·게이트 구현 어려움</td><td><strong>PsiQuantum, Xanadu</strong></td></tr>
+        <tr><td><strong>중성원자</strong></td><td>레이저로 포획된 중성원자 활용</td><td>동일한 큐비트·높은 확장성</td><td>초기 단계</td><td><strong>QuEra, Pasqal, Atom Computing</strong></td></tr>
+        <tr><td><strong>위상 큐비트</strong></td><td>마요라나 페르미온 기반 — 오류 내성</td><td>이론적 오류 내성 탁월</td><td>마요라나 입자 구현 어려움</td><td><strong>Microsoft</strong></td></tr>
+      </tbody>
+    </table>
+    <div class="memo">초전도=IBM·Google·극저온필요 / 이온트랩=IonQ·높은충실도 / 광자=상온동작·네트워크 / 위상=Microsoft·오류내성(이론)</div>
+  </div>
+
+  <div class="card">
+    <div class="card-h"><div class="ico iy">📊</div><h3>주요 양자 컴퓨팅 플랫폼 & 현황</h3></div>
+    <table>
+      <thead><tr><th>기업</th><th>플랫폼</th><th>방식</th><th>큐비트 현황·특징</th></tr></thead>
+      <tbody>
+        <tr><td><strong>IBM ⭐</strong></td><td>IBM Quantum / Qiskit</td><td>초전도</td><td>Eagle(127큐비트)·Osprey(433)·Condor(1121) / Qiskit 오픈소스 SDK / 클라우드 접근 가능</td></tr>
+        <tr><td><strong>Google</strong></td><td>Quantum AI / Cirq</td><td>초전도</td><td>Sycamore(54큐비트) → Willow(105큐비트, 2024) / 양자 우월성 최초 주장</td></tr>
+        <tr><td><strong>IonQ</strong></td><td>IonQ Aria·Forte</td><td>이온 트랩</td><td>높은 충실도 / 나스닥 상장 / AWS·Azure·Google Cloud 제공</td></tr>
+        <tr><td><strong>D-Wave</strong></td><td>Advantage</td><td>양자 어닐링</td><td>5000+ 큐비트 / 범용 양자 컴퓨터 아님 / 최적화 문제 특화</td></tr>
+        <tr><td><strong>Microsoft</strong></td><td>Azure Quantum</td><td>위상(개발 중)</td><td>토폴로지컬 큐비트 목표 / 클라우드 양자 서비스</td></tr>
+        <tr><td><strong>Amazon</strong></td><td>Amazon Braket</td><td>멀티</td><td>IonQ·Rigetti·D-Wave 등 여러 업체 통합 접근 클라우드</td></tr>
+      </tbody>
+    </table>
+
+    <div class="card-h" style="margin-top:14px;margin-bottom:10px;"><div class="ico ip">🌐</div><h3>양자 컴퓨팅 오류 수정 & 한계</h3></div>
+    <div class="g2">
+      <div>
+        <p style="font-size:11.5px;font-weight:800;color:var(--a4);margin-bottom:7px;">주요 한계·도전 과제</p>
+        <ul class="il">
+          <li><strong>결어긋남(Decoherence):</strong> 환경과의 상호작용으로 양자 상태 손실 → 극저온(-273.15°C) 필요</li>
+          <li><strong>게이트 오류율:</strong> 현재 0.1~1% → 오류 수정 필수</li>
+          <li><strong>큐비트 수 확장:</strong> 논리 큐비트 1개 = 물리 큐비트 수백~수천 개 필요 (오류 수정)</li>
+          <li><strong>결맞음 시간:</strong> 마이크로초~밀리초 단위 → 복잡한 계산 한계</li>
+        </ul>
+      </div>
+      <div>
+        <p style="font-size:11.5px;font-weight:800;color:var(--a2);margin-bottom:7px;">양자 오류 수정 (QEC)</p>
+        <ul class="il">
+          <li><strong>표면 코드(Surface Code):</strong> 가장 유망한 오류 수정 방식 — 인접 큐비트로 오류 탐지·수정</li>
+          <li><strong>논리 큐비트 1개:</strong> 물리 큐비트 수백~수천 개 필요</li>
+          <li><strong>오류 임계값:</strong> 물리 오류율 1% 미만이어야 오류 수정 의미 있음</li>
+          <li><strong>Google Willow(2024):</strong> 큐비트 늘릴수록 오류↓ — 오류 수정의 이정표</li>
+        </ul>
+      </div>
+    </div>
+    <div class="memo">IBM Qiskit·Google Cirq·Amazon Braket=클라우드 양자 / 초전도=극저온 / 결어긋남=큰 도전 / 표면코드=오류수정 표준방식</div>
+  </div>
+</div>
+
+<!-- P6: QA -->
+<div class="pnl" id="p6">
+  <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:7px;margin-bottom:12px;">
+    <div class="fb-wr" id="fbar" style="margin:0;">
+      <button class="fb on" data-f="all">전체</button>
+      <button class="fb" data-f="기초">⚛️ 기초</button>
+      <button class="fb" data-f="게이트">🔬 게이트</button>
+      <button class="fb" data-f="알고리즘">🚀 알고리즘</button>
+      <button class="fb" data-f="암호">🔐 암호·보안</button>
+      <button class="fb" data-f="구현">🖥️ 구현</button>
+      <button class="fb" data-f="OX">⭕ OX</button>
+    </div>
+    <div class="sc-b">정답: <span id="sc">0</span>/<span id="st">0</span></div>
+  </div>
+  <div id="ql"></div>
+</div>
+
+</div>
+<script>
+document.querySelectorAll('.tab').forEach(t=>t.addEventListener('click',()=>{
+  document.querySelectorAll('.tab,.pnl').forEach(x=>x.classList.remove('on'));
+  t.classList.add('on');document.getElementById(t.dataset.p).classList.add('on');
+}));
+const QA=[
+  {cat:'기초',diff:'easy',
+   q:'양자 컴퓨터의 기본 단위인 큐비트(Qubit)와 고전 비트(Bit)의 가장 핵심적인 차이로 가장 적절한 것은?',
+   cs:['큐비트는 0과 1 두 가지 값만 가질 수 있다.','큐비트는 측정 전까지 0과 1의 중첩(Superposition) 상태를 동시에 가질 수 있어 2ⁿ 상태를 동시 표현한다.','큐비트는 고전 비트보다 저장 용량이 크다.','큐비트는 항상 1의 값을 가진다.'],ans:1,
+   exp:'<strong>큐비트의 핵심 특성</strong>: 고전 비트는 0 또는 1 중 <em>하나의 확정된 값</em>을 가지지만, 큐비트는 측정 전까지 |0⟩과 |1⟩의 <em>중첩 상태</em>를 가집니다. n개의 큐비트는 2ⁿ개의 상태를 동시에 표현할 수 있어 특정 문제에서 지수적 병렬성 제공. 측정 시 확률적으로 하나의 값으로 붕괴됩니다.'},
+  {cat:'기초',diff:'mid',
+   q:'양자 얽힘(Quantum Entanglement)의 특성으로 가장 적절한 것은?',
+   cs:['두 큐비트가 서로 다른 상태를 독립적으로 유지하는 현상','두 큐비트가 상관 관계로 연결되어 하나를 측정하면 다른 큐비트의 상태가 즉시 결정되는 현상','큐비트가 0과 1의 중첩 상태를 동시에 가지는 현상','양자 상태를 복사할 수 없는 물리 법칙'],ans:1,
+   exp:'<strong>양자 얽힘(Entanglement)</strong>: 두 큐비트가 <em>비국소적 상관 관계</em>로 연결되어, 아무리 멀리 떨어져 있어도 하나를 측정하면 다른 큐비트의 상태가 즉시 결정됩니다. QKD(양자 키 분배)·양자 텔레포테이션의 기반. 중첩=큐비트 하나의 특성, 비복제정리=복사 불가, 얽힘=두 큐비트 간 상관.'},
+  {cat:'기초',diff:'mid',
+   q:'양자 비복제 정리(No-Cloning Theorem)가 양자 암호(QKD)의 보안에 기여하는 방식으로 가장 적절한 것은?',
+   cs:['도청자가 키를 복사할 수 없으므로 절대 안전한 통신 채널이 보장된다.','임의의 양자 상태를 복사할 수 없기 때문에 도청자가 광자를 복제하여 측정 후 재전송하는 것이 불가능하다.','양자 상태를 복제할 수 없으므로 키 생성 자체가 불가능하다.','도청자가 광자를 측정해도 오류가 발생하지 않는다.'],ans:1,
+   exp:'<strong>비복제 정리와 QKD 보안</strong>: 도청자(Eve)는 전송 중인 광자를 복제한 후 측정하고 원본을 재전송할 수 없습니다. 복사가 불가능하므로 Eve는 <em>직접 광자를 측정</em>할 수밖에 없고, 측정 시 양자 상태가 붕괴되어 오류가 발생합니다. 이 오류가 통계적으로 탐지되어 도청 사실이 드러납니다.'},
+  {cat:'게이트',diff:'mid',
+   q:'아다마르 게이트(Hadamard Gate, H)의 역할로 가장 적절한 것은?',
+   cs:['큐비트를 |0⟩에서 |1⟩로 반전시킨다.','큐비트를 |0⟩과 |1⟩의 균등한 중첩 상태로 변환하여 양자 병렬성을 활성화한다.','두 큐비트를 얽힘 상태로 만든다.','큐비트의 위상만 변경한다.'],ans:1,
+   exp:'<strong>아다마르 게이트(H)</strong>: |0⟩ → (|0⟩+|1⟩)/√2, |1⟩ → (|0⟩-|1⟩)/√2 로 변환. 고전 0 또는 1을 <em>50:50 확률의 균등 중첩</em> 상태로 만들어 양자 병렬성 활성화. 양자 알고리즘의 시작점. n개 큐비트에 H 적용 → 2ⁿ 상태 동시 중첩. H²=I (두 번 적용=원래 상태 복귀).'},
+  {cat:'알고리즘',diff:'mid',
+   q:'쇼어 알고리즘(Shor\'s Algorithm)이 기존 암호 체계에 가장 큰 위협이 되는 이유로 가장 적절한 것은?',
+   cs:['해시 함수를 지수적으로 빠르게 계산하기 때문에','대용량 데이터베이스를 √N 시간에 탐색하기 때문에','소인수분해를 다항 시간에 수행하여 RSA·ECC 등 공개키 암호를 해독할 수 있기 때문에','대칭키 암호의 키 공간을 절반으로 줄이기 때문에'],ans:2,
+   exp:'<strong>쇼어 알고리즘</strong>: 양자 푸리에 변환(QFT)을 이용하여 소인수분해를 <em>다항 시간 O(n³)</em>에 수행합니다. RSA·ECC·DH 등 공개키 암호는 소인수분해·이산 로그의 어려움에 기반하므로 쇼어 알고리즘으로 해독 가능합니다. 고전 컴퓨터는 지수 시간 소요. 대칭키 절반 약화는 그로버 알고리즘.'},
+  {cat:'알고리즘',diff:'mid',
+   q:'그로버 알고리즘(Grover\'s Algorithm)의 특성과 대칭키 암호에 대한 영향으로 가장 적절한 것은?',
+   cs:['비정렬 데이터베이스를 O(N) 시간에 탐색하여 고전 방법과 동일한 성능이다.','비정렬 데이터베이스를 O(√N) 시간에 탐색하여 대칭키 암호의 보안 강도를 절반으로 줄인다.','소인수분해를 통해 대칭키를 직접 계산한다.','해시 함수를 완전히 무력화하여 SHA-256을 즉시 해독한다.'],ans:1,
+   exp:'<strong>그로버 알고리즘</strong>: N개 중 하나를 탐색하는 데 고전=O(N), 양자=<em>O(√N)</em>. AES-128에 적용 시: 키 공간 2¹²⁸ → √(2¹²⁸) = 2⁶⁴번 연산 → <em>보안 강도가 128비트에서 64비트로 감소</em>. 대응: AES-256 사용(그로버 후 128비트 보안 유지). SHA-256도 출력 길이 2배인 SHA-512 권장.'},
+  {cat:'암호',diff:'mid',
+   q:'BB84 QKD 프로토콜에서 도청을 탐지하는 원리로 가장 적절한 것은?',
+   cs:['도청자가 키를 복사하면 복사본의 존재가 수신자에게 알려진다.','도청자가 광자를 측정하면 양자 상태가 붕괴되어 오류율이 증가하고, 이 오류율이 임계값을 초과하면 도청이 탐지된다.','도청자의 IP 주소가 양자 채널에 기록된다.','도청자가 측정해도 상태 변화가 없어 복원 불가능하다.'],ans:1,
+   exp:'<strong>BB84 도청 탐지 원리</strong>: 도청자(Eve)가 전송 중인 광자를 측정하면 <em>양자 상태가 붕괴</em>됩니다. Eve가 잘못된 기저로 측정 후 재전송하면 Bob의 측정에서 오류 발생. Alice·Bob이 일부 비트를 공개 비교 → 오류율 11%(QBER) 초과 시 도청 탐지 → 키 폐기·재시도. 비복제 정리+측정 붕괴의 결합 효과.'},
+  {cat:'암호',diff:'hard',
+   q:'NIST가 2024년 최종 표준화한 양자 내성 암호(PQC) 알고리즘의 수학적 기반으로 가장 적절한 것은?',
+   cs:['소인수분해와 이산 로그 어려움 (RSA·ECC와 동일)','격자 기반 수학 문제 (CRYSTALS-Kyber·Dilithium), 해시 기반 (SPHINCS+)','타원 곡선 암호의 변형','AES를 기반으로 한 대칭키 확장'],ans:1,
+   exp:'<strong>NIST PQC 표준화(2024)</strong>: ①<em>CRYSTALS-Kyber(ML-KEM)</em>: 격자 기반 키 캡슐화 ②<em>CRYSTALS-Dilithium(ML-DSA)</em>: 격자 기반 전자서명 ③<em>SPHINCS+(SLH-DSA)</em>: 해시 기반 서명. 격자 문제(Learning With Errors·SVP 등)는 양자 컴퓨터로도 효율적 알고리즘이 없어 안전. RSA·ECC는 쇼어로 위험.'},
+  {cat:'구현',diff:'mid',
+   q:'초전도 큐비트 방식의 양자 컴퓨터(IBM·Google)의 가장 큰 기술적 도전으로 가장 적절한 것은?',
+   cs:['광자를 포획하는 레이저 기술의 한계','절대 영도(-273.15°C)에 가까운 극저온 환경 유지와 결어긋남(Decoherence) 문제','이온을 안정적으로 포획하는 전자기장 제어','큐비트의 측정 속도 부족'],ans:1,
+   exp:'<strong>초전도 큐비트의 과제</strong>: 조셉슨 접합이 초전도 현상을 유지하기 위해 <em>절대 영도(-273.15°C)에 가까운 극저온(~15밀리켈빈)</em> 냉각이 필요합니다. 또한 환경 노이즈로 인한 <em>결어긋남(Decoherence)</em>으로 양자 상태가 빠르게 손실됩니다. 이온 트랩=긴 결맞음·확장성 어려움, 광자=상온 동작 가능.'},
+  {cat:'기초',diff:'hard',
+   q:'"Harvest Now, Decrypt Later" 공격의 의미로 가장 적절한 것은?',
+   cs:['현재 해독이 가능한 데이터만 선별하여 공격','현재는 해독할 수 없지만 미래 양자 컴퓨터를 위해 현재 암호화된 데이터를 지금 수집·저장해 두는 공격','양자 컴퓨터를 이용해 실시간으로 데이터를 해독','해시 함수를 역산하여 원문을 복원하는 공격'],ans:1,
+   exp:'<strong>Harvest Now, Decrypt Later(지금 수집·나중 해독)</strong>: 공격자가 현재 RSA·ECC로 암호화된 데이터를 <em>지금 대량 수집</em>하여 저장해 두었다가, 미래에 충분히 발전한 양자 컴퓨터로 <em>나중에 해독</em>하는 장기 위협입니다. 기밀 유지 기간이 긴 민감 데이터(국가 기밀·의료·금융)에 특히 위험. 따라서 PQC 전환을 지금 시작해야 하는 이유입니다.'},
+  {cat:'OX',diff:'easy',type:'ox',
+   q:'양자 컴퓨터는 모든 종류의 문제에서 고전 컴퓨터보다 빠르다.',ans:false,
+   exp:'<strong>×</strong> — 양자 컴퓨터는 <strong>특정 문제</strong>(소인수분해·비정렬 탐색·양자 시뮬레이션 등)에서만 우위를 가집니다. 일반적인 계산(워드프로세서·웹 서핑·데이터베이스 조회 등)에서는 오히려 불안정하고 느립니다. 양자 컴퓨터는 고전 컴퓨터를 대체하는 것이 아니라 특수 목적 보조 처리 장치로 활용됩니다.'},
+  {cat:'알고리즘',diff:'mid',type:'ox',
+   q:'쇼어 알고리즘은 비정렬 데이터베이스에서 특정 항목을 √N 시간에 탐색하는 알고리즘이다.',ans:false,
+   exp:'<strong>×</strong> — √N 탐색은 <strong>그로버 알고리즘</strong>입니다. <strong>쇼어 알고리즘</strong>은 큰 수의 <em>소인수분해</em>를 다항 시간 O(n³)에 수행하여 RSA·ECC 등 공개키 암호를 위협합니다. 쇼어=소인수분해·RSA위협 / 그로버=비정렬탐색·대칭키약화. 두 알고리즘 구분이 시험 핵심입니다.'},
+  {cat:'암호',diff:'mid',type:'ox',
+   q:'양자 내성 암호(PQC)는 양자 컴퓨터에서만 실행 가능한 특수 암호 알고리즘이다.',ans:false,
+   exp:'<strong>×</strong> — PQC(Post-Quantum Cryptography)는 <strong>고전 컴퓨터에서 실행</strong>되지만, 양자 컴퓨터로도 해독이 어려운 수학 문제에 기반한 암호입니다. 격자 문제·해시 함수 등을 기반으로 하며 기존 소프트웨어 업그레이드로 도입 가능합니다. QKD는 양자 물리를 이용하는 반면, PQC는 순수 수학 기반의 고전 알고리즘입니다.'},
+  {cat:'기초',diff:'hard',type:'ox',
+   q:'결어긋남(Decoherence)은 양자 컴퓨터가 환경과 상호작용하여 큐비트의 양자 상태를 잃는 현상으로, 초전도 큐비트에서 극저온 환경이 필요한 주된 이유 중 하나이다.',ans:true,
+   exp:'<strong>○</strong> — <strong>결어긋남(Decoherence)</strong>: 큐비트가 주변 환경(열·전자기 노이즈·진동)과 상호작용하면 양자 중첩·얽힘 상태를 잃고 고전적 상태로 전환됩니다. 초전도 큐비트는 열 노이즈를 최소화하기 위해 <em>절대 영도(-273.15°C)에 가까운 ~15mK</em>의 극저온이 필요합니다. 결맞음 시간이 길수록 복잡한 연산이 가능합니다.'},
+  {cat:'암호',diff:'mid',type:'ox',
+   q:'BB84 QKD 프로토콜은 물리 법칙에 기반한 무조건적 안전성을 제공하므로 충분히 강력한 양자 컴퓨터가 등장해도 해독이 불가능하다.',ans:true,
+   exp:'<strong>○</strong> — QKD(Quantum Key Distribution)는 계산 복잡성이 아닌 <strong>양자역학의 물리 법칙</strong>(비복제 정리·측정 붕괴)에 기반하므로 <em>계산 능력에 무관하게 무조건적 안전성(Unconditional Security)</em>을 제공합니다. 미래의 양자 컴퓨터로도 해독 불가. 단, 구현상의 한계(거리 제한·광학 장치 취약점)가 있어 완벽한 보안은 별도 보장 필요.'},
+];
+let answered=0,correct=0;
+function renderQ(f){
+  const data=f==='all'?QA:QA.filter(q=>q.cat===f);
+  const list=document.getElementById('ql');list.innerHTML='';
+  answered=0;correct=0;upS();
+  const CATC={'기초':'tp','게이트':'tb','알고리즘':'ty','암호':'tr','구현':'tg','OX':'to'};
+  const DLC={'easy':'easy 쉬움','mid':'mid 보통','hard':'hard 어려움'};
+  const NL=['①','②','③','④'];
+  if(!data.length){list.innerHTML='<div style="text-align:center;padding:40px;color:var(--mu)">문제 없음</div>';return;}
+  data.forEach((q,i)=>{
+    const gi=QA.indexOf(q);
+    const el=document.createElement('div');el.className='qa';
+    const tc=CATC[q.cat]||'tp';
+    const [dc,dn]=(DLC[q.diff]||'mid 보통').split(' ');
+    if(q.type==='ox'){
+      el.innerHTML=`<div class="qa-hd" onclick="this.closest('.qa').classList.toggle('open')"><div><div class="qa-meta"><span class="qn">Q${String(i+1).padStart(2,'0')}</span><span class="tag ${tc}">${q.cat}</span><span class="diff ${dc}">${dn}</span><span class="tag tg">O/X</span></div><div class="qq">${q.q}</div></div><span class="tgl">▾</span></div>
+      <div class="qa-bd"><div class="ox-wr"><button class="ox" onclick="pickOX(this,true,${gi})">⭕ 옳다</button><button class="ox" onclick="pickOX(this,false,${gi})">❌ 틀리다</button></div><div class="exp" id="ex-${gi}"><div class="exp-t">💡 해설</div>${q.exp}</div></div>`;
+    } else {
+      el.innerHTML=`<div class="qa-hd" onclick="this.closest('.qa').classList.toggle('open')"><div><div class="qa-meta"><span class="qn">Q${String(i+1).padStart(2,'0')}</span><span class="tag ${tc}">${q.cat}</span><span class="diff ${dc}">${dn}</span></div><div class="qq">${q.q}</div></div><span class="tgl">▾</span></div>
+      <div class="qa-bd"><div class="chs">${q.cs.map((c,ci)=>`<div class="ch" data-ci="${ci}" onclick="pickCh(this,${gi})"><span class="cnum">${NL[ci]}</span><span>${c}</span></div>`).join('')}</div><div class="exp" id="ex-${gi}"><div class="exp-t">💡 해설</div>${q.exp}</div></div>`;
+    }
+    list.appendChild(el);
+  });
+}
+function pickCh(el,gi){
+  const bd=el.closest('.qa-bd');if(bd.querySelector('.ok,.ng'))return;
+  const q=QA[gi];
+  bd.querySelectorAll('.ch').forEach((c,i)=>{c.classList.add('lk');if(i===q.ans)c.classList.add('ok');else if(i===parseInt(el.dataset.ci))c.classList.add('ng');});
+  document.getElementById('ex-'+gi).classList.add('show');
+  answered++;if(parseInt(el.dataset.ci)===q.ans)correct++;upS();
+}
+function pickOX(btn,val,gi){
+  const bd=btn.closest('.qa-bd');if(bd.querySelector('.so,.sx'))return;
+  const q=QA[gi];
+  bd.querySelectorAll('.ox').forEach(b=>b.classList.add('lk'));
+  btn.classList.add(val?'so':'sx');
+  if(val!==q.ans){btn.style.opacity='.5';bd.querySelectorAll('.ox')[val?1:0].classList.add(q.ans?'so':'sx');}
+  document.getElementById('ex-'+gi).classList.add('show');
+  answered++;if(val===q.ans)correct++;upS();
+}
+function upS(){document.getElementById('sc').textContent=correct;document.getElementById('st').textContent=answered;}
+document.getElementById('fbar').addEventListener('click',e=>{
+  const b=e.target.closest('.fb');if(!b)return;
+  document.querySelectorAll('.fb').forEach(x=>x.classList.remove('on'));b.classList.add('on');renderQ(b.dataset.f);
+});
+renderQ('all');
+</script>
+</body>
+</html>

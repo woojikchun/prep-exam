@@ -1,0 +1,506 @@
+
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+.wrap{padding:1rem 0;font-family:var(--font-sans)}
+.tabs{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:1.25rem;border-bottom:0.5px solid var(--color-border-tertiary);padding-bottom:.75rem}
+.tab{padding:5px 14px;border-radius:var(--border-radius-md);border:0.5px solid var(--color-border-tertiary);font-size:13px;cursor:pointer;background:transparent;color:var(--color-text-secondary);transition:all .15s}
+.tab.on{background:var(--color-background-secondary);color:var(--color-text-primary);border-color:var(--color-border-secondary);font-weight:500}
+.panel{display:none}.panel.on{display:block}
+.sec{font-size:12px;font-weight:500;color:var(--color-text-secondary);text-transform:uppercase;letter-spacing:.05em;margin:1.5rem 0 .75rem}
+.sec:first-child{margin-top:0}
+.grid2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin-bottom:1.25rem}
+.grid3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin-bottom:1.25rem}
+.grid4{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin-bottom:1.25rem}
+.card{background:var(--color-background-primary);border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-lg);padding:14px}
+.ct{font-size:13px;font-weight:500;margin-bottom:6px;color:var(--color-text-primary)}
+.cs{font-size:12px;color:var(--color-text-secondary);line-height:1.65}
+.badge{display:inline-block;font-size:11px;padding:2px 8px;border-radius:var(--border-radius-md);margin-bottom:8px}
+.b-blue{background:#E6F1FB;color:#0C447C}
+.b-teal{background:#E1F5EE;color:#085041}
+.b-amber{background:#FAEEDA;color:#633806}
+.b-coral{background:#FAECE7;color:#712B13}
+.b-purple{background:#EEEDFE;color:#3C3489}
+.b-green{background:#EAF3DE;color:#27500A}
+.b-pink{background:#FBEAF0;color:#72243E}
+.b-gray{background:#F1EFE8;color:#444441}
+.tw{border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-lg);overflow:hidden;margin-bottom:1.25rem}
+table{width:100%;border-collapse:collapse;font-size:13px}
+th{background:var(--color-background-secondary);font-weight:500;padding:8px 12px;text-align:left;border-bottom:0.5px solid var(--color-border-tertiary);color:var(--color-text-primary)}
+td{padding:8px 12px;border-bottom:0.5px solid var(--color-border-tertiary);color:var(--color-text-secondary);vertical-align:top;line-height:1.55}
+tr:last-child td{border-bottom:none}
+td:first-child{color:var(--color-text-primary);font-weight:500}
+.tip{border-left:3px solid #1D9E75;border-radius:0 var(--border-radius-md) var(--border-radius-md) 0;padding:10px 14px;font-size:13px;margin-bottom:1rem;line-height:1.65;background:var(--color-background-secondary)}
+.warn{border-left:3px solid #BA7517;border-radius:0 var(--border-radius-md) var(--border-radius-md) 0;padding:10px 14px;font-size:13px;margin-bottom:1rem;line-height:1.65;background:var(--color-background-secondary)}
+.one{background:var(--color-background-secondary);border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-lg);padding:12px 16px;font-size:13px;margin-top:1rem}
+.one span{color:var(--color-text-secondary);font-size:12px;display:block;margin-bottom:4px}
+.code{background:var(--color-background-secondary);border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-md);padding:10px 14px;font-size:12px;font-family:var(--font-mono);margin-bottom:10px;color:var(--color-text-primary);line-height:1.7;white-space:pre}
+.qa-item{border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-lg);margin-bottom:8px;overflow:hidden}
+.qa-q{padding:11px 14px;font-size:13px;cursor:pointer;font-weight:500;display:flex;justify-content:space-between;align-items:center;background:var(--color-background-primary);color:var(--color-text-primary)}
+.qa-a{display:none;padding:10px 14px;font-size:13px;color:var(--color-text-secondary);border-top:0.5px solid var(--color-border-tertiary);line-height:1.65;background:var(--color-background-secondary)}
+.qa-a.open{display:block}
+.icon{font-size:12px;color:var(--color-text-tertiary)}
+.flow{display:flex;align-items:center;flex-wrap:wrap;gap:6px;margin-bottom:1.25rem}
+.fb{background:var(--color-background-primary);border:0.5px solid var(--color-border-secondary);border-radius:var(--border-radius-md);padding:6px 12px;font-size:12px;font-weight:500;color:var(--color-text-primary)}
+.arr{font-size:14px;color:var(--color-text-tertiary)}
+</style>
+
+<div class="wrap">
+<div class="tabs">
+  <button class="tab on" onclick="sw(0)">XML 기초</button>
+  <button class="tab" onclick="sw(1)">DTD · Schema</button>
+  <button class="tab" onclick="sw(2)">XPath · XQuery</button>
+  <button class="tab" onclick="sw(3)">XSLT · XSL-FO</button>
+  <button class="tab" onclick="sw(4)">XML 네임스페이스</button>
+  <button class="tab" onclick="sw(5)">웹서비스 기술</button>
+  <button class="tab" onclick="sw(6)">JSON 비교·활용</button>
+  <button class="tab" onclick="sw(7)">기출 Q&A</button>
+</div>
+
+<!-- 탭0 XML 기초 -->
+<div class="panel on" id="p0">
+  <p class="sec">XML 정의 및 특징</p>
+  <div class="card" style="margin-bottom:1.25rem">
+    <div class="cs" style="font-size:13px;line-height:1.75">
+      <b style="color:var(--color-text-primary)">XML(eXtensible Markup Language)</b> — W3C 표준(1998). SGML의 단순화 버전.<br>
+      데이터를 구조적으로 기술하는 메타 언어. 태그를 사용자가 직접 정의 가능.<br>
+      표현(Presentation)과 데이터(Content)를 분리하는 것이 핵심 철학.
+    </div>
+  </div>
+
+  <p class="sec">HTML vs XML 비교 (빈출)</p>
+  <div class="tw">
+    <table>
+      <tr><th>항목</th><th>HTML</th><th>XML</th></tr>
+      <tr><td>목적</td><td>데이터 표현·렌더링</td><td>데이터 구조화·교환</td></tr>
+      <tr><td>태그</td><td>미리 정의된 고정 태그</td><td>사용자 정의 태그</td></tr>
+      <tr><td>대소문자</td><td>구분 없음</td><td>구분함 (case-sensitive)</td></tr>
+      <tr><td>종료 태그</td><td>생략 가능 (&lt;br&gt;)</td><td>필수 (&lt;br/&gt;)</td></tr>
+      <tr><td>속성값</td><td>따옴표 생략 가능</td><td>반드시 따옴표</td></tr>
+      <tr><td>확장성</td><td>없음</td><td>있음 (메타 언어)</td></tr>
+      <tr><td>표준 기반</td><td>SGML 단순화</td><td>SGML 단순화</td></tr>
+    </table>
+  </div>
+
+  <p class="sec">XML 문서 구조</p>
+  <div class="code">&lt;?xml version="1.0" encoding="UTF-8"?&gt;   &lt;!-- XML 선언 --&gt;
+&lt;!DOCTYPE book SYSTEM "book.dtd"&gt;          &lt;!-- DTD 참조 (선택) --&gt;
+
+&lt;book id="001"&gt;                            &lt;!-- 루트 요소 (하나만) --&gt;
+  &lt;title lang="ko"&gt;감리사 합격&lt;/title&gt;    &lt;!-- 요소 + 속성 --&gt;
+  &lt;author&gt;홍길동&lt;/author&gt;
+  &lt;price&gt;30000&lt;/price&gt;
+  &lt;empty-tag/&gt;                             &lt;!-- 빈 요소 --&gt;
+  &lt;!-- 이것은 주석입니다 --&gt;
+&lt;/book&gt;</div>
+
+  <p class="sec">Well-formed vs Valid XML</p>
+  <div class="grid2">
+    <div class="card">
+      <span class="badge b-blue">Well-formed (형식 적합)</span>
+      <div class="ct">XML 문법 규칙 준수</div>
+      <div class="cs">루트 요소 하나, 태그 중첩 올바름, 종료 태그 존재, 속성값 따옴표, 대소문자 일치. 파서가 파싱 가능한 최소 조건</div>
+    </div>
+    <div class="card">
+      <span class="badge b-teal">Valid (유효)</span>
+      <div class="ct">Well-formed + DTD/Schema 준수</div>
+      <div class="cs">Well-formed 조건 충족 + DTD 또는 XML Schema에 정의된 구조·타입 규칙까지 만족. 더 엄격한 조건</div>
+    </div>
+  </div>
+
+  <p class="sec">XML 파서 유형</p>
+  <div class="tw">
+    <table>
+      <tr><th>파서</th><th>방식</th><th>장점</th><th>단점</th></tr>
+      <tr><td>DOM (Document Object Model)</td><td>문서 전체를 트리로 메모리 로드</td><td>임의 접근·수정 가능</td><td>대용량 문서 메모리 부담</td></tr>
+      <tr><td>SAX (Simple API for XML)</td><td>이벤트 기반 순차 파싱</td><td>메모리 효율, 빠름</td><td>임의 접근 불가, 복잡한 코드</td></tr>
+      <tr><td>StAX (Streaming API for XML)</td><td>풀(Pull) 방식 스트리밍</td><td>SAX보다 사용 편리</td><td>SAX보다 약간 느림</td></tr>
+    </table>
+  </div>
+  <div class="warn">DOM vs SAX 비교는 감리사 단골 문제. DOM=트리·전체 로드·임의접근, SAX=이벤트·순차·메모리 효율</div>
+  <div class="one"><span>한 줄 암기</span>Well-formed(문법) ⊂ Valid(문법+DTD/Schema). XML=사용자 정의 태그·대소문자 구분·종료태그 필수·속성값 따옴표 필수</div>
+</div>
+
+<!-- 탭1 DTD · Schema -->
+<div class="panel" id="p1">
+  <p class="sec">DTD (Document Type Definition)</p>
+  <div class="code">&lt;!-- book.dtd --&gt;
+&lt;!ELEMENT book (title, author, price)&gt;    &lt;!-- 요소 정의 --&gt;
+&lt;!ELEMENT title (#PCDATA)&gt;               &lt;!-- 텍스트 내용 --&gt;
+&lt;!ELEMENT author (#PCDATA)&gt;
+&lt;!ELEMENT price (#PCDATA)&gt;
+&lt;!ATTLIST book                            &lt;!-- 속성 정의 --&gt;
+  id    ID       #REQUIRED                &lt;!-- 필수 속성 --&gt;
+  lang  CDATA    #IMPLIED                 &lt;!-- 선택 속성 --&gt;
+&gt;</div>
+
+  <p class="sec">DTD 출현 지시자</p>
+  <div class="tw">
+    <table>
+      <tr><th>지시자</th><th>의미</th><th>예시</th></tr>
+      <tr><td>(없음)</td><td>정확히 1회</td><td>(title)</td></tr>
+      <tr><td>?</td><td>0 또는 1회 (선택적)</td><td>(price?)</td></tr>
+      <tr><td>*</td><td>0회 이상 (없어도 됨)</td><td>(author*)</td></tr>
+      <tr><td>+</td><td>1회 이상 (최소 1개)</td><td>(chapter+)</td></tr>
+      <tr><td>,</td><td>순서대로 (시퀀스)</td><td>(a, b, c)</td></tr>
+      <tr><td>|</td><td>선택 (OR)</td><td>(male|female)</td></tr>
+    </table>
+  </div>
+
+  <p class="sec">XML Schema (XSD) — DTD의 한계 극복</p>
+  <div class="code">&lt;xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"&gt;
+  &lt;xs:element name="book"&gt;
+    &lt;xs:complexType&gt;
+      &lt;xs:sequence&gt;
+        &lt;xs:element name="title"  type="xs:string"/&gt;
+        &lt;xs:element name="price"  type="xs:decimal"/&gt;
+        &lt;xs:element name="author" type="xs:string"
+                    minOccurs="1" maxOccurs="unbounded"/&gt;
+      &lt;/xs:sequence&gt;
+      &lt;xs:attribute name="id" type="xs:ID" use="required"/&gt;
+    &lt;/xs:complexType&gt;
+  &lt;/xs:element&gt;
+&lt;/xs:schema&gt;</div>
+
+  <p class="sec">DTD vs XML Schema 비교 (빈출)</p>
+  <div class="tw">
+    <table>
+      <tr><th>항목</th><th>DTD</th><th>XML Schema (XSD)</th></tr>
+      <tr><td>문법</td><td>독자 문법 (SGML 기반)</td><td>XML 문법 사용</td></tr>
+      <tr><td>데이터 타입</td><td>PCDATA만 (문자열 한정)</td><td>40+ 내장 타입 (int, date 등)</td></tr>
+      <tr><td>네임스페이스</td><td>미지원</td><td>완전 지원</td></tr>
+      <tr><td>출현 횟수</td><td>?, *, + 기호</td><td>minOccurs, maxOccurs 수치 지정</td></tr>
+      <tr><td>상속·확장</td><td>없음</td><td>complexType 확장·제한 가능</td></tr>
+      <tr><td>가독성</td><td>간결</td><td>장황하나 표현력 풍부</td></tr>
+      <tr><td>XML 도구 활용</td><td>불가</td><td>XML 파서 그대로 사용 가능</td></tr>
+    </table>
+  </div>
+  <div class="tip">감리사 핵심: DTD는 데이터 타입 미지원·네임스페이스 미지원이 최대 약점. XML Schema는 이를 극복한 W3C 표준 대안. 실무에서 XSD가 사실상 표준</div>
+  <div class="one"><span>한 줄 암기</span>DTD=간결·PCDATA·네임스페이스 미지원 / XSD=XML 문법·40+타입·네임스페이스·minOccurs/maxOccurs. XSD가 DTD 대체</div>
+</div>
+
+<!-- 탭2 XPath · XQuery -->
+<div class="panel" id="p2">
+  <p class="sec">XPath — XML 노드 탐색 언어</p>
+  <div class="tw">
+    <table>
+      <tr><th>표현식</th><th>의미</th><th>예시</th></tr>
+      <tr><td>/</td><td>루트 또는 절대 경로 구분자</td><td>/book/title</td></tr>
+      <tr><td>//</td><td>문서 전체에서 검색 (하위 전체)</td><td>//author</td></tr>
+      <tr><td>.</td><td>현재 노드</td><td>./price</td></tr>
+      <tr><td>..</td><td>부모 노드</td><td>../title</td></tr>
+      <tr><td>@</td><td>속성 선택</td><td>/book/@id</td></tr>
+      <tr><td>[ ]</td><td>조건 필터 (Predicate)</td><td>//book[price>20000]</td></tr>
+      <tr><td>*</td><td>임의 요소 선택</td><td>/book/*</td></tr>
+      <tr><td>text()</td><td>텍스트 노드</td><td>//title/text()</td></tr>
+      <tr><td>node()</td><td>모든 노드 유형</td><td>//book/node()</td></tr>
+    </table>
+  </div>
+
+  <p class="sec">XPath 축 (Axis)</p>
+  <div class="tw">
+    <table>
+      <tr><th>축</th><th>의미</th></tr>
+      <tr><td>child::</td><td>자식 노드 (기본값)</td></tr>
+      <tr><td>parent::</td><td>부모 노드</td></tr>
+      <tr><td>ancestor::</td><td>모든 조상 노드</td></tr>
+      <tr><td>descendant::</td><td>모든 자손 노드</td></tr>
+      <tr><td>following-sibling::</td><td>뒤에 오는 형제 노드</td></tr>
+      <tr><td>preceding-sibling::</td><td>앞에 오는 형제 노드</td></tr>
+      <tr><td>self::</td><td>현재 노드 자신</td></tr>
+      <tr><td>attribute::</td><td>속성 노드 (@의 완전형)</td></tr>
+    </table>
+  </div>
+
+  <p class="sec">XQuery — XML 질의 언어</p>
+  <div class="card" style="margin-bottom:1rem">
+    <div class="cs" style="font-size:12px;line-height:1.7">XQuery는 XML 데이터베이스 질의를 위한 W3C 표준 언어. XPath를 포함·확장. SQL이 관계형 DB의 질의 언어이듯, <b style="color:var(--color-text-primary)">XQuery는 XML DB의 질의 언어</b>.</div>
+  </div>
+  <div class="code">(: FLWOR 표현식 :)
+for $book in doc("books.xml")//book
+let $price := $book/price
+where $price > 20000
+order by $book/title
+return &lt;result&gt;{$book/title}&lt;/result&gt;</div>
+
+  <p class="sec">FLWOR 표현식 구조</p>
+  <div class="tw">
+    <table>
+      <tr><th>절</th><th>역할</th><th>SQL 대응</th></tr>
+      <tr><td>For</td><td>반복 변수 바인딩</td><td>FROM</td></tr>
+      <tr><td>Let</td><td>변수 선언·할당</td><td>—</td></tr>
+      <tr><td>Where</td><td>조건 필터</td><td>WHERE</td></tr>
+      <tr><td>Order by</td><td>정렬</td><td>ORDER BY</td></tr>
+      <tr><td>Return</td><td>결과 생성</td><td>SELECT</td></tr>
+    </table>
+  </div>
+  <div class="one"><span>한 줄 암기</span>XPath=노드 탐색 경로 언어(//=전체검색, @=속성, []=필터). XQuery=XML DB 질의(FLWOR = For·Let·Where·Order·Return ↔ SQL)</div>
+</div>
+
+<!-- 탭3 XSLT -->
+<div class="panel" id="p3">
+  <p class="sec">XSLT (XSL Transformations)</p>
+  <div class="card" style="margin-bottom:1.25rem">
+    <div class="cs" style="font-size:13px;line-height:1.75">
+      XML 문서를 다른 형식으로 <b style="color:var(--color-text-primary)">변환</b>하는 W3C 표준 언어.<br>
+      XML → HTML, XML → PDF, XML → 다른 XML, XML → 텍스트 변환에 사용.<br>
+      템플릿 기반(Template Matching)으로 동작. XPath를 내부적으로 사용.
+    </div>
+  </div>
+
+  <p class="sec">XSLT 변환 흐름</p>
+  <div class="flow">
+    <div class="fb">XML 원본 문서</div><span class="arr">→</span>
+    <div class="fb">XSLT 프로세서</div><span class="arr">+</span>
+    <div class="fb">XSLT 스타일시트 (.xsl)</div><span class="arr">→</span>
+    <div class="fb">결과 문서 (HTML/XML/텍스트)</div>
+  </div>
+
+  <div class="code">&lt;?xml version="1.0"?&gt;
+&lt;xsl:stylesheet version="1.0"
+  xmlns:xsl="http://www.w3.org/1999/XSL/Transform"&gt;
+
+  &lt;xsl:template match="/"&gt;           &lt;!-- 루트에 매칭 --&gt;
+    &lt;html&gt;&lt;body&gt;
+      &lt;xsl:for-each select="//book"&gt;  &lt;!-- 반복 --&gt;
+        &lt;xsl:sort select="title"/&gt;    &lt;!-- 정렬 --&gt;
+        &lt;p&gt;&lt;xsl:value-of select="title"/&gt;&lt;/p&gt;
+      &lt;/xsl:for-each&gt;
+    &lt;/body&gt;&lt;/html&gt;
+  &lt;/xsl:template&gt;
+
+&lt;/xsl:stylesheet&gt;</div>
+
+  <p class="sec">XSL 관련 기술 체계</p>
+  <div class="grid3">
+    <div class="card">
+      <span class="badge b-blue">XSLT</span>
+      <div class="ct">변환 (Transformation)</div>
+      <div class="cs">XML → 다른 형식 변환. 템플릿 기반. XML 문서 구조 재구성</div>
+    </div>
+    <div class="card">
+      <span class="badge b-teal">XSL-FO</span>
+      <div class="ct">서식 객체 (Formatting Objects)</div>
+      <div class="cs">XML → PDF·인쇄물 변환. 페이지 레이아웃·폰트·여백 등 인쇄 서식 정의</div>
+    </div>
+    <div class="card">
+      <span class="badge b-amber">XPath</span>
+      <div class="ct">경로 표현식</div>
+      <div class="cs">XSLT·XQuery의 기반. XML 문서 내 노드 탐색·선택</div>
+    </div>
+  </div>
+
+  <p class="sec">주요 XSLT 요소</p>
+  <div class="tw">
+    <table>
+      <tr><th>요소</th><th>기능</th></tr>
+      <tr><td>xsl:template</td><td>특정 노드 패턴에 매칭되는 변환 규칙 정의</td></tr>
+      <tr><td>xsl:value-of</td><td>노드의 텍스트 값 추출·출력</td></tr>
+      <tr><td>xsl:for-each</td><td>노드 집합 반복 처리</td></tr>
+      <tr><td>xsl:if</td><td>조건부 처리</td></tr>
+      <tr><td>xsl:choose/when/otherwise</td><td>다중 조건 처리 (switch-case)</td></tr>
+      <tr><td>xsl:sort</td><td>노드 정렬</td></tr>
+      <tr><td>xsl:apply-templates</td><td>자식 노드에 템플릿 적용 (재귀적)</td></tr>
+    </table>
+  </div>
+  <div class="one"><span>한 줄 암기</span>XSLT=XML 변환(템플릿 매칭·XPath 사용). XSL-FO=인쇄·PDF 서식. 흐름: XML + XSLT → XSLT 프로세서 → HTML/PDF/XML</div>
+</div>
+
+<!-- 탭4 네임스페이스 -->
+<div class="panel" id="p4">
+  <p class="sec">XML 네임스페이스 (Namespace)</p>
+  <div class="card" style="margin-bottom:1.25rem">
+    <div class="cs" style="font-size:13px;line-height:1.75">
+      서로 다른 XML 어휘(vocabulary)에서 동일한 태그 이름이 충돌하는 것을 방지.<br>
+      URI로 네임스페이스를 식별 (URI가 실제로 접근 가능할 필요는 없음 — 식별자 역할만).<br>
+      <b style="color:var(--color-text-primary)">xmlns</b> 속성으로 선언.
+    </div>
+  </div>
+
+  <div class="code">&lt;!-- 네임스페이스 충돌 예시: 두 XML의 &lt;table&gt;은 의미가 다름 --&gt;
+&lt;root
+  xmlns:html="http://www.w3.org/1999/xhtml"
+  xmlns:furn="http://furniture.example.com"&gt;
+
+  &lt;html:table&gt;          &lt;!-- HTML 테이블 --&gt;
+    &lt;html:tr&gt;&lt;html:td&gt;데이터&lt;/html:td&gt;&lt;/html:tr&gt;
+  &lt;/html:table&gt;
+
+  &lt;furn:table&gt;          &lt;!-- 가구 테이블 --&gt;
+    &lt;furn:material&gt;원목&lt;/furn:material&gt;
+  &lt;/furn:table&gt;
+
+&lt;/root&gt;</div>
+
+  <p class="sec">네임스페이스 선언 방식</p>
+  <div class="tw">
+    <table>
+      <tr><th>방식</th><th>선언</th><th>사용</th></tr>
+      <tr><td>접두사(Prefix) 방식</td><td>xmlns:prefix="URI"</td><td>prefix:element로 사용</td></tr>
+      <tr><td>기본(Default) 방식</td><td>xmlns="URI"</td><td>접두사 없이 사용 (자식에 상속)</td></tr>
+      <tr><td>해제</td><td>xmlns=""</td><td>기본 네임스페이스 해제</td></tr>
+    </table>
+  </div>
+
+  <p class="sec">주요 표준 네임스페이스</p>
+  <div class="tw">
+    <table>
+      <tr><th>접두사</th><th>URI</th><th>용도</th></tr>
+      <tr><td>xmlns:xs</td><td>http://www.w3.org/2001/XMLSchema</td><td>XML Schema (XSD)</td></tr>
+      <tr><td>xmlns:xsl</td><td>http://www.w3.org/1999/XSL/Transform</td><td>XSLT</td></tr>
+      <tr><td>xmlns:soap</td><td>http://schemas.xmlsoap.org/soap/envelope/</td><td>SOAP 웹서비스</td></tr>
+      <tr><td>xmlns:wsdl</td><td>http://schemas.xmlsoap.org/wsdl/</td><td>WSDL</td></tr>
+    </table>
+  </div>
+  <div class="tip">네임스페이스 URI는 식별자이지 실제 접근 가능한 URL이 아님. 같은 URI를 가진 접두사는 같은 네임스페이스. 감리 시 XML 스키마·SOAP 메시지의 네임스페이스 선언 일관성 확인 필요</div>
+  <div class="one"><span>한 줄 암기</span>네임스페이스=태그 충돌 방지. xmlns:prefix="URI"로 선언. URI는 식별자(실제 접근 불필요). 기본 선언(xmlns="")은 자식에 상속</div>
+</div>
+
+<!-- 탭5 웹서비스 기술 -->
+<div class="panel" id="p5">
+  <p class="sec">XML 기반 웹서비스 기술 스택</p>
+  <div class="flow">
+    <div class="fb">UDDI (검색·등록)</div><span class="arr">↔</span>
+    <div class="fb">WSDL (서비스 기술)</div><span class="arr">↔</span>
+    <div class="fb">SOAP (메시지 교환)</div><span class="arr">↔</span>
+    <div class="fb">HTTP/HTTPS (전송)</div>
+  </div>
+
+  <p class="sec">3대 핵심 기술</p>
+  <div class="grid3">
+    <div class="card">
+      <span class="badge b-coral">SOAP</span>
+      <div class="ct">Simple Object Access Protocol</div>
+      <div class="cs">XML 기반 메시지 교환 프로토콜. Envelope→Header→Body 구조. HTTP, SMTP 등 전송 프로토콜 독립. WS-Security로 보안 추가</div>
+    </div>
+    <div class="card">
+      <span class="badge b-blue">WSDL</span>
+      <div class="ct">Web Services Description Language</div>
+      <div class="cs">웹서비스 인터페이스 기술 언어. 서비스 위치(endpoint), 오퍼레이션, 메시지 형식을 XML로 정의. 서비스 계약서 역할</div>
+    </div>
+    <div class="card">
+      <span class="badge b-purple">UDDI</span>
+      <div class="ct">Universal Description, Discovery, Integration</div>
+      <div class="cs">웹서비스 등록·검색 디렉터리. 비즈니스 정보·서비스 정보·기술 정보(WSDL) 등록. 현재는 사실상 사용 감소</div>
+    </div>
+  </div>
+
+  <p class="sec">SOAP 메시지 구조</p>
+  <div class="code">&lt;soap:Envelope
+  xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/"&gt;
+
+  &lt;soap:Header&gt;                   &lt;!-- 선택: 인증·트랜잭션 정보 --&gt;
+    &lt;auth:token&gt;ABC123&lt;/auth:token&gt;
+  &lt;/soap:Header&gt;
+
+  &lt;soap:Body&gt;                      &lt;!-- 필수: 실제 요청/응답 --&gt;
+    &lt;m:GetPrice xmlns:m="http://example.com"&gt;
+      &lt;m:bookId&gt;001&lt;/m:bookId&gt;
+    &lt;/m:GetPrice&gt;
+  &lt;/soap:Body&gt;
+
+&lt;/soap:Envelope&gt;</div>
+
+  <p class="sec">SOAP vs REST 비교 (빈출)</p>
+  <div class="tw">
+    <table>
+      <tr><th>항목</th><th>SOAP</th><th>REST</th></tr>
+      <tr><td>메시지 형식</td><td>XML (SOAP Envelope)</td><td>JSON, XML, 텍스트 등</td></tr>
+      <tr><td>프로토콜</td><td>HTTP, SMTP 등 독립</td><td>HTTP 전용</td></tr>
+      <tr><td>상태</td><td>Stateful 가능</td><td>Stateless 원칙</td></tr>
+      <tr><td>표준</td><td>W3C 엄격한 표준</td><td>아키텍처 스타일(표준 없음)</td></tr>
+      <tr><td>보안</td><td>WS-Security (메시지 수준)</td><td>HTTPS, OAuth (전송 수준)</td></tr>
+      <tr><td>성능</td><td>무거움 (XML 파싱)</td><td>가벼움</td></tr>
+      <tr><td>적합 용도</td><td>금융·공공·엔터프라이즈</td><td>모바일·웹 API</td></tr>
+    </table>
+  </div>
+  <div class="one"><span>한 줄 암기</span>SOAP(메시지·XML·WS-Security) + WSDL(계약서·인터페이스) + UDDI(등록·검색). SOAP=무겁고 엄격, REST=가볍고 유연</div>
+</div>
+
+<!-- 탭6 JSON 비교 -->
+<div class="panel" id="p6">
+  <p class="sec">XML vs JSON 비교 (빈출)</p>
+  <div class="tw">
+    <table>
+      <tr><th>항목</th><th>XML</th><th>JSON</th></tr>
+      <tr><td>기반</td><td>SGML 유래. 마크업 언어</td><td>JavaScript 객체 표기법</td></tr>
+      <tr><td>가독성</td><td>태그로 장황함</td><td>간결·직관적</td></tr>
+      <tr><td>데이터 타입</td><td>모두 문자열 (스키마로 보완)</td><td>string, number, boolean, null, array, object</td></tr>
+      <tr><td>주석</td><td>지원 (&lt;!-- --&gt;)</td><td>미지원</td></tr>
+      <tr><td>네임스페이스</td><td>지원</td><td>미지원</td></tr>
+      <tr><td>메타데이터</td><td>속성(Attribute)으로 표현</td><td>별도 키로 표현</td></tr>
+      <tr><td>스키마</td><td>DTD, XSD</td><td>JSON Schema</td></tr>
+      <tr><td>변환</td><td>XSLT 지원</td><td>별도 라이브러리</td></tr>
+      <tr><td>파싱 성능</td><td>상대적으로 느림</td><td>빠름</td></tr>
+      <tr><td>주 용도</td><td>문서·엔터프라이즈·SOAP</td><td>웹 API·REST·모바일</td></tr>
+    </table>
+  </div>
+
+  <p class="sec">동일 데이터 표현 비교</p>
+  <div class="grid2">
+    <div class="card">
+      <span class="badge b-blue">XML</span>
+      <div class="code" style="margin-top:6px;margin-bottom:0">&lt;book id="001"&gt;
+  &lt;title&gt;감리사 합격&lt;/title&gt;
+  &lt;price&gt;30000&lt;/price&gt;
+  &lt;tags&gt;
+    &lt;tag&gt;IT&lt;/tag&gt;
+    &lt;tag&gt;시험&lt;/tag&gt;
+  &lt;/tags&gt;
+&lt;/book&gt;</div>
+    </div>
+    <div class="card">
+      <span class="badge b-teal">JSON</span>
+      <div class="code" style="margin-top:6px;margin-bottom:0">{
+  "id": "001",
+  "title": "감리사 합격",
+  "price": 30000,
+  "tags": ["IT", "시험"]
+}</div>
+    </div>
+  </div>
+
+  <p class="sec">언제 XML, 언제 JSON?</p>
+  <div class="grid2">
+    <div class="card">
+      <span class="badge b-coral">XML이 적합한 경우</span>
+      <div class="cs">복잡한 문서 구조·혼합 콘텐츠(텍스트+마크업), SOAP 웹서비스, 전자정부·금융·의료(EDI, HL7), XSLT 변환 필요, 엄격한 스키마 검증(XSD) 필요</div>
+    </div>
+    <div class="card">
+      <span class="badge b-teal">JSON이 적합한 경우</span>
+      <div class="cs">REST API, 모바일·웹 프론트엔드, 경량 데이터 교환, JavaScript 기반 시스템, NoSQL(MongoDB) 데이터 저장, 실시간 데이터 스트리밍</div>
+    </div>
+  </div>
+  <div class="one"><span>한 줄 암기</span>XML=문서·스키마·네임스페이스·SOAP·엔터프라이즈 / JSON=경량·REST·웹API·모바일. XML은 주석·속성 지원, JSON은 네이티브 타입·파싱 속도 우위</div>
+</div>
+
+<!-- 탭7 기출 Q&A -->
+<div class="panel" id="p7">
+  <p class="sec">기출 예상 Q&A</p>
+
+  <div class="qa-item"><div class="qa-q" onclick="tog(this)">Well-formed XML과 Valid XML의 차이를 설명하시오 <span class="icon">▾</span></div><div class="qa-a">Well-formed(형식 적합)은 XML 문법 규칙만 준수한 상태. 루트 요소 하나, 올바른 태그 중첩, 종료 태그 존재, 속성값 따옴표, 대소문자 일치. XML 파서가 파싱 가능한 최소 조건. Valid(유효)는 Well-formed 조건에 더해 DTD 또는 XML Schema(XSD)에 정의된 구조·데이터 타입 규칙까지 만족하는 더 엄격한 조건. Valid이면 반드시 Well-formed이지만, Well-formed라도 Valid가 아닐 수 있음.</div></div>
+
+  <div class="qa-item"><div class="qa-q" onclick="tog(this)">DTD와 XML Schema(XSD)의 차이점과 XSD의 장점은? <span class="icon">▾</span></div><div class="qa-a">DTD는 SGML 기반 독자 문법, 데이터 타입은 PCDATA(문자열)만 지원, 네임스페이스 미지원. XSD(XML Schema)는 XML 문법 자체로 작성, 40여 가지 내장 데이터 타입(int, date, decimal 등) 지원, 네임스페이스 완전 지원, minOccurs/maxOccurs로 출현 횟수 정밀 지정, complexType 상속·확장 가능. XSD는 DTD의 한계를 극복한 W3C 표준으로 실무에서 사실상 표준으로 사용됨.</div></div>
+
+  <div class="qa-item"><div class="qa-q" onclick="tog(this)">DOM 파서와 SAX 파서의 차이와 각각의 적합한 사용 사례는? <span class="icon">▾</span></div><div class="qa-a">DOM(Document Object Model)은 XML 문서 전체를 메모리에 트리 구조로 로드. 임의 접근·수정·탐색이 자유로우나 대용량 문서에서 메모리 부담이 큼. SAX(Simple API for XML)는 이벤트 기반 순차 파싱. 태그 시작·종료 등 이벤트 발생 시 콜백 호출. 메모리 효율적이고 빠르나 임의 접근 불가, 코드가 복잡. DOM은 소~중용량 문서를 복잡하게 조작할 때, SAX는 대용량 문서를 순차 처리할 때 적합.</div></div>
+
+  <div class="qa-item"><div class="qa-q" onclick="tog(this)">XSLT의 역할과 동작 원리를 설명하시오 <span class="icon">▾</span></div><div class="qa-a">XSLT(XSL Transformations)는 XML 문서를 다른 형식으로 변환하는 W3C 표준 언어. 동작 원리: XML 원본 문서 + XSLT 스타일시트(.xsl)를 XSLT 프로세서가 처리해 결과 문서(HTML, PDF, 다른 XML, 텍스트 등)를 생성. 템플릿 매칭(xsl:template match) 방식으로 동작하며 XPath를 내부적으로 사용해 소스 노드를 선택. xsl:for-each, xsl:value-of, xsl:if, xsl:apply-templates 등의 요소를 사용.</div></div>
+
+  <div class="qa-item"><div class="qa-q" onclick="tog(this)">XML 네임스페이스가 필요한 이유와 선언 방법은? <span class="icon">▾</span></div><div class="qa-a">서로 다른 XML 어휘에서 동일한 태그 이름이 충돌하는 것을 방지하기 위해 필요. 예: HTML의 &lt;table&gt;과 가구 데이터의 &lt;table&gt;이 같은 문서에 있을 때. 선언: xmlns:prefix="URI" 형식. 접두사(prefix)는 문서 내 구분자, URI는 네임스페이스 식별자(실제 접근 가능 URL일 필요 없음). 기본 네임스페이스는 xmlns="URI"로 선언하며 자식 요소에 상속됨. xmlns=""로 기본 네임스페이스 해제 가능.</div></div>
+
+  <div class="qa-item"><div class="qa-q" onclick="tog(this)">SOAP, WSDL, UDDI의 역할과 관계를 설명하시오 <span class="icon">▾</span></div><div class="qa-a">SOAP(Simple Object Access Protocol): XML 기반 메시지 교환 프로토콜. Envelope-Header-Body 구조. HTTP·SMTP 등 전송 프로토콜 독립. WSDL(Web Services Description Language): 웹서비스 인터페이스를 XML로 기술하는 서비스 계약서. 서비스 위치(endpoint), 오퍼레이션, 메시지 형식 정의. UDDI(Universal Description, Discovery, Integration): 웹서비스 등록·검색 디렉터리. 관계: 서비스 제공자가 WSDL 작성 → UDDI에 등록 → 서비스 소비자가 UDDI에서 검색 → WSDL 참조 → SOAP 메시지로 호출.</div></div>
+
+  <div class="qa-item"><div class="qa-q" onclick="tog(this)">XQuery의 FLWOR 표현식을 SQL과 비교해 설명하시오 <span class="icon">▾</span></div><div class="qa-a">XQuery는 XML 데이터베이스 질의 언어. FLWOR 표현식은 For(FROM), Let(변수 할당), Where(WHERE), Order by(ORDER BY), Return(SELECT)으로 구성. For는 반복 변수 바인딩, Let은 변수 선언·할당(SQL에 없는 개념), Where는 조건 필터, Order by는 정렬, Return은 결과 XML 생성. XPath를 내부적으로 사용해 XML 노드를 탐색. SQL이 관계형 DB의 질의 언어이듯 XQuery는 XML DB의 질의 언어.</div></div>
+</div>
+</div>
+
+<script>
+function sw(i){
+  document.querySelectorAll('.tab').forEach((t,j)=>t.classList.toggle('on',i===j));
+  document.querySelectorAll('.panel').forEach((p,j)=>p.classList.toggle('on',i===j));
+}
+function tog(el){
+  const a=el.nextElementSibling;
+  a.classList.toggle('open');
+  el.querySelector('.icon').textContent=a.classList.contains('open')?'▴':'▾';
+}
+</script>

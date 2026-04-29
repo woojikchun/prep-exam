@@ -1,0 +1,659 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&family=JetBrains+Mono:wght@400;700&display=swap');
+:root{
+  --bg:#060c1a;--s1:#0b1526;--s2:#101f38;--s3:#162848;
+  --bdr:#1c3462;--a1:#38bdf8;--a2:#a78bfa;--a3:#34d399;
+  --a4:#fbbf24;--a5:#f87171;--a6:#fb923c;
+  --txt:#e2e8f0;--mu:#64748b;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Noto Sans KR',sans-serif;background:var(--bg);color:var(--txt);min-height:100vh;}
+.hdr{padding:22px 24px 16px;background:linear-gradient(150deg,#060c1a 0%,#0e1e3a 50%,#060c1a 100%);border-bottom:1px solid var(--bdr);position:relative;overflow:hidden;}
+.hdr::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 65% 85% at 80% 30%,rgba(56,189,248,.09),transparent 65%),radial-gradient(ellipse 45% 65% at 20% 80%,rgba(167,139,250,.07),transparent 60%);pointer-events:none;}
+.hdr-r{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:6px;}
+.pill{padding:3px 10px;border-radius:20px;font-size:10px;font-weight:700;letter-spacing:.8px;}
+.p1{background:linear-gradient(135deg,#1e3a8a,var(--a1));color:#fff;}
+.p2{background:rgba(251,191,36,.15);color:var(--a4);border:1px solid rgba(251,191,36,.3);}
+.p3{background:rgba(167,139,250,.15);color:var(--a2);border:1px solid rgba(167,139,250,.3);}
+h1{font-size:19px;font-weight:900;}
+.h1g{background:linear-gradient(90deg,var(--a1),var(--a2),var(--a3));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.hdr p{color:var(--mu);font-size:12px;margin-top:3px;}
+.tabs{display:flex;padding:0 24px;background:var(--s1);border-bottom:1px solid var(--bdr);overflow-x:auto;scrollbar-width:none;}
+.tabs::-webkit-scrollbar{display:none;}
+.tab{padding:11px 14px;font-size:12px;font-weight:600;color:var(--mu);cursor:pointer;border-bottom:2px solid transparent;white-space:nowrap;transition:all .2s;background:none;border-top:none;border-left:none;border-right:none;font-family:'Noto Sans KR',sans-serif;}
+.tab:hover{color:var(--txt);}.tab.on{color:var(--a1);border-bottom-color:var(--a1);}
+.wrap{padding:20px 24px;max-width:960px;margin:0 auto;}
+.pnl{display:none;}.pnl.on{display:block;}
+.card{background:var(--s1);border:1px solid var(--bdr);border-radius:12px;padding:18px;margin-bottom:14px;}
+.card-h{display:flex;align-items:center;gap:10px;margin-bottom:14px;}
+.ico{width:34px;height:34px;border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:17px;flex-shrink:0;}
+.ib{background:rgba(56,189,248,.15);}.ip{background:rgba(167,139,250,.15);}.ig{background:rgba(52,211,153,.15);}.iy{background:rgba(251,191,36,.15);}.ir{background:rgba(248,113,113,.15);}.io{background:rgba(251,146,60,.15);}
+.card h3{font-size:14px;font-weight:700;}
+.tag{display:inline-block;padding:2px 8px;border-radius:4px;font-size:10px;font-weight:600;margin:2px 2px 2px 0;}
+.tb{background:rgba(56,189,248,.12);color:var(--a1);border:1px solid rgba(56,189,248,.25);}
+.tp{background:rgba(167,139,250,.12);color:var(--a2);border:1px solid rgba(167,139,250,.25);}
+.tg{background:rgba(52,211,153,.12);color:var(--a3);border:1px solid rgba(52,211,153,.25);}
+.ty{background:rgba(251,191,36,.12);color:var(--a4);border:1px solid rgba(251,191,36,.25);}
+.tr{background:rgba(248,113,113,.12);color:var(--a5);border:1px solid rgba(248,113,113,.25);}
+.to{background:rgba(251,146,60,.12);color:var(--a6);border:1px solid rgba(251,146,60,.25);}
+table{width:100%;border-collapse:collapse;font-size:12.5px;}
+th{background:var(--s2);color:var(--mu);font-weight:700;padding:8px 12px;text-align:left;font-size:10px;text-transform:uppercase;letter-spacing:.5px;border-bottom:1px solid var(--bdr);}
+td{padding:9px 12px;border-bottom:1px solid rgba(28,52,96,.45);vertical-align:top;line-height:1.6;}
+tr:last-child td{border-bottom:none;}
+tr:hover td{background:rgba(255,255,255,.02);}
+td strong{color:var(--a4);}
+ul.il{list-style:none;display:flex;flex-direction:column;gap:7px;}
+ul.il li{font-size:12.5px;padding-left:16px;position:relative;line-height:1.55;}
+ul.il li::before{content:'▸';position:absolute;left:0;color:var(--a1);font-size:10px;top:3px;}
+ul.il li strong{color:var(--a4);}
+ul.il li em{color:var(--a3);font-style:normal;}
+.memo{background:linear-gradient(135deg,rgba(56,189,248,.07),rgba(167,139,250,.07));border:1px solid rgba(56,189,248,.22);border-left:3px solid var(--a1);border-radius:8px;padding:10px 14px;font-size:12.5px;font-weight:600;color:var(--a1);margin:10px 0;}
+.memo::before{content:'🎯 한 줄 암기 │ ';color:var(--mu);font-weight:400;}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:14px;}
+@media(max-width:600px){.g2{grid-template-columns:1fr;}}
+.code-box{background:var(--s3);border:1px solid rgba(56,189,248,.25);border-radius:8px;padding:12px 14px;font-family:'JetBrains Mono',monospace;font-size:11.5px;margin:10px 0;line-height:1.7;overflow-x:auto;}
+.code-box .cm{color:var(--mu);}
+
+/* 프로토콜 카드 */
+.proto-card{background:var(--s2);border:1px solid var(--bdr);border-radius:10px;padding:14px;margin-bottom:10px;cursor:pointer;transition:border-color .2s;}
+.proto-card:hover{border-color:rgba(56,189,248,.3);}
+.proto-card.open{border-color:rgba(56,189,248,.4);}
+.proto-header{display:flex;justify-content:space-between;align-items:flex-start;}
+.proto-title{font-size:14px;font-weight:800;}
+.proto-en{font-size:11px;color:var(--mu);font-family:'JetBrains Mono',monospace;margin-top:2px;}
+.proto-body{display:none;border-top:1px solid var(--bdr);margin-top:12px;padding-top:12px;}
+.proto-card.open .proto-body{display:block;}
+.proto-tgl{color:var(--mu);font-size:16px;transition:transform .2s;flex-shrink:0;}
+.proto-card.open .proto-tgl{transform:rotate(180deg);}
+
+/* 이메일 흐름도 */
+.flow{display:flex;align-items:center;gap:4px;flex-wrap:wrap;margin:10px 0;}
+.fbox{background:var(--s2);border:1px solid var(--bdr);border-radius:7px;padding:8px 10px;font-size:11.5px;font-weight:700;text-align:center;min-width:80px;}
+.farrow{color:var(--mu);font-size:18px;font-weight:700;}
+
+/* QA */
+.qa{background:var(--s1);border:1px solid var(--bdr);border-radius:10px;margin-bottom:11px;overflow:hidden;transition:border-color .2s;}
+.qa:hover{border-color:rgba(56,189,248,.25);}
+.qa-hd{padding:14px 18px;cursor:pointer;display:flex;justify-content:space-between;align-items:flex-start;gap:10px;user-select:none;}
+.qa-meta{display:flex;align-items:center;gap:6px;margin-bottom:5px;flex-wrap:wrap;}
+.qn{font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:700;color:var(--mu);}
+.qq{font-size:13px;font-weight:600;line-height:1.55;}
+.tgl{color:var(--mu);font-size:16px;flex-shrink:0;transition:transform .2s;}
+.qa.open .tgl{transform:rotate(180deg);}
+.qa-bd{display:none;border-top:1px solid var(--bdr);padding:14px 18px;background:var(--s2);}
+.qa.open .qa-bd{display:block;}
+.chs{display:flex;flex-direction:column;gap:7px;margin-bottom:12px;}
+.ch{display:flex;align-items:flex-start;gap:10px;padding:9px 13px;border-radius:7px;border:1px solid var(--bdr);font-size:12.5px;cursor:pointer;background:var(--s1);line-height:1.5;transition:all .15s;}
+.ch:hover:not(.lk){border-color:rgba(56,189,248,.3);background:rgba(56,189,248,.04);}
+.ch.ok{border-color:var(--a3);background:rgba(52,211,153,.1);color:var(--a3);}
+.ch.ng{border-color:var(--a5);background:rgba(248,113,113,.08);color:var(--a5);opacity:.7;}
+.ch.lk{cursor:default;}
+.cnum{font-family:'JetBrains Mono',monospace;font-weight:700;font-size:11px;flex-shrink:0;margin-top:1px;color:var(--mu);}
+.ch.ok .cnum{color:var(--a3);}.ch.ng .cnum{color:var(--a5);}
+.exp{background:rgba(56,189,248,.05);border:1px solid rgba(56,189,248,.18);border-radius:8px;padding:12px 14px;font-size:12.5px;line-height:1.65;display:none;}
+.exp.show{display:block;}
+.exp-t{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--a1);margin-bottom:6px;}
+.exp strong{color:var(--a4);}
+.exp em{color:var(--a3);font-style:normal;}
+.ox-wr{display:flex;gap:10px;margin-bottom:12px;}
+.ox{flex:1;padding:11px;border-radius:8px;border:1px solid var(--bdr);font-size:20px;cursor:pointer;background:var(--s1);transition:all .15s;font-family:'Noto Sans KR',sans-serif;color:var(--txt);}
+.ox:hover:not(.lk){transform:scale(1.02);}
+.ox.so{border-color:var(--a3);background:rgba(52,211,153,.15);}
+.ox.sx{border-color:var(--a5);background:rgba(248,113,113,.1);}
+.ox.lk{cursor:default;}
+.diff{display:inline-block;padding:2px 7px;border-radius:10px;font-size:9px;font-weight:700;}
+.easy{background:rgba(52,211,153,.2);color:var(--a3);}
+.mid{background:rgba(251,191,36,.2);color:var(--a4);}
+.hard{background:rgba(248,113,113,.2);color:var(--a5);}
+.fb-wr{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:14px;}
+.fb{padding:5px 12px;border-radius:20px;border:1px solid var(--bdr);font-size:11px;font-weight:600;cursor:pointer;background:var(--s2);color:var(--mu);transition:all .15s;font-family:'Noto Sans KR',sans-serif;}
+.fb.on{background:rgba(56,189,248,.15);color:var(--a1);border-color:var(--a1);}
+.sc-b{background:var(--s2);border:1px solid var(--bdr);border-radius:8px;padding:5px 14px;font-size:12px;color:var(--mu);}
+.sc-b span{color:var(--a1);font-weight:700;}
+</style>
+</head>
+<body>
+
+<div class="hdr">
+  <div class="hdr-r">
+    <span class="pill p1">응용계층 보안</span>
+    <span class="pill p2">이메일 보안 · 인증</span>
+    <span class="pill p3">감리사 핵심 출제</span>
+  </div>
+  <h1><span class="h1g">응용계층 보안: 이메일·도메인 인증 프로토콜</span></h1>
+  <p>PEM · PGP · S/MIME · SPF · DKIM · DMARC · SET · SSL/TLS 응용 보안 완전 정리</p>
+</div>
+
+<div class="tabs">
+  <button class="tab on" data-p="p1">📧 이메일 보안 개요</button>
+  <button class="tab" data-p="p2">🔐 PEM · PGP · S/MIME</button>
+  <button class="tab" data-p="p3">✅ SPF · DKIM · DMARC</button>
+  <button class="tab" data-p="p4">🌐 기타 응용 보안</button>
+  <button class="tab" data-p="p5">📊 비교 총정리</button>
+  <button class="tab" data-p="p6">❓ 예상문제</button>
+</div>
+
+<div class="wrap">
+
+<!-- ===== P1: 이메일 보안 개요 ===== -->
+<div class="pnl on" id="p1">
+  <div class="card">
+    <div class="card-h"><div class="ico ib">📧</div><h3>이메일 보안 위협 & 프로토콜 체계</h3></div>
+    <div class="g2">
+      <div>
+        <p style="font-size:12px;font-weight:700;color:var(--a5);margin-bottom:8px;">이메일 보안 위협</p>
+        <ul class="il">
+          <li><strong>스팸(Spam):</strong> 대량 발송 광고·피싱 메일</li>
+          <li><strong>피싱(Phishing):</strong> 발신자 위조로 개인정보 탈취</li>
+          <li><strong>스푸핑(Spoofing):</strong> 발신 도메인·IP 위조</li>
+          <li><strong>메일 위변조:</strong> 전송 중 내용 변조</li>
+          <li><strong>도청(Eavesdropping):</strong> 전송 중 내용 도청</li>
+        </ul>
+      </div>
+      <div>
+        <p style="font-size:12px;font-weight:700;color:var(--a3);margin-bottom:8px;">이메일 보안 솔루션 분류</p>
+        <ul class="il">
+          <li><strong style="color:var(--a1)">메일 내용 보안:</strong> PEM, PGP, S/MIME</li>
+          <li><strong style="color:var(--a3)">발신자 인증:</strong> SPF, DKIM, DMARC</li>
+          <li><strong style="color:var(--a4)">전송 보안:</strong> STARTTLS, SMTPS</li>
+          <li><strong style="color:var(--a2)">전자결제:</strong> SET (Secure Electronic Transaction)</li>
+        </ul>
+      </div>
+    </div>
+    <div class="memo">이메일 보안 2대 축: ①내용 보호(PEM·PGP·S/MIME) ②발신자 인증(SPF·DKIM·DMARC)</div>
+  </div>
+
+  <div class="card">
+    <div class="card-h"><div class="ico iy">🔑</div><h3>이메일 보안이 제공하는 서비스</h3></div>
+    <table>
+      <thead><tr><th>보안 서비스</th><th>의미</th><th>구현 기술</th></tr></thead>
+      <tbody>
+        <tr><td><span class="tag tg">기밀성 (Confidentiality)</span></td><td>제3자가 내용을 볼 수 없음</td><td>대칭키/비대칭키 암호화</td></tr>
+        <tr><td><span class="tag tb">무결성 (Integrity)</span></td><td>전송 중 내용이 변조되지 않음</td><td>해시 함수 (SHA 등)</td></tr>
+        <tr><td><span class="tag ty">인증 (Authentication)</span></td><td>발신자·수신자 신원 확인</td><td>디지털 서명, PKI</td></tr>
+        <tr><td><span class="tag tp">부인방지 (Non-repudiation)</span></td><td>발송 사실 부인 불가</td><td>디지털 서명</td></tr>
+        <tr><td><span class="tag tr">발신자 검증</span></td><td>도메인·IP 위조 탐지</td><td>SPF, DKIM, DMARC</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="card">
+    <div class="card-h"><div class="ico ig">📡</div><h3>이메일 전송 프로토콜 계층</h3></div>
+    <div class="flow">
+      <div class="fbox" style="border-color:rgba(56,189,248,.4);color:var(--a1);">발신자<br>MUA</div>
+      <div class="farrow">→</div>
+      <div class="fbox" style="border-color:rgba(52,211,153,.4);color:var(--a3);">발신<br>MTA<br><span style="font-size:10px;font-weight:400;">SMTP</span></div>
+      <div class="farrow">→</div>
+      <div class="fbox" style="border-color:rgba(251,191,36,.4);color:var(--a4);">DNS<br>조회<br><span style="font-size:10px;font-weight:400;">SPF·DKIM</span></div>
+      <div class="farrow">→</div>
+      <div class="fbox" style="border-color:rgba(167,139,250,.4);color:var(--a2);">수신<br>MTA<br><span style="font-size:10px;font-weight:400;">SMTP</span></div>
+      <div class="farrow">→</div>
+      <div class="fbox" style="border-color:rgba(248,113,113,.4);color:var(--a5);">수신자<br>MUA<br><span style="font-size:10px;font-weight:400;">POP3/IMAP</span></div>
+    </div>
+    <p style="font-size:11.5px;color:var(--mu);line-height:1.6;margin-top:8px;">MUA = Mail User Agent(이메일 클라이언트) / MTA = Mail Transfer Agent(메일 서버) / SMTP는 전송, POP3·IMAP은 수신</p>
+  </div>
+</div>
+
+<!-- ===== P2: PEM · PGP · S/MIME ===== -->
+<div class="pnl" id="p2">
+
+  <div class="proto-card" onclick="this.classList.toggle('open')">
+    <div class="proto-header">
+      <div>
+        <div class="proto-title" style="color:var(--a1);">🔵 PEM (Privacy Enhanced Mail)</div>
+        <div class="proto-en">IETF RFC 1421~1424 / 중앙 집중식 CA 계층 구조</div>
+      </div>
+      <div class="proto-tgl">▾</div>
+    </div>
+    <div class="proto-body">
+      <table>
+        <thead><tr><th>항목</th><th>내용</th></tr></thead>
+        <tbody>
+          <tr><td><strong>정의</strong></td><td>IETF가 제안한 초기 이메일 보안 표준 — 중앙 집중식 PKI 기반</td></tr>
+          <tr><td><strong>암호화 방식</strong></td><td>DES(대칭키) + RSA(비대칭키) 혼합 방식</td></tr>
+          <tr><td><strong>신뢰 모델</strong></td><td><strong>계층적 CA(Certificate Authority)</strong> 구조 — 최상위 CA에서 하위 CA로 신뢰 전파</td></tr>
+          <tr><td><strong>보안 서비스</strong></td><td>기밀성, 무결성, 인증, 부인방지</td></tr>
+          <tr><td><strong>한계</strong></td><td>중앙 집중식 구조로 확장성 제한, 인터넷 보급으로 PGP·S/MIME에 밀려 사실상 폐기</td></tr>
+          <tr><td><strong>인코딩</strong></td><td>Base64 인코딩 사용 — ASCII 텍스트로 변환</td></tr>
+        </tbody>
+      </table>
+      <div class="memo">PEM = 최초 이메일 보안 표준 / 계층적 CA / DES+RSA / Base64 / 실제 사용↓</div>
+    </div>
+  </div>
+
+  <div class="proto-card" onclick="this.classList.toggle('open')">
+    <div class="proto-header">
+      <div>
+        <div class="proto-title" style="color:var(--a3);">🟢 PGP (Pretty Good Privacy)</div>
+        <div class="proto-en">Phil Zimmermann 개발 / 분산형 신뢰 모델 (Web of Trust)</div>
+      </div>
+      <div class="proto-tgl">▾</div>
+    </div>
+    <div class="proto-body">
+      <table>
+        <thead><tr><th>항목</th><th>내용</th></tr></thead>
+        <tbody>
+          <tr><td><strong>정의</strong></td><td>1991년 Phil Zimmermann이 개발한 이메일 암호화 소프트웨어</td></tr>
+          <tr><td><strong>신뢰 모델</strong></td><td><strong>Web of Trust (신뢰망)</strong> — 중앙 CA 없이 사용자 간 상호 신뢰 (분산형)</td></tr>
+          <tr><td><strong>암호화 과정</strong></td><td>① 세션키(대칭키) 생성 → ② 메시지를 세션키로 암호화 → ③ 세션키를 수신자 공개키로 암호화 → ④ 전송</td></tr>
+          <tr><td><strong>사용 알고리즘</strong></td><td>대칭: IDEA·3DES·AES / 비대칭: RSA·DSA·El Gamal / 해시: MD5·SHA-1</td></tr>
+          <tr><td><strong>디지털 서명</strong></td><td>해시(메시지) → 발신자 개인키로 서명 → 수신자가 공개키로 검증</td></tr>
+          <tr><td><strong>키 관리</strong></td><td>공개키 링(Public Key Ring), 개인키 링(Private Key Ring)으로 관리</td></tr>
+          <tr><td><strong>OpenPGP</strong></td><td>PGP 기반 표준 (RFC 4880) — GnuPG(GPG) 등 오픈소스 구현체</td></tr>
+        </tbody>
+      </table>
+      <div class="code-box"><span class="cm">// PGP 암호화 과정</span><br>
+평문 → [세션키(대칭)]로 암호화 → 암호문<br>
+세션키 → [수신자 공개키(비대칭)]로 암호화 → 암호화된 세션키<br>
+전송: {암호문 + 암호화된 세션키 + 디지털 서명}</div>
+      <div class="memo">PGP = Web of Trust(분산) / 하이브리드 암호화 / 세션키→공개키 암호화 / OpenPGP</div>
+    </div>
+  </div>
+
+  <div class="proto-card" onclick="this.classList.toggle('open')">
+    <div class="proto-header">
+      <div>
+        <div class="proto-title" style="color:var(--a4);">🟡 S/MIME (Secure/MIME)</div>
+        <div class="proto-en">RSA Security 개발 → IETF 표준 / RFC 8551 / 계층적 CA 기반</div>
+      </div>
+      <div class="proto-tgl">▾</div>
+    </div>
+    <div class="proto-body">
+      <table>
+        <thead><tr><th>항목</th><th>내용</th></tr></thead>
+        <tbody>
+          <tr><td><strong>정의</strong></td><td>MIME(Multipurpose Internet Mail Extensions)에 보안 기능을 추가한 이메일 보안 표준</td></tr>
+          <tr><td><strong>신뢰 모델</strong></td><td><strong>계층적 PKI(CA)</strong> — PEM과 유사, 현재 기업 환경에서 가장 많이 사용</td></tr>
+          <tr><td><strong>암호화</strong></td><td>CMS(Cryptographic Message Syntax) 기반 — 하이브리드 암호화</td></tr>
+          <tr><td><strong>사용 알고리즘</strong></td><td>대칭: 3DES·AES / 비대칭: RSA / 해시: SHA-256·SHA-384 / 서명: DSA·RSA</td></tr>
+          <tr><td><strong>기능</strong></td><td>기밀성(암호화), 무결성·인증·부인방지(디지털 서명), 첨부파일 포함 전체 보안</td></tr>
+          <tr><td><strong>인증서</strong></td><td>X.509 인증서 사용 — 공인된 CA에서 발급</td></tr>
+          <tr><td><strong>PGP와 차이</strong></td><td>S/MIME = 계층적 CA / PGP = Web of Trust / S/MIME이 기업 이메일 클라이언트(Outlook 등) 표준</td></tr>
+        </tbody>
+      </table>
+      <div class="memo">S/MIME = MIME+보안 / X.509 인증서 / 계층적 CA / 기업 이메일 표준 / Outlook 지원</div>
+    </div>
+  </div>
+
+  <div class="card" style="margin-top:14px;">
+    <div class="card-h"><div class="ico ip">⚖️</div><h3>PEM vs PGP vs S/MIME 비교</h3></div>
+    <table>
+      <thead><tr><th>구분</th><th style="color:var(--a1)">PEM</th><th style="color:var(--a3)">PGP</th><th style="color:var(--a4)">S/MIME</th></tr></thead>
+      <tbody>
+        <tr><td><strong>신뢰 모델</strong></td><td>계층적 CA</td><td><strong>Web of Trust</strong></td><td>계층적 CA (X.509)</td></tr>
+        <tr><td><strong>키 인증서</strong></td><td>CA 인증서</td><td>사용자 간 서명</td><td><strong>X.509</strong></td></tr>
+        <tr><td><strong>현재 상태</strong></td><td>사실상 폐기</td><td>개인·오픈소스</td><td><strong>기업 표준</strong></td></tr>
+        <tr><td><strong>표준 기관</strong></td><td>IETF</td><td>OpenPGP(IETF)</td><td>IETF (RFC 8551)</td></tr>
+        <tr><td><strong>알고리즘</strong></td><td>DES + RSA</td><td>IDEA·AES + RSA</td><td>3DES·AES + RSA</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- ===== P3: SPF · DKIM · DMARC ===== -->
+<div class="pnl" id="p3">
+
+  <div class="proto-card" onclick="this.classList.toggle('open')">
+    <div class="proto-header">
+      <div>
+        <div class="proto-title" style="color:var(--a1);">🔵 SPF (Sender Policy Framework)</div>
+        <div class="proto-en">RFC 7208 / DNS TXT 레코드 / 발신 IP 검증</div>
+      </div>
+      <div class="proto-tgl">▾</div>
+    </div>
+    <div class="proto-body">
+      <table>
+        <thead><tr><th>항목</th><th>내용</th></tr></thead>
+        <tbody>
+          <tr><td><strong>목적</strong></td><td>이메일 발신 서버 IP 주소가 도메인 소유자가 허가한 서버인지 검증 — 발신 IP 스푸핑 방지</td></tr>
+          <tr><td><strong>동작 방식</strong></td><td>도메인 DNS TXT 레코드에 허가된 메일 서버 IP 목록을 등록 → 수신 서버가 확인</td></tr>
+          <tr><td><strong>검증 위치</strong></td><td>메일 봉투(Envelope)의 <strong>Return-Path(MAIL FROM)</strong> 헤더 도메인 기반 검증</td></tr>
+          <tr><td><strong>한계</strong></td><td>메일 전달(Forwarding) 시 원래 IP와 달라져 SPF 실패 가능 / 헤더 From 주소는 검증 안 함</td></tr>
+        </tbody>
+      </table>
+      <div class="code-box"><span class="cm">// DNS TXT 레코드 예시</span><br>
+v=spf1 ip4:203.0.113.0/24 include:_spf.example.com ~all<br>
+<span class="cm">// v=spf1: SPF 버전 / ip4: 허가 IP / include: 외부 서비스 포함</span><br>
+<span class="cm">// ~all: Softfail(의심) / -all: Hardfail(거부) / +all: 모두 허용</span></div>
+      <div class="memo">SPF = DNS TXT에 허가 IP 등록 / 발신 IP 검증 / 포워딩 시 실패 가능 / Return-Path 기반</div>
+    </div>
+  </div>
+
+  <div class="proto-card" onclick="this.classList.toggle('open')">
+    <div class="proto-header">
+      <div>
+        <div class="proto-title" style="color:var(--a3);">🟢 DKIM (DomainKeys Identified Mail)</div>
+        <div class="proto-en">RFC 6376 / 디지털 서명 기반 / 메일 내용 무결성 검증</div>
+      </div>
+      <div class="proto-tgl">▾</div>
+    </div>
+    <div class="proto-body">
+      <table>
+        <thead><tr><th>항목</th><th>내용</th></tr></thead>
+        <tbody>
+          <tr><td><strong>목적</strong></td><td>메일 헤더·본문에 디지털 서명을 추가하여 <strong>전송 중 위변조 탐지</strong> + 발신 도메인 인증</td></tr>
+          <tr><td><strong>동작 방식</strong></td><td>발신 서버가 <strong>개인키</strong>로 서명 → DNS에 <strong>공개키</strong> 등록 → 수신 서버가 공개키로 서명 검증</td></tr>
+          <tr><td><strong>서명 위치</strong></td><td>이메일 헤더에 <strong>DKIM-Signature</strong> 헤더 추가</td></tr>
+          <tr><td><strong>장점</strong></td><td>포워딩(Forwarding)에도 서명은 유지 — SPF 한계 보완</td></tr>
+          <tr><td><strong>검증 도메인</strong></td><td>From 헤더의 도메인 기반 (d= 태그)</td></tr>
+          <tr><td><strong>알고리즘</strong></td><td>RSA + SHA-256 (기본)</td></tr>
+        </tbody>
+      </table>
+      <div class="code-box"><span class="cm">// DKIM-Signature 헤더 예시</span><br>
+DKIM-Signature: v=1; a=rsa-sha256; d=example.com; s=mail;<br>
+  h=From:To:Subject:Date; bh=base64(body_hash); b=base64(signature)<br>
+<span class="cm">// d: 서명 도메인 / s: 셀렉터(공개키 위치) / bh: 본문 해시 / b: 서명값</span></div>
+      <div class="memo">DKIM = 개인키 서명 + DNS 공개키 등록 / DKIM-Signature 헤더 / 포워딩에도 유효 / From 도메인 인증</div>
+    </div>
+  </div>
+
+  <div class="proto-card" onclick="this.classList.toggle('open')">
+    <div class="proto-header">
+      <div>
+        <div class="proto-title" style="color:var(--a4);">🟡 DMARC (Domain-based Message Authentication, Reporting and Conformance)</div>
+        <div class="proto-en">RFC 7489 / SPF + DKIM 통합 정책 / 처리 방침 지정</div>
+      </div>
+      <div class="proto-tgl">▾</div>
+    </div>
+    <div class="proto-body">
+      <table>
+        <thead><tr><th>항목</th><th>내용</th></tr></thead>
+        <tbody>
+          <tr><td><strong>목적</strong></td><td>SPF·DKIM 검증 결과를 종합하여 인증 실패 메일에 대한 <strong>처리 정책 지정</strong> + 보고서 수신</td></tr>
+          <tr><td><strong>정책 (p=)</strong></td><td><strong>none</strong>(모니터링만), <strong>quarantine</strong>(스팸함), <strong>reject</strong>(거부)</td></tr>
+          <tr><td><strong>정렬 (Alignment)</strong></td><td>From 헤더 도메인이 SPF의 Return-Path 도메인 또는 DKIM의 d= 도메인과 일치해야 통과</td></tr>
+          <tr><td><strong>보고서</strong></td><td>집계 보고서(rua=): 통계 / 실패 보고서(ruf=): 개별 실패 메일 상세</td></tr>
+          <tr><td><strong>역할</strong></td><td>SPF·DKIM이 없으면 DMARC도 의미 없음 — SPF·DKIM의 통합 관리 레이어</td></tr>
+        </tbody>
+      </table>
+      <div class="code-box"><span class="cm">// DMARC DNS TXT 레코드 예시</span><br>
+_dmarc.example.com TXT "v=DMARC1; p=reject; rua=mailto:dmarc@example.com"<br>
+<span class="cm">// p=reject: 인증 실패 메일 거부 / p=quarantine: 스팸함 / p=none: 모니터링</span><br>
+<span class="cm">// rua: 집계 보고서 수신 주소 / ruf: 실패 메일 보고서 수신 주소</span></div>
+      <div class="memo">DMARC = SPF+DKIM 통합 정책 / p=none·quarantine·reject / From 정렬 검증 / 보고서 제공</div>
+    </div>
+  </div>
+
+  <div class="card" style="margin-top:14px;">
+    <div class="card-h"><div class="ico ig">🔄</div><h3>SPF · DKIM · DMARC 동작 흐름</h3></div>
+    <div class="flow" style="flex-direction:column;align-items:flex-start;gap:6px;">
+      <div style="display:flex;align-items:center;gap:8px;width:100%;">
+        <div class="fbox" style="border-color:rgba(56,189,248,.4);color:var(--a1);min-width:100px;">발신 서버<br><span style="font-size:10px;">DKIM 서명 추가</span></div>
+        <div style="flex:1;border-top:2px dashed var(--a1);height:1px;"></div>
+        <div class="fbox" style="border-color:rgba(52,211,153,.4);color:var(--a3);min-width:100px;">수신 서버</div>
+      </div>
+      <div style="background:var(--s2);border:1px solid var(--bdr);border-radius:8px;padding:12px 16px;width:100%;font-size:12px;line-height:1.8;">
+        수신 서버 검증 순서:<br>
+        <span style="color:var(--a1);">① SPF 검증:</span> 발신 IP가 DNS TXT(SPF)에 허가된 IP인가?<br>
+        <span style="color:var(--a3);">② DKIM 검증:</span> DNS 공개키로 DKIM-Signature 유효성 확인<br>
+        <span style="color:var(--a4);">③ DMARC 정책 적용:</span> SPF·DKIM 결과 + From 정렬 확인 → p= 정책에 따라 처리<br>
+        <span style="color:var(--mu);">④ 보고서 발송:</span> rua/ruf 주소로 인증 결과 보고
+      </div>
+    </div>
+    <div class="memo">검증 순서: SPF(IP확인) → DKIM(서명확인) → DMARC(정책적용·보고)</div>
+  </div>
+</div>
+
+<!-- ===== P4: 기타 응용 보안 ===== -->
+<div class="pnl" id="p4">
+  <div class="card">
+    <div class="card-h"><div class="ico iy">💳</div><h3>SET (Secure Electronic Transaction)</h3></div>
+    <table>
+      <thead><tr><th>항목</th><th>내용</th></tr></thead>
+      <tbody>
+        <tr><td><strong>정의</strong></td><td>Visa·MasterCard가 공동 개발한 전자상거래 지불 프로토콜 (1996)</td></tr>
+        <tr><td><strong>목적</strong></td><td>인터넷 신용카드 결제 보안 — 카드번호 보호, 상점에게 카드번호 노출 방지</td></tr>
+        <tr><td><strong>핵심 기술</strong></td><td><strong>이중 서명 (Dual Signature)</strong> — 구매 정보(상점)와 결제 정보(은행)를 분리 서명</td></tr>
+        <tr><td><strong>참여자</strong></td><td>고객 - 상점 - 결제 게이트웨이 - 발급 은행 - 브랜드(Visa 등)</td></tr>
+        <tr><td><strong>이중 서명 효과</strong></td><td>상점은 결제 금액만, 은행은 구매 내역을 알 수 없음 → 프라이버시 보호</td></tr>
+        <tr><td><strong>현재</strong></td><td>복잡성·비용으로 실제 배포 실패 → SSL/TLS 기반 결제로 대체</td></tr>
+      </tbody>
+    </table>
+    <div class="memo">SET = Visa·MasterCard / 이중 서명으로 카드번호 보호 / 복잡성으로 실패 → TLS로 대체</div>
+  </div>
+
+  <div class="card">
+    <div class="card-h"><div class="ico ib">🌐</div><h3>SSL/TLS (Secure Sockets Layer / Transport Layer Security)</h3></div>
+    <table>
+      <thead><tr><th>항목</th><th>내용</th></tr></thead>
+      <tbody>
+        <tr><td><strong>위치</strong></td><td>전송계층과 응용계층 사이 (4.5계층) — HTTPS·SMTPS·IMAPS 등에 활용</td></tr>
+        <tr><td><strong>버전</strong></td><td>SSL 1.0~3.0(폐기) → TLS 1.0·1.1(폐기) → <strong>TLS 1.2·1.3</strong>(현행)</td></tr>
+        <tr><td><strong>핵심 기능</strong></td><td>핸드셰이크(인증·키 교환) + 레코드(암호화·무결성)</td></tr>
+        <tr><td><strong>TLS 1.3 특징</strong></td><td>불필요한 암호 알고리즘 제거, 0-RTT(Zero Round-Trip), 순방향 비밀성(PFS) 필수화</td></tr>
+        <tr><td><strong>인증서</strong></td><td>X.509 인증서, CA 계층 구조</td></tr>
+        <tr><td><strong>이메일 적용</strong></td><td>STARTTLS(SMTP 보안 업그레이드), SMTPS(465), IMAPS(993), POP3S(995)</td></tr>
+      </tbody>
+    </table>
+    <div class="memo">TLS 1.3 = 현행 표준 / 0-RTT·PFS 필수 / STARTTLS로 SMTP 보안 업그레이드</div>
+  </div>
+
+  <div class="card">
+    <div class="card-h"><div class="ico ig">🔒</div><h3>기타 응용계층 보안 프로토콜</h3></div>
+    <table>
+      <thead><tr><th>프로토콜</th><th>Full Name</th><th>용도</th></tr></thead>
+      <tbody>
+        <tr><td><span class="tag tb">SSH</span></td><td>Secure Shell</td><td>원격 로그인 보안 — Telnet 대체, 포트 22</td></tr>
+        <tr><td><span class="tag tg">HTTPS</span></td><td>HTTP + TLS</td><td>웹 통신 암호화, 포트 443</td></tr>
+        <tr><td><span class="tag ty">DNSSEC</span></td><td>DNS Security Extensions</td><td>DNS 응답 위조 방지 — 디지털 서명으로 DNS 레코드 인증</td></tr>
+        <tr><td><span class="tag tp">Kerberos</span></td><td>-</td><td>네트워크 인증 프로토콜 — 대칭키 기반 티켓 방식 SSO</td></tr>
+        <tr><td><span class="tag to">LDAP</span></td><td>Lightweight Directory Access Protocol</td><td>디렉터리 서비스 — 사용자·자원 정보 관리</td></tr>
+        <tr><td><span class="tag tr">OAuth 2.0</span></td><td>-</td><td>위임 인가(Authorization) 프레임워크</td></tr>
+        <tr><td><span class="tag tb">OIDC</span></td><td>OpenID Connect</td><td>OAuth 2.0 기반 인증(Authentication) 프로토콜</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- ===== P5: 비교 총정리 ===== -->
+<div class="pnl" id="p5">
+  <div class="card">
+    <div class="card-h"><div class="ico ip">📊</div><h3>이메일 보안 프로토콜 총합 비교표</h3></div>
+    <table>
+      <thead><tr><th>구분</th><th>PEM</th><th>PGP</th><th>S/MIME</th><th>SPF</th><th>DKIM</th><th>DMARC</th></tr></thead>
+      <tbody>
+        <tr><td><strong>분류</strong></td><td>내용 보호</td><td>내용 보호</td><td>내용 보호</td><td>발신 인증</td><td>발신 인증</td><td>정책 통합</td></tr>
+        <tr><td><strong>신뢰 모델</strong></td><td>계층적 CA</td><td><strong>Web of Trust</strong></td><td>계층적 CA</td><td>-</td><td>-</td><td>-</td></tr>
+        <tr><td><strong>인증서</strong></td><td>CA 인증서</td><td>PGP키</td><td><strong>X.509</strong></td><td>DNS TXT</td><td>DNS TXT</td><td>DNS TXT</td></tr>
+        <tr><td><strong>암호화</strong></td><td>DES+RSA</td><td>IDEA+RSA</td><td>3DES·AES</td><td>없음</td><td>없음</td><td>없음</td></tr>
+        <tr><td><strong>디지털 서명</strong></td><td>✅</td><td>✅</td><td>✅</td><td>❌</td><td>✅(헤더)</td><td>정책만</td></tr>
+        <tr><td><strong>검증 대상</strong></td><td>내용</td><td>내용</td><td>내용</td><td>발신 IP</td><td>헤더·본문</td><td>종합</td></tr>
+        <tr><td><strong>포워딩 대응</strong></td><td>-</td><td>-</td><td>-</td><td><strong>❌실패</strong></td><td>✅유지</td><td>의존적</td></tr>
+        <tr><td><strong>현황</strong></td><td>폐기</td><td>개인용</td><td><strong>기업 표준</strong></td><td>필수</td><td>필수</td><td>권고</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="g2">
+    <div class="card">
+      <div class="card-h"><div class="ico iy">⭐</div><h3>핵심 암기 포인트</h3></div>
+      <ul class="il">
+        <li><strong>PEM:</strong> 계층적CA, DES+RSA, Base64, 사실상 폐기</li>
+        <li><strong>PGP:</strong> <em>Web of Trust</em>(분산), 하이브리드, OpenPGP</li>
+        <li><strong>S/MIME:</strong> X.509 인증서, 계층적CA, 기업 표준</li>
+        <li><strong>SPF:</strong> DNS TXT에 <em>허가 IP</em> 등록, Return-Path 검증, 포워딩 실패</li>
+        <li><strong>DKIM:</strong> <em>개인키 서명</em>+DNS 공개키, DKIM-Signature 헤더, 포워딩 유지</li>
+        <li><strong>DMARC:</strong> SPF+DKIM 통합, p=none/quarantine/reject, 보고서</li>
+      </ul>
+    </div>
+    <div class="card">
+      <div class="card-h"><div class="ico ir">🎯</div><h3>자주 나오는 구분 포인트</h3></div>
+      <ul class="il">
+        <li><strong>PGP vs S/MIME:</strong> PGP=Web of Trust(분산) / S/MIME=X.509(계층적CA)</li>
+        <li><strong>SPF vs DKIM:</strong> SPF=IP검증 / DKIM=서명검증 / SPF는 포워딩 실패</li>
+        <li><strong>DMARC 역할:</strong> SPF·DKIM 결과로 처리 정책 결정 (none/quarantine/reject)</li>
+        <li><strong>SET 이중 서명:</strong> 상점=주문정보만, 은행=결제정보만 알 수 있게 분리</li>
+        <li><strong>TLS 1.3:</strong> 0-RTT, PFS 필수, 불안전 알고리즘 제거</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<!-- ===== P6: 예상문제 ===== -->
+<div class="pnl" id="p6">
+  <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;margin-bottom:14px;">
+    <div class="fb-wr" id="fbar" style="margin:0;">
+      <button class="fb on" data-f="all">전체</button>
+      <button class="fb" data-f="PEM">PEM</button>
+      <button class="fb" data-f="PGP">PGP</button>
+      <button class="fb" data-f="SMIME">S/MIME</button>
+      <button class="fb" data-f="SPF">SPF·DKIM</button>
+      <button class="fb" data-f="DMARC">DMARC</button>
+      <button class="fb" data-f="기타">기타</button>
+      <button class="fb" data-f="OX">⭕ OX</button>
+    </div>
+    <div class="sc-b">정답: <span id="sc">0</span>/<span id="st">0</span></div>
+  </div>
+  <div id="ql"></div>
+</div>
+
+</div>
+
+<script>
+document.querySelectorAll('.tab').forEach(t=>t.addEventListener('click',()=>{
+  document.querySelectorAll('.tab,.pnl').forEach(x=>x.classList.remove('on'));
+  t.classList.add('on');document.getElementById(t.dataset.p).classList.add('on');
+}));
+
+const QA=[
+  {cat:'PGP',diff:'easy',
+   q:'PGP가 채택한 신뢰 모델로 가장 적절한 것은?',
+   cs:['계층적 CA (Certificate Authority) 구조','Web of Trust (신뢰망)','RADIUS 인증 서버 구조','Kerberos 티켓 방식'],
+   ans:1,
+   exp:'<strong>PGP</strong>는 중앙 CA 없이 사용자 간 상호 서명으로 신뢰를 구축하는 <em>Web of Trust(신뢰망)</em> 방식을 사용합니다. S/MIME과 PEM은 계층적 CA 구조를 사용합니다. Web of Trust는 분산형 신뢰 모델의 대표 사례입니다.'},
+  {cat:'PGP',diff:'mid',
+   q:'PGP에서 메시지를 암호화하는 과정의 순서로 가장 적절한 것은?',
+   cs:['메시지를 수신자 공개키로 직접 암호화한다.',
+       '세션키(대칭키)를 생성 → 메시지를 세션키로 암호화 → 세션키를 수신자 공개키로 암호화 → 전송',
+       '메시지를 발신자 개인키로 암호화 → 수신자 공개키로 재암호화',
+       '해시값을 계산하여 공개키로 암호화하고 원본과 함께 전송'],
+   ans:1,
+   exp:'PGP는 <strong>하이브리드 암호화</strong>를 사용합니다: ①랜덤 세션키(대칭키) 생성 → ②메시지를 세션키로 암호화(빠름) → ③세션키를 수신자 공개키로 암호화(안전한 키 전달) → ④암호문+암호화된 세션키 전송. 대칭키의 속도와 비대칭키의 보안성을 결합한 방식입니다.'},
+  {cat:'SMIME',diff:'mid',
+   q:'S/MIME에서 사용하는 인증서 표준으로 가장 적절한 것은?',
+   cs:['PGP 자체 서명 키','X.509 인증서','RADIUS 인증','Kerberos 티켓'],
+   ans:2,
+   exp:'<strong>S/MIME</strong>은 공인 CA가 발급하는 <em>X.509 인증서</em>를 사용합니다. 이는 PGP의 Web of Trust(사용자 간 상호 서명)와 가장 큰 차이점입니다. X.509는 PKI 표준 인증서 형식으로, SSL/TLS와 S/MIME 등에서 사용됩니다.'},
+  {cat:'SMIME',diff:'hard',
+   q:'S/MIME과 PGP의 비교로 가장 적절하지 않은 것은?',
+   cs:['S/MIME은 계층적 CA 구조를 사용하고, PGP는 Web of Trust를 사용한다.',
+       'S/MIME은 X.509 인증서를 사용하고, PGP는 자체 공개키 형식을 사용한다.',
+       'PGP는 기업 이메일 클라이언트의 표준으로 Outlook 등에 기본 지원된다.',
+       'S/MIME이 기업 환경에서 더 널리 사용된다.'],
+   ans:2,
+   exp:'<strong>S/MIME</strong>이 Outlook·Apple Mail 등 기업 이메일 클라이언트의 표준으로 기본 지원됩니다. <strong>PGP</strong>는 개인 사용자나 오픈소스 환경에서 더 많이 사용되며, GnuPG(GPG) 등의 도구를 별도 설치해야 합니다.'},
+  {cat:'PEM',diff:'easy',
+   q:'PEM이 사용하는 암호화 방식으로 가장 적절한 것은?',
+   cs:['AES + ECDSA','DES + RSA','IDEA + DSA','3DES + El Gamal'],
+   ans:1,
+   exp:'<strong>PEM(Privacy Enhanced Mail)</strong>은 대칭키 암호화로 <em>DES</em>, 비대칭키 암호화로 <em>RSA</em>를 사용합니다. PEM은 IETF가 제안한 최초의 이메일 보안 표준이지만 현재는 사실상 폐기되었으며, S/MIME과 PGP로 대체되었습니다.'},
+  {cat:'SPF',diff:'mid',
+   q:'SPF(Sender Policy Framework)에 관한 설명으로 가장 적절하지 않은 것은?',
+   cs:['DNS TXT 레코드에 허가된 메일 서버 IP 목록을 등록한다.',
+       '수신 서버가 발신 서버의 IP를 검증하여 스푸핑을 방지한다.',
+       'SPF는 이메일 포워딩(Forwarding) 시에도 항상 정상 동작한다.',
+       'Return-Path(MAIL FROM) 헤더의 도메인을 기준으로 검증한다.'],
+   ans:2,
+   exp:'SPF의 대표적인 한계: <strong>이메일 포워딩 시 SPF 검증이 실패</strong>할 수 있습니다. 포워딩 서버가 메일을 재발송할 때 발신 IP가 바뀌어 SPF 레코드에 없는 IP에서 발송되기 때문입니다. 이 한계를 DKIM이 보완합니다(서명은 포워딩 후에도 유지).'},
+  {cat:'SPF',diff:'mid',
+   q:'DKIM(DomainKeys Identified Mail)에서 이메일 서명을 어디에 추가하는가?',
+   cs:['이메일 본문 하단에 추가','DKIM-Signature라는 이메일 헤더에 추가','DNS TXT 레코드에 직접 추가','별도의 첨부파일로 전송'],
+   ans:1,
+   exp:'DKIM은 발신 서버가 개인키로 메시지 헤더·본문을 서명한 후 <strong>DKIM-Signature 헤더</strong>에 추가합니다. 수신 서버는 DNS에서 해당 도메인의 공개키를 조회(셀렉터 이용)하여 서명을 검증합니다. 공개키는 DNS TXT 레코드에 등록됩니다.'},
+  {cat:'DMARC',diff:'mid',
+   q:'DMARC 정책 중 SPF·DKIM 검증에 실패한 이메일을 스팸함으로 보내도록 지시하는 설정은?',
+   cs:['p=none','p=quarantine','p=reject','p=fail'],
+   ans:1,
+   exp:'DMARC의 p= 정책 3가지: <em>none</em>(모니터링만, 아무 처리 안 함), <strong>quarantine</strong>(스팸함으로 격리), <em>reject</em>(메일 거부/반송). none→quarantine→reject 순으로 점점 강력한 정책입니다. 처음에는 none으로 시작해 단계적으로 강화하는 것이 권장됩니다.'},
+  {cat:'DMARC',diff:'hard',
+   q:'DMARC에서 "정렬(Alignment)"이 의미하는 것으로 가장 적절한 것은?',
+   cs:['DMARC 레코드가 DNS에 올바르게 등록되었는지 확인하는 것',
+       'From 헤더 도메인이 SPF의 Return-Path 도메인 또는 DKIM의 d= 도메인과 일치하는지 확인하는 것',
+       'SPF와 DKIM이 모두 통과했는지 확인하는 것',
+       '수신 서버의 IP가 허가된 IP 목록에 있는지 확인하는 것'],
+   ans:1,
+   exp:'DMARC의 핵심 개념인 <strong>정렬(Alignment)</strong>: 사용자에게 보이는 <em>From 헤더의 도메인</em>이 SPF 검증 시 사용된 Return-Path 도메인 또는 DKIM 서명의 d= 도메인과 일치해야 합니다. 이를 통해 From 위조(Display Name Spoofing) 공격을 방지합니다.'},
+  {cat:'기타',diff:'mid',
+   q:'SET(Secure Electronic Transaction)의 이중 서명(Dual Signature)이 제공하는 프라이버시 보호로 가장 적절한 것은?',
+   cs:['카드번호를 해시화하여 아무도 알 수 없게 보호한다.',
+       '상점은 결제 금액 정보만, 은행은 구매 내역을 알 수 없도록 정보를 분리한다.',
+       '고객 신원을 완전히 익명으로 처리한다.',
+       '모든 거래 내역을 블록체인에 저장하여 위변조를 방지한다.'],
+   ans:1,
+   exp:'SET의 <strong>이중 서명(Dual Signature)</strong>: 구매 주문 정보(상점이 볼 수 있음)와 결제 카드 정보(은행만 볼 수 있음)를 별도로 서명·암호화하여 <em>상점에게는 카드번호가, 은행에게는 구체적인 구매 내역이 노출되지 않습니다</em>. 단, 복잡성으로 실제 배포에 실패하여 TLS 기반 결제로 대체되었습니다.'},
+  // OX
+  {cat:'OX',diff:'easy',type:'ox',
+   q:'PGP는 중앙 CA 없이 사용자 간 상호 서명으로 신뢰를 형성하는 Web of Trust 모델을 사용한다.',
+   ans:true,
+   exp:'<strong>○</strong> — PGP는 <em>Web of Trust(신뢰망)</em> 방식을 사용합니다. 중앙화된 CA 없이 "사용자 A가 사용자 B의 공개키에 서명하면, A를 신뢰하는 C도 B를 신뢰할 수 있다"는 분산형 신뢰 체계입니다. S/MIME과 PEM은 계층적 CA를 사용합니다.'},
+  {cat:'OX',diff:'mid',type:'ox',
+   q:'SPF는 이메일을 포워딩(Forwarding)할 때에도 발신자 IP 검증이 정상적으로 이루어진다.',
+   ans:false,
+   exp:'<strong>×</strong> — SPF의 대표적인 한계입니다. 이메일이 포워딩될 때 포워딩 서버의 IP로 재발송되는데, 이 IP가 원래 도메인의 SPF 레코드에 없으므로 <strong>SPF 검증이 실패</strong>합니다. 반면 DKIM은 서명이 헤더에 남아 있어 포워딩 후에도 검증이 유지됩니다.'},
+  {cat:'OX',diff:'mid',type:'ox',
+   q:'DMARC의 p=reject는 인증 실패한 이메일을 스팸함으로 격리하는 정책이다.',
+   ans:false,
+   exp:'<strong>×</strong> — <em>스팸함 격리는 p=quarantine</em>입니다. <strong>p=reject</strong>는 인증에 실패한 이메일을 <em>완전히 거부(반송)</em>하는 가장 강력한 정책입니다. 정책 강도: p=none(모니터링) < p=quarantine(스팸함) < p=reject(거부).'},
+  {cat:'OX',diff:'hard',type:'ox',
+   q:'DKIM은 이메일 본문과 헤더에 대한 해시를 계산하고 발신 서버의 개인키로 서명하여 DKIM-Signature 헤더에 추가한다.',
+   ans:true,
+   exp:'<strong>○</strong> — DKIM 동작: ①발신 서버가 헤더·본문 해시를 계산 → ②개인키로 서명 → ③DKIM-Signature 헤더에 추가 → ④수신 서버가 DNS에서 공개키 조회 → ⑤서명 검증. 공개키는 <em>selector._domainkey.example.com</em> 형식의 DNS TXT 레코드에 등록됩니다.'},
+  {cat:'OX',diff:'mid',type:'ox',
+   q:'S/MIME은 PGP와 동일하게 Web of Trust 신뢰 모델을 기반으로 한다.',
+   ans:false,
+   exp:'<strong>×</strong> — <strong>S/MIME</strong>은 <em>계층적 PKI(CA) 구조</em>를 기반으로 하며, X.509 인증서를 사용합니다. <em>Web of Trust(분산형)</em>는 PGP만의 특징입니다. 이 차이 때문에 S/MIME이 기업 환경(Outlook 등)에서 표준으로 사용되고, PGP는 개인 사용자 중심으로 활용됩니다.'},
+];
+
+let answered=0,correct=0;
+function renderQ(f){
+  const data=f==='all'?QA:QA.filter(q=>q.cat===f);
+  const list=document.getElementById('ql');list.innerHTML='';
+  answered=0;correct=0;upS();
+  const CATC={'PEM':'tb','PGP':'tg','SMIME':'ty','SPF':'to','DMARC':'tr','기타':'tp','OX':'tp'};
+  const DLC={'easy':'easy 쉬움','mid':'mid 보통','hard':'hard 어려움'};
+  const NL=['①','②','③','④'];
+  if(!data.length){list.innerHTML='<div style="text-align:center;padding:40px;color:var(--mu)">문제 없음</div>';return;}
+  data.forEach((q,i)=>{
+    const gi=QA.indexOf(q);
+    const el=document.createElement('div');el.className='qa';
+    const tc=CATC[q.cat]||'tb';
+    const [dc,dn]=(DLC[q.diff]||'mid 보통').split(' ');
+    if(q.type==='ox'){
+      el.innerHTML=`<div class="qa-hd" onclick="this.closest('.qa').classList.toggle('open')"><div><div class="qa-meta"><span class="qn">Q${String(i+1).padStart(2,'0')}</span><span class="tag ${tc}">${q.cat}</span><span class="diff ${dc}">${dn}</span><span class="tag tp">O/X</span></div><div class="qq">${q.q}</div></div><span class="tgl">▾</span></div>
+      <div class="qa-bd"><div class="ox-wr"><button class="ox" onclick="pickOX(this,true,${gi})">⭕ 옳다</button><button class="ox" onclick="pickOX(this,false,${gi})">❌ 틀리다</button></div><div class="exp" id="ex-${gi}"><div class="exp-t">💡 해설</div>${q.exp}</div></div>`;
+    } else {
+      el.innerHTML=`<div class="qa-hd" onclick="this.closest('.qa').classList.toggle('open')"><div><div class="qa-meta"><span class="qn">Q${String(i+1).padStart(2,'0')}</span><span class="tag ${tc}">${q.cat}</span><span class="diff ${dc}">${dn}</span></div><div class="qq">${q.q}</div></div><span class="tgl">▾</span></div>
+      <div class="qa-bd"><div class="chs">${q.cs.map((c,ci)=>`<div class="ch" data-ci="${ci}" onclick="pickCh(this,${gi})"><span class="cnum">${NL[ci]}</span><span>${c}</span></div>`).join('')}</div><div class="exp" id="ex-${gi}"><div class="exp-t">💡 해설</div>${q.exp}</div></div>`;
+    }
+    list.appendChild(el);
+  });
+}
+function pickCh(el,gi){
+  const bd=el.closest('.qa-bd');if(bd.querySelector('.ok,.ng'))return;
+  const q=QA[gi];
+  bd.querySelectorAll('.ch').forEach((c,i)=>{c.classList.add('lk');if(i===q.ans)c.classList.add('ok');else if(i===parseInt(el.dataset.ci))c.classList.add('ng');});
+  document.getElementById('ex-'+gi).classList.add('show');
+  answered++;if(parseInt(el.dataset.ci)===q.ans)correct++;upS();
+}
+function pickOX(btn,val,gi){
+  const bd=btn.closest('.qa-bd');if(bd.querySelector('.so,.sx'))return;
+  const q=QA[gi];
+  bd.querySelectorAll('.ox').forEach(b=>b.classList.add('lk'));
+  btn.classList.add(val?'so':'sx');
+  if(val!==q.ans){btn.style.opacity='.5';bd.querySelectorAll('.ox')[val?1:0].classList.add(q.ans?'so':'sx');}
+  document.getElementById('ex-'+gi).classList.add('show');
+  answered++;if(val===q.ans)correct++;upS();
+}
+function upS(){document.getElementById('sc').textContent=correct;document.getElementById('st').textContent=answered;}
+document.getElementById('fbar').addEventListener('click',e=>{
+  const b=e.target.closest('.fb');if(!b)return;
+  document.querySelectorAll('.fb').forEach(x=>x.classList.remove('on'));b.classList.add('on');renderQ(b.dataset.f);
+});
+renderQ('all');
+</script>
+</body>
+</html>

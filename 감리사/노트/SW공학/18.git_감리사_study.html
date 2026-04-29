@@ -1,0 +1,301 @@
+
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:var(--font-sans)}
+.wrap{padding:1rem 0}
+.tabs{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:1.25rem}
+.tab{padding:6px 14px;font-size:13px;border:0.5px solid var(--color-border-secondary);border-radius:var(--border-radius-md);cursor:pointer;background:var(--color-background-primary);color:var(--color-text-secondary);transition:all .15s}
+.tab.on{background:var(--color-background-secondary);color:var(--color-text-primary);border-color:var(--color-border-primary);font-weight:500}
+.panel{display:none}.panel.on{display:block}
+.section-title{font-size:15px;font-weight:500;color:var(--color-text-primary);margin-bottom:12px;padding-bottom:6px;border-bottom:0.5px solid var(--color-border-tertiary)}
+.card{background:var(--color-background-primary);border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-lg);padding:1rem 1.25rem;margin-bottom:10px}
+.badge{display:inline-block;font-size:11px;font-weight:500;padding:2px 8px;border-radius:var(--border-radius-md);margin-right:6px}
+.badge-blue{background:#E6F1FB;color:#0C447C}
+.badge-teal{background:#E1F5EE;color:#085041}
+.badge-amber{background:#FAEEDA;color:#633806}
+.badge-red{background:#FCEBEB;color:#791F1F}
+.badge-purple{background:#EEEDFE;color:#3C3489}
+.kv{display:flex;gap:8px;margin-bottom:6px;font-size:14px;align-items:flex-start}
+.kv .k{color:var(--color-text-secondary);min-width:90px;font-size:13px;flex-shrink:0}
+.kv .v{color:var(--color-text-primary);line-height:1.5}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.cmd-card{background:var(--color-background-primary);border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-lg);padding:.85rem 1rem}
+.cmd-name{font-family:var(--font-mono);font-size:13px;font-weight:500;color:#0C447C;margin-bottom:4px}
+.cmd-desc{font-size:12px;color:var(--color-text-secondary);line-height:1.5}
+.cmd-ex{font-family:var(--font-mono);font-size:11px;color:var(--color-text-tertiary);margin-top:4px;background:var(--color-background-secondary);padding:3px 6px;border-radius:4px;display:block}
+.flow{display:flex;align-items:center;gap:4px;flex-wrap:wrap;margin:12px 0}
+.flow-box{padding:6px 14px;border-radius:var(--border-radius-md);font-size:12px;font-weight:500;text-align:center}
+.flow-arrow{color:var(--color-text-tertiary);font-size:14px}
+.diff-row{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px}
+.diff-hd{font-size:12px;font-weight:500;color:var(--color-text-secondary);margin-bottom:6px}
+.highlight{background:var(--color-background-secondary);border-left:3px solid #1D9E75;border-radius:0;padding:8px 12px;font-size:13px;color:var(--color-text-primary);margin-top:12px;line-height:1.6}
+.qa-q{font-size:13px;font-weight:500;color:var(--color-text-primary);margin-bottom:4px}
+.qa-a{font-size:13px;color:var(--color-text-secondary);line-height:1.5;padding-left:12px;border-left:2px solid var(--color-border-secondary)}
+.flow-svg{width:100%;overflow-x:auto}
+table{width:100%;border-collapse:collapse;font-size:13px}
+th{text-align:left;font-weight:500;font-size:12px;color:var(--color-text-secondary);padding:6px 8px;border-bottom:0.5px solid var(--color-border-tertiary)}
+td{padding:6px 8px;border-bottom:0.5px solid var(--color-border-tertiary);color:var(--color-text-primary);vertical-align:top}
+.mono{font-family:var(--font-mono);font-size:12px}
+</style>
+
+<div class="wrap">
+<div class="tabs">
+  <div class="tab on" onclick="show('개요')">개요 및 특징</div>
+  <div class="tab" onclick="show('구조')">저장소 구조</div>
+  <div class="tab" onclick="show('명령어')">주요 명령어</div>
+  <div class="tab" onclick="show('브랜치')">브랜치 전략</div>
+  <div class="tab" onclick="show('감리')">감리 포인트</div>
+  <div class="tab" onclick="show('qa')">시험 Q&A</div>
+</div>
+
+<div id="개요" class="panel on">
+  <p class="section-title">Git 개요 및 핵심 특징</p>
+  <div class="card">
+    <div class="kv"><div class="k">정의</div><div class="v">분산형(Distributed) 버전 관리 시스템(VCS). 로컬에 전체 히스토리를 복제하여 네트워크 없이도 작업 가능</div></div>
+    <div class="kv"><div class="k">창시</div><div class="v">Linus Torvalds (2005), Linux 커널 개발을 위해 설계</div></div>
+    <div class="kv"><div class="k">핵심 모델</div><div class="v">스냅샷(Snapshot) 기반 — 변경된 파일만 저장하는 델타 방식이 아니라, 매 커밋 시점의 전체 파일 상태를 스냅샷으로 저장</div></div>
+  </div>
+  <p class="section-title" style="margin-top:16px">집중식 vs 분산식 비교</p>
+  <div class="diff-row">
+    <div class="card">
+      <div class="diff-hd"><span class="badge badge-amber">집중식 VCS (CVS, SVN)</span></div>
+      <div class="kv"><div class="k">구조</div><div class="v">중앙 서버 1개 + 클라이언트</div></div>
+      <div class="kv"><div class="k">히스토리</div><div class="v">서버에만 존재</div></div>
+      <div class="kv"><div class="k">오프라인</div><div class="v">작업 불가</div></div>
+      <div class="kv"><div class="k">장애</div><div class="v">서버 다운 시 전체 불가</div></div>
+      <div class="kv"><div class="k">속도</div><div class="v">네트워크 의존</div></div>
+    </div>
+    <div class="card" style="border-color:#9FE1CB">
+      <div class="diff-hd"><span class="badge badge-teal">분산식 VCS (Git)</span></div>
+      <div class="kv"><div class="k">구조</div><div class="v">원격 + 각 로컬이 전체 복제본</div></div>
+      <div class="kv"><div class="k">히스토리</div><div class="v">모든 노드에 존재</div></div>
+      <div class="kv"><div class="k">오프라인</div><div class="v">커밋·브랜치·로그 가능</div></div>
+      <div class="kv"><div class="k">장애</div><div class="v">원격 다운돼도 로컬 작업 가능</div></div>
+      <div class="kv"><div class="k">속도</div><div class="v">대부분 로컬 연산 → 고속</div></div>
+    </div>
+  </div>
+  <p class="section-title" style="margin-top:16px">Git 5대 특징</p>
+  <div class="grid2">
+    <div class="card"><div style="font-weight:500;font-size:13px;margin-bottom:4px">① 분산 저장소</div><div class="cmd-desc">모든 개발자가 전체 저장소의 복사본 보유. 서버 없이도 버전 관리 가능</div></div>
+    <div class="card"><div style="font-weight:500;font-size:13px;margin-bottom:4px">② 스냅샷 기반 저장</div><div class="cmd-desc">변경점이 아닌 파일 전체 상태를 저장. 변경 없는 파일은 이전 스냅샷 링크로 처리</div></div>
+    <div class="card"><div style="font-weight:500;font-size:13px;margin-bottom:4px">③ 무결성 (SHA-1/SHA-256)</div><div class="cmd-desc">모든 객체는 해시값으로 관리. 내용 위·변조 즉시 탐지 가능</div></div>
+    <div class="card"><div style="font-weight:500;font-size:13px;margin-bottom:4px">④ 경량 브랜칭</div><div class="cmd-desc">브랜치 = 포인터(40바이트). 생성·삭제·이동이 O(1)로 매우 빠름</div></div>
+    <div class="card"><div style="font-weight:500;font-size:13px;margin-bottom:4px">⑤ 스테이징 영역 (Index)</div><div class="cmd-desc">작업 디렉터리 → 스테이징 → 저장소의 3단계. 커밋 내용을 세밀하게 제어</div></div>
+    <div class="card"><div style="font-weight:500;font-size:13px;margin-bottom:4px">⑥ 비선형 개발</div><div class="cmd-desc">여러 브랜치를 병렬로 운영하며 독립적으로 실험·개발 후 병합</div></div>
+  </div>
+  <div class="highlight">한 줄 암기: Git = 분산형 + 스냅샷 + SHA 무결성 + 경량 브랜치 + 3단계 작업흐름</div>
+</div>
+
+<div id="구조" class="panel">
+  <p class="section-title">Git 4대 영역 및 객체 모델</p>
+  <div class="card" style="margin-bottom:16px">
+    <div style="font-size:13px;font-weight:500;margin-bottom:10px">작업 흐름 (4단계 영역)</div>
+    <div class="flow">
+      <div class="flow-box" style="background:#E6F1FB;color:#0C447C">Working Directory<br><span style="font-size:10px;font-weight:400">실제 파일 편집 공간</span></div>
+      <div class="flow-arrow">→ <span style="font-size:10px">git add</span> →</div>
+      <div class="flow-box" style="background:#EEEDFE;color:#3C3489">Staging Area<br><span style="font-size:10px;font-weight:400">Index / 커밋 준비 공간</span></div>
+      <div class="flow-arrow">→ <span style="font-size:10px">git commit</span> →</div>
+      <div class="flow-box" style="background:#E1F5EE;color:#085041">Local Repository<br><span style="font-size:10px;font-weight:400">.git 폴더</span></div>
+      <div class="flow-arrow">→ <span style="font-size:10px">git push</span> →</div>
+      <div class="flow-box" style="background:#FAEEDA;color:#633806">Remote Repository<br><span style="font-size:10px;font-weight:400">GitHub / GitLab</span></div>
+    </div>
+    <div class="flow" style="margin-top:0">
+      <div class="flow-box" style="background:#E6F1FB;color:#0C447C;opacity:.7">Working Directory</div>
+      <div class="flow-arrow">← <span style="font-size:10px">git checkout</span> ←</div>
+      <div class="flow-box" style="background:#E1F5EE;color:#085041;opacity:.7">Local Repository</div>
+      <div class="flow-arrow">← <span style="font-size:10px">git pull/fetch</span> ←</div>
+      <div class="flow-box" style="background:#FAEEDA;color:#633806;opacity:.7">Remote Repository</div>
+    </div>
+  </div>
+  <p class="section-title">Git 4대 객체</p>
+  <div class="grid2">
+    <div class="card"><div style="font-weight:500;font-size:13px;margin-bottom:4px"><span class="badge badge-blue">Blob</span></div><div class="cmd-desc">파일 내용 그 자체. 파일명·권한 정보 없음. SHA 해시로 식별</div></div>
+    <div class="card"><div style="font-weight:500;font-size:13px;margin-bottom:4px"><span class="badge badge-purple">Tree</span></div><div class="cmd-desc">디렉터리 구조. Blob 및 다른 Tree 를 가리키는 포인터 목록</div></div>
+    <div class="card"><div style="font-weight:500;font-size:13px;margin-bottom:4px"><span class="badge badge-teal">Commit</span></div><div class="cmd-desc">Tree 포인터 + 부모 커밋 + 작성자/시간 + 메시지. 불변 객체</div></div>
+    <div class="card"><div style="font-weight:500;font-size:13px;margin-bottom:4px"><span class="badge badge-amber">Tag</span></div><div class="cmd-desc">특정 커밋에 이름 부여. Lightweight(포인터만) vs Annotated(서명 포함)</div></div>
+  </div>
+  <p class="section-title" style="margin-top:16px">파일 상태 생명주기</p>
+  <div class="card">
+    <div class="flow">
+      <div class="flow-box" style="background:#F1EFE8;color:#444441">Untracked</div>
+      <div class="flow-arrow">→ git add →</div>
+      <div class="flow-box" style="background:#E6F1FB;color:#0C447C">Staged</div>
+      <div class="flow-arrow">→ git commit →</div>
+      <div class="flow-box" style="background:#E1F5EE;color:#085041">Unmodified</div>
+      <div class="flow-arrow">→ 편집 →</div>
+      <div class="flow-box" style="background:#FAEEDA;color:#633806">Modified</div>
+      <div class="flow-arrow">→ git add →</div>
+      <div class="flow-box" style="background:#E6F1FB;color:#0C447C">Staged</div>
+    </div>
+    <div style="font-size:12px;color:var(--color-text-secondary);margin-top:8px">git rm → Unmodified에서 삭제 후 Staged(삭제됨) 상태로 전환</div>
+  </div>
+  <div class="highlight">한 줄 암기: Git 저장소 = Working → Staging → Local → Remote, 객체 = Blob(내용) + Tree(구조) + Commit(메타) + Tag(이름)</div>
+</div>
+
+<div id="명령어" class="panel">
+  <p class="section-title">① 초기화 / 설정</p>
+  <div class="grid2">
+    <div class="cmd-card"><div class="cmd-name">git init</div><div class="cmd-desc">현재 디렉터리를 Git 저장소로 초기화 (.git 생성)</div></div>
+    <div class="cmd-card"><div class="cmd-name">git clone &lt;url&gt;</div><div class="cmd-desc">원격 저장소 전체를 로컬로 복제. 히스토리 포함</div></div>
+    <div class="cmd-card"><div class="cmd-name">git config</div><div class="cmd-desc">사용자 이름·이메일·에디터 등 환경 설정<span class="cmd-ex">git config --global user.email "a@b.com"</span></div></div>
+    <div class="cmd-card"><div class="cmd-name">git remote</div><div class="cmd-desc">원격 저장소 별칭 관리<span class="cmd-ex">git remote add origin &lt;url&gt;</span></div></div>
+  </div>
+  <p class="section-title" style="margin-top:14px">② 기본 작업 (add / commit)</p>
+  <div class="grid2">
+    <div class="cmd-card"><div class="cmd-name">git status</div><div class="cmd-desc">작업 디렉터리와 스테이징 영역의 현재 상태 확인</div></div>
+    <div class="cmd-card"><div class="cmd-name">git add &lt;파일&gt;</div><div class="cmd-desc">파일을 스테이징 영역에 추가<span class="cmd-ex">git add .  (전체 추가)</span></div></div>
+    <div class="cmd-card"><div class="cmd-name">git commit -m</div><div class="cmd-desc">스테이징 내용을 로컬 저장소에 커밋<span class="cmd-ex">git commit -m "feat: 로그인 기능"</span></div></div>
+    <div class="cmd-card"><div class="cmd-name">git commit --amend</div><div class="cmd-desc">직전 커밋 메시지 또는 내용 수정 (히스토리 재작성 주의)</div></div>
+    <div class="cmd-card"><div class="cmd-name">git diff</div><div class="cmd-desc">작업 디렉터리 vs 스테이징 차이<span class="cmd-ex">git diff --staged: 스테이징 vs 최신 커밋</span></div></div>
+    <div class="cmd-card"><div class="cmd-name">git log</div><div class="cmd-desc">커밋 히스토리 조회<span class="cmd-ex">git log --oneline --graph --all</span></div></div>
+  </div>
+  <p class="section-title" style="margin-top:14px">③ 브랜치 / 병합</p>
+  <div class="grid2">
+    <div class="cmd-card"><div class="cmd-name">git branch</div><div class="cmd-desc">브랜치 목록 조회 / 생성 / 삭제<span class="cmd-ex">git branch -d feature/login</span></div></div>
+    <div class="cmd-card"><div class="cmd-name">git checkout / switch</div><div class="cmd-desc">브랜치 전환. switch는 Git 2.23+ 권장<span class="cmd-ex">git switch -c feature/new</span></div></div>
+    <div class="cmd-card"><div class="cmd-name">git merge &lt;브랜치&gt;</div><div class="cmd-desc">대상 브랜치를 현재 브랜치에 병합. Fast-forward / 3-way merge</div></div>
+    <div class="cmd-card"><div class="cmd-name">git rebase &lt;브랜치&gt;</div><div class="cmd-desc">커밋을 다른 브랜치 위로 재배치. 히스토리 선형화 (공개 브랜치 사용 금지)</div></div>
+    <div class="cmd-card"><div class="cmd-name">git cherry-pick</div><div class="cmd-desc">특정 커밋만 선택적으로 현재 브랜치에 적용</div></div>
+    <div class="cmd-card"><div class="cmd-name">git stash</div><div class="cmd-desc">현재 작업 내용을 임시 저장하고 워킹 디렉터리를 깨끗이 정리<span class="cmd-ex">git stash pop: 복원</span></div></div>
+  </div>
+  <p class="section-title" style="margin-top:14px">④ 원격 저장소</p>
+  <div class="grid2">
+    <div class="cmd-card"><div class="cmd-name">git fetch</div><div class="cmd-desc">원격 변경사항을 가져오되 로컬 브랜치에 병합 안 함</div></div>
+    <div class="cmd-card"><div class="cmd-name">git pull</div><div class="cmd-desc">fetch + merge 결합. origin/main → 로컬 main 자동 병합</div></div>
+    <div class="cmd-card"><div class="cmd-name">git push</div><div class="cmd-desc">로컬 커밋을 원격 저장소로 전송<span class="cmd-ex">git push -u origin main</span></div></div>
+    <div class="cmd-card"><div class="cmd-name">git push --force-with-lease</div><div class="cmd-desc">강제 push 시 타인 커밋 덮어쓰기 방지. --force보다 안전</div></div>
+  </div>
+  <p class="section-title" style="margin-top:14px">⑤ 되돌리기</p>
+  <div class="grid2">
+    <div class="cmd-card"><div class="cmd-name">git revert &lt;커밋&gt;</div><div class="cmd-desc"><span class="badge badge-teal">안전</span>되돌리는 새 커밋 생성. 히스토리 보존. 공개 브랜치에 사용</div></div>
+    <div class="cmd-card"><div class="cmd-name">git reset</div><div class="cmd-desc"><span class="badge badge-red">주의</span>커밋 포인터 이동. --soft(스테이징 유지) / --mixed(기본) / --hard(완전 삭제)</div></div>
+    <div class="cmd-card"><div class="cmd-name">git restore</div><div class="cmd-desc">작업 디렉터리 파일 복원 (Git 2.23+)<span class="cmd-ex">git restore --staged: 언스테이징</span></div></div>
+    <div class="cmd-card"><div class="cmd-name">git reflog</div><div class="cmd-desc">HEAD 이동 이력 전체 조회. reset --hard 실수 복구에 활용</div></div>
+  </div>
+  <div class="highlight">한 줄 암기: revert=새커밋으로 안전 취소, reset=포인터 이동(히스토리 재작성 위험), rebase=선형 히스토리(공개 브랜치 금지)</div>
+</div>
+
+<div id="브랜치" class="panel">
+  <p class="section-title">주요 브랜치 전략 비교</p>
+  <table>
+    <thead><tr><th>전략</th><th>주요 브랜치</th><th>특징</th><th>적합 대상</th></tr></thead>
+    <tbody>
+      <tr><td style="font-weight:500">Git Flow</td><td class="mono">main, develop, feature, release, hotfix</td><td>엄격한 릴리즈 관리. 롤백 용이</td><td>정기 배포 제품</td></tr>
+      <tr><td style="font-weight:500">GitHub Flow</td><td class="mono">main + feature/*</td><td>main 항상 배포 가능. PR 중심 단순 흐름</td><td>CI/CD, SaaS</td></tr>
+      <tr><td style="font-weight:500">GitLab Flow</td><td class="mono">main + environment 브랜치</td><td>환경별(staging, production) 브랜치 추가</td><td>다중 환경 배포</td></tr>
+      <tr><td style="font-weight:500">Trunk-Based</td><td class="mono">main (trunk)</td><td>모든 개발자가 trunk에 소규모 커밋. Feature Flag 활용</td><td>고속 CI/CD</td></tr>
+    </tbody>
+  </table>
+  <p class="section-title" style="margin-top:16px">Git Flow 상세 브랜치 역할</p>
+  <div class="grid2">
+    <div class="card"><div style="font-weight:500;font-size:13px;margin-bottom:6px"><span class="badge badge-teal">main (master)</span></div><div class="cmd-desc">항상 프로덕션 배포 상태. 직접 커밋 금지. 태그로 버전 관리</div></div>
+    <div class="card"><div style="font-weight:500;font-size:13px;margin-bottom:6px"><span class="badge badge-blue">develop</span></div><div class="cmd-desc">통합 브랜치. 다음 릴리즈 준비. feature 브랜치의 병합 대상</div></div>
+    <div class="card"><div style="font-weight:500;font-size:13px;margin-bottom:6px"><span class="badge badge-purple">feature/*</span></div><div class="cmd-desc">기능 개발. develop에서 분기 → develop으로 병합</div></div>
+    <div class="card"><div style="font-weight:500;font-size:13px;margin-bottom:6px"><span class="badge badge-amber">release/*</span></div><div class="cmd-desc">QA·버그픽스만. main + develop 동시 병합 후 삭제</div></div>
+    <div class="card" style="grid-column:1/-1"><div style="font-weight:500;font-size:13px;margin-bottom:6px"><span class="badge badge-red">hotfix/*</span></div><div class="cmd-desc">프로덕션 긴급 패치. main에서 분기 → main + develop 동시 병합</div></div>
+  </div>
+  <p class="section-title" style="margin-top:16px">Merge vs Rebase</p>
+  <div class="diff-row">
+    <div class="card">
+      <div class="diff-hd">git merge</div>
+      <div class="cmd-desc">병합 커밋(Merge Commit) 생성. 히스토리에 병합 사실 기록. 안전하고 추적 가능</div>
+      <div style="font-size:12px;margin-top:8px;color:var(--color-text-secondary)">장점: 히스토리 보존 | 단점: 히스토리 복잡</div>
+    </div>
+    <div class="card">
+      <div class="diff-hd">git rebase</div>
+      <div class="cmd-desc">커밋을 대상 브랜치 끝에 재배치. 선형 히스토리. 공개 브랜치에 절대 사용 금지</div>
+      <div style="font-size:12px;margin-top:8px;color:var(--color-text-secondary)">장점: 깔끔한 히스토리 | 단점: SHA 변경, 협업 위험</div>
+    </div>
+  </div>
+  <div class="highlight">한 줄 암기: Git Flow=5브랜치 엄격 관리, GitHub Flow=main+feature 단순화, rebase=로컬만/공개브랜치 금지</div>
+</div>
+
+<div id="감리" class="panel">
+  <p class="section-title">감리사 핵심 점검 항목</p>
+  <div class="card" style="margin-bottom:10px">
+    <div style="font-weight:500;font-size:13px;margin-bottom:8px"><span class="badge badge-red">감리 포인트 ①</span> 접근 통제 및 권한 관리</div>
+    <div class="cmd-desc" style="line-height:1.8">
+      · main/release 브랜치에 직접 Push 가능한 계정 최소화 (Branch Protection Rule)<br>
+      · 코드 리뷰 없는 Merge 차단 (Required Reviewers 설정 확인)<br>
+      · 외부 기여자·퇴직자 권한 즉시 회수 여부 확인<br>
+      · SSH Key / Token 관리 정책 (만료 기한, 범위 최소 원칙)
+    </div>
+  </div>
+  <div class="card" style="margin-bottom:10px">
+    <div style="font-weight:500;font-size:13px;margin-bottom:8px"><span class="badge badge-red">감리 포인트 ②</span> 이력 무결성</div>
+    <div class="cmd-desc" style="line-height:1.8">
+      · git rebase / git commit --amend / git push --force로 공개 히스토리 재작성 여부<br>
+      · 커밋 SHA 변조 가능성 → Signed Commit(GPG 서명) 적용 확인<br>
+      · 태그(Tag) 삭제·이동 방지 정책 (Annotated Tag + 보호 규칙)<br>
+      · Audit Log 활성화 여부 (GitHub Enterprise / GitLab Audit Events)
+    </div>
+  </div>
+  <div class="card" style="margin-bottom:10px">
+    <div style="font-weight:500;font-size:13px;margin-bottom:8px"><span class="badge badge-amber">감리 포인트 ③</span> 민감 정보 유출</div>
+    <div class="cmd-desc" style="line-height:1.8">
+      · 비밀번호·API Key·개인정보가 커밋 히스토리에 포함 여부 (git log --all 검색)<br>
+      · .gitignore 미설정으로 환경설정 파일(.env) 업로드 여부<br>
+      · Secret Scanning / SAST 도구 CI 파이프라인 통합 여부<br>
+      · 이미 올라간 민감 정보는 BFG Repo Cleaner / git filter-repo로 완전 삭제 필요
+    </div>
+  </div>
+  <div class="card" style="margin-bottom:10px">
+    <div style="font-weight:500;font-size:13px;margin-bottom:8px"><span class="badge badge-amber">감리 포인트 ④</span> 브랜치 전략 준수</div>
+    <div class="cmd-desc" style="line-height:1.8">
+      · 정의된 브랜치 전략(Git Flow 등) 실제 운영 준수 여부<br>
+      · 장기 미병합 Feature 브랜치 존재 여부 (분기 이탈·방치 브랜치)<br>
+      · PR/MR 리뷰 프로세스 준수 및 리뷰 없이 병합된 케이스 확인<br>
+      · 배포 가능 상태 보장: main 브랜치 CI 파이프라인 통과 여부
+    </div>
+  </div>
+  <div class="card">
+    <div style="font-weight:500;font-size:13px;margin-bottom:8px"><span class="badge badge-blue">감리 포인트 ⑤</span> 백업 및 복구</div>
+    <div class="cmd-desc" style="line-height:1.8">
+      · 원격 저장소 자체 백업 주기 및 보관 정책<br>
+      · 재해복구(DR) 시나리오에서 Git 저장소 복구 절차 문서화 여부<br>
+      · Bare Repository 미러 운영 여부 (git clone --mirror)<br>
+      · Large File Storage(LFS) 사용 시 별도 백업 정책 확인
+    </div>
+  </div>
+  <div class="highlight">감리 핵심: 접근통제(Branch Protection) + 이력무결성(Force Push 금지) + 민감정보(Secret Scanning) + 브랜치전략 준수 + 백업정책</div>
+</div>
+
+<div id="qa" class="panel">
+  <p class="section-title">감리사 시험 예상 Q&A</p>
+  <div class="card" style="margin-bottom:10px">
+    <div class="qa-q">Q1. Git의 분산형 VCS 구조가 집중형 대비 가지는 가용성 측면 장점은?</div>
+    <div class="qa-a" style="margin-top:6px">모든 클라이언트가 전체 히스토리를 포함한 저장소 복사본을 보유하므로, 중앙 서버 장애 시에도 로컬에서 커밋·브랜치·이력 조회가 가능하다. 또한 어느 클라이언트든 원격 저장소의 역할을 대신할 수 있어 단일 장애점(SPOF) 위험이 없다.</div>
+  </div>
+  <div class="card" style="margin-bottom:10px">
+    <div class="qa-q">Q2. git revert와 git reset의 차이를 설명하고, 공개(원격) 브랜치에 적합한 방법은?</div>
+    <div class="qa-a" style="margin-top:6px">git revert는 취소 내용을 담은 새 커밋을 추가하여 기존 히스토리를 보존한다. git reset은 커밋 포인터를 이전으로 이동시켜 히스토리를 재작성한다. 공개 브랜치에는 타 개발자의 로컬과 충돌을 방지하기 위해 반드시 git revert를 사용해야 한다.</div>
+  </div>
+  <div class="card" style="margin-bottom:10px">
+    <div class="qa-q">Q3. Git 저장소에서 민감 정보(API Key) 커밋 후 조치 방법은?</div>
+    <div class="qa-a" style="margin-top:6px">① 즉시 해당 Key를 무효화(Revoke)한다. ② git filter-repo 또는 BFG Repo Cleaner로 히스토리 전체에서 해당 파일·문자열을 제거한다. ③ 모든 협력자가 저장소를 재클론(re-clone)한다. ④ .gitignore 및 Secret Scanning 도구를 도입하여 재발 방지한다.</div>
+  </div>
+  <div class="card" style="margin-bottom:10px">
+    <div class="qa-q">Q4. Git 4대 내부 객체를 열거하고 각각의 역할을 설명하라.</div>
+    <div class="qa-a" style="margin-top:6px">① Blob: 파일 내용(바이너리)을 SHA 해시로 저장. 파일명 없음. ② Tree: 디렉터리 구조를 표현. Blob과 하위 Tree의 포인터 목록. ③ Commit: Tree 포인터 + 부모 커밋 SHA + 작성자·시각·메시지 포함. ④ Tag: 특정 Commit에 사람이 읽을 수 있는 이름을 부여. Annotated Tag는 GPG 서명 포함 가능.</div>
+  </div>
+  <div class="card" style="margin-bottom:10px">
+    <div class="qa-q">Q5. Git Flow에서 hotfix 브랜치를 사용하는 이유와 병합 대상은?</div>
+    <div class="qa-a" style="margin-top:6px">프로덕션(main) 환경의 긴급 결함을 develop 브랜치와 무관하게 즉시 수정하기 위해 main에서 직접 분기한다. 수정 완료 후 main(프로덕션 반영)과 develop(이후 릴리즈에 반영) 양쪽에 모두 병합해야 하며, 태그로 버전을 명시한다.</div>
+  </div>
+  <div class="card">
+    <div class="qa-q">Q6. Staging Area(Index)의 역할과 감리 관점에서의 의미는?</div>
+    <div class="qa-a" style="margin-top:6px">Staging Area는 커밋에 포함할 변경 사항을 선별하는 중간 준비 공간이다. 감리 관점에서는 개발자가 의도적으로 포함·제외할 파일을 제어할 수 있으므로, 민감 파일이 실수로 커밋되기 전 최후 검토 지점이다. git diff --staged로 커밋 직전 변경 내용을 검증하는 습관이 중요하다.</div>
+  </div>
+  <div class="highlight">빈출 키워드: 분산형 SPOF제거 · revert vs reset · Blob/Tree/Commit/Tag · hotfix 양쪽병합 · Staging 최후검토</div>
+</div>
+</div>
+
+<script>
+function show(id){
+  document.querySelectorAll('.panel').forEach(p=>p.classList.remove('on'));
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('on'));
+  document.getElementById(id).classList.add('on');
+  event.target.classList.add('on');
+}
+</script>

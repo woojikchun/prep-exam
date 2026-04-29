@@ -1,0 +1,523 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>교착상태(Deadlock) — 컴퓨터시스템응용 기술사 모범 답안</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;500;700&family=Noto+Sans+KR:wght@400;500;700&family=JetBrains+Mono:wght@400;600&display=swap');
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --ink:#1a1a1a;--ink2:#333;--ink3:#666;
+  --line:#c8c8c8;--line2:#e2e0da;--bg:#fdfcf8;
+  --accent:#1a3a6e;--accent2:#7a3010;--green:#2d6a4f;--purple:#4a3080;
+}
+body{background:#dddad2;font-family:'Noto Sans KR',sans-serif;color:var(--ink);padding:20px 0 40px}
+.doc{max-width:800px;margin:0 auto;background:var(--bg);box-shadow:0 4px 32px rgba(0,0,0,.22)}
+
+.hdr{border-bottom:3px double var(--ink);padding:20px 36px 16px;display:flex;align-items:flex-start;gap:16px}
+.hdr-l{flex:1}
+.lbl{font-size:11px;letter-spacing:.14em;color:var(--ink3);font-family:'Noto Serif KR',serif}
+.ttl{font-size:20px;font-weight:700;font-family:'Noto Serif KR',serif;color:var(--accent);line-height:1.35;margin-top:5px}
+.pills{display:flex;gap:8px;margin-top:9px;flex-wrap:wrap}
+.pill{font-size:11px;padding:2px 10px;border:1px solid var(--line);border-radius:2px;color:var(--ink2);background:#fff}
+.score-box{border:1.5px solid var(--ink);padding:10px 16px;text-align:center;min-width:72px}
+.sc-lbl{font-size:10px;color:var(--ink3);letter-spacing:.06em}
+.sc-n{font-size:24px;font-weight:700;font-family:'Noto Serif KR',serif;color:var(--accent);line-height:1.1}
+
+.body{padding:24px 40px 48px}
+.qbox{background:#f0efea;border:1px solid #bbb;padding:14px 18px;border-radius:3px;margin-bottom:24px;font-size:12.5px;color:var(--ink2);line-height:1.85}
+.qbox strong{color:var(--ink);font-weight:700}
+
+.sh {font-size:14.5px;font-weight:700;font-family:'Noto Serif KR',serif;color:var(--accent);border-bottom:1.5px solid var(--accent);padding-bottom:5px;margin:0 0 13px}
+.sh2{font-size:13px;font-weight:700;color:var(--ink);margin:13px 0 5px;padding-left:8px;border-left:3px solid var(--accent2)}
+.sh3{font-size:12.5px;font-weight:700;color:var(--ink2);margin:9px 0 4px;padding-left:18px}
+.sec{margin-bottom:22px}
+.txt{font-size:12.5px;line-height:1.92;color:var(--ink2)}
+.txt p{margin-bottom:5px}
+.i1{padding-left:14px}
+.i2{padding-left:28px}
+.kw{font-weight:700;color:var(--ink)}
+
+.tw{margin:10px 0 14px;overflow-x:auto}
+table{width:100%;border-collapse:collapse;font-size:11.5px}
+th{background:var(--accent);color:#fff;padding:6px 9px;text-align:left;font-weight:500;border:1px solid var(--accent)}
+td{padding:6px 9px;border:1px solid var(--line);vertical-align:top;line-height:1.75;color:var(--ink2)}
+tr:nth-child(even) td{background:#f4f3ef}
+.kc{font-weight:700;color:var(--ink)}
+.tc{text-align:center}
+
+.fig{margin:13px 0 16px;background:#f8f7f3;border:1px solid var(--line2);border-radius:4px;padding:10px 8px}
+.fc{font-size:11px;color:var(--ink3);text-align:center;margin-top:7px;font-style:italic}
+
+/* Banker table */
+.bk-cell{text-align:center;font-family:'JetBrains Mono',monospace;font-weight:700}
+.bk-safe{background:#EAF3DE;color:#2d6a4f}
+.bk-need{background:#E6F1FB;color:#0C447C}
+.bk-alloc{background:#FAEEDA;color:#7a3010}
+.bk-avail{background:#d4edda;color:#1a3d2b}
+
+.note{margin:16px 0 0;padding:12px 16px;border:1px solid #8b6914;background:#fffbef;border-radius:3px}
+.nt{font-size:12px;font-weight:700;color:#6a4f00;margin-bottom:5px}
+.nb{font-size:12px;color:#4a3800;line-height:1.85}
+
+.pb{border:none;border-top:2px dashed #bbb;margin:24px 0;position:relative}
+.pb::after{content:"— 다음 페이지 —";position:absolute;top:-9px;left:50%;transform:translateX(-50%);background:var(--bg);padding:0 10px;font-size:10px;color:#bbb;white-space:nowrap}
+
+.ftr{border-top:2px solid var(--ink);margin:0 40px;padding:10px 0;display:flex;justify-content:space-between;font-size:10px;color:var(--ink3)}
+
+.badge{display:inline-block;font-size:10.5px;padding:1px 8px;border-radius:2px;font-weight:600;margin:1px 2px}
+.badge-r{background:#FCEBEB;color:#A32D2D;border:1px solid #f0b8b8}
+.badge-g{background:#EAF3DE;color:#2d6a4f;border:1px solid #b0d89a}
+.badge-b{background:#E6F1FB;color:#0C447C;border:1px solid #9dc4f0}
+.badge-o{background:#FAEEDA;color:#7a3010;border:1px solid #f0c88a}
+.badge-p{background:#eeedfe;color:#4a3080;border:1px solid #b8b0f0}
+
+.formula{display:inline-block;font-family:'JetBrains Mono',monospace;font-size:11.5px;background:#f0efea;border:1px solid var(--line2);border-radius:3px;padding:2px 8px;color:#1a3a6e;font-weight:700;margin:2px 0}
+
+/* 4가지 조건 박스 */
+.cond-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:10px 0 14px}
+.cond-box{border:1.5px solid var(--accent);border-radius:6px;padding:10px 12px;background:#fff}
+.cond-num{font-size:18px;font-weight:700;color:var(--accent);font-family:'Noto Serif KR',serif;line-height:1}
+.cond-title{font-size:12px;font-weight:700;color:var(--ink);margin:3px 0 4px}
+.cond-en{font-size:10.5px;color:var(--ink3);margin-bottom:5px}
+.cond-desc{font-size:11.5px;color:var(--ink2);line-height:1.75}
+.cond-break{background:#FCEBEB;border-color:#A32D2D}
+.cond-break .cond-num{color:#A32D2D}
+
+/* 처리 전략 타임라인 */
+.strategy-row{display:flex;gap:0;margin:12px 0}
+.strategy-box{flex:1;text-align:center;padding:8px 6px;border:1px solid var(--line);font-size:11px}
+.strategy-box.s1{background:#E6F1FB;border-color:#1a3a6e;color:#0C447C}
+.strategy-box.s2{background:#EAF3DE;border-color:#2d6a4f;color:#2d6a4f}
+.strategy-box.s3{background:#FAEEDA;border-color:#7a3010;color:#7a3010}
+.strategy-box.s4{background:#eeedfe;border-color:#4a3080;color:#4a3080}
+.strategy-box .s-title{font-weight:700;font-size:12px;display:block;margin-bottom:3px}
+.strategy-arr{display:flex;align-items:center;font-size:18px;color:#bbb;flex-shrink:0;padding:0 2px}
+</style>
+</head>
+<body>
+<div class="doc">
+
+<!-- Header -->
+<div class="hdr">
+  <div class="hdr-l">
+    <div class="lbl">컴퓨터시스템응용 기술사 · 예상 문제 및 모범 답안</div>
+    <div class="ttl">교착상태(Deadlock)<br>발생 조건 및 처리 방법</div>
+    <div class="pills">
+      <span class="pill">4교시 · 논술형</span>
+      <span class="pill">운영체제 / 자원 관리</span>
+      <span class="pill">키워드: 4대 조건 · RAG · 은행원 알고리즘 · 예방·회피·탐지·복구</span>
+    </div>
+  </div>
+  <div class="score-box">
+    <div class="sc-lbl">배점</div>
+    <div class="sc-n">25</div>
+    <div class="sc-lbl">점</div>
+  </div>
+</div>
+
+<div class="body">
+
+<!-- 문제 -->
+<div class="qbox">
+  <strong>【 문 제 】</strong><br><br>
+  운영체제의 자원 관리에서 발생하는 <strong>교착상태(Deadlock)</strong>에 대하여 다음을 설명하시오.<br><br>
+  &emsp;(1) 교착상태의 개념, 4가지 필요충분 조건 및 자원 할당 그래프(RAG) &nbsp;(7점)<br>
+  &emsp;(2) 교착상태 처리 전략의 분류 체계 &nbsp;(3점)<br>
+  &emsp;(3) 교착상태 예방(Prevention)과 회피(Avoidance) — 은행원 알고리즘 포함 &nbsp;(9점)<br>
+  &emsp;(4) 교착상태 탐지(Detection)와 복구(Recovery) 및 실무 고려사항 &nbsp;(6점)
+</div>
+
+<!-- ─── Ⅰ. 개념 및 4대 조건 ─── -->
+<div class="sec">
+  <div class="sh">Ⅰ. 교착상태의 개념, 4가지 필요충분 조건 및 자원 할당 그래프</div>
+
+  <div class="sh2">1. 교착상태(Deadlock)의 정의</div>
+  <div class="txt i1">
+    <p><span class="kw">교착상태(Deadlock)</span>란 둘 이상의 프로세스 집합이 서로 상대방이 점유한 자원을 기다리며 <span class="kw">어떤 프로세스도 영원히 진행할 수 없는 무한 대기 상태</span>를 의미한다. 1965년 E. W. Dijkstra가 최초 기술하였으며, 운영체제·데이터베이스·분산 시스템에서 공통으로 발생하는 핵심 동시성 문제이다.</p>
+    <p>교착상태는 <span class="kw">기아(Starvation)</span>와 구별해야 한다. 기아는 자원을 얻을 가능성이 있으나 계속 지연되는 상태인 반면, 교착상태는 관련된 모든 프로세스가 <span class="kw">영원히 자원을 얻을 수 없다는 점</span>에서 본질적으로 다르다.</p>
+  </div>
+
+  <div class="sh2">2. 교착상태 발생의 4가지 필요충분 조건 (Coffman, 1971)</div>
+  <div class="txt i1"><p>아래 4가지 조건이 <span class="kw">동시에</span> 성립할 때만 교착상태가 발생한다. 따라서 하나라도 제거하면 교착상태를 예방할 수 있다.</p></div>
+  <div class="cond-grid">
+    <div class="cond-box">
+      <div class="cond-num">①</div>
+      <div class="cond-title">상호 배제 (Mutual Exclusion)</div>
+      <div class="cond-en">한 번에 하나의 프로세스만 자원 사용</div>
+      <div class="cond-desc">자원은 공유 불가능하며, 하나의 프로세스만이 독점적으로 사용 가능. 공유 가능 자원(읽기 전용 파일 등)은 해당 없음</div>
+    </div>
+    <div class="cond-box">
+      <div class="cond-num">②</div>
+      <div class="cond-title">점유와 대기 (Hold and Wait)</div>
+      <div class="cond-en">자원 보유 중 추가 자원 대기</div>
+      <div class="cond-desc">최소 1개의 자원을 보유한 채로 다른 프로세스가 점유 중인 추가 자원을 획득하기 위해 대기하는 상태</div>
+    </div>
+    <div class="cond-box">
+      <div class="cond-num">③</div>
+      <div class="cond-title">비선점 (Non-preemption)</div>
+      <div class="cond-en">자원을 강제로 빼앗을 수 없음</div>
+      <div class="cond-desc">프로세스가 보유한 자원은 해당 프로세스가 자발적으로 반환하기 전까지 OS가 강제로 회수 불가</div>
+    </div>
+    <div class="cond-box">
+      <div class="cond-num">④</div>
+      <div class="cond-title">순환 대기 (Circular Wait)</div>
+      <div class="cond-en">프로세스 간 순환 형태의 대기</div>
+      <div class="cond-desc">{P0→P1→P2→…→Pn→P0} 형태로 각 프로세스가 다음 프로세스가 보유한 자원을 기다리는 순환 구조 형성</div>
+    </div>
+  </div>
+  <div class="fc" style="margin-bottom:12px">【표 1】 교착상태 4가지 필요충분 조건 (Coffman Conditions, 1971)</div>
+
+  <div class="sh2">3. 자원 할당 그래프 (Resource Allocation Graph, RAG)</div>
+  <div class="txt i1">
+    <p><span class="kw">RAG</span>는 프로세스(원)와 자원(사각형)을 노드로, 할당(자원→프로세스)과 요청(프로세스→자원)을 방향 간선으로 표현한 그래프이다. <span class="kw">사이클(Cycle) 존재 = 교착상태 가능성</span>을 의미하며, 자원 인스턴스가 1개인 경우 사이클 = 교착상태가 확정된다.</p>
+  </div>
+  <div class="fig">
+    <svg width="100%" viewBox="0 0 680 240" xmlns="http://www.w3.org/2000/svg" role="img">
+      <title>자원 할당 그래프 — 교착상태 발생 vs 미발생</title>
+      <defs>
+        <marker id="ra" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse">
+          <path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </marker>
+      </defs>
+
+      <!-- ─ 왼쪽: 교착상태 발생 (사이클) ─ -->
+      <text font-size="12" font-weight="700" fill="#A32D2D" x="160" y="18" text-anchor="middle" font-family="'Noto Sans KR',sans-serif">교착상태 발생 (사이클 존재)</text>
+
+      <!-- 프로세스 -->
+      <circle cx="60"  cy="80"  r="24" fill="#1a3a6e" stroke="#0d2347" stroke-width="1"/>
+      <text font-size="12" font-weight="700" fill="#fff" x="60"  y="85"  text-anchor="middle" font-family="'Noto Sans KR',sans-serif">P1</text>
+      <circle cx="260" cy="80"  r="24" fill="#1a3a6e" stroke="#0d2347" stroke-width="1"/>
+      <text font-size="12" font-weight="700" fill="#fff" x="260" y="85"  text-anchor="middle" font-family="'Noto Sans KR',sans-serif">P2</text>
+      <circle cx="160" cy="200" r="24" fill="#1a3a6e" stroke="#0d2347" stroke-width="1"/>
+      <text font-size="12" font-weight="700" fill="#fff" x="160" y="205" text-anchor="middle" font-family="'Noto Sans KR',sans-serif">P3</text>
+
+      <!-- 자원 -->
+      <rect x="130" y="56" width="60" height="48" rx="4" fill="#7a3010" stroke="#4a1a00" stroke-width="1"/>
+      <text font-size="11" font-weight="700" fill="#fff" x="160" y="76"  text-anchor="middle" font-family="'Noto Sans KR',sans-serif">R1</text>
+      <circle cx="152" cy="90" r="5" fill="#fff" opacity=".8"/>
+      <circle cx="168" cy="90" r="5" fill="#fff" opacity=".8"/>
+
+      <rect x="60"  y="136" width="60" height="40" rx="4" fill="#7a3010" stroke="#4a1a00" stroke-width="1"/>
+      <text font-size="11" font-weight="700" fill="#fff" x="90"  y="161" text-anchor="middle" font-family="'Noto Sans KR',sans-serif">R2</text>
+      <circle cx="84" cy="150" r="5" fill="#fff" opacity=".8"/>
+
+      <rect x="200" y="136" width="60" height="40" rx="4" fill="#7a3010" stroke="#4a1a00" stroke-width="1"/>
+      <text font-size="11" font-weight="700" fill="#fff" x="230" y="161" text-anchor="middle" font-family="'Noto Sans KR',sans-serif">R3</text>
+      <circle cx="224" cy="150" r="5" fill="#fff" opacity=".8"/>
+
+      <!-- 간선: 할당(실선), 요청(점선) -->
+      <!-- R1 → P1 (할당) -->
+      <line x1="132" y1="72" x2="83"  y2="72" stroke="#2d6a4f" stroke-width="1.5" marker-end="url(#ra)" fill="none"/>
+      <!-- P1 → R2 (요청) -->
+      <line x1="63"  y1="103" x2="75" y2="134" stroke="#c00" stroke-width="1.5" marker-end="url(#ra)" fill="none" stroke-dasharray="4 2"/>
+      <!-- R2 → P3 (할당) -->
+      <line x1="115" y1="156" x2="137" y2="176" stroke="#2d6a4f" stroke-width="1.5" marker-end="url(#ra)" fill="none"/>
+      <!-- P3 → R1 (요청) -->
+      <line x1="148" y1="178" x2="148" y2="106" stroke="#c00" stroke-width="1.5" marker-end="url(#ra)" fill="none" stroke-dasharray="4 2"/>
+      <!-- R1 → P2 (할당) -->
+      <line x1="190" y1="72" x2="237" y2="72" stroke="#2d6a4f" stroke-width="1.5" marker-end="url(#ra)" fill="none"/>
+      <!-- P2 → R3 (요청) -->
+      <line x1="245" y1="103" x2="240" y2="134" stroke="#c00" stroke-width="1.5" marker-end="url(#ra)" fill="none" stroke-dasharray="4 2"/>
+      <!-- R3 → P3 (할당) -->
+      <line x1="213" y1="165" x2="183" y2="177" stroke="#2d6a4f" stroke-width="1.5" marker-end="url(#ra)" fill="none"/>
+      <!-- P3 → R3 (요청) -->
+      <line x1="175" y1="182" x2="205" y2="170" stroke="#c00" stroke-width="1.5" marker-end="url(#ra)" fill="none" stroke-dasharray="4 2"/>
+
+      <!-- 사이클 표시 -->
+      <text font-size="10" fill="#A32D2D" font-weight="700" x="160" y="130" text-anchor="middle" font-family="'Noto Sans KR',sans-serif">⟳ 사이클 = Deadlock</text>
+
+      <!-- 범례 -->
+      <line x1="40" y1="225" x2="70" y2="225" stroke="#2d6a4f" stroke-width="1.5" marker-end="url(#ra)" fill="none"/>
+      <text font-size="10" fill="#2d6a4f" x="74" y="229" font-family="'Noto Sans KR',sans-serif">할당(Assign)</text>
+      <line x1="140" y1="225" x2="170" y2="225" stroke="#c00" stroke-width="1.5" marker-end="url(#ra)" fill="none" stroke-dasharray="4 2"/>
+      <text font-size="10" fill="#c00" x="174" y="229" font-family="'Noto Sans KR',sans-serif">요청(Request)</text>
+
+      <!-- 구분선 -->
+      <line x1="340" y1="10" x2="340" y2="230" stroke="#ccc" stroke-width="1" stroke-dasharray="5 3"/>
+
+      <!-- ─ 오른쪽: 교착상태 없음 (사이클 없음) ─ -->
+      <text font-size="12" font-weight="700" fill="#2d6a4f" x="520" y="18" text-anchor="middle" font-family="'Noto Sans KR',sans-serif">교착상태 없음 (사이클 없음)</text>
+
+      <!-- 프로세스 -->
+      <circle cx="390" cy="90"  r="24" fill="#2d6a4f" stroke="#1a3d2b" stroke-width="1"/>
+      <text font-size="12" font-weight="700" fill="#fff" x="390" y="95"  text-anchor="middle" font-family="'Noto Sans KR',sans-serif">P1</text>
+      <circle cx="520" cy="150" r="24" fill="#2d6a4f" stroke="#1a3d2b" stroke-width="1"/>
+      <text font-size="12" font-weight="700" fill="#fff" x="520" y="155" text-anchor="middle" font-family="'Noto Sans KR',sans-serif">P2</text>
+      <circle cx="650" cy="90"  r="24" fill="#2d6a4f" stroke="#1a3d2b" stroke-width="1"/>
+      <text font-size="12" font-weight="700" fill="#fff" x="650" y="95"  text-anchor="middle" font-family="'Noto Sans KR',sans-serif">P3</text>
+
+      <!-- 자원 -->
+      <rect x="468" y="60" width="60" height="48" rx="4" fill="#7a3010" stroke="#4a1a00" stroke-width="1"/>
+      <text font-size="11" font-weight="700" fill="#fff" x="498" y="80"  text-anchor="middle" font-family="'Noto Sans KR',sans-serif">R1</text>
+      <circle cx="488" cy="96" r="5" fill="#fff" opacity=".8"/>
+      <circle cx="508" cy="96" r="5" fill="#fff" opacity=".8"/>
+
+      <!-- R1 → P1 (할당) -->
+      <line x1="470" y1="78" x2="413" y2="86" stroke="#2d6a4f" stroke-width="1.5" marker-end="url(#ra)" fill="none"/>
+      <!-- R1 → P3 (할당) -->
+      <line x1="528" y1="78" x2="627" y2="86" stroke="#2d6a4f" stroke-width="1.5" marker-end="url(#ra)" fill="none"/>
+      <!-- P2 → R1 (요청, 인스턴스 남음 → 교착 아님) -->
+      <line x1="520" y1="126" x2="508" y2="108" stroke="#b8860b" stroke-width="1.5" marker-end="url(#ra)" fill="none" stroke-dasharray="4 2"/>
+
+      <text font-size="10" fill="#2d6a4f" font-weight="700" x="520" y="210" text-anchor="middle" font-family="'Noto Sans KR',sans-serif">가용 인스턴스 존재 → 대기 후 실행 가능</text>
+    </svg>
+    <div class="fc">【그림 1】 자원 할당 그래프(RAG) — 좌: 교착상태(사이클), 우: 교착상태 없음(잔여 인스턴스)</div>
+  </div>
+</div>
+
+<hr class="pb">
+
+<!-- ─── Ⅱ. 처리 전략 분류 ─── -->
+<div class="sec">
+  <div class="sh">Ⅱ. 교착상태 처리 전략의 분류 체계</div>
+
+  <div class="strategy-row">
+    <div class="strategy-box s1">
+      <span class="s-title">예방 (Prevention)</span>
+      4대 조건 중 1개 이상<br>사전 제거
+      <div style="font-size:10px;margin-top:4px;opacity:.8">가장 강력·비효율</div>
+    </div>
+    <div class="strategy-arr">→</div>
+    <div class="strategy-box s2">
+      <span class="s-title">회피 (Avoidance)</span>
+      안전 상태(Safe State)<br>유지하며 자원 할당
+      <div style="font-size:10px;margin-top:4px;opacity:.8">은행원 알고리즘</div>
+    </div>
+    <div class="strategy-arr">→</div>
+    <div class="strategy-box s3">
+      <span class="s-title">탐지 (Detection)</span>
+      교착상태 발생 허용<br>후 주기적 탐지
+      <div style="font-size:10px;margin-top:4px;opacity:.8">RAG 사이클 탐지</div>
+    </div>
+    <div class="strategy-arr">→</div>
+    <div class="strategy-box s4">
+      <span class="s-title">복구 (Recovery)</span>
+      탐지 후 프로세스<br>종료·자원 선점
+      <div style="font-size:10px;margin-top:4px;opacity:.8">희생자 선택</div>
+    </div>
+  </div>
+
+  <div class="tw" style="margin-top:10px">
+    <table>
+      <tr><th style="width:14%">전략</th><th style="width:22%">핵심 개념</th><th style="width:24%">장점</th><th style="width:24%">단점</th><th>적합 시스템</th></tr>
+      <tr><td><span class="kc">예방</span></td><td>4대 조건 제거</td><td>교착 원천 차단</td><td>자원 이용률 저하, 비현실적 제약</td><td>안전 최우선 임베디드</td></tr>
+      <tr><td><span class="kc">회피</span></td><td>안전 상태 유지</td><td>예방보다 유연</td><td>최대 요구량 사전 선언 필요</td><td>자원 예측 가능 시스템</td></tr>
+      <tr><td><span class="kc">탐지·복구</span></td><td>발생 허용 후 처리</td><td>자원 효율 최대</td><td>복구 비용·롤백 복잡성</td><td>범용 OS (Linux·Windows)</td></tr>
+      <tr><td><span class="kc">무시</span></td><td>Ostrich Algorithm</td><td>구현 불필요</td><td>시스템 중단 위험</td><td>교착 드문 일반 PC</td></tr>
+    </table>
+  </div>
+  <div class="fc" style="margin-top:-8px;margin-bottom:12px">【표 2】 교착상태 처리 전략 비교</div>
+</div>
+
+<hr class="pb">
+
+<!-- ─── Ⅲ. 예방 및 회피 ─── -->
+<div class="sec">
+  <div class="sh">Ⅲ. 교착상태 예방(Prevention)과 회피(Avoidance)</div>
+
+  <div class="sh2">1. 교착상태 예방 — 4대 조건 각각의 제거</div>
+  <div class="tw">
+    <table>
+      <tr><th style="width:20%">제거 대상 조건</th><th style="width:34%">구현 방법</th><th>문제점</th></tr>
+      <tr>
+        <td><span class="kc">① 상호 배제 제거</span></td>
+        <td>공유 가능 자원(읽기 전용 파일, 프린터 스풀링)으로 전환</td>
+        <td>본질적으로 공유 불가한 자원(뮤텍스 등)은 제거 불가</td>
+      </tr>
+      <tr>
+        <td><span class="kc">② 점유·대기 제거</span></td>
+        <td>① 모든 자원 한꺼번에 요청·할당(All-or-Nothing)<br>② 자원 요청 시 보유 자원 전부 반환 후 재요청</td>
+        <td>자원 이용률 극히 낮음, 기아 가능성, 실용성 부족</td>
+      </tr>
+      <tr>
+        <td><span class="kc">③ 비선점 제거</span></td>
+        <td>추가 자원 획득 불가 시 보유 자원 강제 선점·반환. CPU·레지스터처럼 상태 저장 가능한 자원에 한해 적용</td>
+        <td>프린터·테이프 등 중간 상태 저장 불가 자원에는 적용 불가</td>
+      </tr>
+      <tr>
+        <td><span class="kc">④ 순환 대기 제거</span></td>
+        <td><span class="kw">자원에 전역 순서(Ordering) 부여</span> — 프로세스는 반드시 오름차순으로만 자원 요청 가능</td>
+        <td>자원 순서 설계 복잡, 번호 체계 변경 시 전체 재설계 필요</td>
+      </tr>
+    </table>
+  </div>
+  <div class="fc" style="margin-top:-8px;margin-bottom:12px">【표 3】 교착상태 예방 — 4대 조건 제거 방법</div>
+
+  <div class="sh2">2. 교착상태 회피 — 안전 상태(Safe State)의 개념</div>
+  <div class="txt i1">
+    <p><span class="kw">안전 상태(Safe State)</span>란 모든 프로세스가 요구하는 최대 자원을 순차적으로 할당·완료할 수 있는 <span class="kw">안전 순서열(Safe Sequence)</span>이 존재하는 상태이다. 시스템이 항상 안전 상태를 유지하도록 자원을 할당하면 교착상태가 발생하지 않는다.</p>
+    <div style="text-align:center;margin:8px 0">
+      <span class="formula">안전 상태 ⊂ 교착상태 없음</span>
+      &nbsp;&nbsp;
+      <span class="formula">불안전 상태 ⊃ 교착상태 가능</span>
+    </div>
+  </div>
+
+  <div class="sh2">3. 은행원 알고리즘 (Banker's Algorithm — Dijkstra, 1965)</div>
+  <div class="txt i1">
+    <p>자원 할당 요청 시 <span class="kw">가상으로 자원을 할당한 뒤 안전 상태 여부를 검사</span>하고, 안전 상태일 때만 실제 할당하는 회피 알고리즘이다. 마치 은행이 대출 후 파산 여부를 시뮬레이션하는 방식과 유사하다.</p>
+  </div>
+  <div class="sh3">가. 알고리즘 핵심 데이터 구조</div>
+  <div class="tw">
+    <table>
+      <tr><th style="width:22%">자료구조</th><th style="width:34%">의미</th><th>크기</th></tr>
+      <tr><td><span class="kc">Allocation[i][j]</span></td><td>프로세스 i에 현재 할당된 자원 j의 수</td><td>n × m</td></tr>
+      <tr><td><span class="kc">Max[i][j]</span></td><td>프로세스 i가 요구할 수 있는 자원 j의 최대량</td><td>n × m</td></tr>
+      <tr><td><span class="kc">Need[i][j]</span></td><td>= Max[i][j] − Allocation[i][j] (잔여 필요량)</td><td>n × m</td></tr>
+      <tr><td><span class="kc">Available[j]</span></td><td>현재 시스템에서 가용한 자원 j의 수</td><td>1 × m</td></tr>
+    </table>
+  </div>
+  <div class="fc" style="margin-top:-8px;margin-bottom:10px">【표 4】 은행원 알고리즘 자료구조</div>
+
+  <div class="sh3">나. 은행원 알고리즘 예제 — 5 프로세스 × 3 자원 (A, B, C)</div>
+  <div class="tw">
+    <table>
+      <tr>
+        <th rowspan="2" style="text-align:center;width:10%">프로세스</th>
+        <th colspan="3" style="text-align:center;background:#7a3010">Allocation</th>
+        <th colspan="3" style="text-align:center;background:#4a3080">Max</th>
+        <th colspan="3" style="text-align:center;background:#0C447C">Need (Max−Alloc)</th>
+      </tr>
+      <tr>
+        <th class="tc" style="background:#9a5030">A</th><th class="tc" style="background:#9a5030">B</th><th class="tc" style="background:#9a5030">C</th>
+        <th class="tc" style="background:#6a50a0">A</th><th class="tc" style="background:#6a50a0">B</th><th class="tc" style="background:#6a50a0">C</th>
+        <th class="tc" style="background:#1a5090">A</th><th class="tc" style="background:#1a5090">B</th><th class="tc" style="background:#1a5090">C</th>
+      </tr>
+      <tr><td class="tc kc">P0</td><td class="tc bk-alloc">0</td><td class="tc bk-alloc">1</td><td class="tc bk-alloc">0</td><td class="tc">7</td><td class="tc">5</td><td class="tc">3</td><td class="tc bk-need">7</td><td class="tc bk-need">4</td><td class="tc bk-need">3</td></tr>
+      <tr><td class="tc kc">P1</td><td class="tc bk-alloc">2</td><td class="tc bk-alloc">0</td><td class="tc bk-alloc">0</td><td class="tc">3</td><td class="tc">2</td><td class="tc">2</td><td class="tc bk-need">1</td><td class="tc bk-need">2</td><td class="tc bk-need">2</td></tr>
+      <tr><td class="tc kc">P2</td><td class="tc bk-alloc">3</td><td class="tc bk-alloc">0</td><td class="tc bk-alloc">2</td><td class="tc">9</td><td class="tc">0</td><td class="tc">2</td><td class="tc bk-need">6</td><td class="tc bk-need">0</td><td class="tc bk-need">0</td></tr>
+      <tr><td class="tc kc">P3</td><td class="tc bk-alloc">2</td><td class="tc bk-alloc">1</td><td class="tc bk-alloc">1</td><td class="tc">2</td><td class="tc">2</td><td class="tc">2</td><td class="tc bk-need">0</td><td class="tc bk-need">1</td><td class="tc bk-need">1</td></tr>
+      <tr><td class="tc kc">P4</td><td class="tc bk-alloc">0</td><td class="tc bk-alloc">0</td><td class="tc bk-alloc">2</td><td class="tc">4</td><td class="tc">3</td><td class="tc">3</td><td class="tc bk-need">4</td><td class="tc bk-need">3</td><td class="tc bk-need">1</td></tr>
+      <tr>
+        <td colspan="7" style="text-align:right;font-weight:700;font-size:11.5px;color:#2d6a4f">Available (가용 자원)</td>
+        <td class="tc bk-avail" style="font-weight:700">3</td>
+        <td class="tc bk-avail" style="font-weight:700">3</td>
+        <td class="tc bk-avail" style="font-weight:700">2</td>
+      </tr>
+    </table>
+  </div>
+  <div class="fc" style="margin-top:-8px;margin-bottom:10px">【표 5】 은행원 알고리즘 예제 — 초기 상태 (Available: A=3, B=3, C=2)</div>
+
+  <div class="sh3">다. 안전 순서열 탐색 과정</div>
+  <div class="tw">
+    <table>
+      <tr><th style="width:8%">단계</th><th style="width:12%">선택</th><th style="width:28%">조건 검사 (Need ≤ Available)</th><th style="width:30%">자원 반환 후 Available</th><th>결과</th></tr>
+      <tr><td class="tc">1</td><td class="tc kc">P1</td><td>Need(1,2,2) ≤ (3,3,2) <span class="badge badge-g">✔</span></td><td>(3,3,2) + Alloc(2,0,0) = <strong>(5,3,2)</strong></td><td class="tc bk-safe">완료</td></tr>
+      <tr><td class="tc">2</td><td class="tc kc">P3</td><td>Need(0,1,1) ≤ (5,3,2) <span class="badge badge-g">✔</span></td><td>(5,3,2) + (2,1,1) = <strong>(7,4,3)</strong></td><td class="tc bk-safe">완료</td></tr>
+      <tr><td class="tc">3</td><td class="tc kc">P4</td><td>Need(4,3,1) ≤ (7,4,3) <span class="badge badge-g">✔</span></td><td>(7,4,3) + (0,0,2) = <strong>(7,4,5)</strong></td><td class="tc bk-safe">완료</td></tr>
+      <tr><td class="tc">4</td><td class="tc kc">P0</td><td>Need(7,4,3) ≤ (7,4,5) <span class="badge badge-g">✔</span></td><td>(7,4,5) + (0,1,0) = <strong>(7,5,5)</strong></td><td class="tc bk-safe">완료</td></tr>
+      <tr><td class="tc">5</td><td class="tc kc">P2</td><td>Need(6,0,0) ≤ (7,5,5) <span class="badge badge-g">✔</span></td><td>(7,5,5) + (3,0,2) = <strong>(10,5,7)</strong></td><td class="tc bk-safe">완료</td></tr>
+    </table>
+  </div>
+  <div class="fc" style="margin-top:-8px;margin-bottom:10px">【표 6】 안전 순서열 탐색 — &lt;P1, P3, P4, P0, P2&gt; 존재 → <span style="color:#2d6a4f;font-weight:700">안전 상태 ✔</span></div>
+
+  <div class="sh3">라. 은행원 알고리즘의 한계</div>
+  <div class="txt i2">
+    <p>① <span class="kw">최대 자원 요구량 사전 선언 필요</span> → 동적 환경에서 현실적 적용 어려움</p>
+    <p>② <span class="kw">프로세스·자원 수 고정 가정</span> → 동적 생성·소멸 환경 부적합</p>
+    <p>③ <span class="kw">O(n² × m) 시간 복잡도</span> → 프로세스·자원 수 증가 시 오버헤드</p>
+  </div>
+</div>
+
+<hr class="pb">
+
+<!-- ─── Ⅳ. 탐지·복구 ─── -->
+<div class="sec">
+  <div class="sh">Ⅳ. 교착상태 탐지(Detection)와 복구(Recovery) 및 실무 고려사항</div>
+
+  <div class="sh2">1. 교착상태 탐지 알고리즘</div>
+  <div class="tw">
+    <table>
+      <tr><th style="width:22%">구분</th><th style="width:36%">방법</th><th>시간 복잡도</th></tr>
+      <tr>
+        <td><span class="kc">단일 인스턴스 자원</span></td>
+        <td>자원 할당 그래프(RAG)에서 <span class="kw">사이클 탐지 (DFS)</span>. 사이클 = 교착상태</td>
+        <td>O(V + E)</td>
+      </tr>
+      <tr>
+        <td><span class="kc">복수 인스턴스 자원</span></td>
+        <td>은행원 알고리즘 변형 — <span class="kw">Wait-for Graph</span> 또는 Allocation·Request 행렬로 완료 가능 프로세스 탐색. 완료 불가 프로세스 = 교착상태</td>
+        <td>O(n² × m)</td>
+      </tr>
+    </table>
+  </div>
+  <div class="fc" style="margin-top:-8px;margin-bottom:12px">【표 7】 교착상태 탐지 알고리즘</div>
+
+  <div class="sh2">2. 탐지 주기 설계 트레이드오프</div>
+  <div class="txt i1">
+    <p>탐지 알고리즘을 너무 자주 실행하면 <span class="kw">오버헤드 증가</span>, 너무 드물게 실행하면 <span class="kw">교착 상태로 묶인 시간 증가</span>. 일반적으로 자원 요청이 즉시 승인되지 않는 시점에 트리거하거나, CPU 이용률이 일정 임계값 이하로 떨어질 때 실행하는 전략이 유효하다.</p>
+  </div>
+
+  <div class="sh2">3. 교착상태 복구 방법</div>
+  <div class="tw">
+    <table>
+      <tr><th style="width:20%">방법</th><th style="width:38%">내용</th><th>장단점</th></tr>
+      <tr>
+        <td><span class="kc">프로세스 종료<br>(Process Termination)</span></td>
+        <td>① 교착 관련 프로세스 전부 종료<br>② 사이클 해제될 때까지 한 번에 하나씩 종료</td>
+        <td>① 단순·확실 / 비용 크고 데이터 손실<br>② 점진적·손실 최소 / 종료 후 재탐지 필요</td>
+      </tr>
+      <tr>
+        <td><span class="kc">자원 선점<br>(Resource Preemption)</span></td>
+        <td>희생자(Victim) 선택 → 자원 강제 회수 → 해당 프로세스 롤백(Rollback) → 기아 방지를 위한 선점 횟수 제한</td>
+        <td>자원 효율 우수 / 롤백 구현 복잡, 우선순위 역전 위험</td>
+      </tr>
+    </table>
+  </div>
+  <div class="fc" style="margin-top:-8px;margin-bottom:12px">【표 8】 교착상태 복구 방법 비교</div>
+
+  <div class="sh2">4. 희생자 선택 기준</div>
+  <div class="txt i1">
+    <p>복구 비용 최소화를 위해 아래 기준을 종합적으로 고려하여 희생자(Victim) 프로세스를 선택한다.</p>
+    <p class="i1">① <span class="kw">우선순위가 낮은 프로세스</span> 우선 선택<br>
+    ② 지금까지 <span class="kw">사용한 CPU 시간이 짧은 프로세스</span><br>
+    ③ 보유 자원 수가 많아 <span class="kw">교착 해제 기여도가 높은 프로세스</span><br>
+    ④ 롤백 비용이 낮고 <span class="kw">재시작이 쉬운 프로세스</span><br>
+    ⑤ 동일 프로세스 반복 선점 방지 — <span class="kw">선점 횟수 카운터</span>로 기아 차단</p>
+  </div>
+
+  <div class="sh2">5. 실무 시스템별 교착상태 처리 사례</div>
+  <div class="tw">
+    <table>
+      <tr><th style="width:20%">시스템</th><th style="width:40%">처리 방식</th><th>특이사항</th></tr>
+      <tr><td><span class="kc">Linux·Unix</span></td><td>주로 무시(Ostrich) 또는 제한적 탐지. 커널 뮤텍스에는 lockdep 도구로 런타임 사이클 탐지</td><td>lockdep: 락 획득 순서 추적·사이클 경고</td></tr>
+      <tr><td><span class="kc">DBMS (Oracle 등)</span></td><td>트랜잭션 Wait-for Graph 주기적 탐지 → 희생자 트랜잭션 롤백(자동 복구)</td><td>MVCC로 교착 빈도 자체를 대폭 감소</td></tr>
+      <tr><td><span class="kc">Java JVM</span></td><td>Thread Dump 분석으로 스레드 교착 탐지. 자동 복구 미지원 — 재시작 필요</td><td>jstack·VisualVM 툴로 탐지</td></tr>
+      <tr><td><span class="kc">분산 시스템</span></td><td>글로벌 Wait-for Graph 구성 어려움 → 타임아웃(Timeout) 기반 복구 주로 사용</td><td>Spanner: 타임스탬프 기반 교착 회피</td></tr>
+    </table>
+  </div>
+  <div class="fc" style="margin-top:-8px;margin-bottom:12px">【표 9】 실무 시스템별 교착상태 처리 사례</div>
+</div>
+
+<!-- ─── Ⅴ. 결론 ─── -->
+<div class="sec">
+  <div class="sh">Ⅴ. 결론</div>
+  <div class="txt">
+    <p>교착상태는 <span class="kw">상호 배제·점유 대기·비선점·순환 대기</span> 4가지 조건이 동시에 충족될 때 발생하며, 이를 처리하는 방법은 예방·회피·탐지·복구의 네 전략으로 분류된다. 실무에서는 단일 전략보다 <span class="kw">워크로드 특성에 맞는 복합 전략</span>이 적합하다. DBMS는 탐지·복구, RTOS는 예방 중심, 범용 OS는 무시에 가까운 접근을 택한다. 분산 환경에서는 글로벌 상태 수집의 어려움으로 타임아웃 기반 복구가 현실적 대안으로 활용된다.</p>
+  </div>
+</div>
+
+<div class="note">
+  <div class="nt">★ 기술사 핵심 코멘트</div>
+  <div class="nb">
+    교착상태의 본질은 <strong>자원의 순환 의존(Circular Dependency)에 의한 무한 대기</strong>이며, 시스템 감리 시 다음을 중점 검토해야 한다.<br>
+    ① <strong>자원 할당 정책 적정성:</strong> 복수 자원 동시 획득 로직에서 자원 요청 순서의 전역 일관성(Ordering) 준수 여부 확인 — 순환 대기 예방의 핵심<br>
+    ② <strong>DBMS 트랜잭션 격리:</strong> 교착 탐지 주기·희생자 롤백 정책 설계 적정성, MVCC 적용으로 교착 빈도 최소화 여부<br>
+    ③<strong> 분산 시스템 타임아웃 설계:</strong> 타임아웃 값이 지나치게 짧으면 정상 지연을 교착으로 오인, 지나치게 길면 복구 지연 — 워크로드 기반 튜닝 필요<br>
+    ④ <strong>멀티스레드 애플리케이션:</strong> 락 획득 순서 코딩 표준 수립·정적 분석 도구(lockdep, ThreadSanitizer) 적용 여부 감리
+  </div>
+</div>
+
+</div><!-- /body -->
+
+<div class="ftr">
+  <span>컴퓨터시스템응용 기술사 · 모범 답안</span>
+  <span>Deadlock — 4대 조건 · 예방·회피·탐지·복구 · 은행원 알고리즘</span>
+  <span>총 5개 항목 · 표 9개 · 그림 1개 · RAG 다이어그램 포함</span>
+</div>
+
+</div><!-- /doc -->
+</body>
+</html>

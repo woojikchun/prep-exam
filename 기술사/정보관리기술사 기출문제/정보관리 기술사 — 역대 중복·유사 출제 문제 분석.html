@@ -1,0 +1,1450 @@
+<!DOCTYPE html>
+<!-- saved from url=(0174)file:///C:/Users/USER/Downloads/%EC%A0%95%EB%B3%B4%EA%B4%80%EB%A6%AC%EA%B8%B0%EC%88%A0%EC%82%AC_%EC%A4%91%EB%B3%B5%EC%B6%9C%EC%A0%9C%EB%AC%B8%EC%A0%9C_%EB%B6%84%EC%84%9D.html -->
+<html lang="ko"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>정보관리 기술사 — 역대 중복·유사 출제 문제 분석</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Noto Sans KR','Apple SD Gothic Neo','Malgun Gothic',sans-serif;font-size:14px;color:#1a1a18;background:#f0f4f8;padding:1.5rem}
+.wrap{max-width:960px;margin:0 auto;background:#fff;border-radius:14px;border:1px solid rgba(0,0,0,.1);padding:1.75rem 2.25rem 3rem}
+
+/* 헤더 */
+.top-bar{background:linear-gradient(135deg,#0f2b4e 0%,#185FA5 100%);border-radius:12px;padding:1rem 1.5rem;margin-bottom:1.25rem;color:#fff;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:.5rem}
+.top-bar h1{font-size:17px;font-weight:600;line-height:1.4}
+.top-bar p{font-size:12px;opacity:.8;margin-top:.2rem}
+.badge-w{font-size:11px;padding:4px 10px;border-radius:8px;background:rgba(255,255,255,.2);color:#fff;font-weight:600;border:1px solid rgba(255,255,255,.3);white-space:nowrap}
+
+/* 통계 */
+.stat-row{display:grid;grid-template-columns:repeat(5,1fr);gap:.5rem;margin-bottom:1.1rem}
+.stat{border-radius:10px;padding:.65rem .75rem;text-align:center;border:1px solid}
+.stat .n{font-size:22px;font-weight:700;line-height:1.15}
+.stat .l{font-size:10px;margin-top:2px;font-weight:500}
+.s-red{background:#FCEBEB;border-color:#e8a8a8;color:#791F1F}.s-red .n{color:#A32D2D}
+.s-ora{background:#FFF0E0;border-color:#f0c070;color:#633806}.s-ora .n{color:#854F0B}
+.s-grn{background:#EAF3DE;border-color:#aad07a;color:#27500A}.s-grn .n{color:#3B6D11}
+.s-blu{background:#E6F1FB;border-color:#90bce8;color:#0C447C}.s-blu .n{color:#185FA5}
+.s-pur{background:#EEEDFE;border-color:#b0aaee;color:#3C3489}.s-pur .n{color:#534AB7}
+
+/* 필터 탭 */
+.filter-wrap{background:#f5f4ef;border-radius:10px;padding:.6rem .75rem;margin-bottom:1.1rem}
+.filter-label{font-size:10px;color:#73726c;font-weight:600;letter-spacing:.05em;margin-bottom:.4rem}
+.filter-row{display:flex;gap:5px;flex-wrap:wrap}
+.fb{font-size:11px;padding:4px 11px;border-radius:20px;border:1px solid #d3d1c7;background:#fff;cursor:pointer;color:#5f5e5a;transition:all .12s;font-weight:500}
+.fb:hover{background:#e6f1fb;border-color:#90bce8;color:#0C447C}
+.fb.on{border-color:#185FA5;background:#185FA5;color:#fff;font-weight:600}
+
+/* 카드 */
+.topic-card{border:1px solid #e0ddd5;border-radius:12px;margin-bottom:.65rem;overflow:hidden;transition:box-shadow .15s}
+.topic-card:hover{box-shadow:0 2px 12px rgba(0,0,0,.08)}
+.tc-head{padding:.75rem 1rem;cursor:pointer;display:flex;align-items:flex-start;gap:.65rem;background:#fff}
+.tc-head:hover{background:#fafaf8}
+.tc-left{display:flex;flex-direction:column;gap:4px;flex-shrink:0}
+.freq-badge{font-size:11px;padding:2px 9px;border-radius:20px;font-weight:700;white-space:nowrap;text-align:center}
+.f6{background:#FCEBEB;color:#791F1F;border:1px solid #e8a8a8}
+.f5{background:#FFF0E0;color:#633806;border:1px solid #f0c070}
+.f4{background:#EAF3DE;color:#27500A;border:1px solid #aad07a}
+.f3{background:#E6F1FB;color:#0C447C;border:1px solid #90bce8}
+.cat-badge{font-size:10px;padding:1px 7px;border-radius:20px;background:#f5f4ef;border:1px solid #d3d1c7;color:#73726c;text-align:center}
+.tc-main{flex:1;min-width:0}
+.tc-title{font-size:13px;font-weight:600;line-height:1.45;color:#1a1a18;margin-bottom:.2rem}
+.tc-sub{font-size:11px;color:#73726c;line-height:1.4}
+.tc-arrow{font-size:12px;color:#9e9c94;flex-shrink:0;padding-top:2px;transition:transform .15s}
+
+/* 바디 */
+.tc-body{display:none;padding:.85rem 1rem 1.1rem;border-top:1px solid #e0ddd5;background:#fafaf8}
+.tc-body.open{display:block}
+.section-tag{font-size:10px;font-weight:700;color:#73726c;letter-spacing:.06em;text-transform:uppercase;margin:.6rem 0 .3rem}
+
+/* 연도 칩 */
+.year-chips{display:flex;flex-wrap:wrap;gap:4px;margin-bottom:.6rem}
+.yc{font-size:10px;padding:2px 8px;border-radius:20px;background:#f0eee8;border:1px solid #d3d1c7;color:#73726c}
+.yc.r{background:#E6F1FB;border-color:#378ADD;color:#0C447C;font-weight:700}
+
+/* 변형 문항 */
+.variants-box{background:#fff;border:1px solid #e0ddd5;border-radius:8px;padding:.6rem .85rem;margin-bottom:.65rem}
+.v-item{font-size:12px;line-height:1.75;color:#3a3936;padding:.15rem 0;border-bottom:1px dashed #e8e6df;display:flex;gap:.5rem}
+.v-item:last-child{border-bottom:none}
+.v-num{font-size:10px;font-weight:700;color:#9e9c94;flex-shrink:0;padding-top:2px}
+
+/* 전략 팁 */
+.tip-box{background:linear-gradient(135deg,#E6F1FB,#edf6ff);border:1px solid #90bce8;border-radius:8px;padding:.6rem .85rem;font-size:12px;line-height:1.7;color:#1a1a18}
+.tip-box .tip-head{font-size:10px;font-weight:700;color:#185FA5;letter-spacing:.05em;margin-bottom:.2rem}
+
+/* 키워드 */
+.kw-row{display:flex;flex-wrap:wrap;gap:4px;margin-bottom:.6rem}
+.kw{font-size:10px;padding:2px 8px;border-radius:6px;font-weight:500}
+.kw-b{background:#E6F1FB;color:#0C447C}
+.kw-g{background:#EAF3DE;color:#27500A}
+.kw-r{background:#FCEBEB;color:#791F1F}
+.kw-p{background:#EEEDFE;color:#3C3489}
+.kw-a{background:#FFF0E0;color:#633806}
+
+/* 섹션 구분선 */
+.sec-div{font-size:11px;font-weight:700;color:#73726c;letter-spacing:.06em;text-transform:uppercase;margin:1rem 0 .4rem;padding:.3rem .6rem;background:#f5f4ef;border-radius:6px;display:flex;align-items:center;gap:.5rem}
+.sec-div::before{content:'';display:block;width:3px;height:14px;border-radius:2px;background:#185FA5}
+
+.empty{text-align:center;padding:2.5rem;font-size:13px;color:#73726c}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<div class="top-bar">
+  <div>
+    <h1>정보관리 기술사 — 역대 중복·유사 출제 문제 분석</h1>
+    <p>출제 빈도 기반 핵심 토픽 정리 · 파란 연도칩 = 최근 5년 이내 출제</p>
+  </div>
+  <span class="badge-w">기술사 시험 대비</span>
+</div>
+
+<div class="stat-row">
+  <div class="stat s-red"><div class="n" id="s6">20</div><div class="l">6회+ 출제</div></div>
+  <div class="stat s-ora"><div class="n" id="s5">9</div><div class="l">5회 출제</div></div>
+  <div class="stat s-grn"><div class="n" id="s4">2</div><div class="l">4회 출제</div></div>
+  <div class="stat s-blu"><div class="n" id="s3">0</div><div class="l">3회 출제</div></div>
+  <div class="stat s-pur"><div class="n" id="stot">31</div><div class="l">총 토픽 수</div></div>
+</div>
+
+<div class="filter-wrap">
+  <div class="filter-label">▸ 도메인 필터</div>
+  <div class="filter-row" id="frow">
+    <button class="fb on" data-f="all">전체</button>
+    <button class="fb" data-f="db">데이터베이스</button>
+    <button class="fb" data-f="sw">소프트웨어공학</button>
+    <button class="fb" data-f="mis">경영정보·전략</button>
+    <button class="fb" data-f="net">네트워크·인터넷</button>
+    <button class="fb" data-f="sec">정보보안</button>
+    <button class="fb" data-f="ai">AI·빅데이터</button>
+    <button class="fb" data-f="cloud">클라우드·신기술</button>
+    <button class="fb" data-f="pm">프로젝트관리</button>
+    <button class="fb" data-f="law">법규·제도</button>
+  </div>
+</div>
+
+<div id="list"><div class="sec-div">데이터베이스</div><div class="topic-card">
+        <div class="tc-head" onclick="tog(&#39;cdb0&#39;)">
+          <div class="tc-left">
+            <span class="freq-badge f6">8회 출제</span>
+            <span class="cat-badge">데이터베이스</span>
+          </div>
+          <div class="tc-main">
+            <div class="tc-title">정규화 이론 — 함수 종속·1NF~5NF·이상 현상·반정규화</div>
+            <div class="tc-sub">DB 설계 핵심 이론</div>
+          </div>
+          <span class="tc-arrow" id="arr-cdb0">▼</span>
+        </div>
+        <div class="tc-body" id="body-cdb0">
+          <div class="section-tag">출제 연도 <span style="font-weight:400;font-style:italic;color:#aaa">(파란색 = 최근 5년)</span></div>
+          <div class="year-chips"><span class="yc">94회</span><span class="yc">97회</span><span class="yc">100회</span><span class="yc">103회</span><span class="yc">108회</span><span class="yc">111회</span><span class="yc">115회</span><span class="yc r">120회</span><span class="yc r">123회</span><span class="yc r">126회</span></div>
+          <div class="section-tag">키워드</div>
+          <div class="kw-row" style="margin-bottom:.65rem"><span class="kw kw-b">함수 종속</span><span class="kw kw-b">부분 종속</span><span class="kw kw-b">이행 종속</span><span class="kw kw-r">BCNF</span><span class="kw kw-g">다치 종속</span><span class="kw kw-a">반정규화</span><span class="kw kw-a">성능 트레이드오프</span></div>
+          <div class="section-tag">유사·변형 출제 문항</div>
+          <div class="variants-box"><div class="v-item"><span class="v-num">Q1</span><span>함수 종속(FD) 정의와 1NF부터 BCNF까지 각 정규형의 조건을 예시 릴레이션과 함께 설명하시오</span></div><div class="v-item"><span class="v-num">Q2</span><span>이상 현상(삽입·삭제·갱신)의 발생 원인을 정규화 이론으로 설명하고 해결 과정을 서술하시오</span></div><div class="v-item"><span class="v-num">Q3</span><span>반정규화(Denormalization)의 필요성과 기법(테이블 분할·합병·중복 컬럼 추가)을 논하시오</span></div><div class="v-item"><span class="v-num">Q4</span><span>4NF·5NF에서 제거하는 다치 종속·조인 종속의 개념을 예시와 함께 설명하시오</span></div><div class="v-item"><span class="v-num">Q5</span><span>함수 종속 추론 규칙(Armstrong 공리)과 정준 커버(Canonical Cover) 도출 과정을 서술하시오</span></div></div>
+          <div class="tip-box">
+            <div class="tip-head">💡 수험 전략</div>
+            정보관리 기술사 DB 파트 최빈출 1위. 릴레이션을 주고 정규형 판별 + 분해 과정을 직접 수행하는 유형이 주를 이룸. BCNF vs. 3NF 차이("모든 결정자가 후보키")를 명확히 정의하고 반정규화 trade-off를 반드시 언급.
+          </div>
+        </div>
+      </div><div class="topic-card">
+        <div class="tc-head" onclick="tog(&#39;cdb1&#39;)">
+          <div class="tc-left">
+            <span class="freq-badge f6">7회 출제</span>
+            <span class="cat-badge">데이터베이스</span>
+          </div>
+          <div class="tc-main">
+            <div class="tc-title">트랜잭션 관리 — ACID·격리수준·동시성 제어·회복</div>
+            <div class="tc-sub">DBMS 핵심 메커니즘</div>
+          </div>
+          <span class="tc-arrow" id="arr-cdb1">▼</span>
+        </div>
+        <div class="tc-body" id="body-cdb1">
+          <div class="section-tag">출제 연도 <span style="font-weight:400;font-style:italic;color:#aaa">(파란색 = 최근 5년)</span></div>
+          <div class="year-chips"><span class="yc">96회</span><span class="yc">100회</span><span class="yc">104회</span><span class="yc">108회</span><span class="yc">113회</span><span class="yc">118회</span><span class="yc r">121회</span><span class="yc r">125회</span></div>
+          <div class="section-tag">키워드</div>
+          <div class="kw-row" style="margin-bottom:.65rem"><span class="kw kw-b">ACID</span><span class="kw kw-b">격리수준</span><span class="kw kw-r">2PL</span><span class="kw kw-g">MVCC</span><span class="kw kw-p">Undo·Redo</span><span class="kw kw-a">체크포인트</span><span class="kw kw-a">WAL</span></div>
+          <div class="section-tag">유사·변형 출제 문항</div>
+          <div class="variants-box"><div class="v-item"><span class="v-num">Q1</span><span>ACID 속성을 설명하고 각 속성을 보장하는 DBMS 메커니즘(Lock·Undo Log·Redo Log)을 서술하시오</span></div><div class="v-item"><span class="v-num">Q2</span><span>트랜잭션 격리 수준 4단계와 각 단계에서 발생 가능한 이상 현상(Dirty·Non-Repeatable·Phantom Read)을 비교하시오</span></div><div class="v-item"><span class="v-num">Q3</span><span>2단계 잠금(2PL) 프로토콜의 동작 원리와 교착상태 가능성을 설명하시오</span></div><div class="v-item"><span class="v-num">Q4</span><span>MVCC(다중 버전 동시성 제어)의 스냅샷 격리(SI) 원리와 낙관적 동시성 제어를 비교하시오</span></div><div class="v-item"><span class="v-num">Q5</span><span>DBMS 회복 기법 — Undo·Redo·Check-point·WAL 프로토콜을 장애 유형별로 설명하시오</span></div></div>
+          <div class="tip-box">
+            <div class="tip-head">💡 수험 전략</div>
+            격리수준 4×3 이상현상 O/X 표는 반드시 암기. 회복 기법은 "장애 유형(시스템·매체·트랜잭션)별 대응"으로 구조화. WAL(Write-Ahead Logging) 원리를 트랜잭션 원자성·지속성과 연결.
+          </div>
+        </div>
+      </div><div class="topic-card">
+        <div class="tc-head" onclick="tog(&#39;cdb2&#39;)">
+          <div class="tc-left">
+            <span class="freq-badge f6">6회 출제</span>
+            <span class="cat-badge">데이터베이스</span>
+          </div>
+          <div class="tc-main">
+            <div class="tc-title">데이터 모델링 — ERD·관계형 변환·UML 클래스 다이어그램</div>
+            <div class="tc-sub">개념·논리 설계 방법론</div>
+          </div>
+          <span class="tc-arrow" id="arr-cdb2">▼</span>
+        </div>
+        <div class="tc-body" id="body-cdb2">
+          <div class="section-tag">출제 연도 <span style="font-weight:400;font-style:italic;color:#aaa">(파란색 = 최근 5년)</span></div>
+          <div class="year-chips"><span class="yc">97회</span><span class="yc">102회</span><span class="yc">107회</span><span class="yc">112회</span><span class="yc r">117회</span><span class="yc r">122회</span></div>
+          <div class="section-tag">키워드</div>
+          <div class="kw-row" style="margin-bottom:.65rem"><span class="kw kw-b">개체-관계 모델</span><span class="kw kw-b">카디널리티</span><span class="kw kw-r">참조 무결성</span><span class="kw kw-g">식별/비식별 관계</span><span class="kw kw-p">수퍼타입·서브타입</span><span class="kw kw-a">정규화 연계</span></div>
+          <div class="section-tag">유사·변형 출제 문항</div>
+          <div class="variants-box"><div class="v-item"><span class="v-num">Q1</span><span>E-R 다이어그램의 구성 요소와 카디널리티(1:1·1:N·M:N) 관계를 예시와 함께 설명하시오</span></div><div class="v-item"><span class="v-num">Q2</span><span>수퍼타입·서브타입 모델링과 관계형 테이블 변환(Single·Plus·Separate) 방식을 비교하시오</span></div><div class="v-item"><span class="v-num">Q3</span><span>식별 관계와 비식별 관계의 차이와 설계 선택 기준을 서술하시오</span></div><div class="v-item"><span class="v-num">Q4</span><span>UML 클래스 다이어그램에서 연관·의존·집합·합성 관계를 ERD와 비교하여 설명하시오</span></div></div>
+          <div class="tip-box">
+            <div class="tip-head">💡 수험 전략</div>
+            설계 방법론(개념→논리→물리)의 산출물 흐름을 항상 먼저 제시. 수퍼/서브타입 변환 3가지를 그림+장단점 표로.
+          </div>
+        </div>
+      </div><div class="topic-card">
+        <div class="tc-head" onclick="tog(&#39;cdb3&#39;)">
+          <div class="tc-left">
+            <span class="freq-badge f6">6회 출제</span>
+            <span class="cat-badge">데이터베이스</span>
+          </div>
+          <div class="tc-main">
+            <div class="tc-title">인덱스 — B+ Tree·해시·클러스터드·파티셔닝·쿼리 최적화</div>
+            <div class="tc-sub">성능 튜닝 핵심</div>
+          </div>
+          <span class="tc-arrow" id="arr-cdb3">▼</span>
+        </div>
+        <div class="tc-body" id="body-cdb3">
+          <div class="section-tag">출제 연도 <span style="font-weight:400;font-style:italic;color:#aaa">(파란색 = 최근 5년)</span></div>
+          <div class="year-chips"><span class="yc">98회</span><span class="yc">103회</span><span class="yc">108회</span><span class="yc">114회</span><span class="yc r">119회</span><span class="yc r">124회</span></div>
+          <div class="section-tag">키워드</div>
+          <div class="kw-row" style="margin-bottom:.65rem"><span class="kw kw-b">B+ Tree</span><span class="kw kw-g">클러스터드</span><span class="kw kw-r">실행 계획</span><span class="kw kw-a">선택도</span><span class="kw kw-p">파티셔닝</span><span class="kw kw-b">옵티마이저</span></div>
+          <div class="section-tag">유사·변형 출제 문항</div>
+          <div class="variants-box"><div class="v-item"><span class="v-num">Q1</span><span>B+ Tree 인덱스의 구조와 리프 노드 체인을 이용한 범위 검색 메커니즘을 설명하시오</span></div><div class="v-item"><span class="v-num">Q2</span><span>클러스터드 인덱스와 논클러스터드 인덱스의 차이, 복합 인덱스 컬럼 순서 결정 기준을 서술하시오</span></div><div class="v-item"><span class="v-num">Q3</span><span>SQL 실행 계획(Execution Plan)에서 옵티마이저의 비용 기반 선택과 인덱스 스캔·풀 스캔 판단 기준을 설명하시오</span></div><div class="v-item"><span class="v-num">Q4</span><span>테이블 파티셔닝(Range·Hash·List·Composite) 방식과 파티션 프루닝 효과를 논하시오</span></div></div>
+          <div class="tip-box">
+            <div class="tip-head">💡 수험 전략</div>
+            쿼리 최적화는 "힌트(Hint), 통계 정보, 선택도(Selectivity)" 키워드 포함. 파티셔닝은 VLDB·데이터 웨어하우스 맥락과 연결.
+          </div>
+        </div>
+      </div><div class="topic-card">
+        <div class="tc-head" onclick="tog(&#39;cdb4&#39;)">
+          <div class="tc-left">
+            <span class="freq-badge f5">5회 출제</span>
+            <span class="cat-badge">데이터베이스</span>
+          </div>
+          <div class="tc-main">
+            <div class="tc-title">데이터 웨어하우스 — DW·OLAP·데이터 마트·ETL</div>
+            <div class="tc-sub">분석 DB 아키텍처</div>
+          </div>
+          <span class="tc-arrow" id="arr-cdb4">▼</span>
+        </div>
+        <div class="tc-body" id="body-cdb4">
+          <div class="section-tag">출제 연도 <span style="font-weight:400;font-style:italic;color:#aaa">(파란색 = 최근 5년)</span></div>
+          <div class="year-chips"><span class="yc">99회</span><span class="yc">105회</span><span class="yc">110회</span><span class="yc r">116회</span><span class="yc r">122회</span></div>
+          <div class="section-tag">키워드</div>
+          <div class="kw-row" style="margin-bottom:.65rem"><span class="kw kw-b">스타 스키마</span><span class="kw kw-g">눈송이 스키마</span><span class="kw kw-r">OLAP</span><span class="kw kw-a">MOLAP·ROLAP</span><span class="kw kw-p">ETL</span><span class="kw kw-b">데이터 레이크</span></div>
+          <div class="section-tag">유사·변형 출제 문항</div>
+          <div class="variants-box"><div class="v-item"><span class="v-num">Q1</span><span>OLTP와 OLAP의 차이를 트랜잭션·조회 패턴·DB 설계 관점에서 비교하시오</span></div><div class="v-item"><span class="v-num">Q2</span><span>스타 스키마(Star Schema)와 눈송이 스키마(Snowflake Schema)를 비교하고 팩트·차원 테이블을 설명하시오</span></div><div class="v-item"><span class="v-num">Q3</span><span>ETL(Extract-Transform-Load) 프로세스의 각 단계와 데이터 품질 이슈를 서술하시오</span></div><div class="v-item"><span class="v-num">Q4</span><span>데이터 레이크(Data Lake)와 데이터 웨어하우스의 차이와 레이크하우스(Lakehouse) 아키텍처를 논하시오</span></div></div>
+          <div class="tip-box">
+            <div class="tip-head">💡 수험 전략</div>
+            스타 스키마 그림(Fact 중심, Dimension 방사형)은 필수. 최근 데이터 레이크하우스(Delta Lake, Apache Iceberg) 연계 문항 출제.
+          </div>
+        </div>
+      </div><div class="topic-card">
+        <div class="tc-head" onclick="tog(&#39;cdb5&#39;)">
+          <div class="tc-left">
+            <span class="freq-badge f5">5회 출제</span>
+            <span class="cat-badge">데이터베이스</span>
+          </div>
+          <div class="tc-main">
+            <div class="tc-title">NoSQL — 분산 DB·CAP 정리·BASE·MongoDB·Cassandra</div>
+            <div class="tc-sub">분산 데이터 저장</div>
+          </div>
+          <span class="tc-arrow" id="arr-cdb5">▼</span>
+        </div>
+        <div class="tc-body" id="body-cdb5">
+          <div class="section-tag">출제 연도 <span style="font-weight:400;font-style:italic;color:#aaa">(파란색 = 최근 5년)</span></div>
+          <div class="year-chips"><span class="yc">107회</span><span class="yc">111회</span><span class="yc">115회</span><span class="yc r">119회</span><span class="yc r">124회</span></div>
+          <div class="section-tag">키워드</div>
+          <div class="kw-row" style="margin-bottom:.65rem"><span class="kw kw-r">CAP 정리</span><span class="kw kw-r">BASE</span><span class="kw kw-b">키-값</span><span class="kw kw-g">문서형</span><span class="kw kw-p">컬럼 패밀리</span><span class="kw kw-a">그래프 DB</span><span class="kw kw-a">Eventually Consistent</span></div>
+          <div class="section-tag">유사·변형 출제 문항</div>
+          <div class="variants-box"><div class="v-item"><span class="v-num">Q1</span><span>CAP 정리(일관성·가용성·분단 허용성)를 설명하고 CP·AP·CA 시스템의 대표 예시를 드시오</span></div><div class="v-item"><span class="v-num">Q2</span><span>ACID와 BASE의 차이를 비교하고 분산 환경에서 BASE가 선택되는 이유를 논하시오</span></div><div class="v-item"><span class="v-num">Q3</span><span>NoSQL DB 4가지 유형(키-값·문서·컬럼 패밀리·그래프)의 구조와 적합 워크로드를 비교하시오</span></div><div class="v-item"><span class="v-num">Q4</span><span>샤딩(Sharding)과 복제(Replication) 전략, 일관성 해싱(Consistent Hashing)을 설명하시오</span></div></div>
+          <div class="tip-box">
+            <div class="tip-head">💡 수험 전략</div>
+            CAP에서 CP: HBase·Zookeeper, AP: Cassandra·CouchDB, CA: 전통 RDBMS 분류 예시. BASE = Basically Available, Soft state, Eventually consistent.
+          </div>
+        </div>
+      </div><div class="sec-div">소프트웨어공학</div><div class="topic-card">
+        <div class="tc-head" onclick="tog(&#39;csw0&#39;)">
+          <div class="tc-left">
+            <span class="freq-badge f6">8회 출제</span>
+            <span class="cat-badge">소프트웨어공학</span>
+          </div>
+          <div class="tc-main">
+            <div class="tc-title">소프트웨어 개발 방법론 — SDLC 모델·Agile·DevOps 비교</div>
+            <div class="tc-sub">개발 프로세스 패러다임</div>
+          </div>
+          <span class="tc-arrow" id="arr-csw0">▼</span>
+        </div>
+        <div class="tc-body" id="body-csw0">
+          <div class="section-tag">출제 연도 <span style="font-weight:400;font-style:italic;color:#aaa">(파란색 = 최근 5년)</span></div>
+          <div class="year-chips"><span class="yc">95회</span><span class="yc">99회</span><span class="yc">103회</span><span class="yc">107회</span><span class="yc">111회</span><span class="yc">115회</span><span class="yc r">119회</span><span class="yc r">123회</span></div>
+          <div class="section-tag">키워드</div>
+          <div class="kw-row" style="margin-bottom:.65rem"><span class="kw kw-b">폭포수</span><span class="kw kw-g">나선형</span><span class="kw kw-r">Scrum</span><span class="kw kw-r">XP</span><span class="kw kw-a">Kanban</span><span class="kw kw-p">CI/CD</span><span class="kw kw-r">DevSecOps</span></div>
+          <div class="section-tag">유사·변형 출제 문항</div>
+          <div class="variants-box"><div class="v-item"><span class="v-num">Q1</span><span>폭포수·프로토타이핑·나선형·RAD 모델을 비교하고 각 모델의 적합 프로젝트 유형을 설명하시오</span></div><div class="v-item"><span class="v-num">Q2</span><span>애자일 선언문의 4가지 가치와 12원칙을 서술하고 전통 방법론과의 차이를 논하시오</span></div><div class="v-item"><span class="v-num">Q3</span><span>Scrum의 Sprint·제품 백로그·번다운 차트·회고를 설명하고 XP의 TDD·페어 프로그래밍과 비교하시오</span></div><div class="v-item"><span class="v-num">Q4</span><span>DevOps 파이프라인(소스관리→빌드→테스트→배포→모니터링)의 각 단계와 핵심 도구를 서술하시오</span></div><div class="v-item"><span class="v-num">Q5</span><span>DevSecOps의 개념과 SAST·DAST·SCA를 파이프라인 단계별 보안 통합 방안으로 설명하시오</span></div></div>
+          <div class="tip-box">
+            <div class="tip-head">💡 수험 전략</div>
+            나선형 4단계 그림 필수(계획→위험분석→개발→평가). 최근 DevSecOps·Supply Chain 보안 연계 문항 급증. Agile+DevOps 통합 질문에는 Value Stream Mapping 개념 추가.
+          </div>
+        </div>
+      </div><div class="topic-card">
+        <div class="tc-head" onclick="tog(&#39;csw1&#39;)">
+          <div class="tc-left">
+            <span class="freq-badge f6">7회 출제</span>
+            <span class="cat-badge">소프트웨어공학</span>
+          </div>
+          <div class="tc-main">
+            <div class="tc-title">소프트웨어 아키텍처 — 마이크로서비스·이벤트 기반·DDD</div>
+            <div class="tc-sub">아키텍처 패턴 및 설계</div>
+          </div>
+          <span class="tc-arrow" id="arr-csw1">▼</span>
+        </div>
+        <div class="tc-body" id="body-csw1">
+          <div class="section-tag">출제 연도 <span style="font-weight:400;font-style:italic;color:#aaa">(파란색 = 최근 5년)</span></div>
+          <div class="year-chips"><span class="yc">104회</span><span class="yc">108회</span><span class="yc">112회</span><span class="yc">116회</span><span class="yc r">119회</span><span class="yc r">122회</span><span class="yc r">125회</span></div>
+          <div class="section-tag">키워드</div>
+          <div class="kw-row" style="margin-bottom:.65rem"><span class="kw kw-b">MSA</span><span class="kw kw-b">Bounded Context</span><span class="kw kw-g">CQRS</span><span class="kw kw-g">Event Sourcing</span><span class="kw kw-r">Saga 패턴</span><span class="kw kw-p">API Gateway</span><span class="kw kw-a">서비스 메시</span></div>
+          <div class="section-tag">유사·변형 출제 문항</div>
+          <div class="variants-box"><div class="v-item"><span class="v-num">Q1</span><span>모놀리식 아키텍처와 MSA(마이크로서비스)를 비교하고 MSA 전환 시 고려 사항을 서술하시오</span></div><div class="v-item"><span class="v-num">Q2</span><span>DDD(도메인 주도 설계)의 Bounded Context·Aggregate·Domain Event 개념을 설명하시오</span></div><div class="v-item"><span class="v-num">Q3</span><span>CQRS 패턴과 Event Sourcing을 결합한 아키텍처의 장단점과 적용 사례를 논하시오</span></div><div class="v-item"><span class="v-num">Q4</span><span>Saga 패턴(Choreography vs. Orchestration)으로 분산 트랜잭션을 관리하는 방법을 서술하시오</span></div><div class="v-item"><span class="v-num">Q5</span><span>API Gateway의 역할(인증·라우팅·로드밸런싱·서킷 브레이커)과 BFF 패턴을 설명하시오</span></div></div>
+          <div class="tip-box">
+            <div class="tip-head">💡 수험 전략</div>
+            최근 시험 급부상. MSA 문항은 항상 "장점-단점-전환 시 고려 사항" 3단 구조. Event Sourcing은 이벤트 로그가 단일 진실 소스임을 강조.
+          </div>
+        </div>
+      </div><div class="topic-card">
+        <div class="tc-head" onclick="tog(&#39;csw2&#39;)">
+          <div class="tc-left">
+            <span class="freq-badge f6">6회 출제</span>
+            <span class="cat-badge">소프트웨어공학</span>
+          </div>
+          <div class="tc-main">
+            <div class="tc-title">소프트웨어 테스트 — 테스트 기법·커버리지·품질 지표</div>
+            <div class="tc-sub">품질 보증 방법론</div>
+          </div>
+          <span class="tc-arrow" id="arr-csw2">▼</span>
+        </div>
+        <div class="tc-body" id="body-csw2">
+          <div class="section-tag">출제 연도 <span style="font-weight:400;font-style:italic;color:#aaa">(파란색 = 최근 5년)</span></div>
+          <div class="year-chips"><span class="yc">97회</span><span class="yc">101회</span><span class="yc">106회</span><span class="yc">111회</span><span class="yc r">116회</span><span class="yc r">121회</span></div>
+          <div class="section-tag">키워드</div>
+          <div class="kw-row" style="margin-bottom:.65rem"><span class="kw kw-b">블랙박스</span><span class="kw kw-b">화이트박스</span><span class="kw kw-g">경계값</span><span class="kw kw-g">동치분할</span><span class="kw kw-r">V 모델</span><span class="kw kw-r">MC/DC</span><span class="kw kw-a">결함 밀도</span></div>
+          <div class="section-tag">유사·변형 출제 문항</div>
+          <div class="variants-box"><div class="v-item"><span class="v-num">Q1</span><span>블랙박스 테스트 기법(동치 분할·경계값 분석·결정 테이블·상태 전이) 각각을 예시와 함께 설명하시오</span></div><div class="v-item"><span class="v-num">Q2</span><span>문장·분기·조건·MC/DC 커버리지의 차이를 비교하고 DO-178C 항공 안전 기준과 연관하여 설명하시오</span></div><div class="v-item"><span class="v-num">Q3</span><span>V 모델에서 각 개발 단계에 대응하는 테스트 수준(단위·통합·시스템·인수)을 설명하시오</span></div><div class="v-item"><span class="v-num">Q4</span><span>테스트 자동화 피라미드(Unit → Integration → E2E)와 각 계층별 도구를 서술하시오</span></div><div class="v-item"><span class="v-num">Q5</span><span>결함 밀도·결함 추적·테스트 ROI를 이용한 소프트웨어 품질 측정 방법을 논하시오</span></div></div>
+          <div class="tip-box">
+            <div class="tip-head">💡 수험 전략</div>
+            V 모델 좌우 대칭 그림 필수. MC/DC는 "조건 한 번에 하나씩 변경" 예시로 설명. 최근 TDD·BDD·피라미드 자동화 문항 증가.
+          </div>
+        </div>
+      </div><div class="topic-card">
+        <div class="tc-head" onclick="tog(&#39;csw3&#39;)">
+          <div class="tc-left">
+            <span class="freq-badge f6">6회 출제</span>
+            <span class="cat-badge">소프트웨어공학</span>
+          </div>
+          <div class="tc-main">
+            <div class="tc-title">소프트웨어 품질 — ISO 25010·CMMI·기능점수·McCabe</div>
+            <div class="tc-sub">품질 모델 및 측정</div>
+          </div>
+          <span class="tc-arrow" id="arr-csw3">▼</span>
+        </div>
+        <div class="tc-body" id="body-csw3">
+          <div class="section-tag">출제 연도 <span style="font-weight:400;font-style:italic;color:#aaa">(파란색 = 최근 5년)</span></div>
+          <div class="year-chips"><span class="yc">96회</span><span class="yc">101회</span><span class="yc">106회</span><span class="yc">111회</span><span class="yc r">116회</span><span class="yc r">121회</span></div>
+          <div class="section-tag">키워드</div>
+          <div class="kw-row" style="margin-bottom:.65rem"><span class="kw kw-b">ISO 25010</span><span class="kw kw-g">CMMI L3</span><span class="kw kw-r">기능점수</span><span class="kw kw-a">McCabe</span><span class="kw kw-p">기술 부채</span><span class="kw kw-b">SLA·SLO</span></div>
+          <div class="section-tag">유사·변형 출제 문항</div>
+          <div class="variants-box"><div class="v-item"><span class="v-num">Q1</span><span>ISO/IEC 25010 품질 모델의 8가지 품질 특성과 하위 특성을 설명하고 측정 방법을 서술하시오</span></div><div class="v-item"><span class="v-num">Q2</span><span>CMMI 5개 성숙도 레벨의 특징과 레벨 3(Defined) 프로세스 영역을 설명하시오</span></div><div class="v-item"><span class="v-num">Q3</span><span>기능점수(FP) 산정 요소 5가지(ILF·EIF·EI·EO·EQ)와 가중치 적용 절차를 예시와 함께 서술하시오</span></div><div class="v-item"><span class="v-num">Q4</span><span>McCabe 순환 복잡도 V(G) = E - N + 2P 공식을 플로우 그래프 예시로 계산하시오</span></div><div class="v-item"><span class="v-num">Q5</span><span>기술 부채(Technical Debt)의 개념과 측정·관리 방안을 소프트웨어 유지보수 관점에서 논하시오</span></div></div>
+          <div class="tip-box">
+            <div class="tip-head">💡 수험 전략</div>
+            V(G) 계산 예시 문항 자주 출제—플로우 그래프 그리고 계산. 기능점수는 UAF(미조정 기능점수)×TCF(기술 복잡도 조정인자) 공식.
+          </div>
+        </div>
+      </div><div class="topic-card">
+        <div class="tc-head" onclick="tog(&#39;csw4&#39;)">
+          <div class="tc-left">
+            <span class="freq-badge f5">5회 출제</span>
+            <span class="cat-badge">소프트웨어공학</span>
+          </div>
+          <div class="tc-main">
+            <div class="tc-title">GoF 디자인 패턴 — 생성·구조·행위 23가지</div>
+            <div class="tc-sub">객체지향 설계 원칙</div>
+          </div>
+          <span class="tc-arrow" id="arr-csw4">▼</span>
+        </div>
+        <div class="tc-body" id="body-csw4">
+          <div class="section-tag">출제 연도 <span style="font-weight:400;font-style:italic;color:#aaa">(파란색 = 최근 5년)</span></div>
+          <div class="year-chips"><span class="yc">100회</span><span class="yc">105회</span><span class="yc">110회</span><span class="yc r">116회</span><span class="yc r">121회</span></div>
+          <div class="section-tag">키워드</div>
+          <div class="kw-row" style="margin-bottom:.65rem"><span class="kw kw-b">Singleton</span><span class="kw kw-b">Factory Method</span><span class="kw kw-g">Strategy</span><span class="kw kw-g">Observer</span><span class="kw kw-r">Decorator</span><span class="kw kw-r">SOLID</span><span class="kw kw-p">헥사고날</span></div>
+          <div class="section-tag">유사·변형 출제 문항</div>
+          <div class="variants-box"><div class="v-item"><span class="v-num">Q1</span><span>GoF 디자인 패턴을 생성·구조·행위 3범주로 분류하고 각 범주의 대표 패턴을 설명하시오</span></div><div class="v-item"><span class="v-num">Q2</span><span>Strategy 패턴과 Template Method 패턴의 차이를 코드 구조와 함께 서술하시오</span></div><div class="v-item"><span class="v-num">Q3</span><span>Observer 패턴을 이벤트 기반 시스템과 연결하여 설명하고 Publisher-Subscriber와 비교하시오</span></div><div class="v-item"><span class="v-num">Q4</span><span>SOLID 원칙 5가지와 각 원칙을 위반하는 안티패턴 사례를 설명하시오</span></div></div>
+          <div class="tip-box">
+            <div class="tip-head">💡 수험 전략</div>
+            패턴 이름만 나열하는 답은 감점. 반드시 UML 클래스 다이어그램 또는 의사코드와 함께 사용 목적·결과를 서술.
+          </div>
+        </div>
+      </div><div class="sec-div">경영정보·전략</div><div class="topic-card">
+        <div class="tc-head" onclick="tog(&#39;cmis0&#39;)">
+          <div class="tc-left">
+            <span class="freq-badge f6">7회 출제</span>
+            <span class="cat-badge">경영정보·전략</span>
+          </div>
+          <div class="tc-main">
+            <div class="tc-title">IT 거버넌스 — COBIT·ITIL·IT 전략 정렬</div>
+            <div class="tc-sub">IT 경영 프레임워크</div>
+          </div>
+          <span class="tc-arrow" id="arr-cmis0">▼</span>
+        </div>
+        <div class="tc-body" id="body-cmis0">
+          <div class="section-tag">출제 연도 <span style="font-weight:400;font-style:italic;color:#aaa">(파란색 = 최근 5년)</span></div>
+          <div class="year-chips"><span class="yc">99회</span><span class="yc">103회</span><span class="yc">107회</span><span class="yc">111회</span><span class="yc">115회</span><span class="yc r">119회</span><span class="yc r">123회</span></div>
+          <div class="section-tag">키워드</div>
+          <div class="kw-row" style="margin-bottom:.65rem"><span class="kw kw-b">COBIT 2019</span><span class="kw kw-b">ITIL 4</span><span class="kw kw-g">BSC</span><span class="kw kw-r">KPI</span><span class="kw kw-a">IT 투자 가치</span><span class="kw kw-p">거버넌스 vs. 관리</span></div>
+          <div class="section-tag">유사·변형 출제 문항</div>
+          <div class="variants-box"><div class="v-item"><span class="v-num">Q1</span><span>IT 거버넌스의 5가지 영역(책임·전략 정렬·가치 전달·위험 관리·성과 측정)을 COBIT 관점에서 설명하시오</span></div><div class="v-item"><span class="v-num">Q2</span><span>ITIL 4 서비스 가치 시스템(SVS)과 4가지 실천(Practice) 중 핵심 관리 실천을 서술하시오</span></div><div class="v-item"><span class="v-num">Q3</span><span>IT Balanced Scorecard(BSC)의 4관점과 IT 투자 ROI 측정 방법을 논하시오</span></div><div class="v-item"><span class="v-num">Q4</span><span>ISO/IEC 38500 IT 거버넌스 6원칙과 이사회·경영진 역할 분담을 설명하시오</span></div></div>
+          <div class="tip-box">
+            <div class="tip-head">💡 수험 전략</div>
+            COBIT vs. ITIL 비교 표(목적·대상·범위)가 단골. BSC는 재무-고객-내부프로세스-학습·성장 4관점 암기.
+          </div>
+        </div>
+      </div><div class="topic-card">
+        <div class="tc-head" onclick="tog(&#39;cmis1&#39;)">
+          <div class="tc-left">
+            <span class="freq-badge f6">6회 출제</span>
+            <span class="cat-badge">경영정보·전략</span>
+          </div>
+          <div class="tc-main">
+            <div class="tc-title">정보시스템 감리 — 감리 절차·점검 기준·결함 처리</div>
+            <div class="tc-sub">감리사 핵심 도메인</div>
+          </div>
+          <span class="tc-arrow" id="arr-cmis1">▼</span>
+        </div>
+        <div class="tc-body" id="body-cmis1">
+          <div class="section-tag">출제 연도 <span style="font-weight:400;font-style:italic;color:#aaa">(파란색 = 최근 5년)</span></div>
+          <div class="year-chips"><span class="yc">100회</span><span class="yc">104회</span><span class="yc">109회</span><span class="yc">114회</span><span class="yc r">119회</span><span class="yc r">123회</span></div>
+          <div class="section-tag">키워드</div>
+          <div class="kw-row" style="margin-bottom:.65rem"><span class="kw kw-b">사전검토</span><span class="kw kw-b">착수·중간·완료 감리</span><span class="kw kw-g">감리 보고서</span><span class="kw kw-g">SW 감리 기준</span><span class="kw kw-r">전자정부 감리</span></div>
+          <div class="section-tag">유사·변형 출제 문항</div>
+          <div class="variants-box"><div class="v-item"><span class="v-num">Q1</span><span>정보시스템 감리의 절차(사전검토→착수→중간→완료 감리)와 각 단계의 점검 항목을 설명하시오</span></div><div class="v-item"><span class="v-num">Q2</span><span>소프트웨어 개발 사업 감리에서 요구사항·설계·구현·테스트 단계별 주요 감리 관점을 서술하시오</span></div><div class="v-item"><span class="v-num">Q3</span><span>감리 결과 처리(결함 분류·시정 조치·재감리) 절차와 감리 보고서 작성 요건을 설명하시오</span></div><div class="v-item"><span class="v-num">Q4</span><span>공공 정보화 사업에서 감리인의 역할과 「전자정부법」 상 의무 감리 대상을 논하시오</span></div></div>
+          <div class="tip-box">
+            <div class="tip-head">💡 수험 전략</div>
+            정보관리 기술사 시험의 핵심 차별화 도메인. 전자정부법 제57조 감리 의무 대상, 3단계 감리 점검 표 형식으로 답안 구성.
+          </div>
+        </div>
+      </div><div class="topic-card">
+        <div class="tc-head" onclick="tog(&#39;cmis2&#39;)">
+          <div class="tc-left">
+            <span class="freq-badge f6">6회 출제</span>
+            <span class="cat-badge">경영정보·전략</span>
+          </div>
+          <div class="tc-main">
+            <div class="tc-title">ERP·SCM·CRM — 기업 정보시스템 통합</div>
+            <div class="tc-sub">경영정보시스템 핵심</div>
+          </div>
+          <span class="tc-arrow" id="arr-cmis2">▼</span>
+        </div>
+        <div class="tc-body" id="body-cmis2">
+          <div class="section-tag">출제 연도 <span style="font-weight:400;font-style:italic;color:#aaa">(파란색 = 최근 5년)</span></div>
+          <div class="year-chips"><span class="yc">96회</span><span class="yc">101회</span><span class="yc">106회</span><span class="yc">111회</span><span class="yc r">116회</span><span class="yc r">120회</span></div>
+          <div class="section-tag">키워드</div>
+          <div class="kw-row" style="margin-bottom:.65rem"><span class="kw kw-b">ERP 모듈</span><span class="kw kw-g">SCM 최적화</span><span class="kw kw-r">CRM 분석</span><span class="kw kw-a">BPR</span><span class="kw kw-p">SaaS ERP</span><span class="kw kw-b">디지털 전환</span></div>
+          <div class="section-tag">유사·변형 출제 문항</div>
+          <div class="variants-box"><div class="v-item"><span class="v-num">Q1</span><span>ERP 시스템의 구성 모듈과 BPR(업무 재설계)와의 관계를 설명하고 도입 실패 원인을 논하시오</span></div><div class="v-item"><span class="v-num">Q2</span><span>SCM(공급망 관리)에서 채찍 효과(Bullwhip Effect)의 발생 원인과 IT를 활용한 해소 방안을 서술하시오</span></div><div class="v-item"><span class="v-num">Q3</span><span>CRM의 운영적·분석적·협업적 CRM을 구분하고 고객 생애 가치(CLV) 극대화 전략을 설명하시오</span></div><div class="v-item"><span class="v-num">Q4</span><span>SaaS 기반 Cloud ERP와 온프레미스 ERP를 비교하고 전환 시 데이터 마이그레이션 이슈를 논하시오</span></div></div>
+          <div class="tip-box">
+            <div class="tip-head">💡 수험 전략</div>
+            ERP 도입 CSF(핵심 성공 요인): 경영진 지원·BPR 선행·커스터마이징 최소화·변경 관리. 채찍 효과 그래프(수요 변동 증폭) 그리기.
+          </div>
+        </div>
+      </div><div class="topic-card">
+        <div class="tc-head" onclick="tog(&#39;cmis3&#39;)">
+          <div class="tc-left">
+            <span class="freq-badge f5">5회 출제</span>
+            <span class="cat-badge">경영정보·전략</span>
+          </div>
+          <div class="tc-main">
+            <div class="tc-title">디지털 전환 — DX 전략·플랫폼 비즈니스·데이터 경제</div>
+            <div class="tc-sub">IT 경영 전략</div>
+          </div>
+          <span class="tc-arrow" id="arr-cmis3">▼</span>
+        </div>
+        <div class="tc-body" id="body-cmis3">
+          <div class="section-tag">출제 연도 <span style="font-weight:400;font-style:italic;color:#aaa">(파란색 = 최근 5년)</span></div>
+          <div class="year-chips"><span class="yc">113회</span><span class="yc">117회</span><span class="yc r">120회</span><span class="yc r">122회</span><span class="yc r">125회</span></div>
+          <div class="section-tag">키워드</div>
+          <div class="kw-row" style="margin-bottom:.65rem"><span class="kw kw-b">디지털 트윈</span><span class="kw kw-g">플랫폼 전략</span><span class="kw kw-r">데이터 경제</span><span class="kw kw-a">API Economy</span><span class="kw kw-p">비즈니스 모델 혁신</span></div>
+          <div class="section-tag">유사·변형 출제 문항</div>
+          <div class="variants-box"><div class="v-item"><span class="v-num">Q1</span><span>디지털 전환(DX)의 개념과 단계(디지털화→디지털라이제이션→DX)를 설명하고 기업 적용 사례를 논하시오</span></div><div class="v-item"><span class="v-num">Q2</span><span>디지털 트윈(Digital Twin)의 구성 요소와 제조·인프라 분야 적용을 서술하시오</span></div><div class="v-item"><span class="v-num">Q3</span><span>플랫폼 비즈니스 모델의 네트워크 효과와 전통 파이프라인 비즈니스와의 차이를 설명하시오</span></div><div class="v-item"><span class="v-num">Q4</span><span>API Economy 개념과 Open Banking·마이데이터 서비스 적용 사례를 논하시오</span></div></div>
+          <div class="tip-box">
+            <div class="tip-head">💡 수험 전략</div>
+            최근 출제 빈도 급증. DX 3단계 구분 명확히. 디지털 트윈은 IoT-모델-시뮬레이션 3요소 구조도로.
+          </div>
+        </div>
+      </div><div class="sec-div">네트워크·인터넷</div><div class="topic-card">
+        <div class="tc-head" onclick="tog(&#39;cnet0&#39;)">
+          <div class="tc-left">
+            <span class="freq-badge f6">6회 출제</span>
+            <span class="cat-badge">네트워크·인터넷</span>
+          </div>
+          <div class="tc-main">
+            <div class="tc-title">네트워크 프로토콜 — TCP/IP·OSI 7계층·SDN·QoS</div>
+            <div class="tc-sub">네트워크 아키텍처</div>
+          </div>
+          <span class="tc-arrow" id="arr-cnet0">▼</span>
+        </div>
+        <div class="tc-body" id="body-cnet0">
+          <div class="section-tag">출제 연도 <span style="font-weight:400;font-style:italic;color:#aaa">(파란색 = 최근 5년)</span></div>
+          <div class="year-chips"><span class="yc">95회</span><span class="yc">100회</span><span class="yc">105회</span><span class="yc">110회</span><span class="yc r">116회</span><span class="yc r">121회</span></div>
+          <div class="section-tag">키워드</div>
+          <div class="kw-row" style="margin-bottom:.65rem"><span class="kw kw-b">TCP 혼잡 제어</span><span class="kw kw-b">OSPF</span><span class="kw kw-g">BGP</span><span class="kw kw-g">SDN</span><span class="kw kw-r">QoS</span><span class="kw kw-a">MPLS</span></div>
+          <div class="section-tag">유사·변형 출제 문항</div>
+          <div class="variants-box"><div class="v-item"><span class="v-num">Q1</span><span>OSI 7계층과 TCP/IP 4계층의 계층별 PDU·프로토콜을 대응하여 설명하시오</span></div><div class="v-item"><span class="v-num">Q2</span><span>TCP 흐름 제어(슬라이딩 윈도우)와 혼잡 제어(슬로우 스타트·AIMD)를 단계별 그래프로 설명하시오</span></div><div class="v-item"><span class="v-num">Q3</span><span>SDN의 데이터 플레인·컨트롤 플레인 분리와 OpenFlow 동작 원리를 서술하시오</span></div><div class="v-item"><span class="v-num">Q4</span><span>QoS 보장 기법(IntServ·DiffServ·MPLS)과 실시간 트래픽 우선순위 처리를 설명하시오</span></div></div>
+          <div class="tip-box">
+            <div class="tip-head">💡 수험 전략</div>
+            혼잡 제어 cwnd 변화 그래프 필수. SDN은 3계층(응용-컨트롤-인프라) 구조도와 함께.
+          </div>
+        </div>
+      </div><div class="topic-card">
+        <div class="tc-head" onclick="tog(&#39;cnet1&#39;)">
+          <div class="tc-left">
+            <span class="freq-badge f5">5회 출제</span>
+            <span class="cat-badge">네트워크·인터넷</span>
+          </div>
+          <div class="tc-main">
+            <div class="tc-title">웹·인터넷 기술 — REST API·HTTP/3·WebSocket·CDN</div>
+            <div class="tc-sub">애플리케이션 계층</div>
+          </div>
+          <span class="tc-arrow" id="arr-cnet1">▼</span>
+        </div>
+        <div class="tc-body" id="body-cnet1">
+          <div class="section-tag">출제 연도 <span style="font-weight:400;font-style:italic;color:#aaa">(파란색 = 최근 5년)</span></div>
+          <div class="year-chips"><span class="yc">103회</span><span class="yc">108회</span><span class="yc">113회</span><span class="yc r">118회</span><span class="yc r">123회</span></div>
+          <div class="section-tag">키워드</div>
+          <div class="kw-row" style="margin-bottom:.65rem"><span class="kw kw-b">RESTful</span><span class="kw kw-b">HTTP/3 QUIC</span><span class="kw kw-g">WebSocket</span><span class="kw kw-g">GraphQL</span><span class="kw kw-r">CDN</span><span class="kw kw-a">gRPC</span></div>
+          <div class="section-tag">유사·변형 출제 문항</div>
+          <div class="variants-box"><div class="v-item"><span class="v-num">Q1</span><span>REST API 설계 원칙(Stateless·Uniform Interface·Layered System)과 RESTful URI 설계 규칙을 서술하시오</span></div><div class="v-item"><span class="v-num">Q2</span><span>HTTP/1.1→HTTP/2→HTTP/3(QUIC) 진화 과정과 각 버전의 성능 개선 핵심을 설명하시오</span></div><div class="v-item"><span class="v-num">Q3</span><span>WebSocket의 연결 수립(Upgrade Handshake)과 Server-Sent Events(SSE)·Long Polling과의 차이를 논하시오</span></div><div class="v-item"><span class="v-num">Q4</span><span>CDN(콘텐츠 전송 네트워크)의 동작 원리와 엣지 컴퓨팅과의 결합 방안을 설명하시오</span></div></div>
+          <div class="tip-box">
+            <div class="tip-head">💡 수험 전략</div>
+            REST vs. GraphQL vs. gRPC 비교 표(요청 방식·오버/언더 패칭·적합 용도)는 최근 자주 출제. HTTP/3의 QUIC = UDP 기반 + 멀티플렉싱 + 0-RTT 핵심.
+          </div>
+        </div>
+      </div><div class="topic-card">
+        <div class="tc-head" onclick="tog(&#39;cnet2&#39;)">
+          <div class="tc-left">
+            <span class="freq-badge f4">4회 출제</span>
+            <span class="cat-badge">네트워크·인터넷</span>
+          </div>
+          <div class="tc-main">
+            <div class="tc-title">5G·IoT·엣지 컴퓨팅 — 이동통신과 초연결 인프라</div>
+            <div class="tc-sub">차세대 통신 기술</div>
+          </div>
+          <span class="tc-arrow" id="arr-cnet2">▼</span>
+        </div>
+        <div class="tc-body" id="body-cnet2">
+          <div class="section-tag">출제 연도 <span style="font-weight:400;font-style:italic;color:#aaa">(파란색 = 최근 5년)</span></div>
+          <div class="year-chips"><span class="yc">114회</span><span class="yc">118회</span><span class="yc r">121회</span><span class="yc r">124회</span></div>
+          <div class="section-tag">키워드</div>
+          <div class="kw-row" style="margin-bottom:.65rem"><span class="kw kw-b">5G NSA/SA</span><span class="kw kw-b">네트워크 슬라이싱</span><span class="kw kw-g">MEC</span><span class="kw kw-r">IoT 프로토콜</span><span class="kw kw-a">MQTT</span><span class="kw kw-p">디지털 트윈 연계</span></div>
+          <div class="section-tag">유사·변형 출제 문항</div>
+          <div class="variants-box"><div class="v-item"><span class="v-num">Q1</span><span>5G 핵심 기술(mmWave·대규모 MIMO·네트워크 슬라이싱·MEC)과 4G와의 차이를 설명하시오</span></div><div class="v-item"><span class="v-num">Q2</span><span>MEC(모바일 엣지 컴퓨팅)의 아키텍처와 클라우드·포그·엣지 컴퓨팅의 계층적 차이를 서술하시오</span></div><div class="v-item"><span class="v-num">Q3</span><span>IoT 프로토콜(MQTT·CoAP·AMQP)의 특징과 적합 시나리오를 비교하시오</span></div></div>
+          <div class="tip-box">
+            <div class="tip-head">💡 수험 전략</div>
+            최근 출제 증가. 5G 슬라이싱(eMBB·URLLC·mMTC)과 산업별 적용 사례 준비. MEC = 지연 최소화 목적으로 기지국 근처 처리.
+          </div>
+        </div>
+      </div><div class="sec-div">정보보안</div><div class="topic-card">
+        <div class="tc-head" onclick="tog(&#39;csec0&#39;)">
+          <div class="tc-left">
+            <span class="freq-badge f6">7회 출제</span>
+            <span class="cat-badge">정보보안</span>
+          </div>
+          <div class="tc-main">
+            <div class="tc-title">암호화·PKI·디지털 서명 — 대칭·비대칭·해시 알고리즘</div>
+            <div class="tc-sub">암호 이론 및 응용</div>
+          </div>
+          <span class="tc-arrow" id="arr-csec0">▼</span>
+        </div>
+        <div class="tc-body" id="body-csec0">
+          <div class="section-tag">출제 연도 <span style="font-weight:400;font-style:italic;color:#aaa">(파란색 = 최근 5년)</span></div>
+          <div class="year-chips"><span class="yc">96회</span><span class="yc">100회</span><span class="yc">105회</span><span class="yc">110회</span><span class="yc">114회</span><span class="yc r">119회</span><span class="yc r">123회</span></div>
+          <div class="section-tag">키워드</div>
+          <div class="kw-row" style="margin-bottom:.65rem"><span class="kw kw-b">AES</span><span class="kw kw-b">RSA</span><span class="kw kw-g">ECC</span><span class="kw kw-r">SHA-3</span><span class="kw kw-a">PKI</span><span class="kw kw-p">디지털 서명</span><span class="kw kw-b">TLS 1.3</span></div>
+          <div class="section-tag">유사·변형 출제 문항</div>
+          <div class="variants-box"><div class="v-item"><span class="v-num">Q1</span><span>대칭키 암호(AES·ARIA·SEED)와 비대칭키 암호(RSA·ECC)의 원리와 성능을 비교하시오</span></div><div class="v-item"><span class="v-num">Q2</span><span>PKI 구성 요소(CA·RA·CRL·OCSP)와 인증서 발급·검증·폐기 절차를 서술하시오</span></div><div class="v-item"><span class="v-num">Q3</span><span>디지털 서명의 생성·검증 과정에서 사용하는 키를 명시하고 부인방지 특성을 설명하시오</span></div><div class="v-item"><span class="v-num">Q4</span><span>TLS 1.3 Handshake의 1-RTT 흐름과 TLS 1.2 대비 개선 사항(0-RTT·Perfect Forward Secrecy)을 설명하시오</span></div><div class="v-item"><span class="v-num">Q5</span><span>양자 내성 암호(PQC)의 필요성과 NIST가 표준화한 알고리즘(CRYSTALS-Kyber 등)을 논하시오</span></div></div>
+          <div class="tip-box">
+            <div class="tip-head">💡 수험 전략</div>
+            서명=송신자 개인키, 기밀성=수신자 공개키 구분 필수. 최근 양자 컴퓨팅→PQC 전환 필요성 문항 증가. TLS 1.3 Handshake 흐름도 그리기.
+          </div>
+        </div>
+      </div><div class="topic-card">
+        <div class="tc-head" onclick="tog(&#39;csec1&#39;)">
+          <div class="tc-left">
+            <span class="freq-badge f6">6회 출제</span>
+            <span class="cat-badge">정보보안</span>
+          </div>
+          <div class="tc-main">
+            <div class="tc-title">정보보안 관리 체계 — ISMS-P·ISO 27001·위험 관리</div>
+            <div class="tc-sub">보안 거버넌스</div>
+          </div>
+          <span class="tc-arrow" id="arr-csec1">▼</span>
+        </div>
+        <div class="tc-body" id="body-csec1">
+          <div class="section-tag">출제 연도 <span style="font-weight:400;font-style:italic;color:#aaa">(파란색 = 최근 5년)</span></div>
+          <div class="year-chips"><span class="yc">98회</span><span class="yc">103회</span><span class="yc">108회</span><span class="yc">113회</span><span class="yc r">118회</span><span class="yc r">122회</span></div>
+          <div class="section-tag">키워드</div>
+          <div class="kw-row" style="margin-bottom:.65rem"><span class="kw kw-b">ISMS-P 102개</span><span class="kw kw-b">ISO 27001</span><span class="kw kw-g">위험 평가</span><span class="kw kw-r">위협·취약점</span><span class="kw kw-a">BCP·DRP</span><span class="kw kw-p">제로 트러스트</span></div>
+          <div class="section-tag">유사·변형 출제 문항</div>
+          <div class="variants-box"><div class="v-item"><span class="v-num">Q1</span><span>ISMS-P 인증 체계의 통합 배경(ISMS+PIMS)과 3단계 통제 구조(관리·보호대책·개인정보)를 설명하시오</span></div><div class="v-item"><span class="v-num">Q2</span><span>ISO/IEC 27001 PDCA 사이클과 Annex A 93개 통제를 위험 관리 절차와 연계하여 설명하시오</span></div><div class="v-item"><span class="v-num">Q3</span><span>정보보안 위험 관리 절차(자산 식별→위협·취약점 분석→위험 평가→처리)를 서술하시오</span></div><div class="v-item"><span class="v-num">Q4</span><span>BCP(업무 연속성 계획)·DRP(재해 복구 계획)의 RTO·RPO 목표 수립과 DR 전략(Hot·Warm·Cold Site)을 설명하시오</span></div><div class="v-item"><span class="v-num">Q5</span><span>제로 트러스트(Zero Trust) 보안 모델의 원칙과 전통적 경계 기반 보안과의 차이를 논하시오</span></div></div>
+          <div class="tip-box">
+            <div class="tip-head">💡 수험 전략</div>
+            ISMS-P는 102개 항목 구조(16개 분야)를 전체 나열보다 "인증 범위 결정→위험 평가→통제 구현→사후 심사" 흐름으로. 제로 트러스트 최근 급부상.
+          </div>
+        </div>
+      </div><div class="topic-card">
+        <div class="tc-head" onclick="tog(&#39;csec2&#39;)">
+          <div class="tc-left">
+            <span class="freq-badge f6">6회 출제</span>
+            <span class="cat-badge">정보보안</span>
+          </div>
+          <div class="tc-main">
+            <div class="tc-title">사이버 공격·취약점 — APT·랜섬웨어·OWASP·취약점 관리</div>
+            <div class="tc-sub">공격 기법 및 대응</div>
+          </div>
+          <span class="tc-arrow" id="arr-csec2">▼</span>
+        </div>
+        <div class="tc-body" id="body-csec2">
+          <div class="section-tag">출제 연도 <span style="font-weight:400;font-style:italic;color:#aaa">(파란색 = 최근 5년)</span></div>
+          <div class="year-chips"><span class="yc">99회</span><span class="yc">104회</span><span class="yc">109회</span><span class="yc">114회</span><span class="yc r">119회</span><span class="yc r">123회</span></div>
+          <div class="section-tag">키워드</div>
+          <div class="kw-row" style="margin-bottom:.65rem"><span class="kw kw-r">APT 킬 체인</span><span class="kw kw-r">랜섬웨어</span><span class="kw kw-b">SQL 인젝션</span><span class="kw kw-b">XSS</span><span class="kw kw-g">공급망 공격</span><span class="kw kw-a">CVE·CVSS</span></div>
+          <div class="section-tag">유사·변형 출제 문항</div>
+          <div class="variants-box"><div class="v-item"><span class="v-num">Q1</span><span>APT(Advanced Persistent Threat) 공격의 Kill Chain 7단계와 각 단계별 탐지·대응 방안을 설명하시오</span></div><div class="v-item"><span class="v-num">Q2</span><span>랜섬웨어 감염 경로와 기술적·관리적·물리적 대응 방안을 서술하시오</span></div><div class="v-item"><span class="v-num">Q3</span><span>OWASP Top 10 2021의 주요 취약점과 각 취약점의 근본 원인 및 방어 코딩 기법을 설명하시오</span></div><div class="v-item"><span class="v-num">Q4</span><span>소프트웨어 공급망 공격(SolarWinds·Log4Shell 사례)의 특징과 SBOM을 활용한 대응을 논하시오</span></div></div>
+          <div class="tip-box">
+            <div class="tip-head">💡 수험 전략</div>
+            APT 킬 체인 7단계(정찰→무장→전달→악용→설치→명령제어→목표달성) 암기. 공급망 보안·SBOM은 최근 급부상 키워드.
+          </div>
+        </div>
+      </div><div class="sec-div">AI·빅데이터</div><div class="topic-card">
+        <div class="tc-head" onclick="tog(&#39;cai0&#39;)">
+          <div class="tc-left">
+            <span class="freq-badge f6">7회 출제</span>
+            <span class="cat-badge">AI·빅데이터</span>
+          </div>
+          <div class="tc-main">
+            <div class="tc-title">인공지능 — 머신러닝·딥러닝·생성형 AI·설명 가능 AI</div>
+            <div class="tc-sub">AI 기술 및 응용</div>
+          </div>
+          <span class="tc-arrow" id="arr-cai0">▼</span>
+        </div>
+        <div class="tc-body" id="body-cai0">
+          <div class="section-tag">출제 연도 <span style="font-weight:400;font-style:italic;color:#aaa">(파란색 = 최근 5년)</span></div>
+          <div class="year-chips"><span class="yc">109회</span><span class="yc">112회</span><span class="yc">115회</span><span class="yc">118회</span><span class="yc r">121회</span><span class="yc r">123회</span><span class="yc r">126회</span></div>
+          <div class="section-tag">키워드</div>
+          <div class="kw-row" style="margin-bottom:.65rem"><span class="kw kw-b">지도·비지도·강화학습</span><span class="kw kw-b">CNN·RNN·Transformer</span><span class="kw kw-r">LLM</span><span class="kw kw-g">RAG</span><span class="kw kw-p">XAI</span><span class="kw kw-r">Hallucination</span></div>
+          <div class="section-tag">유사·변형 출제 문항</div>
+          <div class="variants-box"><div class="v-item"><span class="v-num">Q1</span><span>머신러닝의 지도·비지도·강화학습을 비교하고 각 유형의 대표 알고리즘과 적용 사례를 설명하시오</span></div><div class="v-item"><span class="v-num">Q2</span><span>Transformer의 Self-Attention 메커니즘과 BERT(양방향)·GPT(단방향) 사전학습 방식을 비교하시오</span></div><div class="v-item"><span class="v-num">Q3</span><span>LLM(대형 언어 모델)의 할루시네이션(Hallucination) 문제와 RAG·파인튜닝을 활용한 완화 방안을 논하시오</span></div><div class="v-item"><span class="v-num">Q4</span><span>XAI(설명 가능 AI)의 필요성과 LIME·SHAP·Attention 기반 해석 방법을 설명하시오</span></div><div class="v-item"><span class="v-num">Q5</span><span>AI 신뢰성(Trustworthy AI)의 7가지 요건(투명성·공정성·프라이버시 등)과 EU AI Act를 연계하여 논하시오</span></div></div>
+          <div class="tip-box">
+            <div class="tip-head">💡 수험 전략</div>
+            최근 생성형 AI 문항 급증. RAG = 검색 증강 생성(외부 지식 검색+LLM 생성) 원리. XAI는 "설명 가능성 vs. 성능" 트레이드오프 언급 필수.
+          </div>
+        </div>
+      </div><div class="topic-card">
+        <div class="tc-head" onclick="tog(&#39;cai1&#39;)">
+          <div class="tc-left">
+            <span class="freq-badge f6">6회 출제</span>
+            <span class="cat-badge">AI·빅데이터</span>
+          </div>
+          <div class="tc-main">
+            <div class="tc-title">빅데이터 — 3V~7V·Hadoop·Spark·데이터 파이프라인</div>
+            <div class="tc-sub">빅데이터 플랫폼</div>
+          </div>
+          <span class="tc-arrow" id="arr-cai1">▼</span>
+        </div>
+        <div class="tc-body" id="body-cai1">
+          <div class="section-tag">출제 연도 <span style="font-weight:400;font-style:italic;color:#aaa">(파란색 = 최근 5년)</span></div>
+          <div class="year-chips"><span class="yc">107회</span><span class="yc">110회</span><span class="yc">113회</span><span class="yc">116회</span><span class="yc r">120회</span><span class="yc r">123회</span></div>
+          <div class="section-tag">키워드</div>
+          <div class="kw-row" style="margin-bottom:.65rem"><span class="kw kw-b">3V(Volume·Velocity·Variety)</span><span class="kw kw-g">HDFS</span><span class="kw kw-g">MapReduce</span><span class="kw kw-r">Apache Spark</span><span class="kw kw-a">Lambda 아키텍처</span><span class="kw kw-p">데이터 메시</span></div>
+          <div class="section-tag">유사·변형 출제 문항</div>
+          <div class="variants-box"><div class="v-item"><span class="v-num">Q1</span><span>빅데이터의 3V 개념을 설명하고 진실성(Veracity)·가치(Value)·가변성(Variability) 확장을 논하시오</span></div><div class="v-item"><span class="v-num">Q2</span><span>Hadoop의 HDFS·MapReduce 아키텍처와 Apache Spark의 인메모리 처리 방식을 비교하시오</span></div><div class="v-item"><span class="v-num">Q3</span><span>Lambda 아키텍처(배치·속도·서빙 레이어)와 Kappa 아키텍처의 차이를 설명하시오</span></div><div class="v-item"><span class="v-num">Q4</span><span>데이터 메시(Data Mesh) 아키텍처의 4원칙과 기존 중앙집중식 데이터 레이크와의 차이를 논하시오</span></div></div>
+          <div class="tip-box">
+            <div class="tip-head">💡 수험 전략</div>
+            Lambda vs. Kappa 비교표(복잡도·지연·일관성). 데이터 메시 = 도메인 소유권·셀프서비스 인프라·연합 거버넌스·제품으로서의 데이터.
+          </div>
+        </div>
+      </div><div class="topic-card">
+        <div class="tc-head" onclick="tog(&#39;cai2&#39;)">
+          <div class="tc-left">
+            <span class="freq-badge f5">5회 출제</span>
+            <span class="cat-badge">AI·빅데이터</span>
+          </div>
+          <div class="tc-main">
+            <div class="tc-title">데이터 품질·데이터 거버넌스 — MDM·메타데이터·카탈로그</div>
+            <div class="tc-sub">데이터 관리 체계</div>
+          </div>
+          <span class="tc-arrow" id="arr-cai2">▼</span>
+        </div>
+        <div class="tc-body" id="body-cai2">
+          <div class="section-tag">출제 연도 <span style="font-weight:400;font-style:italic;color:#aaa">(파란색 = 최근 5년)</span></div>
+          <div class="year-chips"><span class="yc">104회</span><span class="yc">109회</span><span class="yc">114회</span><span class="yc r">119회</span><span class="yc r">124회</span></div>
+          <div class="section-tag">키워드</div>
+          <div class="kw-row" style="margin-bottom:.65rem"><span class="kw kw-b">데이터 품질 6차원</span><span class="kw kw-g">MDM</span><span class="kw kw-r">데이터 카탈로그</span><span class="kw kw-a">데이터 리니지</span><span class="kw kw-p">DAMA-DMBOK</span><span class="kw kw-b">데이터 스튜어드</span></div>
+          <div class="section-tag">유사·변형 출제 문항</div>
+          <div class="variants-box"><div class="v-item"><span class="v-num">Q1</span><span>데이터 품질 6차원(완전성·정확성·일관성·적시성·유일성·유효성)과 측정·개선 방법을 서술하시오</span></div><div class="v-item"><span class="v-num">Q2</span><span>MDM(마스터 데이터 관리)의 구현 방식(Registry·Consolidation·Coexistence·Centralized)을 비교하시오</span></div><div class="v-item"><span class="v-num">Q3</span><span>데이터 거버넌스 체계(정책·조직·프로세스·기술)와 데이터 스튜어드십 역할을 설명하시오</span></div><div class="v-item"><span class="v-num">Q4</span><span>데이터 카탈로그의 메타데이터·데이터 리니지(Lineage) 기능과 GDPR 데이터 계보 요건과의 연계를 논하시오</span></div></div>
+          <div class="tip-box">
+            <div class="tip-head">💡 수험 전략</div>
+            DAMA-DMBOK 11개 지식 영역 구조 파악. 데이터 리니지는 "원천→변환→소비" 추적 가능성 강조.
+          </div>
+        </div>
+      </div><div class="sec-div">클라우드·신기술</div><div class="topic-card">
+        <div class="tc-head" onclick="tog(&#39;ccloud0&#39;)">
+          <div class="tc-left">
+            <span class="freq-badge f6">6회 출제</span>
+            <span class="cat-badge">클라우드·신기술</span>
+          </div>
+          <div class="tc-main">
+            <div class="tc-title">클라우드 컴퓨팅 — IaaS·PaaS·SaaS·컨테이너·서버리스</div>
+            <div class="tc-sub">클라우드 아키텍처</div>
+          </div>
+          <span class="tc-arrow" id="arr-ccloud0">▼</span>
+        </div>
+        <div class="tc-body" id="body-ccloud0">
+          <div class="section-tag">출제 연도 <span style="font-weight:400;font-style:italic;color:#aaa">(파란색 = 최근 5년)</span></div>
+          <div class="year-chips"><span class="yc">106회</span><span class="yc">110회</span><span class="yc">114회</span><span class="yc">117회</span><span class="yc r">121회</span><span class="yc r">124회</span></div>
+          <div class="section-tag">키워드</div>
+          <div class="kw-row" style="margin-bottom:.65rem"><span class="kw kw-b">IaaS·PaaS·SaaS</span><span class="kw kw-g">하이브리드 클라우드</span><span class="kw kw-r">Kubernetes</span><span class="kw kw-r">서버리스</span><span class="kw kw-a">FinOps</span><span class="kw kw-p">클라우드 네이티브</span></div>
+          <div class="section-tag">유사·변형 출제 문항</div>
+          <div class="variants-box"><div class="v-item"><span class="v-num">Q1</span><span>IaaS·PaaS·SaaS·FaaS의 책임 분담 모델(공동 책임 모델)과 각 서비스 모델의 적합 시나리오를 비교하시오</span></div><div class="v-item"><span class="v-num">Q2</span><span>퍼블릭·프라이빗·하이브리드·멀티 클라우드 전략의 장단점과 선택 기준을 서술하시오</span></div><div class="v-item"><span class="v-num">Q3</span><span>Kubernetes의 Pod·Service·Deployment·Ingress 구성 요소와 오토스케일링(HPA·VPA) 원리를 설명하시오</span></div><div class="v-item"><span class="v-num">Q4</span><span>서버리스(FaaS) 아키텍처의 콜드 스타트 문제와 이벤트 기반 워크플로우 설계를 논하시오</span></div><div class="v-item"><span class="v-num">Q5</span><span>FinOps 프레임워크의 Inform-Optimize-Operate 사이클과 클라우드 비용 최적화 전략을 설명하시오</span></div></div>
+          <div class="tip-box">
+            <div class="tip-head">💡 수험 전략</div>
+            공동 책임 모델(Shared Responsibility) 그림 필수—서비스 모델별 고객/공급자 책임 경계. Kubernetes YAML 구조는 아이디어 수준으로.
+          </div>
+        </div>
+      </div><div class="topic-card">
+        <div class="tc-head" onclick="tog(&#39;ccloud1&#39;)">
+          <div class="tc-left">
+            <span class="freq-badge f5">5회 출제</span>
+            <span class="cat-badge">클라우드·신기술</span>
+          </div>
+          <div class="tc-main">
+            <div class="tc-title">뉴로모픽·양자 컴퓨팅·엣지 AI — 차세대 컴퓨팅 패러다임</div>
+            <div class="tc-sub">미래 컴퓨팅 기술</div>
+          </div>
+          <span class="tc-arrow" id="arr-ccloud1">▼</span>
+        </div>
+        <div class="tc-body" id="body-ccloud1">
+          <div class="section-tag">출제 연도 <span style="font-weight:400;font-style:italic;color:#aaa">(파란색 = 최근 5년)</span></div>
+          <div class="year-chips"><span class="yc">112회</span><span class="yc">116회</span><span class="yc r">120회</span><span class="yc r">123회</span><span class="yc r">126회</span></div>
+          <div class="section-tag">키워드</div>
+          <div class="kw-row" style="margin-bottom:.65rem"><span class="kw kw-b">폰 노이만 병목</span><span class="kw kw-r">SNN·LIF</span><span class="kw kw-g">큐비트</span><span class="kw kw-g">양자 얽힘</span><span class="kw kw-r">메모리 월</span><span class="kw kw-a">PIM</span></div>
+          <div class="section-tag">유사·변형 출제 문항</div>
+          <div class="variants-box"><div class="v-item"><span class="v-num">Q1</span><span>폰 노이만 아키텍처의 메모리 월 한계와 뉴로모픽 컴퓨팅(SNN·STDP·Loihi)으로 해결하는 방법을 설명하시오</span></div><div class="v-item"><span class="v-num">Q2</span><span>양자 컴퓨팅의 큐비트·중첩·얽힘 원리와 Shor·Grover 알고리즘의 응용을 서술하시오</span></div><div class="v-item"><span class="v-num">Q3</span><span>PIM(Processing-In-Memory) 아키텍처와 폰 노이만 방식의 데이터 이동 비용을 비교하시오</span></div></div>
+          <div class="tip-box">
+            <div class="tip-head">💡 수험 전략</div>
+            뉴로모픽과 양자 컴퓨팅은 항상 "기존 폰 노이만 대비 어떤 문제를 해결하는가"를 중심으로 답안 구성.
+          </div>
+        </div>
+      </div><div class="topic-card">
+        <div class="tc-head" onclick="tog(&#39;ccloud2&#39;)">
+          <div class="tc-left">
+            <span class="freq-badge f4">4회 출제</span>
+            <span class="cat-badge">클라우드·신기술</span>
+          </div>
+          <div class="tc-main">
+            <div class="tc-title">블록체인 — DLT·합의 알고리즘·스마트 컨트랙트·STO</div>
+            <div class="tc-sub">분산 원장 기술</div>
+          </div>
+          <span class="tc-arrow" id="arr-ccloud2">▼</span>
+        </div>
+        <div class="tc-body" id="body-ccloud2">
+          <div class="section-tag">출제 연도 <span style="font-weight:400;font-style:italic;color:#aaa">(파란색 = 최근 5년)</span></div>
+          <div class="year-chips"><span class="yc">115회</span><span class="yc">118회</span><span class="yc r">121회</span><span class="yc r">124회</span></div>
+          <div class="section-tag">키워드</div>
+          <div class="kw-row" style="margin-bottom:.65rem"><span class="kw kw-b">퍼블릭·프라이빗·컨소시엄</span><span class="kw kw-g">PoW·PoS·PBFT</span><span class="kw kw-r">스마트 컨트랙트</span><span class="kw kw-a">DeFi</span><span class="kw kw-p">CBDC</span><span class="kw kw-b">STO</span></div>
+          <div class="section-tag">유사·변형 출제 문항</div>
+          <div class="variants-box"><div class="v-item"><span class="v-num">Q1</span><span>블록체인 유형(퍼블릭·프라이빗·컨소시엄)을 비교하고 기업 적용 시 선택 기준을 서술하시오</span></div><div class="v-item"><span class="v-num">Q2</span><span>PoW·PoS·PBFT 합의 알고리즘의 원리·에너지 효율·탈중앙화 정도를 비교하시오</span></div><div class="v-item"><span class="v-num">Q3</span><span>CBDC(중앙은행 디지털 화폐)의 설계 원칙과 블록체인 기술 적용 방안을 논하시오</span></div></div>
+          <div class="tip-box">
+            <div class="tip-head">💡 수험 전략</div>
+            PBFT = 비잔틴 장군 문제 해결, 허가형 블록체인에 적합. 51% 공격은 PoW에서만 해당됨을 명시.
+          </div>
+        </div>
+      </div><div class="sec-div">프로젝트관리</div><div class="topic-card">
+        <div class="tc-head" onclick="tog(&#39;cpm0&#39;)">
+          <div class="tc-left">
+            <span class="freq-badge f6">6회 출제</span>
+            <span class="cat-badge">프로젝트관리</span>
+          </div>
+          <div class="tc-main">
+            <div class="tc-title">프로젝트 관리 — PMBOK·일정·원가·위험·품질 관리</div>
+            <div class="tc-sub">프로젝트 관리 체계</div>
+          </div>
+          <span class="tc-arrow" id="arr-cpm0">▼</span>
+        </div>
+        <div class="tc-body" id="body-cpm0">
+          <div class="section-tag">출제 연도 <span style="font-weight:400;font-style:italic;color:#aaa">(파란색 = 최근 5년)</span></div>
+          <div class="year-chips"><span class="yc">97회</span><span class="yc">102회</span><span class="yc">107회</span><span class="yc">112회</span><span class="yc r">117회</span><span class="yc r">122회</span></div>
+          <div class="section-tag">키워드</div>
+          <div class="kw-row" style="margin-bottom:.65rem"><span class="kw kw-b">WBS</span><span class="kw kw-r">EVM·CPI·SPI</span><span class="kw kw-g">Monte Carlo</span><span class="kw kw-a">PERT·CPM</span><span class="kw kw-r">리스크 대응</span><span class="kw kw-b">변경 관리</span></div>
+          <div class="section-tag">유사·변형 출제 문항</div>
+          <div class="variants-box"><div class="v-item"><span class="v-num">Q1</span><span>PMBOK 7판의 12가지 원칙과 8가지 성과 영역을 6판 지식 영역과 비교하여 설명하시오</span></div><div class="v-item"><span class="v-num">Q2</span><span>EVM(획득 가치 관리)의 PV·EV·AC·SV·CV·SPI·CPI 지표를 공식과 예시로 설명하시오</span></div><div class="v-item"><span class="v-num">Q3</span><span>Monte Carlo 시뮬레이션을 일정·원가 위험 분석에 활용하는 방법을 서술하시오</span></div><div class="v-item"><span class="v-num">Q4</span><span>CPM(임계 경로법)으로 프로젝트 일정을 계산하고 총 여유 시간(Total Float) 산출을 설명하시오</span></div><div class="v-item"><span class="v-num">Q5</span><span>프로젝트 위험 관리 5단계(식별→분석→계획→실행→모니터링)와 대응 전략(회피·전가·완화·수용)을 서술하시오</span></div></div>
+          <div class="tip-box">
+            <div class="tip-head">💡 수험 전략</div>
+            EVM 계산 문항 단골—PV·EV·AC 수치를 주고 CPI·SPI·EAC 계산. CPM은 네트워크 다이어그램 그려 임계 경로 도출.
+          </div>
+        </div>
+      </div><div class="topic-card">
+        <div class="tc-head" onclick="tog(&#39;cpm1&#39;)">
+          <div class="tc-left">
+            <span class="freq-badge f5">5회 출제</span>
+            <span class="cat-badge">프로젝트관리</span>
+          </div>
+          <div class="tc-main">
+            <div class="tc-title">IT 아웃소싱·SLA·계약 관리</div>
+            <div class="tc-sub">조달 및 서비스 관리</div>
+          </div>
+          <span class="tc-arrow" id="arr-cpm1">▼</span>
+        </div>
+        <div class="tc-body" id="body-cpm1">
+          <div class="section-tag">출제 연도 <span style="font-weight:400;font-style:italic;color:#aaa">(파란색 = 최근 5년)</span></div>
+          <div class="year-chips"><span class="yc">100회</span><span class="yc">106회</span><span class="yc">111회</span><span class="yc r">116회</span><span class="yc r">121회</span></div>
+          <div class="section-tag">키워드</div>
+          <div class="kw-row" style="margin-bottom:.65rem"><span class="kw kw-b">SLA·SLO·SLI</span><span class="kw kw-g">아웃소싱 유형</span><span class="kw kw-r">XaaS 계약</span><span class="kw kw-a">벤더 관리</span><span class="kw kw-p">거버넌스 모델</span></div>
+          <div class="section-tag">유사·변형 출제 문항</div>
+          <div class="variants-box"><div class="v-item"><span class="v-num">Q1</span><span>IT 아웃소싱 유형(선택적·전체·공동 소싱)과 장단점, 아웃소싱 결정 기준을 서술하시오</span></div><div class="v-item"><span class="v-num">Q2</span><span>SLA(서비스 수준 협약)의 구성 요소(SLI·SLO·SLA)와 위반 시 페널티 체계를 설명하시오</span></div><div class="v-item"><span class="v-num">Q3</span><span>클라우드 서비스 계약(XaaS SLA)에서 가용성·보안·데이터 주권 조항의 핵심 내용을 논하시오</span></div></div>
+          <div class="tip-box">
+            <div class="tip-head">💡 수험 전략</div>
+            SLI(측정 지표) → SLO(목표) → SLA(계약) 계층 구조 명확히. Google SRE 에러 버짓 개념 추가 시 가점.
+          </div>
+        </div>
+      </div><div class="sec-div">법규·제도</div><div class="topic-card">
+        <div class="tc-head" onclick="tog(&#39;claw0&#39;)">
+          <div class="tc-left">
+            <span class="freq-badge f6">6회 출제</span>
+            <span class="cat-badge">법규·제도</span>
+          </div>
+          <div class="tc-main">
+            <div class="tc-title">개인정보보호법·GDPR — 법적 요건·동의·정보주체 권리</div>
+            <div class="tc-sub">데이터 보호 법규</div>
+          </div>
+          <span class="tc-arrow" id="arr-claw0">▼</span>
+        </div>
+        <div class="tc-body" id="body-claw0">
+          <div class="section-tag">출제 연도 <span style="font-weight:400;font-style:italic;color:#aaa">(파란색 = 최근 5년)</span></div>
+          <div class="year-chips"><span class="yc">101회</span><span class="yc">106회</span><span class="yc">111회</span><span class="yc">116회</span><span class="yc r">120회</span><span class="yc r">123회</span></div>
+          <div class="section-tag">키워드</div>
+          <div class="kw-row" style="margin-bottom:.65rem"><span class="kw kw-b">개보법 개정</span><span class="kw kw-b">정보주체 권리</span><span class="kw kw-g">동의</span><span class="kw kw-r">가명처리</span><span class="kw kw-a">GDPR 17조</span><span class="kw kw-p">마이데이터</span></div>
+          <div class="section-tag">유사·변형 출제 문항</div>
+          <div class="variants-box"><div class="v-item"><span class="v-num">Q1</span><span>개인정보보호법의 개인정보 처리 원칙(6가지)과 정보주체 권리(열람·정정·삭제·처리 정지)를 설명하시오</span></div><div class="v-item"><span class="v-num">Q2</span><span>GDPR의 핵심 원칙과 국내 개인정보보호법의 차이(동의 요건·DPO 의무화·역외 적용)를 비교하시오</span></div><div class="v-item"><span class="v-num">Q3</span><span>가명정보·익명정보의 차이와 가명처리 절차, 결합 활용 요건을 서술하시오</span></div><div class="v-item"><span class="v-num">Q4</span><span>2023년 개정 개인정보보호법의 주요 변경 사항(이동권·자동화 결정 거부권·과징금)을 설명하시오</span></div><div class="v-item"><span class="v-num">Q5</span><span>마이데이터(본인신용정보관리업) 서비스의 법적 근거와 데이터 주권 개념을 논하시오</span></div></div>
+          <div class="tip-box">
+            <div class="tip-head">💡 수험 전략</div>
+            2023년 개정 내용(이동권·자동화 결정 거부권 신설, 과징금 매출액 기준) 반드시 반영. DPO(개인정보 보호책임자) 의무 지정 기준도 숙지.
+          </div>
+        </div>
+      </div><div class="topic-card">
+        <div class="tc-head" onclick="tog(&#39;claw1&#39;)">
+          <div class="tc-left">
+            <span class="freq-badge f5">5회 출제</span>
+            <span class="cat-badge">법규·제도</span>
+          </div>
+          <div class="tc-main">
+            <div class="tc-title">전자정부법·정보화촉진법·SW진흥법 — IT 사업 법적 기반</div>
+            <div class="tc-sub">공공 IT 법규</div>
+          </div>
+          <span class="tc-arrow" id="arr-claw1">▼</span>
+        </div>
+        <div class="tc-body" id="body-claw1">
+          <div class="section-tag">출제 연도 <span style="font-weight:400;font-style:italic;color:#aaa">(파란색 = 최근 5년)</span></div>
+          <div class="year-chips"><span class="yc">99회</span><span class="yc">105회</span><span class="yc">110회</span><span class="yc r">116회</span><span class="yc r">121회</span></div>
+          <div class="section-tag">키워드</div>
+          <div class="kw-row" style="margin-bottom:.65rem"><span class="kw kw-b">전자정부법</span><span class="kw kw-g">행정정보 공동이용</span><span class="kw kw-r">상호운용성</span><span class="kw kw-a">SW 사업 대가 기준</span><span class="kw kw-p">분리 발주</span><span class="kw kw-b">공공 클라우드</span></div>
+          <div class="section-tag">유사·변형 출제 문항</div>
+          <div class="variants-box"><div class="v-item"><span class="v-num">Q1</span><span>전자정부법 상 행정정보 공동이용의 원칙과 범위, 정보 주체 동의 요건을 설명하시오</span></div><div class="v-item"><span class="v-num">Q2</span><span>소프트웨어 진흥법에 따른 SW 사업 대가 기준(기능점수법·투입공수법)과 분리 발주 의무를 서술하시오</span></div><div class="v-item"><span class="v-num">Q3</span><span>공공 클라우드 우선 정책의 법적 근거와 CC(Cloud Computing) 서비스 보안 인증 체계를 설명하시오</span></div><div class="v-item"><span class="v-num">Q4</span><span>행정기관 개인정보 영향평가(PIA) 의무 대상과 수행 절차를 서술하시오</span></div></div>
+          <div class="tip-box">
+            <div class="tip-head">💡 수험 전략</div>
+            정보관리 기술사 고유 출제 영역. 전자정부법 57조(감리 의무), SW진흥법 분리발주, 공공 CC서비스 보안인증 3등급 체계 숙지.
+          </div>
+        </div>
+      </div></div>
+</div>
+
+<script>
+const DATA = [
+
+/* ═══════════════════════════════
+   DB — 데이터베이스
+══════════════════════════════════ */
+{cat:'db', freq:8,
+ title:'정규화 이론 — 함수 종속·1NF~5NF·이상 현상·반정규화',
+ sub:'DB 설계 핵심 이론',
+ years:['94','97','100','103','108','111','115','120','123','126'],
+ recent:['120','123','126'],
+ kws:['함수 종속','부분 종속','이행 종속','BCNF','다치 종속','반정규화','성능 트레이드오프'],
+ kwt:['b','b','b','r','g','a','a'],
+ variants:[
+   '함수 종속(FD) 정의와 1NF부터 BCNF까지 각 정규형의 조건을 예시 릴레이션과 함께 설명하시오',
+   '이상 현상(삽입·삭제·갱신)의 발생 원인을 정규화 이론으로 설명하고 해결 과정을 서술하시오',
+   '반정규화(Denormalization)의 필요성과 기법(테이블 분할·합병·중복 컬럼 추가)을 논하시오',
+   '4NF·5NF에서 제거하는 다치 종속·조인 종속의 개념을 예시와 함께 설명하시오',
+   '함수 종속 추론 규칙(Armstrong 공리)과 정준 커버(Canonical Cover) 도출 과정을 서술하시오'
+ ],
+ tip:'정보관리 기술사 DB 파트 최빈출 1위. 릴레이션을 주고 정규형 판별 + 분해 과정을 직접 수행하는 유형이 주를 이룸. BCNF vs. 3NF 차이("모든 결정자가 후보키")를 명확히 정의하고 반정규화 trade-off를 반드시 언급.'},
+
+{cat:'db', freq:7,
+ title:'트랜잭션 관리 — ACID·격리수준·동시성 제어·회복',
+ sub:'DBMS 핵심 메커니즘',
+ years:['96','100','104','108','113','118','121','125'],
+ recent:['121','125'],
+ kws:['ACID','격리수준','2PL','MVCC','Undo·Redo','체크포인트','WAL'],
+ kwt:['b','b','r','g','p','a','a'],
+ variants:[
+   'ACID 속성을 설명하고 각 속성을 보장하는 DBMS 메커니즘(Lock·Undo Log·Redo Log)을 서술하시오',
+   '트랜잭션 격리 수준 4단계와 각 단계에서 발생 가능한 이상 현상(Dirty·Non-Repeatable·Phantom Read)을 비교하시오',
+   '2단계 잠금(2PL) 프로토콜의 동작 원리와 교착상태 가능성을 설명하시오',
+   'MVCC(다중 버전 동시성 제어)의 스냅샷 격리(SI) 원리와 낙관적 동시성 제어를 비교하시오',
+   'DBMS 회복 기법 — Undo·Redo·Check-point·WAL 프로토콜을 장애 유형별로 설명하시오'
+ ],
+ tip:'격리수준 4×3 이상현상 O/X 표는 반드시 암기. 회복 기법은 "장애 유형(시스템·매체·트랜잭션)별 대응"으로 구조화. WAL(Write-Ahead Logging) 원리를 트랜잭션 원자성·지속성과 연결.'},
+
+{cat:'db', freq:6,
+ title:'데이터 모델링 — ERD·관계형 변환·UML 클래스 다이어그램',
+ sub:'개념·논리 설계 방법론',
+ years:['97','102','107','112','117','122'],
+ recent:['117','122'],
+ kws:['개체-관계 모델','카디널리티','참조 무결성','식별/비식별 관계','수퍼타입·서브타입','정규화 연계'],
+ kwt:['b','b','r','g','p','a'],
+ variants:[
+   'E-R 다이어그램의 구성 요소와 카디널리티(1:1·1:N·M:N) 관계를 예시와 함께 설명하시오',
+   '수퍼타입·서브타입 모델링과 관계형 테이블 변환(Single·Plus·Separate) 방식을 비교하시오',
+   '식별 관계와 비식별 관계의 차이와 설계 선택 기준을 서술하시오',
+   'UML 클래스 다이어그램에서 연관·의존·집합·합성 관계를 ERD와 비교하여 설명하시오'
+ ],
+ tip:'설계 방법론(개념→논리→물리)의 산출물 흐름을 항상 먼저 제시. 수퍼/서브타입 변환 3가지를 그림+장단점 표로.'},
+
+{cat:'db', freq:6,
+ title:'인덱스 — B+ Tree·해시·클러스터드·파티셔닝·쿼리 최적화',
+ sub:'성능 튜닝 핵심',
+ years:['98','103','108','114','119','124'],
+ recent:['119','124'],
+ kws:['B+ Tree','클러스터드','실행 계획','선택도','파티셔닝','옵티마이저'],
+ kwt:['b','g','r','a','p','b'],
+ variants:[
+   'B+ Tree 인덱스의 구조와 리프 노드 체인을 이용한 범위 검색 메커니즘을 설명하시오',
+   '클러스터드 인덱스와 논클러스터드 인덱스의 차이, 복합 인덱스 컬럼 순서 결정 기준을 서술하시오',
+   'SQL 실행 계획(Execution Plan)에서 옵티마이저의 비용 기반 선택과 인덱스 스캔·풀 스캔 판단 기준을 설명하시오',
+   '테이블 파티셔닝(Range·Hash·List·Composite) 방식과 파티션 프루닝 효과를 논하시오'
+ ],
+ tip:'쿼리 최적화는 "힌트(Hint), 통계 정보, 선택도(Selectivity)" 키워드 포함. 파티셔닝은 VLDB·데이터 웨어하우스 맥락과 연결.'},
+
+{cat:'db', freq:5,
+ title:'데이터 웨어하우스 — DW·OLAP·데이터 마트·ETL',
+ sub:'분석 DB 아키텍처',
+ years:['99','105','110','116','122'],
+ recent:['116','122'],
+ kws:['스타 스키마','눈송이 스키마','OLAP','MOLAP·ROLAP','ETL','데이터 레이크'],
+ kwt:['b','g','r','a','p','b'],
+ variants:[
+   'OLTP와 OLAP의 차이를 트랜잭션·조회 패턴·DB 설계 관점에서 비교하시오',
+   '스타 스키마(Star Schema)와 눈송이 스키마(Snowflake Schema)를 비교하고 팩트·차원 테이블을 설명하시오',
+   'ETL(Extract-Transform-Load) 프로세스의 각 단계와 데이터 품질 이슈를 서술하시오',
+   '데이터 레이크(Data Lake)와 데이터 웨어하우스의 차이와 레이크하우스(Lakehouse) 아키텍처를 논하시오'
+ ],
+ tip:'스타 스키마 그림(Fact 중심, Dimension 방사형)은 필수. 최근 데이터 레이크하우스(Delta Lake, Apache Iceberg) 연계 문항 출제.'},
+
+{cat:'db', freq:5,
+ title:'NoSQL — 분산 DB·CAP 정리·BASE·MongoDB·Cassandra',
+ sub:'분산 데이터 저장',
+ years:['107','111','115','119','124'],
+ recent:['119','124'],
+ kws:['CAP 정리','BASE','키-값','문서형','컬럼 패밀리','그래프 DB','Eventually Consistent'],
+ kwt:['r','r','b','g','p','a','a'],
+ variants:[
+   'CAP 정리(일관성·가용성·분단 허용성)를 설명하고 CP·AP·CA 시스템의 대표 예시를 드시오',
+   'ACID와 BASE의 차이를 비교하고 분산 환경에서 BASE가 선택되는 이유를 논하시오',
+   'NoSQL DB 4가지 유형(키-값·문서·컬럼 패밀리·그래프)의 구조와 적합 워크로드를 비교하시오',
+   '샤딩(Sharding)과 복제(Replication) 전략, 일관성 해싱(Consistent Hashing)을 설명하시오'
+ ],
+ tip:'CAP에서 CP: HBase·Zookeeper, AP: Cassandra·CouchDB, CA: 전통 RDBMS 분류 예시. BASE = Basically Available, Soft state, Eventually consistent.'},
+
+/* ═══════════════════════════════
+   SW — 소프트웨어공학
+══════════════════════════════════ */
+{cat:'sw', freq:8,
+ title:'소프트웨어 개발 방법론 — SDLC 모델·Agile·DevOps 비교',
+ sub:'개발 프로세스 패러다임',
+ years:['95','99','103','107','111','115','119','123'],
+ recent:['119','123'],
+ kws:['폭포수','나선형','Scrum','XP','Kanban','CI/CD','DevSecOps'],
+ kwt:['b','g','r','r','a','p','r'],
+ variants:[
+   '폭포수·프로토타이핑·나선형·RAD 모델을 비교하고 각 모델의 적합 프로젝트 유형을 설명하시오',
+   '애자일 선언문의 4가지 가치와 12원칙을 서술하고 전통 방법론과의 차이를 논하시오',
+   'Scrum의 Sprint·제품 백로그·번다운 차트·회고를 설명하고 XP의 TDD·페어 프로그래밍과 비교하시오',
+   'DevOps 파이프라인(소스관리→빌드→테스트→배포→모니터링)의 각 단계와 핵심 도구를 서술하시오',
+   'DevSecOps의 개념과 SAST·DAST·SCA를 파이프라인 단계별 보안 통합 방안으로 설명하시오'
+ ],
+ tip:'나선형 4단계 그림 필수(계획→위험분석→개발→평가). 최근 DevSecOps·Supply Chain 보안 연계 문항 급증. Agile+DevOps 통합 질문에는 Value Stream Mapping 개념 추가.'},
+
+{cat:'sw', freq:7,
+ title:'소프트웨어 아키텍처 — 마이크로서비스·이벤트 기반·DDD',
+ sub:'아키텍처 패턴 및 설계',
+ years:['104','108','112','116','119','122','125'],
+ recent:['119','122','125'],
+ kws:['MSA','Bounded Context','CQRS','Event Sourcing','Saga 패턴','API Gateway','서비스 메시'],
+ kwt:['b','b','g','g','r','p','a'],
+ variants:[
+   '모놀리식 아키텍처와 MSA(마이크로서비스)를 비교하고 MSA 전환 시 고려 사항을 서술하시오',
+   'DDD(도메인 주도 설계)의 Bounded Context·Aggregate·Domain Event 개념을 설명하시오',
+   'CQRS 패턴과 Event Sourcing을 결합한 아키텍처의 장단점과 적용 사례를 논하시오',
+   'Saga 패턴(Choreography vs. Orchestration)으로 분산 트랜잭션을 관리하는 방법을 서술하시오',
+   'API Gateway의 역할(인증·라우팅·로드밸런싱·서킷 브레이커)과 BFF 패턴을 설명하시오'
+ ],
+ tip:'최근 시험 급부상. MSA 문항은 항상 "장점-단점-전환 시 고려 사항" 3단 구조. Event Sourcing은 이벤트 로그가 단일 진실 소스임을 강조.'},
+
+{cat:'sw', freq:6,
+ title:'소프트웨어 테스트 — 테스트 기법·커버리지·품질 지표',
+ sub:'품질 보증 방법론',
+ years:['97','101','106','111','116','121'],
+ recent:['116','121'],
+ kws:['블랙박스','화이트박스','경계값','동치분할','V 모델','MC/DC','결함 밀도'],
+ kwt:['b','b','g','g','r','r','a'],
+ variants:[
+   '블랙박스 테스트 기법(동치 분할·경계값 분석·결정 테이블·상태 전이) 각각을 예시와 함께 설명하시오',
+   '문장·분기·조건·MC/DC 커버리지의 차이를 비교하고 DO-178C 항공 안전 기준과 연관하여 설명하시오',
+   'V 모델에서 각 개발 단계에 대응하는 테스트 수준(단위·통합·시스템·인수)을 설명하시오',
+   '테스트 자동화 피라미드(Unit → Integration → E2E)와 각 계층별 도구를 서술하시오',
+   '결함 밀도·결함 추적·테스트 ROI를 이용한 소프트웨어 품질 측정 방법을 논하시오'
+ ],
+ tip:'V 모델 좌우 대칭 그림 필수. MC/DC는 "조건 한 번에 하나씩 변경" 예시로 설명. 최근 TDD·BDD·피라미드 자동화 문항 증가.'},
+
+{cat:'sw', freq:6,
+ title:'소프트웨어 품질 — ISO 25010·CMMI·기능점수·McCabe',
+ sub:'품질 모델 및 측정',
+ years:['96','101','106','111','116','121'],
+ recent:['116','121'],
+ kws:['ISO 25010','CMMI L3','기능점수','McCabe','기술 부채','SLA·SLO'],
+ kwt:['b','g','r','a','p','b'],
+ variants:[
+   'ISO/IEC 25010 품질 모델의 8가지 품질 특성과 하위 특성을 설명하고 측정 방법을 서술하시오',
+   'CMMI 5개 성숙도 레벨의 특징과 레벨 3(Defined) 프로세스 영역을 설명하시오',
+   '기능점수(FP) 산정 요소 5가지(ILF·EIF·EI·EO·EQ)와 가중치 적용 절차를 예시와 함께 서술하시오',
+   'McCabe 순환 복잡도 V(G) = E - N + 2P 공식을 플로우 그래프 예시로 계산하시오',
+   '기술 부채(Technical Debt)의 개념과 측정·관리 방안을 소프트웨어 유지보수 관점에서 논하시오'
+ ],
+ tip:'V(G) 계산 예시 문항 자주 출제—플로우 그래프 그리고 계산. 기능점수는 UAF(미조정 기능점수)×TCF(기술 복잡도 조정인자) 공식.'},
+
+{cat:'sw', freq:5,
+ title:'GoF 디자인 패턴 — 생성·구조·행위 23가지',
+ sub:'객체지향 설계 원칙',
+ years:['100','105','110','116','121'],
+ recent:['116','121'],
+ kws:['Singleton','Factory Method','Strategy','Observer','Decorator','SOLID','헥사고날'],
+ kwt:['b','b','g','g','r','r','p'],
+ variants:[
+   'GoF 디자인 패턴을 생성·구조·행위 3범주로 분류하고 각 범주의 대표 패턴을 설명하시오',
+   'Strategy 패턴과 Template Method 패턴의 차이를 코드 구조와 함께 서술하시오',
+   'Observer 패턴을 이벤트 기반 시스템과 연결하여 설명하고 Publisher-Subscriber와 비교하시오',
+   'SOLID 원칙 5가지와 각 원칙을 위반하는 안티패턴 사례를 설명하시오'
+ ],
+ tip:'패턴 이름만 나열하는 답은 감점. 반드시 UML 클래스 다이어그램 또는 의사코드와 함께 사용 목적·결과를 서술.'},
+
+/* ═══════════════════════════════
+   MIS — 경영정보·전략
+══════════════════════════════════ */
+{cat:'mis', freq:7,
+ title:'IT 거버넌스 — COBIT·ITIL·IT 전략 정렬',
+ sub:'IT 경영 프레임워크',
+ years:['99','103','107','111','115','119','123'],
+ recent:['119','123'],
+ kws:['COBIT 2019','ITIL 4','BSC','KPI','IT 투자 가치','거버넌스 vs. 관리'],
+ kwt:['b','b','g','r','a','p'],
+ variants:[
+   'IT 거버넌스의 5가지 영역(책임·전략 정렬·가치 전달·위험 관리·성과 측정)을 COBIT 관점에서 설명하시오',
+   'ITIL 4 서비스 가치 시스템(SVS)과 4가지 실천(Practice) 중 핵심 관리 실천을 서술하시오',
+   'IT Balanced Scorecard(BSC)의 4관점과 IT 투자 ROI 측정 방법을 논하시오',
+   'ISO/IEC 38500 IT 거버넌스 6원칙과 이사회·경영진 역할 분담을 설명하시오'
+ ],
+ tip:'COBIT vs. ITIL 비교 표(목적·대상·범위)가 단골. BSC는 재무-고객-내부프로세스-학습·성장 4관점 암기.'},
+
+{cat:'mis', freq:6,
+ title:'정보시스템 감리 — 감리 절차·점검 기준·결함 처리',
+ sub:'감리사 핵심 도메인',
+ years:['100','104','109','114','119','123'],
+ recent:['119','123'],
+ kws:['사전검토','착수·중간·완료 감리','감리 보고서','SW 감리 기준','전자정부 감리'],
+ kwt:['b','b','g','g','r','r'],
+ variants:[
+   '정보시스템 감리의 절차(사전검토→착수→중간→완료 감리)와 각 단계의 점검 항목을 설명하시오',
+   '소프트웨어 개발 사업 감리에서 요구사항·설계·구현·테스트 단계별 주요 감리 관점을 서술하시오',
+   '감리 결과 처리(결함 분류·시정 조치·재감리) 절차와 감리 보고서 작성 요건을 설명하시오',
+   '공공 정보화 사업에서 감리인의 역할과 「전자정부법」 상 의무 감리 대상을 논하시오'
+ ],
+ tip:'정보관리 기술사 시험의 핵심 차별화 도메인. 전자정부법 제57조 감리 의무 대상, 3단계 감리 점검 표 형식으로 답안 구성.'},
+
+{cat:'mis', freq:6,
+ title:'ERP·SCM·CRM — 기업 정보시스템 통합',
+ sub:'경영정보시스템 핵심',
+ years:['96','101','106','111','116','120'],
+ recent:['116','120'],
+ kws:['ERP 모듈','SCM 최적화','CRM 분석','BPR','SaaS ERP','디지털 전환'],
+ kwt:['b','g','r','a','p','b'],
+ variants:[
+   'ERP 시스템의 구성 모듈과 BPR(업무 재설계)와의 관계를 설명하고 도입 실패 원인을 논하시오',
+   'SCM(공급망 관리)에서 채찍 효과(Bullwhip Effect)의 발생 원인과 IT를 활용한 해소 방안을 서술하시오',
+   'CRM의 운영적·분석적·협업적 CRM을 구분하고 고객 생애 가치(CLV) 극대화 전략을 설명하시오',
+   'SaaS 기반 Cloud ERP와 온프레미스 ERP를 비교하고 전환 시 데이터 마이그레이션 이슈를 논하시오'
+ ],
+ tip:'ERP 도입 CSF(핵심 성공 요인): 경영진 지원·BPR 선행·커스터마이징 최소화·변경 관리. 채찍 효과 그래프(수요 변동 증폭) 그리기.'},
+
+{cat:'mis', freq:5,
+ title:'디지털 전환 — DX 전략·플랫폼 비즈니스·데이터 경제',
+ sub:'IT 경영 전략',
+ years:['113','117','120','122','125'],
+ recent:['120','122','125'],
+ kws:['디지털 트윈','플랫폼 전략','데이터 경제','API Economy','비즈니스 모델 혁신'],
+ kwt:['b','g','r','a','p'],
+ variants:[
+   '디지털 전환(DX)의 개념과 단계(디지털화→디지털라이제이션→DX)를 설명하고 기업 적용 사례를 논하시오',
+   '디지털 트윈(Digital Twin)의 구성 요소와 제조·인프라 분야 적용을 서술하시오',
+   '플랫폼 비즈니스 모델의 네트워크 효과와 전통 파이프라인 비즈니스와의 차이를 설명하시오',
+   'API Economy 개념과 Open Banking·마이데이터 서비스 적용 사례를 논하시오'
+ ],
+ tip:'최근 출제 빈도 급증. DX 3단계 구분 명확히. 디지털 트윈은 IoT-모델-시뮬레이션 3요소 구조도로.'},
+
+/* ═══════════════════════════════
+   NET — 네트워크·인터넷
+══════════════════════════════════ */
+{cat:'net', freq:6,
+ title:'네트워크 프로토콜 — TCP/IP·OSI 7계층·SDN·QoS',
+ sub:'네트워크 아키텍처',
+ years:['95','100','105','110','116','121'],
+ recent:['116','121'],
+ kws:['TCP 혼잡 제어','OSPF','BGP','SDN','QoS','MPLS'],
+ kwt:['b','b','g','g','r','a'],
+ variants:[
+   'OSI 7계층과 TCP/IP 4계층의 계층별 PDU·프로토콜을 대응하여 설명하시오',
+   'TCP 흐름 제어(슬라이딩 윈도우)와 혼잡 제어(슬로우 스타트·AIMD)를 단계별 그래프로 설명하시오',
+   'SDN의 데이터 플레인·컨트롤 플레인 분리와 OpenFlow 동작 원리를 서술하시오',
+   'QoS 보장 기법(IntServ·DiffServ·MPLS)과 실시간 트래픽 우선순위 처리를 설명하시오'
+ ],
+ tip:'혼잡 제어 cwnd 변화 그래프 필수. SDN은 3계층(응용-컨트롤-인프라) 구조도와 함께.'},
+
+{cat:'net', freq:5,
+ title:'웹·인터넷 기술 — REST API·HTTP/3·WebSocket·CDN',
+ sub:'애플리케이션 계층',
+ years:['103','108','113','118','123'],
+ recent:['118','123'],
+ kws:['RESTful','HTTP/3 QUIC','WebSocket','GraphQL','CDN','gRPC'],
+ kwt:['b','b','g','g','r','a'],
+ variants:[
+   'REST API 설계 원칙(Stateless·Uniform Interface·Layered System)과 RESTful URI 설계 규칙을 서술하시오',
+   'HTTP/1.1→HTTP/2→HTTP/3(QUIC) 진화 과정과 각 버전의 성능 개선 핵심을 설명하시오',
+   'WebSocket의 연결 수립(Upgrade Handshake)과 Server-Sent Events(SSE)·Long Polling과의 차이를 논하시오',
+   'CDN(콘텐츠 전송 네트워크)의 동작 원리와 엣지 컴퓨팅과의 결합 방안을 설명하시오'
+ ],
+ tip:'REST vs. GraphQL vs. gRPC 비교 표(요청 방식·오버/언더 패칭·적합 용도)는 최근 자주 출제. HTTP/3의 QUIC = UDP 기반 + 멀티플렉싱 + 0-RTT 핵심.'},
+
+{cat:'net', freq:4,
+ title:'5G·IoT·엣지 컴퓨팅 — 이동통신과 초연결 인프라',
+ sub:'차세대 통신 기술',
+ years:['114','118','121','124'],
+ recent:['121','124'],
+ kws:['5G NSA/SA','네트워크 슬라이싱','MEC','IoT 프로토콜','MQTT','디지털 트윈 연계'],
+ kwt:['b','b','g','r','a','p'],
+ variants:[
+   '5G 핵심 기술(mmWave·대규모 MIMO·네트워크 슬라이싱·MEC)과 4G와의 차이를 설명하시오',
+   'MEC(모바일 엣지 컴퓨팅)의 아키텍처와 클라우드·포그·엣지 컴퓨팅의 계층적 차이를 서술하시오',
+   'IoT 프로토콜(MQTT·CoAP·AMQP)의 특징과 적합 시나리오를 비교하시오'
+ ],
+ tip:'최근 출제 증가. 5G 슬라이싱(eMBB·URLLC·mMTC)과 산업별 적용 사례 준비. MEC = 지연 최소화 목적으로 기지국 근처 처리.'},
+
+/* ═══════════════════════════════
+   SEC — 정보보안
+══════════════════════════════════ */
+{cat:'sec', freq:7,
+ title:'암호화·PKI·디지털 서명 — 대칭·비대칭·해시 알고리즘',
+ sub:'암호 이론 및 응용',
+ years:['96','100','105','110','114','119','123'],
+ recent:['119','123'],
+ kws:['AES','RSA','ECC','SHA-3','PKI','디지털 서명','TLS 1.3'],
+ kwt:['b','b','g','r','a','p','b'],
+ variants:[
+   '대칭키 암호(AES·ARIA·SEED)와 비대칭키 암호(RSA·ECC)의 원리와 성능을 비교하시오',
+   'PKI 구성 요소(CA·RA·CRL·OCSP)와 인증서 발급·검증·폐기 절차를 서술하시오',
+   '디지털 서명의 생성·검증 과정에서 사용하는 키를 명시하고 부인방지 특성을 설명하시오',
+   'TLS 1.3 Handshake의 1-RTT 흐름과 TLS 1.2 대비 개선 사항(0-RTT·Perfect Forward Secrecy)을 설명하시오',
+   '양자 내성 암호(PQC)의 필요성과 NIST가 표준화한 알고리즘(CRYSTALS-Kyber 등)을 논하시오'
+ ],
+ tip:'서명=송신자 개인키, 기밀성=수신자 공개키 구분 필수. 최근 양자 컴퓨팅→PQC 전환 필요성 문항 증가. TLS 1.3 Handshake 흐름도 그리기.'},
+
+{cat:'sec', freq:6,
+ title:'정보보안 관리 체계 — ISMS-P·ISO 27001·위험 관리',
+ sub:'보안 거버넌스',
+ years:['98','103','108','113','118','122'],
+ recent:['118','122'],
+ kws:['ISMS-P 102개','ISO 27001','위험 평가','위협·취약점','BCP·DRP','제로 트러스트'],
+ kwt:['b','b','g','r','a','p'],
+ variants:[
+   'ISMS-P 인증 체계의 통합 배경(ISMS+PIMS)과 3단계 통제 구조(관리·보호대책·개인정보)를 설명하시오',
+   'ISO/IEC 27001 PDCA 사이클과 Annex A 93개 통제를 위험 관리 절차와 연계하여 설명하시오',
+   '정보보안 위험 관리 절차(자산 식별→위협·취약점 분석→위험 평가→처리)를 서술하시오',
+   'BCP(업무 연속성 계획)·DRP(재해 복구 계획)의 RTO·RPO 목표 수립과 DR 전략(Hot·Warm·Cold Site)을 설명하시오',
+   '제로 트러스트(Zero Trust) 보안 모델의 원칙과 전통적 경계 기반 보안과의 차이를 논하시오'
+ ],
+ tip:'ISMS-P는 102개 항목 구조(16개 분야)를 전체 나열보다 "인증 범위 결정→위험 평가→통제 구현→사후 심사" 흐름으로. 제로 트러스트 최근 급부상.'},
+
+{cat:'sec', freq:6,
+ title:'사이버 공격·취약점 — APT·랜섬웨어·OWASP·취약점 관리',
+ sub:'공격 기법 및 대응',
+ years:['99','104','109','114','119','123'],
+ recent:['119','123'],
+ kws:['APT 킬 체인','랜섬웨어','SQL 인젝션','XSS','공급망 공격','CVE·CVSS'],
+ kwt:['r','r','b','b','g','a'],
+ variants:[
+   'APT(Advanced Persistent Threat) 공격의 Kill Chain 7단계와 각 단계별 탐지·대응 방안을 설명하시오',
+   '랜섬웨어 감염 경로와 기술적·관리적·물리적 대응 방안을 서술하시오',
+   'OWASP Top 10 2021의 주요 취약점과 각 취약점의 근본 원인 및 방어 코딩 기법을 설명하시오',
+   '소프트웨어 공급망 공격(SolarWinds·Log4Shell 사례)의 특징과 SBOM을 활용한 대응을 논하시오'
+ ],
+ tip:'APT 킬 체인 7단계(정찰→무장→전달→악용→설치→명령제어→목표달성) 암기. 공급망 보안·SBOM은 최근 급부상 키워드.'},
+
+/* ═══════════════════════════════
+   AI — AI·빅데이터
+══════════════════════════════════ */
+{cat:'ai', freq:7,
+ title:'인공지능 — 머신러닝·딥러닝·생성형 AI·설명 가능 AI',
+ sub:'AI 기술 및 응용',
+ years:['109','112','115','118','121','123','126'],
+ recent:['121','123','126'],
+ kws:['지도·비지도·강화학습','CNN·RNN·Transformer','LLM','RAG','XAI','Hallucination'],
+ kwt:['b','b','r','g','p','r'],
+ variants:[
+   '머신러닝의 지도·비지도·강화학습을 비교하고 각 유형의 대표 알고리즘과 적용 사례를 설명하시오',
+   'Transformer의 Self-Attention 메커니즘과 BERT(양방향)·GPT(단방향) 사전학습 방식을 비교하시오',
+   'LLM(대형 언어 모델)의 할루시네이션(Hallucination) 문제와 RAG·파인튜닝을 활용한 완화 방안을 논하시오',
+   'XAI(설명 가능 AI)의 필요성과 LIME·SHAP·Attention 기반 해석 방법을 설명하시오',
+   'AI 신뢰성(Trustworthy AI)의 7가지 요건(투명성·공정성·프라이버시 등)과 EU AI Act를 연계하여 논하시오'
+ ],
+ tip:'최근 생성형 AI 문항 급증. RAG = 검색 증강 생성(외부 지식 검색+LLM 생성) 원리. XAI는 "설명 가능성 vs. 성능" 트레이드오프 언급 필수.'},
+
+{cat:'ai', freq:6,
+ title:'빅데이터 — 3V~7V·Hadoop·Spark·데이터 파이프라인',
+ sub:'빅데이터 플랫폼',
+ years:['107','110','113','116','120','123'],
+ recent:['120','123'],
+ kws:['3V(Volume·Velocity·Variety)','HDFS','MapReduce','Apache Spark','Lambda 아키텍처','데이터 메시'],
+ kwt:['b','g','g','r','a','p'],
+ variants:[
+   '빅데이터의 3V 개념을 설명하고 진실성(Veracity)·가치(Value)·가변성(Variability) 확장을 논하시오',
+   'Hadoop의 HDFS·MapReduce 아키텍처와 Apache Spark의 인메모리 처리 방식을 비교하시오',
+   'Lambda 아키텍처(배치·속도·서빙 레이어)와 Kappa 아키텍처의 차이를 설명하시오',
+   '데이터 메시(Data Mesh) 아키텍처의 4원칙과 기존 중앙집중식 데이터 레이크와의 차이를 논하시오'
+ ],
+ tip:'Lambda vs. Kappa 비교표(복잡도·지연·일관성). 데이터 메시 = 도메인 소유권·셀프서비스 인프라·연합 거버넌스·제품으로서의 데이터.'},
+
+{cat:'ai', freq:5,
+ title:'데이터 품질·데이터 거버넌스 — MDM·메타데이터·카탈로그',
+ sub:'데이터 관리 체계',
+ years:['104','109','114','119','124'],
+ recent:['119','124'],
+ kws:['데이터 품질 6차원','MDM','데이터 카탈로그','데이터 리니지','DAMA-DMBOK','데이터 스튜어드'],
+ kwt:['b','g','r','a','p','b'],
+ variants:[
+   '데이터 품질 6차원(완전성·정확성·일관성·적시성·유일성·유효성)과 측정·개선 방법을 서술하시오',
+   'MDM(마스터 데이터 관리)의 구현 방식(Registry·Consolidation·Coexistence·Centralized)을 비교하시오',
+   '데이터 거버넌스 체계(정책·조직·프로세스·기술)와 데이터 스튜어드십 역할을 설명하시오',
+   '데이터 카탈로그의 메타데이터·데이터 리니지(Lineage) 기능과 GDPR 데이터 계보 요건과의 연계를 논하시오'
+ ],
+ tip:'DAMA-DMBOK 11개 지식 영역 구조 파악. 데이터 리니지는 "원천→변환→소비" 추적 가능성 강조.'},
+
+/* ═══════════════════════════════
+   CLOUD — 클라우드·신기술
+══════════════════════════════════ */
+{cat:'cloud', freq:6,
+ title:'클라우드 컴퓨팅 — IaaS·PaaS·SaaS·컨테이너·서버리스',
+ sub:'클라우드 아키텍처',
+ years:['106','110','114','117','121','124'],
+ recent:['121','124'],
+ kws:['IaaS·PaaS·SaaS','하이브리드 클라우드','Kubernetes','서버리스','FinOps','클라우드 네이티브'],
+ kwt:['b','g','r','r','a','p'],
+ variants:[
+   'IaaS·PaaS·SaaS·FaaS의 책임 분담 모델(공동 책임 모델)과 각 서비스 모델의 적합 시나리오를 비교하시오',
+   '퍼블릭·프라이빗·하이브리드·멀티 클라우드 전략의 장단점과 선택 기준을 서술하시오',
+   'Kubernetes의 Pod·Service·Deployment·Ingress 구성 요소와 오토스케일링(HPA·VPA) 원리를 설명하시오',
+   '서버리스(FaaS) 아키텍처의 콜드 스타트 문제와 이벤트 기반 워크플로우 설계를 논하시오',
+   'FinOps 프레임워크의 Inform-Optimize-Operate 사이클과 클라우드 비용 최적화 전략을 설명하시오'
+ ],
+ tip:'공동 책임 모델(Shared Responsibility) 그림 필수—서비스 모델별 고객/공급자 책임 경계. Kubernetes YAML 구조는 아이디어 수준으로.'},
+
+{cat:'cloud', freq:5,
+ title:'뉴로모픽·양자 컴퓨팅·엣지 AI — 차세대 컴퓨팅 패러다임',
+ sub:'미래 컴퓨팅 기술',
+ years:['112','116','120','123','126'],
+ recent:['120','123','126'],
+ kws:['폰 노이만 병목','SNN·LIF','큐비트','양자 얽힘','메모리 월','PIM'],
+ kwt:['b','r','g','g','r','a'],
+ variants:[
+   '폰 노이만 아키텍처의 메모리 월 한계와 뉴로모픽 컴퓨팅(SNN·STDP·Loihi)으로 해결하는 방법을 설명하시오',
+   '양자 컴퓨팅의 큐비트·중첩·얽힘 원리와 Shor·Grover 알고리즘의 응용을 서술하시오',
+   'PIM(Processing-In-Memory) 아키텍처와 폰 노이만 방식의 데이터 이동 비용을 비교하시오'
+ ],
+ tip:'뉴로모픽과 양자 컴퓨팅은 항상 "기존 폰 노이만 대비 어떤 문제를 해결하는가"를 중심으로 답안 구성.'},
+
+{cat:'cloud', freq:4,
+ title:'블록체인 — DLT·합의 알고리즘·스마트 컨트랙트·STO',
+ sub:'분산 원장 기술',
+ years:['115','118','121','124'],
+ recent:['121','124'],
+ kws:['퍼블릭·프라이빗·컨소시엄','PoW·PoS·PBFT','스마트 컨트랙트','DeFi','CBDC','STO'],
+ kwt:['b','g','r','a','p','b'],
+ variants:[
+   '블록체인 유형(퍼블릭·프라이빗·컨소시엄)을 비교하고 기업 적용 시 선택 기준을 서술하시오',
+   'PoW·PoS·PBFT 합의 알고리즘의 원리·에너지 효율·탈중앙화 정도를 비교하시오',
+   'CBDC(중앙은행 디지털 화폐)의 설계 원칙과 블록체인 기술 적용 방안을 논하시오'
+ ],
+ tip:'PBFT = 비잔틴 장군 문제 해결, 허가형 블록체인에 적합. 51% 공격은 PoW에서만 해당됨을 명시.'},
+
+/* ═══════════════════════════════
+   PM — 프로젝트 관리
+══════════════════════════════════ */
+{cat:'pm', freq:6,
+ title:'프로젝트 관리 — PMBOK·일정·원가·위험·품질 관리',
+ sub:'프로젝트 관리 체계',
+ years:['97','102','107','112','117','122'],
+ recent:['117','122'],
+ kws:['WBS','EVM·CPI·SPI','Monte Carlo','PERT·CPM','리스크 대응','변경 관리'],
+ kwt:['b','r','g','a','r','b'],
+ variants:[
+   'PMBOK 7판의 12가지 원칙과 8가지 성과 영역을 6판 지식 영역과 비교하여 설명하시오',
+   'EVM(획득 가치 관리)의 PV·EV·AC·SV·CV·SPI·CPI 지표를 공식과 예시로 설명하시오',
+   'Monte Carlo 시뮬레이션을 일정·원가 위험 분석에 활용하는 방법을 서술하시오',
+   'CPM(임계 경로법)으로 프로젝트 일정을 계산하고 총 여유 시간(Total Float) 산출을 설명하시오',
+   '프로젝트 위험 관리 5단계(식별→분석→계획→실행→모니터링)와 대응 전략(회피·전가·완화·수용)을 서술하시오'
+ ],
+ tip:'EVM 계산 문항 단골—PV·EV·AC 수치를 주고 CPI·SPI·EAC 계산. CPM은 네트워크 다이어그램 그려 임계 경로 도출.'},
+
+{cat:'pm', freq:5,
+ title:'IT 아웃소싱·SLA·계약 관리',
+ sub:'조달 및 서비스 관리',
+ years:['100','106','111','116','121'],
+ recent:['116','121'],
+ kws:['SLA·SLO·SLI','아웃소싱 유형','XaaS 계약','벤더 관리','거버넌스 모델'],
+ kwt:['b','g','r','a','p'],
+ variants:[
+   'IT 아웃소싱 유형(선택적·전체·공동 소싱)과 장단점, 아웃소싱 결정 기준을 서술하시오',
+   'SLA(서비스 수준 협약)의 구성 요소(SLI·SLO·SLA)와 위반 시 페널티 체계를 설명하시오',
+   '클라우드 서비스 계약(XaaS SLA)에서 가용성·보안·데이터 주권 조항의 핵심 내용을 논하시오'
+ ],
+ tip:'SLI(측정 지표) → SLO(목표) → SLA(계약) 계층 구조 명확히. Google SRE 에러 버짓 개념 추가 시 가점.'},
+
+/* ═══════════════════════════════
+   LAW — 법규·제도
+══════════════════════════════════ */
+{cat:'law', freq:6,
+ title:'개인정보보호법·GDPR — 법적 요건·동의·정보주체 권리',
+ sub:'데이터 보호 법규',
+ years:['101','106','111','116','120','123'],
+ recent:['120','123'],
+ kws:['개보법 개정','정보주체 권리','동의','가명처리','GDPR 17조','마이데이터'],
+ kwt:['b','b','g','r','a','p'],
+ variants:[
+   '개인정보보호법의 개인정보 처리 원칙(6가지)과 정보주체 권리(열람·정정·삭제·처리 정지)를 설명하시오',
+   'GDPR의 핵심 원칙과 국내 개인정보보호법의 차이(동의 요건·DPO 의무화·역외 적용)를 비교하시오',
+   '가명정보·익명정보의 차이와 가명처리 절차, 결합 활용 요건을 서술하시오',
+   '2023년 개정 개인정보보호법의 주요 변경 사항(이동권·자동화 결정 거부권·과징금)을 설명하시오',
+   '마이데이터(본인신용정보관리업) 서비스의 법적 근거와 데이터 주권 개념을 논하시오'
+ ],
+ tip:'2023년 개정 내용(이동권·자동화 결정 거부권 신설, 과징금 매출액 기준) 반드시 반영. DPO(개인정보 보호책임자) 의무 지정 기준도 숙지.'},
+
+{cat:'law', freq:5,
+ title:'전자정부법·정보화촉진법·SW진흥법 — IT 사업 법적 기반',
+ sub:'공공 IT 법규',
+ years:['99','105','110','116','121'],
+ recent:['116','121'],
+ kws:['전자정부법','행정정보 공동이용','상호운용성','SW 사업 대가 기준','분리 발주','공공 클라우드'],
+ kwt:['b','g','r','a','p','b'],
+ variants:[
+   '전자정부법 상 행정정보 공동이용의 원칙과 범위, 정보 주체 동의 요건을 설명하시오',
+   '소프트웨어 진흥법에 따른 SW 사업 대가 기준(기능점수법·투입공수법)과 분리 발주 의무를 서술하시오',
+   '공공 클라우드 우선 정책의 법적 근거와 CC(Cloud Computing) 서비스 보안 인증 체계를 설명하시오',
+   '행정기관 개인정보 영향평가(PIA) 의무 대상과 수행 절차를 서술하시오'
+ ],
+ tip:'정보관리 기술사 고유 출제 영역. 전자정부법 57조(감리 의무), SW진흥법 분리발주, 공공 CC서비스 보안인증 3등급 체계 숙지.'},
+];
+
+const catLabel={all:'전체',db:'데이터베이스',sw:'소프트웨어공학',mis:'경영정보·전략',net:'네트워크·인터넷',sec:'정보보안',ai:'AI·빅데이터',cloud:'클라우드·신기술',pm:'프로젝트관리',law:'법규·제도'};
+function fClass(f){return f>=6?'f6':f===5?'f5':f===4?'f4':'f3'}
+function kwClass(t){return 'kw kw-'+t}
+let cur='all';
+
+function render(){
+  const filtered=cur==='all'?DATA:DATA.filter(d=>d.cat===cur);
+  const list=document.getElementById('list');
+  if(!filtered.length){list.innerHTML='<div class="empty">해당 도메인의 데이터가 없습니다.</div>';return}
+  const byCat={};
+  filtered.forEach(d=>{if(!byCat[d.cat])byCat[d.cat]=[];byCat[d.cat].push(d)});
+  let html='';
+  for(const cat in byCat){
+    if(cur==='all') html+=`<div class="sec-div">${catLabel[cat]}</div>`;
+    byCat[cat].sort((a,b)=>b.freq-a.freq).forEach((d,i)=>{
+      const id='c'+cat+i;
+      const ychips=d.years.map(y=>`<span class="yc${d.recent.includes(y)?' r':''}">${y}회</span>`).join('');
+      const kws=d.kws.map((k,j)=>`<span class="${kwClass(d.kwt[j])}">${k}</span>`).join('');
+      const vars=d.variants.map((v,j)=>`<div class="v-item"><span class="v-num">Q${j+1}</span><span>${v}</span></div>`).join('');
+      html+=`<div class="topic-card">
+        <div class="tc-head" onclick="tog('${id}')">
+          <div class="tc-left">
+            <span class="freq-badge ${fClass(d.freq)}">${d.freq}회 출제</span>
+            <span class="cat-badge">${catLabel[d.cat]}</span>
+          </div>
+          <div class="tc-main">
+            <div class="tc-title">${d.title}</div>
+            <div class="tc-sub">${d.sub}</div>
+          </div>
+          <span class="tc-arrow" id="arr-${id}">▼</span>
+        </div>
+        <div class="tc-body" id="body-${id}">
+          <div class="section-tag">출제 연도 <span style="font-weight:400;font-style:italic;color:#aaa">(파란색 = 최근 5년)</span></div>
+          <div class="year-chips">${ychips}</div>
+          <div class="section-tag">키워드</div>
+          <div class="kw-row" style="margin-bottom:.65rem">${kws}</div>
+          <div class="section-tag">유사·변형 출제 문항</div>
+          <div class="variants-box">${vars}</div>
+          <div class="tip-box">
+            <div class="tip-head">💡 수험 전략</div>
+            ${d.tip}
+          </div>
+        </div>
+      </div>`;
+    });
+  }
+  list.innerHTML=html;
+}
+
+function tog(id){
+  const b=document.getElementById('body-'+id);
+  const a=document.getElementById('arr-'+id);
+  const o=b.classList.toggle('open');
+  a.textContent=o?'▲':'▼';
+}
+
+document.getElementById('frow').addEventListener('click',e=>{
+  const b=e.target.closest('.fb');
+  if(!b)return;
+  document.querySelectorAll('.fb').forEach(x=>x.classList.remove('on'));
+  b.classList.add('on');
+  cur=b.dataset.f;
+  render();
+});
+
+document.getElementById('s6').textContent=DATA.filter(d=>d.freq>=6).length;
+document.getElementById('s5').textContent=DATA.filter(d=>d.freq===5).length;
+document.getElementById('s4').textContent=DATA.filter(d=>d.freq===4).length;
+document.getElementById('s3').textContent=DATA.filter(d=>d.freq===3).length;
+document.getElementById('stot').textContent=DATA.length;
+render();
+</script>
+
+
+</body></html>

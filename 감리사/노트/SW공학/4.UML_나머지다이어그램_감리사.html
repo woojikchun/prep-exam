@@ -1,0 +1,985 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;900&family=JetBrains+Mono:wght@400;700&display=swap');
+:root{--bg:#04090f;--s1:#070f1c;--s2:#0b1528;--s3:#101c34;--bdr:#1e3560;--a1:#60a5fa;--a2:#34d399;--a3:#fbbf24;--a4:#f87171;--a5:#a78bfa;--a6:#fb923c;--a7:#f472b6;--txt:#e2e8f0;--mu:#64748b;}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Noto Sans KR',sans-serif;background:var(--bg);color:var(--txt);min-height:100vh;}
+.hdr{padding:20px 24px 14px;background:linear-gradient(150deg,#04090f,#091222,#04090f);border-bottom:1px solid var(--bdr);}
+.hdr-r{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:6px;}
+.pill{padding:3px 10px;border-radius:20px;font-size:10px;font-weight:700;}
+.p1{background:linear-gradient(135deg,#1e3a8a,var(--a1));color:#fff;}
+.p2{background:rgba(52,211,153,.15);color:var(--a2);border:1px solid rgba(52,211,153,.3);}
+.p3{background:rgba(251,191,36,.15);color:var(--a3);border:1px solid rgba(251,191,36,.3);}
+h1{font-size:18px;font-weight:900;}
+.h1g{background:linear-gradient(90deg,var(--a1),var(--a5),var(--a2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.hdr p{color:var(--mu);font-size:11.5px;margin-top:3px;}
+.tabs{display:flex;padding:0 24px;background:var(--s1);border-bottom:1px solid var(--bdr);overflow-x:auto;scrollbar-width:none;}
+.tabs::-webkit-scrollbar{display:none;}
+.tab{padding:10px 13px;font-size:11.5px;font-weight:600;color:var(--mu);cursor:pointer;border-bottom:2px solid transparent;white-space:nowrap;transition:all .2s;background:none;border-top:none;border-left:none;border-right:none;font-family:'Noto Sans KR',sans-serif;}
+.tab.on{color:var(--a1);border-bottom-color:var(--a1);}
+.wrap{padding:18px 24px;max-width:960px;margin:0 auto;}
+.pnl{display:none;}.pnl.on{display:block;}
+.card{background:var(--s1);border:1px solid var(--bdr);border-radius:11px;padding:16px;margin-bottom:12px;}
+.card-h{display:flex;align-items:center;gap:9px;margin-bottom:12px;}
+.ico{width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0;}
+.ib{background:rgba(96,165,250,.15);}.ig{background:rgba(52,211,153,.15);}.iy{background:rgba(251,191,36,.15);}.ir{background:rgba(248,113,113,.15);}.ip{background:rgba(167,139,250,.15);}.io{background:rgba(251,146,60,.15);}
+.card h3{font-size:13.5px;font-weight:700;}
+.tag{display:inline-block;padding:2px 7px;border-radius:4px;font-size:9.5px;font-weight:600;margin:2px 2px 2px 0;}
+.tb{background:rgba(96,165,250,.12);color:var(--a1);border:1px solid rgba(96,165,250,.25);}
+.tg{background:rgba(52,211,153,.12);color:var(--a2);border:1px solid rgba(52,211,153,.25);}
+.ty{background:rgba(251,191,36,.12);color:var(--a3);border:1px solid rgba(251,191,36,.25);}
+.tr{background:rgba(248,113,113,.12);color:var(--a4);border:1px solid rgba(248,113,113,.25);}
+.tp{background:rgba(167,139,250,.12);color:var(--a5);border:1px solid rgba(167,139,250,.25);}
+.to{background:rgba(251,146,60,.12);color:var(--a6);border:1px solid rgba(251,146,60,.25);}
+table{width:100%;border-collapse:collapse;font-size:12px;}
+th{background:var(--s2);color:var(--mu);font-weight:700;padding:7px 11px;text-align:left;font-size:9.5px;text-transform:uppercase;letter-spacing:.5px;border-bottom:1px solid var(--bdr);}
+td{padding:8px 11px;border-bottom:1px solid rgba(30,53,96,.5);vertical-align:top;line-height:1.55;}
+tr:last-child td{border-bottom:none;}
+tr:hover td{background:rgba(255,255,255,.02);}
+td strong{color:var(--a3);}
+ul.il{list-style:none;display:flex;flex-direction:column;gap:6px;}
+ul.il li{font-size:12px;padding-left:15px;position:relative;line-height:1.5;}
+ul.il li::before{content:'▸';position:absolute;left:0;color:var(--a1);font-size:9.5px;top:3px;}
+ul.il li strong{color:var(--a3);}
+ul.il li em{color:var(--a2);font-style:normal;}
+.memo{background:linear-gradient(135deg,rgba(96,165,250,.07),rgba(52,211,153,.07));border:1px solid rgba(96,165,250,.22);border-left:3px solid var(--a1);border-radius:7px;padding:9px 13px;font-size:12px;font-weight:600;color:var(--a1);margin:9px 0;}
+.memo::before{content:'🎯 핵심 암기 │ ';color:var(--mu);font-weight:400;}
+.warn{background:rgba(248,113,113,.07);border:1px solid rgba(248,113,113,.25);border-left:3px solid var(--a4);border-radius:7px;padding:9px 13px;font-size:12px;font-weight:600;color:var(--a4);margin:9px 0;}
+.warn::before{content:'⚠️ 함정 포인트 │ ';color:var(--mu);font-weight:400;}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px;}
+@media(max-width:580px){.g2{grid-template-columns:1fr;}}
+/* acc */
+.acc{background:var(--s2);border:1px solid var(--bdr);border-radius:9px;margin-bottom:8px;overflow:hidden;}
+.acc-h{display:flex;justify-content:space-between;align-items:center;padding:10px 14px;cursor:pointer;user-select:none;}
+.acc-h:hover{background:rgba(255,255,255,.02);}
+.acc-title{font-size:12.5px;font-weight:800;flex:1;}
+.acc-tgl{color:var(--mu);transition:transform .2s;font-size:14px;flex-shrink:0;margin-left:8px;}
+.acc.open .acc-tgl{transform:rotate(180deg);}
+.acc-body{display:none;border-top:1px solid var(--bdr);padding:12px 14px;background:var(--s3);font-size:12px;line-height:1.65;}
+.acc.open .acc-body{display:block;}
+.acc-body strong{color:var(--a3);}
+.acc-body em{color:var(--a2);font-style:normal;}
+/* qa */
+.qa{background:var(--s1);border:1px solid var(--bdr);border-radius:9px;margin-bottom:10px;overflow:hidden;}
+.qa:hover{border-color:rgba(96,165,250,.25);}
+.qa-hd{padding:12px 16px;cursor:pointer;display:flex;justify-content:space-between;align-items:flex-start;gap:9px;user-select:none;}
+.qa-meta{display:flex;align-items:center;gap:5px;margin-bottom:4px;flex-wrap:wrap;}
+.qn{font-family:'JetBrains Mono',monospace;font-size:9.5px;font-weight:700;color:var(--mu);}
+.qq{font-size:12.5px;font-weight:600;line-height:1.5;}
+.tgl{color:var(--mu);font-size:15px;flex-shrink:0;transition:transform .2s;}
+.qa.open .tgl{transform:rotate(180deg);}
+.qa-bd{display:none;border-top:1px solid var(--bdr);padding:12px 16px;background:var(--s2);}
+.qa.open .qa-bd{display:block;}
+.chs{display:flex;flex-direction:column;gap:6px;margin-bottom:10px;}
+.ch{display:flex;align-items:flex-start;gap:9px;padding:8px 12px;border-radius:6px;border:1px solid var(--bdr);font-size:12px;cursor:pointer;background:var(--s1);line-height:1.45;transition:all .15s;}
+.ch:hover:not(.lk){border-color:rgba(96,165,250,.3);background:rgba(96,165,250,.04);}
+.ch.ok{border-color:var(--a2);background:rgba(52,211,153,.1);color:var(--a2);}
+.ch.ng{border-color:var(--a4);background:rgba(248,113,113,.08);color:var(--a4);opacity:.7;}
+.ch.lk{cursor:default;}
+.cnum{font-family:'JetBrains Mono',monospace;font-weight:700;font-size:10.5px;flex-shrink:0;margin-top:1px;color:var(--mu);}
+.ch.ok .cnum{color:var(--a2);}.ch.ng .cnum{color:var(--a4);}
+.exp{background:rgba(96,165,250,.05);border:1px solid rgba(96,165,250,.18);border-radius:7px;padding:11px 13px;font-size:12px;line-height:1.6;display:none;}
+.exp.show{display:block;}
+.exp-t{font-size:9.5px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--a1);margin-bottom:5px;}
+.exp strong{color:var(--a3);}
+.exp em{color:var(--a2);font-style:normal;}
+.ox-wr{display:flex;gap:8px;margin-bottom:10px;}
+.ox{flex:1;padding:10px;border-radius:7px;border:1px solid var(--bdr);font-size:18px;cursor:pointer;background:var(--s1);transition:all .15s;font-family:'Noto Sans KR',sans-serif;color:var(--txt);}
+.ox:hover:not(.lk){transform:scale(1.02);}
+.ox.so{border-color:var(--a2);background:rgba(52,211,153,.15);}
+.ox.sx{border-color:var(--a4);background:rgba(248,113,113,.1);}
+.ox.lk{cursor:default;}
+.diff{display:inline-block;padding:2px 6px;border-radius:9px;font-size:8.5px;font-weight:700;}
+.easy{background:rgba(52,211,153,.2);color:var(--a2);}
+.mid{background:rgba(251,191,36,.2);color:var(--a3);}
+.hard{background:rgba(248,113,113,.2);color:var(--a4);}
+.fb-wr{display:flex;gap:5px;flex-wrap:wrap;margin-bottom:12px;}
+.fb{padding:4px 11px;border-radius:18px;border:1px solid var(--bdr);font-size:10.5px;font-weight:600;cursor:pointer;background:var(--s2);color:var(--mu);transition:all .15s;font-family:'Noto Sans KR',sans-serif;}
+.fb.on{background:rgba(96,165,250,.15);color:var(--a1);border-color:var(--a1);}
+.sc-b{background:var(--s2);border:1px solid var(--bdr);border-radius:7px;padding:4px 12px;font-size:11.5px;color:var(--mu);}
+.sc-b span{color:var(--a1);font-weight:700;}
+</style>
+</head>
+<body>
+<div class="hdr">
+  <div class="hdr-r">
+    <span class="pill p1">UML 다이어그램 (UC·Class 제외)</span>
+    <span class="pill p2">순서·활동·상태·컴포넌트·배포·기타</span>
+    <span class="pill p3">감리사 핵심 출제</span>
+  </div>
+  <h1><span class="h1g">UML 나머지 다이어그램 완전 정리</span></h1>
+  <p>순서 · 통신 · 활동 · 상태머신 · 컴포넌트 · 배포 · 객체 · 패키지 다이어그램</p>
+</div>
+<div class="tabs">
+  <button class="tab on" data-p="p1">📋 UML 전체 지도</button>
+  <button class="tab" data-p="p2">📨 순서·통신 다이어그램</button>
+  <button class="tab" data-p="p3">🔄 활동·상태 다이어그램</button>
+  <button class="tab" data-p="p4">🧩 컴포넌트·배포 다이어그램</button>
+  <button class="tab" data-p="p5">📦 객체·패키지·기타</button>
+  <button class="tab" data-p="p6">❓ 예상문제</button>
+</div>
+<div class="wrap">
+
+<!-- P1: 전체 지도 -->
+<div class="pnl on" id="p1">
+  <div class="card">
+    <div class="card-h"><div class="ico ib">📋</div><h3>UML 다이어그램 전체 분류 체계 ⭐</h3></div>
+    <table>
+      <thead><tr><th>대분류</th><th>다이어그램</th><th>목적</th><th>시험 중요도</th></tr></thead>
+      <tbody>
+        <tr>
+          <td rowspan="5"><span class="tag tb">구조 다이어그램<br>(Structure)</span></td>
+          <td><strong>클래스 다이어그램</strong></td><td>정적 구조·클래스 관계</td><td><span class="tag ty">★★★</span> <em style="color:var(--mu);font-size:10px;">별도 정리</em></td>
+        </tr>
+        <tr><td><strong>객체 다이어그램</strong></td><td>클래스의 인스턴스 스냅샷</td><td><span class="tag tg">★★</span></td></tr>
+        <tr><td><strong>컴포넌트 다이어그램 ⭐</strong></td><td>SW 컴포넌트·인터페이스 구조</td><td><span class="tag ty">★★★</span></td></tr>
+        <tr><td><strong>배포 다이어그램 ⭐</strong></td><td>HW 노드·SW 배포 구조</td><td><span class="tag ty">★★★</span></td></tr>
+        <tr><td><strong>패키지 다이어그램</strong></td><td>패키지 구성·의존 관계</td><td><span class="tag tg">★★</span></td></tr>
+        <tr>
+          <td rowspan="3"><span class="tag tg">행위 다이어그램<br>(Behavior)</span></td>
+          <td><strong>유스케이스 다이어그램</strong></td><td>기능 요구사항·시스템 경계</td><td><span class="tag ty">★★★</span> <em style="color:var(--mu);font-size:10px;">별도 정리</em></td>
+        </tr>
+        <tr><td><strong>활동 다이어그램 ⭐</strong></td><td>업무 흐름·프로세스·병렬 처리</td><td><span class="tag ty">★★★</span></td></tr>
+        <tr><td><strong>상태 머신 다이어그램 ⭐</strong></td><td>객체 상태 변화·이벤트 처리</td><td><span class="tag ty">★★★</span></td></tr>
+        <tr>
+          <td rowspan="4"><span class="tag tp">상호작용 다이어그램<br>(Interaction)</span></td>
+          <td><strong>순서 다이어그램 ⭐</strong></td><td>객체 간 시간 순서 메시지</td><td><span class="tag ty">★★★</span></td>
+        </tr>
+        <tr><td><strong>통신 다이어그램</strong></td><td>객체 간 관계+메시지 (순서와 동등)</td><td><span class="tag tg">★★</span></td></tr>
+        <tr><td><strong>타이밍 다이어그램</strong></td><td>시간 제약·상태 변화 타임라인</td><td><span class="tag tg">★</span></td></tr>
+        <tr><td><strong>상호작용 개요 다이어그램</strong></td><td>상호작용 다이어그램의 개요</td><td><span class="tag tg">★</span></td></tr>
+      </tbody>
+    </table>
+
+    <div style="background:var(--s2);border:1px solid rgba(96,165,250,.25);border-radius:9px;padding:12px;margin-top:10px;">
+      <p style="font-size:11.5px;font-weight:800;color:var(--a1);margin-bottom:8px;">다이어그램 선택 가이드 ⭐</p>
+      <table>
+        <thead><tr><th>질문</th><th>사용할 다이어그램</th></tr></thead>
+        <tbody>
+          <tr><td>"객체들이 어떤 <strong>순서</strong>로 메시지를 주고받나?"</td><td><strong>순서 다이어그램</strong></td></tr>
+          <tr><td>"업무 <strong>흐름</strong>이 어떻게 진행되나? (분기·병렬)"</td><td><strong>활동 다이어그램</strong></td></tr>
+          <tr><td>"객체의 <strong>상태</strong>가 어떻게 변하나?"</td><td><strong>상태 머신 다이어그램</strong></td></tr>
+          <tr><td>"SW <strong>컴포넌트</strong>들이 어떻게 구성되나?"</td><td><strong>컴포넌트 다이어그램</strong></td></tr>
+          <tr><td>"HW 서버에 SW가 어떻게 <strong>배포</strong>되나?"</td><td><strong>배포 다이어그램</strong></td></tr>
+          <tr><td>"클래스의 특정 시점 <strong>인스턴스</strong>는?"</td><td><strong>객체 다이어그램</strong></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="memo">구조=정적(클래스·컴포넌트·배포) / 행위=동적(유스케이스·활동·상태) / 상호작용=메시지교환(순서·통신) / 감리사 핵심=순서·활동·상태·컴포넌트·배포</div>
+  </div>
+</div>
+
+<!-- P2: 순서·통신 -->
+<div class="pnl" id="p2">
+  <div class="card">
+    <div class="card-h"><div class="ico ip">📨</div><h3>순서 다이어그램 (Sequence Diagram) ⭐⭐</h3></div>
+    <div style="background:var(--s2);border:1px solid rgba(167,139,250,.25);border-radius:9px;padding:12px;margin-bottom:10px;font-size:12.5px;line-height:1.8;">
+      <strong style="color:var(--a5)">순서 다이어그램</strong>: 객체 간의 <em style="color:var(--a3);font-style:normal;">메시지 교환을 시간 순서</em>에 따라 표현하는 상호작용 다이어그램 — 유스케이스의 특정 시나리오를 상세화하는 데 가장 많이 사용
+    </div>
+
+    <!-- SVG: 순서 다이어그램 -->
+    <svg viewBox="0 0 720 380" xmlns="http://www.w3.org/2000/svg" style="width:100%;background:var(--s2);border-radius:9px;border:1px solid var(--bdr);margin:10px 0;">
+      <!-- 헤더 박스 (생명선) -->
+      <rect x="30" y="15" width="90" height="34" fill="rgba(96,165,250,.2)" stroke="#60a5fa" stroke-width="1.5" rx="3"/>
+      <text x="75" y="37" text-anchor="middle" font-family="JetBrains Mono" font-size="11" fill="#60a5fa" font-weight="bold">:Client</text>
+      <rect x="200" y="15" width="100" height="34" fill="rgba(52,211,153,.15)" stroke="#34d399" stroke-width="1.5" rx="3"/>
+      <text x="250" y="37" text-anchor="middle" font-family="JetBrains Mono" font-size="11" fill="#34d399" font-weight="bold">:Controller</text>
+      <rect x="380" y="15" width="90" height="34" fill="rgba(251,191,36,.15)" stroke="#fbbf24" stroke-width="1.5" rx="3"/>
+      <text x="425" y="37" text-anchor="middle" font-family="JetBrains Mono" font-size="11" fill="#fbbf24" font-weight="bold">:Service</text>
+      <rect x="540" y="15" width="80" height="34" fill="rgba(248,113,113,.15)" stroke="#f87171" stroke-width="1.5" rx="3"/>
+      <text x="580" y="37" text-anchor="middle" font-family="JetBrains Mono" font-size="11" fill="#f87171" font-weight="bold">:DB</text>
+
+      <!-- 생명선 (수직 점선) -->
+      <line x1="75" y1="49" x2="75" y2="360" stroke="#60a5fa" stroke-width="1" stroke-dasharray="5,3"/>
+      <line x1="250" y1="49" x2="250" y2="360" stroke="#34d399" stroke-width="1" stroke-dasharray="5,3"/>
+      <line x1="425" y1="49" x2="425" y2="360" stroke="#fbbf24" stroke-width="1" stroke-dasharray="5,3"/>
+      <line x1="580" y1="49" x2="580" y2="360" stroke="#f87171" stroke-width="1" stroke-dasharray="5,3"/>
+
+      <!-- 활성화 박스 -->
+      <rect x="70" y="78" width="10" height="220" fill="rgba(96,165,250,.3)" stroke="#60a5fa" stroke-width="1"/>
+      <rect x="245" y="98" width="10" height="170" fill="rgba(52,211,153,.3)" stroke="#34d399" stroke-width="1"/>
+      <rect x="420" y="120" width="10" height="120" fill="rgba(251,191,36,.3)" stroke="#fbbf24" stroke-width="1"/>
+      <rect x="575" y="142" width="10" height="70" fill="rgba(248,113,113,.3)" stroke="#f87171" stroke-width="1"/>
+
+      <!-- 메시지 1: 동기 메시지 -->
+      <line x1="80" y1="90" x2="245" y2="90" stroke="#e2e8f0" stroke-width="1.5"/>
+      <polygon points="245,90 233,85 233,95" fill="#e2e8f0"/>
+      <text x="155" y="83" text-anchor="middle" font-family="JetBrains Mono" font-size="9" fill="#e2e8f0">login(id, pw)</text>
+      <text x="80" y="105" font-family="Noto Sans KR" font-size="8" fill="#64748b">① 동기 메시지 (실선+채운화살표)</text>
+
+      <!-- 메시지 2 -->
+      <line x1="255" y1="120" x2="420" y2="120" stroke="#e2e8f0" stroke-width="1.5"/>
+      <polygon points="420,120 408,115 408,125" fill="#e2e8f0"/>
+      <text x="335" y="113" text-anchor="middle" font-family="JetBrains Mono" font-size="9" fill="#e2e8f0">validate(id, pw)</text>
+
+      <!-- 메시지 3 -->
+      <line x1="430" y1="145" x2="575" y2="145" stroke="#e2e8f0" stroke-width="1.5"/>
+      <polygon points="575,145 563,140 563,150" fill="#e2e8f0"/>
+      <text x="500" y="138" text-anchor="middle" font-family="JetBrains Mono" font-size="9" fill="#e2e8f0">findUser(id)</text>
+
+      <!-- 메시지 4: 반환 메시지 -->
+      <line x1="575" y1="180" x2="430" y2="180" stroke="#60a5fa" stroke-width="1.5" stroke-dasharray="5,3"/>
+      <polygon points="430,180 442,175 442,185" fill="#60a5fa"/>
+      <text x="500" y="173" text-anchor="middle" font-family="JetBrains Mono" font-size="9" fill="#60a5fa">User 객체</text>
+      <text x="570" y="195" font-family="Noto Sans KR" font-size="8" fill="#64748b">② 반환 메시지 (점선+빈화살표)</text>
+
+      <!-- alt 결합 프래그먼트 -->
+      <rect x="390" y="200" width="218" height="100" fill="none" stroke="#a78bfa" stroke-width="1.5" rx="3"/>
+      <rect x="390" y="200" width="40" height="16" fill="rgba(167,139,250,.3)" rx="2"/>
+      <text x="410" y="212" text-anchor="middle" font-family="JetBrains Mono" font-size="9" fill="#a78bfa" font-weight="bold">alt</text>
+      <text x="395" y="228" font-family="JetBrains Mono" font-size="8" fill="#34d399">[pw 일치]</text>
+      <line x1="430" y1="235" x2="575" y2="235" stroke="#34d399" stroke-width="1.5"/>
+      <polygon points="430,235 442,230 442,240" fill="#34d399"/>
+      <text x="500" y="228" text-anchor="middle" font-family="JetBrains Mono" font-size="9" fill="#34d399">updateLastLogin()</text>
+      <line x1="390" y1="258" x2="608" y2="258" stroke="#a78bfa" stroke-width="1" stroke-dasharray="3,2"/>
+      <text x="395" y="274" font-family="JetBrains Mono" font-size="8" fill="#f87171">[else pw 불일치]</text>
+      <line x1="430" y1="285" x2="575" y2="285" stroke="#f87171" stroke-width="1.5"/>
+      <polygon points="430,285 442,280 442,290" fill="#f87171"/>
+      <text x="500" y="278" text-anchor="middle" font-family="JetBrains Mono" font-size="9" fill="#f87171">logFailure()</text>
+      <text x="400" y="310" font-family="Noto Sans KR" font-size="8" fill="#64748b">③ alt 결합 프래그먼트 (조건 분기)</text>
+
+      <!-- 반환 메시지 최종 -->
+      <line x1="245" y1="330" x2="80" y2="330" stroke="#60a5fa" stroke-width="1.5" stroke-dasharray="5,3"/>
+      <polygon points="80,330 92,325 92,335" fill="#60a5fa"/>
+      <text x="155" y="323" text-anchor="middle" font-family="JetBrains Mono" font-size="9" fill="#60a5fa">loginResult</text>
+
+      <!-- 범례 -->
+      <text x="30" y="355" font-family="Noto Sans KR" font-size="9" fill="#64748b">생명선(수직점선) | 활성화(좁은직사각형) | 동기=실선+채운화살표 | 반환=점선+빈화살표 | alt=조건분기</text>
+    </svg>
+
+    <div class="acc open" onclick="this.classList.toggle('open')">
+      <div class="acc-h"><div class="acc-title" style="color:var(--a5);">순서 다이어그램 핵심 구성 요소 ⭐</div><div class="acc-tgl">▾</div></div>
+      <div class="acc-body">
+        <table>
+          <thead><tr><th>구성 요소</th><th>표기</th><th>설명</th></tr></thead>
+          <tbody>
+            <tr><td><strong>생명선 (Lifeline) ⭐</strong></td><td>박스:이름 + 수직 점선</td><td>객체의 존재 기간 표현 / 상단 박스에 :클래스명 표기</td></tr>
+            <tr><td><strong>활성화 (Activation) ⭐</strong></td><td>생명선 위 좁은 직사각형</td><td>객체가 메서드를 실행 중인 기간 (실행 명세)</td></tr>
+            <tr><td><strong>동기 메시지 ⭐</strong></td><td>실선 + 채운 삼각형 →</td><td>호출하고 응답을 기다림 (블로킹)</td></tr>
+            <tr><td><strong>비동기 메시지</strong></td><td>실선 + 빈 화살표 →</td><td>호출 후 응답을 기다리지 않음</td></tr>
+            <tr><td><strong>반환 메시지 ⭐</strong></td><td>점선 + 빈 화살표 --→</td><td>메서드 실행 후 호출자에게 결과 반환</td></tr>
+            <tr><td><strong>자기 호출</strong></td><td>자신으로 되돌아오는 화살표</td><td>객체가 자신의 메서드 호출</td></tr>
+            <tr><td><strong>생성 메시지</strong></td><td>점선 + «create»</td><td>새 객체 생성 (생명선 시작)</td></tr>
+            <tr><td><strong>소멸 메시지</strong></td><td>생명선 끝 X</td><td>객체 소멸</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="acc" onclick="this.classList.toggle('open')">
+      <div class="acc-h"><div class="acc-title" style="color:var(--a3);">결합 프래그먼트 (Combined Fragment) ⭐ — 제어 구조</div><div class="acc-tgl">▾</div></div>
+      <div class="acc-body">
+        <table>
+          <thead><tr><th>키워드</th><th>의미</th><th>대응 코드</th></tr></thead>
+          <tbody>
+            <tr><td><strong>alt ⭐</strong></td><td>조건 분기 — 조건에 따라 하나만 실행</td><td>if-else / switch</td></tr>
+            <tr><td><strong>opt ⭐</strong></td><td>선택적 실행 — 조건이 참일 때만</td><td>if (조건만, else 없음)</td></tr>
+            <tr><td><strong>loop ⭐</strong></td><td>반복 — 조건이 참인 동안 반복</td><td>for / while</td></tr>
+            <tr><td><strong>par</strong></td><td>병렬 실행 — 동시에 실행</td><td>Thread / 비동기 병렬</td></tr>
+            <tr><td><strong>break</strong></td><td>중단 조건 — 조건 충족 시 전체 중단</td><td>break / exception</td></tr>
+            <tr><td><strong>ref</strong></td><td>다른 순서 다이어그램 참조</td><td>메서드 호출 참조</td></tr>
+            <tr><td><strong>critical</strong></td><td>원자적 실행 — 중단 없이 완전 실행</td><td>synchronized / lock</td></tr>
+          </tbody>
+        </table>
+        <div class="warn">alt=조건분기(if-else 모두) / opt=조건만 있고 else 없음 — 혼동 주의!</div>
+      </div>
+    </div>
+    <div class="memo">순서다이어그램: 생명선(수직점선)·활성화(직사각형)·동기(실선+채운화살표)·반환(점선+빈화살표) / alt=if-else / opt=if만 / loop=반복</div>
+  </div>
+
+  <div class="card">
+    <div class="card-h"><div class="ico ib">📡</div><h3>통신 다이어그램 (Communication Diagram) ⭐</h3></div>
+    <div class="g2">
+      <div>
+        <p style="font-size:11.5px;font-weight:800;color:var(--a1);margin-bottom:7px;">정의 & 특징</p>
+        <ul class="il">
+          <li><strong>정의:</strong> 객체 간 <em>관계와 메시지를 함께</em> 표현 — 순서 다이어그램과 동일한 정보를 다른 형식으로</li>
+          <li><strong>메시지 순서:</strong> 번호(1, 1.1, 2...)로 순서 표시</li>
+          <li><strong>장점:</strong> 객체 간 구조적 관계 파악 용이</li>
+          <li><strong>단점:</strong> 시간 흐름 파악이 순서 다이어그램보다 어려움</li>
+          <li><strong>구 명칭:</strong> 협력 다이어그램 (Collaboration Diagram)</li>
+        </ul>
+      </div>
+      <div>
+        <svg viewBox="0 0 280 180" style="width:100%;background:var(--s2);border-radius:7px;border:1px solid var(--bdr);">
+          <rect x="10" y="20" width="70" height="34" fill="var(--s3)" stroke="#60a5fa" stroke-width="1.5" rx="3"/>
+          <text x="45" y="42" text-anchor="middle" font-family="JetBrains Mono" font-size="10" fill="#60a5fa">:Client</text>
+          <rect x="100" y="20" width="80" height="34" fill="var(--s3)" stroke="#34d399" stroke-width="1.5" rx="3"/>
+          <text x="140" y="42" text-anchor="middle" font-family="JetBrains Mono" font-size="10" fill="#34d399">:Controller</text>
+          <rect x="195" y="100" width="75" height="34" fill="var(--s3)" stroke="#fbbf24" stroke-width="1.5" rx="3"/>
+          <text x="232" y="122" text-anchor="middle" font-family="JetBrains Mono" font-size="10" fill="#fbbf24">:Service</text>
+          <line x1="80" y1="37" x2="100" y2="37" stroke="#e2e8f0" stroke-width="1.5"/>
+          <polygon points="100,37 91,32 91,42" fill="#e2e8f0"/>
+          <text x="89" y="28" font-family="JetBrains Mono" font-size="8" fill="#e2e8f0">1:login()</text>
+          <line x1="180" y1="50" x2="212" y2="100" stroke="#e2e8f0" stroke-width="1.5"/>
+          <polygon points="212,100 202,91 210,88" fill="#e2e8f0"/>
+          <text x="175" y="82" font-family="JetBrains Mono" font-size="8" fill="#e2e8f0">1.1:validate()</text>
+          <line x1="195" y1="118" x2="180" y2="48" stroke="#60a5fa" stroke-width="1" stroke-dasharray="4,2"/>
+          <polygon points="180,48 185,60 175,60" fill="#60a5fa"/>
+          <text x="148" y="95" font-family="JetBrains Mono" font-size="8" fill="#60a5fa">1.2:result</text>
+        </svg>
+        <p style="text-align:center;font-size:9.5px;color:var(--mu);margin-top:4px;">통신 다이어그램 — 번호로 순서 표현</p>
+      </div>
+    </div>
+
+    <div style="background:var(--s2);border:1px solid rgba(96,165,250,.2);border-radius:8px;padding:10px;margin-top:4px;">
+      <p style="font-size:11.5px;font-weight:800;color:var(--a3);margin-bottom:7px;">순서 vs 통신 다이어그램 비교 ⭐</p>
+      <table>
+        <thead><tr><th>항목</th><th>순서 다이어그램</th><th>통신 다이어그램</th></tr></thead>
+        <tbody>
+          <tr><td><strong>표현 축</strong></td><td>수직 시간축 (위→아래)</td><td>객체 네트워크 + 번호 순서</td></tr>
+          <tr><td><strong>시간 흐름</strong></td><td>한눈에 파악 쉬움</td><td>번호로만 순서 파악</td></tr>
+          <tr><td><strong>관계 파악</strong></td><td>객체 관계 파악 어려움</td><td>객체 간 구조 파악 용이</td></tr>
+          <tr><td><strong>정보량</strong></td><td>동일 — 의미상 동등</td><td>동일 — 서로 변환 가능</td></tr>
+          <tr><td><strong>선호 상황</strong></td><td>시간 순서 중요한 설계</td><td>객체 구조 중심 설계</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="memo">순서·통신=의미상 동등·상호변환가능 / 순서=시간축 명확 / 통신=관계구조 명확·메시지번호로 순서 / 구 명칭=협력다이어그램</div>
+  </div>
+</div>
+
+<!-- P3: 활동·상태 -->
+<div class="pnl" id="p3">
+  <div class="card">
+    <div class="card-h"><div class="ico ig">🔄</div><h3>활동 다이어그램 (Activity Diagram) ⭐⭐</h3></div>
+    <div style="background:var(--s2);border:1px solid rgba(52,211,153,.25);border-radius:9px;padding:12px;margin-bottom:10px;font-size:12.5px;line-height:1.8;">
+      <strong style="color:var(--a2)">활동 다이어그램</strong>: 시스템이나 비즈니스 <em style="color:var(--a3);font-style:normal;">프로세스의 흐름</em>을 표현 — 순차·분기·병렬·반복 처리를 시각화. 순서도(Flowchart)와 유사하지만 <strong>병렬 처리 표현</strong>이 강점
+    </div>
+
+    <div class="g2">
+      <div class="acc open" style="margin-bottom:0;" onclick="this.classList.toggle('open')">
+        <div class="acc-h" style="border-radius:9px;"><div class="acc-title" style="color:var(--a2);">핵심 구성 요소 ⭐</div><div class="acc-tgl">▾</div></div>
+        <div class="acc-body" style="border-radius:0 0 9px 9px;">
+          <table>
+            <thead><tr><th>요소</th><th>표기</th><th>의미</th></tr></thead>
+            <tbody>
+              <tr><td><strong>초기 노드</strong></td><td>● 채운 원</td><td>활동의 시작점 (하나)</td></tr>
+              <tr><td><strong>종료 노드</strong></td><td>◉ 원 안 채운 원</td><td>활동의 종료점 (여럿 가능)</td></tr>
+              <tr><td><strong>액션 노드 ⭐</strong></td><td>둥근 직사각형</td><td>단일 작업·행동</td></tr>
+              <tr><td><strong>결정 노드 ⭐</strong></td><td>◇ 마름모</td><td>분기 조건 (1개 입력, 다수 출력)</td></tr>
+              <tr><td><strong>병합 노드</strong></td><td>◇ 마름모</td><td>분기 합류 (다수 입력, 1개 출력)</td></tr>
+              <tr><td><strong>포크 (Fork) ⭐</strong></td><td>굵은 수평선</td><td>병렬 시작 (1개 입력→다수 출력)</td></tr>
+              <tr><td><strong>조인 (Join) ⭐</strong></td><td>굵은 수평선</td><td>병렬 합류 (다수 입력→1개 출력)</td></tr>
+              <tr><td><strong>스윔레인 ⭐</strong></td><td>수직 구획</td><td>책임 영역 분리 (역할별)</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div>
+        <svg viewBox="0 0 220 380" style="width:100%;background:var(--s2);border-radius:7px;border:1px solid var(--bdr);">
+          <!-- 스윔레인 -->
+          <rect x="5" y="5" width="100" height="370" fill="rgba(96,165,250,.04)" stroke="var(--bdr)" stroke-width="1"/>
+          <rect x="105" y="5" width="110" height="370" fill="rgba(52,211,153,.04)" stroke="var(--bdr)" stroke-width="1"/>
+          <text x="55" y="20" text-anchor="middle" font-family="Noto Sans KR" font-size="9" fill="#60a5fa" font-weight="bold">고객</text>
+          <text x="160" y="20" text-anchor="middle" font-family="Noto Sans KR" font-size="9" fill="#34d399" font-weight="bold">시스템</text>
+
+          <!-- 초기 노드 -->
+          <circle cx="55" cy="40" r="8" fill="#60a5fa"/>
+          <line x1="55" y1="48" x2="55" y2="68" stroke="#e2e8f0" stroke-width="1.5"/>
+          <polygon points="55,68 51,60 59,60" fill="#e2e8f0"/>
+
+          <!-- 액션: 주문 선택 -->
+          <rect x="15" y="68" width="80" height="30" fill="var(--s3)" stroke="#60a5fa" stroke-width="1.5" rx="12"/>
+          <text x="55" y="87" text-anchor="middle" font-family="Noto Sans KR" font-size="9" fill="#60a5fa">상품 선택</text>
+          <line x1="55" y1="98" x2="55" y2="118" stroke="#e2e8f0" stroke-width="1.5"/>
+          <polygon points="55,118 51,110 59,110" fill="#e2e8f0"/>
+
+          <!-- 결정 노드 -->
+          <polygon points="55,118 80,135 55,152 30,135" fill="var(--s3)" stroke="#fbbf24" stroke-width="1.5"/>
+          <text x="55" y="139" text-anchor="middle" font-family="Noto Sans KR" font-size="8" fill="#fbbf24">로그인?</text>
+          <!-- Yes -->
+          <line x1="80" y1="135" x2="160" y2="135" stroke="#34d399" stroke-width="1.5"/>
+          <polygon points="160,135 152,131 152,139" fill="#34d399"/>
+          <text x="117" y="128" font-family="Noto Sans KR" font-size="8" fill="#34d399">[Yes]</text>
+          <!-- No -->
+          <line x1="55" y1="152" x2="55" y2="172" stroke="#f87171" stroke-width="1.5"/>
+          <polygon points="55,172 51,164 59,164" fill="#f87171"/>
+          <text x="64" y="166" font-family="Noto Sans KR" font-size="8" fill="#f87171">[No]</text>
+
+          <!-- 액션: 로그인 -->
+          <rect x="15" y="172" width="80" height="28" fill="var(--s3)" stroke="#f87171" stroke-width="1.5" rx="12"/>
+          <text x="55" y="190" text-anchor="middle" font-family="Noto Sans KR" font-size="9" fill="#f87171">로그인</text>
+          <line x1="55" y1="200" x2="55" y2="215" stroke="#e2e8f0" stroke-width="1.5"/>
+          <!-- 병합 -->
+          <polygon points="55,215 80,228 55,241 30,228" fill="var(--s3)" stroke="#fbbf24" stroke-width="1.5"/>
+          <line x1="160" y1="135" x2="160" y2="228" stroke="#34d399" stroke-width="1"/>
+          <line x1="160" y1="228" x2="80" y2="228" stroke="#34d399" stroke-width="1"/>
+          <!-- 포크 -->
+          <line x1="55" y1="241" x2="55" y2="258" stroke="#e2e8f0" stroke-width="1.5"/>
+          <rect x="20" y="258" width="190" height="8" fill="#a78bfa" rx="2"/>
+          <text x="55" y="254" font-family="Noto Sans KR" font-size="8" fill="#a78bfa">«fork»</text>
+          <line x1="55" y1="266" x2="55" y2="282" stroke="#60a5fa" stroke-width="1.5"/>
+          <line x1="160" y1="266" x2="160" y2="282" stroke="#34d399" stroke-width="1.5"/>
+
+          <!-- 병렬 액션들 -->
+          <rect x="15" y="282" width="80" height="28" fill="var(--s3)" stroke="#60a5fa" stroke-width="1.5" rx="12"/>
+          <text x="55" y="300" text-anchor="middle" font-family="Noto Sans KR" font-size="9" fill="#60a5fa">결제</text>
+          <rect x="118" y="282" width="90" height="28" fill="var(--s3)" stroke="#34d399" stroke-width="1.5" rx="12"/>
+          <text x="163" y="300" text-anchor="middle" font-family="Noto Sans KR" font-size="9" fill="#34d399">재고 확인</text>
+
+          <!-- 조인 -->
+          <line x1="55" y1="310" x2="55" y2="328" stroke="#60a5fa" stroke-width="1.5"/>
+          <line x1="163" y1="310" x2="163" y2="328" stroke="#34d399" stroke-width="1.5"/>
+          <rect x="20" y="328" width="190" height="8" fill="#a78bfa" rx="2"/>
+          <text x="110" y="324" font-family="Noto Sans KR" font-size="8" fill="#a78bfa">«join»</text>
+          <line x1="110" y1="336" x2="110" y2="352" stroke="#e2e8f0" stroke-width="1.5"/>
+
+          <!-- 종료 노드 -->
+          <circle cx="110" cy="360" r="8" fill="none" stroke="#e2e8f0" stroke-width="2"/>
+          <circle cx="110" cy="360" r="5" fill="#e2e8f0"/>
+        </svg>
+        <p style="text-align:center;font-size:9.5px;color:var(--mu);margin-top:4px;">스윔레인·결정·포크·조인 표현</p>
+      </div>
+    </div>
+    <div class="memo">활동다이어그램: ●시작·◉종료·둥근사각형=액션·◇마름모=결정/병합·굵은선=포크/조인(병렬) / 스윔레인=역할구획 / 병렬처리가 순서도와의 차이</div>
+  </div>
+
+  <div class="card">
+    <div class="card-h"><div class="ico iy">⚡</div><h3>상태 머신 다이어그램 (State Machine Diagram) ⭐⭐</h3></div>
+    <div style="background:var(--s2);border:1px solid rgba(251,191,36,.25);border-radius:9px;padding:12px;margin-bottom:10px;font-size:12.5px;line-height:1.8;">
+      <strong style="color:var(--a3)">상태 머신 다이어그램</strong>: 객체가 <em style="color:var(--a1);font-style:normal;">생명주기 동안 거치는 상태 변화</em>와 상태 전이를 일으키는 이벤트·조건·동작을 표현 — 복잡한 객체 동작 모델링에 적합
+    </div>
+
+    <div class="g2">
+      <div>
+        <p style="font-size:11.5px;font-weight:800;color:var(--a3);margin-bottom:7px;">핵심 구성 요소 ⭐</p>
+        <table>
+          <thead><tr><th>요소</th><th>표기</th><th>설명</th></tr></thead>
+          <tbody>
+            <tr><td><strong>초기 상태 ⭐</strong></td><td>● 채운 원</td><td>시작점 (딱 1개)</td></tr>
+            <tr><td><strong>최종 상태 ⭐</strong></td><td>◉ 이중 원</td><td>종료점 (여럿 가능)</td></tr>
+            <tr><td><strong>상태 (State) ⭐</strong></td><td>둥근 직사각형</td><td>객체의 특정 조건·상황 (진입·퇴출 동작 포함)</td></tr>
+            <tr><td><strong>전이 (Transition) ⭐</strong></td><td>화살표 실선</td><td>상태 간 이동</td></tr>
+            <tr><td><strong>이벤트 ⭐</strong></td><td>화살표 위 레이블</td><td>상태 전이를 일으키는 촉발 조건</td></tr>
+            <tr><td><strong>가드 (Guard) ⭐</strong></td><td>[조건]</td><td>전이 허용 여부 조건</td></tr>
+            <tr><td><strong>동작 (Action)</strong></td><td>/ 동작명</td><td>전이 시 실행되는 행동</td></tr>
+          </tbody>
+        </table>
+        <p style="font-size:11px;font-weight:700;color:var(--a3);margin:8px 0 4px;">전이 레이블 형식</p>
+        <div style="background:var(--s3);border-radius:6px;padding:8px;font-family:'JetBrains Mono',monospace;font-size:10.5px;color:var(--a2);">
+          이벤트 [가드] / 동작<br>
+          <span style="color:var(--mu);"># 예: 결제완료 [금액>0] / 영수증발행</span>
+        </div>
+      </div>
+      <div>
+        <svg viewBox="0 0 220 360" style="width:100%;background:var(--s2);border-radius:7px;border:1px solid var(--bdr);">
+          <!-- 주문 상태 다이어그램 -->
+          <text x="110" y="18" text-anchor="middle" font-family="Noto Sans KR" font-size="9" fill="#fbbf24" font-weight="bold">주문 상태 다이어그램</text>
+
+          <!-- 초기 상태 -->
+          <circle cx="110" cy="36" r="8" fill="#fbbf24"/>
+          <line x1="110" y1="44" x2="110" y2="62" stroke="#e2e8f0" stroke-width="1.5"/>
+          <polygon points="110,62 106,54 114,54" fill="#e2e8f0"/>
+
+          <!-- 장바구니 상태 -->
+          <rect x="55" y="62" width="110" height="40" fill="var(--s3)" stroke="#fbbf24" stroke-width="1.5" rx="10"/>
+          <text x="110" y="86" text-anchor="middle" font-family="Noto Sans KR" font-size="10" fill="#fbbf24" font-weight="bold">장바구니</text>
+          <line x1="110" y1="102" x2="110" y2="122" stroke="#e2e8f0" stroke-width="1.5"/>
+          <polygon points="110,122 106,114 114,114" fill="#e2e8f0"/>
+          <text x="118" y="115" font-family="Noto Sans KR" font-size="8" fill="#34d399">주문완료</text>
+
+          <!-- 주문접수 상태 -->
+          <rect x="55" y="122" width="110" height="40" fill="var(--s3)" stroke="#60a5fa" stroke-width="1.5" rx="10"/>
+          <text x="110" y="146" text-anchor="middle" font-family="Noto Sans KR" font-size="10" fill="#60a5fa" font-weight="bold">주문접수</text>
+          <line x1="110" y1="162" x2="110" y2="182" stroke="#e2e8f0" stroke-width="1.5"/>
+          <polygon points="110,182 106,174 114,174" fill="#e2e8f0"/>
+          <text x="118" y="175" font-family="Noto Sans KR" font-size="8" fill="#34d399">결제완료</text>
+
+          <!-- 배송중 상태 -->
+          <rect x="55" y="182" width="110" height="40" fill="var(--s3)" stroke="#a78bfa" stroke-width="1.5" rx="10"/>
+          <text x="110" y="206" text-anchor="middle" font-family="Noto Sans KR" font-size="10" fill="#a78bfa" font-weight="bold">배송중</text>
+
+          <!-- 전이: 배송완료 -->
+          <line x1="110" y1="222" x2="110" y2="242" stroke="#e2e8f0" stroke-width="1.5"/>
+          <polygon points="110,242 106,234 114,234" fill="#e2e8f0"/>
+          <text x="118" y="235" font-family="Noto Sans KR" font-size="8" fill="#34d399">배송완료</text>
+
+          <!-- 완료 상태 -->
+          <rect x="55" y="242" width="110" height="40" fill="var(--s3)" stroke="#34d399" stroke-width="1.5" rx="10"/>
+          <text x="110" y="266" text-anchor="middle" font-family="Noto Sans KR" font-size="10" fill="#34d399" font-weight="bold">완료</text>
+
+          <!-- 취소 전이 (주문접수→취소) -->
+          <path d="M 55,142 Q 10,185 55,225" fill="none" stroke="#f87171" stroke-width="1.5"/>
+          <polygon points="55,225 48,214 58,213" fill="#f87171"/>
+          <text x="5" y="188" font-family="Noto Sans KR" font-size="8" fill="#f87171">취소</text>
+
+          <!-- 취소됨 상태 -->
+          <rect x="55" y="295" width="110" height="40" fill="var(--s3)" stroke="#f87171" stroke-width="1.5" rx="10"/>
+          <text x="110" y="319" text-anchor="middle" font-family="Noto Sans KR" font-size="10" fill="#f87171" font-weight="bold">취소됨</text>
+          <line x1="45" y1="225" x2="65" y2="295" stroke="#f87171" stroke-width="1.5"/>
+          <polygon points="65,295 58,284 68,282" fill="#f87171"/>
+
+          <!-- 완료 → 최종 -->
+          <line x1="110" y1="282" x2="110" y2="302" stroke="#e2e8f0" stroke-width="1.5"/>
+          <line x1="155" y1="315" x2="178" y2="315" stroke="#f87171" stroke-width="1.5"/>
+          <circle cx="186" cy="315" r="6" fill="none" stroke="#e2e8f0" stroke-width="1.5"/>
+          <circle cx="186" cy="315" r="3.5" fill="#e2e8f0"/>
+          <circle cx="110" cy="310" r="6" fill="none" stroke="#e2e8f0" stroke-width="1.5"/>
+          <circle cx="110" cy="310" r="3.5" fill="#e2e8f0"/>
+        </svg>
+        <p style="text-align:center;font-size:9.5px;color:var(--mu);margin-top:4px;">주문 상태 변화 다이어그램</p>
+      </div>
+    </div>
+
+    <div class="acc" onclick="this.classList.toggle('open')">
+      <div class="acc-h"><div class="acc-title" style="color:var(--a3);">상태 내부 구조 & 복합 상태 ⭐</div><div class="acc-tgl">▾</div></div>
+      <div class="acc-body">
+        <ul class="il">
+          <li><strong>진입 동작(entry):</strong> 상태에 진입할 때 실행 — entry / 동작명</li>
+          <li><strong>퇴출 동작(exit):</strong> 상태를 떠날 때 실행 — exit / 동작명</li>
+          <li><strong>do 동작:</strong> 상태 유지 중 지속 실행 — do / 동작명</li>
+          <li><strong>내부 전이:</strong> 상태를 떠나지 않고 이벤트 처리 (진입/퇴출 동작 없음)</li>
+          <li><strong>복합 상태(Composite State):</strong> 상태 안에 하위 상태 포함 — 계층적 상태 기계</li>
+          <li><strong>히스토리 상태(History State) ⭐:</strong> H 기호 — 이전에 있던 하위 상태로 복귀</li>
+        </ul>
+        <div style="background:var(--s2);border-radius:6px;padding:8px;font-family:'JetBrains Mono',monospace;font-size:10.5px;margin-top:6px;">
+          배송중 상태 {<br>
+          &nbsp;&nbsp;entry / 배송알림전송()<br>
+          &nbsp;&nbsp;do / 위치추적()<br>
+          &nbsp;&nbsp;exit / 도착확인요청()<br>
+          }
+        </div>
+      </div>
+    </div>
+    <div class="memo">상태머신: ●초기·◉최종·둥근사각형=상태·화살표=전이 / 레이블=이벤트[가드]/동작 / entry·do·exit=상태 내 동작 / 히스토리=H기호·이전상태복귀</div>
+  </div>
+</div>
+
+<!-- P4: 컴포넌트·배포 -->
+<div class="pnl" id="p4">
+  <div class="card">
+    <div class="card-h"><div class="ico io">🧩</div><h3>컴포넌트 다이어그램 (Component Diagram) ⭐⭐</h3></div>
+    <div style="background:var(--s2);border:1px solid rgba(251,146,60,.25);border-radius:9px;padding:12px;margin-bottom:10px;font-size:12.5px;line-height:1.8;">
+      <strong style="color:var(--a6)">컴포넌트 다이어그램</strong>: 시스템을 구성하는 <em style="color:var(--a3);font-style:normal;">소프트웨어 컴포넌트들의 구조·인터페이스·의존 관계</em>를 표현 — 아키텍처 설계, 모듈 간 인터페이스 명세에 활용
+    </div>
+
+    <!-- SVG: 컴포넌트 다이어그램 -->
+    <svg viewBox="0 0 720 260" xmlns="http://www.w3.org/2000/svg" style="width:100%;background:var(--s2);border-radius:9px;border:1px solid var(--bdr);margin:10px 0;">
+
+      <!-- OrderService 컴포넌트 -->
+      <rect x="20" y="30" width="150" height="90" fill="var(--s3)" stroke="#fb923c" stroke-width="1.5" rx="4"/>
+      <rect x="148" y="38" width="18" height="12" fill="none" stroke="#fb923c" stroke-width="1.5" rx="2"/>
+      <rect x="148" y="52" width="18" height="12" fill="none" stroke="#fb923c" stroke-width="1.5" rx="2"/>
+      <text x="90" y="58" text-anchor="middle" font-family="JetBrains Mono" font-size="9" fill="#fb923c">«component»</text>
+      <text x="90" y="74" text-anchor="middle" font-family="JetBrains Mono" font-size="12" fill="#fb923c" font-weight="bold">OrderService</text>
+      <text x="90" y="92" text-anchor="middle" font-family="Noto Sans KR" font-size="9" fill="#64748b">주문 처리 컴포넌트</text>
+      <!-- 제공 인터페이스 (볼록한 원) -->
+      <circle cx="170" cy="75" r="8" fill="var(--s3)" stroke="#34d399" stroke-width="1.5"/>
+      <text x="180" y="70" font-family="JetBrains Mono" font-size="8" fill="#34d399">IOrder</text>
+
+      <!-- PaymentService 컴포넌트 -->
+      <rect x="280" y="30" width="160" height="90" fill="var(--s3)" stroke="#fb923c" stroke-width="1.5" rx="4"/>
+      <rect x="418" y="38" width="18" height="12" fill="none" stroke="#fb923c" stroke-width="1.5" rx="2"/>
+      <rect x="418" y="52" width="18" height="12" fill="none" stroke="#fb923c" stroke-width="1.5" rx="2"/>
+      <text x="358" y="58" text-anchor="middle" font-family="JetBrains Mono" font-size="9" fill="#fb923c">«component»</text>
+      <text x="358" y="74" text-anchor="middle" font-family="JetBrains Mono" font-size="12" fill="#fb923c" font-weight="bold">PaymentSvc</text>
+      <text x="358" y="92" text-anchor="middle" font-family="Noto Sans KR" font-size="9" fill="#64748b">결제 처리 컴포넌트</text>
+      <!-- 필요 인터페이스 (반원) -->
+      <path d="M 280,75 Q 272,75 272,83 Q 272,91 280,91" fill="none" stroke="#60a5fa" stroke-width="1.5"/>
+      <text x="235" y="83" font-family="JetBrains Mono" font-size="8" fill="#60a5fa">IPayment</text>
+      <!-- 제공 인터페이스 -->
+      <circle cx="440" cy="75" r="8" fill="var(--s3)" stroke="#34d399" stroke-width="1.5"/>
+      <text x="450" y="70" font-family="JetBrains Mono" font-size="8" fill="#34d399">IGateway</text>
+
+      <!-- 의존 관계: OrderService → PaymentService -->
+      <line x1="178" y1="75" x2="272" y2="75" stroke="#60a5fa" stroke-width="1.5" stroke-dasharray="5,3"/>
+      <polygon points="272,75 262,70 262,80" fill="#60a5fa"/>
+      <text x="218" y="65" text-anchor="middle" font-family="Noto Sans KR" font-size="8" fill="#60a5fa">«use»</text>
+
+      <!-- DB 컴포넌트 -->
+      <rect x="560" y="30" width="140" height="90" fill="var(--s3)" stroke="#fb923c" stroke-width="1.5" rx="4"/>
+      <rect x="678" y="38" width="18" height="12" fill="none" stroke="#fb923c" stroke-width="1.5" rx="2"/>
+      <rect x="678" y="52" width="18" height="12" fill="none" stroke="#fb923c" stroke-width="1.5" rx="2"/>
+      <text x="628" y="58" text-anchor="middle" font-family="JetBrains Mono" font-size="9" fill="#fb923c">«component»</text>
+      <text x="628" y="74" text-anchor="middle" font-family="JetBrains Mono" font-size="12" fill="#fb923c" font-weight="bold">Database</text>
+      <text x="628" y="92" text-anchor="middle" font-family="Noto Sans KR" font-size="9" fill="#64748b">데이터 저장 컴포넌트</text>
+      <!-- 필요 인터페이스 -->
+      <path d="M 560,75 Q 552,75 552,83 Q 552,91 560,91" fill="none" stroke="#60a5fa" stroke-width="1.5"/>
+
+      <!-- 어셈블리 커넥터: PaymentSvc ─○)─ Database -->
+      <line x1="448" y1="75" x2="552" y2="75" stroke="#34d399" stroke-width="1.5"/>
+      <text x="498" y="65" text-anchor="middle" font-family="Noto Sans KR" font-size="8" fill="#34d399">어셈블리커넥터</text>
+
+      <!-- 범례 -->
+      <rect x="20" y="145" width="680" height="105" fill="none" stroke="var(--bdr)" stroke-width="1" rx="5"/>
+      <text x="30" y="163" font-family="Noto Sans KR" font-size="10" font-weight="bold" fill="#64748b">범례</text>
+      <rect x="30" y="173" width="50" height="30" fill="var(--s3)" stroke="#fb923c" stroke-width="1.5" rx="3"/>
+      <rect x="76" y="177" width="10" height="7" fill="none" stroke="#fb923c" stroke-width="1"/>
+      <rect x="76" y="186" width="10" height="7" fill="none" stroke="#fb923c" stroke-width="1"/>
+      <text x="56" y="215" text-anchor="middle" font-family="Noto Sans KR" font-size="9" fill="#64748b">컴포넌트</text>
+      <circle cx="145" cy="190" r="8" fill="var(--s3)" stroke="#34d399" stroke-width="1.5"/>
+      <text x="145" y="215" text-anchor="middle" font-family="Noto Sans KR" font-size="9" fill="#64748b">제공 인터페이스</text>
+      <path d="M 225,183 Q 215,183 215,190 Q 215,197 225,197" fill="none" stroke="#60a5fa" stroke-width="1.5"/>
+      <text x="225" y="215" text-anchor="middle" font-family="Noto Sans KR" font-size="9" fill="#64748b">필요 인터페이스</text>
+      <line x1="310" y1="190" x2="350" y2="190" stroke="#60a5fa" stroke-width="1.5" stroke-dasharray="4,2"/>
+      <polygon points="350,190 342,186 342,194" fill="#60a5fa"/>
+      <text x="330" y="215" text-anchor="middle" font-family="Noto Sans KR" font-size="9" fill="#64748b">의존 관계</text>
+      <line x1="420" y1="190" x2="460" y2="190" stroke="#34d399" stroke-width="1.5"/>
+      <text x="440" y="215" text-anchor="middle" font-family="Noto Sans KR" font-size="9" fill="#64748b">어셈블리 커넥터</text>
+    </svg>
+
+    <table>
+      <thead><tr><th>구성 요소</th><th>표기</th><th>설명</th></tr></thead>
+      <tbody>
+        <tr><td><strong>컴포넌트 ⭐</strong></td><td>직사각형 + 우측 상단 컴포넌트 아이콘 + «component» 스테레오타입</td><td>독립 교체 가능한 SW 모듈</td></tr>
+        <tr><td><strong>제공 인터페이스 (Lollipop) ⭐</strong></td><td>컴포넌트 경계에 붙은 원 ○</td><td>다른 컴포넌트에 제공하는 서비스</td></tr>
+        <tr><td><strong>필요 인터페이스 (Socket) ⭐</strong></td><td>컴포넌트 경계에 붙은 반원 )</td><td>다른 컴포넌트에서 필요한 서비스</td></tr>
+        <tr><td><strong>어셈블리 커넥터</strong></td><td>제공 인터페이스 ─○)─ 필요 인터페이스</td><td>컴포넌트 간 인터페이스 연결</td></tr>
+        <tr><td><strong>포트 (Port)</strong></td><td>컴포넌트 경계의 작은 사각형</td><td>특정 인터페이스 진입점</td></tr>
+      </tbody>
+    </table>
+    <div class="memo">컴포넌트다이어그램: 컴포넌트(사각형+아이콘)·제공인터페이스(원·Lollipop)·필요인터페이스(반원·Socket)·어셈블리커넥터 / SW 아키텍처 표현</div>
+  </div>
+
+  <div class="card">
+    <div class="card-h"><div class="ico ir">🖥️</div><h3>배포 다이어그램 (Deployment Diagram) ⭐⭐</h3></div>
+    <div style="background:var(--s2);border:1px solid rgba(248,113,113,.25);border-radius:9px;padding:12px;margin-bottom:10px;font-size:12.5px;line-height:1.8;">
+      <strong style="color:var(--a4)">배포 다이어그램</strong>: <em style="color:var(--a3);font-style:normal;">하드웨어 노드에 소프트웨어 아티팩트가 어떻게 배포되는지</em>를 표현 — 물리적 인프라·시스템 구성·네트워크 토폴로지 시각화
+    </div>
+
+    <!-- SVG: 배포 다이어그램 -->
+    <svg viewBox="0 0 720 220" xmlns="http://www.w3.org/2000/svg" style="width:100%;background:var(--s2);border-radius:9px;border:1px solid var(--bdr);margin:10px 0;">
+
+      <!-- Client 노드 (PC) -->
+      <rect x="15" y="20" width="130" height="90" fill="var(--s3)" stroke="#60a5fa" stroke-width="2" rx="4"/>
+      <rect x="25" y="10" width="110" height="16" fill="var(--s3)" stroke="#60a5fa" stroke-width="1.5"/>
+      <text x="80" y="22" text-anchor="middle" font-family="JetBrains Mono" font-size="9" fill="#60a5fa" font-weight="bold">«device»</text>
+      <text x="80" y="40" text-anchor="middle" font-family="Noto Sans KR" font-size="10" fill="#60a5fa" font-weight="bold">Client PC</text>
+      <rect x="30" y="55" width="100" height="40" fill="rgba(96,165,250,.1)" stroke="#60a5fa" stroke-width="1" rx="3"/>
+      <text x="80" y="68" text-anchor="middle" font-family="JetBrains Mono" font-size="8" fill="#64748b">«artifact»</text>
+      <text x="80" y="84" text-anchor="middle" font-family="JetBrains Mono" font-size="9" fill="#60a5fa">WebBrowser</text>
+
+      <!-- Web Server 노드 -->
+      <rect x="210" y="20" width="145" height="90" fill="var(--s3)" stroke="#34d399" stroke-width="2" rx="4"/>
+      <rect x="220" y="10" width="125" height="16" fill="var(--s3)" stroke="#34d399" stroke-width="1.5"/>
+      <text x="282" y="22" text-anchor="middle" font-family="JetBrains Mono" font-size="9" fill="#34d399" font-weight="bold">«execution environment»</text>
+      <text x="282" y="40" text-anchor="middle" font-family="Noto Sans KR" font-size="10" fill="#34d399" font-weight="bold">Web Server</text>
+      <rect x="222" y="55" width="120" height="40" fill="rgba(52,211,153,.1)" stroke="#34d399" stroke-width="1" rx="3"/>
+      <text x="282" y="68" text-anchor="middle" font-family="JetBrains Mono" font-size="8" fill="#64748b">«artifact»</text>
+      <text x="282" y="84" text-anchor="middle" font-family="JetBrains Mono" font-size="9" fill="#34d399">ShoppingApp.war</text>
+
+      <!-- App Server 노드 -->
+      <rect x="420" y="20" width="145" height="90" fill="var(--s3)" stroke="#a78bfa" stroke-width="2" rx="4"/>
+      <rect x="430" y="10" width="125" height="16" fill="var(--s3)" stroke="#a78bfa" stroke-width="1.5"/>
+      <text x="492" y="22" text-anchor="middle" font-family="JetBrains Mono" font-size="9" fill="#a78bfa" font-weight="bold">«execution environment»</text>
+      <text x="492" y="40" text-anchor="middle" font-family="Noto Sans KR" font-size="10" fill="#a78bfa" font-weight="bold">App Server</text>
+      <rect x="432" y="55" width="120" height="40" fill="rgba(167,139,250,.1)" stroke="#a78bfa" stroke-width="1" rx="3"/>
+      <text x="492" y="68" text-anchor="middle" font-family="JetBrains Mono" font-size="8" fill="#64748b">«artifact»</text>
+      <text x="492" y="84" text-anchor="middle" font-family="JetBrains Mono" font-size="9" fill="#a78bfa">OrderService.jar</text>
+
+      <!-- DB Server 노드 -->
+      <rect x="620" y="20" width="90" height="90" fill="var(--s3)" stroke="#fbbf24" stroke-width="2" rx="4"/>
+      <rect x="630" y="10" width="70" height="16" fill="var(--s3)" stroke="#fbbf24" stroke-width="1.5"/>
+      <text x="665" y="22" text-anchor="middle" font-family="JetBrains Mono" font-size="9" fill="#fbbf24" font-weight="bold">«device»</text>
+      <text x="665" y="40" text-anchor="middle" font-family="Noto Sans KR" font-size="10" fill="#fbbf24" font-weight="bold">DB Server</text>
+      <rect x="633" y="55" width="72" height="40" fill="rgba(251,191,36,.1)" stroke="#fbbf24" stroke-width="1" rx="3"/>
+      <text x="669" y="68" text-anchor="middle" font-family="JetBrains Mono" font-size="8" fill="#64748b">«artifact»</text>
+      <text x="669" y="84" text-anchor="middle" font-family="JetBrains Mono" font-size="9" fill="#fbbf24">MySQL.db</text>
+
+      <!-- 통신 경로 -->
+      <line x1="145" y1="65" x2="210" y2="65" stroke="#60a5fa" stroke-width="1.5" stroke-dasharray="5,3"/>
+      <text x="177" y="57" text-anchor="middle" font-family="JetBrains Mono" font-size="8" fill="#64748b">HTTPS</text>
+      <line x1="355" y1="65" x2="420" y2="65" stroke="#34d399" stroke-width="1.5" stroke-dasharray="5,3"/>
+      <text x="387" y="57" text-anchor="middle" font-family="JetBrains Mono" font-size="8" fill="#64748b">REST API</text>
+      <line x1="565" y1="65" x2="620" y2="65" stroke="#a78bfa" stroke-width="1.5" stroke-dasharray="5,3"/>
+      <text x="592" y="57" text-anchor="middle" font-family="JetBrains Mono" font-size="8" fill="#64748b">JDBC</text>
+
+      <!-- 범례 -->
+      <rect x="15" y="130" width="700" height="80" fill="none" stroke="var(--bdr)" stroke-width="1" rx="5"/>
+      <text x="25" y="148" font-family="Noto Sans KR" font-size="10" font-weight="bold" fill="#64748b">주요 스테레오타입</text>
+      <text x="25" y="168" font-family="JetBrains Mono" font-size="9" fill="#60a5fa">«device»</text>
+      <text x="100" y="168" font-family="Noto Sans KR" font-size="9" fill="#64748b">: 물리적 하드웨어 (서버·PC·모바일)</text>
+      <text x="25" y="185" font-family="JetBrains Mono" font-size="9" fill="#34d399">«execution environment»</text>
+      <text x="195" y="185" font-family="Noto Sans KR" font-size="9" fill="#64748b">: SW 실행 환경 (JVM·Node.js·컨테이너)</text>
+      <text x="25" y="202" font-family="JetBrains Mono" font-size="9" fill="#a78bfa">«artifact»</text>
+      <text x="100" y="202" font-family="Noto Sans KR" font-size="9" fill="#64748b">: 배포 단위 (.war/.jar/.exe/.db)</text>
+    </svg>
+
+    <table>
+      <thead><tr><th>구성 요소</th><th>표기</th><th>설명</th></tr></thead>
+      <tbody>
+        <tr><td><strong>노드 (Node) ⭐</strong></td><td>3D 직육면체 또는 «device»/«execution environment» 스테레오타입</td><td>HW 장치 또는 SW 실행 환경</td></tr>
+        <tr><td><strong>아티팩트 (Artifact) ⭐</strong></td><td>«artifact» 스테레오타입 직사각형</td><td>배포 가능한 SW 산출물 (.war·.jar·.exe·DB)</td></tr>
+        <tr><td><strong>통신 경로</strong></td><td>노드 간 실선</td><td>네트워크 연결 (HTTP·JDBC·RMI)</td></tr>
+        <tr><td><strong>«device»</strong></td><td>물리적 HW 노드</td><td>서버·PC·스마트폰·네트워크 장비</td></tr>
+        <tr><td><strong>«execution environment»</strong></td><td>SW 실행 컨테이너</td><td>JVM·Node.js·Docker·OS</td></tr>
+        <tr><td><strong>배포 관계 (deploy)</strong></td><td>점선 화살표 «deploy»</td><td>아티팩트가 노드에 배포됨</td></tr>
+      </tbody>
+    </table>
+    <div class="memo">배포다이어그램: 노드(HW/SW실행환경)·아티팩트(배포파일)·통신경로(프로토콜) / «device»=HW / «execution environment»=JVM·컨테이너 / 물리 인프라 표현</div>
+  </div>
+</div>
+
+<!-- P5: 객체·패키지·기타 -->
+<div class="pnl" id="p5">
+  <div class="card">
+    <div class="card-h"><div class="ico ig">📦</div><h3>객체 다이어그램 (Object Diagram) ⭐</h3></div>
+    <div style="background:var(--s2);border:1px solid rgba(52,211,153,.25);border-radius:9px;padding:12px;margin-bottom:10px;font-size:12.5px;line-height:1.8;">
+      <strong style="color:var(--a2)">객체 다이어그램</strong>: 클래스 다이어그램의 <em style="color:var(--a3);font-style:normal;">특정 시점의 인스턴스(스냅샷)</em>를 표현 — 클래스 다이어그램이 타입을 표현한다면 객체 다이어그램은 런타임 인스턴스를 표현
+    </div>
+    <div class="g2">
+      <div>
+        <p style="font-size:11.5px;font-weight:800;color:var(--a2);margin-bottom:7px;">클래스 vs 객체 다이어그램 ⭐</p>
+        <table>
+          <thead><tr><th>항목</th><th>클래스 다이어그램</th><th>객체 다이어그램</th></tr></thead>
+          <tbody>
+            <tr><td><strong>표현 대상</strong></td><td>클래스 (타입 정의)</td><td>객체 (인스턴스)</td></tr>
+            <tr><td><strong>이름 표기 ⭐</strong></td><td>ClassName</td><td><strong>objectName:ClassName</strong></td></tr>
+            <tr><td><strong>밑줄 ⭐</strong></td><td>없음</td><td><strong>이름에 밑줄</strong></td></tr>
+            <tr><td><strong>속성값</strong></td><td>타입만 표기</td><td><strong>실제 값 표기</strong></td></tr>
+            <tr><td><strong>시점</strong></td><td>정적 (설계 시)</td><td>특정 시점 (런타임)</td></tr>
+            <tr><td><strong>메서드</strong></td><td>포함</td><td>없음 (인스턴스 수준)</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div>
+        <svg viewBox="0 0 250 200" style="width:100%;background:var(--s2);border-radius:7px;border:1px solid var(--bdr);">
+          <!-- 클래스 -->
+          <text x="60" y="18" text-anchor="middle" font-family="Noto Sans KR" font-size="9" fill="#64748b">클래스</text>
+          <rect x="10" y="22" width="100" height="70" fill="var(--s3)" stroke="#60a5fa" stroke-width="1.5" rx="3"/>
+          <text x="60" y="38" text-anchor="middle" font-family="JetBrains Mono" font-size="10" fill="#60a5fa" font-weight="bold">Customer</text>
+          <line x1="10" y1="42" x2="110" y2="42" stroke="#60a5fa" stroke-width="1"/>
+          <text x="18" y="57" font-family="JetBrains Mono" font-size="9" fill="#fbbf24">- name: String</text>
+          <text x="18" y="70" font-family="JetBrains Mono" font-size="9" fill="#fbbf24">- age: int</text>
+          <line x1="10" y1="78" x2="110" y2="78" stroke="#60a5fa" stroke-width="1"/>
+          <text x="18" y="88" font-family="JetBrains Mono" font-size="9" fill="#60a5fa">+ getName()</text>
+
+          <!-- 객체 -->
+          <text x="190" y="18" text-anchor="middle" font-family="Noto Sans KR" font-size="9" fill="#64748b">객체 인스턴스</text>
+          <rect x="140" y="22" width="105" height="60" fill="var(--s3)" stroke="#34d399" stroke-width="1.5" rx="3"/>
+          <text x="192" y="38" text-anchor="middle" font-family="JetBrains Mono" font-size="9" fill="#34d399" font-weight="bold" text-decoration="underline">kim:Customer</text>
+          <line x1="140" y1="42" x2="245" y2="42" stroke="#34d399" stroke-width="1"/>
+          <text x="148" y="57" font-family="JetBrains Mono" font-size="9" fill="#e2e8f0">name = "김철수"</text>
+          <text x="148" y="72" font-family="JetBrains Mono" font-size="9" fill="#e2e8f0">age = 30</text>
+
+          <!-- 화살표 -->
+          <text x="125" y="52" text-anchor="middle" font-family="Noto Sans KR" font-size="9" fill="#64748b">→</text>
+          <text x="125" y="65" text-anchor="middle" font-family="Noto Sans KR" font-size="8" fill="#64748b">인스턴스</text>
+
+          <!-- 링크 예시 -->
+          <rect x="10" y="130" width="100" height="50" fill="var(--s3)" stroke="#34d399" stroke-width="1.5" rx="3"/>
+          <text x="60" y="147" text-anchor="middle" font-family="JetBrains Mono" font-size="9" fill="#34d399" font-weight="bold" text-decoration="underline">ord1:Order</text>
+          <line x1="10" y1="152" x2="110" y2="152" stroke="#34d399" stroke-width="1"/>
+          <text x="18" y="170" font-family="JetBrains Mono" font-size="9" fill="#e2e8f0">orderId = 1001</text>
+
+          <line x1="140" y1="82" x2="110" y2="140" stroke="#34d399" stroke-width="1.5"/>
+          <text x="140" y="115" font-family="Noto Sans KR" font-size="8" fill="#34d399">링크(Link)</text>
+          <text x="148" y="100" font-family="Noto Sans KR" font-size="8" fill="#64748b">객체간 연관의</text>
+          <text x="148" y="112" font-family="Noto Sans KR" font-size="8" fill="#64748b">인스턴스</text>
+        </svg>
+      </div>
+    </div>
+    <div class="memo">객체다이어그램: 이름=객체명:클래스명(밑줄) / 속성=실제값 / 메서드 없음 / 링크=연관의 인스턴스 / 런타임 스냅샷 표현</div>
+  </div>
+
+  <div class="card">
+    <div class="card-h"><div class="ico ib">📦</div><h3>패키지 다이어그램 (Package Diagram) ⭐</h3></div>
+    <div class="g2">
+      <div>
+        <p style="font-size:11.5px;font-weight:800;color:var(--a1);margin-bottom:7px;">정의 & 목적</p>
+        <ul class="il">
+          <li><strong>정의:</strong> 클래스·컴포넌트 등을 <em>패키지 단위로 그룹화</em>하고 패키지 간 의존 관계를 표현</li>
+          <li><strong>목적:</strong> 대규모 시스템의 논리적 구조·모듈 의존성 관리</li>
+          <li><strong>표기:</strong> 탭(Tab) 달린 폴더 모양 — 패키지 이름은 탭 또는 중앙</li>
+          <li><strong>가시성:</strong> 패키지 내 요소에 +/- 가시성 표기 가능</li>
+        </ul>
+        <p style="font-size:11.5px;font-weight:800;color:var(--a3);margin:8px 0 5px;">패키지 관계</p>
+        <table>
+          <thead><tr><th>관계</th><th>표기</th><th>의미</th></tr></thead>
+          <tbody>
+            <tr><td><strong>import ⭐</strong></td><td>«import» 점선 화살표</td><td>공개 요소를 자신의 네임스페이스에 추가</td></tr>
+            <tr><td><strong>access</strong></td><td>«access» 점선 화살표</td><td>공개 요소 접근 (네임스페이스 추가 안 함)</td></tr>
+            <tr><td><strong>merge</strong></td><td>«merge» 점선 화살표</td><td>두 패키지를 논리적으로 병합</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div>
+        <svg viewBox="0 0 250 200" style="width:100%;background:var(--s2);border-radius:7px;border:1px solid var(--bdr);">
+          <!-- UI 패키지 -->
+          <rect x="10" y="10" width="30" height="10" fill="var(--s3)" stroke="#60a5fa" stroke-width="1.5" rx="2"/>
+          <rect x="10" y="18" width="100" height="65" fill="var(--s3)" stroke="#60a5fa" stroke-width="1.5" rx="2"/>
+          <text x="60" y="35" text-anchor="middle" font-family="JetBrains Mono" font-size="9" fill="#60a5fa" font-weight="bold">UI</text>
+          <text x="60" y="52" text-anchor="middle" font-family="Noto Sans KR" font-size="9" fill="#64748b">LoginView</text>
+          <text x="60" y="68" text-anchor="middle" font-family="Noto Sans KR" font-size="9" fill="#64748b">OrderView</text>
+
+          <!-- Service 패키지 -->
+          <rect x="140" y="10" width="40" height="10" fill="var(--s3)" stroke="#34d399" stroke-width="1.5" rx="2"/>
+          <rect x="140" y="18" width="100" height="65" fill="var(--s3)" stroke="#34d399" stroke-width="1.5" rx="2"/>
+          <text x="190" y="35" text-anchor="middle" font-family="JetBrains Mono" font-size="9" fill="#34d399" font-weight="bold">Service</text>
+          <text x="190" y="52" text-anchor="middle" font-family="Noto Sans KR" font-size="9" fill="#64748b">UserService</text>
+          <text x="190" y="68" text-anchor="middle" font-family="Noto Sans KR" font-size="9" fill="#64748b">OrderService</text>
+
+          <!-- Repository 패키지 -->
+          <rect x="140" y="110" width="50" height="10" fill="var(--s3)" stroke="#fbbf24" stroke-width="1.5" rx="2"/>
+          <rect x="140" y="118" width="100" height="65" fill="var(--s3)" stroke="#fbbf24" stroke-width="1.5" rx="2"/>
+          <text x="190" y="135" text-anchor="middle" font-family="JetBrains Mono" font-size="9" fill="#fbbf24" font-weight="bold">Repository</text>
+          <text x="190" y="152" text-anchor="middle" font-family="Noto Sans KR" font-size="9" fill="#64748b">UserRepo</text>
+          <text x="190" y="168" text-anchor="middle" font-family="Noto Sans KR" font-size="9" fill="#64748b">OrderRepo</text>
+
+          <!-- 의존 관계 -->
+          <line x1="110" y1="50" x2="140" y2="50" stroke="#60a5fa" stroke-width="1.5" stroke-dasharray="4,2"/>
+          <polygon points="140,50 132,46 132,54" fill="#60a5fa"/>
+          <text x="124" y="43" font-family="JetBrains Mono" font-size="7" fill="#60a5fa">«import»</text>
+
+          <line x1="190" y1="83" x2="190" y2="118" stroke="#34d399" stroke-width="1.5" stroke-dasharray="4,2"/>
+          <polygon points="190,118 186,110 194,110" fill="#34d399"/>
+          <text x="198" y="104" font-family="JetBrains Mono" font-size="7" fill="#34d399">«import»</text>
+        </svg>
+      </div>
+    </div>
+    <div class="memo">패키지=폴더모양·네임스페이스단위 / «import»=공개요소 네임스페이스추가 / «access»=접근만 / 대규모시스템 모듈의존성 관리</div>
+  </div>
+
+  <div class="card">
+    <div class="card-h"><div class="ico iy">⏱️</div><h3>타이밍·상호작용개요 다이어그램</h3></div>
+    <table>
+      <thead><tr><th>다이어그램</th><th>목적</th><th>특징</th><th>활용</th></tr></thead>
+      <tbody>
+        <tr>
+          <td><strong>타이밍 다이어그램<br>(Timing Diagram)</strong></td>
+          <td>시간 제약 조건 + 상태 변화를 타임라인으로 표현</td>
+          <td>X축=시간 / Y축=상태 변화 / 실시간 시스템·임베디드 시스템에 적합</td>
+          <td>신호 처리·프로토콜·실시간 시스템</td>
+        </tr>
+        <tr>
+          <td><strong>상호작용 개요<br>(Interaction Overview)</strong></td>
+          <td>여러 상호작용 다이어그램의 흐름을 활동 다이어그램 형태로 개요 표현</td>
+          <td>활동 다이어그램 + 순서 다이어그램 결합 / ref 프래그먼트 활용</td>
+          <td>복잡한 상호작용 시나리오 개요</td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="memo">타이밍다이어그램=시간축+상태변화·임베디드시스템 / 상호작용개요=활동+순서 결합·ref 프래그먼트 / 감리사 시험 출제 빈도 낮음</div>
+  </div>
+</div>
+
+<!-- P6: QA -->
+<div class="pnl" id="p6">
+  <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:7px;margin-bottom:12px;">
+    <div class="fb-wr" id="fbar" style="margin:0;">
+      <button class="fb on" data-f="all">전체</button>
+      <button class="fb" data-f="순서">📨 순서</button>
+      <button class="fb" data-f="활동">🔄 활동</button>
+      <button class="fb" data-f="상태">⚡ 상태</button>
+      <button class="fb" data-f="컴포넌트">🧩 컴포넌트</button>
+      <button class="fb" data-f="배포">🖥️ 배포</button>
+      <button class="fb" data-f="OX">⭕ OX</button>
+    </div>
+    <div class="sc-b">정답: <span id="sc">0</span>/<span id="st">0</span></div>
+  </div>
+  <div id="ql"></div>
+</div>
+
+</div>
+<script>
+document.querySelectorAll('.tab').forEach(t=>t.addEventListener('click',()=>{
+  document.querySelectorAll('.tab,.pnl').forEach(x=>x.classList.remove('on'));
+  t.classList.add('on');document.getElementById(t.dataset.p).classList.add('on');
+}));
+const QA=[
+  {cat:'순서',diff:'easy',
+   q:'UML 순서 다이어그램(Sequence Diagram)에서 객체의 메서드 실행 기간을 나타내는 표기로 가장 적절한 것은?',
+   cs:['수직 점선(Lifeline)','생명선 위에 그려진 좁은 직사각형(Activation Bar)','채운 삼각형 화살표','alt 결합 프래그먼트'],ans:1,
+   exp:'<strong>활성화 박스(Activation Bar)</strong>: 생명선(Lifeline) 위에 그려진 <em>좁고 긴 직사각형</em>으로 객체가 해당 메서드를 실행하고 있는 기간을 나타냅니다. 수직 점선=생명선(객체 존재 기간), 채운 삼각형=동기 메시지, alt=조건 분기 프래그먼트.'},
+  {cat:'순서',diff:'mid',
+   q:'순서 다이어그램의 결합 프래그먼트에서 "alt"와 "opt"의 차이로 가장 적절한 것은?',
+   cs:['alt는 병렬 실행, opt는 순차 실행을 나타낸다.','alt는 if-else처럼 조건에 따라 구간이 나뉘고, opt는 조건이 참일 때만 실행되는 단일 구간이다(else 없음).','alt와 opt는 동일하며 이름만 다르다.','alt는 반복, opt는 종료 조건을 나타낸다.'],ans:1,
+   exp:'<strong>alt vs opt</strong>: <em>alt</em>=if-else처럼 조건에 따라 여러 구간으로 나뉨(조건 분기). <em>opt</em>=조건이 참일 때만 실행되는 단일 구간(else 구간 없음, 단순 if). 반복=loop, 병렬=par, 중단=break. alt는 두 개 이상의 구간이 있고 opt는 하나만 있는 것이 핵심 차이.'},
+  {cat:'활동',diff:'mid',
+   q:'활동 다이어그램(Activity Diagram)에서 "포크(Fork)"와 "조인(Join)"의 역할로 가장 적절한 것은?',
+   cs:['포크는 조건 분기, 조인은 조건 합류를 나타낸다.','포크는 병렬 처리의 시작(1개 입력→다수 출력), 조인은 병렬 처리의 합류(다수 입력→1개 출력)를 나타낸다.','포크와 조인은 모두 굵은 수직선으로 표기한다.','포크는 활동의 시작, 조인은 활동의 종료를 나타낸다.'],ans:1,
+   exp:'<strong>포크(Fork)·조인(Join)</strong>: 둘 다 <em>굵은 수평(또는 수직)선</em>으로 표기. <em>포크</em>=1개 흐름이 여러 개로 분리되어 병렬 시작. <em>조인</em>=여러 병렬 흐름이 하나로 합류(모두 완료될 때까지 대기). 조건 분기/합류는 마름모(결정 노드/병합 노드). 이것이 순서도와 달리 활동 다이어그램이 <em>병렬 처리</em>를 표현할 수 있는 이유.'},
+  {cat:'활동',diff:'mid',
+   q:'활동 다이어그램의 스윔레인(Swimlane)의 역할로 가장 적절한 것은?',
+   cs:['시간 순서를 나타내는 수평 구획','활동을 수행하는 책임 주체(역할·부서·시스템)별로 행동을 시각적으로 구분하는 수직 구획','결합 프래그먼트의 조건을 표시하는 영역','병렬 처리 구간을 구분하는 박스'],ans:1,
+   exp:'<strong>스윔레인(Swimlane)</strong>: 활동 다이어그램에서 수직(또는 수평) 구획으로 나누어 <em>각 행동을 수행하는 역할·부서·시스템을 명확히 구분</em>합니다. 예) 고객/시스템/결제서비스 구획. 어떤 액터가 어떤 행동을 담당하는지 책임 경계를 시각화합니다.'},
+  {cat:'상태',diff:'mid',
+   q:'상태 머신 다이어그램(State Machine Diagram)에서 전이(Transition) 레이블의 표준 형식으로 가장 적절한 것은?',
+   cs:['상태명 / 이벤트 / 동작','이벤트 [가드 조건] / 동작','[조건] → 이벤트 / 동작','이벤트 : 가드 : 동작'],ans:1,
+   exp:'<strong>전이 레이블 형식</strong>: <em>이벤트 [가드 조건] / 동작</em>. 이벤트=전이를 일으키는 원인, [가드]=전이 허용 여부 조건, /동작=전이 시 수행하는 액션. 예) "결제완료 [금액>0] / 영수증발행". 세 요소 모두 선택적이며 하나 이상 있으면 됩니다.'},
+  {cat:'상태',diff:'hard',
+   q:'상태 머신 다이어그램에서 히스토리 상태(History State)의 기능으로 가장 적절한 것은?',
+   cs:['모든 이전 상태를 기록하는 로그 기능','복합 상태(Composite State)에서 중단되기 전 마지막으로 활성화되었던 하위 상태로 복귀하는 기능','상태의 진입 동작(entry)을 나타내는 기호','타이머 이벤트를 처리하는 특수 상태'],ans:1,
+   exp:'<strong>히스토리 상태(H)</strong>: 복합 상태에서 다른 상태로 전환했다가 다시 돌아올 때 <em>이전에 있었던 마지막 하위 상태로 복귀</em>하는 기능. H=얕은 히스토리(직접 하위 상태만), H*=깊은 히스토리(중첩된 모든 하위 상태). 예) 음악 재생기가 일시정지→다시 재생할 때 이전 재생 위치로 복귀.'},
+  {cat:'컴포넌트',diff:'mid',
+   q:'컴포넌트 다이어그램에서 제공 인터페이스(Lollipop)와 필요 인터페이스(Socket)의 의미로 가장 적절한 것은?',
+   cs:['제공 인터페이스=다른 컴포넌트가 필요로 하는 서비스, 필요 인터페이스=자신이 제공하는 서비스','제공 인터페이스(원)=다른 컴포넌트에 자신이 제공하는 서비스, 필요 인터페이스(반원)=자신이 다른 컴포넌트에서 필요로 하는 서비스','제공과 필요 인터페이스는 동일하다.','제공 인터페이스=입력, 필요 인터페이스=출력을 나타낸다.'],ans:1,
+   exp:'<strong>인터페이스 표기</strong>: <em>제공 인터페이스(Lollipop·원 ○)</em>=컴포넌트가 외부에 제공하는 서비스(나가는 방향). <em>필요 인터페이스(Socket·반원 ))</em>=컴포넌트가 외부에서 필요로 하는 서비스(들어오는 방향). 어셈블리 커넥터는 제공 인터페이스와 필요 인터페이스를 연결합니다.'},
+  {cat:'배포',diff:'mid',
+   q:'배포 다이어그램(Deployment Diagram)에서 «execution environment»의 의미로 가장 적절한 것은?',
+   cs:['물리적 하드웨어 서버','소프트웨어 실행 컨테이너 — JVM·Node.js·Docker·OS 등 SW가 실행되는 환경','배포 가능한 소프트웨어 산출물(.war·.jar)','하드웨어와 소프트웨어의 네트워크 연결'],ans:1,
+   exp:'<strong>«execution environment»</strong>: SW가 실행되는 <em>소프트웨어 환경</em>(JVM·Node.js·Docker 컨테이너·OS·웹 서버). «device»는 물리적 하드웨어(서버·PC·스마트폰). «artifact»는 배포 가능한 SW 파일(.war·.jar·.exe). 배포 다이어그램은 HW 노드에 SW 아티팩트가 어떻게 배포되는지 표현합니다.'},
+  {cat:'순서',diff:'mid',
+   q:'순서 다이어그램과 통신 다이어그램(Communication Diagram)의 관계로 가장 적절한 것은?',
+   cs:['순서 다이어그램은 구조를, 통신 다이어그램은 행위를 표현한다.','두 다이어그램은 의미상 동등하며 서로 변환 가능하지만, 순서는 시간 흐름을 명확히 표현하고 통신은 객체 간 관계 구조를 명확히 표현한다.','통신 다이어그램은 순서 다이어그램의 이전 버전으로 더 이상 사용하지 않는다.','두 다이어그램은 전혀 다른 정보를 표현한다.'],ans:1,
+   exp:'<strong>순서·통신 다이어그램</strong>: 두 다이어그램은 <em>의미상 동등(Semantically Equivalent)</em>하여 서로 변환 가능합니다. 순서=수직 시간축으로 시간 흐름 파악 용이. 통신(구 협력 다이어그램)=객체 네트워크 구조와 번호로 순서 표현. 표현 방식만 다를 뿐 동일한 정보를 담습니다.'},
+  {cat:'활동',diff:'easy',
+   q:'활동 다이어그램(Activity Diagram)과 순서도(Flowchart)의 가장 큰 차이점으로 가장 적절한 것은?',
+   cs:['활동 다이어그램은 텍스트 기반이고 순서도는 그래픽 기반이다.','활동 다이어그램은 포크/조인을 통한 병렬 처리와 스윔레인을 표현할 수 있지만, 순서도는 병렬 처리 표현이 어렵다.','순서도는 UML 표준이고 활동 다이어그램은 비표준이다.','두 다이어그램은 완전히 동일하다.'],ans:1,
+   exp:'<strong>활동 다이어그램 vs 순서도</strong>: 가장 큰 차이는 <em>포크(Fork)/조인(Join)을 통한 병렬 처리 표현</em>과 <em>스윔레인(역할 구획)</em>입니다. 순서도는 순차·분기·반복만 표현 가능하며 병렬 처리 표현이 어렵습니다. 활동 다이어그램은 UML 표준 행위 다이어그램으로 비즈니스 프로세스와 병렬 시스템 모델링에 적합합니다.'},
+  {cat:'상태',diff:'easy',type:'ox',
+   q:'상태 머신 다이어그램에서 초기 상태는 반드시 하나여야 하고, 최종 상태는 여러 개가 될 수 있다.',ans:true,
+   exp:'<strong>○</strong> — 상태 머신 다이어그램의 규칙: <em>초기 상태(●)</em>는 반드시 1개만 존재합니다(진입점은 하나). <em>최종 상태(◉)</em>는 여러 개가 될 수 있습니다(다양한 종료 조건). 활동 다이어그램도 동일한 규칙이 적용됩니다. 초기=채운 원, 최종=이중 원.'},
+  {cat:'컴포넌트',diff:'mid',type:'ox',
+   q:'컴포넌트 다이어그램과 배포 다이어그램은 동일한 다이어그램으로 소프트웨어의 물리적 배포를 표현한다.',ans:false,
+   exp:'<strong>×</strong> — 두 다이어그램은 다릅니다. <strong>컴포넌트 다이어그램</strong>=SW 컴포넌트들의 <em>논리적 구조</em>·인터페이스·의존 관계 표현. <strong>배포 다이어그램</strong>=HW 노드에 SW 아티팩트가 어떻게 <em>물리적으로 배포</em>되는지 표현. 컴포넌트=무엇이 있는가 / 배포=어디에 놓이는가.'},
+  {cat:'배포',diff:'mid',type:'ox',
+   q:'배포 다이어그램에서 «artifact»는 .war, .jar, .exe 등 배포 가능한 소프트웨어 산출물을 나타낸다.',ans:true,
+   exp:'<strong>○</strong> — «artifact»: 물리적으로 배포 가능한 <em>SW 산출물</em>입니다. 예) ShoppingApp.war(Java 웹 앱), OrderService.jar(라이브러리), app.exe(실행 파일), schema.sql(DB 스크립트), config.xml(설정 파일). 아티팩트는 노드에 배포(«deploy»)됩니다.'},
+  {cat:'순서',diff:'hard',type:'ox',
+   q:'순서 다이어그램의 결합 프래그먼트 "loop"는 조건이 참인 동안 반복 실행을 나타내며, 반복 횟수를 최소·최대값으로 지정할 수 있다.',ans:true,
+   exp:'<strong>○</strong> — loop 결합 프래그먼트: <em>loop [min, max]</em> 형식으로 반복 범위 지정 가능. 예) loop [1,5] = 최소 1회, 최대 5회 반복. loop [1,*] = 1회 이상 무한 반복. 조건도 함께 명시 가능: loop [i<10]. alt=if-else, opt=단순if, par=병렬, break=중단.'},
+];
+let answered=0,correct=0;
+function renderQ(f){
+  const data=f==='all'?QA:QA.filter(q=>q.cat===f);
+  const list=document.getElementById('ql');list.innerHTML='';
+  answered=0;correct=0;upS();
+  const CATC={'순서':'tp','활동':'tg','상태':'ty','컴포넌트':'to','배포':'tr','OX':'tb'};
+  const DLC={'easy':'easy 쉬움','mid':'mid 보통','hard':'hard 어려움'};
+  const NL=['①','②','③','④'];
+  if(!data.length){list.innerHTML='<div style="text-align:center;padding:40px;color:var(--mu)">문제 없음</div>';return;}
+  data.forEach((q,i)=>{
+    const gi=QA.indexOf(q);
+    const el=document.createElement('div');el.className='qa';
+    const tc=CATC[q.cat]||'tb';
+    const [dc,dn]=(DLC[q.diff]||'mid 보통').split(' ');
+    if(q.type==='ox'){
+      el.innerHTML=`<div class="qa-hd" onclick="this.closest('.qa').classList.toggle('open')"><div><div class="qa-meta"><span class="qn">Q${String(i+1).padStart(2,'0')}</span><span class="tag ${tc}">${q.cat}</span><span class="diff ${dc}">${dn}</span><span class="tag tg">O/X</span></div><div class="qq">${q.q}</div></div><span class="tgl">▾</span></div>
+      <div class="qa-bd"><div class="ox-wr"><button class="ox" onclick="pickOX(this,true,${gi})">⭕ 옳다</button><button class="ox" onclick="pickOX(this,false,${gi})">❌ 틀리다</button></div><div class="exp" id="ex-${gi}"><div class="exp-t">💡 해설</div>${q.exp}</div></div>`;
+    } else {
+      el.innerHTML=`<div class="qa-hd" onclick="this.closest('.qa').classList.toggle('open')"><div><div class="qa-meta"><span class="qn">Q${String(i+1).padStart(2,'0')}</span><span class="tag ${tc}">${q.cat}</span><span class="diff ${dc}">${dn}</span></div><div class="qq">${q.q}</div></div><span class="tgl">▾</span></div>
+      <div class="qa-bd"><div class="chs">${q.cs.map((c,ci)=>`<div class="ch" data-ci="${ci}" onclick="pickCh(this,${gi})"><span class="cnum">${NL[ci]}</span><span>${c}</span></div>`).join('')}</div><div class="exp" id="ex-${gi}"><div class="exp-t">💡 해설</div>${q.exp}</div></div>`;
+    }
+    list.appendChild(el);
+  });
+}
+function pickCh(el,gi){
+  const bd=el.closest('.qa-bd');if(bd.querySelector('.ok,.ng'))return;
+  const q=QA[gi];
+  bd.querySelectorAll('.ch').forEach((c,i)=>{c.classList.add('lk');if(i===q.ans)c.classList.add('ok');else if(i===parseInt(el.dataset.ci))c.classList.add('ng');});
+  document.getElementById('ex-'+gi).classList.add('show');
+  answered++;if(parseInt(el.dataset.ci)===q.ans)correct++;upS();
+}
+function pickOX(btn,val,gi){
+  const bd=btn.closest('.qa-bd');if(bd.querySelector('.so,.sx'))return;
+  const q=QA[gi];
+  bd.querySelectorAll('.ox').forEach(b=>b.classList.add('lk'));
+  btn.classList.add(val?'so':'sx');
+  if(val!==q.ans){btn.style.opacity='.5';bd.querySelectorAll('.ox')[val?1:0].classList.add(q.ans?'so':'sx');}
+  document.getElementById('ex-'+gi).classList.add('show');
+  answered++;if(val===q.ans)correct++;upS();
+}
+function upS(){document.getElementById('sc').textContent=correct;document.getElementById('st').textContent=answered;}
+document.getElementById('fbar').addEventListener('click',e=>{
+  const b=e.target.closest('.fb');if(!b)return;
+  document.querySelectorAll('.fb').forEach(x=>x.classList.remove('on'));b.classList.add('on');renderQ(b.dataset.f);
+});
+renderQ('all');
+</script>
+</body>
+</html>
