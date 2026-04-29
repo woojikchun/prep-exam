@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TCP 혼잡 제어 메커니즘 — 컴퓨터시스템응용 기술사 모범 답안</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;500;700&family=Noto+Sans+KR:wght@400;500;700&family=JetBrains+Mono:wght@400;600&display=swap');
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --ink:#1a1a1a;--ink2:#333;--ink3:#666;
+  --line:#c8c8c8;--line2:#e2e0da;--bg:#fdfcf8;
+  --accent:#1a3a6e;--accent2:#7a3010;--green:#2d6a4f;--purple:#4a3080;
+}
+body{background:#dddad2;font-family:'Noto Sans KR',sans-serif;color:var(--ink);padding:20px 0 40px}
+.doc{max-width:800px;margin:0 auto;background:var(--bg);box-shadow:0 4px 32px rgba(0,0,0,.22)}
+
+.hdr{border-bottom:3px double var(--ink);padding:20px 36px 16px;display:flex;align-items:flex-start;gap:16px}
+.hdr-l{flex:1}
+.lbl{font-size:11px;letter-spacing:.14em;color:var(--ink3);font-family:'Noto Serif KR',serif}
+.ttl{font-size:20px;font-weight:700;font-family:'Noto Serif KR',serif;color:var(--accent);line-height:1.35;margin-top:5px}
+.pills{display:flex;gap:8px;margin-top:9px;flex-wrap:wrap}
+.pill{font-size:11px;padding:2px 10px;border:1px solid var(--line);border-radius:2px;color:var(--ink2);background:#fff}
+.score-box{border:1.5px solid var(--ink);padding:10px 16px;text-align:center;min-width:72px}
+.sc-lbl{font-size:10px;color:var(--ink3);letter-spacing:.06em}
+.sc-n{font-size:24px;font-weight:700;font-family:'Noto Serif KR',serif;color:var(--accent);line-height:1.1}
+
+.body{padding:24px 40px 48px}
+.qbox{background:#f0efea;border:1px solid #bbb;padding:14px 18px;border-radius:3px;margin-bottom:24px;font-size:12.5px;color:var(--ink2);line-height:1.85}
+.qbox strong{color:var(--ink);font-weight:700}
+
+.sh {font-size:14.5px;font-weight:700;font-family:'Noto Serif KR',serif;color:var(--accent);border-bottom:1.5px solid var(--accent);padding-bottom:5px;margin:0 0 13px}
+.sh2{font-size:13px;font-weight:700;color:var(--ink);margin:13px 0 5px;padding-left:8px;border-left:3px solid var(--accent2)}
+.sh3{font-size:12.5px;font-weight:700;color:var(--ink2);margin:9px 0 4px;padding-left:18px}
+.sec{margin-bottom:22px}
+.txt{font-size:12.5px;line-height:1.92;color:var(--ink2)}
+.txt p{margin-bottom:5px}
+.i1{padding-left:14px}
+.i2{padding-left:28px}
+.kw{font-weight:700;color:var(--ink)}
+
+.tw{margin:10px 0 14px;overflow-x:auto}
+table{width:100%;border-collapse:collapse;font-size:11.5px}
+th{background:var(--accent);color:#fff;padding:6px 9px;text-align:left;font-weight:500;border:1px solid var(--accent)}
+td{padding:6px 9px;border:1px solid var(--line);vertical-align:top;line-height:1.75;color:var(--ink2)}
+tr:nth-child(even) td{background:#f4f3ef}
+.kc{font-weight:700;color:var(--ink)}
+.tc{text-align:center}
+
+.fig{margin:13px 0 16px;background:#f8f7f3;border:1px solid var(--line2);border-radius:4px;padding:12px 8px}
+.fc{font-size:11px;color:var(--ink3);text-align:center;margin-top:7px;font-style:italic}
+
+.note{margin:16px 0 0;padding:12px 16px;border:1px solid #8b6914;background:#fffbef;border-radius:3px}
+.nt{font-size:12px;font-weight:700;color:#6a4f00;margin-bottom:5px}
+.nb{font-size:12px;color:#4a3800;line-height:1.85}
+
+.pb{border:none;border-top:2px dashed #bbb;margin:24px 0;position:relative}
+.pb::after{content:"— 다음 페이지 —";position:absolute;top:-9px;left:50%;transform:translateX(-50%);background:var(--bg);padding:0 10px;font-size:10px;color:#bbb;white-space:nowrap}
+.ftr{border-top:2px solid var(--ink);margin:0 40px;padding:10px 0;display:flex;justify-content:space-between;font-size:10px;color:var(--ink3)}
+
+.badge{display:inline-block;font-size:10.5px;padding:1px 8px;border-radius:2px;font-weight:600;margin:1px 2px}
+.badge-r{background:#FCEBEB;color:#A32D2D;border:1px solid #f0b8b8}
+.badge-g{background:#EAF3DE;color:#2d6a4f;border:1px solid #b0d89a}
+.badge-b{background:#E6F1FB;color:#0C447C;border:1px solid #9dc4f0}
+.badge-o{background:#FAEEDA;color:#7a3010;border:1px solid #f0c88a}
+.badge-p{background:#eeedfe;color:#4a3080;border:1px solid #b8b0f0}
+
+.formula{display:inline-block;font-family:'JetBrains Mono',monospace;font-size:11.5px;background:#f0efea;border:1px solid var(--line2);border-radius:3px;padding:2px 8px;color:#1a3a6e;font-weight:700;margin:2px 0}
+
+/* 단계 카드 */
+.phase-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:10px 0 14px}
+.ph-card{border-radius:6px;overflow:hidden}
+.ph-head{padding:8px 12px;font-size:12.5px;font-weight:700;color:#fff}
+.ph-body{padding:7px 12px 10px;font-size:12px;line-height:1.8;color:var(--ink2)}
+.ph-ss  .ph-head{background:#2d6a4f}  .ph-ss{border:1.5px solid #2d6a4f}
+.ph-ca  .ph-head{background:#1a3a6e}  .ph-ca{border:1.5px solid #1a3a6e}
+.ph-fr  .ph-head{background:#7a3010}  .ph-fr{border:1.5px solid #7a3010}
+.ph-qu  .ph-head{background:#4a3080}  .ph-qu{border:1.5px solid #4a3080}
+</style>
+</head>
+<body>
+<div class="doc">
+
+<!-- Header -->
+<div class="hdr">
+  <div class="hdr-l">
+    <div class="lbl">컴퓨터시스템응용 기술사 · 예상 문제 및 모범 답안</div>
+    <div class="ttl">TCP 혼잡 제어 메커니즘<br>(TCP Congestion Control)</div>
+    <div class="pills">
+      <span class="pill">4교시 · 논술형</span>
+      <span class="pill">네트워크 / 전송 계층</span>
+      <span class="pill">키워드: cwnd · ssthresh · Slow Start · AIMD · Fast Retransmit · CUBIC · BBR</span>
+    </div>
+  </div>
+  <div class="score-box">
+    <div class="sc-lbl">배점</div>
+    <div class="sc-n">25</div>
+    <div class="sc-lbl">점</div>
+  </div>
+</div>
+
+<div class="body">
+
+<!-- 문제 -->
+<div class="qbox">
+  <strong>【 문 제 】</strong><br><br>
+  인터넷 전송 신뢰성의 핵심인 TCP의 <strong>혼잡 제어(Congestion Control)</strong>에 대하여 다음을 설명하시오.<br><br>
+  &emsp;(1) 혼잡(Congestion)의 개념, 혼잡 감지 방법 및 핵심 변수 &nbsp;(5점)<br>
+  &emsp;(2) 혼잡 제어 4단계 알고리즘 — Slow Start · Congestion Avoidance · Fast Retransmit · Fast Recovery &nbsp;(10점)<br>
+  &emsp;(3) TCP Reno vs. TCP CUBIC vs. BBR 알고리즘 비교 &nbsp;(6점)<br>
+  &emsp;(4) 혼잡 제어와 흐름 제어의 차이 및 실무 고려사항 &nbsp;(4점)
+</div>
+
+<!-- ─── Ⅰ. 개요 ─── -->
+<div class="sec">
+  <div class="sh">Ⅰ. 혼잡의 개념, 혼잡 감지 방법 및 핵심 변수</div>
+
+  <div class="sh2">1. 혼잡(Congestion)의 정의</div>
+  <div class="txt i1">
+    <p><span class="kw">혼잡(Congestion)</span>이란 네트워크 링크·라우터 버퍼에 처리 가능 용량 이상의 트래픽이 집중되어 <span class="kw">패킷 손실·지연 급증·처리율(Throughput) 저하</span>가 발생하는 상태이다. 혼잡이 방치되면 Congestion Collapse(모두가 재전송하는 악순환)로 네트워크가 사실상 불통이 된다.</p>
+    <p>TCP는 <span class="kw">종단간(End-to-End) 네트워크 상태를 추론</span>하여 송신 속도를 자율 조절한다. 라우터는 혼잡 알림을 명시적으로 제공하지 않으며(ECN 제외), TCP 스스로 손실·지연 신호를 해석한다.</p>
+  </div>
+
+  <div class="sh2">2. 혼잡 감지 방법</div>
+  <div class="tw">
+    <table>
+      <tr><th style="width:28%">감지 신호</th><th style="width:36%">내용</th><th>심각도</th></tr>
+      <tr>
+        <td><span class="kc">패킷 손실 — 타임아웃(RTO)</span></td>
+        <td>재전송 타임아웃(RTO) 만료: ACK가 RTO 내에 수신되지 않음. 심각한 혼잡 신호</td>
+        <td class="tc"><span class="badge badge-r">높음</span></td>
+      </tr>
+      <tr>
+        <td><span class="kc">패킷 손실 — 3 중복 ACK</span></td>
+        <td>동일 ACK를 3번 연속 수신 → 특정 세그먼트 손실 추정. 부분 손실 신호</td>
+        <td class="tc"><span class="badge badge-o">중간</span></td>
+      </tr>
+      <tr>
+        <td><span class="kc">RTT 증가 (BBR 방식)</span></td>
+        <td>왕복 지연(RTT) 증가를 버퍼 포화의 조기 신호로 탐지. 손실 전 감지</td>
+        <td class="tc"><span class="badge badge-b">낮음(선제)</span></td>
+      </tr>
+      <tr>
+        <td><span class="kc">ECN (Explicit Congestion Notification)</span></td>
+        <td>라우터가 IP 헤더에 ECN 비트 설정 → 수신자가 ECE 플래그로 송신자에 명시 통보</td>
+        <td class="tc"><span class="badge badge-g">명시적</span></td>
+      </tr>
+    </table>
+  </div>
+  <div class="fc" style="margin-top:-8px;margin-bottom:12px">【표 1】 혼잡 감지 방법 및 심각도</div>
+
+  <div class="sh2">3. 핵심 변수</div>
+  <div class="tw">
+    <table>
+      <tr><th style="width:22%">변수</th><th style="width:38%">정의</th><th>역할</th></tr>
+      <tr>
+        <td><span class="kc">cwnd<br>(Congestion Window)</span></td>
+        <td>송신자가 ACK 없이 전송 가능한 최대 데이터 크기 (바이트 또는 MSS 단위). 혼잡 제어가 동적으로 조절</td>
+        <td>혼잡 상태에 따른 <span class="kw">전송 속도 제한</span></td>
+      </tr>
+      <tr>
+        <td><span class="kc">rwnd<br>(Receiver Window)</span></td>
+        <td>수신자의 버퍼 여유 공간. ACK 헤더에 포함하여 송신자에 전달</td>
+        <td>수신자 처리 속도에 따른 <span class="kw">흐름 제어</span></td>
+      </tr>
+      <tr>
+        <td><span class="kc">ssthresh<br>(Slow Start Threshold)</span></td>
+        <td>Slow Start → Congestion Avoidance 전환 임계값. 혼잡 이벤트 발생 시 갱신</td>
+        <td><span class="kw">단계 전환 기준</span></td>
+      </tr>
+      <tr>
+        <td><span class="kc">실효 전송 윈도우</span></td>
+        <td>실제 전송 가능 크기 = min(cwnd, rwnd)</td>
+        <td>혼잡 제어 + 흐름 제어의 <span class="kw">통합 상한</span></td>
+      </tr>
+    </table>
+  </div>
+  <div class="fc" style="margin-top:-8px;margin-bottom:12px">【표 2】 TCP 혼잡 제어 핵심 변수</div>
+</div>
+
+<hr class="pb">
+
+<!-- ─── Ⅱ. 4단계 알고리즘 ─── -->
+<div class="sec">
+  <div class="sh">Ⅱ. 혼잡 제어 4단계 알고리즘</div>
+
+  <div class="phase-grid">
+    <!-- Slow Start -->
+    <div class="ph-card ph-ss">
+      <div class="ph-head">① Slow Start (느린 시작)</div>
+      <div class="ph-body">
+        <span class="kw">초기 또는 RTO 타임아웃 후</span> 적용<br>
+        · cwnd = 1 MSS 에서 시작<br>
+        · ACK 1개 수신 시 cwnd += 1 MSS<br>
+        &nbsp;&nbsp;→ <span class="kw">매 RTT마다 cwnd 2배 증가 (지수)</span><br>
+        · cwnd ≥ ssthresh 시 CA 단계로 전환<br>
+        <span class="kw">목적:</span> 초기 네트워크 용량을 빠르게 탐색
+      </div>
+    </div>
+    <!-- Congestion Avoidance -->
+    <div class="ph-card ph-ca">
+      <div class="ph-head">② Congestion Avoidance (혼잡 회피)</div>
+      <div class="ph-body">
+        <span class="kw">cwnd ≥ ssthresh</span> 구간에서 적용<br>
+        · ACK 1개 수신 시 cwnd += MSS²/cwnd<br>
+        &nbsp;&nbsp;→ <span class="kw">매 RTT마다 cwnd += 1 MSS (선형)</span><br>
+        · 손실 이벤트 발생 시 반응<br>
+        <span class="kw">목적:</span> 혼잡 직전까지 선형적·안전하게 증가
+      </div>
+    </div>
+    <!-- Fast Retransmit -->
+    <div class="ph-card ph-fr">
+      <div class="ph-head">③ Fast Retransmit (빠른 재전송)</div>
+      <div class="ph-body">
+        <span class="kw">3 중복 ACK(Triple Duplicate ACK)</span> 수신 시<br>
+        · RTO 만료를 기다리지 않고 즉시 손실 세그먼트 재전송<br>
+        · RTO 방식 대비 <span class="kw">재전송 지연 대폭 감소</span><br>
+        <span class="kw">목적:</span> 타임아웃 없이 빠른 손실 복구
+      </div>
+    </div>
+    <!-- Fast Recovery -->
+    <div class="ph-card ph-qu">
+      <div class="ph-head">④ Fast Recovery (빠른 복구)</div>
+      <div class="ph-body">
+        <span class="kw">Fast Retransmit 직후</span> 진입 (Reno 기준)<br>
+        · ssthresh = cwnd / 2<br>
+        · cwnd = ssthresh + 3 MSS<br>
+        · 추가 중복 ACK 수신 시 cwnd += 1 MSS<br>
+        · 새 ACK 수신 시 cwnd = ssthresh → CA 전환<br>
+        <span class="kw">목적:</span> SS로 되돌아가지 않고 CA 단계 유지
+      </div>
+    </div>
+  </div>
+  <div class="fc" style="margin-bottom:14px">【표 3】 TCP 혼잡 제어 4단계 — 초록(SS)·파랑(CA)·주황(FR)·보라(FRec)</div>
+
+  <div class="sh2">혼잡 이벤트별 cwnd · ssthresh 조정 규칙</div>
+  <div class="tw">
+    <table>
+      <tr><th style="width:24%">혼잡 이벤트</th><th style="width:26%">ssthresh 갱신</th><th style="width:26%">cwnd 갱신</th><th>다음 단계</th></tr>
+      <tr>
+        <td><span class="kc">RTO 타임아웃</span></td>
+        <td>ssthresh = cwnd / 2</td>
+        <td>cwnd = 1 MSS</td>
+        <td>Slow Start 재시작</td>
+      </tr>
+      <tr>
+        <td><span class="kc">3 중복 ACK</span></td>
+        <td>ssthresh = cwnd / 2</td>
+        <td>cwnd = ssthresh + 3 MSS</td>
+        <td>Fast Recovery → CA</td>
+      </tr>
+      <tr>
+        <td><span class="kc">새 ACK 수신 (SS 중)</span></td>
+        <td>변경 없음</td>
+        <td>cwnd += 1 MSS</td>
+        <td>SS 지속 or CA 전환</td>
+      </tr>
+      <tr>
+        <td><span class="kc">새 ACK 수신 (CA 중)</span></td>
+        <td>변경 없음</td>
+        <td>cwnd += MSS²/cwnd (≈+1 MSS/RTT)</td>
+        <td>CA 지속</td>
+      </tr>
+    </table>
+  </div>
+  <div class="fc" style="margin-top:-8px;margin-bottom:12px">【표 4】 혼잡 이벤트별 cwnd · ssthresh 조정 규칙</div>
+
+  <div class="sh2">AIMD 원리 (Additive Increase Multiplicative Decrease)</div>
+  <div class="txt i1">
+    <p>TCP 혼잡 제어의 핵심은 <span class="kw">AIMD(Additive Increase / Multiplicative Decrease)</span> 원리이다. 정상 구간에서는 선형 증가(+1 MSS/RTT), 혼잡 감지 시 절반으로 감소(×1/2)하여 시스템 전체의 공정한 대역폭 공유를 달성한다.</p>
+    <div style="text-align:center;margin:8px 0">
+      <span class="formula">정상: cwnd(t+1) = cwnd(t) + α &nbsp;(α=1 MSS)</span><br>
+      <span class="formula">혼잡: cwnd(t+1) = cwnd(t) × β &nbsp;(β=0.5)</span>
+    </div>
+  </div>
+
+  <!-- cwnd 변화 그래프 -->
+  <div class="sh2">TCP Reno cwnd 변화 다이어그램</div>
+  <div class="fig">
+    <svg width="100%" viewBox="0 0 700 280" xmlns="http://www.w3.org/2000/svg" role="img">
+      <title>TCP Reno cwnd 변화 다이어그램</title>
+      <defs>
+        <marker id="ax" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse">
+          <path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </marker>
+      </defs>
+
+      <!-- 축 -->
+      <line x1="50" y1="240" x2="680" y2="240" stroke="#888" stroke-width="1.2" marker-end="url(#ax)" fill="none"/>
+      <line x1="50" y1="240" x2="50"  y2="20"  stroke="#888" stroke-width="1.2" marker-end="url(#ax)" fill="none"/>
+      <text font-size="11" fill="#555" x="680" y="255" text-anchor="middle" font-family="'Noto Sans KR',sans-serif">시간 (RTT)</text>
+      <text font-size="11" fill="#555" x="20"  y="130" text-anchor="middle" font-family="'Noto Sans KR',sans-serif" transform="rotate(-90,20,130)">cwnd (MSS)</text>
+
+      <!-- Y축 눈금 -->
+      <line x1="46" y1="200" x2="54" y2="200" stroke="#888" stroke-width="0.8"/>
+      <text font-size="10" fill="#888" x="42" y="204" text-anchor="end" font-family="'JetBrains Mono',monospace">4</text>
+      <line x1="46" y1="160" x2="54" y2="160" stroke="#888" stroke-width="0.8"/>
+      <text font-size="10" fill="#888" x="42" y="164" text-anchor="end" font-family="'JetBrains Mono',monospace">8</text>
+      <line x1="46" y1="120" x2="54" y2="120" stroke="#888" stroke-width="0.8"/>
+      <text font-size="10" fill="#888" x="42" y="124" text-anchor="end" font-family="'JetBrains Mono',monospace">12</text>
+      <line x1="46" y1="80" x2="54" y2="80" stroke="#888" stroke-width="0.8"/>
+      <text font-size="10" fill="#888" x="42" y="84" text-anchor="end" font-family="'JetBrains Mono',monospace">16</text>
+      <line x1="46" y1="40" x2="54" y2="40" stroke="#888" stroke-width="0.8"/>
+      <text font-size="10" fill="#888" x="42" y="44" text-anchor="end" font-family="'JetBrains Mono',monospace">20</text>
+
+      <!-- ssthresh 선 (초기=8) -->
+      <line x1="50" y1="160" x2="340" y2="160" stroke="#b8860b" stroke-width="1.2" stroke-dasharray="6 3"/>
+      <text font-size="10" fill="#b8860b" font-weight="700" x="56" y="154" font-family="'Noto Sans KR',sans-serif">ssthresh=8</text>
+
+      <!-- Slow Start 1구간 (RTT 1~4, 지수 증가) -->
+      <polyline points="60,230 100,220 140,200 180,160" fill="none" stroke="#2d6a4f" stroke-width="2.5"/>
+      <rect x="62" y="248" width="130" height="16" rx="3" fill="#2d6a4f" fill-opacity=".15" stroke="#2d6a4f" stroke-width="0.8"/>
+      <text font-size="10" fill="#2d6a4f" font-weight="700" x="127" y="260" text-anchor="middle" font-family="'Noto Sans KR',sans-serif">① Slow Start (지수)</text>
+
+      <!-- Congestion Avoidance 1구간 (RTT 4~8, 선형 증가) -->
+      <polyline points="180,160 220,150 260,140 300,130 340,120" fill="none" stroke="#1a3a6e" stroke-width="2.5"/>
+      <rect x="182" y="248" width="160" height="16" rx="3" fill="#1a3a6e" fill-opacity=".15" stroke="#1a3a6e" stroke-width="0.8"/>
+      <text font-size="10" fill="#1a3a6e" font-weight="700" x="262" y="260" text-anchor="middle" font-family="'Noto Sans KR',sans-serif">② Congestion Avoidance (선형)</text>
+
+      <!-- 3 dup ACK 이벤트 -->
+      <line x1="340" y1="120" x2="340" y2="240" stroke="#A32D2D" stroke-width="1.5" stroke-dasharray="4 2"/>
+      <text font-size="9.5" fill="#A32D2D" font-weight="700" x="340" y="16" text-anchor="middle" font-family="'Noto Sans KR',sans-serif">3 Dup ACK</text>
+      <!-- ssthresh 절반 (12→6) -->
+      <line x1="340" y1="192" x2="620" y2="192" stroke="#b8860b" stroke-width="1.2" stroke-dasharray="6 3"/>
+      <text font-size="10" fill="#b8860b" font-weight="700" x="622" y="196" font-family="'Noto Sans KR',sans-serif">ssthresh=6</text>
+
+      <!-- Fast Retransmit / Fast Recovery -->
+      <!-- cwnd → ssthresh+3=9 -->
+      <circle cx="340" cy="120" r="4" fill="#7a3010"/>
+      <line x1="340" y1="120" x2="380" y2="174" stroke="#7a3010" stroke-width="2" stroke-dasharray="3 2" marker-end="url(#ax)" fill="none"/>
+      <text font-size="9.5" fill="#7a3010" font-weight="700" x="380" y="166" text-anchor="middle" font-family="'Noto Sans KR',sans-serif">③④ FR+FRec</text>
+      <!-- Fast Recovery 선형 증가 -->
+      <polyline points="380,174 420,168 460,162" fill="none" stroke="#4a3080" stroke-width="2.5"/>
+
+      <!-- CA 재시작 (새 ACK 수신) -->
+      <polyline points="460,192 500,182 540,172 580,162 620,152" fill="none" stroke="#1a3a6e" stroke-width="2.5"/>
+      <rect x="462" y="248" width="140" height="16" rx="3" fill="#1a3a6e" fill-opacity=".15" stroke="#1a3a6e" stroke-width="0.8"/>
+      <text font-size="10" fill="#1a3a6e" font-weight="700" x="532" y="260" text-anchor="middle" font-family="'Noto Sans KR',sans-serif">② CA 재개 (선형)</text>
+
+      <!-- RTO 이벤트 (가상) -->
+      <line x1="620" y1="152" x2="640" y2="230" stroke="#A32D2D" stroke-width="1.5" stroke-dasharray="3 2" marker-end="url(#ax)" fill="none"/>
+      <text font-size="9.5" fill="#A32D2D" font-weight="700" x="645" y="200" font-family="'Noto Sans KR',sans-serif">RTO</text>
+      <text font-size="9.5" fill="#A32D2D" x="645" y="213" font-family="'Noto Sans KR',sans-serif">cwnd→1</text>
+
+      <!-- 범례 -->
+      <line x1="56" y1="275" x2="80" y2="275" stroke="#2d6a4f" stroke-width="2.5"/>
+      <text font-size="10" fill="#2d6a4f" x="84" y="279" font-family="'Noto Sans KR',sans-serif">Slow Start</text>
+      <line x1="160" y1="275" x2="184" y2="275" stroke="#1a3a6e" stroke-width="2.5"/>
+      <text font-size="10" fill="#1a3a6e" x="188" y="279" font-family="'Noto Sans KR',sans-serif">Cong. Avoid.</text>
+      <line x1="286" y1="275" x2="310" y2="275" stroke="#4a3080" stroke-width="2.5"/>
+      <text font-size="10" fill="#4a3080" x="314" y="279" font-family="'Noto Sans KR',sans-serif">Fast Recovery</text>
+      <line x1="420" y1="275" x2="444" y2="275" stroke="#b8860b" stroke-width="1.2" stroke-dasharray="6 3"/>
+      <text font-size="10" fill="#b8860b" x="448" y="279" font-family="'Noto Sans KR',sans-serif">ssthresh</text>
+      <line x1="530" y1="275" x2="554" y2="275" stroke="#A32D2D" stroke-width="1.2" stroke-dasharray="4 2"/>
+      <text font-size="10" fill="#A32D2D" x="558" y="279" font-family="'Noto Sans KR',sans-serif">혼잡 이벤트</text>
+    </svg>
+    <div class="fc">【그림 1】 TCP Reno cwnd 변화 — SS(지수)→CA(선형)→3DupACK(절반+FR)→CA 재개→RTO(cwnd=1 초기화)</div>
+  </div>
+</div>
+
+<hr class="pb">
+
+<!-- ─── Ⅲ. 알고리즘 비교 ─── -->
+<div class="sec">
+  <div class="sh">Ⅲ. TCP Reno vs. TCP CUBIC vs. BBR 알고리즘 비교</div>
+
+  <div class="sh2">1. TCP Reno (표준 기준선)</div>
+  <div class="txt i1">
+    <p>1990년대 표준화된 기준 혼잡 제어 알고리즘. AIMD 기반으로 패킷 손실을 혼잡 신호로 사용한다. <span class="kw">고대역폭·고지연(High BDP) 환경</span>에서는 window가 가득 차기까지 너무 오래 걸려 <span class="kw">대역폭 저활용</span> 문제가 발생한다.</p>
+    <p>BDP(Bandwidth-Delay Product) = 대역폭 × RTT — 고BDP 환경에서 cwnd가 BDP에 도달하는 데 수백 RTT 소요</p>
+  </div>
+
+  <div class="sh2">2. TCP CUBIC (리눅스 기본값, RFC 8312)</div>
+  <div class="txt i1">
+    <p>고BDP 환경을 위해 설계된 알고리즘. cwnd 증가를 <span class="kw">3차 함수(Cubic Function)</span>로 모델링하여 이전 최대 cwnd(Wmax) 근처에서는 천천히 증가(안전 탐색), 멀리 있을 때는 빠르게 증가(공격적 회복)한다.</p>
+    <div style="text-align:center;margin:6px 0">
+      <span class="formula">W(t) = C × (t − K)³ + Wmax</span>
+    </div>
+    <p class="i1">C: 스케일링 계수, K: 포화점까지 남은 시간, Wmax: 이전 혼잡 직전 cwnd</p>
+    <p><span class="kw">장점:</span> Reno 대비 고BDP에서 대역폭 활용률 대폭 향상. RTT 독립적(여러 흐름 간 공정성 개선)</p>
+  </div>
+
+  <div class="sh2">3. BBR (Bottleneck Bandwidth and Round-trip propagation time, Google 2016)</div>
+  <div class="txt i1">
+    <p>BBR은 패킷 손실이 아닌 <span class="kw">병목 대역폭(BtlBw)과 최소 RTT(RTprop)를 직접 측정</span>하여 혼잡 없는 최적 전송률을 추정한다. 버퍼가 채워지기 전에 적정 속도를 유지하므로 불필요한 버퍼링과 패킷 손실을 줄인다.</p>
+    <div style="text-align:center;margin:6px 0">
+      <span class="formula">전송 목표율 = BtlBw × RTprop</span>
+    </div>
+    <p><span class="kw">장점:</span> 고손실·위성·LTE 등 비이상적 환경에서 Reno·CUBIC 대비 처리율 수배. YouTube·Google CDN에 배포</p>
+    <p><span class="kw">한계:</span> 일부 환경에서 다른 알고리즘과 공정성(Fairness) 문제, RTT 측정 부정확성</p>
+  </div>
+
+  <div class="sh2">4. 세 알고리즘 종합 비교</div>
+  <div class="tw">
+    <table>
+      <tr><th style="width:22%">비교 항목</th><th style="background:#1a3a6e;color:#fff">TCP Reno</th><th style="background:#2d6a4f;color:#fff">TCP CUBIC</th><th style="background:#7a3010;color:#fff">BBR (v2)</th></tr>
+      <tr><td><span class="kc">혼잡 신호</span></td><td>패킷 손실</td><td>패킷 손실</td><td>BtlBw+RTT (모델 기반)</td></tr>
+      <tr><td><span class="kc">cwnd 증가 함수</span></td><td>선형(AIMD)</td><td>3차 함수(Cubic)</td><td>PacingRate 제어</td></tr>
+      <tr><td><span class="kc">고BDP 환경</span></td><td class="tc"><span class="badge badge-r">취약</span></td><td class="tc"><span class="badge badge-g">우수</span></td><td class="tc"><span class="badge badge-g">매우 우수</span></td></tr>
+      <tr><td><span class="kc">고손실 환경</span></td><td class="tc"><span class="badge badge-r">취약</span></td><td class="tc"><span class="badge badge-o">보통</span></td><td class="tc"><span class="badge badge-g">우수</span></td></tr>
+      <tr><td><span class="kc">버퍼 점유</span></td><td>과도한 버퍼링</td><td>과도한 버퍼링</td><td>최소 버퍼링</td></tr>
+      <tr><td><span class="kc">공정성(Fairness)</span></td><td class="tc"><span class="badge badge-g">우수</span></td><td class="tc"><span class="badge badge-g">우수</span></td><td class="tc"><span class="badge badge-o">이슈 존재</span></td></tr>
+      <tr><td><span class="kc">구현 복잡도</span></td><td class="tc"><span class="badge badge-g">낮음</span></td><td class="tc"><span class="badge badge-o">중간</span></td><td class="tc"><span class="badge badge-o">높음</span></td></tr>
+      <tr><td><span class="kc">주요 적용 OS·서비스</span></td><td>구형 시스템</td><td>Linux 기본(2.6.19+), Windows</td><td>Google, YouTube CDN, Linux 5.x</td></tr>
+    </table>
+  </div>
+  <div class="fc" style="margin-top:-8px;margin-bottom:12px">【표 5】 TCP Reno · CUBIC · BBR 종합 비교</div>
+
+  <div class="sh2">5. cwnd 증가 패턴 비교 다이어그램</div>
+  <div class="fig">
+    <svg width="100%" viewBox="0 0 680 200" xmlns="http://www.w3.org/2000/svg" role="img">
+      <title>Reno vs CUBIC vs BBR cwnd 비교</title>
+      <defs>
+        <marker id="ay" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse">
+          <path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </marker>
+      </defs>
+      <!-- 축 -->
+      <line x1="50" y1="170" x2="650" y2="170" stroke="#888" stroke-width="1" marker-end="url(#ay)" fill="none"/>
+      <line x1="50" y1="170" x2="50"  y2="20"  stroke="#888" stroke-width="1" marker-end="url(#ay)" fill="none"/>
+      <text font-size="10.5" fill="#555" x="650" y="188" text-anchor="middle" font-family="'Noto Sans KR',sans-serif">시간 (RTT)</text>
+      <text font-size="10.5" fill="#555" x="20"  y="100" text-anchor="middle" font-family="'Noto Sans KR',sans-serif" transform="rotate(-90,20,100)">cwnd</text>
+
+      <!-- Wmax 표시 -->
+      <line x1="50" y1="50" x2="630" y2="50" stroke="#ccc" stroke-width="0.8" stroke-dasharray="4 3"/>
+      <text font-size="9.5" fill="#aaa" x="635" y="53" font-family="'JetBrains Mono',monospace">Wmax</text>
+
+      <!-- 이전 혼잡 포인트 -->
+      <line x1="280" y1="20" x2="280" y2="180" stroke="#ddd" stroke-width="0.8" stroke-dasharray="3 2"/>
+      <text font-size="9.5" fill="#bbb" x="280" y="16" text-anchor="middle" font-family="'Noto Sans KR',sans-serif">혼잡 이벤트</text>
+
+      <!-- TCP Reno — 선형 증가 -->
+      <polyline points="280,120 340,114 400,108 460,102 520,96 580,90 630,85"
+                fill="none" stroke="#555" stroke-width="2" stroke-dasharray="6 3"/>
+      <text font-size="10" fill="#555" font-weight="700" x="635" y="88" font-family="'Noto Sans KR',sans-serif">Reno</text>
+
+      <!-- TCP CUBIC — S자형 증가 -->
+      <path d="M280 120 C310 118 340 114 360 100 C380 85 410 60 450 54 C490 50 540 50 580 50 C610 50 625 50 630 50"
+            fill="none" stroke="#2d6a4f" stroke-width="2.5"/>
+      <text font-size="10" fill="#2d6a4f" font-weight="700" x="635" y="53" font-family="'Noto Sans KR',sans-serif">CUBIC</text>
+
+      <!-- BBR — 목표치 유지 (PacingRate) -->
+      <line x1="280" y1="85" x2="630" y2="78" stroke="#7a3010" stroke-width="2.5"/>
+      <text font-size="10" fill="#7a3010" font-weight="700" x="635" y="82" font-family="'Noto Sans KR',sans-serif">BBR</text>
+      <text font-size="9" fill="#7a3010" x="400" y="72" text-anchor="middle" font-family="'Noto Sans KR',sans-serif">BtlBw × RTprop 목표율</text>
+
+      <!-- 구간 표시 -->
+      <rect x="56" y="176" width="224" height="16" rx="3" fill="#E6F1FB" stroke="#1a3a6e" stroke-width="0.8"/>
+      <text font-size="9.5" fill="#0C447C" x="168" y="188" text-anchor="middle" font-family="'Noto Sans KR',sans-serif">이전 혼잡 이벤트 이전 구간</text>
+      <rect x="284" y="176" width="350" height="16" rx="3" fill="#EAF3DE" stroke="#2d6a4f" stroke-width="0.8"/>
+      <text font-size="9.5" fill="#2d6a4f" x="459" y="188" text-anchor="middle" font-family="'Noto Sans KR',sans-serif">혼잡 이후 회복 구간 — CUBIC이 Reno 대비 Wmax 도달 훨씬 빠름</text>
+    </svg>
+    <div class="fc">【그림 2】 Reno(선형)·CUBIC(3차 S자)·BBR(목표율 직접 설정) cwnd 증가 패턴 비교</div>
+  </div>
+</div>
+
+<hr class="pb">
+
+<!-- ─── Ⅳ. 흐름 제어 비교·고려사항 ─── -->
+<div class="sec">
+  <div class="sh">Ⅳ. 혼잡 제어와 흐름 제어의 차이 및 실무 고려사항</div>
+
+  <div class="sh2">1. 혼잡 제어 vs. 흐름 제어 비교</div>
+  <div class="tw">
+    <table>
+      <tr><th style="width:22%">비교 항목</th><th>혼잡 제어 (Congestion Control)</th><th>흐름 제어 (Flow Control)</th></tr>
+      <tr><td><span class="kc">목적</span></td><td><span class="kw">네트워크 과부하 방지</span> — 라우터·링크 보호</td><td><span class="kw">수신자 버퍼 오버플로우 방지</span> — 수신자 보호</td></tr>
+      <tr><td><span class="kc">제어 주체</span></td><td>송신자(sender) 자율 — 네트워크 상태 추론</td><td>수신자(receiver) 명시 — rwnd 값으로 통보</td></tr>
+      <tr><td><span class="kc">제어 변수</span></td><td>cwnd (혼잡 창)</td><td>rwnd (수신 창)</td></tr>
+      <tr><td><span class="kc">신호 방식</span></td><td>패킷 손실·RTT 증가·ECN 비트 (암묵적)</td><td>ACK 헤더의 Window Size 필드 (명시적)</td></tr>
+      <tr><td><span class="kc">통합 적용</span></td><td colspan="2" style="text-align:center">실제 전송 크기 = <span class="kw">min(cwnd, rwnd)</span> — 두 제약의 최솟값</td></tr>
+    </table>
+  </div>
+  <div class="fc" style="margin-top:-8px;margin-bottom:12px">【표 6】 혼잡 제어 vs. 흐름 제어 비교</div>
+
+  <div class="sh2">2. 실무 고려사항</div>
+  <div class="txt i1">
+    <p>① <span class="kw">초기 cwnd(IW) 증가:</span> RFC 6928은 초기 cwnd를 10 MSS로 정의(기존 1~4). 단거리 소규모 HTTP 응답의 완료 속도를 크게 향상시킴. Google의 실험에서 평균 페이지 로드 10% 개선</p>
+    <p>② <span class="kw">TCP BBR과 버퍼 팽창(Bufferbloat):</span> CUBIC은 버퍼를 채울 때까지 전송 → 지연 급증(Bufferbloat). BBR은 최소 RTT 기반으로 버퍼링 최소화 → 게임·VoIP 등 지연 민감 서비스에 유리</p>
+    <p>③ <span class="kw">공정성(Fairness) 이슈:</span> BBR과 CUBIC이 같은 병목을 공유할 때 BBR이 더 많은 대역폭을 점유하는 불공정 현상. 동일 알고리즘 사용 환경에서는 문제 없음</p>
+    <p>④ <span class="kw">QUIC과 혼잡 제어:</span> HTTP/3 기반 QUIC 프로토콜은 UDP 위에서 응용 계층이 혼잡 제어를 구현(Cubic·BBR 플러그인 방식). TCP의 HOL(Head-Of-Line) 블로킹 없이 스트림별 독립 혼잡 제어 가능</p>
+    <p>⑤ <span class="kw">데이터센터 내부:</span> DCTCP(Data Center TCP) — ECN을 활용하여 버퍼 점유율에 비례해 cwnd를 정밀 조정. 마이크로초 수준의 지연 제어</p>
+  </div>
+
+  <div class="sh2">3. 알고리즘 선택 가이드</div>
+  <div class="tw">
+    <table>
+      <tr><th style="width:32%">환경</th><th style="width:28%">권장 알고리즘</th><th>근거</th></tr>
+      <tr><td>범용 서버 (Linux)</td><td class="tc"><span class="badge badge-g">CUBIC</span></td><td>Linux 기본값. 대부분 환경에서 안정적 성능</td></tr>
+      <tr><td>고BDP 장거리 (위성·WAN)</td><td class="tc"><span class="badge badge-o">BBR</span></td><td>패킷 손실 무관 최대 처리율, Bufferbloat 최소화</td></tr>
+      <tr><td>데이터센터 내부</td><td class="tc"><span class="badge badge-b">DCTCP</span></td><td>ECN 기반 정밀 제어, 극저지연</td></tr>
+      <tr><td>HTTP/3 · QUIC</td><td class="tc"><span class="badge badge-p">BBR (QUIC)</span></td><td>스트림별 독립 혼잡 제어, HOL 블로킹 없음</td></tr>
+      <tr><td>레거시·임베디드</td><td class="tc"><span class="badge badge-b">Reno/NewReno</span></td><td>구현 단순, 자원 최소 소비</td></tr>
+    </table>
+  </div>
+  <div class="fc" style="margin-top:-8px;margin-bottom:12px">【표 7】 환경별 TCP 혼잡 제어 알고리즘 선택 가이드</div>
+</div>
+
+<!-- ─── Ⅴ. 결론 ─── -->
+<div class="sec">
+  <div class="sh">Ⅴ. 결론</div>
+  <div class="txt">
+    <p>TCP 혼잡 제어는 <span class="kw">Slow Start의 지수 탐색 → Congestion Avoidance의 선형 증가 → Fast Retransmit·Recovery의 신속 복구</span>라는 4단계 구조로 네트워크 자원의 공정하고 효율적인 이용을 달성한다. Reno의 단순 AIMD에서 CUBIC의 3차 함수 증가, BBR의 대역폭 직접 측정으로 진화하면서 고BDP·고손실 환경에서의 처리율이 비약적으로 향상되었다. 현대 네트워크에서는 <span class="kw">워크로드 특성과 네트워크 환경에 맞는 알고리즘의 선택적 적용</span>이 핵심 설계 포인트이다.</p>
+  </div>
+</div>
+
+<div class="note">
+  <div class="nt">★ 기술사 핵심 코멘트</div>
+  <div class="nb">
+    TCP 혼잡 제어의 본질은 <strong>종단간에서 네트워크 상태를 추론하여 자율적으로 전송률을 조절하는 분산 제어 메커니즘</strong>이며, 시스템 감리 시 다음을 중점 검토해야 한다.<br>
+    ① <strong>초기 cwnd 설정:</strong> 클라우드 서버·CDN에서 IW=10 미적용 시 단발성 소형 HTTP 응답의 불필요한 RTT 추가 소요 — /proc/sys/net/ipv4/tcp_init_cwnd 설정 확인<br>
+    ② <strong>Bufferbloat 유발 여부:</strong> CUBIC 환경에서 과도한 버퍼(수백 ms 지연)가 발생하면 BBR 전환 또는 AQM(Active Queue Management — fq_codel, PIE) 적용 검토<br>
+    ③ <strong>알고리즘 혼재 공정성:</strong> 같은 병목을 BBR+CUBIC 플로우가 공유할 때 불공정 대역폭 점유 발생 가능 — 동일 환경 내 알고리즘 통일 정책 수립 여부 확인<br>
+    ④ <strong>QUIC/HTTP3 전환 시 혼잡 제어 가시성:</strong> QUIC는 암호화된 UDP이므로 중간 네트워크 장비의 트래픽 모니터링·QoS 적용이 어려움 — DSCP 마킹 및 관측 가능성(Observability) 설계 여부 점검
+  </div>
+</div>
+
+</div><!-- /body -->
+
+<div class="ftr">
+  <span>컴퓨터시스템응용 기술사 · 모범 답안</span>
+  <span>TCP 혼잡 제어 — SS·CA·FR·FRec · Reno·CUBIC·BBR · AIMD</span>
+  <span>총 5개 항목 · 표 7개 · 그림 2개 · cwnd 변화 다이어그램 포함</span>
+</div>
+
+</div><!-- /doc -->
+</body>
+</html>
