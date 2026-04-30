@@ -1,0 +1,964 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>컴퓨터시스템응용기술사 모범답안</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700;900&family=Noto+Serif+KR:wght@400;600;700&family=JetBrains+Mono:wght@400;600&display=swap');
+:root {
+  --bg:#f5f7fa;--white:#fff;--surface2:#eef1f6;--border:#dde3ec;--border-light:#eef1f6;
+  --blue:#1d4ed8;--blue-light:#3b82f6;--blue-bg:#eff6ff;--blue-border:#bfdbfe;
+  --red:#b91c1c;--red-bg:#fef2f2;--red-border:#fecaca;
+  --green:#065f46;--green-bg:#ecfdf5;--green-border:#a7f3d0;
+  --orange:#92400e;--orange-bg:#fffbeb;--orange-border:#fde68a;
+  --purple:#5b21b6;--purple-bg:#f5f3ff;--purple-border:#ddd6fe;
+  --text:#111827;--text2:#374151;--text3:#6b7280;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--text);font-family:'Noto Sans KR',sans-serif;font-size:14px;line-height:1.6}
+
+.site-header{background:linear-gradient(135deg,#1e3a8a 0%,#1d4ed8 60%,#2563eb 100%);color:white;padding:28px 24px 22px;position:relative;overflow:hidden}
+.site-header::after{content:'';position:absolute;right:-60px;top:-60px;width:220px;height:220px;border-radius:50%;background:rgba(255,255,255,0.05)}
+.hdr-inner{max-width:1080px;margin:0 auto;position:relative}
+.hdr-eyebrow{font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:#93c5fd;margin-bottom:6px}
+.hdr-title{font-size:clamp(18px,3.5vw,26px);font-weight:900;margin-bottom:6px;font-family:'Noto Serif KR',serif}
+.hdr-sub{font-size:12px;color:#bfdbfe}
+.hdr-pills{display:flex;flex-wrap:wrap;gap:6px;margin-top:14px}
+.hdr-pill{background:rgba(255,255,255,0.12);border:1px solid rgba(255,255,255,0.2);padding:3px 11px;border-radius:20px;font-size:11px;color:#e0f2fe}
+
+.domain-nav{background:var(--white);border-bottom:2px solid var(--border);overflow-x:auto;white-space:nowrap;padding:0 16px;position:sticky;top:0;z-index:100;scrollbar-width:none;box-shadow:0 2px 8px rgba(0,0,0,0.06)}
+.domain-nav::-webkit-scrollbar{display:none}
+.nav-btn{display:inline-block;padding:12px 14px;font-size:12px;font-weight:600;color:var(--text3);background:none;border:none;border-bottom:3px solid transparent;cursor:pointer;font-family:inherit;transition:all 0.18s}
+.nav-btn:hover{color:var(--blue)}
+.nav-btn.active{color:var(--blue);border-bottom-color:var(--blue)}
+
+.main{max-width:1080px;margin:0 auto;padding:24px 16px 60px}
+.panel{display:none}
+.panel.active{display:block}
+
+.q-card{background:var(--white);border:1px solid var(--border);border-radius:14px;overflow:hidden;box-shadow:0 2px 12px rgba(0,0,0,0.05);margin-bottom:24px}
+.q-header{padding:18px 22px 14px;border-bottom:1px solid var(--border-light);display:flex;align-items:flex-start;gap:14px}
+.q-domain-badge{flex-shrink:0;padding:4px 11px;border-radius:20px;font-size:10px;font-weight:700;letter-spacing:0.5px;margin-top:2px}
+.q-meta{flex:1}
+.q-type{font-size:10px;color:var(--text3);font-weight:600;letter-spacing:0.5px;margin-bottom:4px}
+.q-title{font-size:15px;font-weight:800;color:var(--text);line-height:1.4}
+.q-body{background:var(--bg);padding:16px 22px;border-bottom:1px solid var(--border-light)}
+.q-items{margin-top:10px;display:flex;flex-direction:column;gap:6px}
+.q-item{display:flex;gap:10px;align-items:flex-start;font-size:13px;color:var(--text2)}
+.q-item-label{font-weight:700;color:var(--blue);min-width:20px;flex-shrink:0}
+.q-hint-row{display:flex;flex-wrap:wrap;gap:6px;margin-top:12px}
+.q-hint{background:var(--blue-bg);border:1px solid var(--blue-border);color:var(--blue);font-size:10px;font-weight:600;padding:2px 8px;border-radius:5px}
+
+.ans-card{background:var(--white)}
+.ans-toggle{width:100%;padding:14px 22px;background:none;border:none;display:flex;align-items:center;justify-content:space-between;cursor:pointer;font-family:inherit;transition:background 0.15s}
+.ans-toggle:hover{background:var(--blue-bg)}
+.ans-toggle-label{font-size:13px;font-weight:700;color:var(--blue);display:flex;align-items:center;gap:8px}
+.ans-toggle-arrow{font-size:16px;color:var(--blue);transition:transform 0.25s}
+.ans-toggle-arrow.open{transform:rotate(180deg)}
+.ans-body{display:none;padding:0 22px 22px}
+.ans-body.open{display:block}
+
+.ans-title{font-size:17px;font-weight:900;color:var(--text);font-family:'Noto Serif KR',serif;padding:18px 0 6px;border-bottom:2px solid var(--blue);margin-bottom:18px}
+.ans-section{margin-bottom:20px}
+.ans-section-title{font-size:13px;font-weight:800;color:#fff;padding:5px 12px;border-radius:6px;display:inline-block;margin-bottom:12px}
+.sec-blue{background:var(--blue)}
+.sec-green{background:#059669}
+.sec-purple{background:#7c3aed}
+.sec-orange{background:#d97706}
+.sec-red{background:#dc2626}
+.sec-teal{background:#0d9488}
+
+.ans-p{font-size:13px;color:var(--text2);line-height:1.85;margin-bottom:10px}
+
+.ans-table{width:100%;border-collapse:collapse;font-size:12px;margin:10px 0 14px}
+.ans-table th{background:var(--surface2);color:var(--text2);font-weight:700;padding:8px 12px;border:1px solid var(--border);text-align:center}
+.ans-table td{padding:8px 12px;border:1px solid var(--border);vertical-align:top;line-height:1.6}
+.ans-table td:first-child{font-weight:600;color:var(--blue);background:var(--blue-bg);text-align:center}
+.ans-table tr:nth-child(even) td:not(:first-child){background:#fafbfd}
+
+.ans-ol{padding-left:0;list-style:none;display:flex;flex-direction:column;gap:10px;margin:8px 0}
+.ans-ol li{display:flex;gap:10px;align-items:flex-start;font-size:13px;color:var(--text2);line-height:1.7}
+.ol-num{flex-shrink:0;width:22px;height:22px;background:var(--blue);color:white;border-radius:50%;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;margin-top:1px}
+.ol-num.green{background:#059669}
+.ol-num.purple{background:#7c3aed}
+.ol-num.orange{background:#d97706}
+.ol-num.red{background:#dc2626}
+
+.sub-list{margin-top:6px;display:flex;flex-direction:column;gap:4px}
+.sub-item{display:flex;gap:8px;font-size:12px;color:var(--text3)}
+.sub-item::before{content:'▸';color:var(--blue-light);flex-shrink:0}
+
+.diagram-box{background:#f8fafc;border:1px solid var(--border);border-left:3px solid var(--blue);border-radius:8px;padding:14px 16px;margin:10px 0;font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--text2);line-height:1.8;overflow-x:auto;white-space:pre}
+
+.key-box{border-radius:8px;padding:12px 16px;margin:12px 0;font-size:12px;line-height:1.7}
+.key-box.blue{background:var(--blue-bg);border:1px solid var(--blue-border);color:#1e40af}
+.key-box.green{background:var(--green-bg);border:1px solid var(--green-border);color:var(--green)}
+.key-box.orange{background:var(--orange-bg);border:1px solid var(--orange-border);color:var(--orange)}
+.key-box.red{background:var(--red-bg);border:1px solid var(--red-border);color:var(--red)}
+.key-box.purple{background:var(--purple-bg);border:1px solid var(--purple-border);color:var(--purple)}
+.key-box .kb-title{font-weight:700;margin-bottom:4px;font-size:11px;letter-spacing:0.5px}
+
+.conclusion{background:linear-gradient(135deg,var(--blue-bg),var(--purple-bg));border:1px solid var(--blue-border);border-radius:8px;padding:14px 16px;margin-top:14px}
+.conclusion-title{font-weight:700;color:var(--blue);font-size:12px;margin-bottom:6px}
+.conclusion p{font-size:12px;color:var(--text2);line-height:1.75}
+
+.score-row{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px}
+.score-chip{font-size:11px;padding:3px 10px;border-radius:6px;font-weight:600}
+.chip-time{background:var(--orange-bg);color:var(--orange);border:1px solid var(--orange-border)}
+.chip-page{background:var(--green-bg);color:var(--green);border:1px solid var(--green-border)}
+.chip-score{background:var(--red-bg);color:var(--red);border:1px solid var(--red-border)}
+
+.badge-net{background:#dbeafe;color:#1d4ed8;border:1px solid #bfdbfe}
+.badge-sec{background:#fef2f2;color:#b91c1c;border:1px solid #fecaca}
+.badge-os{background:#f0fdfa;color:#0f766e;border:1px solid #99f6e4}
+.badge-ai{background:#f5f3ff;color:#5b21b6;border:1px solid #ddd6fe}
+.badge-sw{background:#ecfdf5;color:#065f46;border:1px solid #a7f3d0}
+.badge-db{background:#fffbeb;color:#92400e;border:1px solid #fde68a}
+.badge-pm{background:#fdf4ff;color:#7e22ce;border:1px solid #f0abfc}
+.badge-law{background:#fff7ed;color:#9a3412;border:1px solid #fed7aa}
+.badge-cloud{background:#f0f9ff;color:#0369a1;border:1px solid #bae6fd}
+</style>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="hdr-inner">
+    <div class="hdr-eyebrow">PROFESSIONAL ENGINEER · COMPUTER SYSTEM APPLICATION</div>
+    <div class="hdr-title">컴퓨터시스템응용기술사<br>분야별 빈출 유사문제 &amp; 모범답안</div>
+    <div class="hdr-sub">기술사 실전 답안 형식 완전 재현 · 9개 분야 · 논술형 기준</div>
+    <div class="hdr-pills">
+      <span class="hdr-pill">1~4교시 논술형 형식</span>
+      <span class="hdr-pill">3~4페이지 분량 기준</span>
+      <span class="hdr-pill">개념→구성→원리→대책→결론 구조</span>
+    </div>
+  </div>
+</header>
+
+<nav class="domain-nav">
+  <button class="nav-btn active" onclick="show(0,this)">①네트워크</button>
+  <button class="nav-btn" onclick="show(1,this)">②보안·암호</button>
+  <button class="nav-btn" onclick="show(2,this)">③컴퓨터구조·OS</button>
+  <button class="nav-btn" onclick="show(3,this)">④AI·신기술</button>
+  <button class="nav-btn" onclick="show(4,this)">⑤소프트웨어공학</button>
+  <button class="nav-btn" onclick="show(5,this)">⑥데이터베이스</button>
+  <button class="nav-btn" onclick="show(6,this)">⑦프로젝트관리</button>
+  <button class="nav-btn" onclick="show(7,this)">⑧법·제도·감리</button>
+  <button class="nav-btn" onclick="show(8,this)">⑨클라우드·인프라</button>
+</nav>
+
+<main class="main">
+
+<!-- ① 네트워크 -->
+<div class="panel active" id="p0">
+<div class="q-card">
+  <div class="q-header">
+    <span class="q-domain-badge badge-net">네트워크 / 통신</span>
+    <div class="q-meta">
+      <div class="q-type">2~4교시 논술형 · 25점</div>
+      <div class="q-title">OSI 7계층 모델에 대하여 다음을 설명하시오.</div>
+    </div>
+  </div>
+  <div class="q-body">
+    <div class="q-items">
+      <div class="q-item"><span class="q-item-label">가.</span><span>OSI 7계층 각 계층의 기능과 데이터 단위(PDU)</span></div>
+      <div class="q-item"><span class="q-item-label">나.</span><span>계층별 주요 프로토콜 및 장비</span></div>
+      <div class="q-item"><span class="q-item-label">다.</span><span>OSI 7계층과 TCP/IP 4계층의 비교 및 캡슐화(Encapsulation) 과정</span></div>
+    </div>
+    <div class="q-hint-row">
+      <span class="q-hint">134회 유사 출제</span><span class="q-hint">핵심 빈출</span><span class="q-hint">비교표 필수</span>
+    </div>
+  </div>
+  <div class="ans-card">
+    <button class="ans-toggle" onclick="toggleAns(this)">
+      <span class="ans-toggle-label">📄 모범 답안 보기</span>
+      <span class="ans-toggle-arrow">▼</span>
+    </button>
+    <div class="ans-body">
+      <div class="ans-title">OSI 7계층 모델의 기능, 프로토콜·장비 및 TCP/IP와의 비교</div>
+      <div class="score-row">
+        <span class="score-chip chip-time">⏱ 목표 25분</span>
+        <span class="score-chip chip-page">📄 3.5~4페이지</span>
+        <span class="score-chip chip-score">💯 25점</span>
+      </div>
+      <div class="ans-section">
+        <div class="ans-section-title sec-blue">Ⅰ. 개요 — OSI 7계층 모델의 개념</div>
+        <div class="ans-p">OSI(Open Systems Interconnection) 참조 모델은 1984년 ISO가 제정한 네트워크 통신 표준으로, 이기종 시스템 간의 상호 연결을 위해 통신 기능을 7개의 계층으로 계층화·모듈화한 참조 아키텍처이다. 각 계층은 독립적으로 동작하며 인접 계층과만 인터페이스를 공유함으로써 유지보수성과 확장성을 보장한다.</div>
+      </div>
+      <div class="ans-section">
+        <div class="ans-section-title sec-green">Ⅱ. 가. 계층별 기능 및 PDU</div>
+        <table class="ans-table">
+          <tr><th>계층</th><th>명칭</th><th>주요 기능</th><th>PDU</th></tr>
+          <tr><td>7</td><td>응용 계층 (Application)</td><td>사용자·앱에 네트워크 서비스 제공. HTTP, FTP, SMTP 등 동작</td><td>메시지</td></tr>
+          <tr><td>6</td><td>표현 계층 (Presentation)</td><td>데이터 형식 변환(ASCII↔EBCDIC), 암호화/복호화, 압축·해제</td><td>메시지</td></tr>
+          <tr><td>5</td><td>세션 계층 (Session)</td><td>통신 세션 설정·유지·종료, 동기화(체크포인트), 전이중/반이중 제어</td><td>메시지</td></tr>
+          <tr><td>4</td><td>전송 계층 (Transport)</td><td>종단 간 신뢰성 있는 데이터 전송, 흐름·오류·혼잡 제어, 포트 기반 다중화</td><td>세그먼트(TCP) / 데이터그램(UDP)</td></tr>
+          <tr><td>3</td><td>네트워크 계층 (Network)</td><td>논리 주소(IP) 기반 라우팅, 패킷 전달·단편화, 혼잡 제어</td><td>패킷</td></tr>
+          <tr><td>2</td><td>데이터링크 계층 (Data Link)</td><td>물리 주소(MAC) 기반 노드 간 신뢰성 전달, 프레임 구성, CRC 오류 검출</td><td>프레임</td></tr>
+          <tr><td>1</td><td>물리 계층 (Physical)</td><td>비트를 전기 신호로 변환·전송, 전압·케이블·커넥터 규격 정의</td><td>비트(Bit)</td></tr>
+        </table>
+      </div>
+      <div class="ans-section">
+        <div class="ans-section-title sec-purple">Ⅲ. 나. 계층별 주요 프로토콜 및 장비</div>
+        <table class="ans-table">
+          <tr><th>계층</th><th>주요 프로토콜</th><th>대표 장비</th></tr>
+          <tr><td>7 응용</td><td>HTTP/S, FTP, SMTP, DNS, SNMP</td><td>방화벽(L7), 로드밸런서</td></tr>
+          <tr><td>6 표현</td><td>SSL/TLS, JPEG, MPEG, ASCII</td><td>암호화 장비</td></tr>
+          <tr><td>5 세션</td><td>NetBIOS, RPC, NFS, SSH</td><td>—</td></tr>
+          <tr><td>4 전송</td><td>TCP, UDP, SCTP</td><td>방화벽(L4), L4 로드밸런서</td></tr>
+          <tr><td>3 네트워크</td><td>IP, ICMP, IGMP, ARP, OSPF, BGP</td><td>라우터, L3 스위치</td></tr>
+          <tr><td>2 데이터링크</td><td>Ethernet, PPP, HDLC, Wi-Fi(802.11), 802.1Q</td><td>스위치(L2), 브리지</td></tr>
+          <tr><td>1 물리</td><td>RS-232, 100BASE-T, 1000BASE-LX</td><td>허브, 리피터, NIC, 케이블</td></tr>
+        </table>
+      </div>
+      <div class="ans-section">
+        <div class="ans-section-title sec-orange">Ⅳ. 다. OSI 7계층과 TCP/IP 4계층 비교 및 캡슐화</div>
+        <table class="ans-table">
+          <tr><th>OSI 7계층</th><th>TCP/IP 4계층</th><th>특징</th></tr>
+          <tr><td>응용(7)·표현(6)·세션(5)</td><td>응용 계층</td><td>TCP/IP는 세 계층을 단일 계층으로 통합. 실용성 중시</td></tr>
+          <tr><td>전송(4)</td><td>전송 계층</td><td>TCP/UDP. 신뢰성을 전송계층에서 전담</td></tr>
+          <tr><td>네트워크(3)</td><td>인터넷 계층</td><td>IP 주소 기반 라우팅. 비연결형 패킷 전달</td></tr>
+          <tr><td>데이터링크(2)·물리(1)</td><td>네트워크 접속 계층</td><td>MAC 주소 기반 로컬 전달, 물리 매체 제어</td></tr>
+        </table>
+        <div class="key-box blue">
+          <div class="kb-title">📌 캡슐화(Encapsulation) 과정</div>
+          OSI 7→1 방향(송신 측): 상위 계층 데이터에 각 계층 헤더(또는 트레일러)를 순서대로 부착하여 하위 계층으로 전달.<br>
+          수신 측(1→7)은 역캡슐화(Decapsulation)를 통해 헤더를 제거하며 상위 계층으로 전달한다.
+        </div>
+        <div class="diagram-box">송신: [데이터] → [세그먼트:TCP헤더+데이터] → [패킷:IP헤더+세그먼트]
+     → [프레임:MAC헤더+패킷+FCS] → [비트 스트림 전송]
+수신: [비트 스트림] → FCS 검증/MAC헤더 제거 → IP헤더 제거
+     → TCP헤더 제거 → 원본 데이터 복원</div>
+      </div>
+      <div class="conclusion">
+        <div class="conclusion-title">Ⅴ. 결론 및 발전 방향</div>
+        <p>OSI 7계층은 이기종 시스템 간 호환성 확보를 위한 개념적 참조 모델로서 네트워크 설계·문제 진단의 기준이 되며, TCP/IP는 실제 인터넷의 사실상 표준(de facto standard)으로 동작한다. SDN·NFV 환경에서는 계층 간 경계가 소프트웨어로 추상화되어 운영되며, Wi-Fi 7·6G 등 차세대 통신 표준도 OSI 계층 구조를 기반으로 설계된다.</p>
+      </div>
+    </div>
+  </div>
+</div>
+</div><!-- /p0 -->
+
+<!-- ② 보안 -->
+<div class="panel" id="p1">
+<div class="q-card">
+  <div class="q-header">
+    <span class="q-domain-badge badge-sec">보안 / 암호</span>
+    <div class="q-meta">
+      <div class="q-type">2~4교시 논술형 · 25점</div>
+      <div class="q-title">PKI(Public Key Infrastructure)에 대하여 다음을 설명하시오.</div>
+    </div>
+  </div>
+  <div class="q-body">
+    <div class="q-items">
+      <div class="q-item"><span class="q-item-label">가.</span><span>PKI의 개념과 구성요소</span></div>
+      <div class="q-item"><span class="q-item-label">나.</span><span>공개키 암호화 방식의 동작 원리 및 디지털 서명 프로세스</span></div>
+      <div class="q-item"><span class="q-item-label">다.</span><span>PKI의 취약점과 보완 방안</span></div>
+    </div>
+    <div class="q-hint-row">
+      <span class="q-hint">보안 핵심 빈출</span><span class="q-hint">암호 알고리즘 연계</span>
+    </div>
+  </div>
+  <div class="ans-card">
+    <button class="ans-toggle" onclick="toggleAns(this)">
+      <span class="ans-toggle-label">📄 모범 답안 보기</span>
+      <span class="ans-toggle-arrow">▼</span>
+    </button>
+    <div class="ans-body">
+      <div class="ans-title">PKI의 구성요소, 공개키 암호화·디지털 서명 원리 및 취약점 보완</div>
+      <div class="score-row">
+        <span class="score-chip chip-time">⏱ 목표 25분</span>
+        <span class="score-chip chip-page">📄 3.5~4페이지</span>
+        <span class="score-chip chip-score">💯 25점</span>
+      </div>
+      <div class="ans-section">
+        <div class="ans-section-title sec-blue">Ⅰ. 개요 — PKI의 개념</div>
+        <div class="ans-p">PKI(공개키 기반 구조)는 공개키 암호화 기술을 기반으로 디지털 인증서의 발급·관리·폐지를 통해 인터넷상에서 안전한 통신, 전자서명, 신원 인증을 가능하게 하는 복합 보안 인프라이다. X.509 표준을 기반으로 하며, 제3의 신뢰기관(CA)을 중심으로 신뢰 체계를 형성한다.</div>
+      </div>
+      <div class="ans-section">
+        <div class="ans-section-title sec-green">Ⅱ. 가. PKI 구성요소</div>
+        <ul class="ans-ol">
+          <li><span class="ol-num green">1</span><div><strong>CA(인증기관)</strong>: 디지털 인증서를 발급·서명·폐지하는 최상위 신뢰기관. 루트 CA → 중간 CA 계층 구조 형성. (국내: KISA, 금융결제원)</div></li>
+          <li><span class="ol-num green">2</span><div><strong>RA(등록기관)</strong>: 사용자 신원 검증 후 CA에 인증서 발급 요청 위임. CA와 최종 개체 사이 중계 역할</div></li>
+          <li><span class="ol-num green">3</span><div><strong>디지털 인증서(X.509)</strong>: 주체 공개키·신원·유효기간·CA 서명을 포함한 전자 문서. 버전·일련번호·서명 알고리즘·발급자·공개키 포함</div></li>
+          <li><span class="ol-num green">4</span><div><strong>CRL / OCSP</strong>: 인증서 폐지 목록(CRL) 및 실시간 폐지 확인 프로토콜(OCSP)을 통해 인증서 유효성 실시간 검증</div></li>
+          <li><span class="ol-num green">5</span><div><strong>저장소(Repository)</strong>: LDAP 등 디렉터리 서비스를 통해 공개된 인증서와 CRL을 배포·저장</div></li>
+        </ul>
+      </div>
+      <div class="ans-section">
+        <div class="ans-section-title sec-purple">Ⅲ. 나. 공개키 암호화 동작 원리 및 디지털 서명</div>
+        <div class="key-box blue">
+          <div class="kb-title">공개키 암호화 원리 (기밀성)</div>
+          ① 수신자가 공개키(PK)·개인키(SK) 쌍 생성 → ② 송신자가 수신자의 공개키로 평문 암호화 → ③ 수신자만이 자신의 개인키로 복호화
+        </div>
+        <div class="diagram-box">디지털 서명 프로세스 (무결성·부인방지)
+
+[서명 생성 — 송신자]
+ 원문 → SHA-256 해시 → 해시값 → 송신자 개인키(SK)로 서명 → 서명값 첨부 전송
+
+[서명 검증 — 수신자]
+ 수신 원문 → SHA-256 해시 → 해시값(A)
+ 서명값 → 송신자 공개키(PK)로 복호화 → 해시값(B)
+ 해시값(A) == 해시값(B) → 무결성·인증·부인방지 확인 ✓</div>
+        <div class="ans-p">알고리즘: 공개키 암호화는 <strong>RSA(2048bit 이상), ECC(256bit)</strong> 사용. 해시 함수는 <strong>SHA-256/384/512</strong>가 표준. ECC는 RSA 대비 짧은 키 길이로 동등 보안 강도 제공 → IoT·모바일 환경에 적합.</div>
+      </div>
+      <div class="ans-section">
+        <div class="ans-section-title sec-red">Ⅳ. 다. PKI 취약점 및 보완 방안</div>
+        <table class="ans-table">
+          <tr><th>취약점 유형</th><th>위협 내용</th><th>보완 방안</th></tr>
+          <tr><td>CA 침해</td><td>루트 CA 해킹 시 전체 신뢰 체계 붕괴</td><td>HSM으로 CA 개인키 보호, 오프라인 루트 CA 운영</td></tr>
+          <tr><td>부정 인증서 발급</td><td>CA의 악의적·실수로 잘못된 인증서 발급</td><td>CT(Certificate Transparency) 로그, CAA DNS 레코드 설정</td></tr>
+          <tr><td>인증서 폐지 지연</td><td>CRL 업데이트 지연으로 폐지 인증서 신뢰</td><td>OCSP Stapling, 짧은 유효기간 인증서 사용</td></tr>
+          <tr><td>개인키 탈취</td><td>사용자 단말에서 개인키 유출</td><td>스마트카드·FIDO2 하드웨어 토큰, 키 에스크로 정책</td></tr>
+          <tr><td>양자 컴퓨팅 위협</td><td>Shor 알고리즘으로 RSA/ECC 키 해독 가능</td><td>PQC 알고리즘 전환 계획 수립 (CRYSTALS-Kyber 등, NIST 2024 표준화)</td></tr>
+        </table>
+      </div>
+      <div class="conclusion">
+        <div class="conclusion-title">Ⅴ. 결론</div>
+        <p>PKI는 전자금융, 전자정부, TLS/HTTPS 등 신뢰 기반 디지털 서비스의 핵심 인프라이다. 최근 Let's Encrypt 등 자동화 인증서 관리(ACME 프로토콜)가 확산되고 있으며, 양자 컴퓨팅 시대를 대비한 NIST PQC 표준에 맞추어 알고리즘 전환 로드맵 수립이 시급하다.</p>
+      </div>
+    </div>
+  </div>
+</div>
+</div><!-- /p1 -->
+
+<!-- ③ 컴퓨터구조·OS -->
+<div class="panel" id="p2">
+<div class="q-card">
+  <div class="q-header">
+    <span class="q-domain-badge badge-os">컴퓨터구조 / OS</span>
+    <div class="q-meta">
+      <div class="q-type">2~4교시 논술형 · 25점</div>
+      <div class="q-title">교착상태(Deadlock)에 대하여 다음을 설명하시오.</div>
+    </div>
+  </div>
+  <div class="q-body">
+    <div class="q-items">
+      <div class="q-item"><span class="q-item-label">가.</span><span>교착상태의 개념과 4가지 필요조건</span></div>
+      <div class="q-item"><span class="q-item-label">나.</span><span>교착상태의 해결 방법(예방·회피·탐지·회복) 비교</span></div>
+      <div class="q-item"><span class="q-item-label">다.</span><span>자원 할당 그래프(Resource Allocation Graph)를 이용한 교착상태 탐지</span></div>
+    </div>
+    <div class="q-hint-row">
+      <span class="q-hint">매회 빈출 클래식</span><span class="q-hint">4가지 조건 필수 암기</span>
+    </div>
+  </div>
+  <div class="ans-card">
+    <button class="ans-toggle" onclick="toggleAns(this)">
+      <span class="ans-toggle-label">📄 모범 답안 보기</span>
+      <span class="ans-toggle-arrow">▼</span>
+    </button>
+    <div class="ans-body">
+      <div class="ans-title">교착상태의 개념·필요조건·해결 방법 및 자원 할당 그래프 탐지</div>
+      <div class="score-row">
+        <span class="score-chip chip-time">⏱ 목표 25분</span>
+        <span class="score-chip chip-page">📄 3~4페이지</span>
+        <span class="score-chip chip-score">💯 25점</span>
+      </div>
+      <div class="ans-section">
+        <div class="ans-section-title sec-blue">Ⅰ. 개요 — 교착상태의 개념</div>
+        <div class="ans-p">교착상태(Deadlock)란 둘 이상의 프로세스가 서로 상대방이 점유한 자원을 무한정 대기하면서, 어떤 프로세스도 진행하지 못하는 무한 대기 상태를 의미한다. 1965년 Dijkstra가 정의한 개념으로, 운영체제 자원 관리의 핵심 문제이다.</div>
+      </div>
+      <div class="ans-section">
+        <div class="ans-section-title sec-green">Ⅱ. 가. 교착상태 4가지 필요조건 (Coffman, 1971)</div>
+        <ul class="ans-ol">
+          <li><span class="ol-num green">1</span><div><strong>상호 배제(Mutual Exclusion)</strong>: 자원은 동시에 하나의 프로세스만 사용 가능. 공유 불가 자원에 한해 성립</div></li>
+          <li><span class="ol-num green">2</span><div><strong>점유와 대기(Hold and Wait)</strong>: 자원을 최소 하나 점유한 상태에서 다른 프로세스가 점유한 추가 자원을 요청·대기</div></li>
+          <li><span class="ol-num green">3</span><div><strong>비선점(No Preemption)</strong>: 프로세스가 사용 중인 자원을 OS가 강제 회수 불가. 자발적 반납만 허용</div></li>
+          <li><span class="ol-num green">4</span><div><strong>환형 대기(Circular Wait)</strong>: {P0,P1,...,Pn}에서 P0→P1→...→Pn→P0 형태의 순환 대기 체인 형성</div></li>
+        </ul>
+        <div class="key-box green">
+          <div class="kb-title">핵심 암기</div>
+          4가지 조건이 <strong>모두 동시에 충족</strong>될 때만 교착상태 발생. 하나라도 부정하면 교착상태 불가 → 예방(Prevention)의 기본 원리
+        </div>
+      </div>
+      <div class="ans-section">
+        <div class="ans-section-title sec-purple">Ⅲ. 나. 교착상태 해결 방법 비교</div>
+        <table class="ans-table">
+          <tr><th>기법</th><th>접근 방식</th><th>장점</th><th>단점</th><th>대표 알고리즘</th></tr>
+          <tr><td>예방 (Prevention)</td><td>4가지 조건 중 하나 원천 차단</td><td>교착상태 불가</td><td>자원 낭비, 처리율 저하</td><td>—</td></tr>
+          <tr><td>회피 (Avoidance)</td><td>자원 할당 전 안전 상태(Safe State) 검사</td><td>자원 이용률 향상</td><td>최대 자원 요구량 사전 신고 필요</td><td>은행원 알고리즘</td></tr>
+          <tr><td>탐지 (Detection)</td><td>발생 허용 후 주기적 탐지</td><td>자원 이용률 최대</td><td>탐지 비용, 회복 오버헤드</td><td>자원 할당 그래프</td></tr>
+          <tr><td>회복 (Recovery)</td><td>탐지 후 프로세스 종료 또는 자원 선점</td><td>교착상태 해소</td><td>작업 손실, 기아(Starvation) 가능</td><td>롤백, 희생자 선택</td></tr>
+        </table>
+      </div>
+      <div class="ans-section">
+        <div class="ans-section-title sec-orange">Ⅳ. 다. 자원 할당 그래프(RAG)를 이용한 탐지</div>
+        <div class="diagram-box">자원 할당 그래프(Resource Allocation Graph)
+
+[표기 규칙]
+  ○ → □  : 요청 간선 (프로세스가 자원을 요청)
+  □ → ○  : 할당 간선 (자원이 프로세스에 할당됨)
+
+[교착상태 탐지 예시]
+  P1 ─요청→ R2 ─할당→ P2
+  P2 ─요청→ R1 ─할당→ P1
+         ↑_________↑  ← 사이클(환형) 형성 = 교착상태 확정 ✓
+
+단일 인스턴스 자원: 사이클 존재 → 교착상태 확정
+다중 인스턴스 자원: 사이클 존재 + 대기 불가 프로세스 無 → 교착상태 확정</div>
+        <div class="ans-p">탐지 알고리즘은 Wait-for 그래프에서 DFS·BFS를 통해 사이클을 검출한다. 탐지 후 회복은 ①교착 관련 프로세스 전부 종료, ②희생자 선택 후 순차 종료, ③자원 선점(Preemption) 중 선택한다.</div>
+      </div>
+      <div class="conclusion">
+        <div class="conclusion-title">Ⅴ. 결론</div>
+        <p>운영체제는 일반적으로 탐지+회복 또는 회피(은행원 알고리즘) 전략을 채택한다. 현대 DBMS·클라우드 환경에서는 분산 교착상태(Distributed Deadlock)가 더욱 복잡한 문제로 대두되며, 타임아웃 기반 탐지와 분산 Wait-for 그래프 기법이 활용된다.</p>
+      </div>
+    </div>
+  </div>
+</div>
+</div><!-- /p2 -->
+
+<!-- ④ AI·신기술 -->
+<div class="panel" id="p3">
+<div class="q-card">
+  <div class="q-header">
+    <span class="q-domain-badge badge-ai">AI / 신기술</span>
+    <div class="q-meta">
+      <div class="q-type">2~4교시 논술형 · 25점</div>
+      <div class="q-title">RAG(Retrieval-Augmented Generation)에 대하여 다음을 설명하시오.</div>
+    </div>
+  </div>
+  <div class="q-body">
+    <div class="q-items">
+      <div class="q-item"><span class="q-item-label">가.</span><span>RAG의 개념과 등장 배경 (LLM의 한계 연계)</span></div>
+      <div class="q-item"><span class="q-item-label">나.</span><span>RAG의 아키텍처 및 동작 원리</span></div>
+      <div class="q-item"><span class="q-item-label">다.</span><span>Fine-tuning 방식과의 비교 및 공공·기업 분야 적용 시 고려사항</span></div>
+    </div>
+    <div class="q-hint-row">
+      <span class="q-hint">초거대AI 연계 최신 출제 유력</span><span class="q-hint">134회 유사 토픽</span>
+    </div>
+  </div>
+  <div class="ans-card">
+    <button class="ans-toggle" onclick="toggleAns(this)">
+      <span class="ans-toggle-label">📄 모범 답안 보기</span>
+      <span class="ans-toggle-arrow">▼</span>
+    </button>
+    <div class="ans-body">
+      <div class="ans-title">RAG의 개념·아키텍처·동작 원리 및 Fine-tuning 비교·적용 고려사항</div>
+      <div class="score-row">
+        <span class="score-chip chip-time">⏱ 목표 25분</span>
+        <span class="score-chip chip-page">📄 3.5페이지</span>
+        <span class="score-chip chip-score">💯 25점</span>
+      </div>
+      <div class="ans-section">
+        <div class="ans-section-title sec-blue">Ⅰ. 가. RAG의 개념과 등장 배경</div>
+        <div class="ans-p">RAG(검색 증강 생성)는 대규모 언어 모델(LLM)의 생성(Generation) 단계에 외부 지식 저장소에서 관련 문서를 실시간 검색(Retrieval)하여 맥락으로 주입하는 하이브리드 AI 아키텍처이다. 2020년 Meta(Lewis et al.)가 제안하였다.</div>
+        <div class="key-box orange">
+          <div class="kb-title">RAG 등장 배경 — LLM 3대 한계</div>
+          ① <strong>환각(Hallucination)</strong>: 사실과 다른 내용을 자신감 있게 생성<br>
+          ② <strong>지식 단절(Knowledge Cutoff)</strong>: 학습 데이터 시점 이후 정보 반영 불가<br>
+          ③ <strong>도메인 지식 부재</strong>: 기업·공공 내부 문서 기반 응답 불가
+        </div>
+      </div>
+      <div class="ans-section">
+        <div class="ans-section-title sec-green">Ⅱ. 나. RAG 아키텍처 및 동작 원리</div>
+        <div class="diagram-box">RAG 아키텍처 (Naive RAG 기준)
+
+[오프라인 인덱싱]
+ 원본 문서 → 청킹(Chunking) → 임베딩(Embedding)
+ → 벡터 DB 저장 (Pinecone / Chroma / FAISS)
+
+[온라인 추론]
+ 사용자 질문(Query)
+  → 질문 임베딩 → 벡터 DB 유사도 검색(Top-K)
+  → 관련 청크 Retrieve → 프롬프트에 컨텍스트 삽입
+  → LLM 생성(Generation) → 최종 답변 반환</div>
+        <ul class="ans-ol">
+          <li><span class="ol-num green">1</span><div><strong>문서 청킹(Chunking)</strong>: 원본 문서를 의미 단위(512~1024 토큰)로 분할. 오버랩 청킹으로 문맥 단절 방지</div></li>
+          <li><span class="ol-num green">2</span><div><strong>임베딩(Embedding)</strong>: 각 청크를 고차원 벡터로 변환 (text-embedding-ada-002, BGE-M3 등)</div></li>
+          <li><span class="ol-num green">3</span><div><strong>벡터 유사도 검색</strong>: 코사인 유사도·내적 기반 Top-K 청크 검색</div></li>
+          <li><span class="ol-num green">4</span><div><strong>증강 프롬프팅</strong>: 검색된 문서를 시스템 프롬프트에 컨텍스트로 삽입 후 LLM 호출</div></li>
+        </ul>
+      </div>
+      <div class="ans-section">
+        <div class="ans-section-title sec-purple">Ⅲ. 다. RAG vs Fine-tuning 비교 및 적용 고려사항</div>
+        <table class="ans-table">
+          <tr><th>비교 항목</th><th>RAG</th><th>Fine-tuning</th></tr>
+          <tr><td>지식 업데이트</td><td>벡터 DB 갱신으로 실시간 반영</td><td>재학습 필요 (비용·시간 소요)</td></tr>
+          <tr><td>비용</td><td>낮음 (추론 비용 중심)</td><td>높음 (GPU 학습 비용)</td></tr>
+          <tr><td>환각 억제</td><td>검색 근거 제공으로 억제 효과</td><td>학습 데이터 품질에 의존</td></tr>
+          <tr><td>도메인 적응</td><td>검색 범위 내 문서에 한정</td><td>스타일·형식·도메인 용어 학습</td></tr>
+          <tr><td>적합 상황</td><td>최신 정보, 사실 기반 Q&amp;A</td><td>특정 문체, 태스크 특화</td></tr>
+        </table>
+        <div class="key-box purple">
+          <div class="kb-title">공공·기업 적용 시 핵심 고려사항</div>
+          ① <strong>보안·데이터 주권</strong>: 내부 문서의 외부 LLM API 유출 위험 → On-premise LLM 또는 데이터 마스킹<br>
+          ② <strong>답변 출처 표시</strong>: 행정 책임성 확보를 위한 인용 문서·조항 명시 (Grounding)<br>
+          ③ <strong>청킹 전략</strong>: 법령·매뉴얼은 조항 단위 청킹으로 정확도 향상<br>
+          ④ <strong>Reranking</strong>: Cross-Encoder로 검색 결과 재정렬하여 Top-K 정확도 향상<br>
+          ⑤ <strong>환각 검증</strong>: RAGAS 등 자동 평가 지표(Faithfulness, Answer Relevancy) 도입
+        </div>
+      </div>
+      <div class="conclusion">
+        <div class="conclusion-title">Ⅳ. 결론</div>
+        <p>RAG는 LLM의 실용적 한계를 해결하는 핵심 기술로, 공공·금융·의료 분야에서 신뢰성 있는 AI 서비스 구현의 사실상 표준으로 자리잡고 있다. 향후 Advanced RAG(재순위화, 쿼리 분해)와 Agentic RAG(도구 호출·멀티홉 추론) 방향으로 발전하며, 초거대 AI 공공 도입 가이드라인에서도 환각 방지 수단으로 명시되고 있다.</p>
+      </div>
+    </div>
+  </div>
+</div>
+</div><!-- /p3 -->
+
+<!-- ⑤ 소프트웨어공학 -->
+<div class="panel" id="p4">
+<div class="q-card">
+  <div class="q-header">
+    <span class="q-domain-badge badge-sw">소프트웨어공학</span>
+    <div class="q-meta">
+      <div class="q-type">2~4교시 논술형 · 25점</div>
+      <div class="q-title">DevSecOps에 대하여 다음을 설명하시오.</div>
+    </div>
+  </div>
+  <div class="q-body">
+    <div class="q-items">
+      <div class="q-item"><span class="q-item-label">가.</span><span>DevSecOps의 개념 및 DevOps와의 차이점</span></div>
+      <div class="q-item"><span class="q-item-label">나.</span><span>DevSecOps 파이프라인의 보안 통합 단계 및 주요 도구</span></div>
+      <div class="q-item"><span class="q-item-label">다.</span><span>SBOM(Software Bill of Materials)과의 연계 방안</span></div>
+    </div>
+    <div class="q-hint-row">
+      <span class="q-hint">SBOM 연계 최신 출제 유력</span><span class="q-hint">공급망 보안 트렌드</span>
+    </div>
+  </div>
+  <div class="ans-card">
+    <button class="ans-toggle" onclick="toggleAns(this)">
+      <span class="ans-toggle-label">📄 모범 답안 보기</span>
+      <span class="ans-toggle-arrow">▼</span>
+    </button>
+    <div class="ans-body">
+      <div class="ans-title">DevSecOps의 개념·파이프라인 구성 및 SBOM 연계 방안</div>
+      <div class="score-row">
+        <span class="score-chip chip-time">⏱ 목표 25분</span>
+        <span class="score-chip chip-page">📄 3~3.5페이지</span>
+        <span class="score-chip chip-score">💯 25점</span>
+      </div>
+      <div class="ans-section">
+        <div class="ans-section-title sec-blue">Ⅰ. 가. DevSecOps 개념 및 DevOps 차이점</div>
+        <div class="ans-p">DevSecOps는 소프트웨어 개발(Dev)·운영(Ops) 전 생명주기에 보안(Sec)을 자동화·내재화하는 방법론이다. "Shift Left" 원칙에 따라 보안 검증을 개발 초기 단계로 앞당겨 취약점 수정 비용을 최소화하며, CI/CD 파이프라인에 보안 도구를 통합한다.</div>
+        <table class="ans-table">
+          <tr><th>비교 항목</th><th>DevOps</th><th>DevSecOps</th></tr>
+          <tr><td>핵심 목표</td><td>개발·배포 속도 향상</td><td>속도 + 보안 내재화</td></tr>
+          <tr><td>보안 적용 시점</td><td>배포 후 침투 테스트</td><td>설계~운영 전 단계(Shift Left)</td></tr>
+          <tr><td>보안 책임</td><td>보안팀 전담</td><td>개발·운영·보안팀 공동 책임</td></tr>
+          <tr><td>자동화 범위</td><td>빌드·테스트·배포 자동화</td><td>보안 검증 자동화 포함</td></tr>
+        </table>
+      </div>
+      <div class="ans-section">
+        <div class="ans-section-title sec-green">Ⅱ. 나. DevSecOps 파이프라인 단계 및 도구</div>
+        <div class="diagram-box">Plan→Code→Build→Test→Release→Deploy→Operate→Monitor
+  │      │      │      │        │         │         │         │
+보안요  SAST  SCA   DAST    서명검증  컨테이너  RASP    SIEM/SOC
+구정의  IDE   오픈  동적분  코드서명  보안스캔  런타임  모니터링
+위협모  Lint  소스  석·Fuzz SBOM생성  이미지스  보호    경보</div>
+        <table class="ans-table">
+          <tr><th>단계</th><th>보안 활동</th><th>대표 도구</th></tr>
+          <tr><td>Plan</td><td>위협 모델링, 보안 요구사항 정의</td><td>STRIDE, OWASP Threat Dragon</td></tr>
+          <tr><td>Code</td><td>SAST(정적 분석), 시크릿 탐지</td><td>SonarQube, Checkmarx, TruffleHog</td></tr>
+          <tr><td>Build</td><td>SCA(오픈소스 취약점 분석)</td><td>OWASP Dependency-Check, Snyk, Trivy</td></tr>
+          <tr><td>Test</td><td>DAST(동적 분석), Fuzzing</td><td>OWASP ZAP, Burp Suite</td></tr>
+          <tr><td>Deploy</td><td>컨테이너 이미지 스캔, 서명 검증</td><td>Trivy, Cosign, OPA Gatekeeper</td></tr>
+          <tr><td>Operate</td><td>RASP, 권한 최소화(Zero Trust)</td><td>Falco, Aqua Security</td></tr>
+          <tr><td>Monitor</td><td>SIEM, 이상 탐지, 취약점 관리</td><td>Splunk, ELK Stack, Wazuh</td></tr>
+        </table>
+      </div>
+      <div class="ans-section">
+        <div class="ans-section-title sec-orange">Ⅲ. 다. SBOM과 DevSecOps 연계 방안</div>
+        <div class="key-box orange">
+          <div class="kb-title">SBOM(소프트웨어 부품 명세서) 개념</div>
+          SW에 포함된 모든 오픈소스·서드파티 컴포넌트의 목록(이름·버전·라이선스·공급망 관계)을 기계 가독 형식(SPDX, CycloneDX)으로 문서화한 명세서. 미국 행정명령 EO 14028(2021)으로 공공 SW 의무화.
+        </div>
+        <ul class="ans-ol">
+          <li><span class="ol-num orange">1</span><div><strong>빌드 단계 자동 생성</strong>: Build 단계에서 Syft·cdxgen 도구로 SBOM 자동 생성 및 저장소 연동</div></li>
+          <li><span class="ol-num orange">2</span><div><strong>취약점 지속 모니터링</strong>: SBOM + CVE(NVD/OSV) DB 연계로 신규 취약점 발견 시 자동 알림 및 패치 파이프라인 트리거</div></li>
+          <li><span class="ol-num orange">3</span><div><strong>라이선스 컴플라이언스</strong>: GPL·LGPL 등 라이선스 충돌 자동 탐지로 법적 리스크 관리</div></li>
+          <li><span class="ol-num orange">4</span><div><strong>공급망 공격 방어</strong>: 서드파티 의존성 무결성 검증(Hash·Cosign)으로 SolarWinds류 공급망 공격 탐지</div></li>
+        </ul>
+      </div>
+      <div class="conclusion">
+        <div class="conclusion-title">Ⅳ. 결론</div>
+        <p>DevSecOps는 애자일·클라우드 네이티브 환경에서 보안을 코드화(Security as Code)하는 현대적 보안 패러다임이다. SBOM을 파이프라인에 통합함으로써 소프트웨어 공급망 투명성을 확보하고, Log4Shell·XZ Utils 등 오픈소스 취약점에 신속 대응하는 체계를 구축할 수 있다. 국내에서도 「소프트웨어 진흥법」 개정으로 공공 SW 보안 요구사항이 강화되고 있어 DevSecOps 도입이 필수적이다.</p>
+      </div>
+    </div>
+  </div>
+</div>
+</div><!-- /p4 -->
+
+<!-- ⑥ 데이터베이스 -->
+<div class="panel" id="p5">
+<div class="q-card">
+  <div class="q-header">
+    <span class="q-domain-badge badge-db">데이터베이스</span>
+    <div class="q-meta">
+      <div class="q-type">2~4교시 논술형 · 25점</div>
+      <div class="q-title">데이터베이스 트랜잭션에 대하여 다음을 설명하시오.</div>
+    </div>
+  </div>
+  <div class="q-body">
+    <div class="q-items">
+      <div class="q-item"><span class="q-item-label">가.</span><span>트랜잭션의 개념과 ACID 특성</span></div>
+      <div class="q-item"><span class="q-item-label">나.</span><span>트랜잭션 격리 수준(Isolation Level) 4가지와 각각에서 발생하는 이상 현상</span></div>
+      <div class="q-item"><span class="q-item-label">다.</span><span>분산 데이터베이스 환경에서의 트랜잭션 처리 방안 (2PC, SAGA 패턴)</span></div>
+    </div>
+    <div class="q-hint-row">
+      <span class="q-hint">DB 핵심 빈출</span><span class="q-hint">ACID 완전 암기</span><span class="q-hint">MSA 연계 최신 트렌드</span>
+    </div>
+  </div>
+  <div class="ans-card">
+    <button class="ans-toggle" onclick="toggleAns(this)">
+      <span class="ans-toggle-label">📄 모범 답안 보기</span>
+      <span class="ans-toggle-arrow">▼</span>
+    </button>
+    <div class="ans-body">
+      <div class="ans-title">트랜잭션 ACID 특성·격리 수준·이상 현상 및 분산 트랜잭션 처리 방안</div>
+      <div class="score-row">
+        <span class="score-chip chip-time">⏱ 목표 25분</span>
+        <span class="score-chip chip-page">📄 3.5페이지</span>
+        <span class="score-chip chip-score">💯 25점</span>
+      </div>
+      <div class="ans-section">
+        <div class="ans-section-title sec-blue">Ⅰ. 가. 트랜잭션 개념 및 ACID 특성</div>
+        <div class="ans-p">트랜잭션(Transaction)은 데이터베이스의 상태를 변화시키는 논리적인 작업 단위로, 하나의 논리적 기능을 수행하는 SQL 연산의 집합이다.</div>
+        <table class="ans-table">
+          <tr><th>특성</th><th>영문</th><th>내용</th><th>구현 메커니즘</th></tr>
+          <tr><td>원자성</td><td>Atomicity</td><td>전부 성공(Commit) 또는 전부 실패(Rollback)</td><td>Undo Log, Rollback</td></tr>
+          <tr><td>일관성</td><td>Consistency</td><td>트랜잭션 전후 DB는 무결성 제약 조건 항상 만족</td><td>무결성 제약 검사</td></tr>
+          <tr><td>격리성</td><td>Isolation</td><td>동시 실행 트랜잭션 간 상호 간섭 없음. 중간 상태 비노출</td><td>Lock, MVCC</td></tr>
+          <tr><td>지속성</td><td>Durability</td><td>Commit된 트랜잭션 결과는 장애 후에도 영구 보존</td><td>Redo Log, WAL</td></tr>
+        </table>
+      </div>
+      <div class="ans-section">
+        <div class="ans-section-title sec-green">Ⅱ. 나. 격리 수준 및 이상 현상</div>
+        <table class="ans-table">
+          <tr><th>격리 수준</th><th>Dirty Read</th><th>Non-Repeatable Read</th><th>Phantom Read</th><th>특징</th></tr>
+          <tr><td>Read Uncommitted</td><td>발생</td><td>발생</td><td>발생</td><td>미커밋 데이터 읽기 허용. 가장 낮은 격리</td></tr>
+          <tr><td>Read Committed</td><td>방지</td><td>발생</td><td>발생</td><td>Oracle 기본값. 커밋된 데이터만 읽음</td></tr>
+          <tr><td>Repeatable Read</td><td>방지</td><td>방지</td><td>발생</td><td>MySQL InnoDB 기본값. 같은 행 반복 읽기 보장</td></tr>
+          <tr><td>Serializable</td><td>방지</td><td>방지</td><td>방지</td><td>완전 직렬 수행. 가장 높은 격리. 성능 저하</td></tr>
+        </table>
+        <div class="key-box green">
+          <div class="kb-title">이상 현상 정의</div>
+          <strong>Dirty Read</strong>: 미완료 트랜잭션이 변경한 데이터를 다른 트랜잭션이 읽는 현상<br>
+          <strong>Non-Repeatable Read</strong>: 같은 행을 두 번 읽었을 때 값이 변경된 현상<br>
+          <strong>Phantom Read</strong>: 같은 조건 조회 시 처음에 없던 행이 나타나거나 사라지는 현상
+        </div>
+      </div>
+      <div class="ans-section">
+        <div class="ans-section-title sec-purple">Ⅲ. 다. 분산 트랜잭션 처리 방안</div>
+        <ul class="ans-ol">
+          <li><span class="ol-num purple">1</span><div><strong>2PC (2-Phase Commit)</strong>
+            <div class="sub-list">
+              <div class="sub-item"><strong>준비 단계</strong>: 코디네이터가 모든 참여자에게 Prepare 요청 → 투표(Vote Commit/Abort)</div>
+              <div class="sub-item"><strong>커밋 단계</strong>: 모두 Commit이면 Global Commit, 하나라도 Abort면 Global Rollback</div>
+              <div class="sub-item">단점: 코디네이터 장애 시 참여자 블로킹, 동기식 처리로 가용성 저하</div>
+            </div>
+          </div></li>
+          <li><span class="ol-num purple">2</span><div><strong>SAGA 패턴 (MSA 환경 권장)</strong>
+            <div class="sub-list">
+              <div class="sub-item">긴 트랜잭션을 로컬 트랜잭션 시퀀스로 분해. 실패 시 보상 트랜잭션(Compensating Transaction) 실행</div>
+              <div class="sub-item"><strong>Choreography SAGA</strong>: 이벤트 발행·구독으로 순서 조율 (결합도 낮음)</div>
+              <div class="sub-item"><strong>Orchestration SAGA</strong>: 중앙 오케스트레이터가 호출 순서 지시 (가시성 높음)</div>
+              <div class="sub-item">결과적 일관성(Eventual Consistency) 모델, BASE 특성 수용</div>
+            </div>
+          </div></li>
+        </ul>
+        <table class="ans-table">
+          <tr><th>구분</th><th>2PC</th><th>SAGA 패턴</th></tr>
+          <tr><td>일관성</td><td>강한 일관성</td><td>결과적 일관성</td></tr>
+          <tr><td>가용성</td><td>낮음 (블로킹)</td><td>높음 (비동기)</td></tr>
+          <tr><td>적합 환경</td><td>단일 DB, 소규모 분산</td><td>MSA, 이벤트 기반 아키텍처</td></tr>
+        </table>
+      </div>
+      <div class="conclusion">
+        <div class="conclusion-title">Ⅳ. 결론</div>
+        <p>트랜잭션은 데이터 무결성의 근간이며, 격리 수준은 성능과 일관성 간의 트레이드오프를 결정한다. MSA 환경에서는 2PC의 가용성 문제로 SAGA 패턴이 사실상 표준으로 채택되고 있으며, Outbox 패턴과 결합하여 메시지 유실 없는 분산 트랜잭션을 구현하는 것이 현대적 모범 사례이다.</p>
+      </div>
+    </div>
+  </div>
+</div>
+</div><!-- /p5 -->
+
+<!-- ⑦ 프로젝트관리 -->
+<div class="panel" id="p6">
+<div class="q-card">
+  <div class="q-header">
+    <span class="q-domain-badge badge-pm">프로젝트관리</span>
+    <div class="q-meta">
+      <div class="q-type">2~4교시 논술형 · 25점</div>
+      <div class="q-title">정보시스템 마스터플랜(ISMP)에 대하여 다음을 설명하시오.</div>
+    </div>
+  </div>
+  <div class="q-body">
+    <div class="q-items">
+      <div class="q-item"><span class="q-item-label">가.</span><span>ISMP의 개념 및 ISP, EA와의 비교</span></div>
+      <div class="q-item"><span class="q-item-label">나.</span><span>ISMP 수립 절차 및 단계별 주요 활동·산출물</span></div>
+      <div class="q-item"><span class="q-item-label">다.</span><span>ISMP 기반 사업대가 산정 방법 (투입공수 방식)</span></div>
+    </div>
+    <div class="q-hint-row">
+      <span class="q-hint">132회 실제 출제</span><span class="q-hint">법령 연계 필수</span>
+    </div>
+  </div>
+  <div class="ans-card">
+    <button class="ans-toggle" onclick="toggleAns(this)">
+      <span class="ans-toggle-label">📄 모범 답안 보기</span>
+      <span class="ans-toggle-arrow">▼</span>
+    </button>
+    <div class="ans-body">
+      <div class="ans-title">ISMP의 개념·ISP·EA 비교, 수립 절차·산출물 및 사업대가 산정</div>
+      <div class="score-row">
+        <span class="score-chip chip-time">⏱ 목표 25분</span>
+        <span class="score-chip chip-page">📄 3.5페이지</span>
+        <span class="score-chip chip-score">💯 25점</span>
+      </div>
+      <div class="ans-section">
+        <div class="ans-section-title sec-blue">Ⅰ. 가. ISMP 개념 및 ISP·EA 비교</div>
+        <div class="ans-p">ISMP(정보시스템 마스터플랜)는 「전자정부법」 및 「소프트웨어 진흥법」에 근거하여, 공공기관이 정보화 사업 발주 전에 현행 시스템 현황 분석·미래 아키텍처 설계·사업 범위 및 대가를 사전에 수립하는 정보화 선행 계획서이다.</div>
+        <table class="ans-table">
+          <tr><th>구분</th><th>ISP</th><th>ISMP</th><th>EA</th></tr>
+          <tr><td>목적</td><td>중장기 정보화 방향 수립</td><td>단위 사업 발주 준비</td><td>기관 전체 아키텍처 관리</td></tr>
+          <tr><td>기간</td><td>3~5년 중장기</td><td>단위 사업 중심</td><td>상시 관리·갱신</td></tr>
+          <tr><td>산출물</td><td>정보화 로드맵</td><td>RFP, 사업범위, 대가</td><td>아키텍처 뷰, 참조모형</td></tr>
+          <tr><td>법적 근거</td><td>전자정부법</td><td>소프트웨어 진흥법</td><td>전자정부법 시행령</td></tr>
+        </table>
+      </div>
+      <div class="ans-section">
+        <div class="ans-section-title sec-green">Ⅱ. 나. ISMP 수립 절차 및 산출물</div>
+        <div class="diagram-box">ISMP 수립 절차 (4단계)
+
+1단계 [준비]      사업 목표·범위 정의, 추진 조직 구성, 현행 자료 수집
+2단계 [현황분석]  AS-IS 분석 (현행 시스템·업무·데이터·인프라·법령)
+                  갭 분석 (문제점·개선 요구사항 도출)
+3단계 [목표설계]  TO-BE 설계 (기능·시스템·데이터·인프라 아키텍처)
+                  이행 전략 및 단계별 로드맵 수립
+4단계 [사업계획]  사업 범위·추진 일정·소요예산·사업대가 산정
+                  RFP 초안 작성·검토 → ISMP 보고서 완성</div>
+        <table class="ans-table">
+          <tr><th>단계</th><th>주요 활동</th><th>핵심 산출물</th></tr>
+          <tr><td>준비</td><td>이해관계자 인터뷰, 현행 자료 수집</td><td>사업 추진 계획서, 현황 조사표</td></tr>
+          <tr><td>현황분석</td><td>AS-IS 시스템·업무 프로세스 분석</td><td>현황분석서, 문제점·개선과제 목록</td></tr>
+          <tr><td>목표설계</td><td>TO-BE 아키텍처 설계, 기술 스택 선정</td><td>목표 아키텍처서, 이행 로드맵</td></tr>
+          <tr><td>사업계획</td><td>WBS 작성, 대가 산정, RFP 작성</td><td>사업계획서, RFP, 사업대가 산정서</td></tr>
+        </table>
+      </div>
+      <div class="ans-section">
+        <div class="ans-section-title sec-orange">Ⅲ. 다. 사업대가 산정 (투입공수 방식)</div>
+        <div class="key-box orange">
+          <div class="kb-title">투입공수 방식 산정 공식</div>
+          <strong>사업대가 = 직접인건비 + 직접경비 + 제경비 + 기술료 + 부가가치세</strong><br><br>
+          • <strong>직접인건비</strong> = 투입 M/M × 직종별 노임단가 (한국SW산업협회 고시 기준)<br>
+          • <strong>제경비</strong> = 직접인건비 × 110~120%<br>
+          • <strong>기술료</strong> = (직접인건비 + 제경비) × 20~40%<br>
+          • <strong>직접경비</strong>: 출장비, 교육훈련비, 시험 장비 임차료 등 실비
+        </div>
+        <ul class="ans-ol">
+          <li><span class="ol-num orange">1</span><div><strong>기능점수(FP) 산정</strong>: 시스템 기능을 ILF·EIF·EI·EO·EQ로 분류하여 미조정 기능점수 산출</div></li>
+          <li><span class="ol-num orange">2</span><div><strong>공수 산출</strong>: 기능점수 × 생산성(FP/PM) → M/M 환산. 생산성 지수는 한국SW산업협회 고시 적용</div></li>
+          <li><span class="ol-num orange">3</span><div><strong>검증</strong>: 유사 사업 사례 대비 ±30% 이내 범위 타당성 확인. PMO 또는 전문기관 검토 권장</div></li>
+        </ul>
+      </div>
+      <div class="conclusion">
+        <div class="conclusion-title">Ⅳ. 결론</div>
+        <p>ISMP는 부실 발주로 인한 사업 실패를 예방하고 공공 IT사업의 품질과 예측가능성을 높이는 핵심 선행 절차이다. 「소프트웨어 진흥법」 제48조에 따라 일정 규모 이상의 공공 정보화사업에 ISMP가 의무화되었으며, AI·클라우드 전환 사업에도 ISMP 프로세스를 적용하여 체계적인 이행 관리가 요구된다.</p>
+      </div>
+    </div>
+  </div>
+</div>
+</div><!-- /p6 -->
+
+<!-- ⑧ 법·제도·감리 -->
+<div class="panel" id="p7">
+<div class="q-card">
+  <div class="q-header">
+    <span class="q-domain-badge badge-law">법 / 제도 / 감리</span>
+    <div class="q-meta">
+      <div class="q-type">2~4교시 논술형 · 25점</div>
+      <div class="q-title">개인정보보호 강화기술(PET)에 대하여 다음을 설명하시오.</div>
+    </div>
+  </div>
+  <div class="q-body">
+    <div class="q-items">
+      <div class="q-item"><span class="q-item-label">가.</span><span>PET의 개념과 등장 배경 (개인정보보호법 개정 연계)</span></div>
+      <div class="q-item"><span class="q-item-label">나.</span><span>PET 주요 유형별 원리 및 특징 (가명처리·차분 프라이버시·동형암호·연합학습)</span></div>
+      <div class="q-item"><span class="q-item-label">다.</span><span>데이터 활용 사업 감리 시 PET 적용 점검항목</span></div>
+    </div>
+    <div class="q-hint-row">
+      <span class="q-hint">134회 실제 출제</span><span class="q-hint">감리 연계</span><span class="q-hint">개인정보보호법 개정</span>
+    </div>
+  </div>
+  <div class="ans-card">
+    <button class="ans-toggle" onclick="toggleAns(this)">
+      <span class="ans-toggle-label">📄 모범 답안 보기</span>
+      <span class="ans-toggle-arrow">▼</span>
+    </button>
+    <div class="ans-body">
+      <div class="ans-title">PET 개념·주요 유형 및 데이터 활용 사업 감리 점검항목</div>
+      <div class="score-row">
+        <span class="score-chip chip-time">⏱ 목표 25분</span>
+        <span class="score-chip chip-page">📄 3.5페이지</span>
+        <span class="score-chip chip-score">💯 25점</span>
+      </div>
+      <div class="ans-section">
+        <div class="ans-section-title sec-blue">Ⅰ. 가. PET 개념 및 등장 배경</div>
+        <div class="ans-p">PET(Privacy Enhancing Technology, 개인정보 강화기술)는 개인정보를 삭제·암호화·변환하여 프라이버시를 보호하면서도 데이터의 통계적 유용성이나 연산 능력을 유지하는 기술의 총칭이다.</div>
+        <div class="key-box blue">
+          <div class="kb-title">등장 배경</div>
+          ① <strong>데이터 3법 개정(2020)</strong>: 가명정보 처리 허용, PET 필요성 증대<br>
+          ② <strong>개인정보보호법 제28조의2</strong>: 가명처리 기준·절차 법제화<br>
+          ③ <strong>데이터 경제</strong>: AI·빅데이터 수요 증가 vs 개인정보 보호 간 균형 필요<br>
+          ④ <strong>EU GDPR·국내 법령 강화</strong>: Privacy by Design 원칙 의무화
+        </div>
+      </div>
+      <div class="ans-section">
+        <div class="ans-section-title sec-green">Ⅱ. 나. PET 주요 유형별 원리 및 특징</div>
+        <table class="ans-table">
+          <tr><th>유형</th><th>원리</th><th>특징</th><th>활용 사례</th></tr>
+          <tr><td>가명처리</td><td>직접 식별자를 가명으로 대체. 별도 키 관리 필요</td><td>재식별 가능(키 보관). 개인정보보호법 허용</td><td>의료 데이터 연구, 금융 분석</td></tr>
+          <tr><td>차분 프라이버시</td><td>통계 질의 결과에 수학적 노이즈(ε-DP) 추가</td><td>수학적 프라이버시 보장. ε으로 프라이버시-정확도 조절</td><td>Apple iOS 키보드, Google RAPPOR, 통계청</td></tr>
+          <tr><td>동형암호</td><td>암호화된 상태로 연산 수행. 복호화 없이 연산</td><td>완전동형(FHE): 모든 연산. 연산 속도 느림(개선 중)</td><td>클라우드 의료 데이터 분석</td></tr>
+          <tr><td>연합학습</td><td>원시 데이터 미공유. 로컬 학습 후 모델 파라미터만 집계</td><td>데이터 유출 없이 협업 학습. 비IID 데이터 문제</td><td>삼성 갤럭시 키보드 AI, 병원 간 AI 공동 학습</td></tr>
+          <tr><td>안전다자간계산(MPC)</td><td>입력 공개 없이 여러 참여자가 공동으로 함수 계산</td><td>입력값 비노출 보장. 고도 암호 프로토콜 필요</td><td>공동 경매, 금융기관 간 데이터 분석</td></tr>
+        </table>
+      </div>
+      <div class="ans-section">
+        <div class="ans-section-title sec-orange">Ⅲ. 다. 데이터 활용 사업 감리 시 PET 점검항목</div>
+        <ul class="ans-ol">
+          <li><span class="ol-num orange">1</span><div><strong>법적 근거 적합성</strong>: 개인정보보호법 제28조의2에 따른 가명처리 목적·절차·기록이 적절한가</div></li>
+          <li><span class="ol-num orange">2</span><div><strong>가명처리 적정성</strong>: k-익명성(k≥3), l-다양성, t-근접성 등 비식별 수준이 목적에 부합하는가</div></li>
+          <li><span class="ol-num orange">3</span><div><strong>재식별 위험 관리</strong>: 외부 데이터 결합을 통한 재식별 위험 평가 및 관리 체계가 존재하는가</div></li>
+          <li><span class="ol-num orange">4</span><div><strong>기술적 PET 검증</strong>: 차분 프라이버시의 ε 값 설정 적절성, 동형암호 키 관리 절차 존재 여부</div></li>
+          <li><span class="ol-num orange">5</span><div><strong>연합학습 보안</strong>: 모델 역전 공격(Model Inversion), 멤버십 추론 공격 방어 대책 존재 여부</div></li>
+          <li><span class="ol-num orange">6</span><div><strong>데이터 처리 기록</strong>: 가명정보 처리 내역 기록·보관 의무(개인정보보호법 제28조의4) 준수 여부</div></li>
+        </ul>
+      </div>
+      <div class="conclusion">
+        <div class="conclusion-title">Ⅳ. 결론</div>
+        <p>PET는 데이터 가치 극대화와 개인정보 보호라는 상충 목표를 기술적으로 조화시키는 핵심 수단이다. 국내 개인정보보호법 개정과 GDPR 강화에 따라 공공·의료·금융 분야에서 PET 도입이 가속화되고 있으며, 감리사는 사업 유형별 적합 PET 기술의 적용 여부와 법령 준수성을 핵심 점검항목으로 관리해야 한다.</p>
+      </div>
+    </div>
+  </div>
+</div>
+</div><!-- /p7 -->
+
+<!-- ⑨ 클라우드·인프라 -->
+<div class="panel" id="p8">
+<div class="q-card">
+  <div class="q-header">
+    <span class="q-domain-badge badge-cloud">클라우드 / 인프라</span>
+    <div class="q-meta">
+      <div class="q-type">2~4교시 논술형 · 25점</div>
+      <div class="q-title">가상머신(VM)과 컨테이너(Container)를 비교하고, 쿠버네티스(Kubernetes)의 아키텍처와 핵심 기능을 설명하시오.</div>
+    </div>
+  </div>
+  <div class="q-body">
+    <div class="q-items">
+      <div class="q-item"><span class="q-item-label">가.</span><span>가상머신과 컨테이너의 개념 및 기술적 차이점</span></div>
+      <div class="q-item"><span class="q-item-label">나.</span><span>쿠버네티스 아키텍처(Control Plane·Worker Node) 및 핵심 오브젝트</span></div>
+      <div class="q-item"><span class="q-item-label">다.</span><span>컨테이너 기반 MSA 전환 시 고려사항 및 보안 위협</span></div>
+    </div>
+    <div class="q-hint-row">
+      <span class="q-hint">132회 유사 출제</span><span class="q-hint">클라우드 네이티브 핵심</span>
+    </div>
+  </div>
+  <div class="ans-card">
+    <button class="ans-toggle" onclick="toggleAns(this)">
+      <span class="ans-toggle-label">📄 모범 답안 보기</span>
+      <span class="ans-toggle-arrow">▼</span>
+    </button>
+    <div class="ans-body">
+      <div class="ans-title">VM·컨테이너 비교, 쿠버네티스 아키텍처·오브젝트 및 MSA 전환 고려사항</div>
+      <div class="score-row">
+        <span class="score-chip chip-time">⏱ 목표 25분</span>
+        <span class="score-chip chip-page">📄 3.5~4페이지</span>
+        <span class="score-chip chip-score">💯 25점</span>
+      </div>
+      <div class="ans-section">
+        <div class="ans-section-title sec-blue">Ⅰ. 가. VM과 컨테이너 비교</div>
+        <div class="diagram-box">  가상머신(VM)                      컨테이너(Container)
+┌───────────────────┐         ┌───────────────────┐
+│ App A │ App B     │         │App A│App B│App C   │
+├───────┼───────────┤         ├─────┼─────┼────────┤
+│GuestOS│ GuestOS   │         │  컨테이너 런타임      │
+├───────┴───────────┤         │(Docker/containerd) │
+│   하이퍼바이저       │         ├────────────────────┤
+│(Type1:ESXi/Type2) │         │   Host OS (공유)    │
+├───────────────────┤         ├────────────────────┤
+│   Host OS·HW      │         │     하드웨어          │
+└───────────────────┘         └────────────────────┘</div>
+        <table class="ans-table">
+          <tr><th>비교 항목</th><th>가상머신(VM)</th><th>컨테이너</th></tr>
+          <tr><td>격리 방법</td><td>하이퍼바이저 (HW 수준 가상화)</td><td>커널 네임스페이스·cgroup (OS 수준)</td></tr>
+          <tr><td>OS 공유</td><td>Guest OS 각자 보유</td><td>Host OS 커널 공유</td></tr>
+          <tr><td>부팅 시간</td><td>수십 초~수 분</td><td>밀리초~수 초</td></tr>
+          <tr><td>이미지 크기</td><td>수 GB</td><td>수십~수백 MB</td></tr>
+          <tr><td>보안 격리</td><td>강함 (HW 수준)</td><td>상대적으로 약함 (커널 공유)</td></tr>
+          <tr><td>적합 환경</td><td>완전한 OS 격리 필요, 레거시 앱</td><td>MSA, DevOps, 클라우드 네이티브</td></tr>
+        </table>
+      </div>
+      <div class="ans-section">
+        <div class="ans-section-title sec-green">Ⅱ. 나. 쿠버네티스 아키텍처 및 핵심 오브젝트</div>
+        <div class="diagram-box">쿠버네티스 클러스터 아키텍처
+
+┌─────────── Control Plane ──────────────┐
+│ API Server     ← kubectl 진입점         │
+│ etcd           ← 클러스터 상태 분산 저장  │
+│ Scheduler      ← Pod 배치 노드 결정     │
+│ Controller Mgr ← 상태 조정(Reconcile)  │
+└────────────────────────────────────────┘
+            ↕ API 통신
+┌─────── Worker Node × N ────────────────┐
+│ kubelet     ← Pod 생명주기 관리 Agent   │
+│ kube-proxy  ← 네트워크 규칙·서비스 라우팅│
+│ Container Runtime (containerd / CRI-O) │
+│ [Pod] [Pod] [Pod]                      │
+└────────────────────────────────────────┘</div>
+        <table class="ans-table">
+          <tr><th>오브젝트</th><th>역할</th></tr>
+          <tr><td>Pod</td><td>최소 배포 단위. 1개 이상의 컨테이너 묶음. 동일 네트워크·스토리지 공유</td></tr>
+          <tr><td>Deployment</td><td>Pod 복제본(Replica) 관리, 롤링 업데이트·롤백. 무중단 배포</td></tr>
+          <tr><td>Service</td><td>Pod 집합에 대한 고정 엔드포인트(ClusterIP/NodePort/LoadBalancer) 제공</td></tr>
+          <tr><td>ConfigMap/Secret</td><td>설정 정보·민감 데이터를 코드와 분리하여 환경 변수·파일로 주입</td></tr>
+          <tr><td>HPA</td><td>CPU·메모리 기반 Pod 자동 수평 확장 (Horizontal Pod Autoscaler)</td></tr>
+          <tr><td>Ingress</td><td>외부 HTTP/HTTPS 트래픽을 내부 서비스로 라우팅. TLS 종료 처리</td></tr>
+        </table>
+      </div>
+      <div class="ans-section">
+        <div class="ans-section-title sec-red">Ⅲ. 다. MSA 전환 고려사항 및 컨테이너 보안 위협</div>
+        <ul class="ans-ol">
+          <li><span class="ol-num red">1</span><div><strong>서비스 분해 전략</strong>: DDD의 Bounded Context 기반 서비스 경계 설정. Database per Service 원칙 적용</div></li>
+          <li><span class="ol-num red">2</span><div><strong>분산 트랜잭션</strong>: ACID 대신 Saga 패턴·이벤트 소싱으로 결과적 일관성 보장</div></li>
+          <li><span class="ol-num red">3</span><div><strong>관찰가능성(Observability)</strong>: 분산 추적(Jaeger·Zipkin), 로그(ELK), 메트릭(Prometheus·Grafana) 3요소 구축</div></li>
+          <li><span class="ol-num red">4</span><div><strong>컨테이너 보안 위협 및 대책</strong>
+            <div class="sub-list">
+              <div class="sub-item"><strong>컨테이너 탈출</strong>: 커널 취약점으로 Host OS 접근 → 최소 권한(Non-root), Seccomp/AppArmor 적용</div>
+              <div class="sub-item"><strong>이미지 취약점</strong>: 기반 이미지 내 CVE → 빌드 시 Trivy·Snyk 스캔, 신뢰 레지스트리만 허용</div>
+              <div class="sub-item"><strong>Supply Chain 공격</strong>: 악성 오픈소스 이미지 → Cosign 이미지 서명 검증, SBOM 연계</div>
+              <div class="sub-item"><strong>과도한 권한</strong>: 과도한 Linux Capability → 최소 권한 원칙, OPA Gatekeeper 정책 적용</div>
+            </div>
+          </div></li>
+        </ul>
+      </div>
+      <div class="conclusion">
+        <div class="conclusion-title">Ⅳ. 결론</div>
+        <p>컨테이너와 쿠버네티스는 현대 클라우드 네이티브 아키텍처의 핵심 기반 기술이다. 공공 클라우드 전환 및 MSA 도입이 확산됨에 따라, DevSecOps와 결합하여 컨테이너 보안을 파이프라인에 통합하고, eBPF 기반 런타임 보안(Cilium·Falco) 등 클라우드 네이티브 보안 기술 도입이 필수화되고 있다.</p>
+      </div>
+    </div>
+  </div>
+</div>
+</div><!-- /p8 -->
+
+</main>
+
+<script>
+function show(idx,btn){
+  document.querySelectorAll('.panel').forEach((p,i)=>p.classList.toggle('active',i===idx));
+  document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+function toggleAns(btn){
+  const body=btn.nextElementSibling;
+  const arrow=btn.querySelector('.ans-toggle-arrow');
+  const isOpen=body.classList.toggle('open');
+  arrow.classList.toggle('open',isOpen);
+  btn.querySelector('.ans-toggle-label').textContent=isOpen?'📄 답안 닫기':'📄 모범 답안 보기';
+}
+</script>
+</body>
+</html>
