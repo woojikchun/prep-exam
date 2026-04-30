@@ -1,0 +1,1176 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>보안·암호화·개인정보 문제집</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700;900&family=Noto+Serif+KR:wght@400;600;700&family=JetBrains+Mono:wght@400;600&display=swap');
+:root {
+  --bg:#f4f6fb;--white:#fff;--s2:#edf0f7;--border:#d8dff0;--bl:#eef1f8;
+  --blue:#1e40af;--blue2:#3b82f6;--blue-bg:#eff6ff;--blue-br:#bfdbfe;
+  --red:#991b1b;--red-bg:#fef2f2;--red-br:#fecaca;
+  --green:#065f46;--green-bg:#ecfdf5;--green-br:#a7f3d0;
+  --orange:#92400e;--org-bg:#fffbeb;--org-br:#fde68a;
+  --purple:#5b21b6;--pur-bg:#f5f3ff;--pur-br:#ddd6fe;
+  --teal:#0f766e;--teal-bg:#f0fdfa;--teal-br:#99f6e4;
+  --rose:#9f1239;--rose-bg:#fff1f2;--rose-br:#fecdd3;
+  --t1:#111827;--t2:#374151;--t3:#6b7280;--t4:#9ca3af;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--t1);font-family:'Noto Sans KR',sans-serif;font-size:14px;line-height:1.65}
+
+/* HEADER */
+.hdr{background:linear-gradient(135deg,#1e1b4b 0%,#312e81 40%,#4338ca 80%,#6366f1 100%);color:#fff;padding:30px 24px 24px;overflow:hidden;position:relative}
+.hdr::before{content:'';position:absolute;right:-80px;top:-80px;width:260px;height:260px;border-radius:50%;background:rgba(255,255,255,0.04)}
+.hdr::after{content:'';position:absolute;left:60%;bottom:-40px;width:180px;height:180px;border-radius:50%;background:rgba(255,255,255,0.03)}
+.hdr-in{max-width:1100px;margin:0 auto;position:relative}
+.hdr-eye{font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:#a5b4fc;margin-bottom:8px}
+.hdr-title{font-size:clamp(20px,4vw,30px);font-weight:900;line-height:1.25;font-family:'Noto Serif KR',serif;margin-bottom:8px}
+.hdr-sub{font-size:12.5px;color:#c7d2fe;margin-bottom:16px}
+.hdr-pills{display:flex;flex-wrap:wrap;gap:8px}
+.hdr-pill{background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.18);padding:3px 12px;border-radius:20px;font-size:11px;color:#e0e7ff}
+.hdr-pill.red{background:rgba(239,68,68,0.2);border-color:rgba(239,68,68,0.4);color:#fca5a5}
+.hdr-pill.green{background:rgba(16,185,129,0.2);border-color:rgba(16,185,129,0.4);color:#6ee7b7}
+
+/* NAV */
+.nav{background:var(--white);border-bottom:2px solid var(--border);position:sticky;top:0;z-index:200;box-shadow:0 2px 10px rgba(0,0,0,0.06)}
+.nav-inner{max-width:1100px;margin:0 auto;display:flex;align-items:stretch}
+.nav-section{display:flex;border-right:1px solid var(--border)}
+.nav-label{display:flex;align-items:center;padding:0 14px;font-size:10px;font-weight:800;letter-spacing:1px;text-transform:uppercase;color:var(--t3)}
+.tab-btn{padding:13px 12px;font-size:12px;font-weight:700;color:var(--t3);background:none;border:none;border-bottom:3px solid transparent;cursor:pointer;font-family:inherit;white-space:nowrap;transition:all 0.18s}
+.tab-btn:hover{color:var(--blue)}
+.tab-btn.active{color:var(--blue);border-bottom-color:var(--blue)}
+.tab-btn.sa.active{color:#059669;border-bottom-color:#059669}
+.tab-btn.sa:hover{color:#059669}
+
+/* MAIN */
+.main{max-width:1100px;margin:0 auto;padding:28px 16px 80px}
+.panel{display:none}
+.panel.active{display:block}
+
+/* SECTION HEADER */
+.sec-hdr{display:flex;align-items:center;gap:12px;margin-bottom:20px;padding-bottom:14px;border-bottom:2px solid var(--border)}
+.sec-badge{padding:4px 14px;border-radius:20px;font-size:11px;font-weight:800;letter-spacing:0.5px}
+.sb-sa{background:#dcfce7;color:#166534;border:1px solid #86efac}
+.sb-es{background:#ede9fe;color:#4c1d95;border:1px solid #c4b5fd}
+.sec-title{font-size:16px;font-weight:800;color:var(--t1)}
+.sec-sub{font-size:12px;color:var(--t3);margin-left:auto}
+
+/* Q CARD */
+.qcard{background:var(--white);border:1px solid var(--border);border-radius:14px;overflow:hidden;box-shadow:0 2px 14px rgba(0,0,0,0.05);margin-bottom:28px}
+.qcard-head{display:flex;align-items:flex-start;gap:12px;padding:18px 22px 14px;border-bottom:1px solid var(--bl)}
+.qnum{flex-shrink:0;width:34px;height:34px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:900;margin-top:1px}
+.qnum-sa{background:#dcfce7;color:#166534}
+.qnum-es{background:#ede9fe;color:#4c1d95}
+.qmeta{flex:1}
+.qtype-row{display:flex;align-items:center;gap:8px;margin-bottom:6px;flex-wrap:wrap}
+.qtag{font-size:10px;font-weight:700;padding:2px 8px;border-radius:5px}
+.qtag-sa{background:#f0fdf4;color:#166534;border:1px solid #86efac}
+.qtag-es{background:#f5f3ff;color:#5b21b6;border:1px solid #c4b5fd}
+.qtag-hot{background:#fef2f2;color:#991b1b;border:1px solid #fca5a5}
+.qtag-new{background:#eff6ff;color:#1e40af;border:1px solid #bfdbfe}
+.qtag-kw{background:var(--s2);color:var(--t3);border:1px solid var(--border)}
+.qtitle{font-size:15px;font-weight:800;color:var(--t1);line-height:1.4}
+.qbody{background:var(--bg);padding:14px 22px;border-bottom:1px solid var(--bl)}
+.qtext{font-size:13px;color:var(--t2);line-height:1.85}
+.qitems{display:flex;flex-direction:column;gap:6px;margin-top:10px}
+.qitem{display:flex;gap:10px;font-size:13px;color:var(--t2)}
+.qilabel{font-weight:800;color:var(--blue);min-width:22px;flex-shrink:0}
+
+/* TOGGLE */
+.ans-toggle{width:100%;padding:14px 22px;background:none;border:none;display:flex;align-items:center;justify-content:space-between;cursor:pointer;font-family:inherit;transition:background 0.15s}
+.ans-toggle:hover{background:var(--blue-bg)}
+.ans-toggle.sa:hover{background:#f0fdf4}
+.ans-toggle-lbl{font-size:13px;font-weight:700;color:var(--blue);display:flex;align-items:center;gap:8px}
+.ans-toggle.sa .ans-toggle-lbl{color:#059669}
+.ans-arrow{font-size:16px;transition:transform 0.25s}
+.ans-arrow.open{transform:rotate(180deg)}
+.ans-body{display:none;padding:4px 22px 24px}
+.ans-body.open{display:block}
+
+/* ANSWER CONTENT */
+.ans-title{font-size:17px;font-weight:900;font-family:'Noto Serif KR',serif;padding:18px 0 8px;border-bottom:2px solid;margin-bottom:18px}
+.ans-title.es{border-color:var(--blue)}
+.ans-title.sa{border-color:#059669}
+
+.chips-row{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px}
+.chip{font-size:11px;padding:3px 11px;border-radius:6px;font-weight:600}
+.chip-t{background:var(--org-bg);color:var(--orange);border:1px solid var(--org-br)}
+.chip-p{background:var(--green-bg);color:var(--green);border:1px solid var(--green-br)}
+.chip-s{background:var(--red-bg);color:var(--red);border:1px solid var(--red-br)}
+
+.sec{margin-bottom:20px}
+.sec-ttl{font-size:13px;font-weight:800;color:#fff;padding:5px 13px;border-radius:6px;display:inline-block;margin-bottom:12px}
+.c-blue{background:var(--blue)}.c-green{background:#059669}.c-purple{background:#7c3aed}
+.c-orange{background:#d97706}.c-red{background:#dc2626}.c-teal{background:#0d9488}
+.c-rose{background:#be185d}.c-indigo{background:#4338ca}
+
+.ap{font-size:13px;color:var(--t2);line-height:1.88;margin-bottom:10px}
+
+.tbl{width:100%;border-collapse:collapse;font-size:12px;margin:10px 0 14px}
+.tbl th{background:var(--s2);color:var(--t2);font-weight:700;padding:8px 12px;border:1px solid var(--border);text-align:center}
+.tbl td{padding:8px 12px;border:1px solid var(--border);vertical-align:top;line-height:1.65}
+.tbl td:first-child{font-weight:600;color:var(--blue);background:var(--blue-bg);text-align:center;white-space:nowrap}
+.tbl tr:nth-child(even) td:not(:first-child){background:#fafbfe}
+
+.ol{list-style:none;padding:0;display:flex;flex-direction:column;gap:10px;margin:8px 0}
+.ol li{display:flex;gap:10px;align-items:flex-start;font-size:13px;color:var(--t2);line-height:1.75}
+.on{flex-shrink:0;width:22px;height:22px;border-radius:50%;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;margin-top:1px;color:#fff}
+.on-b{background:var(--blue)}.on-g{background:#059669}.on-p{background:#7c3aed}
+.on-o{background:#d97706}.on-r{background:#dc2626}.on-t{background:#0d9488}
+
+.subs{margin-top:6px;display:flex;flex-direction:column;gap:4px}
+.sub{display:flex;gap:8px;font-size:12px;color:var(--t3)}
+.sub::before{content:'▸';color:var(--blue2);flex-shrink:0}
+
+.diag{background:#f8fafc;border:1px solid var(--border);border-left:3px solid var(--blue);border-radius:8px;padding:14px 16px;margin:10px 0;font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--t2);line-height:1.85;overflow-x:auto;white-space:pre}
+
+.kbox{border-radius:8px;padding:12px 16px;margin:12px 0;font-size:12px;line-height:1.75}
+.kb-blue{background:var(--blue-bg);border:1px solid var(--blue-br);color:#1e3a8a}
+.kb-green{background:var(--green-bg);border:1px solid var(--green-br);color:var(--green)}
+.kb-orange{background:var(--org-bg);border:1px solid var(--org-br);color:var(--orange)}
+.kb-red{background:var(--red-bg);border:1px solid var(--red-br);color:var(--red)}
+.kb-purple{background:var(--pur-bg);border:1px solid var(--pur-br);color:var(--purple)}
+.kb-teal{background:var(--teal-bg);border:1px solid var(--teal-br);color:var(--teal)}
+.kb-rose{background:var(--rose-bg);border:1px solid var(--rose-br);color:var(--rose)}
+.kb-title{font-weight:800;margin-bottom:5px;font-size:11px;letter-spacing:0.5px}
+
+.concl{background:linear-gradient(135deg,var(--blue-bg),var(--pur-bg));border:1px solid var(--blue-br);border-radius:8px;padding:14px 16px;margin-top:14px}
+.concl-t{font-weight:700;color:var(--blue);font-size:12px;margin-bottom:6px}
+.concl p{font-size:12.5px;color:var(--t2);line-height:1.8}
+
+/* SA specific */
+.sa-def{background:var(--green-bg);border:1px solid var(--green-br);border-radius:8px;padding:14px 18px;margin-bottom:14px}
+.sa-def-title{font-size:11px;font-weight:800;color:var(--green);letter-spacing:0.5px;margin-bottom:6px}
+.sa-def p{font-size:13px;color:#064e3b;line-height:1.8}
+.sa-formula{background:#1e1b4b;border-radius:8px;padding:14px 18px;margin:12px 0;font-family:'JetBrains Mono',monospace;font-size:12px;color:#e0e7ff;line-height:1.85}
+.sa-point{display:flex;align-items:flex-start;gap:10px;font-size:13px;color:var(--t2);padding:6px 0;border-bottom:1px solid var(--bl)}
+.sa-point:last-child{border-bottom:none}
+.sp-label{font-weight:700;color:#059669;min-width:60px;flex-shrink:0}
+</style>
+</head>
+<body>
+
+<header class="hdr">
+  <div class="hdr-in">
+    <div class="hdr-eye">컴퓨터시스템응용기술사 · 보안·암호화·개인정보 집중 문제집</div>
+    <div class="hdr-title">보안 / 암호화 / 개인정보보호<br>실전 문제 &amp; 모범답안 10선</div>
+    <div class="hdr-sub">단답형 5문제(1~2교시 용) + 논술형 5문제(2~4교시 용) · 기술사 답안 형식 완전 재현</div>
+    <div class="hdr-pills">
+      <span class="hdr-pill green">단답형 5문제 · 10분/문제</span>
+      <span class="hdr-pill red">논술형 5문제 · 25분/문제</span>
+      <span class="hdr-pill">최신 출제 경향 반영</span>
+      <span class="hdr-pill">핵심 암기 포인트 수록</span>
+    </div>
+  </div>
+</header>
+
+<nav class="nav">
+  <div class="nav-inner">
+    <div class="nav-section">
+      <div class="nav-label">단답형</div>
+      <button class="tab-btn sa active" onclick="show(0,this)">SA①블록암호모드</button>
+      <button class="tab-btn sa" onclick="show(1,this)">SA②Zero-Trust</button>
+      <button class="tab-btn sa" onclick="show(2,this)">SA③개인정보영향평가</button>
+      <button class="tab-btn sa" onclick="show(3,this)">SA④이메일인증</button>
+      <button class="tab-btn sa" onclick="show(4,this)">SA⑤디지털포렌식</button>
+    </div>
+    <div class="nav-section" style="border-right:none">
+      <div class="nav-label">논술형</div>
+      <button class="tab-btn active" onclick="show(5,this)">ES①SSO·Federation</button>
+      <button class="tab-btn" onclick="show(6,this)">ES②랜섬웨어대응</button>
+      <button class="tab-btn" onclick="show(7,this)">ES③양자암호</button>
+      <button class="tab-btn" onclick="show(8,this)">ES④공급망보안</button>
+      <button class="tab-btn" onclick="show(9,this)">ES⑤개인정보보호법</button>
+    </div>
+  </div>
+</nav>
+
+<main class="main">
+
+<!-- ============================
+     단답형 SA①  블록암호 운용 모드
+     ============================ -->
+<div class="panel active" id="p0">
+<div class="sec-hdr">
+  <span class="sec-badge sb-sa">단답형</span>
+  <span class="sec-title">블록암호 운용 모드 (Block Cipher Mode of Operation)</span>
+  <span class="sec-sub">1~2교시 · 10점</span>
+</div>
+<div class="qcard">
+  <div class="qcard-head">
+    <div class="qnum qnum-sa">SA1</div>
+    <div class="qmeta">
+      <div class="qtype-row">
+        <span class="qtag qtag-sa">단답형</span>
+        <span class="qtag qtag-hot">빈출</span>
+        <span class="qtag qtag-kw">AES</span>
+        <span class="qtag qtag-kw">GCM</span>
+        <span class="qtag qtag-kw">CBC</span>
+      </div>
+      <div class="qtitle">블록암호의 4가지 주요 운용 모드(ECB, CBC, CTR, GCM)의 특징과 차이점, 그리고 현대 보안 환경에서 GCM이 권장되는 이유를 설명하시오.</div>
+    </div>
+  </div>
+  <div class="ans-toggle sa" onclick="toggleAns(this)">
+    <span class="ans-toggle-lbl">📄 모범 답안 보기</span>
+    <span class="ans-arrow">▼</span>
+  </div>
+  <div class="ans-body">
+    <div class="ans-title sa">블록암호 운용 모드 — ECB·CBC·CTR·GCM 비교 및 GCM 권장 이유</div>
+    <div class="chips-row">
+      <span class="chip chip-t">⏱ 10분</span>
+      <span class="chip chip-p">📄 1.5~2페이지</span>
+      <span class="chip chip-s">💯 10점</span>
+    </div>
+
+    <div class="sec">
+      <div class="sec-ttl c-blue">Ⅰ. 블록암호 운용 모드의 개념</div>
+      <div class="ap">블록암호(AES, ARIA 등)는 고정 크기 블록(128bit) 단위로 암호화한다. 운용 모드(Mode of Operation)는 평문이 블록 크기를 초과할 때 블록 간 연산 방식을 정의하는 알고리즘 체계이다.</div>
+    </div>
+
+    <div class="sec">
+      <div class="sec-ttl c-green">Ⅱ. 4가지 운용 모드 비교</div>
+      <table class="tbl">
+        <tr><th>모드</th><th>동작 원리</th><th>특징</th><th>취약점/단점</th></tr>
+        <tr><td>ECB<br>(Electronic CodeBook)</td><td>각 블록을 독립적으로 암호화 (키만 사용)</td><td>병렬 처리 가능. 구현 단순</td><td>동일 평문 블록 → 동일 암호문 블록. 패턴 노출 (펭귄 이미지 문제). 사용 금지 권고</td></tr>
+        <tr><td>CBC<br>(Cipher Block Chaining)</td><td>이전 암호문 블록과 현재 평문 XOR 후 암호화. IV(초기화 벡터) 필요</td><td>패턴 은닉. 순차 처리</td><td>패딩 오라클 공격(POODLE) 취약. 직렬 처리로 성능 저하. 무결성 미보장</td></tr>
+        <tr><td>CTR<br>(CounTeR)</td><td>증가하는 카운터를 암호화한 키스트림과 평문 XOR</td><td>병렬 처리 가능. 스트림 암호처럼 동작. 랜덤 접근 가능</td><td>무결성(인증) 미보장. Nonce 재사용 시 치명적 취약</td></tr>
+        <tr><td>GCM<br>(Galois/Counter Mode)</td><td>CTR 모드 + GHASH(갈루아 필드) 인증 태그 생성. 암호화+인증 동시 제공</td><td>AEAD(인증 암호화). 병렬 처리. 하드웨어 가속(AES-NI). TLS 1.3 필수</td><td>Nonce 재사용 시 키 복구 위험. 구현 복잡도 높음</td></tr>
+      </table>
+    </div>
+
+    <div class="sec">
+      <div class="sec-ttl c-purple">Ⅲ. GCM이 현대 보안 환경에서 권장되는 이유</div>
+      <ul class="ol">
+        <li><span class="on on-p">1</span><div><strong>AEAD(Authenticated Encryption with Associated Data)</strong>: 암호화(기밀성)와 무결성·인증(Authentication Tag, 128bit)을 단일 연산으로 동시 보장. 별도 MAC이 불필요하여 취약점 감소</div></li>
+        <li><span class="on on-p">2</span><div><strong>성능 우위</strong>: CTR 기반 병렬 암호화 + 갈루아 필드 인증의 하드웨어 가속(Intel AES-NI, ARMv8). CBC 대비 처리 속도 2~5배 향상</div></li>
+        <li><span class="on on-p">3</span><div><strong>표준 채택</strong>: TLS 1.3의 필수 암호 스위트(TLS_AES_256_GCM_SHA384), NIST SP 800-38D 표준, IETF RFC 5288 지정</div></li>
+        <li><span class="on on-p">4</span><div><strong>패딩 오라클 공격 면역</strong>: CTR 기반으로 패딩이 불필요하여 POODLE·Lucky13 등 CBC의 패딩 오라클 공격 원천 방지</div></li>
+      </ul>
+      <div class="kbox kb-orange">
+        <div class="kb-title">⚠ GCM 사용 시 주의사항</div>
+        Nonce(96bit)는 <strong>절대 재사용 금지</strong>. 동일 키+Nonce 재사용 시 두 암호문 XOR로 키스트림 복구 가능. 실무에서는 랜덤 Nonce(CSPRNG) 또는 카운터 기반 Nonce로 관리.
+      </div>
+    </div>
+
+    <div class="kbox kb-green">
+      <div class="kb-title">🔑 핵심 암기 (1줄 요약)</div>
+      ECB=패턴노출(사용금지) / CBC=패딩오라클(레거시) / CTR=병렬·무결성없음 / <strong>GCM=AEAD+병렬+TLS1.3 표준 (현행 최선)</strong>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- ============================
+     단답형 SA②  Zero-Trust 보안 모델
+     ============================ -->
+<div class="panel" id="p1">
+<div class="sec-hdr">
+  <span class="sec-badge sb-sa">단답형</span>
+  <span class="sec-title">Zero-Trust 보안 모델</span>
+  <span class="sec-sub">1~2교시 · 10점</span>
+</div>
+<div class="qcard">
+  <div class="qcard-head">
+    <div class="qnum qnum-sa">SA2</div>
+    <div class="qmeta">
+      <div class="qtype-row">
+        <span class="qtag qtag-sa">단답형</span>
+        <span class="qtag qtag-new">최신 트렌드</span>
+        <span class="qtag qtag-kw">NIST SP 800-207</span>
+        <span class="qtag qtag-kw">IAM</span>
+      </div>
+      <div class="qtitle">Zero-Trust 보안 모델의 개념, 7가지 핵심 원칙, 구성요소 및 기존 경계 기반 보안(Perimeter Security)과의 차이점을 설명하시오.</div>
+    </div>
+  </div>
+  <div class="ans-toggle sa" onclick="toggleAns(this)">
+    <span class="ans-toggle-lbl">📄 모범 답안 보기</span>
+    <span class="ans-arrow">▼</span>
+  </div>
+  <div class="ans-body">
+    <div class="ans-title sa">Zero-Trust 보안 모델 — 개념·7원칙·구성요소 및 경계 보안 비교</div>
+    <div class="chips-row">
+      <span class="chip chip-t">⏱ 10분</span>
+      <span class="chip chip-p">📄 1.5~2페이지</span>
+      <span class="chip chip-s">💯 10점</span>
+    </div>
+
+    <div class="sec">
+      <div class="sec-ttl c-blue">Ⅰ. Zero-Trust의 개념</div>
+      <div class="sa-def">
+        <div class="sa-def-title">정의 (NIST SP 800-207, 2020)</div>
+        <p>Zero-Trust(ZT)란 <strong>"절대 신뢰하지 말고, 항상 검증하라(Never Trust, Always Verify)"</strong>는 원칙 하에, 네트워크 내·외부 모든 사용자·기기·트래픽을 지속적으로 인증·인가·모니터링하는 보안 패러다임이다. 내부망도 안전하지 않다는 전제를 기반으로 한다.</p>
+      </div>
+    </div>
+
+    <div class="sec">
+      <div class="sec-ttl c-green">Ⅱ. 경계 보안 vs Zero-Trust 비교</div>
+      <table class="tbl">
+        <tr><th>비교 항목</th><th>경계 기반 보안 (Perimeter)</th><th>Zero-Trust</th></tr>
+        <tr><td>신뢰 전제</td><td>내부망 = 신뢰 구역</td><td>내부망도 불신. 모든 요청 검증</td></tr>
+        <tr><td>인증 범위</td><td>입구(방화벽·VPN) 1회 인증</td><td>리소스 접근 시마다 연속 인증</td></tr>
+        <tr><td>측면 이동</td><td>내부 이동 무제한 허용</td><td>마이크로세그멘테이션으로 차단</td></tr>
+        <tr><td>원격·클라우드</td><td>VPN 집중, 성능 병목</td><td>SDP·ZTNA로 직접 접근 제어</td></tr>
+        <tr><td>내부자 위협</td><td>탐지 어려움</td><td>지속 모니터링으로 조기 탐지</td></tr>
+      </table>
+    </div>
+
+    <div class="sec">
+      <div class="sec-ttl c-purple">Ⅲ. NIST 7가지 핵심 원칙</div>
+      <ul class="ol" style="gap:6px">
+        <li><span class="on on-p" style="font-size:10px">①</span><div>모든 데이터·서비스를 리소스로 간주</div></li>
+        <li><span class="on on-p" style="font-size:10px">②</span><div>모든 통신은 네트워크 위치에 무관하게 보안 적용</div></li>
+        <li><span class="on on-p" style="font-size:10px">③</span><div>개별 세션 단위로 기업 리소스 접근 허가</div></li>
+        <li><span class="on on-p" style="font-size:10px">④</span><div>클라이언트 신원·앱·자산 상태·기타 행위 속성으로 동적 접근 제어</div></li>
+        <li><span class="on on-p" style="font-size:10px">⑤</span><div>모든 자산의 무결성·보안 상태 모니터링·측정</div></li>
+        <li><span class="on on-p" style="font-size:10px">⑥</span><div>모든 리소스 인증·인가는 동적 엄격 수행</div></li>
+        <li><span class="on on-p" style="font-size:10px">⑦</span><div>자산·네트워크 인프라 현황 수집·개선</div></li>
+      </ul>
+    </div>
+
+    <div class="sec">
+      <div class="sec-ttl c-orange">Ⅳ. 핵심 구성요소</div>
+      <div class="diag">Policy Engine(PE) + Policy Administrator(PA) → Policy Enforcement Point(PEP)
+
+[사용자/기기] ─── ZTNA ──→ [PEP] ──→ [리소스]
+                              │
+                  ┌───────────┼───────────┐
+                 [PA]        [PE]     [CDM·SIEM]
+                              │
+              [신원관리(IAM)] [기기신뢰(EDR)] [위협정보]</div>
+    </div>
+
+    <div class="kbox kb-green">
+      <div class="kb-title">🔑 핵심 암기 (1줄 요약)</div>
+      Zero-Trust = <strong>Never Trust Always Verify</strong> + 마이크로세그멘테이션 + 지속 검증(UEBA) + 최소 권한. 구현: IAM·MFA·EDR·ZTNA·SASE
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- ============================
+     단답형 SA③  개인정보 영향평가(PIA)
+     ============================ -->
+<div class="panel" id="p2">
+<div class="sec-hdr">
+  <span class="sec-badge sb-sa">단답형</span>
+  <span class="sec-title">개인정보 영향평가 (PIA)</span>
+  <span class="sec-sub">1~2교시 · 10점</span>
+</div>
+<div class="qcard">
+  <div class="qcard-head">
+    <div class="qnum qnum-sa">SA3</div>
+    <div class="qmeta">
+      <div class="qtype-row">
+        <span class="qtag qtag-sa">단답형</span>
+        <span class="qtag qtag-hot">빈출</span>
+        <span class="qtag qtag-kw">개인정보보호법</span>
+        <span class="qtag qtag-kw">GDPR DPIA</span>
+      </div>
+      <div class="qtitle">개인정보 영향평가(PIA)의 개념, 법적 근거, 대상 기준, 수행 절차 및 GDPR의 DPIA(Data Protection Impact Assessment)와의 비교를 설명하시오.</div>
+    </div>
+  </div>
+  <div class="ans-toggle sa" onclick="toggleAns(this)">
+    <span class="ans-toggle-lbl">📄 모범 답안 보기</span>
+    <span class="ans-arrow">▼</span>
+  </div>
+  <div class="ans-body">
+    <div class="ans-title sa">개인정보 영향평가(PIA) — 개념·법적 근거·절차 및 GDPR DPIA 비교</div>
+    <div class="chips-row">
+      <span class="chip chip-t">⏱ 10분</span>
+      <span class="chip chip-p">📄 1.5~2페이지</span>
+      <span class="chip chip-s">💯 10점</span>
+    </div>
+
+    <div class="sec">
+      <div class="sec-ttl c-blue">Ⅰ. 개인정보 영향평가(PIA)의 개념 및 법적 근거</div>
+      <div class="sa-def">
+        <div class="sa-def-title">정의</div>
+        <p>PIA(Privacy Impact Assessment)란 개인정보를 포함하는 신규 정보시스템 구축·기존 시스템 변경 시, 해당 사업이 개인정보에 미치는 영향을 사전에 조사·분석·평가하여 개인정보 침해 위험 요인을 발굴·개선하는 제도이다.</p>
+      </div>
+      <div class="sa-point"><span class="sp-label">법적 근거</span><span>개인정보보호법 제33조, 동법 시행령 제35조~제38조</span></div>
+      <div class="sa-point"><span class="sp-label">대상 기관</span><span>공공기관 중 5만 명 이상의 민감정보·고유식별정보 처리, 또는 50만 명 이상 개인정보 처리 시스템 구축·변경 시 의무</span></div>
+      <div class="sa-point"><span class="sp-label">평가 기관</span><span>개인정보보호위원회 지정 영향평가 전문기관 (KISA 등)</span></div>
+    </div>
+
+    <div class="sec">
+      <div class="sec-ttl c-green">Ⅱ. PIA 수행 절차</div>
+      <div class="diag">①대상선정  →  ②현황분석  →  ③위험도평가  →  ④위험요인개선  →  ⑤결과보고서
+
+①대상선정: 의무 대상 해당 여부 판단, 영향평가 전문기관 선정
+②현황분석: 개인정보 수집·처리 항목, 시스템 구성, 관련 법령 분석
+③위험도평가: 개인정보 처리 단계별 침해 위험 도출, 위험도 산정(가능성×영향도)
+④위험요인개선: 기술적·관리적·물리적 보호조치 수립, 잔여 위험 수용 여부 결정
+⑤결과보고서: 개인정보보호위원회 제출, 시스템 설계·개발에 반영</div>
+    </div>
+
+    <div class="sec">
+      <div class="sec-ttl c-purple">Ⅲ. 국내 PIA vs GDPR DPIA 비교</div>
+      <table class="tbl">
+        <tr><th>비교 항목</th><th>국내 PIA (개인정보보호법)</th><th>GDPR DPIA (제35조)</th></tr>
+        <tr><td>의무 대상</td><td>공공기관 일정 규모 이상</td><td>민간 포함 고위험 처리 활동</td></tr>
+        <tr><td>적용 시점</td><td>시스템 구축·변경 시 사전 수행</td><td>처리 시작 전 사전 수행</td></tr>
+        <tr><td>평가 주체</td><td>지정 전문기관</td><td>컨트롤러 자체 수행 (DPO 지원)</td></div></tr>
+        <tr><td>감독기관 제출</td><td>개인정보보호위원회 의무 제출</td><td>고위험 시 감독기관 사전 협의</td></tr>
+        <tr><td>처벌</td><td>미실시 시 과태료(3천만 원 이하)</td><td>최대 1,000만 유로 또는 연 매출 2%</td></tr>
+      </table>
+    </div>
+
+    <div class="kbox kb-green">
+      <div class="kb-title">🔑 핵심 암기</div>
+      PIA = <strong>사전 침해 위험 발굴·개선 제도</strong>. 개인정보보호법 §33 의무. 5만/50만 기준. 절차: 선정→분석→평가→개선→보고. GDPR DPIA는 민간+자체수행+감독기관 사전 협의 차이
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- ============================
+     단답형 SA④  이메일 인증 프로토콜
+     ============================ -->
+<div class="panel" id="p3">
+<div class="sec-hdr">
+  <span class="sec-badge sb-sa">단답형</span>
+  <span class="sec-title">이메일 인증 프로토콜 (SPF·DKIM·DMARC)</span>
+  <span class="sec-sub">1~2교시 · 10점</span>
+</div>
+<div class="qcard">
+  <div class="qcard-head">
+    <div class="qnum qnum-sa">SA4</div>
+    <div class="qmeta">
+      <div class="qtype-row">
+        <span class="qtag qtag-sa">단답형</span>
+        <span class="qtag qtag-hot">최근 출제</span>
+        <span class="qtag qtag-kw">SPF</span>
+        <span class="qtag qtag-kw">DKIM</span>
+        <span class="qtag qtag-kw">DMARC</span>
+      </div>
+      <div class="qtitle">이메일 스푸핑(Email Spoofing) 방지를 위한 SPF, DKIM, DMARC의 동작 원리와 각 기술의 상호 보완 관계를 설명하시오.</div>
+    </div>
+  </div>
+  <div class="ans-toggle sa" onclick="toggleAns(this)">
+    <span class="ans-toggle-lbl">📄 모범 답안 보기</span>
+    <span class="ans-arrow">▼</span>
+  </div>
+  <div class="ans-body">
+    <div class="ans-title sa">SPF·DKIM·DMARC 동작 원리 및 상호 보완 관계</div>
+    <div class="chips-row">
+      <span class="chip chip-t">⏱ 10분</span>
+      <span class="chip chip-p">📄 1.5~2페이지</span>
+      <span class="chip chip-s">💯 10점</span>
+    </div>
+
+    <div class="sec">
+      <div class="sec-ttl c-blue">Ⅰ. 이메일 스푸핑 위협</div>
+      <div class="ap">이메일 스푸핑이란 공격자가 From 헤더의 발신자 도메인을 위조하여 피싱·사기 메일을 발송하는 공격이다. SMTP는 발신자 인증 메커니즘이 없어 위조가 용이하며, SPF·DKIM·DMARC는 이를 방어하는 3계층 방어 체계이다.</div>
+    </div>
+
+    <div class="sec">
+      <div class="sec-ttl c-green">Ⅱ. SPF·DKIM·DMARC 동작 원리</div>
+      <table class="tbl">
+        <tr><th>기술</th><th>방어 원리</th><th>DNS 레코드</th><th>한계</th></tr>
+        <tr><td>SPF<br>(Sender Policy Framework)</td><td>도메인 소유자가 DNS TXT 레코드에 허가된 발신 IP 목록 등록. 수신 서버는 실제 발신 IP와 대조하여 유효성 검증</td><td>TXT: "v=spf1 ip4:1.2.3.0/24 include:sendgrid.net ~all"</td><td>IP만 검증. 헤더 From 위조는 차단 불가. 포워딩 시 실패</td></tr>
+        <tr><td>DKIM<br>(DomainKeys Identified Mail)</td><td>발신 서버가 메일 헤더+본문에 도메인 개인키로 서명 첨부. 수신 서버는 DNS 공개키로 서명 검증하여 무결성 확인</td><td>TXT: selector._domainkey.example.com → 공개키</td><td>발신 IP 검증 없음. 서명 헤더만 보호 (일부 헤더 위조 가능)</td></tr>
+        <tr><td>DMARC<br>(Domain-based Message Authentication)</td><td>SPF·DKIM 결과와 헤더 From 도메인의 일치 여부(Alignment) 검사. 정책(none/quarantine/reject)과 리포트 수신 지정</td><td>TXT: _dmarc.example.com → "v=DMARC1; p=reject; rua=mailto:..."</td><td>SPF 또는 DKIM 중 하나라도 통과하면 인정. 양쪽 모두 취약 시 우회 가능</td></tr>
+      </table>
+    </div>
+
+    <div class="sec">
+      <div class="sec-ttl c-purple">Ⅲ. 3기술 상호 보완 관계</div>
+      <div class="diag">이메일 수신 시 검증 흐름
+
+[수신 서버]
+ 1. SPF 검사: 발신 MTA IP ∈ DNS SPF 레코드? (발신 서버 IP 인증)
+ 2. DKIM 검사: 메일 서명 → DNS 공개키로 서명 검증 (메시지 무결성)
+ 3. DMARC 검사: SPF/DKIM 결과 + Header-From 도메인 Alignment 확인
+     ├─ Aligned Pass → 수신함 전달
+     ├─ Fail + p=quarantine → 스팸함 분류
+     └─ Fail + p=reject → 메일 반려</div>
+    </div>
+
+    <div class="kbox kb-green">
+      <div class="kb-title">🔑 핵심 암기</div>
+      SPF=<strong>발신IP인증</strong> / DKIM=<strong>서명무결성</strong> / DMARC=<strong>정책·Alignment·리포팅</strong>.<br>
+      세 기술의 조합으로 발신 서버 인증 + 메시지 무결성 + 도메인 위조 방지의 3중 보호 달성.
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- ============================
+     단답형 SA⑤  디지털 포렌식
+     ============================ -->
+<div class="panel" id="p4">
+<div class="sec-hdr">
+  <span class="sec-badge sb-sa">단답형</span>
+  <span class="sec-title">디지털 포렌식 (Digital Forensics)</span>
+  <span class="sec-sub">1~2교시 · 10점</span>
+</div>
+<div class="qcard">
+  <div class="qcard-head">
+    <div class="qnum qnum-sa">SA5</div>
+    <div class="qmeta">
+      <div class="qtype-row">
+        <span class="qtag qtag-sa">단답형</span>
+        <span class="qtag qtag-hot">빈출</span>
+        <span class="qtag qtag-kw">증거보전</span>
+        <span class="qtag qtag-kw">연계보관성</span>
+        <span class="qtag qtag-kw">해시</span>
+      </div>
+      <div class="qtitle">디지털 포렌식의 개념, 4대 원칙, 수행 절차, 그리고 연계보관성(Chain of Custody)의 중요성을 설명하시오.</div>
+    </div>
+  </div>
+  <div class="ans-toggle sa" onclick="toggleAns(this)">
+    <span class="ans-toggle-lbl">📄 모범 답안 보기</span>
+    <span class="ans-arrow">▼</span>
+  </div>
+  <div class="ans-body">
+    <div class="ans-title sa">디지털 포렌식 — 개념·4대 원칙·수행 절차·연계보관성</div>
+    <div class="chips-row">
+      <span class="chip chip-t">⏱ 10분</span>
+      <span class="chip chip-p">📄 1.5~2페이지</span>
+      <span class="chip chip-s">💯 10점</span>
+    </div>
+
+    <div class="sec">
+      <div class="sec-ttl c-blue">Ⅰ. 디지털 포렌식의 개념</div>
+      <div class="sa-def">
+        <div class="sa-def-title">정의</div>
+        <p>디지털 포렌식(Digital Forensics)이란 컴퓨터·모바일·네트워크 등 디지털 저장매체에서 법적 효력이 있는 디지털 증거를 수집·보존·분석·제출하는 과학적 절차와 기술의 총체이다. 법정에서의 증거 능력 확보가 핵심 목표이다.</div>
+      </div>
+    </div>
+
+    <div class="sec">
+      <div class="sec-ttl c-green">Ⅱ. 디지털 포렌식 4대 원칙</div>
+      <ul class="ol" style="gap:7px">
+        <li><span class="on on-g">1</span><div><strong>정당성(Legality)</strong>: 적법한 절차와 방법으로 증거 수집·분석. 위법 수집 증거는 법정 효력 없음</div></li>
+        <li><span class="on on-g">2</span><div><strong>재현성(Reproducibility)</strong>: 동일 조건에서 동일 결과 재현 가능. 분석 절차와 도구를 문서화</div></li>
+        <li><span class="on on-g">3</span><div><strong>무결성(Integrity)</strong>: 수집 이후 원본 데이터가 변조·훼손되지 않음. 해시값(SHA-256)으로 증명</div></li>
+        <li><span class="on on-g">4</span><div><strong>연계보관성(Chain of Custody)</strong>: 증거 수집~법정 제출까지 모든 취급자·취급 행위를 빠짐없이 기록·유지</div></li>
+      </ul>
+    </div>
+
+    <div class="sec">
+      <div class="sec-ttl c-purple">Ⅲ. 수행 절차 및 연계보관성의 중요성</div>
+      <div class="diag">디지털 포렌식 수행 절차
+
+1. 현장 보존   : 증거 현장 사진 촬영, 전원 차단 여부 판단, 접근 통제
+2. 수집·이미징 : 원본 저장매체 쓰기 방지 장치(Write Blocker) 연결
+                  비트 대 비트 이미징(DD, FTK Imager) → 이미지 파일 생성
+                  원본·이미지의 SHA-256 해시값 산출 및 기록
+3. 보존        : 원본은 증거 봉투 봉인·서명, 보안 장소 보관
+                  이미지 사본으로만 분석 진행
+4. 분석        : 파일 복구(삭제·포맷 복구), 타임라인 분석, 아티팩트 추출
+                  메모리 포렌식(휘발성 데이터: RAM, 프로세스, 네트워크 연결)
+5. 보고·제출   : 분석 과정·결과·도구를 법정 제출용 보고서 작성
+                  연계보관성 기록과 함께 검찰·법원 제출</div>
+      <div class="kbox kb-orange">
+        <div class="kb-title">연계보관성(Chain of Custody)의 중요성</div>
+        증거가 수집된 시점부터 법정 제출까지 <strong>누가(Who)·언제(When)·어떻게(How)</strong> 취급했는지 끊김 없이 기록해야 법적 증거 능력을 인정받는다. 한 번이라도 연계보관성이 단절되면 법정에서 증거 효력이 상실되며, 디지털 증거의 가장 취약한 고리로 작용한다.
+      </div>
+    </div>
+
+    <div class="kbox kb-green">
+      <div class="kb-title">🔑 핵심 암기</div>
+      4대 원칙 = <strong>정·재·무·연</strong> (정당성·재현성·무결성·연계보관성). 핵심 기술: 쓰기 방지 장치 + SHA-256 해시 + 이미지 분석.
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- ============================
+     논술형 ES①  SSO·Federation
+     ============================ -->
+<div class="panel" id="p5">
+<div class="sec-hdr">
+  <span class="sec-badge sb-es">논술형</span>
+  <span class="sec-title">SSO 및 페더레이션 신원 관리</span>
+  <span class="sec-sub">2~4교시 · 25점</span>
+</div>
+<div class="qcard">
+  <div class="qcard-head">
+    <div class="qnum qnum-es">ES1</div>
+    <div class="qmeta">
+      <div class="qtype-row">
+        <span class="qtag qtag-es">논술형</span>
+        <span class="qtag qtag-hot">빈출</span>
+        <span class="qtag qtag-kw">SAML</span>
+        <span class="qtag qtag-kw">OAuth2.0</span>
+        <span class="qtag qtag-kw">OIDC</span>
+        <span class="qtag qtag-kw">Kerberos</span>
+      </div>
+      <div class="qtitle">SSO(Single Sign-On) 및 페더레이션 신원 관리에 대하여 다음을 설명하시오.</div>
+    </div>
+  </div>
+  <div class="qbody">
+    <div class="qitems">
+      <div class="qitem"><span class="qilabel">가.</span><span>SSO의 개념과 Kerberos 기반 SSO의 동작 원리 (TGT·ST 포함)</span></div>
+      <div class="qitem"><span class="qilabel">나.</span><span>SAML 2.0, OAuth 2.0, OIDC의 동작 원리 비교 및 적합한 사용 시나리오</span></div>
+      <div class="qitem"><span class="qilabel">다.</span><span>SSO 도입 시 보안 위협과 대응 방안</span></div>
+    </div>
+  </div>
+  <div class="ans-toggle" onclick="toggleAns(this)">
+    <span class="ans-toggle-lbl">📄 모범 답안 보기</span>
+    <span class="ans-arrow">▼</span>
+  </div>
+  <div class="ans-body">
+    <div class="ans-title es">SSO의 개념·Kerberos 원리, SAML·OAuth·OIDC 비교 및 보안 위협 대응</div>
+    <div class="chips-row">
+      <span class="chip chip-t">⏱ 목표 25분</span>
+      <span class="chip chip-p">📄 3.5~4페이지</span>
+      <span class="chip chip-s">💯 25점</span>
+    </div>
+
+    <div class="sec">
+      <div class="sec-ttl c-blue">Ⅰ. 개요 — SSO의 개념과 필요성</div>
+      <div class="ap">SSO(Single Sign-On)는 사용자가 한 번의 인증(1회 로그인)으로 여러 애플리케이션·서비스에 추가 로그인 없이 접근하는 인증 체계이다. 사용자 편의성 향상, 패스워드 분산 위험 감소, 중앙화된 접근 제어가 핵심 장점이며, 엔터프라이즈·클라우드 환경의 ID 관리 표준이다.</div>
+    </div>
+
+    <div class="sec">
+      <div class="sec-ttl c-green">Ⅱ. 가. Kerberos 기반 SSO 동작 원리</div>
+      <div class="ap">Kerberos는 신뢰받는 제3자(KDC: Key Distribution Center)를 통해 대칭키 기반으로 인증 티켓을 발급하는 프로토콜이다 (RFC 4120, MIT 개발).</div>
+      <div class="diag">Kerberos 인증 흐름 (3단계)
+
+[1단계] AS 교환 (Authentication Service)
+ 클라이언트 → AS(KDC): 사용자 ID + 타임스탬프(암호화)
+ AS → 클라이언트: TGT(Ticket-Granting Ticket, TGS 세션키 포함)
+                   ※ TGT는 클라이언트의 장기키(패스워드 해시)로 암호화
+
+[2단계] TGS 교환 (Ticket-Granting Service)
+ 클라이언트 → TGS(KDC): TGT + 서비스 요청 + Authenticator
+ TGS → 클라이언트: ST(Service Ticket, 서비스 세션키 포함)
+
+[3단계] AP 교환 (Application)
+ 클라이언트 → 서비스 서버: ST + Authenticator
+ 서비스 서버: ST 복호화 → 클라이언트 신원 확인 → 서비스 제공</div>
+      <div class="kbox kb-green">
+        <div class="kb-title">Kerberos 핵심 보안 특성</div>
+        ① <strong>상호 인증</strong>: 클라이언트↔서버 양방향 인증<br>
+        ② <strong>재전송 공격 방지</strong>: 타임스탬프 + 단기 유효 티켓(기본 10시간)<br>
+        ③ <strong>패스워드 평문 미전송</strong>: 모든 통신은 암호화된 티켓 사용
+      </div>
+    </div>
+
+    <div class="sec">
+      <div class="sec-ttl c-purple">Ⅲ. 나. SAML 2.0 / OAuth 2.0 / OIDC 비교</div>
+      <table class="tbl">
+        <tr><th>구분</th><th>SAML 2.0</th><th>OAuth 2.0</th><th>OIDC</th></tr>
+        <tr><td>목적</td><td>인증(Authentication) + 인가</td><td>인가(Authorization) 위임</td><td>인증(Authentication) 레이어</td></tr>
+        <tr><td>토큰 형식</td><td>XML 기반 Assertion</td><td>Access Token (불투명/JWT)</td><td>ID Token (JWT 필수)</td></tr>
+        <tr><td>전송 방식</td><td>HTTP Redirect·POST (SOAP 포함)</td><td>HTTP/JSON RESTful</td><td>HTTP/JSON RESTful</td></tr>
+        <tr><td>주요 흐름</td><td>IdP-Initiated / SP-Initiated SSO</td><td>Authorization Code / Client Credentials 등 4가지 그랜트</td><td>Authorization Code + PKCE (기본 권장)</td></tr>
+        <tr><td>적합 시나리오</td><td>기업 내부·B2B 연동, 레거시 엔터프라이즈 SSO</td><td>3rd파티 API 권한 위임 (소셜로그인 인가)</td><td>모바일·SPA의 소셜 로그인·신원 확인</td></tr>
+        <tr><td>표준/스펙</td><td>OASIS SAML 2.0</td><td>IETF RFC 6749</td><td>OpenID Foundation</td></tr>
+      </table>
+      <div class="diag">OAuth 2.0 Authorization Code + PKCE 흐름 (OIDC 포함)
+
+사용자 → 클라이언트(앱): "Google로 로그인" 클릭
+클라이언트 → Authorization Server: Auth 요청 + code_challenge(PKCE)
+Authorization Server → 사용자: 로그인·동의 화면
+사용자 → Authorization Server: 인증 완료
+Authorization Server → 클라이언트: Authorization Code
+클라이언트 → Authorization Server: Code + code_verifier(PKCE)
+Authorization Server → 클라이언트: Access Token + ID Token(OIDC)
+클라이언트 → Resource Server: Access Token으로 API 호출</div>
+    </div>
+
+    <div class="sec">
+      <div class="sec-ttl c-red">Ⅳ. 다. SSO 도입 시 보안 위협 및 대응 방안</div>
+      <table class="tbl">
+        <tr><th>보안 위협</th><th>위협 내용</th><th>대응 방안</th></tr>
+        <tr><td>단일 장애점<br>(Single Point of Failure)</td><td>IdP 서버 장애 시 모든 서비스 로그인 불가</td><td>IdP 이중화(HA·DR), 오프라인 접근 허용 정책 수립</td></tr>
+        <tr><td>계정 탈취<br>(Account Takeover)</td><td>SSO 자격증명 탈취 시 연동된 모든 서비스 접근 가능</td><td>MFA(FIDO2·OTP) 필수 적용, 위험 기반 인증(RBA)</td></tr>
+        <tr><td>세션 하이재킹</td><td>SSO 세션 토큰 탈취·위조</td><td>HTTPS Only, 짧은 세션 만료(10~30분), 토큰 바인딩</td></tr>
+        <tr><td>CSRF·오픈 리다이렉트</td><td>OAuth/SAML 흐름의 state 파라미터 미검증</td><td>state/nonce 파라미터 CSRF 토큰으로 검증, PKCE 필수</td></tr>
+        <tr><td>XML 서명 래핑<br>(SAML)</td><td>SAML Assertion XML 구조 조작으로 권한 상승</td><td>엄격한 XML 서명 검증, 최신 SAML 라이브러리 사용</td></tr>
+        <tr><td>과도한 권한 위임<br>(OAuth)</td><td>광범위한 scope 동의 유도(OAuth Scope 남용)</td><td>최소 권한 scope 설계, 사용자 동의 UI에 명확한 권한 표시</td></tr>
+      </table>
+    </div>
+
+    <div class="concl">
+      <div class="concl-t">Ⅴ. 결론</div>
+      <p>SSO는 사용자 경험과 보안 관리 효율을 동시에 향상시키는 현대 IAM(Identity and Access Management)의 핵심이다. 클라우드·멀티 SaaS 환경에서는 SAML보다 OIDC+OAuth 2.0 기반의 경량·RESTful 연동이 주류이며, Zero-Trust 아키텍처와 결합하여 지속적 인증(Continuous Authentication) 및 위험 기반 접근 제어(RBAC+ABAC)로 발전하고 있다.</p>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- ============================
+     논술형 ES②  랜섬웨어 대응
+     ============================ -->
+<div class="panel" id="p6">
+<div class="sec-hdr">
+  <span class="sec-badge sb-es">논술형</span>
+  <span class="sec-title">랜섬웨어 공격 대응 체계</span>
+  <span class="sec-sub">2~4교시 · 25점</span>
+</div>
+<div class="qcard">
+  <div class="qcard-head">
+    <div class="qnum qnum-es">ES2</div>
+    <div class="qmeta">
+      <div class="qtype-row">
+        <span class="qtag qtag-es">논술형</span>
+        <span class="qtag qtag-hot">빈출</span>
+        <span class="qtag qtag-new">최신 이슈</span>
+        <span class="qtag qtag-kw">BCM</span>
+        <span class="qtag qtag-kw">EDR</span>
+      </div>
+      <div class="qtitle">랜섬웨어(Ransomware) 공격에 대한 종합 대응 체계를 다음과 같이 설명하시오.</div>
+    </div>
+  </div>
+  <div class="qbody">
+    <div class="qitems">
+      <div class="qitem"><span class="qilabel">가.</span><span>랜섬웨어의 공격 기법 진화 과정 및 이중 갈취(Double Extortion) 전략</span></div>
+      <div class="qitem"><span class="qilabel">나.</span><span>랜섬웨어 공격 단계(Kill Chain)별 탐지 및 방어 전략</span></div>
+      <div class="qitem"><span class="qilabel">다.</span><span>랜섬웨어 피해 최소화를 위한 백업·복구 전략 및 사고 대응(IR) 절차</span></div>
+    </div>
+  </div>
+  <div class="ans-toggle" onclick="toggleAns(this)">
+    <span class="ans-toggle-lbl">📄 모범 답안 보기</span>
+    <span class="ans-arrow">▼</span>
+  </div>
+  <div class="ans-body">
+    <div class="ans-title es">랜섬웨어 공격 진화·Kill Chain별 방어 전략·백업·IR 절차</div>
+    <div class="chips-row">
+      <span class="chip chip-t">⏱ 목표 25분</span>
+      <span class="chip chip-p">📄 3.5~4페이지</span>
+      <span class="chip chip-s">💯 25점</span>
+    </div>
+
+    <div class="sec">
+      <div class="sec-ttl c-blue">Ⅰ. 개요</div>
+      <div class="ap">랜섬웨어는 피해자의 파일을 암호화하고 복호화 키를 빌미로 금전(암호화폐)을 요구하는 악성코드이다. 2023년 기준 전 세계 사이버 보험 피해의 40% 이상을 차지하며, 공공·의료·금융 인프라를 주요 표적으로 삼고 있다.</div>
+    </div>
+
+    <div class="sec">
+      <div class="sec-ttl c-green">Ⅱ. 가. 랜섬웨어 공격 기법 진화 및 이중 갈취</div>
+      <table class="tbl">
+        <tr><th>세대</th><th>시기</th><th>특징</th><th>대표 사례</th></tr>
+        <tr><td>1세대</td><td>~2012</td><td>화면 잠금형. 단순 협박, 실제 암호화 없음</td><td>경찰청 랜섬웨어</td></tr>
+        <tr><td>2세대</td><td>2013~2016</td><td>파일 암호화(RSA+AES). 개인 대상. 비트코인 요구</td><td>CryptoLocker, CryptoWall</td></tr>
+        <tr><td>3세대</td><td>2017~2019</td><td>웜 기능 탑재. 네트워크 자가 전파. 대규모 피해</td><td>WannaCry(EternalBlue), NotPetya</td></tr>
+        <tr><td>4세대<br>(현재)</td><td>2020~</td><td>RaaS(Ransomware-as-a-Service). 이중·삼중 갈취. APT 전술 결합. 공급망 공격</td><td>REvil, LockBit, ALPHV(BlackCat)</td></tr>
+      </table>
+      <div class="kbox kb-red">
+        <div class="kb-title">이중 갈취(Double Extortion) 전략</div>
+        ① <strong>1차 갈취</strong>: 파일 암호화 → 복호화 키 대가로 금전 요구<br>
+        ② <strong>2차 갈취</strong>: 암호화 전 데이터 탈취 → 다크웹 공개 협박 (피해자가 백업으로 복구해도 데이터 유출 위협 지속)<br>
+        ③ <strong>3차 갈취(최신)</strong>: 피해 기업의 고객·파트너에게 직접 연락, 추가 협박
+      </div>
+    </div>
+
+    <div class="sec">
+      <div class="sec-ttl c-purple">Ⅲ. 나. Kill Chain별 탐지 및 방어 전략</div>
+      <table class="tbl">
+        <tr><th>Kill Chain 단계</th><th>공격자 행위</th><th>탐지 방법</th><th>방어 전략</th></tr>
+        <tr><td>정찰 (Recon)</td><td>취약점 스캔, 피싱 대상 조사</td><td>외부 노출 자산 모니터링</td><td>공격 표면 최소화, 버그바운티</td></tr>
+        <tr><td>초기 침투</td><td>피싱 메일, VPN/RDP 취약점, 공급망</td><td>이메일 샌드박스, CASB</td><td>MFA 필수, 패치 관리, SPF/DKIM/DMARC</td></tr>
+        <tr><td>측면 이동</td><td>자격증명 덤프(Mimikatz), Pass-the-Hash</td><td>EDR 이상 행위 탐지, UEBA</td><td>마이크로세그멘테이션, 최소권한, PAM</td></tr>
+        <tr><td>데이터 탈취</td><td>C2 서버로 데이터 유출 (exfil)</td><td>DLP, 네트워크 트래픽 분석(NTA)</td><td>DLP 솔루션, DNS 싱크홀, 이상 대역폭 경보</td></tr>
+        <tr><td>암호화·랜섬노트</td><td>파일 대량 암호화, VSS 삭제</td><td>파일 엔트로피 급증 탐지, EDR</td><td>VSS 보호, EDR 행위 기반 차단, 앱 화이트리스트</td></tr>
+      </table>
+    </div>
+
+    <div class="sec">
+      <div class="sec-ttl c-orange">Ⅳ. 다. 백업·복구 전략 및 사고 대응(IR) 절차</div>
+      <div class="kbox kb-orange">
+        <div class="kb-title">📦 3-2-1-1-0 백업 전략 (업계 표준)</div>
+        <strong>3</strong>개 데이터 복사본 / <strong>2</strong>가지 다른 미디어 유형 / <strong>1</strong>개 오프사이트 보관 / <strong>1</strong>개 오프라인(Air-Gap) 또는 불변 스토리지(Immutable Backup) / 복구 테스트 오류 <strong>0</strong>건 검증
+      </div>
+      <div class="diag">랜섬웨어 사고 대응(IR) 절차 (NIST SP 800-61 기반)
+
+1. 준비(Preparation)
+   - IR 계획서 수립, 대응팀(CSIRT) 구성, 테이블탑 훈련 정기 실시
+
+2. 탐지·분석(Detection & Analysis)
+   - EDR·SIEM 경보 분석, 랜섬웨어 변종 식별, 피해 범위 조사
+   - 감염 시스템 네트워크 격리 (단, 무작정 전원 차단 주의 - 메모리 증거 소실)
+
+3. 봉쇄(Containment)
+   - 단기: 감염 시스템 네트워크 분리 (VLAN, 방화벽 ACL)
+   - 장기: 공격 경로(초기 침투 벡터) 차단, 자격증명 전수 교체
+
+4. 근절(Eradication)
+   - 악성코드 및 지속성 메커니즘(레지스트리 스케줄러·서비스) 완전 제거
+   - 취약점 패치, 백도어·C2 채널 차단
+
+5. 복구(Recovery)
+   - 클린 백업에서 시스템 복원, 단계적 서비스 재개
+   - 복구 후 모니터링 강화 (재감염 탐지)
+
+6. 사후 조치(Lessons Learned)
+   - 사고 원인 RCA(Root Cause Analysis), 재발 방지 대책 수립
+   - 규제기관·개인정보보호위원회 침해 신고 (72시간 이내)</div>
+    </div>
+
+    <div class="concl">
+      <div class="concl-t">Ⅴ. 결론</div>
+      <p>랜섬웨어는 RaaS 모델의 진화로 기술적 장벽이 낮아지고 공격 규모는 커지는 비대칭 위협이다. 효과적 대응을 위해 기술적 방어(EDR·ZT·MFA)와 운영적 대비(IR 계획·백업·훈련)를 동시에 강화해야 하며, 특히 Air-Gap 백업과 불변 스토리지를 통한 복구 능력 확보가 피해 최소화의 마지막 보루이다. 국내 「정보보호산업의 진흥에 관한 법률」과 ISMS-P 인증 기준에서도 랜섬웨어 대응 체계 구비를 명시적으로 요구하고 있다.</p>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- ============================
+     논술형 ES③  양자암호 및 PQC
+     ============================ -->
+<div class="panel" id="p7">
+<div class="sec-hdr">
+  <span class="sec-badge sb-es">논술형</span>
+  <span class="sec-title">양자 암호 및 PQC (Post-Quantum Cryptography)</span>
+  <span class="sec-sub">2~4교시 · 25점</span>
+</div>
+<div class="qcard">
+  <div class="qcard-head">
+    <div class="qnum qnum-es">ES3</div>
+    <div class="qmeta">
+      <div class="qtype-row">
+        <span class="qtag qtag-es">논술형</span>
+        <span class="qtag qtag-new">최신 출제 유력</span>
+        <span class="qtag qtag-kw">NIST PQC</span>
+        <span class="qtag qtag-kw">QKD</span>
+        <span class="qtag qtag-kw">격자암호</span>
+      </div>
+      <div class="qtitle">양자 컴퓨팅 시대의 암호화 위협과 대응 기술에 대하여 다음을 설명하시오.</div>
+    </div>
+  </div>
+  <div class="qbody">
+    <div class="qitems">
+      <div class="qitem"><span class="qilabel">가.</span><span>양자 컴퓨팅이 현행 암호 체계(RSA, ECC, AES)에 미치는 위협 (Shor·Grover 알고리즘 연계)</span></div>
+      <div class="qitem"><span class="qilabel">나.</span><span>PQC(양자내성암호) 알고리즘의 종류와 NIST 표준화 결과 (2024년 확정)</span></div>
+      <div class="qitem"><span class="qilabel">다.</span><span>QKD(양자 키 분배)와 PQC의 비교 및 국내 암호 전환 로드맵</span></div>
+    </div>
+  </div>
+  <div class="ans-toggle" onclick="toggleAns(this)">
+    <span class="ans-toggle-lbl">📄 모범 답안 보기</span>
+    <span class="ans-arrow">▼</span>
+  </div>
+  <div class="ans-body">
+    <div class="ans-title es">양자 컴퓨팅 위협·PQC 표준·QKD 비교 및 암호 전환 로드맵</div>
+    <div class="chips-row">
+      <span class="chip chip-t">⏱ 목표 25분</span>
+      <span class="chip chip-p">📄 3.5페이지</span>
+      <span class="chip chip-s">💯 25점</span>
+    </div>
+
+    <div class="sec">
+      <div class="sec-ttl c-blue">Ⅰ. 개요</div>
+      <div class="ap">양자 컴퓨터는 큐비트(Qubit)의 중첩(Superposition)·얽힘(Entanglement)·간섭(Interference) 특성을 이용하여 특정 문제를 고전 컴퓨터 대비 지수적으로 빠르게 풀 수 있다. 이는 현행 공개키 암호 체계의 수학적 난제(인수분해, 이산로그)를 붕괴시켜 전례 없는 암호 위협을 야기한다.</div>
+    </div>
+
+    <div class="sec">
+      <div class="sec-ttl c-green">Ⅱ. 가. 양자 컴퓨팅의 암호 위협</div>
+      <table class="tbl">
+        <tr><th>알고리즘</th><th>적용 대상</th><th>효과</th><th>피해 암호 체계</th></tr>
+        <tr><td>Shor 알고리즘<br>(1994)</td><td>정수 인수분해·이산로그 문제</td><td>다항식 시간 해결 (지수→다항식)</td><td>RSA, DSA, ECC, DH, ECDH — 사실상 파괴</td></tr>
+        <tr><td>Grover 알고리즘<br>(1996)</td><td>비정형 검색(대칭키 해독)</td><td>√N 검색 (보안 강도 절반 약화)</td><td>AES-128 → 64bit 보안 수준으로 약화 (AES-256은 안전)</td></tr>
+      </table>
+      <div class="kbox kb-red">
+        <div class="kb-title">⚠ HNDL(Harvest Now, Decrypt Later) 위협</div>
+        현재 공격자가 암호화된 통신 데이터를 저장해두었다가, 미래 양자 컴퓨터로 복호화하는 공격. 기밀 유효기간이 긴 외교·국방·의료 데이터는 <strong>현재 즉시 위협</strong>이며, PQC 전환 시급성의 핵심 이유.
+      </div>
+    </div>
+
+    <div class="sec">
+      <div class="sec-ttl c-purple">Ⅲ. 나. PQC 알고리즘 및 NIST 표준화 결과 (2024)</div>
+      <div class="ap">NIST는 2016년부터 PQC 공모·평가를 진행하여 2024년 8월 최초 PQC 표준 3종을 확정하였다 (FIPS 203/204/205).</div>
+      <table class="tbl">
+        <tr><th>표준</th><th>알고리즘</th><th>기반 수학 문제</th><th>용도</th><th>특징</th></tr>
+        <tr><td>FIPS 203</td><td>ML-KEM<br>(CRYSTALS-Kyber)</td><td>격자 기반<br>(Module-LWE)</td><td>키 캡슐화<br>(KEM · TLS 키 교환)</td><td>빠른 속도, 작은 키 크기. TLS 1.3 후계자 적합</td></tr>
+        <tr><td>FIPS 204</td><td>ML-DSA<br>(CRYSTALS-Dilithium)</td><td>격자 기반<br>(Module-LWE)</td><td>디지털 서명</td><td>DSA 대체. 서명·검증 빠름. 주력 서명 알고리즘</td></tr>
+        <tr><td>FIPS 205</td><td>SLH-DSA<br>(SPHINCS+)</td><td>해시 기반</td><td>디지털 서명<br>(백업용)</td><td>수학적 가정 최소화. 보수적 보안. 속도 느림</td></tr>
+      </table>
+      <div class="kbox kb-purple">
+        <div class="kb-title">PQC 알고리즘 분류</div>
+        <strong>격자 기반(Lattice)</strong>: CRYSTALS-Kyber, Dilithium → 현재 주력 표준. LWE/MLWE 문제 기반<br>
+        <strong>해시 기반(Hash)</strong>: SPHINCS+ → 수학적으로 가장 보수적. 속도 느림<br>
+        <strong>코드 기반(Code)</strong>: McEliece → 큰 키 크기가 단점<br>
+        <strong>다변수 기반(Multivariate)</strong>: UOV, Rainbow(파기됨) → 서명 알고리즘
+      </div>
+    </div>
+
+    <div class="sec">
+      <div class="sec-ttl c-orange">Ⅳ. 다. QKD vs PQC 비교 및 국내 전환 로드맵</div>
+      <table class="tbl">
+        <tr><th>비교 항목</th><th>QKD (양자 키 분배)</th><th>PQC (양자내성암호)</th></tr>
+        <tr><td>원리</td><td>양자 역학(광자)으로 키 분배. 도청 시 양자 상태 변화 탐지</td><td>양자 컴퓨터도 풀기 어려운 수학 문제 기반</td></tr>
+        <tr><td>보안 근거</td><td>물리학 법칙 (정보이론적 안전)</td><td>계산 복잡도 (수학적 가정)</td></tr>
+        <tr><td>인프라</td><td>전용 광케이블·양자 채널 장비 필요. 고비용</td><td>기존 인터넷·소프트웨어로 구현 가능. 저비용</td></tr>
+        <tr><td>거리 한계</td><td>~수백 km (리피터 없이). 위성 QKD로 극복 중</td><td>거리 무관</td></tr>
+        <tr><td>표준화</td><td>ITU-T Y.3800 시리즈. 국내 ETRI 연구 중</td><td>NIST FIPS 203/204/205 (2024 확정)</td></tr>
+        <tr><td>권고 적용</td><td>국가·금융 기간망 핵심 구간</td><td>범용 인터넷·기업 시스템 (즉시 전환 권고)</td></tr>
+      </table>
+      <div class="kbox kb-teal">
+        <div class="kb-title">국내 암호 전환 로드맵 (KISA·NIST 기반)</div>
+        <strong>2024</strong>: NIST PQC 표준 확정. 국내 암호전환 지침 수립<br>
+        <strong>2025~2027</strong>: 국가·공공기관 신규 시스템 PQC 적용 의무화 준비. 하이브리드 암호(PQC+기존) 병행 운영<br>
+        <strong>2028~2030</strong>: 기존 시스템 RSA·ECC 순차 교체. 인증서 갱신 주기 단축<br>
+        <strong>2030+</strong>: 전면 PQC 전환 완료 목표. 암호민첩성(Crypto Agility) 체계 구축
+      </div>
+    </div>
+
+    <div class="concl">
+      <div class="concl-t">Ⅴ. 결론</div>
+      <p>양자 컴퓨팅은 현재의 공개키 암호 체계를 근본적으로 위협하는 패러다임 전환을 예고한다. NIST의 PQC 표준화 완료로 기술적 기반이 마련된 만큼, 조직은 현재 보유한 암호 자산을 목록화(Cryptographic Inventory)하고 암호민첩성을 확보하여 단계적·체계적 전환을 추진해야 한다. 특히 HNDL 공격을 고려하면 기밀 데이터의 PQC 전환은 양자 컴퓨터 실용화 이전에 선제적으로 이루어져야 한다.</p>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- ============================
+     논술형 ES④  소프트웨어 공급망 보안
+     ============================ -->
+<div class="panel" id="p8">
+<div class="sec-hdr">
+  <span class="sec-badge sb-es">논술형</span>
+  <span class="sec-title">소프트웨어 공급망 보안 (Supply Chain Security)</span>
+  <span class="sec-sub">2~4교시 · 25점</span>
+</div>
+<div class="qcard">
+  <div class="qcard-head">
+    <div class="qnum qnum-es">ES4</div>
+    <div class="qmeta">
+      <div class="qtype-row">
+        <span class="qtag qtag-es">논술형</span>
+        <span class="qtag qtag-new">최신 이슈</span>
+        <span class="qtag qtag-kw">SBOM</span>
+        <span class="qtag qtag-kw">SolarWinds</span>
+        <span class="qtag qtag-kw">Log4Shell</span>
+      </div>
+      <div class="qtitle">소프트웨어 공급망 보안에 대하여 다음을 설명하시오.</div>
+    </div>
+  </div>
+  <div class="qbody">
+    <div class="qitems">
+      <div class="qitem"><span class="qilabel">가.</span><span>소프트웨어 공급망 공격의 유형 및 대표 사례 분석 (SolarWinds, Log4Shell, XZ Utils)</span></div>
+      <div class="qitem"><span class="qilabel">나.</span><span>SBOM(Software Bill of Materials)의 개념, 형식(SPDX, CycloneDX), 법적 의무화 동향</span></div>
+      <div class="qitem"><span class="qilabel">다.</span><span>소프트웨어 공급망 보안을 위한 SLSA(Supply Chain Levels for Software Artifacts) 프레임워크와 Sigstore를 이용한 소프트웨어 서명 체계</span></div>
+    </div>
+  </div>
+  <div class="ans-toggle" onclick="toggleAns(this)">
+    <span class="ans-toggle-lbl">📄 모범 답안 보기</span>
+    <span class="ans-arrow">▼</span>
+  </div>
+  <div class="ans-body">
+    <div class="ans-title es">공급망 공격 유형·SBOM 개념·SLSA 프레임워크 및 Sigstore 서명</div>
+    <div class="chips-row">
+      <span class="chip chip-t">⏱ 목표 25분</span>
+      <span class="chip chip-p">📄 3.5페이지</span>
+      <span class="chip chip-s">💯 25점</span>
+    </div>
+
+    <div class="sec">
+      <div class="sec-ttl c-blue">Ⅰ. 개요</div>
+      <div class="ap">소프트웨어 공급망 공격이란 신뢰받는 소프트웨어 개발·배포·업데이트 과정에 침투하여 악성코드를 삽입하거나 취약한 오픈소스 컴포넌트를 이용하는 공격이다. 공급망을 통해 단일 취약점이 수천 개 조직에 동시 영향을 미치는 고효율 공격 벡터로 부상하였다.</div>
+    </div>
+
+    <div class="sec">
+      <div class="sec-ttl c-green">Ⅱ. 가. 공급망 공격 유형 및 대표 사례</div>
+      <table class="tbl">
+        <tr><th>공격 유형</th><th>메커니즘</th><th>대표 사례</th><th>교훈</th></tr>
+        <tr><td>빌드 시스템 침해</td><td>소프트웨어 빌드 인프라에 백도어 삽입 → 서명된 악성 업데이트 배포</td><td>SolarWinds SUNBURST (2020): 18,000개 조직, 미 국방부·NSA 피해</td><td>빌드 파이프라인 무결성 검증 필수. 코드 서명만으로 불충분</td></tr>
+        <tr><td>오픈소스 취약점</td><td>광범위하게 사용되는 라이브러리의 CVE → 패치 지연으로 대규모 피해</td><td>Log4Shell (CVE-2021-44228): Log4j 2.x 원격 코드 실행. CVSS 10.0</td><td>SCA·SBOM으로 의존성 즉시 탐지·패치 체계 필수</td></tr>
+        <tr><td>악의적 패키지 삽입</td><td>타이포스쿼팅·의존성 혼동으로 악성 패키지를 합법 패키지로 위장 배포</td><td>XZ Utils (CVE-2024-3094): 2년에 걸친 사회공학으로 백도어 삽입. 직전 탐지</td><td>패키지 관리자 계정 보안, 코드 리뷰 강화, 신뢰 체계 중요성</td></tr>
+        <tr><td>서드파티 컴포넌트 취약점</td><td>납품 SW 내 포함된 외부 컴포넌트 취약점 악용</td><td>3CX Supply Chain (2023): 트로이목마 앱 배포</td><td>납품 SW SBOM 요구, 검증 의무화</td></tr>
+      </table>
+    </div>
+
+    <div class="sec">
+      <div class="sec-ttl c-purple">Ⅲ. 나. SBOM의 개념·형식·의무화 동향</div>
+      <div class="ap"><strong>SBOM(소프트웨어 부품 명세서)</strong>이란 소프트웨어에 포함된 모든 컴포넌트(오픈소스·서드파티·자체 개발)의 이름·버전·라이선스·공급망 관계·알려진 취약점을 기계 가독 형식으로 문서화한 명세서이다.</div>
+      <table class="tbl">
+        <tr><th>비교 항목</th><th>SPDX (Linux Foundation)</th><th>CycloneDX (OWASP)</th></tr>
+        <tr><td>형식</td><td>태그-값·RDF·JSON·YAML</td><td>XML·JSON·Protocol Buffer</td></tr>
+        <tr><td>ISO 표준</td><td>ISO/IEC 5962:2021</td><td>-</td></tr>
+        <tr><td>강점</td><td>라이선스 컴플라이언스 중심</td><td>보안 취약점(CVE) 연계 강점. DevSecOps 적합</td></tr>
+        <tr><td>채택 현황</td><td>GitHub Dependency Graph</td><td>NIST, OWASP, CISA 권고</td></tr>
+      </table>
+      <div class="kbox kb-blue">
+        <div class="kb-title">SBOM 의무화 동향</div>
+        • <strong>미국 EO 14028(2021)</strong>: 연방정부 납품 SW SBOM 제출 의무화<br>
+        • <strong>EU CRA(Cyber Resilience Act, 2024)</strong>: 디지털 제품 SBOM 포함 사이버보안 요구사항 의무화<br>
+        • <strong>국내</strong>: 과기정통부·KISA 가이드라인 발표. 공공 소프트웨어 납품 시 SBOM 요구 추진 중
+      </div>
+    </div>
+
+    <div class="sec">
+      <div class="sec-ttl c-orange">Ⅳ. 다. SLSA 프레임워크 및 Sigstore 서명 체계</div>
+      <div class="kbox kb-orange">
+        <div class="kb-title">SLSA (Supply-chain Levels for Software Artifacts)</div>
+        Google이 제안한 공급망 보안 성숙도 프레임워크. 빌드 출처(Provenance) 보장 수준을 4단계로 정의:<br>
+        <strong>Level 0</strong>: 보장 없음 →
+        <strong>Level 1</strong>: 빌드 출처 문서화(Provenance 생성) →
+        <strong>Level 2</strong>: 출처 서명(인증된 빌드 서비스) →
+        <strong>Level 3</strong>: 강화된 격리(Hermetic Build, 재현 가능 빌드, 감사 로그)
+      </div>
+      <div class="diag">Sigstore를 이용한 소프트웨어 아티팩트 서명 체계
+
+[서명 단계 — 개발자]
+ 1. Fulcio CA에 OIDC 토큰(GitHub/Google)으로 단기 인증서 요청
+ 2. 아티팩트(컨테이너 이미지·바이너리) 서명 → cosign sign
+ 3. 서명·인증서 → Rekor(불변 투명 로그)에 기록
+
+[검증 단계 — 배포·운영]
+ 1. cosign verify → Rekor에서 서명·출처 검증
+ 2. 아티팩트 다이제스트·서명자 신원·빌드 출처 일치 확인 ✓
+
+장점: PKI 인프라 없이 OIDC 신원으로 서명. 키 관리 불필요.
+      투명 로그로 공개 감사 가능. GitHub Actions 기본 연동</div>
+    </div>
+
+    <div class="concl">
+      <div class="concl-t">Ⅴ. 결론</div>
+      <p>소프트웨어 공급망 보안은 DevSecOps 파이프라인 전반에 SBOM 자동 생성, Sigstore 서명, SLSA 출처 검증을 통합하는 방향으로 발전하고 있다. 국내에서도 공공 SW 납품 보안 요건으로 SBOM이 도입될 것이 예고된 만큼, 개발 단계부터 공급망 무결성 체계를 설계하는 것이 필수적이다.</p>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- ============================
+     논술형 ES⑤  개인정보보호법
+     ============================ -->
+<div class="panel" id="p9">
+<div class="sec-hdr">
+  <span class="sec-badge sb-es">논술형</span>
+  <span class="sec-title">개인정보보호법 주요 제도 및 ISMS-P</span>
+  <span class="sec-sub">2~4교시 · 25점</span>
+</div>
+<div class="qcard">
+  <div class="qcard-head">
+    <div class="qnum qnum-es">ES5</div>
+    <div class="qmeta">
+      <div class="qtype-row">
+        <span class="qtag qtag-es">논술형</span>
+        <span class="qtag qtag-hot">빈출</span>
+        <span class="qtag qtag-kw">개인정보보호법</span>
+        <span class="qtag qtag-kw">ISMS-P</span>
+        <span class="qtag qtag-kw">정보주체 권리</span>
+      </div>
+      <div class="qtitle">개인정보보호 법·제도에 대하여 다음을 설명하시오.</div>
+    </div>
+  </div>
+  <div class="qbody">
+    <div class="qitems">
+      <div class="qitem"><span class="qilabel">가.</span><span>개인정보보호법(2023년 개정)의 주요 변경 사항 및 정보주체의 권리 (열람·정정·삭제·처리정지·이동권)</span></div>
+      <div class="qitem"><span class="qilabel">나.</span><span>개인정보의 안전성 확보 조치 기준(기술적·관리적·물리적)과 과징금 부과 기준</span></div>
+      <div class="qitem"><span class="qilabel">다.</span><span>ISMS-P 인증 체계의 구성 및 개인정보보호법과의 연계</span></div>
+    </div>
+  </div>
+  <div class="ans-toggle" onclick="toggleAns(this)">
+    <span class="ans-toggle-lbl">📄 모범 답안 보기</span>
+    <span class="ans-arrow">▼</span>
+  </div>
+  <div class="ans-body">
+    <div class="ans-title es">개인정보보호법 개정 내용·안전성 확보 조치·과징금·ISMS-P 체계</div>
+    <div class="chips-row">
+      <span class="chip chip-t">⏱ 목표 25분</span>
+      <span class="chip chip-p">📄 3.5~4페이지</span>
+      <span class="chip chip-s">💯 25점</span>
+    </div>
+
+    <div class="sec">
+      <div class="sec-ttl c-blue">Ⅰ. 개요 — 개인정보보호법 체계</div>
+      <div class="ap">개인정보보호법은 2011년 제정, 2020년 데이터 3법 개정(가명정보 도입), 2023년 대폭 개정을 거쳐 GDPR 수준의 글로벌 기준에 근접하였다. 개인정보보호위원회를 중앙행정기관으로 격상하고 민간·공공 통합 규율 체계를 구축하였다.</div>
+    </div>
+
+    <div class="sec">
+      <div class="sec-ttl c-green">Ⅱ. 가. 2023년 개정 주요 내용 및 정보주체 권리</div>
+      <table class="tbl">
+        <tr><th>개정 항목</th><th>주요 내용</th></tr>
+        <tr><td>개인정보 이동권 신설<br>(§35의2)</td><td>정보주체가 보유 개인정보를 타 사업자에게 이전 요구 가능. 금융·의료 분야 선도 시행. GDPR 20조 대응</td></tr>
+        <tr><td>자동화된 결정 거부권<br>(§37의2)</td><td>AI·알고리즘에 의한 자동화 결정에 이의제기·설명 요구 가능. GDPR 22조 대응</td></tr>
+        <tr><td>과징금 강화</td><td>위반행위 관련 매출액의 3% 이하 과징금. 전체 매출액의 3%로 확대(기존 5억 원 한도 폐지)</td></tr>
+        <tr><td>국외 이전 규제 강화</td><td>국외 이전 시 보호 수준 적정성 평가 강화. 표준계약조항(SCC) 의무화</td></tr>
+        <tr><td>침해 신고 강화</td><td>개인정보 침해 시 72시간 이내 보호위원회 신고 의무 (공공·민간 동일 적용)</td></tr>
+      </table>
+      <div class="kbox kb-green">
+        <div class="kb-title">정보주체 5대 권리</div>
+        ① <strong>열람권</strong>(§35): 개인정보 처리 현황 열람 요구<br>
+        ② <strong>정정·삭제권</strong>(§36): 부정확 정보 정정, 불필요 정보 삭제 요구<br>
+        ③ <strong>처리정지권</strong>(§37): 개인정보 처리 중지 요구<br>
+        ④ <strong>이동권</strong>(§35의2·신설): 보유 정보 이전 요구<br>
+        ⑤ <strong>자동화결정 거부권</strong>(§37의2·신설): AI 결정 이의제기·설명 요구
+      </div>
+    </div>
+
+    <div class="sec">
+      <div class="sec-ttl c-purple">Ⅲ. 나. 안전성 확보 조치 기준 및 과징금</div>
+      <table class="tbl">
+        <tr><th>구분</th><th>세부 항목</th><th>주요 내용</th></tr>
+        <tr><td rowspan="5">기술적<br>보호조치</td><td>접근 통제</td><td>접근권한 최소화, 비인가자 접근 차단</td></tr>
+        <tr><td>암호화</td><td>주민등록번호·비밀번호·바이오정보 암호화 저장·전송. AES-256 이상</td></tr>
+        <tr><td>접속 기록</td><td>접속 기록 최소 1년(민감정보·5만 명 이상: 2년) 보관</td></tr>
+        <tr><td>보안 프로그램</td><td>악성코드 방지 프로그램 설치·최신 업데이트</td></tr>
+        <tr><td>취약점 점검</td><td>연 1회 이상 취약점 점검·조치</td></tr>
+        <tr><td>관리적<br>보호조치</td><td colspan="2">내부 관리계획 수립·시행, 개인정보 보호책임자(CPO) 지정, 직원 교육, 처리방침 공개</td></tr>
+        <tr><td>물리적<br>보호조치</td><td colspan="2">개인정보 처리 장소 출입 통제, 잠금장치 설치, 서버실 접근 제한</td></tr>
+      </table>
+      <div class="kbox kb-red">
+        <div class="kb-title">과징금 부과 기준 (2023년 개정)</div>
+        • <strong>부과 기준</strong>: 위반행위와 관련한 매출액의 3% 이하<br>
+        • <strong>상한 폐지</strong>: 기존 5억 원 한도 폐지 → 매출액 비례 부과<br>
+        • <strong>과태료</strong>: 안전성 확보 조치 미이행 시 3,000만 원 이하<br>
+        • <strong>징벌적 손해배상</strong>: 고의·중과실 침해 시 손해액의 5배 이내
+      </div>
+    </div>
+
+    <div class="sec">
+      <div class="sec-ttl c-orange">Ⅳ. 다. ISMS-P 인증 체계 및 개인정보보호법 연계</div>
+      <div class="ap">ISMS-P(정보보호 및 개인정보보호 관리체계)는 기존 ISMS(정보보호 관리체계)와 PIMS(개인정보보호 관리체계)를 통합하여 2018년부터 시행된 통합 인증 체계이다.</div>
+      <div class="diag">ISMS-P 인증 구조
+
+┌─────────────────────────────────────────────────────┐
+│  ISMS-P (102개 인증 기준)                              │
+│                                                      │
+│  ┌──────────────────┐  ┌────────────────────────┐   │
+│  │ ISMS 영역 (80개)  │  │ 개인정보보호 영역 (22개) │   │
+│  │                  │  │                        │   │
+│  │ 1.관리체계 수립    │  │ 1.개인정보 수집·이용·제공│   │
+│  │   및 운영(16개)   │  │   관리 (9개)            │   │
+│  │ 2.보호대책 요구사항│  │ 2.개인정보 처리단계별   │   │
+│  │   (64개)         │  │   요구사항 (13개)       │   │
+│  └──────────────────┘  └────────────────────────┘   │
+└─────────────────────────────────────────────────────┘</div>
+      <table class="tbl">
+        <tr><th>구분</th><th>ISMS</th><th>ISMS-P</th></tr>
+        <tr><td>인증 범위</td><td>정보보호 관리체계</td><td>정보보호 + 개인정보보호</td></tr>
+        <tr><td>의무 대상</td><td>ISP·IDC·매출 100억↑ 쇼핑몰 등</td><td>개인정보 대규모 처리 기업</td></tr>
+        <tr><td>개인정보보호법 연계</td><td>일부 연계</td><td>제29조·30조·32조의2 직접 반영</td></tr>
+        <tr><td>유효기간</td><td>3년 (연간 사후심사)</td><td>3년 (연간 사후심사)</td></tr>
+        <tr><td>인증 기관</td><td colspan="2">KISA·한국정보통신진흥협회(KAIT)</td></tr>
+      </table>
+    </div>
+
+    <div class="concl">
+      <div class="concl-t">Ⅴ. 결론</div>
+      <p>2023년 개인정보보호법 전면 개정으로 국내 개인정보보호 규제는 GDPR과 동등한 수준으로 강화되었다. 특히 이동권·자동화결정 거부권 신설과 매출액 기준 과징금 상한 폐지는 기업의 개인정보 처리 전 과정에 걸친 법령 준수 필요성을 높였다. ISMS-P 인증은 개인정보보호법 준수의 실효적 증명 수단이자 감리 기준으로서, 조직의 데이터 거버넌스 체계 구축과 연계하여 추진되어야 한다.</p>
+    </div>
+  </div>
+</div>
+</div>
+
+</main>
+
+<script>
+const panels=document.querySelectorAll('.panel');
+const tabs=document.querySelectorAll('.tab-btn');
+
+function show(idx,btn){
+  panels.forEach((p,i)=>p.classList.toggle('active',i===idx));
+  tabs.forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function toggleAns(btn){
+  const body=btn.nextElementSibling;
+  const arrow=btn.querySelector('.ans-arrow');
+  const lbl=btn.querySelector('.ans-toggle-lbl');
+  const isOpen=body.classList.toggle('open');
+  arrow.classList.toggle('open',isOpen);
+  lbl.textContent=isOpen?'📄 답안 닫기':'📄 모범 답안 보기';
+}
+</script>
+</body>
+</html>
