@@ -1,0 +1,1191 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI·신기술 분야 문제 및 모범답안</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700;900&family=Noto+Serif+KR:wght@400;600;700&family=JetBrains+Mono:wght@400;600&display=swap');
+:root{
+  --bg:#f5f7fa;--white:#fff;--s2:#eef1f6;--border:#dde3ec;--bl:#eef1f6;
+  --blue:#1d4ed8;--blbg:#eff6ff;--blbd:#bfdbfe;
+  --red:#b91c1c;--rdbg:#fef2f2;--rdbd:#fecaca;
+  --grn:#065f46;--grbg:#ecfdf5;--grbd:#a7f3d0;
+  --org:#92400e;--orbg:#fffbeb;--orbd:#fde68a;
+  --pur:#5b21b6;--pubg:#f5f3ff;--pubd:#ddd6fe;
+  --tel:#0f766e;--tebg:#f0fdfa;--tebd:#99f6e4;
+  --t1:#111827;--t2:#374151;--t3:#6b7280;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--t1);font-family:'Noto Sans KR',sans-serif;font-size:14px;line-height:1.6}
+
+/* HEADER */
+.hdr{background:linear-gradient(135deg,#312e81 0%,#4338ca 50%,#6d28d9 100%);color:#fff;padding:28px 24px 22px;position:relative;overflow:hidden}
+.hdr::before{content:'';position:absolute;right:-80px;top:-80px;width:260px;height:260px;border-radius:50%;background:rgba(255,255,255,0.04)}
+.hdr::after{content:'';position:absolute;left:-40px;bottom:-60px;width:180px;height:180px;border-radius:50%;background:rgba(255,255,255,0.03)}
+.hdr-in{max-width:1100px;margin:0 auto;position:relative}
+.hdr-eye{font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:#c4b5fd;margin-bottom:6px}
+.hdr-h1{font-size:clamp(20px,4vw,28px);font-weight:900;font-family:'Noto Serif KR',serif;margin-bottom:8px}
+.hdr-sub{font-size:12px;color:#ddd6fe}
+.hdr-pills{display:flex;flex-wrap:wrap;gap:6px;margin-top:14px}
+.hdr-pill{background:rgba(255,255,255,0.12);border:1px solid rgba(255,255,255,0.2);padding:3px 12px;border-radius:20px;font-size:11px;color:#ede9fe}
+
+/* TYPE NAV */
+.type-nav{background:#fff;border-bottom:2px solid var(--border);display:flex;box-shadow:0 2px 8px rgba(0,0,0,0.06);position:sticky;top:0;z-index:100}
+.type-btn{flex:1;padding:14px 8px;font-size:13px;font-weight:700;color:var(--t3);background:none;border:none;border-bottom:3px solid transparent;cursor:pointer;font-family:inherit;transition:all .2s;text-align:center}
+.type-btn:hover{color:var(--blue)}
+.type-btn.active{color:var(--blue);border-bottom-color:var(--blue);background:var(--blbg)}
+
+/* Q NAV */
+.q-nav{background:#fff;border-bottom:1px solid var(--border);overflow-x:auto;white-space:nowrap;padding:0 16px;scrollbar-width:none}
+.q-nav::-webkit-scrollbar{display:none}
+.q-nav-btn{display:inline-block;padding:10px 12px;font-size:11px;font-weight:600;color:var(--t3);background:none;border:none;border-bottom:2px solid transparent;cursor:pointer;font-family:inherit;transition:all .18s}
+.q-nav-btn:hover{color:var(--pur)}
+.q-nav-btn.active{color:var(--pur);border-bottom-color:var(--pur)}
+
+/* LAYOUT */
+.main{max-width:1100px;margin:0 auto;padding:20px 16px 60px}
+.type-panel{display:none}
+.type-panel.active{display:block}
+.q-panel{display:none}
+.q-panel.active{display:block}
+
+/* SECTION LABEL */
+.section-label{display:flex;align-items:center;gap:10px;margin:20px 0 14px}
+.sec-badge{padding:5px 14px;border-radius:20px;font-size:11px;font-weight:700;letter-spacing:0.5px}
+.sec-short{background:var(--grbg);color:var(--grn);border:1px solid var(--grbd)}
+.sec-essay{background:var(--pubg);color:var(--pur);border:1px solid var(--pubd)}
+.sec-line{flex:1;height:1px;background:var(--border)}
+
+/* QUESTION CARD */
+.qc{background:#fff;border:1px solid var(--border);border-radius:14px;overflow:hidden;box-shadow:0 2px 12px rgba(0,0,0,0.05);margin-bottom:20px}
+.qc-head{padding:16px 20px 12px;border-bottom:1px solid var(--bl);display:flex;align-items:flex-start;gap:12px}
+.qno{width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:900;flex-shrink:0;margin-top:1px}
+.qno-s{background:var(--grbg);color:var(--grn);border:2px solid var(--grbd)}
+.qno-e{background:var(--pubg);color:var(--pur);border:2px solid var(--pubd)}
+.qc-meta{flex:1}
+.qc-type{font-size:10px;font-weight:700;color:var(--t3);letter-spacing:0.5px;margin-bottom:4px}
+.qc-title{font-size:14px;font-weight:800;color:var(--t1);line-height:1.45}
+.qc-body{background:var(--bg);padding:14px 20px;border-bottom:1px solid var(--bl)}
+.qc-items{display:flex;flex-direction:column;gap:5px;margin-top:8px}
+.qc-item{display:flex;gap:8px;font-size:13px;color:var(--t2)}
+.qc-label{font-weight:700;color:var(--blue);min-width:20px;flex-shrink:0}
+.hints{display:flex;flex-wrap:wrap;gap:5px;margin-top:10px}
+.hint{background:var(--pubg);border:1px solid var(--pubd);color:var(--pur);font-size:10px;font-weight:600;padding:2px 8px;border-radius:5px}
+.hint.g{background:var(--grbg);border-color:var(--grbd);color:var(--grn)}
+
+/* ANSWER */
+.ans-wrap{background:#fff}
+.ans-tog{width:100%;padding:13px 20px;background:none;border:none;display:flex;align-items:center;justify-content:space-between;cursor:pointer;font-family:inherit;transition:background .15s}
+.ans-tog:hover{background:var(--pubg)}
+.ans-tog-lbl{font-size:12px;font-weight:700;color:var(--pur);display:flex;align-items:center;gap:7px}
+.ans-tog-arr{font-size:15px;color:var(--pur);transition:transform .25s}
+.ans-tog-arr.open{transform:rotate(180deg)}
+.ans-body{display:none;padding:0 20px 20px}
+.ans-body.open{display:block}
+
+/* ANSWER CONTENT */
+.ans-title{font-size:16px;font-weight:900;font-family:'Noto Serif KR',serif;color:var(--t1);padding:16px 0 6px;border-bottom:2px solid var(--pur);margin-bottom:16px}
+.chips{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:14px}
+.chip{font-size:11px;padding:3px 10px;border-radius:6px;font-weight:600}
+.c-time{background:var(--orbg);color:var(--org);border:1px solid var(--orbd)}
+.c-page{background:var(--grbg);color:var(--grn);border:1px solid var(--grbd)}
+.c-score{background:var(--rdbg);color:var(--red);border:1px solid var(--rdbd)}
+
+.sec{margin-bottom:18px}
+.sec-h{font-size:12px;font-weight:800;color:#fff;padding:4px 11px;border-radius:6px;display:inline-block;margin-bottom:10px}
+.s-pur{background:#7c3aed}
+.s-blu{background:var(--blue)}
+.s-grn{background:#059669}
+.s-org{background:#d97706}
+.s-red{background:#dc2626}
+.s-tel{background:#0d9488}
+.s-ind{background:#2563eb}
+
+.ap{font-size:13px;color:var(--t2);line-height:1.85;margin-bottom:9px}
+
+.tbl{width:100%;border-collapse:collapse;font-size:12px;margin:8px 0 12px}
+.tbl th{background:var(--s2);color:var(--t2);font-weight:700;padding:7px 11px;border:1px solid var(--border);text-align:center}
+.tbl td{padding:7px 11px;border:1px solid var(--border);vertical-align:top;line-height:1.6}
+.tbl td:first-child{font-weight:600;color:var(--pur);background:var(--pubg);text-align:center}
+.tbl tr:nth-child(even) td:not(:first-child){background:#fafbfd}
+
+.ol{list-style:none;display:flex;flex-direction:column;gap:9px;margin:6px 0}
+.ol li{display:flex;gap:9px;align-items:flex-start;font-size:13px;color:var(--t2);line-height:1.7}
+.on{flex-shrink:0;width:21px;height:21px;border-radius:50%;color:#fff;font-size:10px;font-weight:700;display:flex;align-items:center;justify-content:center;margin-top:2px}
+.on-p{background:#7c3aed}
+.on-g{background:#059669}
+.on-b{background:var(--blue)}
+.on-o{background:#d97706}
+.on-r{background:#dc2626}
+.on-t{background:#0d9488}
+
+.sub{margin-top:5px;display:flex;flex-direction:column;gap:3px}
+.sub-i{display:flex;gap:7px;font-size:12px;color:var(--t3)}
+.sub-i::before{content:'▸';color:#8b5cf6;flex-shrink:0}
+
+.dgm{background:#f8fafc;border:1px solid var(--border);border-left:3px solid var(--pur);border-radius:8px;padding:12px 15px;margin:9px 0;font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--t2);line-height:1.8;overflow-x:auto;white-space:pre}
+
+.kb{border-radius:8px;padding:11px 15px;margin:10px 0;font-size:12px;line-height:1.75}
+.kb-p{background:var(--pubg);border:1px solid var(--pubd);color:var(--pur)}
+.kb-b{background:var(--blbg);border:1px solid var(--blbd);color:#1e40af}
+.kb-g{background:var(--grbg);border:1px solid var(--grbd);color:var(--grn)}
+.kb-o{background:var(--orbg);border:1px solid var(--orbd);color:var(--org)}
+.kb-r{background:var(--rdbg);border:1px solid var(--rdbd);color:var(--red)}
+.kb-t{background:var(--tebg);border:1px solid var(--tebd);color:var(--tel)}
+.kb h4{font-size:11px;font-weight:700;margin-bottom:4px;letter-spacing:0.4px}
+
+.conc{background:linear-gradient(135deg,var(--pubg),var(--blbg));border:1px solid var(--pubd);border-radius:8px;padding:13px 15px;margin-top:13px}
+.conc-h{font-weight:700;color:var(--pur);font-size:12px;margin-bottom:5px}
+.conc p{font-size:12px;color:var(--t2);line-height:1.75}
+
+/* SHORT ANS specific */
+.def-box{background:linear-gradient(135deg,var(--pubg),var(--blbg));border:1px solid var(--pubd);border-radius:10px;padding:14px 16px;margin:10px 0}
+.def-box h4{font-size:11px;font-weight:700;color:var(--pur);margin-bottom:6px;letter-spacing:0.5px}
+.def-box p{font-size:13px;color:var(--t2);line-height:1.8}
+
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:10px 0}
+.col-box{background:#fff;border:1px solid var(--border);border-radius:8px;padding:12px 14px}
+.col-box h5{font-size:11px;font-weight:700;margin-bottom:6px}
+.col-box ul{padding-left:14px;font-size:12px;color:var(--t2);line-height:1.7}
+@media(max-width:600px){.two-col{grid-template-columns:1fr}}
+
+.tag-row{display:flex;flex-wrap:wrap;gap:6px;margin:8px 0}
+.tag{font-size:11px;padding:3px 10px;border-radius:6px;font-weight:600}
+.tag-p{background:var(--pubg);color:var(--pur);border:1px solid var(--pubd)}
+.tag-g{background:var(--grbg);color:var(--grn);border:1px solid var(--grbd)}
+.tag-b{background:var(--blbg);color:var(--blue);border:1px solid var(--blbd)}
+.tag-o{background:var(--orbg);color:var(--org);border:1px solid var(--orbd)}
+.tag-r{background:var(--rdbg);color:var(--red);border:1px solid var(--rdbd)}
+.tag-t{background:var(--tebg);color:var(--tel);border:1px solid var(--tebd)}
+
+.mem-box{background:#fdf4ff;border:2px solid #c4b5fd;border-radius:8px;padding:12px 15px;margin:10px 0;font-size:12px;color:#6d28d9;line-height:1.8}
+.mem-box h4{font-size:11px;font-weight:700;margin-bottom:5px;color:#5b21b6}
+</style>
+</head>
+<body>
+
+<header class="hdr">
+  <div class="hdr-in">
+    <div class="hdr-eye">PROFESSIONAL ENGINEER · COMPUTER SYSTEM APPLICATION</div>
+    <div class="hdr-h1">AI·신기술 분야<br>단답형 5문제 + 논술형 5문제 모범답안</div>
+    <div class="hdr-sub">컴퓨터시스템응용기술사 실전 형식 완전 재현 · 최신 기출 반영</div>
+    <div class="hdr-pills">
+      <span class="hdr-pill">단답형 1~2페이지</span>
+      <span class="hdr-pill">논술형 3~4페이지</span>
+      <span class="hdr-pill">가·나·다 구조</span>
+      <span class="hdr-pill">Ⅰ~Ⅴ 답안 형식</span>
+    </div>
+  </div>
+</header>
+
+<nav class="type-nav">
+  <button class="type-btn active" onclick="showType(0,this)">📝 단답형 (1~2교시형 · 10점)</button>
+  <button class="type-btn" onclick="showType(1,this)">📄 논술형 (2~4교시형 · 25점)</button>
+</nav>
+
+<!-- ══════════════════════════════════════════
+     단답형 패널
+══════════════════════════════════════════ -->
+<div class="type-panel active" id="tp0">
+<nav class="q-nav">
+  <button class="q-nav-btn active" onclick="showQ('s',0,this)">S1. Transformer 어텐션</button>
+  <button class="q-nav-btn" onclick="showQ('s',1,this)">S2. LLM 파인튜닝 기법</button>
+  <button class="q-nav-btn" onclick="showQ('s',2,this)">S3. 프롬프트 엔지니어링</button>
+  <button class="q-nav-btn" onclick="showQ('s',3,this)">S4. AI 할루시네이션</button>
+  <button class="q-nav-btn" onclick="showQ('s',4,this)">S5. AI 거버넌스</button>
+</nav>
+<main class="main">
+
+<!-- S1 Transformer -->
+<div class="q-panel active" id="s0">
+<div class="qc">
+  <div class="qc-head">
+    <div class="qno qno-s">S1</div>
+    <div class="qc-meta">
+      <div class="qc-type">1~2교시 단답형 · 10점 · 목표 10~12분</div>
+      <div class="qc-title">Transformer 모델의 Self-Attention 메커니즘에 대하여 설명하시오.</div>
+    </div>
+  </div>
+  <div class="qc-body">
+    <div class="hints">
+      <span class="hint">Q·K·V 행렬 필수</span>
+      <span class="hint">Scaled Dot-Product</span>
+      <span class="hint">Multi-Head Attention</span>
+      <span class="hint">Positional Encoding</span>
+    </div>
+  </div>
+  <div class="ans-wrap">
+    <button class="ans-tog" onclick="tog(this)">
+      <span class="ans-tog-lbl">📄 모범 답안 보기</span>
+      <span class="ans-tog-arr">▼</span>
+    </button>
+    <div class="ans-body">
+      <div class="ans-title">Transformer Self-Attention 메커니즘</div>
+      <div class="chips">
+        <span class="chip c-time">⏱ 목표 12분</span>
+        <span class="chip c-page">📄 1.5페이지</span>
+        <span class="chip c-score">💯 10점</span>
+      </div>
+
+      <div class="sec">
+        <div class="sec-h s-pur">Ⅰ. 개요 — Transformer와 Self-Attention의 등장 배경</div>
+        <div class="ap">Transformer는 2017년 Google이 제안한 "Attention is All You Need" 논문에서 소개된 신경망 아키텍처로, RNN의 순차 처리 한계(장기 의존성 소실, 병렬화 불가)를 극복하기 위해 Self-Attention 메커니즘을 전면 채택하였다. Self-Attention은 문장 내 모든 토큰이 서로의 관계를 동시에 계산하여 문맥을 포착하는 핵심 연산이다.</div>
+      </div>
+
+      <div class="sec">
+        <div class="sec-h s-grn">Ⅱ. Self-Attention 동작 원리 — Q·K·V 연산</div>
+        <div class="kb kb-p">
+          <h4>핵심 개념: Query · Key · Value</h4>
+          • <strong>Q(Query)</strong>: "내가 어떤 정보를 찾고 있는가" → 현재 토큰의 질의 벡터<br>
+          • <strong>K(Key)</strong>: "나는 어떤 정보를 가지고 있는가" → 각 토큰의 식별 벡터<br>
+          • <strong>V(Value)</strong>: "실제로 전달할 정보는 무엇인가" → 각 토큰의 내용 벡터
+        </div>
+        <div class="dgm">Scaled Dot-Product Attention
+
+입력 X → 선형 변환(WQ, WK, WV)
+         → Q = X·WQ,  K = X·WK,  V = X·WV
+
+Attention(Q,K,V) = softmax( Q·Kᵀ / √dk ) · V
+
+  ① Q·Kᵀ    : 모든 토큰 쌍 간 유사도 점수(Attention Score) 계산
+  ② / √dk   : 차원 수(dk)의 제곱근으로 스케일링 → 기울기 소실 방지
+  ③ softmax : 확률 분포로 정규화 (Attention Weight)
+  ④ · V     : 가중합으로 문맥 반영된 출력 생성</div>
+        <div class="ap"><strong>Multi-Head Attention</strong>: h개의 서로 다른 선형 변환으로 Q·K·V를 분리하여 병렬 계산한 후 Concat. 각 헤드가 다양한 관점(구문적 관계, 의미적 관계 등)을 학습할 수 있다.</div>
+        <div class="dgm">MultiHead(Q,K,V) = Concat(head₁,...,headₕ) · WO
+  where headᵢ = Attention(Q·WiQ, K·WiK, V·WiV)</div>
+      </div>
+
+      <div class="sec">
+        <div class="sec-h s-blu">Ⅲ. Positional Encoding 및 특징</div>
+        <div class="tbl-wrap">
+          <table class="tbl">
+            <tr><th>구성 요소</th><th>역할</th><th>특징</th></tr>
+            <tr><td>Positional Encoding</td><td>위치 정보 주입 (sin/cos 함수)</td><td>순서 정보가 없는 Self-Attention 보완</td></tr>
+            <tr><td>Masked Attention</td><td>디코더에서 미래 토큰 가림</td><td>자기회귀(AR) 생성 시 정보 유출 방지</td></tr>
+            <tr><td>Cross-Attention</td><td>인코더 출력을 디코더가 참조</td><td>번역·요약 등 Seq2Seq 태스크에 적용</td></tr>
+          </table>
+        </div>
+      </div>
+
+      <div class="mem-box">
+        <h4>💡 한 줄 암기 포인트</h4>
+        Self-Attention = <strong>"Q(질문)으로 K(키)를 검색하여 V(값)를 가중합"</strong><br>
+        계산 복잡도: O(n²·d) — 시퀀스 길이 n의 제곱에 비례 → 긴 문장 처리 한계(Linear Attention 등 개선 연구 진행)
+      </div>
+
+      <div class="conc">
+        <div class="conc-h">Ⅳ. 결론 및 발전 방향</div>
+        <p>Self-Attention 기반 Transformer는 BERT·GPT·T5·LLaMA 등 현대 LLM의 공통 기반 아키텍처이다. 긴 시퀀스 처리 효율화를 위한 Flash Attention, Sparse Attention, Mamba(SSM) 등의 대안 아키텍처가 연구되고 있으며, 멀티모달(이미지·음성·동영상) 처리에도 Transformer가 확장 적용되고 있다.</p>
+      </div>
+    </div>
+  </div>
+</div>
+</div><!-- /s0 -->
+
+<!-- S2 파인튜닝 -->
+<div class="q-panel" id="s1">
+<div class="qc">
+  <div class="qc-head">
+    <div class="qno qno-s">S2</div>
+    <div class="qc-meta">
+      <div class="qc-type">1~2교시 단답형 · 10점 · 목표 10~12분</div>
+      <div class="qc-title">LLM(대규모 언어 모델) 파인튜닝 기법인 LoRA(Low-Rank Adaptation)를 설명하시오.</div>
+    </div>
+  </div>
+  <div class="qc-body">
+    <div class="hints">
+      <span class="hint">PEFT 계열</span>
+      <span class="hint">행렬 분해 원리</span>
+      <span class="hint">Full Fine-tuning 비교</span>
+      <span class="hint">QLoRA 연계</span>
+    </div>
+  </div>
+  <div class="ans-wrap">
+    <button class="ans-tog" onclick="tog(this)">
+      <span class="ans-tog-lbl">📄 모범 답안 보기</span>
+      <span class="ans-tog-arr">▼</span>
+    </button>
+    <div class="ans-body">
+      <div class="ans-title">LLM 파인튜닝 기법 LoRA(Low-Rank Adaptation)</div>
+      <div class="chips">
+        <span class="chip c-time">⏱ 목표 12분</span>
+        <span class="chip c-page">📄 1.5페이지</span>
+        <span class="chip c-score">💯 10점</span>
+      </div>
+
+      <div class="sec">
+        <div class="sec-h s-pur">Ⅰ. 개요 — PEFT와 LoRA 등장 배경</div>
+        <div class="ap">LLM의 Full Fine-tuning은 수십~수백억 개의 파라미터를 모두 업데이트하므로 막대한 GPU 메모리와 연산 비용이 필요하다. PEFT(Parameter-Efficient Fine-Tuning)는 전체 파라미터 중 일부만 학습하여 비용을 절감하는 기법 범주이며, LoRA는 2021년 Microsoft가 제안한 대표적 PEFT 기법이다.</div>
+      </div>
+
+      <div class="sec">
+        <div class="sec-h s-grn">Ⅱ. LoRA 동작 원리 — 저랭크 행렬 분해</div>
+        <div class="kb kb-p">
+          <h4>핵심 아이디어</h4>
+          사전 학습된 가중치 행렬 W₀(d×k)를 동결(Freeze)하고, 학습 가능한 두 저랭크 행렬 B(d×r)·A(r×k)의 곱으로 업데이트를 근사한다. (r ≪ min(d,k))
+        </div>
+        <div class="dgm">LoRA 수식
+
+  W₀ : 사전학습 가중치 (Frozen, 학습 안 함)
+  ΔW : 업데이트 행렬
+
+  순전파: h = W₀x + ΔWx = W₀x + BAx
+
+  A : r×k 행렬 (가우시안 초기화)
+  B : d×r 행렬 (0으로 초기화 → 초기 ΔW=0 보장)
+
+  학습 파라미터 수:  d×r + r×k  (r=8 이면 Full 대비 ~0.1%)
+  추론 시 병합:     W = W₀ + BA  (지연 없음)</div>
+        <table class="tbl">
+          <tr><th>비교 항목</th><th>Full Fine-tuning</th><th>LoRA</th></tr>
+          <tr><td>학습 파라미터</td><td>전체 (수십~수백억)</td><td>r 랭크 행렬만 (~0.1~1%)</td></tr>
+          <tr><td>GPU 메모리</td><td>매우 큼 (80GB+ 다수)</td><td>소비 1/4 수준</td></tr>
+          <tr><td>학습 시간</td><td>수일~수주</td><td>수시간~1일</td></tr>
+          <tr><td>성능</td><td>최고</td><td>Full 대비 95% 이상 달성 가능</td></tr>
+          <tr><td>멀티태스크</td><td>재학습 필요</td><td>태스크별 LoRA 모듈 교체</td></tr>
+        </table>
+      </div>
+
+      <div class="sec">
+        <div class="sec-h s-blu">Ⅲ. 변형 기법 및 활용</div>
+        <div class="tag-row">
+          <span class="tag tag-p">QLoRA (4bit 양자화+LoRA)</span>
+          <span class="tag tag-g">LoRA+ (학습률 차등 적용)</span>
+          <span class="tag tag-b">AdaLoRA (랭크 적응적 조정)</span>
+          <span class="tag tag-o">DoRA (가중치 분해 학습)</span>
+        </div>
+        <div class="ap"><strong>QLoRA</strong>는 LLM을 4-bit NF4로 양자화한 상태에서 LoRA를 적용하여 단일 24GB GPU로 65B 모델 파인튜닝을 가능하게 한 획기적 기법이다.</div>
+      </div>
+
+      <div class="mem-box">
+        <h4>💡 한 줄 암기 포인트</h4>
+        LoRA = <strong>"원본 가중치는 얼리고(Freeze), 저랭크 행렬 BA만 학습"</strong><br>
+        적용 위치: Transformer의 Attention 레이어(Wq, Wk, Wv, Wo)에 주로 적용
+      </div>
+
+      <div class="conc">
+        <div class="conc-h">Ⅳ. 결론</div>
+        <p>LoRA는 LLM의 도메인 특화(법률·의료·금융·공공) 파인튜닝을 소규모 인프라로 가능하게 하여 AI 민주화에 기여하고 있다. Hugging Face PEFT 라이브러리로 표준화되어 있으며, 공공기관의 온프레미스 초거대 AI 도입 시 필수적인 기법으로 활용된다.</p>
+      </div>
+    </div>
+  </div>
+</div>
+</div><!-- /s1 -->
+
+<!-- S3 프롬프트 엔지니어링 -->
+<div class="q-panel" id="s2">
+<div class="qc">
+  <div class="qc-head">
+    <div class="qno qno-s">S3</div>
+    <div class="qc-meta">
+      <div class="qc-type">1~2교시 단답형 · 10점 · 목표 10~12분</div>
+      <div class="qc-title">프롬프트 엔지니어링(Prompt Engineering)의 주요 기법을 설명하시오.</div>
+    </div>
+  </div>
+  <div class="qc-body">
+    <div class="hints">
+      <span class="hint">Zero/Few-Shot</span>
+      <span class="hint">Chain-of-Thought</span>
+      <span class="hint">ReAct</span>
+      <span class="hint">프롬프트 인젝션 보안</span>
+    </div>
+  </div>
+  <div class="ans-wrap">
+    <button class="ans-tog" onclick="tog(this)">
+      <span class="ans-tog-lbl">📄 모범 답안 보기</span>
+      <span class="ans-tog-arr">▼</span>
+    </button>
+    <div class="ans-body">
+      <div class="ans-title">프롬프트 엔지니어링의 주요 기법</div>
+      <div class="chips">
+        <span class="chip c-time">⏱ 목표 12분</span>
+        <span class="chip c-page">📄 1.5~2페이지</span>
+        <span class="chip c-score">💯 10점</span>
+      </div>
+
+      <div class="sec">
+        <div class="sec-h s-pur">Ⅰ. 개요 — 프롬프트 엔지니어링의 개념</div>
+        <div class="ap">프롬프트 엔지니어링이란 LLM이 원하는 출력을 생성하도록 입력(프롬프트)을 체계적으로 설계·최적화하는 기술 분야이다. 모델 가중치를 변경하지 않고 In-Context Learning만으로 성능을 향상시키므로 비용 효율이 높다.</div>
+      </div>
+
+      <div class="sec">
+        <div class="sec-h s-grn">Ⅱ. 주요 프롬프트 기법</div>
+        <table class="tbl">
+          <tr><th>기법</th><th>원리</th><th>특징·적용</th></tr>
+          <tr><td>Zero-Shot</td><td>예시 없이 태스크만 지시</td><td>사전학습 지식 활용. 간단하고 범용적</td></tr>
+          <tr><td>Few-Shot</td><td>입력-출력 예시 N개 제공 후 질의</td><td>예시 품질·순서가 성능에 큰 영향. 분류·추출에 효과적</td></tr>
+          <tr><td>Chain-of-Thought (CoT)</td><td>"단계적으로 생각해보자" 지시. 중간 추론 단계 명시</td><td>수학 문제·논리 추론 성능 대폭 향상. Zero-Shot CoT 가능</td></tr>
+          <tr><td>Self-Consistency</td><td>동일 질문을 여러 번 샘플링 후 다수결</td><td>CoT와 결합. 정답 신뢰도 향상</td></tr>
+          <tr><td>Tree of Thoughts (ToT)</td><td>여러 사고 경로를 트리로 탐색·평가</td><td>복잡한 계획 문제에 유효. BFS·DFS 적용</td></tr>
+          <tr><td>ReAct</td><td>Reasoning + Acting. 추론과 외부 도구 호출을 교차 수행</td><td>웹 검색·코드 실행 등 Tool Use와 결합. 에이전트 기반</td></tr>
+          <tr><td>Least-to-Most</td><td>복잡한 문제를 하위 문제로 분해 후 순차 해결</td><td>수학·코딩 문제 분해에 효과적</td></tr>
+        </table>
+      </div>
+
+      <div class="sec">
+        <div class="sec-h s-red">Ⅲ. 프롬프트 보안 위협 — Prompt Injection</div>
+        <div class="kb kb-r">
+          <h4>프롬프트 인젝션 (Prompt Injection)</h4>
+          악의적 입력을 통해 시스템 프롬프트의 지시를 무력화하고 모델을 조종하는 공격.<br>
+          • <strong>Direct Injection</strong>: 사용자가 직접 악성 지시 삽입<br>
+          • <strong>Indirect Injection</strong>: 웹 페이지·문서 내 숨겨진 지시를 모델이 읽어 실행<br>
+          대책: 입력 필터링, Instruction Hierarchy, 샌드박싱, 출력 검증
+        </div>
+      </div>
+
+      <div class="mem-box">
+        <h4>💡 한 줄 암기 포인트</h4>
+        CoT = "단계별 추론 명시화" / ReAct = "추론 + 도구 호출 교차" / ToT = "사고 트리 탐색"<br>
+        <strong>성능 향상 순서 (단순→복잡)</strong>: Zero-Shot → Few-Shot → CoT → Self-Consistency → ToT
+      </div>
+
+      <div class="conc">
+        <div class="conc-h">Ⅳ. 결론</div>
+        <p>프롬프트 엔지니어링은 LLM을 재학습 없이 고도화하는 핵심 역량이다. 최근 Agentic AI 시스템에서는 ReAct·ToT 기반 멀티스텝 추론이 중요해지고 있으며, 보안 관점에서 프롬프트 인젝션 방어는 AI 서비스 신뢰성 확보의 필수 요건이다.</p>
+      </div>
+    </div>
+  </div>
+</div>
+</div><!-- /s2 -->
+
+<!-- S4 할루시네이션 -->
+<div class="q-panel" id="s3">
+<div class="qc">
+  <div class="qc-head">
+    <div class="qno qno-s">S4</div>
+    <div class="qc-meta">
+      <div class="qc-type">1~2교시 단답형 · 10점 · 목표 10~12분</div>
+      <div class="qc-title">AI 할루시네이션(Hallucination)의 유형과 원인 및 완화 방안을 설명하시오.</div>
+    </div>
+  </div>
+  <div class="qc-body">
+    <div class="hints">
+      <span class="hint">Factual / Faithfulness 분류</span>
+      <span class="hint">RAG 연계</span>
+      <span class="hint">RLHF</span>
+      <span class="hint">공공 AI 신뢰성</span>
+    </div>
+  </div>
+  <div class="ans-wrap">
+    <button class="ans-tog" onclick="tog(this)">
+      <span class="ans-tog-lbl">📄 모범 답안 보기</span>
+      <span class="ans-tog-arr">▼</span>
+    </button>
+    <div class="ans-body">
+      <div class="ans-title">AI 할루시네이션의 유형·원인 및 완화 방안</div>
+      <div class="chips">
+        <span class="chip c-time">⏱ 목표 12분</span>
+        <span class="chip c-page">📄 1.5~2페이지</span>
+        <span class="chip c-score">💯 10점</span>
+      </div>
+
+      <div class="sec">
+        <div class="sec-h s-pur">Ⅰ. 개요 — AI 할루시네이션의 정의</div>
+        <div class="ap">AI 할루시네이션(환각)이란 LLM이 사실이 아닌 정보를 마치 사실인 것처럼 자신감 있게 생성하는 현상이다. 단순한 오류와 달리 모델이 높은 확신도를 보이며 허구를 제시하기 때문에 사용자 판별이 어렵고, 의료·법률·공공 분야에서 심각한 위험을 초래할 수 있다.</div>
+      </div>
+
+      <div class="sec">
+        <div class="sec-h s-grn">Ⅱ. 할루시네이션 유형 및 원인</div>
+        <table class="tbl">
+          <tr><th>유형</th><th>설명</th><th>예시</th></tr>
+          <tr><td>Factual Hallucination<br>(사실적 환각)</td><td>현실과 다른 사실 정보 생성</td><td>존재하지 않는 논문 인용, 잘못된 날짜·수치 제시</td></tr>
+          <tr><td>Faithfulness Hallucination<br>(충실성 환각)</td><td>주어진 입력 문서와 다른 내용 생성</td><td>요약 시 원문에 없는 내용 추가</td></tr>
+          <tr><td>Intrinsic Hallucination</td><td>주어진 컨텍스트와 직접 모순</td><td>입력 A라고 했는데 B라고 답변</td></tr>
+          <tr><td>Extrinsic Hallucination</td><td>컨텍스트에서 검증 불가한 외부 정보 추가</td><td>근거 없는 배경 정보 생성</td></tr>
+        </table>
+        <div class="kb kb-r">
+          <h4>주요 원인</h4>
+          ① <strong>확률적 샘플링</strong>: 다음 토큰을 확률로 선택하는 구조적 한계<br>
+          ② <strong>지식 단절(Knowledge Cutoff)</strong>: 학습 데이터 이후 정보 없음<br>
+          ③ <strong>데이터 편향</strong>: 학습 데이터 내 오류·편향 학습<br>
+          ④ <strong>과도한 일반화</strong>: 패턴 과학습으로 그럴듯한 허구 생성
+        </div>
+      </div>
+
+      <div class="sec">
+        <div class="sec-h s-blu">Ⅲ. 완화 방안</div>
+        <ul class="ol">
+          <li><span class="on on-b">1</span><div><strong>RAG(검색 증강 생성)</strong>: 외부 지식 저장소에서 관련 문서를 검색하여 프롬프트에 주입. 생성 근거를 명시적으로 제공</div></li>
+          <li><span class="on on-b">2</span><div><strong>RLHF(인간 피드백 강화학습)</strong>: 인간 평가자의 피드백으로 보상 모델 학습 후 PPO 알고리즘으로 정책 업데이트. 사실성·유용성 향상</div></li>
+          <li><span class="on on-b">3</span><div><strong>낮은 Temperature 설정</strong>: Temperature↓ → 고확률 토큰 선택 → 창의성↓, 사실성↑</div></li>
+          <li><span class="on on-b">4</span><div><strong>출처 인용 강제(Grounding)</strong>: 답변에 근거 문서 인용 필수화. "모른다"고 응답하도록 학습</div></li>
+          <li><span class="on on-b">5</span><div><strong>자동 평가(RAGAS·TruthfulQA)</strong>: Faithfulness·Answer Relevancy 지표로 할루시네이션 자동 탐지</div></li>
+        </ul>
+      </div>
+
+      <div class="mem-box">
+        <h4>💡 한 줄 암기 포인트</h4>
+        할루시네이션 완화 3대 축: <strong>RAG(지식 주입) + RLHF(정렬 학습) + Grounding(출처 명시)</strong>
+      </div>
+
+      <div class="conc">
+        <div class="conc-h">Ⅳ. 결론</div>
+        <p>할루시네이션은 LLM의 본질적 한계로 완전 제거는 불가능하다. 공공·의료·법률 분야 AI 도입 시 RAG와 Human-in-the-Loop 검증 체계를 의무화하고, EU AI Act 및 국내 AI 기본법 등 규제에서도 고위험 AI 시스템에 대한 정확성·신뢰성 요건으로 명시되고 있다.</p>
+      </div>
+    </div>
+  </div>
+</div>
+</div><!-- /s3 -->
+
+<!-- S5 AI 거버넌스 -->
+<div class="q-panel" id="s4">
+<div class="qc">
+  <div class="qc-head">
+    <div class="qno qno-s">S5</div>
+    <div class="qc-meta">
+      <div class="qc-type">1~2교시 단답형 · 10점 · 목표 10~12분</div>
+      <div class="qc-title">AI 거버넌스(AI Governance)의 개념과 국내외 주요 AI 규제 동향을 설명하시오.</div>
+    </div>
+  </div>
+  <div class="qc-body">
+    <div class="hints">
+      <span class="hint">EU AI Act</span>
+      <span class="hint">AI 위험 등급</span>
+      <span class="hint">국내 AI 기본법</span>
+      <span class="hint">설명가능 AI(XAI)</span>
+    </div>
+  </div>
+  <div class="ans-wrap">
+    <button class="ans-tog" onclick="tog(this)">
+      <span class="ans-tog-lbl">📄 모범 답안 보기</span>
+      <span class="ans-tog-arr">▼</span>
+    </button>
+    <div class="ans-body">
+      <div class="ans-title">AI 거버넌스의 개념 및 국내외 AI 규제 동향</div>
+      <div class="chips">
+        <span class="chip c-time">⏱ 목표 12분</span>
+        <span class="chip c-page">📄 1.5~2페이지</span>
+        <span class="chip c-score">💯 10점</span>
+      </div>
+
+      <div class="sec">
+        <div class="sec-h s-pur">Ⅰ. AI 거버넌스의 개념</div>
+        <div class="ap">AI 거버넌스란 AI 시스템의 개발·배포·운용 전 생명주기에 걸쳐 신뢰성·안전성·공정성·투명성·책임성을 확보하기 위한 정책·법·제도·기술·윤리 기준의 총체적 체계이다. AI가 사회·경제 전 분야에 영향을 미침에 따라 국내외 주요국이 경쟁적으로 규제 프레임워크를 수립하고 있다.</div>
+      </div>
+
+      <div class="sec">
+        <div class="sec-h s-grn">Ⅱ. 국내외 주요 AI 규제 동향</div>
+        <table class="tbl">
+          <tr><th>구분</th><th>주요 내용</th><th>특징</th></tr>
+          <tr><td>EU AI Act<br>(2024 발효)</td><td>AI 시스템을 위험 수준에 따라 4등급(금지·고위험·제한·최소위험)으로 분류. 고위험 AI는 적합성 평가·투명성·인간 감독 의무화</td><td>세계 최초 AI 포괄 규제법. 역외 적용(GDPR 방식)</td></tr>
+          <tr><td>미국 AI 행정명령<br>(EO 14110, 2023)</td><td>AI 안전·보안 평가, NIST AI RMF 적용, 생성AI 투명성 요구</td><td>규제보다 혁신 중심. 자율 규제 선호</td></tr>
+          <tr><td>국내 AI 기본법<br>(2024년 제정)</td><td>고영향 AI 정의·규제, AI 안전연구소 설립, 생성AI 워터마크 의무화, AI 영향평가 도입</td><td>포괄적 AI 법제 최초 수립. 2026년 시행 예정</td></tr>
+          <tr><td>중국 AI 규정<br>(2023)</td><td>생성AI 서비스 규정·알고리즘 추천 규정 시행. 사전 안전 평가 의무</td><td>국가 주도 AI 발전·통제 병행</td></tr>
+        </table>
+        <div class="kb kb-p">
+          <h4>EU AI Act 위험 4등급</h4>
+          🔴 <strong>금지(Unacceptable Risk)</strong>: 실시간 생체인식, 사회신용 시스템<br>
+          🟠 <strong>고위험(High Risk)</strong>: 채용·교육·의료·사법·치안 분야 AI → 적합성 평가 의무<br>
+          🟡 <strong>제한적 위험(Limited)</strong>: 챗봇 → AI임을 공개 의무<br>
+          🟢 <strong>최소 위험(Minimal)</strong>: 스팸 필터 등 → 자율 규제
+        </div>
+      </div>
+
+      <div class="sec">
+        <div class="sec-h s-tel">Ⅲ. AI 거버넌스 핵심 원칙</div>
+        <div class="tag-row">
+          <span class="tag tag-p">투명성 (Transparency)</span>
+          <span class="tag tag-g">공정성 (Fairness)</span>
+          <span class="tag tag-b">책임성 (Accountability)</span>
+          <span class="tag tag-o">안전성 (Safety)</span>
+          <span class="tag tag-r">프라이버시 (Privacy)</span>
+          <span class="tag tag-t">설명가능성 (XAI)</span>
+        </div>
+      </div>
+
+      <div class="mem-box">
+        <h4>💡 한 줄 암기 포인트</h4>
+        EU AI Act = <strong>"위험 기반 접근(Risk-Based Approach)"</strong> — 위험 등급에 따라 차등 규제<br>
+        국내 AI 기본법 = 고영향 AI 사전 안전성 평가 + 생성AI 워터마크 의무화
+      </div>
+
+      <div class="conc">
+        <div class="conc-h">Ⅳ. 결론</div>
+        <p>AI 거버넌스는 기술 혁신과 사회적 안전의 균형을 목표로 한다. 감리사는 공공기관의 AI 도입 사업에서 고영향 AI 해당 여부 판단, 투명성·공정성 점검항목 수립, EU AI Act 등 글로벌 규제 준수 여부 감리 역량을 갖추어야 한다.</p>
+      </div>
+    </div>
+  </div>
+</div>
+</div><!-- /s4 -->
+
+</main>
+</div><!-- /tp0 단답형 -->
+
+
+<!-- ══════════════════════════════════════════
+     논술형 패널
+══════════════════════════════════════════ -->
+<div class="type-panel" id="tp1">
+<nav class="q-nav">
+  <button class="q-nav-btn active" onclick="showQ('e',0,this)">E1. 생성AI 아키텍처 비교</button>
+  <button class="q-nav-btn" onclick="showQ('e',1,this)">E2. AI 에이전트·MAS</button>
+  <button class="q-nav-btn" onclick="showQ('e',2,this)">E3. MLOps</button>
+  <button class="q-nav-btn" onclick="showQ('e',3,this)">E4. 멀티모달 AI</button>
+  <button class="q-nav-btn" onclick="showQ('e',4,this)">E5. AI 보안 위협</button>
+</nav>
+<main class="main">
+
+<!-- E1 생성AI 아키텍처 -->
+<div class="q-panel active" id="e0">
+<div class="qc">
+  <div class="qc-head">
+    <div class="qno qno-e">E1</div>
+    <div class="qc-meta">
+      <div class="qc-type">2~4교시 논술형 · 25점 · 목표 25~28분</div>
+      <div class="qc-title">생성형 AI(Generative AI)의 주요 아키텍처를 비교하고 각각의 공공·기업 분야 적용 방안을 설명하시오.</div>
+    </div>
+  </div>
+  <div class="qc-body">
+    <div class="qc-items">
+      <div class="qc-item"><span class="qc-label">가.</span><span>생성형 AI의 개념과 주요 아키텍처 유형 (GAN, VAE, Diffusion Model, Transformer/LLM) 비교</span></div>
+      <div class="qc-item"><span class="qc-label">나.</span><span>각 아키텍처의 동작 원리 및 대표 모델</span></div>
+      <div class="qc-item"><span class="qc-label">다.</span><span>공공·기업 분야 생성AI 도입 시 기대효과와 위험 관리 방안</span></div>
+    </div>
+    <div class="hints">
+      <span class="hint">GAN vs Diffusion 비교 필수</span>
+      <span class="hint">LLM 파운데이션 모델</span>
+      <span class="hint">딥페이크 보안</span>
+    </div>
+  </div>
+  <div class="ans-wrap">
+    <button class="ans-tog" onclick="tog(this)">
+      <span class="ans-tog-lbl">📄 모범 답안 보기</span>
+      <span class="ans-tog-arr">▼</span>
+    </button>
+    <div class="ans-body">
+      <div class="ans-title">생성형 AI 주요 아키텍처 비교 및 공공·기업 도입 방안</div>
+      <div class="chips">
+        <span class="chip c-time">⏱ 목표 28분</span>
+        <span class="chip c-page">📄 3.5~4페이지</span>
+        <span class="chip c-score">💯 25점</span>
+      </div>
+
+      <div class="sec">
+        <div class="sec-h s-pur">Ⅰ. 개요 — 생성형 AI의 개념과 중요성</div>
+        <div class="ap">생성형 AI(Generative AI)는 학습 데이터의 분포를 모델링하여 새로운 텍스트·이미지·음성·코드·동영상 등 창작 콘텐츠를 생성하는 AI 기술의 총칭이다. 2023년 ChatGPT의 급속한 확산을 계기로 산업 전반의 패러다임 변화를 주도하고 있으며, 정부 및 기업의 생산성 혁신 핵심 수단으로 부상하였다.</div>
+      </div>
+
+      <div class="sec">
+        <div class="sec-h s-grn">Ⅱ. 가. 주요 아키텍처 유형 비교</div>
+        <table class="tbl">
+          <tr><th>아키텍처</th><th>핵심 원리</th><th>강점</th><th>약점</th><th>대표 모델</th></tr>
+          <tr><td>GAN<br>(적대적 생성망)</td><td>생성자(G)와 판별자(D)의 제로섬 게임. G는 가짜 생성, D는 진위 구별을 경쟁적으로 학습</td><td>고품질 이미지 생성, 빠른 추론</td><td>모드 붕괴, 학습 불안정, 다양성 부족</td><td>StyleGAN, CycleGAN, DCGAN</td></tr>
+          <tr><td>VAE<br>(변분 오토인코더)</td><td>입력을 잠재 공간(μ, σ)으로 인코딩 후 확률적 복원. KL Divergence로 잠재 분포 정규화</td><td>연속적·매끄러운 잠재 공간, 이상 탐지</td><td>생성 품질이 GAN 대비 낮음(흐릿함)</td><td>VQ-VAE, β-VAE</td></tr>
+          <tr><td>Diffusion Model<br>(확산 모델)</td><td>데이터에 점진적 노이즈 추가(Forward) 후 역방향으로 노이즈 제거(Reverse)를 학습. Score Matching 기반</td><td>최고 품질 이미지, 다양성, 학습 안정</td><td>추론 속도 느림(수십~수백 스텝)</td><td>DALL·E 3, Stable Diffusion, Midjourney, Sora</td></tr>
+          <tr><td>Transformer/LLM</td><td>Self-Attention 기반 자기회귀(AR) 토큰 예측. 스케일링 법칙으로 능력 창발</td><td>범용 언어 이해·생성, 코드·추론</td><td>연산 비용, 환각, 긴 컨텍스트 한계</td><td>GPT-4, Claude, Gemini, LLaMA, HyperCLOVA X</td></tr>
+        </table>
+      </div>
+
+      <div class="sec">
+        <div class="sec-h s-blu">Ⅲ. 나. 각 아키텍처의 동작 원리 및 대표 모델</div>
+        <div class="dgm">Diffusion Model 동작 원리 (가장 최신·중요)
+
+[Forward Process - 노이즈 추가]
+x₀(원본) → x₁ → x₂ → ... → xT(순수 가우시안 노이즈)
+각 단계: q(xₜ|xₜ₋₁) = N(xₜ; √(1-βₜ)xₜ₋₁, βₜI)
+
+[Reverse Process - 노이즈 제거 학습]
+xT → ... → x₁ → x₀(복원)
+U-Net(또는 Transformer) θ로 각 단계의 노이즈 εθ(xₜ,t) 예측
+
+[조건부 생성 - Classifier-Free Guidance]
+텍스트 프롬프트 c를 조건으로 주입 → 텍스트-이미지 정렬</div>
+        <div class="kb kb-b">
+          <h4>LLM 스케일링 법칙 (Scaling Law)</h4>
+          모델 성능(Loss)은 파라미터 수(N)·데이터 양(D)·연산량(C)의 거듭제곱 법칙을 따름.<br>
+          Chinchilla 법칙: 최적 성능은 N과 D를 균형 있게 늘릴 때 달성 (N ≈ 20×D 토큰)
+        </div>
+      </div>
+
+      <div class="sec">
+        <div class="sec-h s-org">Ⅳ. 다. 공공·기업 도입 시 기대효과 및 위험 관리</div>
+        <table class="tbl">
+          <tr><th>분야</th><th>활용 사례</th><th>기대효과</th></tr>
+          <tr><td>공공행정</td><td>민원 자동 답변, 법령 해석 지원, 행정 문서 초안 작성</td><td>민원 처리 시간 단축, 24시간 서비스</td></tr>
+          <tr><td>의료·바이오</td><td>신약 후보 물질 생성(분자 설계), 의료 영상 분석</td><td>R&amp;D 비용·기간 단축</td></tr>
+          <tr><td>금융</td><td>보고서 자동 생성, 리스크 시나리오 분석, 코드 생성</td><td>운영 비용 절감, 분석 고도화</td></tr>
+          <tr><td>교육</td><td>맞춤형 학습 콘텐츠 생성, AI 튜터</td><td>개인화 교육, 교사 행정 부담 경감</td></tr>
+        </table>
+        <ul class="ol">
+          <li><span class="on on-r">1</span><div><strong>딥페이크·허위 정보</strong>: 생성AI를 통한 가짜 영상·음성·문서 제작 → 워터마킹(C2PA 표준), AI 생성물 검출 기술, 디지털 서명 의무화</div></li>
+          <li><span class="on on-r">2</span><div><strong>저작권 침해</strong>: 학습 데이터 및 생성물의 저작권 분쟁 → 학습 데이터 라이선스 확인, 생성물 귀속 명확화</div></li>
+          <li><span class="on on-r">3</span><div><strong>개인정보 유출</strong>: 프롬프트를 통한 학습 데이터 추출 공격 → 차분 프라이버시 적용, 민감정보 필터링</div></li>
+          <li><span class="on on-r">4</span><div><strong>AI 편향(Bias)</strong>: 학습 데이터 편향이 생성물에 반영 → 편향 탐지·완화 체계, 다양성 데이터 확보</div></li>
+        </ul>
+      </div>
+
+      <div class="conc">
+        <div class="conc-h">Ⅴ. 결론 및 발전 방향</div>
+        <p>생성형 AI는 텍스트·이미지·음성·동영상의 멀티모달 통합으로 진화하고 있으며, 파운데이션 모델(Foundation Model)을 기반으로 다양한 도메인에 적응하는 범용 AI 패러다임을 선도하고 있다. 공공 분야에서는 AI 안전법 준수, 인간 감독(Human-in-the-Loop) 체계 구축, 그리고 생성물의 투명성 확보가 성공적 도입의 전제 조건이다.</p>
+      </div>
+    </div>
+  </div>
+</div>
+</div><!-- /e0 -->
+
+<!-- E2 AI 에이전트 -->
+<div class="q-panel" id="e1">
+<div class="qc">
+  <div class="qc-head">
+    <div class="qno qno-e">E2</div>
+    <div class="qc-meta">
+      <div class="qc-type">2~4교시 논술형 · 25점 · 목표 25~28분</div>
+      <div class="qc-title">AI 에이전트(AI Agent)와 다중 에이전트 시스템(MAS)에 대하여 다음을 설명하시오.</div>
+    </div>
+  </div>
+  <div class="qc-body">
+    <div class="qc-items">
+      <div class="qc-item"><span class="qc-label">가.</span><span>AI 에이전트의 개념, 구성요소 및 ReAct·Agentic 패턴</span></div>
+      <div class="qc-item"><span class="qc-label">나.</span><span>다중 에이전트 시스템(MAS)의 아키텍처 및 협력 방식</span></div>
+      <div class="qc-item"><span class="qc-label">다.</span><span>AI 에이전트 도입 시 보안 위협 및 신뢰성 확보 방안</span></div>
+    </div>
+    <div class="hints">
+      <span class="hint">Tool Use / Function Calling</span>
+      <span class="hint">Orchestrator-Worker 패턴</span>
+      <span class="hint">프롬프트 인젝션 보안</span>
+    </div>
+  </div>
+  <div class="ans-wrap">
+    <button class="ans-tog" onclick="tog(this)">
+      <span class="ans-tog-lbl">📄 모범 답안 보기</span>
+      <span class="ans-tog-arr">▼</span>
+    </button>
+    <div class="ans-body">
+      <div class="ans-title">AI 에이전트 개념·MAS 아키텍처 및 보안·신뢰성 확보 방안</div>
+      <div class="chips">
+        <span class="chip c-time">⏱ 목표 28분</span>
+        <span class="chip c-page">📄 3.5~4페이지</span>
+        <span class="chip c-score">💯 25점</span>
+      </div>
+
+      <div class="sec">
+        <div class="sec-h s-pur">Ⅰ. 개요 — AI 에이전트의 개념과 중요성</div>
+        <div class="ap">AI 에이전트란 LLM을 두뇌로 사용하여 목표를 자율적으로 분석·계획·실행·피드백하는 자율 행동 시스템이다. 단순 Q&A를 넘어 도구(Tool)를 호출하고, 외부 환경과 상호작용하며, 장기 목표를 달성하는 것이 특징이다. 2024년부터 Agentic AI가 LLM 활용의 핵심 패러다임으로 부상하였다.</div>
+      </div>
+
+      <div class="sec">
+        <div class="sec-h s-grn">Ⅱ. 가. AI 에이전트 구성요소 및 ReAct 패턴</div>
+        <div class="dgm">AI 에이전트 아키텍처
+
+┌──────────────────────────────────────────┐
+│              AI AGENT                     │
+│                                           │
+│  [LLM Brain]  ←→  [Memory]               │
+│       │              │                   │
+│       ├── 단기: 대화 컨텍스트 (In-Context)  │
+│       └── 장기: 벡터 DB (External Memory) │
+│       ↓                                  │
+│  [Planning]  ← 목표 분해, 태스크 순서화     │
+│       ↓                                  │
+│  [Tool Use / Action]                     │
+│   • 웹 검색  • 코드 실행  • DB 조회        │
+│   • API 호출 • 파일 I/O  • 이메일 발송    │
+└──────────────────────────────────────────┘</div>
+        <div class="kb kb-g">
+          <h4>ReAct 패턴 (Reasoning + Acting)</h4>
+          Thought(추론) → Action(도구 호출) → Observation(결과 관찰) 사이클을 반복하여 목표 달성.<br>
+          예: 질문 → "검색이 필요하다" → 웹 검색 API 호출 → 결과 관찰 → "추가 계산 필요" → 코드 실행 → 최종 답변
+        </div>
+        <table class="tbl">
+          <tr><th>구성요소</th><th>역할</th><th>기술 예시</th></tr>
+          <tr><td>LLM Brain</td><td>추론·계획·판단의 핵심 엔진</td><td>GPT-4, Claude, Gemini</td></tr>
+          <tr><td>단기 Memory</td><td>현재 대화·태스크 컨텍스트 유지</td><td>프롬프트 컨텍스트 윈도우</td></tr>
+          <tr><td>장기 Memory</td><td>과거 경험·지식 저장·검색</td><td>벡터 DB (Pinecone, Chroma)</td></tr>
+          <tr><td>Tool Use</td><td>외부 시스템·API 호출</td><td>Function Calling, MCP, Plugin</td></tr>
+          <tr><td>Planning</td><td>목표를 하위 태스크로 분해</td><td>CoT, ToT, LATS</td></tr>
+        </table>
+      </div>
+
+      <div class="sec">
+        <div class="sec-h s-blu">Ⅲ. 나. 다중 에이전트 시스템(MAS) 아키텍처</div>
+        <div class="dgm">MAS 아키텍처 — Orchestrator-Worker 패턴
+
+┌─────────────────────────────────────────┐
+│         Orchestrator Agent              │
+│   (목표 분석 → 태스크 분배 → 결과 통합)  │
+└───────┬──────────┬──────────┬───────────┘
+        ↓          ↓          ↓
+  [Worker A]  [Worker B]  [Worker C]
+  (웹 검색)   (코드 작성)  (문서 요약)
+        ↓          ↓          ↓
+  결과 반환 → Orchestrator 통합 → 최종 출력</div>
+        <table class="tbl">
+          <tr><th>MAS 유형</th><th>특징</th><th>적합 태스크</th></tr>
+          <tr><td>Orchestrator-Worker</td><td>중앙 조율자가 전문 에이전트에 위임. 명확한 책임 분리</td><td>복잡한 멀티스텝 워크플로우</td></tr>
+          <tr><td>Peer-to-Peer</td><td>에이전트 간 직접 통신·협상. 분산형</td><td>동적 환경, 협상 태스크</td></tr>
+          <tr><td>Hierarchical</td><td>계층적 에이전트 구조. 상위가 하위 에이전트 통제</td><td>복잡한 조직형 태스크</td></tr>
+        </table>
+        <div class="ap">대표 프레임워크: LangGraph, AutoGen, CrewAI, OpenAI Swarm, Anthropic Multi-agent 패턴</div>
+      </div>
+
+      <div class="sec">
+        <div class="sec-h s-red">Ⅳ. 다. AI 에이전트 보안 위협 및 신뢰성 확보</div>
+        <ul class="ol">
+          <li><span class="on on-r">1</span><div><strong>Prompt Injection (프롬프트 인젝션)</strong>: 악성 웹 페이지·문서 내 숨겨진 지시로 에이전트 조종 → Indirect Injection이 특히 위험
+            <div class="sub"><div class="sub-i">대책: 입력 필터링, Instruction Hierarchy(시스템 > 사용자 > 환경), 샌드박싱</div></div>
+          </div></li>
+          <li><span class="on on-r">2</span><div><strong>권한 남용(Privilege Escalation)</strong>: 에이전트가 필요 이상의 권한으로 시스템 조작
+            <div class="sub"><div class="sub-i">대책: 최소 권한 원칙(Least Privilege), 도구 화이트리스트, 위험 행동 재확인</div></div>
+          </div></li>
+          <li><span class="on on-r">3</span><div><strong>계획 오류(Plan Hallucination)</strong>: 에이전트가 잘못된 계획을 자신감 있게 실행하여 피해 발생
+            <div class="sub"><div class="sub-i">대책: Human-in-the-Loop (고위험 행동 전 인간 확인), 실행 전 계획 검토 단계</div></div>
+          </div></li>
+          <li><span class="on on-r">4</span><div><strong>데이터 유출</strong>: 도구 호출을 통해 민감 데이터가 외부로 전송될 위험
+            <div class="sub"><div class="sub-i">대책: 데이터 마스킹, 출력 모니터링, 에이전트 격리 환경(Sandbox)</div></div>
+          </div></li>
+        </ul>
+        <div class="kb kb-t">
+          <h4>에이전트 신뢰성 확보 5원칙</h4>
+          ① <strong>관찰가능성</strong>: 모든 추론·행동 로그 기록 (LangSmith, Langfuse 등)<br>
+          ② <strong>Human-in-the-Loop</strong>: 고위험 행동(파일 삭제, 결제, 이메일 발송)은 인간 확인 필수<br>
+          ③ <strong>행동 범위 제한</strong>: Tool 화이트리스트, 샌드박스 실행 환경<br>
+          ④ <strong>감사 추적</strong>: 에이전트 의사결정 과정의 재현 가능한 로그 유지<br>
+          ⑤ <strong>실패 안전(Fail-safe)</strong>: 에이전트 오류 시 안전한 기본 상태로 롤백
+        </div>
+      </div>
+
+      <div class="conc">
+        <div class="conc-h">Ⅴ. 결론</div>
+        <p>AI 에이전트와 MAS는 반복적이고 복잡한 지식 업무 자동화의 차세대 패러다임으로, 소프트웨어 개발·고객 지원·리서치 자동화 등에 이미 도입이 가속화되고 있다. 그러나 자율적 행동 능력만큼 보안 위협과 책임 소재가 복잡해지므로, 감리 시 에이전트의 행동 범위·로그 관리·인간 감독 체계를 핵심 점검항목으로 삼아야 한다.</p>
+      </div>
+    </div>
+  </div>
+</div>
+</div><!-- /e1 -->
+
+<!-- E3 MLOps -->
+<div class="q-panel" id="e2">
+<div class="qc">
+  <div class="qc-head">
+    <div class="qno qno-e">E3</div>
+    <div class="qc-meta">
+      <div class="qc-type">2~4교시 논술형 · 25점 · 목표 25~28분</div>
+      <div class="qc-title">MLOps(Machine Learning Operations)에 대하여 다음을 설명하시오.</div>
+    </div>
+  </div>
+  <div class="qc-body">
+    <div class="qc-items">
+      <div class="qc-item"><span class="qc-label">가.</span><span>MLOps의 개념과 DevOps 대비 MLOps가 필요한 이유</span></div>
+      <div class="qc-item"><span class="qc-label">나.</span><span>MLOps 파이프라인의 구성 단계와 핵심 컴포넌트</span></div>
+      <div class="qc-item"><span class="qc-label">다.</span><span>모델 드리프트(Model Drift) 유형과 모니터링·재학습 전략</span></div>
+    </div>
+    <div class="hints">
+      <span class="hint">데이터·개념 드리프트 구분</span>
+      <span class="hint">Feature Store</span>
+      <span class="hint">모델 레지스트리</span>
+      <span class="hint">CT/CD/CM 파이프라인</span>
+    </div>
+  </div>
+  <div class="ans-wrap">
+    <button class="ans-tog" onclick="tog(this)">
+      <span class="ans-tog-lbl">📄 모범 답안 보기</span>
+      <span class="ans-tog-arr">▼</span>
+    </button>
+    <div class="ans-body">
+      <div class="ans-title">MLOps의 개념·파이프라인 구성 및 드리프트 모니터링·재학습 전략</div>
+      <div class="chips">
+        <span class="chip c-time">⏱ 목표 28분</span>
+        <span class="chip c-page">📄 3.5~4페이지</span>
+        <span class="chip c-score">💯 25점</span>
+      </div>
+
+      <div class="sec">
+        <div class="sec-h s-pur">Ⅰ. 개요 — MLOps의 개념과 등장 배경</div>
+        <div class="ap">MLOps(Machine Learning Operations)는 ML 모델의 개발(Dev)·배포(Deploy)·운영(Ops) 전 생명주기를 자동화·표준화·거버넌스화하는 방법론이자 엔지니어링 체계이다. Google이 2015년 "Hidden Technical Debt in ML Systems" 논문을 통해 ML 시스템 운영의 복잡성을 지적한 이후, 체계적 운영 방법론으로 발전하였다.</div>
+        <table class="tbl">
+          <tr><th>비교 항목</th><th>DevOps</th><th>MLOps</th></tr>
+          <tr><td>아티팩트</td><td>소프트웨어 코드</td><td>코드 + 데이터 + 모델 (3요소 버전 관리)</td></tr>
+          <tr><td>테스트 대상</td><td>코드 기능·단위 테스트</td><td>모델 성능·공정성·편향·데이터 품질</td></tr>
+          <tr><td>배포 실패 원인</td><td>버그·기능 오류</td><td>데이터 변화·드리프트·모델 열화</td></tr>
+          <tr><td>모니터링</td><td>서버 메트릭 (CPU·메모리·오류율)</td><td>+ 모델 성능 지표 (Accuracy·F1·AUC·드리프트)</td></tr>
+          <tr><td>재배포 트리거</td><td>코드 변경</td><td>코드 변경 또는 데이터/개념 드리프트</td></tr>
+        </table>
+      </div>
+
+      <div class="sec">
+        <div class="sec-h s-grn">Ⅱ. 나. MLOps 파이프라인 구성 단계 및 핵심 컴포넌트</div>
+        <div class="dgm">MLOps 파이프라인 (CT/CD/CM)
+
+[Data]→[Feature]→[Train]→[Evaluate]→[Registry]→[Serve]→[Monitor]
+  │         │         │          │           │          │        │
+데이터      Feature   실험        성능         모델      A/B     드리프트
+수집·검증   Store     추적(MLflow) 검증·승인   Registry  배포    탐지·경보
+DVC        Feast     AutoML      Champion vs  MLflow   Canary  재학습
+           Tecton    하이퍼파라미터 Challenger  S3 Model  Blue   트리거
+                     튜닝                     Hub      Green</div>
+        <ul class="ol">
+          <li><span class="on on-g">1</span><div><strong>데이터 파이프라인</strong>: 데이터 수집·검증·버전 관리(DVC). Great Expectations로 데이터 품질 자동 검증. 학습-서빙 데이터 스큐(Training-Serving Skew) 방지</div></li>
+          <li><span class="on on-g">2</span><div><strong>Feature Store</strong>: 피처(특성)의 중앙 저장·재사용·공유 플랫폼. 온라인(실시간 추론)·오프라인(학습) 피처 분리. (Feast, Tecton, Hopsworks)</div></li>
+          <li><span class="on on-g">3</span><div><strong>실험 추적 (Experiment Tracking)</strong>: 파라미터·메트릭·아티팩트를 버전별로 기록. (MLflow, W&amp;B, Neptune)</div></li>
+          <li><span class="on on-g">4</span><div><strong>모델 레지스트리 (Model Registry)</strong>: 모델 버전·메타데이터·스테이지(Staging→Production) 관리. Champion-Challenger 패턴으로 안전한 배포</div></li>
+          <li><span class="on on-g">5</span><div><strong>서빙 (Model Serving)</strong>: REST API·gRPC 기반 실시간 추론(Online), 배치 추론(Offline). (TorchServe, Triton, BentoML, KServe)</div></li>
+        </ul>
+      </div>
+
+      <div class="sec">
+        <div class="sec-h s-red">Ⅲ. 다. 모델 드리프트 유형과 모니터링·재학습 전략</div>
+        <table class="tbl">
+          <tr><th>드리프트 유형</th><th>정의</th><th>발생 원인</th><th>탐지 방법</th></tr>
+          <tr><td>데이터 드리프트<br>(Data Drift)</td><td>입력 데이터의 통계적 분포 변화 (P(X) 변화)</td><td>사용자 패턴 변화, 외부 환경 변화</td><td>PSI, KS-Test, JS Divergence</td></tr>
+          <tr><td>개념 드리프트<br>(Concept Drift)</td><td>입력-출력 관계 자체가 변화 (P(Y|X) 변화)</td><td>트렌드 변화, 정책·규정 개정</td><td>모델 성능 지표 모니터링 (Acc·F1 급락)</td></tr>
+          <tr><td>레이블 드리프트<br>(Label Drift)</td><td>출력 레이블 분포 변화 (P(Y) 변화)</td><td>클래스 불균형 심화</td><td>예측 분포 통계 모니터링</td></tr>
+          <tr><td>피처 드리프트<br>(Feature Drift)</td><td>특정 입력 피처값의 분포 변화</td><td>센서 노후화, 데이터 수집 오류</td><td>피처별 개별 분포 모니터링</td></tr>
+        </table>
+        <div class="kb kb-o">
+          <h4>재학습(Retraining) 전략</h4>
+          ① <strong>일정 기반(Time-Based)</strong>: 주기적 재학습 (매일·매주). 단순하나 드리프트 미감지 가능<br>
+          ② <strong>성능 기반(Performance-Based)</strong>: 메트릭이 임계값 이하로 하락 시 트리거. 정교하나 레이블 수집 필요<br>
+          ③ <strong>드리프트 기반(Drift-Based)</strong>: 입력 분포 변화 탐지 시 즉시 트리거. 레이블 없이 감지 가능
+        </div>
+      </div>
+
+      <div class="conc">
+        <div class="conc-h">Ⅴ. 결론 및 발전 방향</div>
+        <p>MLOps는 ML 모델을 실험실에서 프로덕션으로 안정적으로 이전하는 필수 엔지니어링 체계이다. 최근 LLMOps로 발전하여 파운데이션 모델의 파인튜닝·배포·평가·모니터링을 통합 관리하는 방향으로 진화하고 있으며, 공공 AI 도입 감리 시 MLOps 성숙도(레벨 0~3) 평가가 새로운 점검 영역으로 부상하고 있다.</p>
+      </div>
+    </div>
+  </div>
+</div>
+</div><!-- /e2 -->
+
+<!-- E4 멀티모달 AI -->
+<div class="q-panel" id="e3">
+<div class="qc">
+  <div class="qc-head">
+    <div class="qno qno-e">E4</div>
+    <div class="qc-meta">
+      <div class="qc-type">2~4교시 논술형 · 25점 · 목표 25~28분</div>
+      <div class="qc-title">멀티모달 AI(Multimodal AI)에 대하여 다음을 설명하시오.</div>
+    </div>
+  </div>
+  <div class="qc-body">
+    <div class="qc-items">
+      <div class="qc-item"><span class="qc-label">가.</span><span>멀티모달 AI의 개념과 단일 모달리티 AI와의 차이점</span></div>
+      <div class="qc-item"><span class="qc-label">나.</span><span>멀티모달 AI의 핵심 기술 (Vision-Language Model, CLIP, Flamingo, GPT-4V 등) 및 동작 원리</span></div>
+      <div class="qc-item"><span class="qc-label">다.</span><span>산업별 적용 사례 및 기술적·윤리적 과제</span></div>
+    </div>
+    <div class="hints">
+      <span class="hint">CLIP Contrastive Learning</span>
+      <span class="hint">VLM 아키텍처</span>
+      <span class="hint">딥페이크 탐지</span>
+      <span class="hint">의료 영상 AI</span>
+    </div>
+  </div>
+  <div class="ans-wrap">
+    <button class="ans-tog" onclick="tog(this)">
+      <span class="ans-tog-lbl">📄 모범 답안 보기</span>
+      <span class="ans-tog-arr">▼</span>
+    </button>
+    <div class="ans-body">
+      <div class="ans-title">멀티모달 AI의 개념·핵심 기술·적용 사례 및 과제</div>
+      <div class="chips">
+        <span class="chip c-time">⏱ 목표 28분</span>
+        <span class="chip c-page">📄 3.5~4페이지</span>
+        <span class="chip c-score">💯 25점</span>
+      </div>
+
+      <div class="sec">
+        <div class="sec-h s-pur">Ⅰ. 개요 — 멀티모달 AI의 개념</div>
+        <div class="ap">멀티모달 AI(Multimodal AI)란 텍스트·이미지·음성·동영상·센서 데이터 등 2가지 이상의 서로 다른 데이터 양식(Modality)을 통합적으로 이해·생성·추론하는 AI 시스템이다. 인간이 시각·청각·언어를 동시에 활용하여 세계를 인식하는 방식을 모방하며, 단일 모달리티 AI의 맥락 이해 한계를 극복한다.</div>
+        <table class="tbl">
+          <tr><th>비교 항목</th><th>단일 모달리티 AI</th><th>멀티모달 AI</th></tr>
+          <tr><td>입력 처리</td><td>텍스트 OR 이미지 OR 음성 중 하나</td><td>텍스트 + 이미지 + 음성 동시 처리</td></tr>
+          <tr><td>이해 수준</td><td>해당 모달리티 내 패턴 인식</td><td>모달리티 간 관계·맥락 통합 이해</td></tr>
+          <tr><td>적용 한계</td><td>이미지 설명 불가, 시각 질의응답 불가</td><td>이미지 보고 텍스트 생성, 음성+이미지 통합 분석</td></tr>
+          <tr><td>대표 예시</td><td>GPT-3(텍스트), ResNet(이미지)</td><td>GPT-4V, Gemini Ultra, Claude 3, LLaVA</td></tr>
+        </table>
+      </div>
+
+      <div class="sec">
+        <div class="sec-h s-grn">Ⅱ. 나. 핵심 기술 및 동작 원리</div>
+        <div class="kb kb-g">
+          <h4>CLIP (Contrastive Language-Image Pretraining, OpenAI 2021)</h4>
+          이미지-텍스트 쌍 4억 개를 대조 학습(Contrastive Learning)으로 사전학습.<br>
+          같은 쌍(Positive)의 이미지·텍스트 임베딩은 가깝게, 다른 쌍(Negative)은 멀게 학습.<br>
+          → Zero-Shot 이미지 분류, 이미지 검색, VLM의 기반 인코더로 활용.
+        </div>
+        <div class="dgm">VLM(Vision-Language Model) 아키텍처
+
+        이미지 입력          텍스트 입력
+           ↓                    ↓
+  [Vision Encoder]        [LLM Tokenizer]
+  (ViT / CLIP 등)              ↓
+           ↓              [LLM Encoder]
+  [이미지 임베딩]               ↓
+           ↓         [Cross-Attention or]
+  [Projection Layer] ─→ [Prefix Fusion or]
+           ↓              [Concat]
+                    ↓
+              [LLM Decoder]
+                    ↓
+               텍스트 출력 (캡셔닝·VQA·추론)</div>
+        <table class="tbl">
+          <tr><th>모델</th><th>특징</th><th>핵심 기여</th></tr>
+          <tr><td>CLIP (2021)</td><td>이미지-텍스트 대조 학습</td><td>Zero-Shot 시각 분류, VLM 기반 구축</td></tr>
+          <tr><td>Flamingo (2022)</td><td>Frozen LLM + 시각 인코더 + Perceiver Resampler</td><td>Few-Shot 멀티모달 학습, 인터리빙</td></tr>
+          <tr><td>LLaVA (2023)</td><td>CLIP + LLaMA, 경량 Projection Layer</td><td>오픈소스 VLM의 기준. 학술 연구 촉진</td></tr>
+          <tr><td>GPT-4V / Gemini (2023~)</td><td>대규모 멀티모달 파운데이션 모델</td><td>의료·법률·코드 등 전문 분야 멀티모달 추론</td></tr>
+          <tr><td>Sora (2024)</td><td>Diffusion Transformer 기반 텍스트→동영상</td><td>고품질 장편 동영상 생성 (최대 60초)</td></tr>
+        </table>
+      </div>
+
+      <div class="sec">
+        <div class="sec-h s-org">Ⅲ. 다. 산업별 적용 사례 및 기술적·윤리적 과제</div>
+        <ul class="ol">
+          <li><span class="on on-o">1</span><div><strong>의료·바이오</strong>: 의료 영상(X-ray·CT·MRI)+텍스트 보고서 통합 분석. 병변 탐지·진단 보조. Med-PaLM M, BioViL</div></li>
+          <li><span class="on on-o">2</span><div><strong>자율주행</strong>: 카메라·LiDAR·레이더+언어 지시 통합. 주변 환경 이해·경로 계획. Tesla FSD, Waymo</div></li>
+          <li><span class="on on-o">3</span><div><strong>제조·품질검사</strong>: 제품 이미지+결함 기준 텍스트를 통합하여 자동 불량 검출. 설명 가능한 검사 보고서 생성</div></li>
+          <li><span class="on on-o">4</span><div><strong>콘텐츠 생성·미디어</strong>: 텍스트 프롬프트로 이미지·동영상 생성. 광고 제작·교육 콘텐츠 개발 비용 절감</div></li>
+          <li><span class="on on-o">5</span><div><strong>공공·보안</strong>: CCTV 영상+텍스트 기반 이상 행동 탐지, 재난 현장 영상 분석·보고서 자동 생성</div></li>
+        </ul>
+        <div class="kb kb-r">
+          <h4>기술적·윤리적 과제</h4>
+          ① <strong>딥페이크 악용</strong>: 멀티모달 생성AI로 정교한 가짜 영상·음성 제작 → C2PA 표준 워터마킹, AI 탐지 기술<br>
+          ② <strong>개인정보·초상권</strong>: 얼굴 인식·음성 합성으로 개인 식별·도용 → 동의 기반 처리, 생체정보 처리 법제화<br>
+          ③ <strong>모달리티 편향</strong>: 특정 언어·문화권 이미지 데이터 편중 → 다양성 있는 학습 데이터셋 구축<br>
+          ④ <strong>평가 벤치마크 부족</strong>: 멀티모달 이해·추론 능력의 표준 평가 기준 미성숙 → MMBench, MMMU 등 개발 진행
+        </div>
+      </div>
+
+      <div class="conc">
+        <div class="conc-h">Ⅴ. 결론 및 발전 방향</div>
+        <p>멀티모달 AI는 텍스트 중심의 LLM을 넘어 시각·청각·언어를 통합하는 범용 AI(AGI)에 한걸음 더 다가선 기술이다. 의료·자율주행·산업 검사 등 고위험 분야 적용이 확대됨에 따라, EU AI Act의 고위험 AI 분류에 포함될 가능성이 높으며, 설명가능성(XAI)·편향 감사·생체정보 보호 법규 준수가 멀티모달 AI 서비스의 필수 요건이 될 것이다.</p>
+      </div>
+    </div>
+  </div>
+</div>
+</div><!-- /e3 -->
+
+<!-- E5 AI 보안 위협 -->
+<div class="q-panel" id="e4">
+<div class="qc">
+  <div class="qc-head">
+    <div class="qno qno-e">E5</div>
+    <div class="qc-meta">
+      <div class="qc-type">2~4교시 논술형 · 25점 · 목표 25~28분</div>
+      <div class="qc-title">AI 시스템에 대한 보안 위협과 대응 방안에 대하여 다음을 설명하시오.</div>
+    </div>
+  </div>
+  <div class="qc-body">
+    <div class="qc-items">
+      <div class="qc-item"><span class="qc-label">가.</span><span>AI 모델에 대한 주요 공격 유형 (적대적 예제, 데이터 포이즈닝, 모델 역전 공격, 멤버십 추론 공격)</span></div>
+      <div class="qc-item"><span class="qc-label">나.</span><span>LLM 특화 보안 위협 (프롬프트 인젝션, 탈옥, 모델 추출) 및 OWASP Top 10 for LLM</span></div>
+      <div class="qc-item"><span class="qc-label">다.</span><span>AI 보안 강화를 위한 방어 기법 및 감리 점검항목</span></div>
+    </div>
+    <div class="hints">
+      <span class="hint">OWASP LLM Top 10</span>
+      <span class="hint">적대적 학습(AT)</span>
+      <span class="hint">Red Team AI</span>
+      <span class="hint">AI 감리 체크리스트</span>
+    </div>
+  </div>
+  <div class="ans-wrap">
+    <button class="ans-tog" onclick="tog(this)">
+      <span class="ans-tog-lbl">📄 모범 답안 보기</span>
+      <span class="ans-tog-arr">▼</span>
+    </button>
+    <div class="ans-body">
+      <div class="ans-title">AI 보안 위협 유형·LLM 특화 위협·대응 방안 및 감리 점검항목</div>
+      <div class="chips">
+        <span class="chip c-time">⏱ 목표 28분</span>
+        <span class="chip c-page">📄 3.5~4페이지</span>
+        <span class="chip c-score">💯 25점</span>
+      </div>
+
+      <div class="sec">
+        <div class="sec-h s-pur">Ⅰ. 개요 — AI 보안 위협의 중요성</div>
+        <div class="ap">AI 시스템이 의료·금융·자율주행·공공서비스 등 핵심 인프라에 도입됨에 따라, AI 모델 자체를 공격 대상으로 하는 새로운 유형의 보안 위협이 급증하고 있다. 기존 사이버 보안과 달리 AI 보안은 모델의 추론 과정·학습 데이터·파라미터 자체를 공격 대상으로 하는 특수성을 가진다.</div>
+      </div>
+
+      <div class="sec">
+        <div class="sec-h s-red">Ⅱ. 가. AI 모델 주요 공격 유형</div>
+        <table class="tbl">
+          <tr><th>공격 유형</th><th>원리</th><th>목표·피해</th><th>사례</th></tr>
+          <tr><td>적대적 예제<br>(Adversarial Example)</td><td>사람이 인지하기 어려운 미세한 입력 변조(Perturbation)를 가하여 모델을 오분류 유도</td><td>자율주행 표지판 오인식, 얼굴인식 우회</td><td>정지 표지판 → 속도제한 표지판으로 오인</td></tr>
+          <tr><td>데이터 포이즈닝<br>(Data Poisoning)</td><td>학습 데이터에 악성 샘플을 삽입하여 모델에 백도어(Backdoor) 삽입</td><td>특정 트리거 입력 시 오동작. 악성 분류</td><td>얼굴인식에 특정 안경 착용 시 다른 사람으로 인증</td></tr>
+          <tr><td>모델 역전 공격<br>(Model Inversion)</td><td>API 응답을 반복 쿼리하여 학습 데이터를 역추론</td><td>학습 데이터 내 개인정보 추출</td><td>의료 모델에서 환자 얼굴 이미지 복원</td></tr>
+          <tr><td>멤버십 추론 공격<br>(Membership Inference)</td><td>특정 데이터가 학습에 사용되었는지 통계적으로 판별</td><td>프라이버시 침해 (의료 기록 학습 여부 노출)</td><td>GPT류 모델에 개인 문서 포함 여부 탐지</td></tr>
+          <tr><td>모델 추출<br>(Model Stealing)</td><td>공개 API 쿼리를 통해 모델의 기능을 복제</td><td>지적재산권 침해, 경쟁 모델 무단 생성</td><td>상용 ML API를 쿼리하여 유사 모델 구축</td></tr>
+        </table>
+      </div>
+
+      <div class="sec">
+        <div class="sec-h s-org">Ⅲ. 나. LLM 특화 보안 위협 — OWASP Top 10 for LLM</div>
+        <div class="kb kb-o">
+          <h4>OWASP Top 10 for Large Language Models (2023)</h4>
+          LLM01 <strong>프롬프트 인젝션</strong>: 악성 입력으로 시스템 프롬프트 무력화<br>
+          LLM02 <strong>안전하지 않은 출력 처리</strong>: LLM 출력을 검증 없이 실행 (XSS·코드 실행)<br>
+          LLM03 <strong>학습 데이터 중독</strong>: 사전학습·파인튜닝 데이터 오염<br>
+          LLM04 <strong>모델 서비스 거부(DoS)</strong>: 복잡한 프롬프트로 연산 자원 고갈<br>
+          LLM05 <strong>공급망 취약점</strong>: 외부 플러그인·서드파티 모델·데이터셋 오염<br>
+          LLM06 <strong>민감 정보 노출</strong>: 학습 데이터의 개인정보·기밀 정보 유출<br>
+          LLM07 <strong>안전하지 않은 플러그인</strong>: 검증 없는 플러그인 실행으로 권한 탈취<br>
+          LLM08 <strong>과도한 에이전시</strong>: 에이전트가 의도치 않은 고위험 행동 실행<br>
+          LLM09 <strong>과도한 의존</strong>: LLM 출력을 맹신하여 할루시네이션 피해<br>
+          LLM10 <strong>모델 절도</strong>: API를 통한 모델 기능 무단 복제
+        </div>
+        <div class="ap"><strong>탈옥(Jailbreaking)</strong>: 안전 장치를 우회하여 유해 콘텐츠·정보를 생성하도록 유도. "DAN(Do Anything Now)" 류 프롬프트가 대표적. 대응: RLHF·Constitutional AI, 입력/출력 분류기 적용.</div>
+      </div>
+
+      <div class="sec">
+        <div class="sec-h s-tel">Ⅳ. 다. AI 보안 강화 방어 기법 및 감리 점검항목</div>
+        <ul class="ol">
+          <li><span class="on on-t">1</span><div><strong>적대적 학습(Adversarial Training)</strong>: 적대적 예제를 학습 데이터에 포함하여 모델 강건성(Robustness) 향상. 가장 효과적인 방어 기법</div></li>
+          <li><span class="on on-t">2</span><div><strong>차분 프라이버시(Differential Privacy)</strong>: 학습 중 기울기에 노이즈 추가(DP-SGD). 멤버십 추론 공격·모델 역전 공격 완화</div></li>
+          <li><span class="on on-t">3</span><div><strong>입력·출력 검증</strong>: LLM 입력의 악성 패턴 필터링(Guardrails AI, Nvidia NeMo Guardrails). 출력의 유해성·사실성 검증</div></li>
+          <li><span class="on on-t">4</span><div><strong>AI Red Team</strong>: 내부·외부 전문가가 AI 시스템의 취약점을 능동적으로 탐색. Microsoft AI Red Team, Anthropic Red Team 방법론 적용</div></li>
+          <li><span class="on on-t">5</span><div><strong>모델 서명·무결성 검증</strong>: 모델 파일의 해시·서명 검증으로 공급망 변조 탐지. (Hugging Face Safe Tensors, Cosign)</div></li>
+        </ul>
+        <table class="tbl">
+          <tr><th>감리 점검 영역</th><th>핵심 점검항목</th></tr>
+          <tr><td>학습 데이터 보안</td><td>데이터 출처 검증, 데이터 포이즈닝 탐지 체계, 개인정보 가명처리 여부</td></tr>
+          <tr><td>모델 배포 보안</td><td>모델 파일 무결성 검증, 접근 권한 통제, API 인증·인가 체계</td></tr>
+          <tr><td>입·출력 보안</td><td>프롬프트 인젝션 방어, 출력 유해성 필터, 민감정보 마스킹</td></tr>
+          <tr><td>에이전트 보안</td><td>도구 화이트리스트, 최소 권한 원칙, Human-in-the-Loop 적용 여부</td></tr>
+          <tr><td>운영 모니터링</td><td>이상 쿼리 탐지, 모델 성능·드리프트 모니터링, 보안 이벤트 로그 보관</td></tr>
+          <tr><td>법규 준수</td><td>EU AI Act 고위험 분류 여부, 국내 AI 기본법 준수, 개인정보보호법 적합성</td></tr>
+        </table>
+      </div>
+
+      <div class="conc">
+        <div class="conc-h">Ⅴ. 결론</div>
+        <p>AI 보안은 기존 사이버 보안과 차별화된 AI 고유 위협(적대적 예제, 프롬프트 인젝션, 데이터 포이즈닝)에 대응하는 새로운 전문 영역이다. NIST AI RMF(AI 위험 관리 프레임워크)와 OWASP LLM Top 10을 감리 기준으로 채택하고, AI 시스템의 생명주기 전반에 걸쳐 Security by Design을 적용하는 것이 공공 AI 도입의 신뢰성 확보 핵심 전략이다.</p>
+      </div>
+    </div>
+  </div>
+</div>
+</div><!-- /e4 -->
+
+</main>
+</div><!-- /tp1 논술형 -->
+
+<script>
+function showType(idx,btn){
+  document.querySelectorAll('.type-panel').forEach((p,i)=>p.classList.toggle('active',i===idx));
+  document.querySelectorAll('.type-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  window.scrollTo({top:0,behavior:'smooth'});
+  // show first q panel for that type
+  const prefix = idx===0?'s':'e';
+  document.querySelectorAll('#tp'+idx+' .q-panel').forEach((p,i)=>p.classList.toggle('active',i===0));
+  document.querySelectorAll('#tp'+idx+' .q-nav-btn').forEach((b,i)=>b.classList.toggle('active',i===0));
+}
+function showQ(prefix,idx,btn){
+  const container = btn.closest('.type-panel');
+  container.querySelectorAll('.q-panel').forEach((p,i)=>p.classList.toggle('active',i===idx));
+  container.querySelectorAll('.q-nav-btn').forEach((b,i)=>b.classList.toggle('active',i===idx));
+  window.scrollTo({top:72,behavior:'smooth'});
+}
+function tog(btn){
+  const body=btn.nextElementSibling;
+  const arr=btn.querySelector('.ans-tog-arr');
+  const isOpen=body.classList.toggle('open');
+  arr.classList.toggle('open',isOpen);
+  btn.querySelector('.ans-tog-lbl').textContent=isOpen?'📄 답안 닫기':'📄 모범 답안 보기';
+}
+</script>
+</body>
+</html>
