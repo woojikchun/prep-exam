@@ -1,0 +1,708 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>컴퓨터시스템응용기술사 출제경향 분석</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&family=JetBrains+Mono:wght@400;700&display=swap');
+
+  :root {
+    --bg: #f0f4f8;
+    --surface: #ffffff;
+    --surface2: #e8eef5;
+    --border: #d1dce8;
+    --accent1: #2563eb;
+    --accent2: #0891b2;
+    --accent3: #7c3aed;
+    --accent4: #059669;
+    --accent5: #d97706;
+    --accent6: #dc2626;
+    --text: #1e293b;
+    --text-muted: #64748b;
+    --text-dim: #475569;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Noto Sans KR', sans-serif;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* HEADER */
+  .header {
+    background: linear-gradient(135deg, #dbeafe 0%, #ede9fe 50%, #dbeafe 100%);
+    border-bottom: 1px solid var(--border);
+    padding: 32px 24px 24px;
+    position: relative;
+    overflow: hidden;
+  }
+  .header::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: radial-gradient(ellipse at 30% 50%, rgba(37,99,235,0.08) 0%, transparent 60%),
+                radial-gradient(ellipse at 70% 50%, rgba(124,58,237,0.07) 0%, transparent 60%);
+  }
+  .header-inner { position: relative; max-width: 1100px; margin: 0 auto; }
+  .badge {
+    display: inline-flex; align-items: center; gap: 6px;
+    background: rgba(37,99,235,0.1); border: 1px solid rgba(37,99,235,0.25);
+    color: var(--accent1); font-size: 11px; font-weight: 700;
+    padding: 4px 10px; border-radius: 20px; letter-spacing: 1.5px;
+    text-transform: uppercase; margin-bottom: 12px;
+  }
+  h1 {
+    font-size: clamp(20px, 4vw, 30px); font-weight: 900; line-height: 1.2;
+    background: linear-gradient(135deg, #1e3a8a, #2563eb, #7c3aed);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    margin-bottom: 8px;
+  }
+  .subtitle { color: var(--text-dim); font-size: 13px; }
+  .meta-chips { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 16px; }
+  .chip {
+    background: rgba(37,99,235,0.07); border: 1px solid rgba(37,99,235,0.2);
+    padding: 4px 12px; border-radius: 12px; font-size: 12px; color: var(--text-dim);
+  }
+  .chip span { color: var(--accent2); font-weight: 700; }
+
+  /* TABS */
+  .tabs-nav {
+    background: var(--surface); border-bottom: 1px solid var(--border);
+    display: flex; gap: 0; overflow-x: auto; padding: 0 16px;
+    position: sticky; top: 0; z-index: 100;
+    scrollbar-width: none;
+  }
+  .tabs-nav::-webkit-scrollbar { display: none; }
+  .tab-btn {
+    padding: 14px 16px; font-size: 12px; font-weight: 600;
+    color: var(--text-muted); background: none; border: none;
+    border-bottom: 2px solid transparent; cursor: pointer;
+    white-space: nowrap; transition: all 0.2s; font-family: inherit;
+    letter-spacing: 0.3px;
+  }
+  .tab-btn:hover { color: var(--text-dim); }
+  .tab-btn.active { color: var(--accent1); border-bottom-color: var(--accent1); }
+
+  /* CONTENT */
+  .content { max-width: 1100px; margin: 0 auto; padding: 24px 16px; }
+  .tab-panel { display: none; }
+  .tab-panel.active { display: block; }
+
+  /* SECTION TITLE */
+  .section-title {
+    font-size: 16px; font-weight: 700; color: var(--text);
+    margin-bottom: 16px; display: flex; align-items: center; gap: 10px;
+  }
+  .section-title::after {
+    content: ''; flex: 1; height: 1px; background: var(--border);
+  }
+
+  /* OVERVIEW CARDS */
+  .overview-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 12px; margin-bottom: 28px; }
+  .ov-card {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: 12px; padding: 16px; text-align: center;
+    transition: border-color 0.2s;
+  }
+  .ov-card:hover { border-color: var(--accent1); box-shadow: 0 2px 10px rgba(37,99,235,0.1); }
+  .ov-num { font-size: 28px; font-weight: 900; font-family: 'JetBrains Mono', monospace; }
+  .ov-label { font-size: 11px; color: var(--text-muted); margin-top: 4px; }
+
+  /* DOMAIN BARS */
+  .domain-list { display: flex; flex-direction: column; gap: 12px; }
+  .domain-item { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 14px 16px; }
+  .domain-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
+  .domain-name { font-size: 13px; font-weight: 700; }
+  .domain-pct { font-size: 12px; font-family: 'JetBrains Mono', monospace; color: var(--text-dim); }
+  .bar-bg { height: 6px; background: rgba(0,0,0,0.06); border-radius: 3px; overflow: hidden; }
+  .bar-fill { height: 100%; border-radius: 3px; transition: width 0.8s ease; }
+  .domain-topics { font-size: 11px; color: var(--text-muted); margin-top: 8px; line-height: 1.6; }
+
+  /* TOPIC CARDS GRID */
+  .topic-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 14px; }
+  .topic-card {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: 10px; padding: 16px; transition: all 0.2s;
+  }
+  .topic-card:hover { border-color: rgba(37,99,235,0.4); transform: translateY(-1px); box-shadow: 0 4px 16px rgba(37,99,235,0.08); }
+  .topic-card-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 10px; }
+  .topic-name { font-size: 13px; font-weight: 700; line-height: 1.4; }
+  .freq-badge {
+    font-size: 10px; font-weight: 700; padding: 2px 8px; border-radius: 8px;
+    white-space: nowrap; flex-shrink: 0; margin-left: 8px;
+  }
+  .freq-high { background: rgba(239,68,68,0.15); color: #ef4444; border: 1px solid rgba(239,68,68,0.3); }
+  .freq-mid { background: rgba(245,158,11,0.15); color: #f59e0b; border: 1px solid rgba(245,158,11,0.3); }
+  .freq-low { background: rgba(16,185,129,0.15); color: #10b981; border: 1px solid rgba(16,185,129,0.3); }
+  .topic-desc { font-size: 11px; color: var(--text-muted); line-height: 1.6; }
+  .keyword-row { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 8px; }
+  .kw { font-size: 10px; background: rgba(37,99,235,0.07); border-radius: 4px; padding: 2px 7px; color: var(--text-dim); border: 1px solid rgba(37,99,235,0.15); }
+
+  /* TYPE ANALYSIS */
+  .type-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 14px; }
+  .type-card {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: 10px; padding: 16px;
+  }
+  .type-icon { font-size: 24px; margin-bottom: 10px; }
+  .type-title { font-size: 13px; font-weight: 700; margin-bottom: 6px; }
+  .type-desc { font-size: 11px; color: var(--text-muted); line-height: 1.6; }
+  .type-examples { margin-top: 10px; }
+  .ex-item { font-size: 11px; color: var(--accent2); margin-bottom: 4px; padding-left: 10px; position: relative; }
+  .ex-item::before { content: '▸'; position: absolute; left: 0; }
+
+  /* STRATEGY TABLE */
+  .strategy-table { width: 100%; border-collapse: collapse; font-size: 12px; }
+  .strategy-table th {
+    background: var(--surface2); color: var(--text-muted); font-weight: 600;
+    padding: 10px 14px; text-align: left; border-bottom: 1px solid var(--border);
+    font-size: 11px; letter-spacing: 0.5px;
+  }
+  .strategy-table td {
+    padding: 10px 14px; border-bottom: 1px solid rgba(0,0,0,0.05);
+    vertical-align: top; line-height: 1.6;
+  }
+  .strategy-table tr:hover td { background: rgba(37,99,235,0.03); }
+  .priority-A { color: #ef4444; font-weight: 700; }
+  .priority-B { color: #f59e0b; font-weight: 700; }
+  .priority-C { color: #10b981; font-weight: 700; }
+
+  /* RECENT TREND */
+  .trend-timeline { display: flex; flex-direction: column; gap: 0; }
+  .trend-year {
+    display: grid; grid-template-columns: 80px 1fr; gap: 0;
+    border-left: 2px solid var(--border); margin-left: 10px;
+    padding-left: 20px; padding-bottom: 20px; position: relative;
+  }
+  .trend-year::before {
+    content: ''; width: 10px; height: 10px; border-radius: 50%;
+    background: var(--accent1); border: 2px solid var(--bg);
+    position: absolute; left: -6px; top: 4px;
+  }
+  .trend-yr-label { font-size: 13px; font-weight: 700; color: var(--accent1); font-family: 'JetBrains Mono'; }
+  .trend-topics { display: flex; flex-wrap: wrap; gap: 6px; }
+  .trend-tag {
+    font-size: 11px; padding: 3px 10px; border-radius: 6px;
+    background: var(--surface2); border: 1px solid var(--border);
+    color: var(--text-dim);
+  }
+  .trend-tag.hot { background: rgba(220,38,38,0.08); border-color: rgba(220,38,38,0.25); color: #b91c1c; }
+  .trend-tag.new { background: rgba(37,99,235,0.08); border-color: rgba(37,99,235,0.25); color: #1d4ed8; }
+
+  /* EXAM FORMAT */
+  .format-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 14px; margin-bottom: 24px; }
+  .format-card {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: 10px; padding: 16px;
+  }
+  .format-label { font-size: 11px; color: var(--text-muted); margin-bottom: 4px; }
+  .format-val { font-size: 15px; font-weight: 700; color: var(--text); }
+  .format-sub { font-size: 11px; color: var(--text-dim); margin-top: 2px; }
+
+  /* COMPARE INFO/COMP */
+  .compare-box {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 14px;
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: 12px; padding: 20px;
+  }
+  .cmp-col-title { font-size: 13px; font-weight: 700; margin-bottom: 12px; padding-bottom: 8px; border-bottom: 1px solid var(--border); }
+  .cmp-row { font-size: 12px; color: var(--text-dim); padding: 5px 0; border-bottom: 1px solid rgba(0,0,0,0.05); display: flex; gap: 8px; }
+  .cmp-row::before { content: '·'; color: var(--accent1); }
+
+  /* ALERT BOX */
+  .alert {
+    border-radius: 10px; padding: 14px 16px; margin-bottom: 20px;
+    font-size: 12px; line-height: 1.7; display: flex; gap: 12px; align-items: flex-start;
+  }
+  .alert-info { background: rgba(37,99,235,0.06); border: 1px solid rgba(37,99,235,0.2); }
+  .alert-warn { background: rgba(217,119,6,0.06); border: 1px solid rgba(217,119,6,0.2); }
+  .alert-icon { font-size: 18px; flex-shrink: 0; }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-inner">
+    <div class="badge">📊 기출 경향 분석</div>
+    <h1>컴퓨터시스템응용기술사<br>출제 경향 완전 분석</h1>
+    <p class="subtitle">108~134회 기출 기반 · 분야별 빈도 · 유형별 전략 · 최신 트렌드 반영</p>
+    <div class="meta-chips">
+      <div class="chip">분석 회차 <span>108~134회</span></div>
+      <div class="chip">총 분야 <span>9개</span></div>
+      <div class="chip">시험형태 <span>1교시 단답 + 2~4교시 논술</span></div>
+      <div class="chip">합격률 <span>약 5% 미만</span></div>
+    </div>
+  </div>
+</div>
+
+<nav class="tabs-nav">
+  <button class="tab-btn active" onclick="showTab('overview')">📌 시험 개요</button>
+  <button class="tab-btn" onclick="showTab('domain')">📊 분야별 비중</button>
+  <button class="tab-btn" onclick="showTab('topics')">🔑 핵심 토픽</button>
+  <button class="tab-btn" onclick="showTab('types')">📝 문제 유형</button>
+  <button class="tab-btn" onclick="showTab('trend')">🔥 최신 트렌드</button>
+  <button class="tab-btn" onclick="showTab('strategy')">🎯 학습 전략</button>
+</nav>
+
+<div class="content">
+
+  <!-- 시험 개요 -->
+  <div id="tab-overview" class="tab-panel active">
+    <div class="section-title">시험 기본 구조</div>
+    <div class="format-grid">
+      <div class="format-card">
+        <div class="format-label">시험 유형</div>
+        <div class="format-val">필기 1차</div>
+        <div class="format-sub">단답형 + 주관식 논술형</div>
+      </div>
+      <div class="format-card">
+        <div class="format-label">총 시험 시간</div>
+        <div class="format-val">400분</div>
+        <div class="format-sub">교시당 100분 × 4교시</div>
+      </div>
+      <div class="format-card">
+        <div class="format-label">1교시 (단답형)</div>
+        <div class="format-val">13문 중 10선택</div>
+        <div class="format-sub">각 10점 · 개념 정의 위주</div>
+      </div>
+      <div class="format-card">
+        <div class="format-label">2~4교시 (논술형)</div>
+        <div class="format-val">6문 중 4선택</div>
+        <div class="format-sub">각 25점 · 심화 서술</div>
+      </div>
+      <div class="format-card">
+        <div class="format-label">합격 기준</div>
+        <div class="format-val">60점 이상</div>
+        <div class="format-sub">100점 만점</div>
+      </div>
+      <div class="format-card">
+        <div class="format-label">필기 합격 유효</div>
+        <div class="format-val">2년</div>
+        <div class="format-sub">유효기간 내 면접 응시 가능</div>
+      </div>
+    </div>
+
+    <div class="section-title">정보관리기술사 vs 컴퓨터시스템응용기술사</div>
+    <div class="compare-box">
+      <div>
+        <div class="cmp-col-title" style="color: var(--accent1);">정보관리기술사</div>
+        <div class="cmp-row">소프트웨어공학·프로젝트관리 비중 높음</div>
+        <div class="cmp-row">IT경영·전략 문제 자주 출제</div>
+        <div class="cmp-row">법/제도 관련 문항 많음</div>
+        <div class="cmp-row">비즈니스 관점 논술 요구</div>
+      </div>
+      <div>
+        <div class="cmp-col-title" style="color: var(--accent3);">컴퓨터시스템응용기술사</div>
+        <div class="cmp-row">컴퓨터구조·OS·하드웨어 비중 높음</div>
+        <div class="cmp-row">네트워크·통신 프로토콜 심화 출제</div>
+        <div class="cmp-row">기술적 동작 원리 서술 중심</div>
+        <div class="cmp-row">구현·설계 관점 논술 요구</div>
+      </div>
+    </div>
+    <p style="font-size:12px; color:var(--text-muted); margin-top:12px; padding-left:4px;">
+      ※ 두 종목의 출제 범위는 약 70~80% 중복. '양술사' 동시 취득 전략도 일반적.
+    </p>
+
+    <div class="section-title" style="margin-top:24px;">출제 범위 총괄</div>
+    <div class="overview-grid">
+      <div class="ov-card">
+        <div class="ov-num" style="color:#3b82f6">①</div>
+        <div class="ov-label">네트워크 / 통신</div>
+      </div>
+      <div class="ov-card">
+        <div class="ov-num" style="color:#8b5cf6">②</div>
+        <div class="ov-label">보안 / 암호</div>
+      </div>
+      <div class="ov-card">
+        <div class="ov-num" style="color:#06b6d4">③</div>
+        <div class="ov-label">컴퓨터구조 / OS</div>
+      </div>
+      <div class="ov-card">
+        <div class="ov-num" style="color:#10b981">④</div>
+        <div class="ov-label">소프트웨어공학</div>
+      </div>
+      <div class="ov-card">
+        <div class="ov-num" style="color:#f59e0b">⑤</div>
+        <div class="ov-label">데이터베이스</div>
+      </div>
+      <div class="ov-card">
+        <div class="ov-num" style="color:#ef4444">⑥</div>
+        <div class="ov-label">AI / 신기술</div>
+      </div>
+      <div class="ov-card">
+        <div class="ov-num" style="color:#ec4899">⑦</div>
+        <div class="ov-label">프로젝트관리</div>
+      </div>
+      <div class="ov-card">
+        <div class="ov-num" style="color:#a78bfa">⑧</div>
+        <div class="ov-label">법·제도·감리</div>
+      </div>
+      <div class="ov-card">
+        <div class="ov-num" style="color:#34d399">⑨</div>
+        <div class="ov-label">클라우드 / 인프라</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 분야별 비중 -->
+  <div id="tab-domain" class="tab-panel">
+    <div class="alert alert-info">
+      <div class="alert-icon">ℹ️</div>
+      <div>컴시응 기술사는 <strong>네트워크·통신</strong>과 <strong>컴퓨터구조·OS</strong> 비중이 정보관리 대비 현저히 높습니다. 보안, AI/신기술은 두 종목 공통 고출제 분야입니다.</div>
+    </div>
+
+    <div class="section-title">분야별 출제 비중 분석 (추정)</div>
+    <div class="domain-list" id="domainList"></div>
+  </div>
+
+  <!-- 핵심 토픽 -->
+  <div id="tab-topics" class="tab-panel">
+    <div class="alert alert-warn">
+      <div class="alert-icon">⚠️</div>
+      <div>🔴 <strong>고빈도</strong>: 거의 매회 출제 &nbsp;|&nbsp; 🟡 <strong>중빈도</strong>: 2~3회마다 출제 &nbsp;|&nbsp; 🟢 <strong>저빈도</strong>: 간헐적 출제</div>
+    </div>
+    <div class="topic-grid" id="topicGrid"></div>
+  </div>
+
+  <!-- 문제 유형 -->
+  <div id="tab-types" class="tab-panel">
+    <div class="section-title">1교시 단답형 유형 분석</div>
+    <div class="type-grid">
+      <div class="type-card">
+        <div class="type-icon">🔤</div>
+        <div class="type-title">개념·정의형</div>
+        <div class="type-desc">특정 기술/용어의 정의와 핵심 특징을 서술. 가장 높은 비중.</div>
+        <div class="type-examples">
+          <div class="ex-item">제로 트러스트(Zero Trust)의 개념</div>
+          <div class="ex-item">온디바이스 AI</div>
+          <div class="ex-item">세마포어의 개념과 주요 연산</div>
+        </div>
+      </div>
+      <div class="type-card">
+        <div class="type-icon">⚙️</div>
+        <div class="type-title">원리·동작방식형</div>
+        <div class="type-desc">기술의 동작 메커니즘, 프로세스 흐름을 설명.</div>
+        <div class="type-examples">
+          <div class="ex-item">TCP 4-way Handshake</div>
+          <div class="ex-item">ARP 스푸핑 공격 방법</div>
+          <div class="ex-item">교착상태의 필요조건</div>
+        </div>
+      </div>
+      <div class="type-card">
+        <div class="type-icon">📋</div>
+        <div class="type-title">표준·법제도형</div>
+        <div class="type-desc">국내외 표준, 고시, 가이드라인 관련 항목 서술.</div>
+        <div class="type-examples">
+          <div class="ex-item">소프트웨어 기술성 평가기준 지침</div>
+          <div class="ex-item">ISMS-P 간편인증 기준</div>
+          <div class="ex-item">전자정부사업관리 위탁(PMO)</div>
+        </div>
+      </div>
+      <div class="type-card">
+        <div class="type-icon">🆕</div>
+        <div class="type-title">신기술·트렌드형</div>
+        <div class="type-desc">최신 IT 기술 이슈, 신조어·신표준 정의.</div>
+        <div class="type-examples">
+          <div class="ex-item">Wi-Fi 7 / 촉각 인터넷</div>
+          <div class="ex-item">SBOM(소프트웨어 부품명세서)</div>
+          <div class="ex-item">슈퍼 앱 / 디지털 리터러시</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="section-title" style="margin-top:24px;">2~4교시 논술형 유형 분석</div>
+    <div class="type-grid">
+      <div class="type-card">
+        <div class="type-icon">📝</div>
+        <div class="type-title">개념+구성요소+사례형</div>
+        <div class="type-desc">가장 전형적인 논술 구조. 개념→구성요소(기술요소)→적용사례 3단 서술이 기본.</div>
+        <div class="type-examples">
+          <div class="ex-item">초거대 AI 개념·도입원칙·사전고려사항</div>
+          <div class="ex-item">PET 개념·유형·적용사례</div>
+          <div class="ex-item">멀티모달 AI 개념·구성요소·핵심기술</div>
+        </div>
+      </div>
+      <div class="type-card">
+        <div class="type-icon">⚔️</div>
+        <div class="type-title">비교·분석형</div>
+        <div class="type-desc">두 기술/개념의 공통점·차이점을 표 또는 서술로 비교.</div>
+        <div class="type-examples">
+          <div class="ex-item">가상머신(VM) vs 컨테이너(Container)</div>
+          <div class="ex-item">ICMP vs IGMP 비교</div>
+          <div class="ex-item">PDH vs SDH vs SONET</div>
+        </div>
+      </div>
+      <div class="type-card">
+        <div class="type-icon">🛡️</div>
+        <div class="type-title">문제점+대책형</div>
+        <div class="type-desc">보안 취약점, 공격기법 + 방어/대응 방안 서술 구조.</div>
+        <div class="type-examples">
+          <div class="ex-item">스푸핑 공격 유형별 방법·대책</div>
+          <div class="ex-item">AIoT 보안 취약점·보안기술</div>
+          <div class="ex-item">교착상태 해결 방법</div>
+        </div>
+      </div>
+      <div class="type-card">
+        <div class="type-icon">📐</div>
+        <div class="type-title">계층·계위·구조형</div>
+        <div class="type-desc">계층별 기능, 프레임 구조, 아키텍처 구성 요소 서술.</div>
+        <div class="type-examples">
+          <div class="ex-item">OSI 7계층 기능·프로토콜·장비</div>
+          <div class="ex-item">HDLC 프레임 구조·동작모드</div>
+          <div class="ex-item">병렬 프로세서 분류</div>
+        </div>
+      </div>
+      <div class="type-card">
+        <div class="type-icon">🏛️</div>
+        <div class="type-title">법·가이드라인 적용형</div>
+        <div class="type-desc">국내 고시·지침에서 규정하는 항목을 설명. 감리 포인트 연계.</div>
+        <div class="type-examples">
+          <div class="ex-item">EA 도입·운영지침 메타모델·참조모형</div>
+          <div class="ex-item">SP 품질인증 기준·인증등급</div>
+          <div class="ex-item">ISMP와 EA·ISP 비교</div>
+        </div>
+      </div>
+      <div class="type-card">
+        <div class="type-icon">📊</div>
+        <div class="type-title">절차·프로세스형</div>
+        <div class="type-desc">특정 사업/활동의 단계별 수행 절차를 순서대로 서술.</div>
+        <div class="type-examples">
+          <div class="ex-item">ISMP 수립비 산정 절차</div>
+          <div class="ex-item">빅데이터 분석단계 점검항목</div>
+          <div class="ex-item">소프트웨어 품질 평가 절차</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 최신 트렌드 -->
+  <div id="tab-trend" class="tab-panel">
+    <div class="alert alert-info">
+      <div class="alert-icon">🔥</div>
+      <div>최근 3~4년간 <strong>AI·클라우드·보안</strong> 관련 신기술 토픽이 급증. 회차별 시사성 키워드가 1교시에 집중 출제됨.</div>
+    </div>
+
+    <div class="section-title">회차별 주요 신출제 토픽 흐름</div>
+    <div class="trend-timeline" id="trendTimeline"></div>
+
+    <div class="section-title" style="margin-top:28px;">분야별 최신 출제 핵심 키워드</div>
+    <div class="topic-grid" id="trendKeywords"></div>
+  </div>
+
+  <!-- 학습 전략 -->
+  <div id="tab-strategy" class="tab-panel">
+    <div class="section-title">분야별 학습 우선순위 & 전략</div>
+    <div style="overflow-x:auto;">
+    <table class="strategy-table">
+      <thead>
+        <tr>
+          <th>우선순위</th>
+          <th>분야</th>
+          <th>핵심 학습 토픽</th>
+          <th>1교시 대비</th>
+          <th>2~4교시 대비</th>
+        </tr>
+      </thead>
+      <tbody id="strategyTable"></tbody>
+    </table>
+    </div>
+
+    <div class="section-title" style="margin-top:28px;">답안 작성 전략 핵심 포인트</div>
+    <div class="type-grid">
+      <div class="type-card">
+        <div class="type-icon">✍️</div>
+        <div class="type-title">1교시 단답형 전략</div>
+        <div class="type-desc">10분/문제 기준. 정의 → 특징/구성 → 사례/효과 순으로 서술. 핵심 키워드 반드시 포함. 1~1.5페이지 분량 목표.</div>
+      </div>
+      <div class="type-card">
+        <div class="type-icon">🖊️</div>
+        <div class="type-title">2~4교시 논술형 전략</div>
+        <div class="type-desc">25분/문제 기준. 문제 분석 3분 → 목차 구성 3분 → 작성 17분 → 검토 2분. 3~4페이지 목표. 그림/표 1~2개 필수.</div>
+      </div>
+      <div class="type-card">
+        <div class="type-icon">📌</div>
+        <div class="type-title">기술 서술 구조</div>
+        <div class="type-desc">① 개념/정의 → ② 구성요소/기술요소 → ③ 동작원리 → ④ 장단점/문제점 → ⑤ 대응방안/활용사례 → ⑥ 발전방향</div>
+      </div>
+      <div class="type-card">
+        <div class="type-icon">🔢</div>
+        <div class="type-title">숫자·표준 암기</div>
+        <div class="type-desc">계층 번호, RFC 번호, 표준 년도, 법령 조항 등 구체적 숫자가 채점 포인트. 관련 국제표준(ISO/IEEE/ITU) 코드 암기 필수.</div>
+      </div>
+      <div class="type-card">
+        <div class="type-icon">🗓️</div>
+        <div class="type-title">시사성 토픽 대비</div>
+        <div class="type-desc">과기부·행안부·NIA 최신 가이드라인, 법령 개정 내용을 시험 3개월 전부터 모니터링. 1교시 출제 가능성 매우 높음.</div>
+      </div>
+      <div class="type-card">
+        <div class="type-icon">🔄</div>
+        <div class="type-title">기출 반복 출제 패턴</div>
+        <div class="type-desc">OSI 7계층, 교착상태, DB 무결성, PKI/암호화 등 클래식 토픽은 표현만 바꿔 재출제. 이 항목들은 완벽 암기 필수.</div>
+      </div>
+    </div>
+  </div>
+
+</div><!-- /content -->
+
+<script>
+const domains = [
+  { name: '네트워크 / 통신', pct: 22, color: '#3b82f6', topics: 'OSI 7계층, TCP/IP, HDLC, ICMP/IGMP, PDH/SDH/SONET, Wi-Fi 6/7, Open RAN, PoE, VLAN, QoS, 라우팅 프로토콜' },
+  { name: '보안 / 암호화', pct: 20, color: '#ef4444', topics: '대칭/비대칭 암호, PKI, 디지털 서명, 접근제어 모델, IDS/IPS/방화벽, 스푸핑/DoS 공격, ISMS-P, 영지식 증명, Zero Trust' },
+  { name: '컴퓨터구조 / 운영체제', pct: 18, color: '#06b6d4', topics: '프로세스/스레드, 교착상태, 메모리 관리, 인터럽트, 병렬 컴퓨팅, CPU 아키텍처, TCAM, NPU, 가상머신/컨테이너' },
+  { name: 'AI / 신기술', pct: 14, color: '#8b5cf6', topics: '초거대 AI, 온디바이스 AI, 멀티모달 AI, AIoT, RAG, Fine-tuning, 앰비언트 컴퓨팅, 블록체인, 메타버스, 양자컴퓨팅' },
+  { name: '소프트웨어공학', pct: 10, color: '#10b981', topics: 'Agile/Scrum, DevOps, SBOM, 소프트웨어 품질(ISO 25010), SW프로세스 인증(SP), 테스트, 형상관리, 설계 패턴' },
+  { name: '데이터베이스', pct: 7, color: '#f59e0b', topics: 'DB 무결성, 정규화, 트랜잭션/ACID, 인덱스, 분산 DB, NoSQL, 빅데이터 처리, 데이터 거버넌스' },
+  { name: '프로젝트관리 / IT경영', pct: 5, color: '#ec4899', topics: 'PMO, ISMP, ISP, EA, 사업대가 산정, CMMI, 위험관리, IT아키텍처' },
+  { name: '법 / 제도 / 감리', pct: 4, color: '#a78bfa', topics: '전자정부법, 개인정보보호법, 정보화사업 감리, ISMS-P, 소프트웨어진흥법, 공공기관 클라우드 기준 고시' },
+];
+
+const dl = document.getElementById('domainList');
+domains.forEach(d => {
+  dl.innerHTML += `
+    <div class="domain-item">
+      <div class="domain-header">
+        <span class="domain-name" style="color:${d.color}">${d.name}</span>
+        <span class="domain-pct">${d.pct}%</span>
+      </div>
+      <div class="bar-bg"><div class="bar-fill" style="width:${d.pct}%;background:${d.color}"></div></div>
+      <div class="domain-topics">${d.topics}</div>
+    </div>`;
+});
+
+const topics = [
+  { name: 'OSI 7계층 / TCP-IP 프로토콜', freq: 'high', desc: '네트워크 계층 구조, 계층별 기능·프로토콜·데이터단위·장비. 거의 매회 변형 출제.', kw: ['OSI','TCP','IP','PDU','라우터','스위치'] },
+  { name: '보안 공격 기법 (스푸핑/DoS)', freq: 'high', desc: 'ARP·IP·DNS 스푸핑, DDoS 공격 원리 및 대응책. 매회 1~2문항.', kw: ['ARP','DNS','IP 스푸핑','DoS','패킷'] },
+  { name: '교착상태 (Deadlock)', freq: 'high', desc: '4가지 필요조건, 탐지·예방·회피·회복 전략. 빠지지 않는 OS 기출.', kw: ['상호배제','점유대기','비선점','환형대기'] },
+  { name: 'IDS / IPS / 방화벽', freq: 'high', desc: '침입탐지·방지 시스템과 웹방화벽(WAF) 개념, 비교, 동작방식.', kw: ['IDS','IPS','WAF','패턴매칭','이상탐지'] },
+  { name: 'PKI / 암호화 알고리즘', freq: 'high', desc: '대칭/비대칭/해시, AES·RSA·ECC, 디지털 서명·인증서·CA 체계.', kw: ['PKI','CA','AES','RSA','ECC','해시'] },
+  { name: 'AI / 초거대 모델', freq: 'high', desc: '초거대 AI·온디바이스 AI·멀티모달 AI 개념, 구성요소, 활용방안.', kw: ['LLM','멀티모달','온디바이스','RAG'] },
+  { name: 'ISMS-P 인증체계', freq: 'high', desc: '정보보호 관리체계 인증 기준, 간편인증, ISMS vs ISMS-P 구분.', kw: ['ISMS-P','인증','통제항목','간편인증'] },
+  { name: '클라우드 / 가상화 (VM·컨테이너)', freq: 'mid', desc: '하이퍼바이저 vs 컨테이너 비교, Kubernetes, 서비스메시, DevOps.', kw: ['VM','Docker','K8s','하이퍼바이저','MSA'] },
+  { name: 'DB 무결성 / 트랜잭션', freq: 'mid', desc: '무결성 제약조건 종류, ACID 특성, 트랜잭션 격리 수준, 정규화.', kw: ['ACID','무결성','격리수준','정규화'] },
+  { name: '소프트웨어 품질 (ISO 25010)', freq: 'mid', desc: 'SW 품질모델 특성, 메트릭, SP 품질인증 등급 기준.', kw: ['ISO 25010','품질특성','신뢰성','사용성'] },
+  { name: 'Agile / Scrum / DevOps', freq: 'mid', desc: 'Agile 가치·원칙, Scrum 이벤트·산출물, DevOps CI/CD 파이프라인.', kw: ['스프린트','백로그','CI/CD','XP','Kanban'] },
+  { name: 'HDLC 프로토콜', freq: 'mid', desc: '데이터링크 프로토콜 프레임 구조(Flag·Address·Control·FCS), 동작모드.', kw: ['NRM','ABM','ARM','프레임','슬라이딩윈도우'] },
+  { name: 'EA / ISMP / ISP', freq: 'mid', desc: '범정부 EA 메타모델, 참조모형, 성숙도 모델. ISMP 수립 절차와 사업대가.', kw: ['EA','참조모형','메타모델','ISP','ISMP'] },
+  { name: '병렬 컴퓨팅 / CPU 아키텍처', freq: 'mid', desc: 'Flynn 분류, 파이프라인, 슈퍼스칼라, NPU·GPU 비교.', kw: ['SIMD','MIMD','파이프라인','NPU','GPU'] },
+  { name: '영지식 증명 / 블록체인', freq: 'mid', desc: '영지식증명(ZKP) 개념·응용, 블록체인 합의 알고리즘·스마트 컨트랙트.', kw: ['ZKP','PoW','PoS','스마트컨트랙트','DID'] },
+  { name: '개인정보보호 강화기술 (PET)', freq: 'mid', desc: '가명처리·익명화·차분 프라이버시·동형암호·연합학습 유형 및 적용.', kw: ['가명처리','차분프라이버시','동형암호','연합학습'] },
+  { name: 'Zero Trust 보안 모델', freq: 'mid', desc: 'Never Trust, Always Verify 원칙, 구현 요소, 기존 경계 보안과 비교.', kw: ['마이크로세그멘테이션','IAM','최소권한','SDP'] },
+  { name: 'Open RAN / 5G 네트워크', freq: 'low', desc: 'RAN 구조 vs Open RAN 비교, O-CU·O-DU·O-RU 구성요소, 이점.', kw: ['O-RAN','CU','DU','RU','5G','NSA/SA'] },
+  { name: '인터럽트 처리 방식', freq: 'low', desc: 'Polling vs Daisy-Chain vs Vector Interrupt 비교.', kw: ['폴링','데이지체인','벡터인터럽트','ISR'] },
+  { name: '디지털 계위 (PDH/SDH/SONET)', freq: 'low', desc: '전송 계위 체계 비교, 동기식/비동기식 다중화 방식.', kw: ['PDH','SDH','SONET','ATM','VC'] },
+];
+
+const tg = document.getElementById('topicGrid');
+topics.forEach(t => {
+  const fc = t.freq === 'high' ? 'freq-high' : t.freq === 'mid' ? 'freq-mid' : 'freq-low';
+  const fl = t.freq === 'high' ? '🔴 고빈도' : t.freq === 'mid' ? '🟡 중빈도' : '🟢 저빈도';
+  tg.innerHTML += `
+    <div class="topic-card">
+      <div class="topic-card-header">
+        <div class="topic-name">${t.name}</div>
+        <div class="freq-badge ${fc}">${fl}</div>
+      </div>
+      <div class="topic-desc">${t.desc}</div>
+      <div class="keyword-row">${t.kw.map(k=>`<span class="kw">${k}</span>`).join('')}</div>
+    </div>`;
+});
+
+const trends = [
+  { year: '134회 (2024)', items: [
+    {t:'Wi-Fi 7', hot:true},{t:'온디바이스 AI', hot:true},{t:'SBOM', hot:false, new_:true},
+    {t:'촉각 인터넷', hot:false, new_:true},{t:'NPU', hot:false},{t:'제로데이', hot:false},
+    {t:'플랫폼 엔지니어링', new_:true},{t:'공공 클라우드 고시', hot:false}
+  ]},
+  { year: '132회 (2024)', items: [
+    {t:'파인튜닝(Fine-tuning)', hot:true},{t:'영지식 증명', hot:true},{t:'AIoT', hot:false, new_:true},
+    {t:'Open RAN', hot:false, new_:true},{t:'앰비언트 컴퓨팅', new_:true},{t:'슈퍼 앱', hot:false},
+    {t:'디지털 리터러시', hot:false},{t:'TCAM', hot:false}
+  ]},
+  { year: '131회 (2023)', items: [
+    {t:'ChatGPT·LLM', hot:true},{t:'메타버스', hot:true},{t:'제로 트러스트', hot:false},
+    {t:'DevSecOps', new_:true},{t:'eBPF', new_:true},{t:'SRE', hot:false},
+    {t:'클라우드 네이티브', hot:false}
+  ]},
+  { year: '129회 (2023)', items: [
+    {t:'AI 신뢰성·설명가능 AI', hot:true},{t:'공급망 보안', hot:true},{t:'Digital Twin', hot:false, new_:true},
+    {t:'WebAssembly', new_:true},{t:'서비스메시', hot:false},{t:'데이터 주권', hot:false}
+  ]},
+  { year: '128회 (2022)', items: [
+    {t:'블록체인·NFT', hot:true},{t:'클라우드 보안', hot:false},{t:'MLOps', new_:true},
+    {t:'엣지 컴퓨팅', hot:false},{t:'컨테이너 보안', hot:false}
+  ]},
+];
+
+const tt = document.getElementById('trendTimeline');
+trends.forEach(tr => {
+  const tags = tr.items.map(i => {
+    const cls = i.hot ? 'trend-tag hot' : i.new_ ? 'trend-tag new' : 'trend-tag';
+    return `<span class="${cls}">${i.t}</span>`;
+  }).join('');
+  tt.innerHTML += `
+    <div class="trend-year">
+      <div><div class="trend-yr-label">${tr.year}</div></div>
+      <div><div class="trend-topics">${tags}</div></div>
+    </div>`;
+});
+
+const trendKw = [
+  { name: 'AI / ML 신기술', freq: 'high', desc: '초거대AI, 멀티모달, RAG, Fine-tuning, MLOps, 온디바이스AI', kw: ['LLM','RAG','LoRA','RLHF','SLM'] },
+  { name: '차세대 네트워크', freq: 'high', desc: 'Wi-Fi 7, 5G SA/NSA, Open RAN, 촉각 인터넷, 6G 방향성', kw: ['Wi-Fi 7','5G','Open RAN','네트워크 슬라이싱'] },
+  { name: '클라우드 보안·거버넌스', freq: 'mid', desc: 'CSPM, 공공 클라우드 고시, 클라우드 보안인증(CSAP), 멀티클라우드', kw: ['CSPM','CASB','CSAP','멀티클라우드'] },
+  { name: '공급망 / 소프트웨어 보안', freq: 'mid', desc: 'SBOM, SCA, DevSecOps, 소프트웨어 공급망 공격 대응', kw: ['SBOM','SCA','DevSecOps','공급망공격'] },
+  { name: '프라이버시·데이터 보호', freq: 'mid', desc: 'PET(가명화·동형암호·연합학습), 데이터 주권, 개인정보보호법 개정', kw: ['가명정보','동형암호','연합학습','GDPR'] },
+];
+const tk = document.getElementById('trendKeywords');
+trendKw.forEach(t => {
+  const fc = t.freq === 'high' ? 'freq-high' : 'freq-mid';
+  const fl = t.freq === 'high' ? '🔴 고빈도' : '🟡 중빈도';
+  tk.innerHTML += `
+    <div class="topic-card">
+      <div class="topic-card-header">
+        <div class="topic-name">${t.name}</div>
+        <div class="freq-badge ${fc}">${fl}</div>
+      </div>
+      <div class="topic-desc">${t.desc}</div>
+      <div class="keyword-row">${t.kw.map(k=>`<span class="kw">${k}</span>`).join('')}</div>
+    </div>`;
+});
+
+const strategies = [
+  { pri: 'A', field: '네트워크 / 통신', key: 'OSI 7계층, TCP/UDP, HDLC, ICMP/IGMP, 라우팅 알고리즘, Wi-Fi 표준', s1: 'TCP 동작·프로토콜 이름 암기', s2: '계층별 기능·장비 비교표 작성, 통신 기술 비교 서술' },
+  { pri: 'A', field: '보안 / 암호', key: '암호 알고리즘, PKI, 접근제어 모델, 공격기법, ISMS-P, Zero Trust', s1: '알고리즘 분류·특징 암기', s2: '공격방법+대책 구조화, 보안 모델 특징 비교' },
+  { pri: 'A', field: '컴퓨터구조 / OS', key: '교착상태, 세마포어, 프로세스/스레드, 인터럽트, 병렬 처리', s1: '필요조건·해결방법 암기', s2: '동작원리 도식화, VM vs 컨테이너 비교 서술' },
+  { pri: 'A', field: 'AI / 신기술', key: '초거대AI, 멀티모달, 온디바이스AI, AIoT, 영지식 증명', s1: '최신 용어 정의 10줄 이내', s2: '개념·구성·사례 3단 구조 연습' },
+  { pri: 'B', field: '소프트웨어공학', key: 'Agile, Scrum, DevOps, SBOM, SW품질(ISO 25010), SP인증', s1: '방법론 특징·값 암기', s2: '장단점·적용 시나리오 서술' },
+  { pri: 'B', field: '데이터베이스', key: '무결성 제약, 트랜잭션, 정규화, 인덱스, 빅데이터', s1: '무결성 종류 5가지 암기', s2: '트랜잭션 특성+격리수준 비교표' },
+  { pri: 'B', field: '법 / 제도 / 감리', key: '전자정부법, 개인정보보호법, EA 지침, SP 인증 고시', s1: '법령·고시 항목 체크리스트화', s2: '가이드라인 목적·항목·절차 구조화' },
+  { pri: 'C', field: '프로젝트관리', key: 'PMO, ISMP, ISP vs EA 비교, 사업대가 산정', s1: '약어·개념 정의 암기', s2: '비교 분석형 서술 연습' },
+  { pri: 'C', field: '클라우드 / 인프라', key: 'VM·컨테이너 비교, K8s, 서비스메시, 클라우드 보안', s1: '서비스 유형(IaaS/PaaS/SaaS) 암기', s2: '마이그레이션 전략·보안 이슈 서술' },
+];
+
+const st = document.getElementById('strategyTable');
+strategies.forEach(s => {
+  const pc = s.pri === 'A' ? 'priority-A' : s.pri === 'B' ? 'priority-B' : 'priority-C';
+  st.innerHTML += `
+    <tr>
+      <td class="${pc}">★${s.pri}</td>
+      <td style="font-weight:600;white-space:nowrap">${s.field}</td>
+      <td style="font-size:11px;color:var(--text-dim)">${s.key}</td>
+      <td style="font-size:11px">${s.s1}</td>
+      <td style="font-size:11px">${s.s2}</td>
+    </tr>`;
+});
+
+function showTab(id) {
+  document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('tab-' + id).classList.add('active');
+  event.target.classList.add('active');
+}
+</script>
+</body>
+</html>
