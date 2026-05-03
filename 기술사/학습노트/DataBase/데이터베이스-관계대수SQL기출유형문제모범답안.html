@@ -1,0 +1,1261 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>관계대수·SQL 기출유형 문제 & 모범답안</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700;900&family=Noto+Serif+KR:wght@400;600;700&family=JetBrains+Mono:wght@400;600&display=swap');
+:root{
+  --bg:#f5f7fa;--white:#fff;--s2:#eef1f6;--bd:#dde3ec;--bdl:#eef1f6;
+  --bl:#1d4ed8;--bll:#3b82f6;--bbg:#eff6ff;--bbd:#bfdbfe;
+  --rd:#b91c1c;--rbg:#fef2f2;--rbd:#fecaca;
+  --gn:#065f46;--gbg:#ecfdf5;--gbd:#a7f3d0;
+  --or:#92400e;--obg:#fffbeb;--obd:#fde68a;
+  --pu:#5b21b6;--pbg:#f5f3ff;--pbd:#ddd6fe;
+  --tl:#0f766e;--tbg:#f0fdfa;--tbd:#99f6e4;
+  --ro:#9f1239;--robg:#fff1f2;--robd:#fecdd3;
+  --tx:#111827;--tx2:#374151;--tx3:#6b7280;--tx4:#9ca3af;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--tx);font-family:'Noto Sans KR',sans-serif;font-size:14px;line-height:1.6}
+
+.hdr{background:linear-gradient(135deg,#1e3a8a 0%,#0f766e 50%,#065f46 100%);color:#fff;padding:28px 24px 22px;position:relative;overflow:hidden}
+.hdr::after{content:'';position:absolute;right:-60px;top:-60px;width:220px;height:220px;border-radius:50%;background:rgba(255,255,255,0.05)}
+.hdr::before{content:'';position:absolute;left:-40px;bottom:-40px;width:160px;height:160px;border-radius:50%;background:rgba(15,118,110,0.15)}
+.hi{max-width:1100px;margin:0 auto;position:relative}
+.heyebrow{font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:#6ee7b7;margin-bottom:6px}
+.htitle{font-size:clamp(18px,3.5vw,26px);font-weight:900;margin-bottom:6px;font-family:'Noto Serif KR',serif}
+.hsub{font-size:12px;color:#a7f3d0}
+.hpills{display:flex;flex-wrap:wrap;gap:6px;margin-top:14px}
+.hpill{background:rgba(255,255,255,0.12);border:1px solid rgba(255,255,255,0.2);padding:3px 11px;border-radius:20px;font-size:11px;color:#d1fae5}
+
+.type-nav{background:var(--white);border-bottom:3px solid var(--bd);display:flex;overflow-x:auto;scrollbar-width:none;box-shadow:0 2px 8px rgba(0,0,0,0.06);position:sticky;top:0;z-index:200}
+.type-nav::-webkit-scrollbar{display:none}
+.type-btn{flex:1;min-width:160px;padding:14px 16px;background:none;border:none;border-bottom:4px solid transparent;cursor:pointer;font-family:inherit;font-size:13px;font-weight:700;color:var(--tx3);transition:all .18s;display:flex;align-items:center;justify-content:center;gap:8px}
+.type-btn:hover{color:var(--bl);background:var(--bbg)}
+.type-btn.active{color:var(--tl);border-bottom-color:var(--tl);background:var(--tbg)}
+.tbadge{font-size:10px;padding:2px 8px;border-radius:10px;font-weight:700}
+.tbs{background:#fef3c7;color:#92400e}
+.tbl{background:var(--pbg);color:var(--pu)}
+
+.q-nav{background:#fff;border-bottom:1px solid var(--bd);overflow-x:auto;white-space:nowrap;padding:0 16px;scrollbar-width:none;box-shadow:0 1px 4px rgba(0,0,0,0.04)}
+.q-nav::-webkit-scrollbar{display:none}
+.q-btn{display:inline-block;padding:10px 12px;font-size:12px;font-weight:600;color:var(--tx3);background:none;border:none;border-bottom:3px solid transparent;cursor:pointer;font-family:inherit;transition:all .15s}
+.q-btn:hover{color:var(--tl)}
+.q-btn.active{color:var(--tl);border-bottom-color:var(--tl)}
+
+.main{max-width:1100px;margin:0 auto;padding:24px 16px 80px}
+.type-panel{display:none}
+.type-panel.active{display:block}
+.q-panel{display:none}
+.q-panel.active{display:block}
+
+.qcard{background:var(--white);border:1px solid var(--bd);border-radius:14px;overflow:hidden;box-shadow:0 2px 12px rgba(0,0,0,0.05);margin-bottom:20px}
+.qhdr{padding:18px 22px 14px;border-bottom:1px solid var(--bdl);display:flex;align-items:flex-start;gap:14px}
+.qdom{flex-shrink:0;padding:4px 11px;border-radius:20px;font-size:10px;font-weight:700;letter-spacing:.5px;margin-top:2px}
+.badge-db{background:var(--tbg);color:var(--tl);border:1px solid var(--tbd)}
+.qmeta{flex:1}
+.qtype{font-size:10px;color:var(--tx3);font-weight:600;letter-spacing:.5px;margin-bottom:4px}
+.qtitle{font-size:15px;font-weight:800;color:var(--tx);line-height:1.45}
+.qbody{background:var(--bg);padding:16px 22px;border-bottom:1px solid var(--bdl)}
+.qitems{margin-top:8px;display:flex;flex-direction:column;gap:6px}
+.qitem{display:flex;gap:10px;align-items:flex-start;font-size:13px;color:var(--tx2)}
+.qlb{font-weight:700;color:var(--tl);min-width:20px;flex-shrink:0}
+.qhints{display:flex;flex-wrap:wrap;gap:6px;margin-top:12px}
+.qhint{background:var(--tbg);border:1px solid var(--tbd);color:var(--tl);font-size:10px;font-weight:600;padding:2px 8px;border-radius:5px}
+
+.acard{background:var(--white)}
+.atog{width:100%;padding:14px 22px;background:none;border:none;display:flex;align-items:center;justify-content:space-between;cursor:pointer;font-family:inherit;transition:background .15s}
+.atog:hover{background:var(--tbg)}
+.alab{font-size:13px;font-weight:700;color:var(--tl)}
+.aarr{font-size:16px;color:var(--tl);transition:transform .25s}
+.aarr.open{transform:rotate(180deg)}
+.abody{display:none;padding:0 22px 24px}
+.abody.open{display:block}
+
+.atitle{font-size:17px;font-weight:900;color:var(--tx);font-family:'Noto Serif KR',serif;padding:18px 0 6px;border-bottom:2px solid var(--tl);margin-bottom:16px}
+.asec{margin-bottom:18px}
+.ast{font-size:12px;font-weight:800;color:#fff;padding:5px 12px;border-radius:6px;display:inline-block;margin-bottom:11px}
+.s1{background:var(--bl)}
+.s2c{background:#059669}
+.s3{background:#7c3aed}
+.s4{background:#d97706}
+.s5{background:#dc2626}
+.s6{background:var(--tl)}
+.s7{background:#be185d}
+
+.ap{font-size:13px;color:var(--tx2);line-height:1.85;margin-bottom:10px}
+
+.at{width:100%;border-collapse:collapse;font-size:12px;margin:8px 0 12px}
+.at th{background:var(--s2);color:var(--tx2);font-weight:700;padding:8px 12px;border:1px solid var(--bd);text-align:center}
+.at td{padding:8px 12px;border:1px solid var(--bd);vertical-align:top;line-height:1.6}
+.at td:first-child{font-weight:600;color:var(--tl);background:var(--tbg);text-align:center;white-space:nowrap}
+.at tr:nth-child(even) td:not(:first-child){background:#fafcfb}
+
+.aol{padding-left:0;list-style:none;display:flex;flex-direction:column;gap:9px;margin:6px 0}
+.aol li{display:flex;gap:10px;align-items:flex-start;font-size:13px;color:var(--tx2);line-height:1.7}
+.on{flex-shrink:0;width:22px;height:22px;border-radius:50%;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;margin-top:1px;color:#fff}
+.on1{background:var(--bl)}
+.on2{background:#059669}
+.on3{background:#7c3aed}
+.on4{background:#d97706}
+.on5{background:#dc2626}
+.on6{background:var(--tl)}
+
+.sub{margin-top:5px;display:flex;flex-direction:column;gap:4px}
+.si{display:flex;gap:8px;font-size:12px;color:var(--tx3)}
+.si::before{content:'▸';color:var(--tl);flex-shrink:0}
+
+/* SQL code block */
+.sql{background:#0f172a;border:1px solid #1e293b;border-radius:8px;padding:14px 16px;margin:10px 0;font-family:'JetBrains Mono',monospace;font-size:11.5px;line-height:1.9;overflow-x:auto;white-space:pre}
+.kw{color:#7dd3fc}   /* SQL keyword */
+.fn{color:#86efac}   /* function */
+.op{color:#f9a8d4}   /* operator */
+.cm{color:#64748b;font-style:italic}  /* comment */
+.tb{color:#fbbf24}   /* table/alias */
+.nu{color:#c4b5fd}   /* number/string */
+.ra{color:#fb923c}   /* relational algebra symbol */
+
+.dbox{background:#f8fafc;border:1px solid var(--bd);border-left:3px solid var(--tl);border-radius:8px;padding:12px 16px;margin:10px 0;font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--tx2);line-height:1.8;overflow-x:auto;white-space:pre}
+
+.kbox{border-radius:8px;padding:12px 16px;margin:10px 0;font-size:12px;line-height:1.75}
+.kb-bl{background:var(--bbg);border:1px solid var(--bbd);color:#1e40af}
+.kb-gn{background:var(--gbg);border:1px solid var(--gbd);color:var(--gn)}
+.kb-or{background:var(--obg);border:1px solid var(--obd);color:var(--or)}
+.kb-rd{background:var(--rbg);border:1px solid var(--rbd);color:var(--rd)}
+.kb-pu{background:var(--pbg);border:1px solid var(--pbd);color:var(--pu)}
+.kb-tl{background:var(--tbg);border:1px solid var(--tbd);color:var(--tl)}
+.kb-ro{background:var(--robg);border:1px solid var(--robd);color:var(--ro)}
+.kbt{font-weight:700;margin-bottom:4px;font-size:11px;letter-spacing:.4px}
+
+.concl{background:linear-gradient(135deg,var(--tbg),var(--bbg));border:1px solid var(--tbd);border-radius:8px;padding:14px 16px;margin-top:14px}
+.ct{font-weight:700;color:var(--tl);font-size:12px;margin-bottom:6px}
+.concl p{font-size:12px;color:var(--tx2);line-height:1.75}
+
+.chips{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px}
+.chip{font-size:11px;padding:3px 10px;border-radius:6px;font-weight:600}
+.cht{background:var(--obg);color:var(--or);border:1px solid var(--obd)}
+.chp{background:var(--gbg);color:var(--gn);border:1px solid var(--gbd)}
+.chs{background:var(--rbg);color:var(--rd);border:1px solid var(--rbd)}
+
+.sgrid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:10px 0}
+@media(max-width:640px){.sgrid{grid-template-columns:1fr}}
+.sc{background:var(--s2);border:1px solid var(--bd);border-radius:8px;padding:11px 13px}
+.sct{font-size:11px;font-weight:700;color:var(--tl);margin-bottom:5px}
+.sc p{font-size:12px;color:var(--tx2);line-height:1.65}
+
+.qctr{font-size:11px;color:var(--tx4);margin-bottom:16px;font-weight:600;letter-spacing:.5px}
+
+/* Algebra symbol styling */
+.sym{font-family:'JetBrains Mono',monospace;font-size:13px;color:var(--tl);font-weight:700;background:var(--tbg);padding:1px 6px;border-radius:4px;border:1px solid var(--tbd)}
+</style>
+</head>
+<body>
+
+<header class="hdr">
+  <div class="hi">
+    <div class="heyebrow">🗄️ 관계대수 &amp; SQL · RELATIONAL ALGEBRA &amp; SQL</div>
+    <div class="htitle">컴퓨터시스템응용기술사<br>관계대수 &amp; SQL 분야 기출유형 문제 &amp; 모범답안</div>
+    <div class="hsub">단답형 5문제 (1~2페이지) + 논술형 5문제 (3~4페이지) · 전 문항 모범답안 수록</div>
+    <div class="hpills">
+      <span class="hpill">관계대수 8연산</span>
+      <span class="hpill">정규화 1NF→BCNF</span>
+      <span class="hpill">SQL 조인·집합·서브쿼리</span>
+      <span class="hpill">쿼리 최적화·실행계획</span>
+    </div>
+  </div>
+</header>
+
+<nav class="type-nav">
+  <button class="type-btn active" onclick="showType(0,this)">
+    📝 단답형 문제
+    <span class="tbadge tbs">1~2페이지 · 5문제</span>
+  </button>
+  <button class="type-btn" onclick="showType(1,this)">
+    📄 논술형 문제
+    <span class="tbadge tbl">3~4페이지 · 5문제</span>
+  </button>
+</nav>
+
+<!-- ═══════════ 단답형 ═══════════ -->
+<div class="type-panel active" id="tp0">
+  <nav class="q-nav">
+    <button class="q-btn active" onclick="showQ(0,'s',this)">①관계대수 연산</button>
+    <button class="q-btn" onclick="showQ(1,'s',this)">②정규화</button>
+    <button class="q-btn" onclick="showQ(2,'s',this)">③SQL 집합연산</button>
+    <button class="q-btn" onclick="showQ(3,'s',this)">④인덱스</button>
+    <button class="q-btn" onclick="showQ(4,'s',this)">⑤뷰(View)</button>
+  </nav>
+  <div class="main">
+
+    <!-- S1 관계대수 -->
+    <div class="q-panel active" id="sq0">
+    <div class="qctr">📝 단답형 1번 / 5번</div>
+    <div class="qcard">
+      <div class="qhdr">
+        <span class="qdom badge-db">관계대수 / 데이터베이스</span>
+        <div class="qmeta">
+          <div class="qtype">1교시 단답형 · 10~15점 · 1~2페이지 분량</div>
+          <div class="qtitle">관계대수(Relational Algebra)의 8가지 연산자를 순수 관계 연산자와 집합 연산자로 분류하고, 각 연산자의 기호·정의·SQL 대응 방법을 설명하시오.</div>
+        </div>
+      </div>
+      <div class="qbody">
+        <div class="qhints">
+          <span class="qhint">기호 암기 필수</span><span class="qhint">SQL 매핑 연계</span><span class="qhint">닫힘 성질(Closure)</span>
+        </div>
+      </div>
+      <div class="acard">
+        <button class="atog" onclick="tgl(this)">
+          <span class="alab">📄 모범 답안 보기</span><span class="aarr">▼</span>
+        </button>
+        <div class="abody">
+          <div class="atitle">관계대수 8연산자 — 분류·기호·정의·SQL 대응</div>
+          <div class="chips">
+            <span class="chip cht">⏱ 15분</span><span class="chip chp">📄 1.5~2페이지</span><span class="chip chs">💯 10~15점</span>
+          </div>
+          <div class="asec">
+            <div class="ast s1">Ⅰ. 관계대수의 개념</div>
+            <div class="ap">관계대수(Relational Algebra)는 관계형 데이터베이스에서 릴레이션(테이블)을 입력으로 받아 새로운 릴레이션을 출력하는 절차적 질의 언어이다. 모든 연산의 결과가 다시 릴레이션이 되는 <strong>닫힘 성질(Closure Property)</strong>을 가지며, SQL의 이론적 기반이 된다. E.F. Codd(1970)가 정의하였다.</div>
+          </div>
+          <div class="asec">
+            <div class="ast s2c">Ⅱ. 순수 관계 연산자 (Pure Relational Operators) — 4종</div>
+            <table class="at">
+              <tr><th>연산자</th><th>기호</th><th>정의</th><th>SQL 대응</th></tr>
+              <tr><td>셀렉트<br>(Select)</td><td><span class="sym">σ</span><br>시그마</td><td>릴레이션에서 조건(predicate)을 만족하는 <strong>튜플(행)</strong>을 추출<br>σ<sub>조건</sub>(R)</td><td><code>WHERE 조건</code></td></tr>
+              <tr><td>프로젝트<br>(Project)</td><td><span class="sym">π</span><br>파이</td><td>릴레이션에서 지정한 <strong>속성(열)</strong>만 추출. 중복 튜플 자동 제거<br>π<sub>속성목록</sub>(R)</td><td><code>SELECT 컬럼</code></td></tr>
+              <tr><td>조인<br>(Join)</td><td><span class="sym">⋈</span><br>나비넥타이</td><td>두 릴레이션에서 공통 속성 값이 같은 튜플을 결합<br>R ⋈<sub>조건</sub> S</td><td><code>JOIN ... ON</code></td></tr>
+              <tr><td>디비전<br>(Division)</td><td><span class="sym">÷</span></td><td>S의 모든 튜플과 대응되는 R의 튜플 추출 (모두 포함 조건)<br>R ÷ S</td><td><code>NOT EXISTS (NOT EXISTS)</code> 이중 부정</td></tr>
+            </table>
+          </div>
+          <div class="asec">
+            <div class="ast s3">Ⅲ. 집합 연산자 (Set Operators) — 4종</div>
+            <div class="kbox kb-tl">
+              <div class="kbt">📌 집합 연산자 적용 조건 — 합병 가능성(Union Compatibility)</div>
+              두 릴레이션 R, S의 ① 속성 수(차수)가 같고 ② 대응 속성의 도메인이 같아야 집합 연산 적용 가능
+            </div>
+            <table class="at">
+              <tr><th>연산자</th><th>기호</th><th>정의</th><th>SQL 대응</th></tr>
+              <tr><td>합집합<br>(Union)</td><td><span class="sym">∪</span></td><td>R과 S에 속하는 모든 튜플의 집합. 중복 제거<br>R ∪ S</td><td><code>UNION</code><br>(중복 포함: <code>UNION ALL</code>)</td></tr>
+              <tr><td>교집합<br>(Intersection)</td><td><span class="sym">∩</span></td><td>R과 S 모두에 속하는 튜플의 집합<br>R ∩ S</td><td><code>INTERSECT</code></td></tr>
+              <tr><td>차집합<br>(Difference)</td><td><span class="sym">−</span></td><td>R에는 있지만 S에는 없는 튜플의 집합<br>R − S</td><td><code>EXCEPT</code> (Oracle: <code>MINUS</code>)</td></tr>
+              <tr><td>카티션 곱<br>(Cartesian Product)</td><td><span class="sym">×</span></td><td>R과 S의 모든 가능한 튜플 조합<br>|R×S| = |R| × |S|</td><td><code>CROSS JOIN</code></td></tr>
+            </table>
+          </div>
+          <div class="asec">
+            <div class="ast s4">Ⅳ. 관계대수 식과 SQL 변환 예시</div>
+            <div class="dbox">관계대수 식 → SQL 변환 예시
+
+예시 릴레이션: 직원(사번, 이름, 부서번호, 급여)  부서(부서번호, 부서명)
+
+① 셀렉트 + 프로젝트 (부서번호=10인 직원의 이름)
+   π이름( σ부서번호=10(직원) )
+   → SELECT 이름 FROM 직원 WHERE 부서번호 = 10;
+
+② 조인 (직원과 부서 조인)
+   직원 ⋈ 직원.부서번호=부서.부서번호 부서
+   → SELECT * FROM 직원 JOIN 부서 ON 직원.부서번호 = 부서.부서번호;
+
+③ 디비전 (모든 강좌를 수강한 학생)
+   수강(학번,강좌번호) ÷ 강좌(강좌번호)
+   → SELECT DISTINCT 학번 FROM 수강 S1
+      WHERE NOT EXISTS (
+        SELECT 강좌번호 FROM 강좌
+        WHERE NOT EXISTS (
+          SELECT * FROM 수강 S2
+          WHERE S2.학번=S1.학번 AND S2.강좌번호=강좌.강좌번호
+        )
+      );</div>
+          </div>
+          <div class="kbox kb-bl">
+            <div class="kbt">📌 한 줄 암기 (순수 4 + 집합 4)</div>
+            <strong>순수</strong>: <span class="sym">σ</span>셀렉트(행) · <span class="sym">π</span>프로젝트(열) · <span class="sym">⋈</span>조인(결합) · <span class="sym">÷</span>디비전(모두포함)<br>
+            <strong>집합</strong>: <span class="sym">∪</span>합집합 · <span class="sym">∩</span>교집합 · <span class="sym">−</span>차집합 · <span class="sym">×</span>카티션곱
+          </div>
+          <div class="concl">
+            <div class="ct">Ⅴ. 결론 — 감리 포인트</div>
+            <p>관계대수는 SQL 쿼리 최적화기(Query Optimizer)의 이론적 기반으로, 동치 변환 법칙(σ를 먼저 적용하여 데이터 크기 감소)을 통해 실행 계획을 최적화한다. 감리 시에는 디비전 연산을 잘못 구현한 이중 NOT EXISTS 로직의 오류 여부, 카티션 곱의 불필요한 사용으로 인한 성능 문제를 점검한다.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    </div><!-- sq0 -->
+
+    <!-- S2 정규화 -->
+    <div class="q-panel" id="sq1">
+    <div class="qctr">📝 단답형 2번 / 5번</div>
+    <div class="qcard">
+      <div class="qhdr">
+        <span class="qdom badge-db">데이터베이스 / 정규화</span>
+        <div class="qmeta">
+          <div class="qtype">1교시 단답형 · 10~15점 · 1~2페이지 분량</div>
+          <div class="qtitle">데이터베이스 정규화(Normalization)의 목적, 이상(Anomaly) 현상 3가지, 함수적 종속성(FD)의 개념, 1NF~BCNF 각 정규형의 조건과 위반 예시를 설명하시오.</div>
+        </div>
+      </div>
+      <div class="qbody">
+        <div class="qhints">
+          <span class="qhint">이상현상 3종 필수</span><span class="qhint">함수적 종속성 화살표</span><span class="qhint">BCNF까지 정확히</span>
+        </div>
+      </div>
+      <div class="acard">
+        <button class="atog" onclick="tgl(this)">
+          <span class="alab">📄 모범 답안 보기</span><span class="aarr">▼</span>
+        </button>
+        <div class="abody">
+          <div class="atitle">정규화 — 이상현상·함수적 종속성·1NF~BCNF 조건 및 위반 예시</div>
+          <div class="chips">
+            <span class="chip cht">⏱ 15분</span><span class="chip chp">📄 1.5~2페이지</span><span class="chip chs">💯 10~15점</span>
+          </div>
+          <div class="asec">
+            <div class="ast s1">Ⅰ. 정규화의 목적 및 이상현상</div>
+            <div class="ap">정규화(Normalization)는 릴레이션에서 데이터 중복을 최소화하고 삽입·삭제·수정 이상현상을 제거하기 위해 릴레이션을 더 작은 릴레이션으로 분해하는 과정이다.</div>
+            <table class="at">
+              <tr><th>이상현상</th><th>정의</th><th>예시</th></tr>
+              <tr><td>삽입 이상<br>(Insertion)</td><td>불필요한 데이터를 함께 삽입해야 하거나, 삽입이 불가능한 현상</td><td>학생-강좌 테이블에서 수강 강좌 없는 신입생 정보를 삽입 불가</td></tr>
+              <tr><td>삭제 이상<br>(Deletion)</td><td>일부 데이터 삭제 시 의도치 않게 다른 정보까지 손실되는 현상</td><td>마지막 수강생 삭제 시 강좌 정보까지 함께 삭제됨</td></tr>
+              <tr><td>수정 이상<br>(Update)</td><td>중복된 데이터 중 일부만 수정되어 데이터 불일치가 발생하는 현상</td><td>교수 이메일 변경 시 해당 교수의 모든 강좌 행을 수정해야 하며, 일부 누락 시 불일치 발생</td></tr>
+            </table>
+          </div>
+          <div class="asec">
+            <div class="ast s2c">Ⅱ. 함수적 종속성 (Functional Dependency)</div>
+            <div class="kbox kb-tl">
+              <div class="kbt">함수적 종속성 정의</div>
+              릴레이션 R에서 속성 X의 값이 결정되면 속성 Y의 값도 유일하게 결정될 때, "Y는 X에 함수적으로 종속된다"고 하며 <strong>X → Y</strong> 로 표기한다.<br><br>
+              • <strong>완전 함수 종속</strong>: Y가 복합 키 X 전체에 종속 (X의 부분집합에는 종속되지 않음)<br>
+              • <strong>부분 함수 종속</strong>: Y가 복합 키 X의 일부 속성에만 종속<br>
+              • <strong>이행 함수 종속</strong>: X→Y, Y→Z 이면 X→Z (Y가 키가 아닐 때)
+            </div>
+          </div>
+          <div class="asec">
+            <div class="ast s3">Ⅲ. 1NF ~ BCNF 정규형 조건 및 위반 예시</div>
+            <table class="at">
+              <tr><th>정규형</th><th>조건</th><th>제거 대상</th><th>위반 예시</th></tr>
+              <tr><td>1NF<br>(제1 정규형)</td><td>모든 속성값이 <strong>원자값(Atomic)</strong>이어야 함. 반복 그룹, 다중값 속성 불허</td><td>비원자 속성, 반복 그룹</td><td>취미 속성에 "독서, 등산, 요리" 처럼 다중값 저장</td></tr>
+              <tr><td>2NF<br>(제2 정규형)</td><td>1NF 만족 + 기본 키에 <strong>완전 함수 종속</strong> (부분 함수 종속 제거)</td><td>부분 함수 종속</td><td>(학번, 과목코드)→성적 ✓ 但 학번→학생명 (부분 종속, 과목코드 불필요)</td></tr>
+              <tr><td>3NF<br>(제3 정규형)</td><td>2NF 만족 + <strong>이행 함수 종속</strong> 제거. 기본 키 이외의 속성이 다른 비키 속성을 결정하지 않아야 함</td><td>이행 함수 종속</td><td>학번→학과코드→학과명 (학번→학과명은 이행 종속)</td></tr>
+              <tr><td>BCNF<br>(Boyce-Codd NF)</td><td>3NF 만족 + 모든 <strong>결정자(Determinant)가 후보 키</strong>이어야 함. 3NF보다 강한 조건</td><td>후보 키가 아닌 결정자</td><td>후보키가 여러 개이고 그 중 하나가 다른 후보키의 속성을 결정할 때</td></tr>
+            </table>
+            <div class="dbox">정규화 단계 도식
+
+비정규형 릴레이션 R
+    │ 원자값 보장 (반복그룹 제거)
+    ▼
+1NF — 원자값 만족
+    │ 부분 함수 종속 제거
+    ▼
+2NF — 완전 함수 종속
+    │ 이행 함수 종속 제거
+    ▼
+3NF — 이행 종속 제거
+    │ 모든 결정자 = 후보키 보장
+    ▼
+BCNF ← 대부분의 실무 목표 정규형
+    │ 다치 종속(MVD) 제거
+    ▼
+4NF
+    │ 조인 종속(JD) 제거
+    ▼
+5NF (PJNF)</div>
+          </div>
+          <div class="kbox kb-or">
+            <div class="kbt">📌 정규화 vs 반정규화 (역정규화)</div>
+            정규화는 이상현상 제거에 유리하나 조인 증가로 성능 저하 가능.<br>
+            반정규화(Denormalization): 성능 향상을 위해 의도적으로 중복 허용. 자주 조회되는 집계 컬럼 추가, 테이블 분할·통합.<br>
+            감리 시: 반정규화 적용 사유·영향도 분석 문서 존재 여부 확인
+          </div>
+          <div class="concl">
+            <div class="ct">Ⅳ. 결론</div>
+            <p>정규화는 데이터 무결성과 일관성을 보장하는 DB 설계의 핵심 원칙이다. 실무에서는 대부분 3NF 또는 BCNF를 목표로 설계하며, 성능과의 트레이드오프를 고려하여 선택적으로 반정규화를 적용한다. 공공 정보화사업 DB 설계 감리 시에는 정규화 준수 여부와 반정규화 근거의 명시를 주요 점검항목으로 확인한다.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    </div><!-- sq1 -->
+
+    <!-- S3 SQL 집합연산 -->
+    <div class="q-panel" id="sq2">
+    <div class="qctr">📝 단답형 3번 / 5번</div>
+    <div class="qcard">
+      <div class="qhdr">
+        <span class="qdom badge-db">SQL / 집합 연산</span>
+        <div class="qmeta">
+          <div class="qtype">1교시 단답형 · 10~15점 · 1~2페이지 분량</div>
+          <div class="qtitle">SQL의 집합 연산자(UNION, INTERSECT, EXCEPT)와 서브쿼리(Subquery) 유형을 설명하고, 상관 서브쿼리(Correlated Subquery)와 EXISTS·IN 연산자의 차이 및 성능 비교를 설명하시오.</div>
+        </div>
+      </div>
+      <div class="qbody">
+        <div class="qhints">
+          <span class="qhint">UNION ALL 차이</span><span class="qhint">EXISTS vs IN 성능</span><span class="qhint">서브쿼리 3위치</span>
+        </div>
+      </div>
+      <div class="acard">
+        <button class="atog" onclick="tgl(this)">
+          <span class="alab">📄 모범 답안 보기</span><span class="aarr">▼</span>
+        </button>
+        <div class="abody">
+          <div class="atitle">SQL 집합 연산자·서브쿼리 유형·EXISTS vs IN 성능 비교</div>
+          <div class="chips">
+            <span class="chip cht">⏱ 15분</span><span class="chip chp">📄 1.5~2페이지</span><span class="chip chs">💯 10~15점</span>
+          </div>
+          <div class="asec">
+            <div class="ast s1">Ⅰ. SQL 집합 연산자</div>
+            <table class="at">
+              <tr><th>연산자</th><th>정의</th><th>중복 처리</th><th>관계대수 대응</th></tr>
+              <tr><td>UNION</td><td>두 SELECT 결과의 합집합</td><td>중복 제거 (UNION ALL: 중복 포함, 더 빠름)</td><td>R ∪ S</td></tr>
+              <tr><td>INTERSECT</td><td>두 SELECT 결과의 교집합</td><td>중복 제거</td><td>R ∩ S</td></tr>
+              <tr><td>EXCEPT<br>(Oracle: MINUS)</td><td>첫 번째 결과에서 두 번째 결과를 뺀 차집합</td><td>중복 제거</td><td>R − S</td></tr>
+            </table>
+            <div class="kbox kb-tl">
+              <div class="kbt">집합 연산 적용 조건 (합병 가능성)</div>
+              ① 두 SELECT 절의 <strong>컬럼 수</strong>가 동일<br>
+              ② 대응하는 컬럼의 <strong>데이터 타입</strong>이 호환 가능<br>
+              ③ 결과 컬럼명은 첫 번째 SELECT 절의 컬럼명을 따름
+            </div>
+          </div>
+          <div class="asec">
+            <div class="ast s2c">Ⅱ. 서브쿼리 유형 (위치에 따른 분류)</div>
+            <table class="at">
+              <tr><th>유형</th><th>위치</th><th>별칭</th><th>예시</th></tr>
+              <tr><td>스칼라 서브쿼리</td><td>SELECT 절</td><td>단일값 반환</td><td>SELECT 이름, (SELECT AVG(급여) FROM 직원) AS 평균급여</td></tr>
+              <tr><td>인라인 뷰</td><td>FROM 절</td><td>파생 테이블</td><td>FROM (SELECT 부서번호, AVG(급여) avg_sal FROM 직원 GROUP BY 부서번호) t</td></tr>
+              <tr><td>중첩 서브쿼리</td><td>WHERE 절</td><td>조건 서브쿼리</td><td>WHERE 급여 &gt; (SELECT AVG(급여) FROM 직원)</td></tr>
+            </table>
+          </div>
+          <div class="asec">
+            <div class="ast s3">Ⅲ. 상관 서브쿼리 vs 비상관 서브쿼리 및 EXISTS·IN 비교</div>
+            <div class="kbox kb-pu">
+              <div class="kbt">상관 서브쿼리 (Correlated Subquery)</div>
+              외부 쿼리의 각 행마다 서브쿼리가 <strong>반복 실행</strong>됨. 외부 쿼리의 컬럼을 서브쿼리에서 참조.<br>
+              비상관 서브쿼리: 서브쿼리가 독립적으로 1회만 실행. 결과를 캐싱하여 외부 쿼리에 전달.
+            </div>
+            <table class="at">
+              <tr><th>비교 항목</th><th>EXISTS</th><th>IN</th></tr>
+              <tr><td>동작 방식</td><td>서브쿼리 결과의 존재 여부 확인. 첫 매칭 발견 시 즉시 중단 (Short-circuit)</td><td>서브쿼리 결과 목록 전체를 메모리에 올린 후 비교</td></tr>
+              <tr><td>NULL 처리</td><td>NULL에 안전 (존재 여부만 확인)</td><td>서브쿼리 결과에 NULL 포함 시 NOT IN이 항상 FALSE 반환 → 위험</td></tr>
+              <tr><td>성능 우위</td><td>서브쿼리 결과가 <strong>대용량</strong>일 때 유리 (Short-circuit으로 조기 종료)</td><td>서브쿼리 결과가 <strong>소용량</strong>일 때 유리 (IN 리스트 캐싱)</td></tr>
+              <tr><td>상관 여부</td><td>주로 상관 서브쿼리로 사용</td><td>비상관 서브쿼리에 주로 사용</td></tr>
+            </table>
+            <div class="sql"><span class="cm">-- EXISTS 사용 (부서 10에 속한 직원이 있는 부서 조회)</span>
+<span class="kw">SELECT</span> 부서명 <span class="kw">FROM</span> <span class="tb">부서 d</span>
+<span class="kw">WHERE</span> <span class="fn">EXISTS</span> (
+  <span class="kw">SELECT</span> <span class="nu">1</span> <span class="kw">FROM</span> <span class="tb">직원 e</span>
+  <span class="kw">WHERE</span> e.부서번호 <span class="op">=</span> d.부서번호  <span class="cm">-- 외부 쿼리 참조 → 상관 서브쿼리</span>
+);
+
+<span class="cm">-- NOT IN의 NULL 함정 → NOT EXISTS 권장</span>
+<span class="kw">SELECT</span> 이름 <span class="kw">FROM</span> <span class="tb">직원</span>
+<span class="kw">WHERE</span> 부서번호 <span class="op">NOT IN</span> (<span class="kw">SELECT</span> 부서번호 <span class="kw">FROM</span> <span class="tb">부서</span>);
+<span class="cm">-- ↑ 부서.부서번호에 NULL이 있으면 결과 0건 (의도치 않은 결과!)</span></div>
+          </div>
+          <div class="concl">
+            <div class="ct">Ⅳ. 결론 — 감리 포인트</div>
+            <p>NOT IN 서브쿼리에 NULL이 포함될 경우 항상 결과가 0건이 되는 치명적 버그가 발생한다. 따라서 NOT IN보다 NOT EXISTS 사용을 권장한다. UNION과 UNION ALL의 차이(중복 제거 여부)를 명확히 인식하여 불필요한 SORT+DISTINCT 연산을 제거해야 한다.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    </div><!-- sq2 -->
+
+    <!-- S4 인덱스 -->
+    <div class="q-panel" id="sq3">
+    <div class="qctr">📝 단답형 4번 / 5번</div>
+    <div class="qcard">
+      <div class="qhdr">
+        <span class="qdom badge-db">데이터베이스 / 인덱스</span>
+        <div class="qmeta">
+          <div class="qtype">1교시 단답형 · 10~15점 · 1~2페이지 분량</div>
+          <div class="qtitle">데이터베이스 인덱스(Index)의 개념, B-Tree 인덱스와 Hash 인덱스의 구조 및 특징을 비교하고, 클러스터드(Clustered) 인덱스와 논클러스터드(Non-Clustered) 인덱스의 차이와 최적 설계 방안을 설명하시오.</div>
+        </div>
+      </div>
+      <div class="qbody">
+        <div class="qhints">
+          <span class="qhint">B+Tree 구조</span><span class="qhint">클러스터드 1개 제한</span><span class="qhint">인덱스 설계 원칙</span>
+        </div>
+      </div>
+      <div class="acard">
+        <button class="atog" onclick="tgl(this)">
+          <span class="alab">📄 모범 답안 보기</span><span class="aarr">▼</span>
+        </button>
+        <div class="abody">
+          <div class="atitle">인덱스 — B-Tree·Hash 비교, Clustered·Non-Clustered 차이 및 최적 설계</div>
+          <div class="chips">
+            <span class="chip cht">⏱ 15분</span><span class="chip chp">📄 1.5~2페이지</span><span class="chip chs">💯 10~15점</span>
+          </div>
+          <div class="asec">
+            <div class="ast s1">Ⅰ. 인덱스의 개념</div>
+            <div class="ap">인덱스는 테이블의 특정 컬럼(들)에 대한 검색 속도를 향상시키기 위한 별도의 데이터 구조이다. 전체 테이블 스캔(Full Table Scan) 대신 인덱스 스캔(Index Scan)을 수행하여 I/O를 최소화한다. 책의 찾아보기(색인)에 비유된다.</div>
+          </div>
+          <div class="asec">
+            <div class="ast s2c">Ⅱ. B-Tree 인덱스 vs Hash 인덱스</div>
+            <table class="at">
+              <tr><th>비교 항목</th><th>B-Tree (B+Tree) 인덱스</th><th>Hash 인덱스</th></tr>
+              <tr><td>자료 구조</td><td>균형 트리. 리프 노드에 실제 데이터 포인터, 리프 간 연결 리스트</td><td>해시 함수로 버킷 주소 계산. O(1) 조회</td></tr>
+              <tr><td>검색 성능</td><td>O(log n). 범위 검색, 정렬, LIKE '값%' 지원</td><td>O(1) 평균. 동등(=) 검색만 지원</td></tr>
+              <tr><td>범위 검색</td><td>✅ 지원 (BETWEEN, &gt;, &lt;, ORDER BY)</td><td>❌ 불가 (해시 충돌로 순서 없음)</td></tr>
+              <tr><td>LIKE 검색</td><td>✅ 전방 일치(LIKE '값%') 지원</td><td>❌ 불가</td></tr>
+              <tr><td>디스크 사용</td><td>많음 (트리 노드)</td><td>적음 (버킷 구조)</td></tr>
+              <tr><td>주요 DBMS</td><td>MySQL InnoDB, PostgreSQL, Oracle (기본)</td><td>Memory 엔진, PostgreSQL Hash Index</td></tr>
+              <tr><td>적합 상황</td><td>범위 검색, 정렬이 필요한 대부분의 상황</td><td>완전 일치 검색(등호), 소용량 임시 테이블</td></tr>
+            </table>
+          </div>
+          <div class="asec">
+            <div class="ast s3">Ⅲ. Clustered vs Non-Clustered 인덱스</div>
+            <table class="at">
+              <tr><th>비교 항목</th><th>클러스터드 (Clustered)</th><th>논클러스터드 (Non-Clustered)</th></tr>
+              <tr><td>정의</td><td>인덱스 키 순서와 테이블 물리적 데이터 순서가 일치</td><td>인덱스와 데이터 물리 순서가 별도로 유지</td></tr>
+              <tr><td>개수 제한</td><td><strong>테이블당 1개</strong>만 생성 가능</td><td>여러 개 생성 가능 (MySQL: 최대 64개)</td></tr>
+              <tr><td>데이터 저장</td><td>리프 노드에 실제 데이터 행 저장</td><td>리프 노드에 데이터 행의 포인터 저장</td></tr>
+              <tr><td>조회 속도</td><td>범위 검색, PK 조회에 매우 빠름</td><td>클러스터드보다 느림 (추가 I/O)</td></tr>
+              <tr><td>삽입 비용</td><td>순서 유지를 위한 페이지 분할(Split) 발생 가능</td><td>상대적으로 낮음</td></tr>
+              <tr><td>생성 기준</td><td>주로 기본 키(PK)에 자동 생성</td><td>외래 키, 검색 조건 컬럼에 생성</td></tr>
+            </table>
+          </div>
+          <div class="asec">
+            <div class="ast s4">Ⅳ. 인덱스 최적 설계 원칙</div>
+            <ul class="aol">
+              <li><span class="on on2">1</span><div><strong>선택성(Selectivity) 높은 컬럼에 생성</strong>: 유니크한 값이 많은 컬럼(주민번호, 이메일)이 효과적. 성별처럼 카디널리티 낮은 컬럼은 비효율</div></li>
+              <li><span class="on on2">2</span><div><strong>복합 인덱스(Composite Index) 컬럼 순서</strong>: 선택성 높은 컬럼을 앞에, WHERE 조건에 자주 함께 사용되는 컬럼 구성. 좌측 전위(Leftmost Prefix) 규칙 준수</div></li>
+              <li><span class="on on2">3</span><div><strong>인덱스 남용 금지</strong>: DML(INSERT/UPDATE/DELETE) 성능 저하 유발. 테이블당 5~6개 이내 권장</div></li>
+              <li><span class="on on2">4</span><div><strong>커버링 인덱스(Covering Index)</strong>: 쿼리에 필요한 모든 컬럼을 인덱스에 포함하여 테이블 접근 없이 인덱스만으로 결과 반환</div></li>
+            </ul>
+          </div>
+          <div class="concl">
+            <div class="ct">Ⅴ. 결론</div>
+            <p>인덱스는 읽기 성능과 쓰기 성능 간의 트레이드오프가 존재한다. 실행 계획(EXPLAIN)을 통해 인덱스 활용 여부를 확인하고, 미사용 인덱스는 제거하여 DML 오버헤드를 최소화해야 한다. 감리 시에는 인덱스 설계서 존재 여부, 실행계획 분석 결과(Full Scan 존재 여부), 인덱스 단편화(Fragmentation) 관리 계획을 점검한다.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    </div><!-- sq3 -->
+
+    <!-- S5 뷰 -->
+    <div class="q-panel" id="sq4">
+    <div class="qctr">📝 단답형 5번 / 5번</div>
+    <div class="qcard">
+      <div class="qhdr">
+        <span class="qdom badge-db">SQL / 뷰(View)</span>
+        <div class="qmeta">
+          <div class="qtype">1교시 단답형 · 10~15점 · 1~2페이지 분량</div>
+          <div class="qtitle">데이터베이스 뷰(View)와 구체화 뷰(Materialized View)의 개념·특징·생성·갱신 방법을 비교하고, 뷰를 통한 데이터 보안 적용 방안과 CTE(Common Table Expression)와의 차이를 설명하시오.</div>
+        </div>
+      </div>
+      <div class="qbody">
+        <div class="qhints">
+          <span class="qhint">가상 테이블 vs 실체화</span><span class="qhint">WITH CHECK OPTION</span><span class="qhint">재귀 CTE</span>
+        </div>
+      </div>
+      <div class="acard">
+        <button class="atog" onclick="tgl(this)">
+          <span class="alab">📄 모범 답안 보기</span><span class="aarr">▼</span>
+        </button>
+        <div class="abody">
+          <div class="atitle">뷰·구체화 뷰 비교, 보안 적용 및 CTE와의 차이</div>
+          <div class="chips">
+            <span class="chip cht">⏱ 15분</span><span class="chip chp">📄 1.5~2페이지</span><span class="chip chs">💯 10~15점</span>
+          </div>
+          <div class="asec">
+            <div class="ast s1">Ⅰ. 뷰(View) vs 구체화 뷰(Materialized View) 비교</div>
+            <table class="at">
+              <tr><th>비교 항목</th><th>뷰 (View)</th><th>구체화 뷰 (Materialized View)</th></tr>
+              <tr><td>저장 방식</td><td>SQL 정의만 저장 (가상 테이블, 데이터 미저장)</td><td>쿼리 결과를 물리적으로 디스크에 저장</td></tr>
+              <tr><td>조회 시</td><td>기반 테이블에 매번 쿼리 재실행</td><td>저장된 결과를 직접 읽음 (빠름)</td></tr>
+              <tr><td>데이터 최신성</td><td>항상 최신 (기반 테이블 직접 참조)</td><td>갱신(REFRESH) 시점에 따라 지연 가능</td></tr>
+              <tr><td>갱신 주기</td><td>없음 (자동)</td><td>ON DEMAND(수동) / ON COMMIT(자동)</td></tr>
+              <tr><td>스토리지</td><td>미사용</td><td>사용 (데이터 복사본 유지)</td></tr>
+              <tr><td>인덱스</td><td>기반 테이블 인덱스 활용</td><td>별도 인덱스 생성 가능</td></tr>
+              <tr><td>적합 상황</td><td>보안, 복잡한 쿼리 단순화, 논리적 독립성</td><td>집계 쿼리 성능 향상, DW/OLAP, 복잡한 조인 캐싱</td></tr>
+            </table>
+            <div class="sql"><span class="cm">-- 뷰 생성</span>
+<span class="kw">CREATE VIEW</span> <span class="tb">직원_공개정보</span> <span class="kw">AS</span>
+  <span class="kw">SELECT</span> 사번, 이름, 부서명
+  <span class="kw">FROM</span> <span class="tb">직원</span> <span class="kw">JOIN</span> <span class="tb">부서</span> <span class="kw">USING</span>(부서번호)
+  <span class="kw">WITH CHECK OPTION</span>; <span class="cm">-- 뷰 조건 벗어난 DML 차단</span>
+
+<span class="cm">-- 구체화 뷰 생성 (Oracle)</span>
+<span class="kw">CREATE MATERIALIZED VIEW</span> <span class="tb">부서별_집계</span>
+<span class="kw">BUILD IMMEDIATE</span>
+<span class="kw">REFRESH COMPLETE ON DEMAND</span>
+<span class="kw">AS</span>
+  <span class="kw">SELECT</span> 부서번호, <span class="fn">COUNT</span>(*) 인원수, <span class="fn">AVG</span>(급여) 평균급여
+  <span class="kw">FROM</span> <span class="tb">직원</span> <span class="kw">GROUP BY</span> 부서번호;</div>
+          </div>
+          <div class="asec">
+            <div class="ast s2c">Ⅱ. 뷰를 통한 데이터 보안 적용</div>
+            <ul class="aol">
+              <li><span class="on on2">1</span><div><strong>컬럼 수준 보안</strong>: 민감 컬럼(주민번호, 급여) 제외한 뷰를 생성하고 일반 사용자에게 기반 테이블 접근 권한 대신 뷰 권한만 부여</div></li>
+              <li><span class="on on2">2</span><div><strong>행 수준 보안</strong>: WHERE 절로 특정 조건의 행만 노출. 예: 부서별 직원은 자신의 부서 데이터만 조회 가능한 뷰 생성</div></li>
+              <li><span class="on on2">3</span><div><strong>WITH CHECK OPTION</strong>: 뷰를 통한 DML 시 뷰의 WHERE 조건을 벗어나는 변경 차단. 데이터 무결성 보호</div></li>
+            </ul>
+          </div>
+          <div class="asec">
+            <div class="ast s3">Ⅲ. CTE(Common Table Expression)와 뷰의 차이</div>
+            <table class="at">
+              <tr><th>비교 항목</th><th>뷰 (View)</th><th>CTE (WITH 절)</th></tr>
+              <tr><td>지속성</td><td>DB에 영구 저장 (DDL)</td><td>단일 쿼리 실행 범위 내에서만 유효 (임시)</td></tr>
+              <tr><td>재사용</td><td>여러 쿼리에서 반복 재사용</td><td>동일 쿼리 내에서만 참조</td></tr>
+              <tr><td>재귀 지원</td><td>불가 (일반 뷰)</td><td>✅ 재귀 CTE로 계층 구조 조회 가능</td></tr>
+              <tr><td>관리</td><td>DBA 권한으로 생성·수정·삭제</td><td>일반 SELECT에 포함, 권한 불필요</td></tr>
+            </table>
+            <div class="sql"><span class="cm">-- 재귀 CTE: 조직도 계층 구조 조회 (상위→하위 전개)</span>
+<span class="kw">WITH RECURSIVE</span> <span class="tb">조직계층</span>(사번, 이름, 상위사번, 레벨) <span class="kw">AS</span> (
+  <span class="cm">-- 기저 조건: 최상위 관리자 (상위사번 없음)</span>
+  <span class="kw">SELECT</span> 사번, 이름, 상위사번, <span class="nu">1</span>
+  <span class="kw">FROM</span> <span class="tb">직원</span> <span class="kw">WHERE</span> 상위사번 <span class="kw">IS NULL</span>
+  <span class="kw">UNION ALL</span>
+  <span class="cm">-- 재귀 조건: 하위 직원 연결</span>
+  <span class="kw">SELECT</span> e.사번, e.이름, e.상위사번, h.레벨 <span class="op">+</span> <span class="nu">1</span>
+  <span class="kw">FROM</span> <span class="tb">직원 e</span>
+  <span class="kw">JOIN</span> <span class="tb">조직계층 h</span> <span class="kw">ON</span> e.상위사번 <span class="op">=</span> h.사번
+)
+<span class="kw">SELECT</span> * <span class="kw">FROM</span> <span class="tb">조직계층</span> <span class="kw">ORDER BY</span> 레벨, 사번;</div>
+          </div>
+          <div class="concl">
+            <div class="ct">Ⅳ. 결론</div>
+            <p>뷰는 보안·복잡도 추상화·논리적 데이터 독립성을 제공하는 핵심 DB 객체이다. 구체화 뷰는 데이터 웨어하우스 집계 쿼리 성능 최적화에 효과적이다. 재귀 쿼리(조직도, BOM 구조)는 재귀 CTE를 활용하며, 이를 뷰로 정의하여 재사용성을 높인다.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    </div><!-- sq4 -->
+
+  </div>
+</div><!-- tp0 -->
+
+<!-- ═══════════ 논술형 ═══════════ -->
+<div class="type-panel" id="tp1">
+  <nav class="q-nav">
+    <button class="q-btn active" onclick="showQ(0,'l',this)">①조인 종류·최적화</button>
+    <button class="q-btn" onclick="showQ(1,'l',this)">②정규화 전 과정</button>
+    <button class="q-btn" onclick="showQ(2,'l',this)">③동시성 제어</button>
+    <button class="q-btn" onclick="showQ(3,'l',this)">④쿼리 최적화</button>
+    <button class="q-btn" onclick="showQ(4,'l',this)">⑤윈도우 함수·고급SQL</button>
+  </nav>
+  <div class="main">
+
+    <!-- L1 조인 -->
+    <div class="q-panel active" id="lq0">
+    <div class="qctr">📄 논술형 1번 / 5번</div>
+    <div class="qcard">
+      <div class="qhdr">
+        <span class="qdom badge-db">SQL / 조인</span>
+        <div class="qmeta">
+          <div class="qtype">2~4교시 논술형 · 25점 · 3~4페이지 분량</div>
+          <div class="qtitle">SQL 조인(JOIN)에 대하여 다음을 설명하시오.</div>
+        </div>
+      </div>
+      <div class="qbody">
+        <div class="qitems">
+          <div class="qitem"><span class="qlb">가.</span><span>INNER JOIN, LEFT/RIGHT OUTER JOIN, FULL OUTER JOIN, CROSS JOIN, SELF JOIN의 개념과 결과 집합 비교</span></div>
+          <div class="qitem"><span class="qlb">나.</span><span>조인 알고리즘(Nested Loop Join, Sort-Merge Join, Hash Join)의 원리·시간복잡도·적합 조건 비교</span></div>
+          <div class="qitem"><span class="qlb">다.</span><span>조인 성능 최적화 방안 및 실행계획(EXPLAIN) 분석 방법</span></div>
+        </div>
+        <div class="qhints">
+          <span class="qhint">벤다이어그램 설명</span><span class="qhint">NL/SM/Hash 3종 알고리즘</span><span class="qhint">실행계획 키워드</span>
+        </div>
+      </div>
+      <div class="acard">
+        <button class="atog" onclick="tgl(this)">
+          <span class="alab">📄 모범 답안 보기</span><span class="aarr">▼</span>
+        </button>
+        <div class="abody">
+          <div class="atitle">SQL 조인 종류·조인 알고리즘 비교·성능 최적화 및 실행계획 분석</div>
+          <div class="chips">
+            <span class="chip cht">⏱ 30분</span><span class="chip chp">📄 3.5~4페이지</span><span class="chip chs">💯 25점</span>
+          </div>
+          <div class="asec">
+            <div class="ast s1">Ⅰ. 개요 — 조인의 개념</div>
+            <div class="ap">조인(JOIN)은 두 개 이상의 테이블에서 연관된 컬럼을 기준으로 데이터를 결합하는 연산으로, 관계형 DB의 핵심 기능이다. 관계대수의 카티션 곱(×)에 셀렉트(σ) 조건을 결합한 형태이다.</div>
+          </div>
+          <div class="asec">
+            <div class="ast s2c">Ⅱ. 가. 조인 종류와 결과 집합 비교</div>
+            <table class="at">
+              <tr><th>조인 종류</th><th>정의</th><th>NULL 행 포함</th><th>관계대수</th></tr>
+              <tr><td>INNER JOIN</td><td>두 테이블에서 조인 조건을 만족하는 행만 반환 (교집합)</td><td>없음</td><td>R ⋈ S</td></tr>
+              <tr><td>LEFT OUTER JOIN</td><td>왼쪽 테이블의 모든 행 + 오른쪽 매칭 행. 불일치 시 NULL</td><td>오른쪽에 NULL</td><td>R ⟕ S</td></tr>
+              <tr><td>RIGHT OUTER JOIN</td><td>오른쪽 테이블의 모든 행 + 왼쪽 매칭 행. 불일치 시 NULL</td><td>왼쪽에 NULL</td><td>R ⟖ S</td></tr>
+              <tr><td>FULL OUTER JOIN</td><td>양쪽 모든 행 반환. 불일치 시 양쪽에 NULL (합집합 효과)</td><td>양쪽에 NULL</td><td>R ⟗ S</td></tr>
+              <tr><td>CROSS JOIN</td><td>카티션 곱. 모든 가능한 행 조합. |R| × |S| 행 생성</td><td>없음</td><td>R × S</td></tr>
+              <tr><td>SELF JOIN</td><td>동일 테이블을 서로 다른 별칭으로 두 번 조인. 계층/자기 참조 구조</td><td>조건에 따라</td><td>R ⋈ R</td></tr>
+            </table>
+            <div class="sql"><span class="cm">-- LEFT OUTER JOIN: 부서 없는 직원도 포함</span>
+<span class="kw">SELECT</span> e.이름, d.부서명
+<span class="kw">FROM</span> <span class="tb">직원 e</span>
+<span class="kw">LEFT OUTER JOIN</span> <span class="tb">부서 d</span> <span class="kw">ON</span> e.부서번호 <span class="op">=</span> d.부서번호;
+
+<span class="cm">-- SELF JOIN: 직원-상관 관계 (관리자 이름 조회)</span>
+<span class="kw">SELECT</span> e.이름 <span class="kw">AS</span> 직원명, m.이름 <span class="kw">AS</span> 관리자명
+<span class="kw">FROM</span> <span class="tb">직원 e</span>
+<span class="kw">LEFT JOIN</span> <span class="tb">직원 m</span> <span class="kw">ON</span> e.관리자번호 <span class="op">=</span> m.사번;</div>
+          </div>
+          <div class="asec">
+            <div class="ast s3">Ⅲ. 나. 조인 알고리즘 비교</div>
+            <table class="at">
+              <tr><th>알고리즘</th><th>원리</th><th>시간복잡도</th><th>인덱스</th><th>적합 상황</th></tr>
+              <tr><td>Nested Loop Join<br>(NL Join)</td><td>외부 테이블(Driving) 행마다 내부 테이블(Driven)을 순차 탐색. 이중 for문과 동일</td><td>O(m × n)<br>인덱스 시 O(m × log n)</td><td>내부 테이블 인덱스 필수</td><td>소용량 테이블, OLTP 단건 조회, 드라이빙 테이블 행 수 적을 때</td></tr>
+              <tr><td>Sort-Merge Join<br>(SM Join)</td><td>두 테이블을 조인 키로 각각 정렬 후 순차 병합. 병합 단계는 O(m+n)</td><td>O(m log m + n log n)</td><td>불필요 (정렬로 대체)</td><td>대용량 테이블, 이미 정렬된 데이터(클러스터드 인덱스), 등호(=) 조인</td></tr>
+              <tr><td>Hash Join<br>(Hash Join)</td><td>소용량 테이블(Build)로 해시 테이블 구성 → 대용량 테이블(Probe)로 해시 조회</td><td>O(m + n) 평균</td><td>불필요</td><td>대용량 테이블, 인덱스 없을 때, OLAP 집계 쿼리, 등호 조인만</td></tr>
+            </table>
+            <div class="dbox">조인 알고리즘 선택 기준
+
+NL Join 선택: 드라이빙 결과 소용량 + 피드라이빙에 인덱스 존재
+               → OLTP 실시간 조회에 최적
+
+SM Join 선택: 대용량 데이터 + 조인 키로 이미 정렬된 경우
+               → ORDER BY 포함 쿼리, 클러스터드 인덱스 컬럼 조인
+
+Hash Join 선택: 대용량 데이터 + 인덱스 없음 + 메모리 충분
+               → OLAP, 배치, 등호(=) 조인만 가능</div>
+          </div>
+          <div class="asec">
+            <div class="ast s4">Ⅳ. 다. 조인 성능 최적화 및 실행계획 분석</div>
+            <ul class="aol">
+              <li><span class="on on4">1</span><div><strong>드라이빙 테이블 선택</strong>: 필터 후 행 수가 적은 테이블을 드라이빙(Outer)으로 설정. WHERE 조건 강한 테이블이 드라이빙</div></li>
+              <li><span class="on on4">2</span><div><strong>조인 컬럼 인덱스</strong>: ON 절의 조인 컬럼 양쪽 모두에 인덱스 생성. 타입 불일치(묵시적 형변환)로 인한 인덱스 무력화 방지</div></li>
+              <li><span class="on on4">3</span><div><strong>조인 순서 조정</strong>: Optimizer Hint로 조인 순서 강제 (Oracle: LEADING, MySQL: STRAIGHT_JOIN)</div></li>
+              <li><span class="on on4">4</span><div><strong>조인 방식 명시</strong>: USE INDEX, FORCE INDEX, USE_NL, USE_HASH 힌트로 최적 알고리즘 유도</div></li>
+            </ul>
+            <div class="sql"><span class="cm">-- 실행계획 분석 (MySQL EXPLAIN)</span>
+<span class="kw">EXPLAIN</span> <span class="kw">SELECT</span> e.이름, d.부서명
+<span class="kw">FROM</span> <span class="tb">직원 e</span> <span class="kw">JOIN</span> <span class="tb">부서 d</span> <span class="kw">ON</span> e.부서번호 <span class="op">=</span> d.부서번호
+<span class="kw">WHERE</span> e.급여 <span class="op">&gt;</span> <span class="nu">5000000</span>;
+
+<span class="cm">/* 실행계획 주요 컬럼 해석:
+  type      : ALL(풀스캔/나쁨) → range → ref → eq_ref → const(최적)
+  key       : 사용된 인덱스. NULL이면 인덱스 미사용
+  rows      : 예상 처리 행 수 (낮을수록 좋음)
+  Extra     : Using index(커버링), Using filesort(정렬 경고),
+              Using temporary(임시 테이블 경고) */</span></div>
+          </div>
+          <div class="concl">
+            <div class="ct">Ⅴ. 결론</div>
+            <p>조인은 관계형 DB의 핵심 연산으로, 조인 종류 선택(INNER vs OUTER)과 알고리즘 선택(NL/SM/Hash)이 성능에 결정적 영향을 미친다. 실행계획(EXPLAIN)을 통해 풀 테이블 스캔·불필요한 정렬·임시 테이블 생성을 탐지하고, 인덱스·힌트·통계 정보 갱신으로 최적화해야 한다. 감리 시에는 성능 테스트 결과에서 응답시간 초과 쿼리의 실행계획 분석 여부를 점검한다.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    </div><!-- lq0 -->
+
+    <!-- L2 정규화 전 과정 -->
+    <div class="q-panel" id="lq1">
+    <div class="qctr">📄 논술형 2번 / 5번</div>
+    <div class="qcard">
+      <div class="qhdr">
+        <span class="qdom badge-db">데이터베이스 / 정규화</span>
+        <div class="qmeta">
+          <div class="qtype">2~4교시 논술형 · 25점 · 3~4페이지 분량</div>
+          <div class="qtitle">데이터베이스 정규화(Normalization) 전 과정에 대하여 다음을 설명하시오.</div>
+        </div>
+      </div>
+      <div class="qbody">
+        <div class="qitems">
+          <div class="qitem"><span class="qlb">가.</span><span>아래 비정규 릴레이션에서 출발하여 1NF → 2NF → 3NF → BCNF로 정규화하는 전 과정 (단계별 릴레이션 제시)</span></div>
+          <div class="qitem"><span class="qlb">나.</span><span>함수적 종속성 다이어그램(FD Diagram) 작성 및 최소 커버(Minimal Cover) 도출</span></div>
+          <div class="qitem"><span class="qlb">다.</span><span>무손실 분해(Lossless Decomposition)와 함수적 종속성 보존(Dependency Preservation)의 개념 및 검증 방법</span></div>
+        </div>
+        <div class="qhints">
+          <span class="qhint">단계별 릴레이션 직접 제시</span><span class="qhint">FD 화살표 그리기</span><span class="qhint">무손실 검증 방법</span>
+        </div>
+      </div>
+      <div class="acard">
+        <button class="atog" onclick="tgl(this)">
+          <span class="alab">📄 모범 답안 보기</span><span class="aarr">▼</span>
+        </button>
+        <div class="abody">
+          <div class="atitle">비정규형 → 1NF → 2NF → 3NF → BCNF 정규화 전 과정</div>
+          <div class="chips">
+            <span class="chip cht">⏱ 30분</span><span class="chip chp">📄 3.5~4페이지</span><span class="chip chs">💯 25점</span>
+          </div>
+          <div class="asec">
+            <div class="ast s1">Ⅰ. 개요 및 예제 설정</div>
+            <div class="ap">다음 비정규 릴레이션을 대상으로 정규화 전 과정을 수행한다.</div>
+            <div class="dbox">비정규 릴레이션: 수강(학번, 학생명, 학과코드, 학과명, 과목번호, 과목명, 성적, 교수번호, 교수명)
+
+예시 데이터:
+학번   학생명  학과코드 학과명  과목번호 과목명   성적  교수번호 교수명
+S001  홍길동  D01    컴퓨터  C101   자료구조 A   P01   김교수
+S001  홍길동  D01    컴퓨터  C102   운영체제 B+  P02   이교수
+S002  이순신  D02    전자    C101   자료구조 A+  P01   김교수
+S003  강감찬  D01    컴퓨터  C201   알고리즘 A   P01   김교수</div>
+          </div>
+          <div class="asec">
+            <div class="ast s2c">Ⅱ. 가. 단계별 정규화 과정</div>
+            <div class="kbox kb-tl">
+              <div class="kbt">함수적 종속성(FD) 목록 도출</div>
+              학번 → 학생명, 학과코드<br>
+              학과코드 → 학과명<br>
+              과목번호 → 과목명, 교수번호<br>
+              교수번호 → 교수명<br>
+              (학번, 과목번호) → 성적 &nbsp;&nbsp; ← 기본 키 (복합 키)
+            </div>
+            <div class="ap"><strong>① 비정규형 → 1NF (원자값 확보)</strong></div>
+            <div class="dbox">위 예시 데이터는 이미 원자값이므로 1NF 만족.
+(만약 과목번호에 "C101,C102"처럼 다중값이 있었다면 행으로 분리)
+
+1NF 릴레이션:
+수강1NF(학번, 학생명, 학과코드, 학과명, 과목번호, 과목명, 성적, 교수번호, 교수명)
+기본 키: (학번, 과목번호)</div>
+            <div class="ap" style="margin-top:14px"><strong>② 1NF → 2NF (부분 함수 종속 제거)</strong></div>
+            <div class="ap">복합 키 (학번, 과목번호)에서 부분 종속 탐지:</div>
+            <div class="dbox">부분 종속 발견:
+  학번 → 학생명, 학과코드, 학과명  (과목번호 없이도 결정)
+  과목번호 → 과목명, 교수번호, 교수명 (학번 없이도 결정)
+
+분해 → 2NF 릴레이션:
+  학생(학번, 학생명, 학과코드, 학과명)  ← 학번이 결정자
+  과목(과목번호, 과목명, 교수번호, 교수명)  ← 과목번호가 결정자
+  수강2NF(학번, 과목번호, 성적)  ← 기본 키 (학번, 과목번호)</div>
+            <div class="ap" style="margin-top:14px"><strong>③ 2NF → 3NF (이행 함수 종속 제거)</strong></div>
+            <div class="dbox">이행 종속 발견:
+  학생 릴레이션: 학번 → 학과코드 → 학과명  (이행 종속)
+  과목 릴레이션: 과목번호 → 교수번호 → 교수명  (이행 종속)
+
+분해 → 3NF 릴레이션:
+  학생3NF(학번, 학생명, 학과코드)
+  학과(학과코드, 학과명)
+  과목3NF(과목번호, 과목명, 교수번호)
+  교수(교수번호, 교수명)
+  수강3NF(학번, 과목번호, 성적)</div>
+            <div class="ap" style="margin-top:14px"><strong>④ 3NF → BCNF (모든 결정자 = 후보 키 확인)</strong></div>
+            <div class="dbox">BCNF 검증:
+  과목3NF(과목번호, 과목명, 교수번호)
+  만약 교수번호 → 과목번호 (한 교수가 한 과목만 담당) 이면:
+    후보 키: {과목번호}, {교수번호}
+    교수번호 → 과목명 (교수번호가 결정자이나 후보 키 ✅)
+    → 이 경우 BCNF 만족
+
+  최종 BCNF 정규화 릴레이션:
+    학생(학번, 학생명, 학과코드)     PK: 학번
+    학과(학과코드, 학과명)           PK: 학과코드
+    교수(교수번호, 교수명)           PK: 교수번호
+    과목(과목번호, 과목명, 교수번호) PK: 과목번호, FK: 교수번호
+    수강(학번, 과목번호, 성적)       PK: (학번, 과목번호)</div>
+          </div>
+          <div class="asec">
+            <div class="ast s3">Ⅲ. 나. FD 다이어그램 및 최소 커버</div>
+            <div class="dbox">함수적 종속성 다이어그램 (FD Diagram)
+
+  학번  ──────────────────→ 학생명
+  학번  ─────────→ 학과코드 ──→ 학과명
+                                  (이행: 학번→학과명 제거 대상)
+  과목번호 ──────→ 과목명
+  과목번호 ─────→ 교수번호 ──→ 교수명
+                                  (이행: 과목번호→교수명 제거 대상)
+  (학번, 과목번호) ────────→ 성적   (완전 함수 종속)
+
+최소 커버(Minimal Cover) 도출:
+  1. 우변 단일화: 이미 단일 속성
+  2. 중복 FD 제거: 이행 종속 경로에서 직접 FD 제거
+  3. 불필요한 좌변 속성 제거
+  결과 최소 커버:
+    학번 → {학생명, 학과코드}
+    학과코드 → 학과명
+    과목번호 → {과목명, 교수번호}
+    교수번호 → 교수명
+    (학번, 과목번호) → 성적</div>
+          </div>
+          <div class="asec">
+            <div class="ast s4">Ⅳ. 다. 무손실 분해 및 종속성 보존 검증</div>
+            <table class="at">
+              <tr><th>속성</th><th>무손실 분해 (Lossless Decomposition)</th><th>종속성 보존 (Dependency Preservation)</th></tr>
+              <tr><td>정의</td><td>분해된 릴레이션을 다시 자연 조인(Natural Join)했을 때 원래 릴레이션과 동일한 결과 반환</td><td>원래 릴레이션의 모든 FD가 분해된 릴레이션 중 하나에 포함</td></tr>
+              <tr><td>중요성</td><td>정보 손실 없는 분해 보장. 정규화의 필수 조건</td><td>각 릴레이션에서 독립적으로 무결성 검사 가능</td></tr>
+              <tr><td>검증 방법</td><td>R1 ∩ R2 → R1 또는 R1 ∩ R2 → R2 (교집합이 슈퍼키이면 무손실)</td><td>모든 FD F가 ∪F_i에 포함되는지 확인. BCNF는 종속성 보존을 보장하지 않을 수 있음</td></tr>
+              <tr><td>주의</td><td>모든 정규화 분해는 무손실이어야 함</td><td>BCNF 분해 시 종속성 보존이 불가능한 경우 → 3NF로 타협</td></tr>
+            </table>
+            <div class="kbox kb-rd">
+              <div class="kbt">📌 BCNF vs 3NF 선택 기준</div>
+              BCNF: 이상현상 완전 제거. 단, 종속성 보존 불가능할 수 있음<br>
+              3NF: 종속성 보존 + 무손실 분해 모두 보장. 일부 이상현상 가능성 존재<br>
+              → 실무 권장: <strong>3NF까지 정규화</strong> + 필요 시 BCNF 적용 (종속성 보존 영향 분석 후)
+            </div>
+          </div>
+          <div class="concl">
+            <div class="ct">Ⅴ. 결론</div>
+            <p>정규화는 데이터 무결성 보장의 이론적 기반으로, 공공 정보화사업의 DB 설계 단계에서 반드시 수행해야 한다. 감리 시에는 ①정규화 수준(3NF/BCNF 준수 여부), ②반정규화 적용 근거 문서, ③무손실 분해 검증 기록을 주요 점검항목으로 확인한다. 지나친 정규화로 인한 조인 증가는 실행계획 분석을 통해 모니터링하고, 필요 시 전략적 반정규화를 적용한다.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    </div><!-- lq1 -->
+
+    <!-- L3 동시성 제어 -->
+    <div class="q-panel" id="lq2">
+    <div class="qctr">📄 논술형 3번 / 5번</div>
+    <div class="qcard">
+      <div class="qhdr">
+        <span class="qdom badge-db">데이터베이스 / 동시성 제어</span>
+        <div class="qmeta">
+          <div class="qtype">2~4교시 논술형 · 25점 · 3~4페이지 분량</div>
+          <div class="qtitle">데이터베이스 동시성 제어(Concurrency Control)에 대하여 다음을 설명하시오.</div>
+        </div>
+      </div>
+      <div class="qbody">
+        <div class="qitems">
+          <div class="qitem"><span class="qlb">가.</span><span>동시성 제어의 필요성 및 발생 가능한 이상현상(Dirty Read, Lost Update, Non-Repeatable Read, Phantom Read)</span></div>
+          <div class="qitem"><span class="qlb">나.</span><span>Lock 기반 동시성 제어(S-Lock, X-Lock, 2PL 프로토콜)와 MVCC(다중 버전 동시성 제어)의 원리 및 비교</span></div>
+          <div class="qitem"><span class="qlb">다.</span><span>교착상태(Deadlock) 탐지·예방 방법 및 실무 적용 방안</span></div>
+        </div>
+        <div class="qhints">
+          <span class="qhint">2PL 단계 상세</span><span class="qhint">MVCC vs Lock 비교</span><span class="qhint">Deadlock Wait-for 그래프</span>
+        </div>
+      </div>
+      <div class="acard">
+        <button class="atog" onclick="tgl(this)">
+          <span class="alab">📄 모범 답안 보기</span><span class="aarr">▼</span>
+        </button>
+        <div class="abody">
+          <div class="atitle">동시성 제어 이상현상·Lock/2PL·MVCC 비교·Deadlock 탐지·예방</div>
+          <div class="chips">
+            <span class="chip cht">⏱ 30분</span><span class="chip chp">📄 3.5~4페이지</span><span class="chip chs">💯 25점</span>
+          </div>
+          <div class="asec">
+            <div class="ast s1">Ⅰ. 가. 동시성 제어의 필요성 및 이상현상</div>
+            <div class="ap">동시성 제어는 다수의 트랜잭션이 동시에 실행될 때 데이터 일관성(Consistency)을 유지하기 위한 메커니즘이다. 제어 없이는 다음과 같은 이상현상이 발생한다.</div>
+            <table class="at">
+              <tr><th>이상현상</th><th>설명</th><th>예시 시나리오</th><th>격리 수준 해결</th></tr>
+              <tr><td>Dirty Read</td><td>미완료 트랜잭션의 변경 데이터를 다른 T가 읽음. Rollback 시 잘못된 값 사용</td><td>T1이 잔액 -1000 후 T2가 읽음 → T1 Rollback</td><td>Read Committed 이상</td></tr>
+              <tr><td>Lost Update</td><td>두 T가 같은 데이터를 동시에 수정 시 하나의 수정이 소실</td><td>T1, T2 모두 재고=10 읽음 → 각각 -1 → 최종 9 (1개 소실)</td><td>Repeatable Read 이상</td></tr>
+              <tr><td>Non-Repeatable Read</td><td>같은 T에서 같은 행 재조회 시 다른 값 반환 (다른 T가 수정·커밋)</td><td>T1이 잔액 읽고 → T2가 수정·커밋 → T1 재조회 시 다른 값</td><td>Repeatable Read 이상</td></tr>
+              <tr><td>Phantom Read</td><td>같은 조건의 SELECT 재실행 시 행 수가 달라짐 (다른 T가 INSERT·DELETE)</td><td>T1이 COUNT(*) 조회 → T2가 INSERT → T1 재조회 시 행 수 증가</td><td>Serializable</td></tr>
+            </table>
+          </div>
+          <div class="asec">
+            <div class="ast s2c">Ⅱ. 나. Lock 기반 제어 및 MVCC 비교</div>
+            <div class="kbox kb-bl">
+              <div class="kbt">Lock 유형</div>
+              <strong>S-Lock (공유 잠금, Shared Lock)</strong>: 읽기 시 획득. 다른 T의 S-Lock 동시 허용. X-Lock 불허<br>
+              <strong>X-Lock (배타 잠금, eXclusive Lock)</strong>: 쓰기 시 획득. 다른 모든 Lock 불허<br>
+              <strong>호환성 행렬</strong>: S+S=허용, S+X=불허, X+X=불허
+            </div>
+            <div class="ap"><strong>2PL (2-Phase Locking) 프로토콜:</strong></div>
+            <div class="dbox">2단계 잠금 프로토콜 (직렬 가능성 보장)
+
+Growing Phase (확장 단계): Lock 획득만 가능, 해제 불가
+          ↕ (잠금 점, Lock Point)
+Shrinking Phase (수축 단계): Lock 해제만 가능, 획득 불가
+
+직렬 가능성(Serializability) 보장: 2PL을 준수하면 트랜잭션 스케줄이
+  직렬 스케줄(Serial Schedule)과 동등함을 보장
+단점: Deadlock 발생 가능, Cascading Rollback 위험</div>
+            <table class="at">
+              <tr><th>비교 항목</th><th>Lock 기반 (Pessimistic)</th><th>MVCC (Optimistic/Multi-Version)</th></tr>
+              <tr><td>기본 철학</td><td>충돌이 자주 발생한다고 가정. 사전 차단</td><td>충돌이 드물다고 가정. 버전으로 분리</td></tr>
+              <tr><td>원리</td><td>읽기/쓰기 시 Lock 획득. 충돌 시 대기</td><td>쓰기 시 새 버전 생성. 읽기는 스냅숏 조회 (Lock 불필요)</td></tr>
+              <tr><td>읽기 성능</td><td>낮음 (S-Lock 경쟁)</td><td>높음 (Lock 없는 읽기, 스냅숏)</td></tr>
+              <tr><td>쓰기 성능</td><td>중간 (단순 Lock)</td><td>버전 관리 오버헤드 존재</td></tr>
+              <tr><td>Phantom Read</td><td>Gap Lock으로 방지</td><td>스냅숏 격리로 방지</td></tr>
+              <tr><td>주요 DBMS</td><td>DB2, SQL Server (기본)</td><td>PostgreSQL (항상), MySQL InnoDB (기본), Oracle</td></tr>
+              <tr><td>적합 상황</td><td>쓰기 충돌 빈번한 OLTP</td><td>읽기 비중 높은 혼합 워크로드</td></tr>
+            </table>
+          </div>
+          <div class="asec">
+            <div class="ast s3">Ⅲ. 다. 교착상태(Deadlock) 탐지 및 예방</div>
+            <div class="dbox">Deadlock 발생 시나리오 (Wait-for 그래프)
+
+T1: X-Lock(A) 보유 → X-Lock(B) 대기
+T2: X-Lock(B) 보유 → X-Lock(A) 대기
+
+Wait-for 그래프:  T1 → T2 → T1  (사이클 = 교착상태)</div>
+            <table class="at">
+              <tr><th>구분</th><th>방법</th><th>내용</th><th>장단점</th></tr>
+              <tr><td rowspan="3">탐지<br>(Detection)</td><td>Wait-for 그래프</td><td>주기적으로 그래프의 사이클 탐지. 사이클 발견 시 희생자(Victim) 선택·Rollback</td><td>탐지 오버헤드. 희생자 재실행 필요</td></tr>
+              <tr><td>타임아웃</td><td>일정 시간 이상 대기 시 자동 롤백 (MySQL innodb_lock_wait_timeout=50s)</td><td>구현 단순. 정상 대기도 종료 위험</td></tr>
+              <tr><td>DBMS 자동 탐지</td><td>Oracle·MySQL·PostgreSQL 모두 Deadlock 자동 탐지 후 하나의 트랜잭션 롤백</td><td>실무 권장 (자동 처리)</td></tr>
+              <tr><td rowspan="2">예방<br>(Prevention)</td><td>Lock 순서 통일</td><td>모든 T가 동일한 순서로 Lock 획득 (예: 항상 작은 ID 테이블 먼저)</td><td>프로그래밍 규칙으로 방지 가능</td></tr>
+              <tr><td>Lock 범위 최소화</td><td>트랜잭션 짧게 유지, 필요한 행만 잠금, 작업 완료 즉시 Commit</td><td>가장 실용적인 방지 방법</td></tr>
+            </table>
+          </div>
+          <div class="concl">
+            <div class="ct">Ⅳ. 결론</div>
+            <p>동시성 제어는 데이터 무결성과 시스템 성능의 균형점을 찾는 핵심 DB 관리 영역이다. 현대 DBMS는 MVCC를 기본 채택하여 읽기 성능을 극대화하고, 쓰기 충돌은 Lock으로 보완한다. 공공 정보시스템에서는 트랜잭션 격리 수준을 업무 특성에 따라 명시적으로 설정하고, Deadlock 탐지 로그를 모니터링하여 주기적으로 쿼리·인덱스를 최적화해야 한다.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    </div><!-- lq2 -->
+
+    <!-- L4 쿼리 최적화 -->
+    <div class="q-panel" id="lq3">
+    <div class="qctr">📄 논술형 4번 / 5번</div>
+    <div class="qcard">
+      <div class="qhdr">
+        <span class="qdom badge-db">SQL / 쿼리 최적화</span>
+        <div class="qmeta">
+          <div class="qtype">2~4교시 논술형 · 25점 · 3~4페이지 분량</div>
+          <div class="qtitle">데이터베이스 쿼리 최적화(Query Optimization)에 대하여 다음을 설명하시오.</div>
+        </div>
+      </div>
+      <div class="qbody">
+        <div class="qitems">
+          <div class="qitem"><span class="qlb">가.</span><span>쿼리 최적화기(Query Optimizer)의 동작 원리 — 파싱·변환·최적화·실행 단계</span></div>
+          <div class="qitem"><span class="qlb">나.</span><span>SQL 튜닝의 주요 원칙 및 인덱스를 무력화하는 안티패턴 5가지와 개선 SQL</span></div>
+          <div class="qitem"><span class="qlb">다.</span><span>실행계획(Execution Plan) 분석 방법 및 파티셔닝(Partitioning)을 통한 대용량 테이블 성능 개선 방안</span></div>
+        </div>
+        <div class="qhints">
+          <span class="qhint">안티패턴 SQL 개선 예시 필수</span><span class="qhint">파티션 프루닝</span><span class="qhint">통계 정보 관리</span>
+        </div>
+      </div>
+      <div class="acard">
+        <button class="atog" onclick="tgl(this)">
+          <span class="alab">📄 모범 답안 보기</span><span class="aarr">▼</span>
+        </button>
+        <div class="abody">
+          <div class="atitle">쿼리 최적화기 원리·SQL 튜닝 안티패턴·실행계획·파티셔닝 성능 개선</div>
+          <div class="chips">
+            <span class="chip cht">⏱ 30분</span><span class="chip chp">📄 3.5~4페이지</span><span class="chip chs">💯 25점</span>
+          </div>
+          <div class="asec">
+            <div class="ast s1">Ⅰ. 가. 쿼리 최적화기 동작 원리</div>
+            <div class="dbox">SQL 처리 파이프라인
+
+SQL 문장 입력
+    │
+    ▼ [1단계: 파싱(Parsing)]
+    문법 오류 검사, 파스 트리(Parse Tree) 생성
+    │
+    ▼ [2단계: 의미 검사(Semantic Check)]
+    테이블·컬럼 존재 확인, 권한 검사, 뷰 확장
+    │
+    ▼ [3단계: 쿼리 변환(Query Transformation)]
+    관계대수 동치 변환: σ 조기 적용, 뷰 인라인 전개,
+    서브쿼리→조인 변환, 불필요한 DISTINCT 제거
+    │
+    ▼ [4단계: 비용 기반 최적화(CBO: Cost-Based Optimizer)]
+    통계 정보(테이블 크기, 카디널리티, 히스토그램) 활용
+    접근 경로(Access Path), 조인 순서, 조인 방식 선택
+    I/O·CPU·메모리 비용 최소화 계획 선택
+    │
+    ▼ [5단계: 실행 계획(Execution Plan) 생성 및 실행]</div>
+            <div class="kbox kb-tl">
+              <div class="kbt">통계 정보 관리의 중요성</div>
+              CBO는 통계 정보가 부정확하면 잘못된 실행 계획 선택. 정기적 통계 수집 필요<br>
+              Oracle: DBMS_STATS.GATHER_TABLE_STATS<br>
+              MySQL: ANALYZE TABLE 테이블명<br>
+              PostgreSQL: ANALYZE 테이블명
+            </div>
+          </div>
+          <div class="asec">
+            <div class="ast s2c">Ⅱ. 나. SQL 튜닝 안티패턴 5가지 및 개선</div>
+            <ul class="aol">
+              <li><span class="on on2">1</span><div><strong>인덱스 컬럼에 함수 적용</strong>: 함수 적용 시 인덱스 무력화 → 함수 기반 인덱스 또는 조건 재작성
+                <div class="sql"><span class="cm">-- 🚫 안티패턴</span>
+<span class="kw">WHERE</span> <span class="fn">YEAR</span>(등록일) <span class="op">=</span> <span class="nu">2024</span>
+
+<span class="cm">-- ✅ 개선</span>
+<span class="kw">WHERE</span> 등록일 <span class="op">BETWEEN</span> <span class="nu">'2024-01-01'</span> <span class="op">AND</span> <span class="nu">'2024-12-31'</span></div>
+              </div></li>
+              <li><span class="on on2">2</span><div><strong>묵시적 형변환</strong>: 컬럼 타입과 비교값 타입 불일치 시 자동 형변환으로 인덱스 무력화
+                <div class="sql"><span class="cm">-- 🚫 사번(VARCHAR)에 숫자 비교</span>
+<span class="kw">WHERE</span> 사번 <span class="op">=</span> <span class="nu">1001</span>
+
+<span class="cm">-- ✅ 개선: 타입 일치</span>
+<span class="kw">WHERE</span> 사번 <span class="op">=</span> <span class="nu">'1001'</span></div>
+              </div></li>
+              <li><span class="on on2">3</span><div><strong>LIKE 후방 일치</strong>: %로 시작하는 패턴은 인덱스 풀스캔 유발
+                <div class="sql"><span class="cm">-- 🚫 후방 일치: 인덱스 불가</span>
+<span class="kw">WHERE</span> 이름 <span class="kw">LIKE</span> <span class="nu">'%길동'</span>
+
+<span class="cm">-- ✅ 전방 일치 또는 전문 검색 인덱스(Full-Text Index) 활용</span>
+<span class="kw">WHERE</span> 이름 <span class="kw">LIKE</span> <span class="nu">'홍%'</span></div>
+              </div></li>
+              <li><span class="on on2">4</span><div><strong>SELECT * 사용</strong>: 불필요한 컬럼 전송·인덱스 커버링 불가
+                <div class="sql"><span class="cm">-- 🚫 전체 컬럼 조회</span>
+<span class="kw">SELECT</span> * <span class="kw">FROM</span> <span class="tb">직원</span> <span class="kw">WHERE</span> 부서번호 <span class="op">=</span> <span class="nu">10</span>;
+
+<span class="cm">-- ✅ 필요 컬럼만 명시 (커버링 인덱스 활용 가능)</span>
+<span class="kw">SELECT</span> 사번, 이름 <span class="kw">FROM</span> <span class="tb">직원</span> <span class="kw">WHERE</span> 부서번호 <span class="op">=</span> <span class="nu">10</span>;</div>
+              </div></li>
+              <li><span class="on on2">5</span><div><strong>OR 조건의 인덱스 무력화</strong>: OR로 연결된 컬럼이 각각 다른 인덱스 사용 시 병합 비효율
+                <div class="sql"><span class="cm">-- 🚫 OR 조건: 인덱스 비효율</span>
+<span class="kw">WHERE</span> 사번 <span class="op">=</span> <span class="nu">'S001'</span> <span class="op">OR</span> 이메일 <span class="op">=</span> <span class="nu">'hong@company.com'</span>
+
+<span class="cm">-- ✅ UNION ALL로 분리 (각각 인덱스 활용)</span>
+<span class="kw">SELECT</span> * <span class="kw">FROM</span> <span class="tb">직원</span> <span class="kw">WHERE</span> 사번 <span class="op">=</span> <span class="nu">'S001'</span>
+<span class="kw">UNION ALL</span>
+<span class="kw">SELECT</span> * <span class="kw">FROM</span> <span class="tb">직원</span> <span class="kw">WHERE</span> 이메일 <span class="op">=</span> <span class="nu">'hong@company.com'</span>
+  <span class="op">AND</span> 사번 <span class="op">&lt;&gt;</span> <span class="nu">'S001'</span>;</div>
+              </div></li>
+            </ul>
+          </div>
+          <div class="asec">
+            <div class="ast s3">Ⅲ. 다. 실행계획 분석 및 파티셔닝 성능 개선</div>
+            <div class="kbox kb-pu">
+              <div class="kbt">실행계획 핵심 지표</div>
+              • <strong>rows</strong>: 예상 처리 행 수 (낮을수록 효율적)<br>
+              • <strong>type</strong>: ALL(풀스캔) &lt; index &lt; range &lt; ref &lt; eq_ref &lt; const (오른쪽이 최적)<br>
+              • <strong>Extra: Using filesort</strong> → ORDER BY에 인덱스 미활용 (개선 필요)<br>
+              • <strong>Extra: Using temporary</strong> → 임시 테이블 생성 (GROUP BY·DISTINCT 최적화 필요)<br>
+              • <strong>Extra: Using index</strong> → 커버링 인덱스 사용 (최적 상태)
+            </div>
+            <div class="ap"><strong>파티셔닝(Partitioning) 성능 개선:</strong></div>
+            <table class="at">
+              <tr><th>파티션 유형</th><th>분할 기준</th><th>특징</th><th>적합 상황</th></tr>
+              <tr><td>범위 파티셔닝<br>(Range)</td><td>컬럼 값의 범위 (날짜, 연도)</td><td>가장 일반적. 파티션 프루닝 효과 큼</td><td>시계열 데이터(거래 이력, 로그)</td></tr>
+              <tr><td>목록 파티셔닝<br>(List)</td><td>이산값 목록 (지역, 카테고리)</td><td>특정 값 목록으로 분할</td><td>지역별·카테고리별 데이터</td></tr>
+              <tr><td>해시 파티셔닝<br>(Hash)</td><td>컬럼값의 해시 함수</td><td>데이터 균등 분산. 핫스팟 방지</td><td>균등 분산 필요, 범위 검색 없을 때</td></tr>
+              <tr><td>복합 파티셔닝<br>(Composite)</td><td>Range + Hash 등 복합 적용</td><td>대용량·복잡한 분산 요구</td><td>초대용량 DW 테이블</td></tr>
+            </table>
+            <div class="kbox kb-gn">
+              <div class="kbt">파티션 프루닝 (Partition Pruning)</div>
+              WHERE 조건이 파티션 키를 포함하면 관련 파티션만 스캔 → I/O 대폭 감소<br>
+              예: WHERE 거래일자 BETWEEN '2024-01-01' AND '2024-03-31'<br>
+              → Range 파티션 적용 시 2024년 1~3월 파티션만 스캔 (나머지 제외)
+            </div>
+          </div>
+          <div class="concl">
+            <div class="ct">Ⅳ. 결론</div>
+            <p>쿼리 최적화는 DB 성능 관리의 핵심으로, 인덱스 설계·SQL 작성 패턴·파티셔닝 전략이 종합적으로 작용한다. 공공 정보화사업 성능 목표(응답시간 3초 이내)를 달성하기 위해 EXPLAIN 기반 실행계획 분석→튜닝→재측정의 사이클을 반복하고, 슬로우 쿼리 로그(slow query log)를 지속 모니터링해야 한다. 감리 시에는 성능 테스트 결과서와 튜닝 조치 기록을 점검한다.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    </div><!-- lq3 -->
+
+    <!-- L5 윈도우 함수·고급SQL -->
+    <div class="q-panel" id="lq4">
+    <div class="qctr">📄 논술형 5번 / 5번</div>
+    <div class="qcard">
+      <div class="qhdr">
+        <span class="qdom badge-db">SQL / 고급 SQL</span>
+        <div class="qmeta">
+          <div class="qtype">2~4교시 논술형 · 25점 · 3~4페이지 분량</div>
+          <div class="qtitle">SQL 고급 기능에 대하여 다음을 설명하시오.</div>
+        </div>
+      </div>
+      <div class="qbody">
+        <div class="qitems">
+          <div class="qitem"><span class="qlb">가.</span><span>윈도우 함수(Window Function)의 개념, OVER절 구성(PARTITION BY, ORDER BY, ROWS/RANGE BETWEEN) 및 대표 함수(ROW_NUMBER, RANK, DENSE_RANK, LAG, LEAD, SUM, AVG) 활용</span></div>
+          <div class="qitem"><span class="qlb">나.</span><span>집계 함수와 윈도우 함수의 차이점 및 PIVOT·UNPIVOT 변환 기법</span></div>
+          <div class="qitem"><span class="qlb">다.</span><span>저장 프로시저(Stored Procedure), 트리거(Trigger), 커서(Cursor)의 개념·용도·주의사항</span></div>
+        </div>
+        <div class="qhints">
+          <span class="qhint">OVER절 문법 완전 숙지</span><span class="qhint">LAG/LEAD 활용</span><span class="qhint">트리거 주의사항</span>
+        </div>
+      </div>
+      <div class="acard">
+        <button class="atog" onclick="tgl(this)">
+          <span class="alab">📄 모범 답안 보기</span><span class="aarr">▼</span>
+        </button>
+        <div class="abody">
+          <div class="atitle">윈도우 함수·PIVOT·저장 프로시저·트리거·커서 개념 및 활용</div>
+          <div class="chips">
+            <span class="chip cht">⏱ 30분</span><span class="chip chp">📄 3.5~4페이지</span><span class="chip chs">💯 25점</span>
+          </div>
+          <div class="asec">
+            <div class="ast s1">Ⅰ. 가. 윈도우 함수 개념 및 OVER절</div>
+            <div class="ap">윈도우 함수(Window Function, 분석 함수)는 현재 행과 관련된 행의 집합(Window)에 대해 집계 연산을 수행하되, 행을 그룹으로 합치지 않고 각 행의 결과를 개별로 반환하는 함수이다. SQL:2003 표준에 포함되었다.</div>
+            <div class="kbox kb-tl">
+              <div class="kbt">OVER절 구성 문법</div>
+              <code>함수명() OVER (</code><br>
+              &nbsp;&nbsp;<code>[PARTITION BY 그룹컬럼]</code> ← 논리적 그룹 분할 (GROUP BY와 달리 행 유지)<br>
+              &nbsp;&nbsp;<code>[ORDER BY 정렬컬럼 ASC/DESC]</code> ← 윈도우 내 정렬 순서<br>
+              &nbsp;&nbsp;<code>[ROWS|RANGE BETWEEN 시작 AND 끝]</code> ← 프레임 범위 지정<br>
+              <code>)</code><br><br>
+              프레임 기준: <code>UNBOUNDED PRECEDING</code>(처음) / <code>CURRENT ROW</code> / <code>UNBOUNDED FOLLOWING</code>(끝)
+            </div>
+            <div class="sql"><span class="cm">-- 부서별 급여 순위 + 전월 대비 + 누적합</span>
+<span class="kw">SELECT</span>
+  사번, 이름, 부서번호, 급여,
+  <span class="cm">-- 순위 함수</span>
+  <span class="fn">ROW_NUMBER</span>() <span class="kw">OVER</span> (<span class="kw">PARTITION BY</span> 부서번호 <span class="kw">ORDER BY</span> 급여 <span class="kw">DESC</span>) <span class="kw">AS</span> 행번호,
+  <span class="fn">RANK</span>()       <span class="kw">OVER</span> (<span class="kw">PARTITION BY</span> 부서번호 <span class="kw">ORDER BY</span> 급여 <span class="kw">DESC</span>) <span class="kw">AS</span> 순위,
+  <span class="fn">DENSE_RANK</span>() <span class="kw">OVER</span> (<span class="kw">PARTITION BY</span> 부서번호 <span class="kw">ORDER BY</span> 급여 <span class="kw">DESC</span>) <span class="kw">AS</span> 밀집순위,
+  <span class="cm">-- 이전/다음 행 참조</span>
+  <span class="fn">LAG</span>(급여, <span class="nu">1</span>, <span class="nu">0</span>) <span class="kw">OVER</span> (<span class="kw">PARTITION BY</span> 부서번호 <span class="kw">ORDER BY</span> 입사일) <span class="kw">AS</span> 전행급여,
+  <span class="fn">LEAD</span>(급여, <span class="nu">1</span>, <span class="nu">0</span>) <span class="kw">OVER</span> (<span class="kw">PARTITION BY</span> 부서번호 <span class="kw">ORDER BY</span> 입사일) <span class="kw">AS</span> 다음행급여,
+  <span class="cm">-- 누적합 (처음 행 ~ 현재 행)</span>
+  <span class="fn">SUM</span>(급여) <span class="kw">OVER</span> (
+    <span class="kw">PARTITION BY</span> 부서번호
+    <span class="kw">ORDER BY</span> 입사일
+    <span class="kw">ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW</span>
+  ) <span class="kw">AS</span> 누적급여합,
+  <span class="cm">-- 이동 평균 (최근 3행)</span>
+  <span class="fn">AVG</span>(급여) <span class="kw">OVER</span> (
+    <span class="kw">ORDER BY</span> 입사일
+    <span class="kw">ROWS BETWEEN</span> <span class="nu">2</span> <span class="kw">PRECEDING AND CURRENT ROW</span>
+  ) <span class="kw">AS</span> 이동평균급여
+<span class="kw">FROM</span> <span class="tb">직원</span>;</div>
+            <div class="at" style="display:table;width:100%;border-collapse:collapse;font-size:12px;margin:8px 0">
+              <tr style="display:table-row"><th style="background:var(--s2);padding:8px 12px;border:1px solid var(--bd);font-weight:700;text-align:center">함수</th><th style="background:var(--s2);padding:8px 12px;border:1px solid var(--bd);font-weight:700;text-align:center">동점 처리</th><th style="background:var(--s2);padding:8px 12px;border:1px solid var(--bd);font-weight:700;text-align:center">예 (급여 500,500,400)</th></tr>
+              <tr><td style="padding:8px 12px;border:1px solid var(--bd);font-weight:600;color:var(--tl);background:var(--tbg);text-align:center">ROW_NUMBER</td><td style="padding:8px 12px;border:1px solid var(--bd)">동점도 고유 번호</td><td style="padding:8px 12px;border:1px solid var(--bd)">1, 2, 3</td></tr>
+              <tr><td style="padding:8px 12px;border:1px solid var(--bd);font-weight:600;color:var(--tl);background:var(--tbg);text-align:center">RANK</td><td style="padding:8px 12px;border:1px solid var(--bd)">동점 같은 순위, 다음 건너뜀</td><td style="padding:8px 12px;border:1px solid var(--bd)">1, 1, 3</td></tr>
+              <tr><td style="padding:8px 12px;border:1px solid var(--bd);font-weight:600;color:var(--tl);background:var(--tbg);text-align:center">DENSE_RANK</td><td style="padding:8px 12px;border:1px solid var(--bd)">동점 같은 순위, 건너뜀 없음</td><td style="padding:8px 12px;border:1px solid var(--bd)">1, 1, 2</td></tr>
+            </div>
+          </div>
+          <div class="asec">
+            <div class="ast s2c">Ⅱ. 나. 집계 함수 vs 윈도우 함수 및 PIVOT·UNPIVOT</div>
+            <table class="at">
+              <tr><th>구분</th><th>집계 함수 (GROUP BY)</th><th>윈도우 함수 (OVER)</th></tr>
+              <tr><td>결과 행</td><td>그룹당 1행으로 압축</td><td>원본 행 수 유지</td></tr>
+              <tr><td>원본 컬럼</td><td>그룹 키 + 집계 컬럼만 가능</td><td>모든 원본 컬럼 + 집계 결과 동시 반환</td></tr>
+              <tr><td>WHERE 사용</td><td>HAVING으로 집계 필터</td><td>WHERE로 일반 필터 후 윈도우 적용</td></tr>
+              <tr><td>적합 상황</td><td>요약 통계, 집계 리포트</td><td>순위, 누적합, 이동 평균, 전후 행 비교</td></tr>
+            </table>
+            <div class="sql"><span class="cm">-- PIVOT: 행 → 열 변환 (분기별 매출을 열로)</span>
+<span class="kw">SELECT</span> * <span class="kw">FROM</span> <span class="tb">매출</span>
+<span class="kw">PIVOT</span> (
+  <span class="fn">SUM</span>(금액)
+  <span class="kw">FOR</span> 분기 <span class="kw">IN</span> (<span class="nu">'Q1'</span> <span class="kw">AS</span> Q1, <span class="nu">'Q2'</span> <span class="kw">AS</span> Q2, <span class="nu">'Q3'</span> <span class="kw">AS</span> Q3, <span class="nu">'Q4'</span> <span class="kw">AS</span> Q4)
+); <span class="cm">-- Oracle 문법</span>
+
+<span class="cm">-- MySQL 방식 (CASE WHEN으로 PIVOT 구현)</span>
+<span class="kw">SELECT</span> 제품코드,
+  <span class="fn">SUM</span>(<span class="kw">CASE WHEN</span> 분기<span class="op">=</span><span class="nu">'Q1'</span> <span class="kw">THEN</span> 금액 <span class="kw">ELSE</span> <span class="nu">0</span> <span class="kw">END</span>) Q1매출,
+  <span class="fn">SUM</span>(<span class="kw">CASE WHEN</span> 분기<span class="op">=</span><span class="nu">'Q2'</span> <span class="kw">THEN</span> 금액 <span class="kw">ELSE</span> <span class="nu">0</span> <span class="kw">END</span>) Q2매출
+<span class="kw">FROM</span> <span class="tb">매출</span> <span class="kw">GROUP BY</span> 제품코드;</div>
+          </div>
+          <div class="asec">
+            <div class="ast s3">Ⅲ. 다. 저장 프로시저·트리거·커서</div>
+            <table class="at">
+              <tr><th>객체</th><th>개념</th><th>주요 용도</th><th>주의사항</th></tr>
+              <tr><td>저장 프로시저<br>(Stored Procedure)</td><td>DB 서버에 컴파일·저장된 SQL 문장의 집합. 파라미터 IN/OUT 지원</td><td>복잡한 비즈니스 로직 캡슐화, 반복 쿼리 성능 향상, 보안 레이어</td><td>DBMS 종속성 높음, 버전 관리 어려움, 과도한 로직 집중 회피 (Application Layer 권장)</td></tr>
+              <tr><td>트리거<br>(Trigger)</td><td>특정 이벤트(INSERT/UPDATE/DELETE) 발생 시 자동 실행되는 프로시저. BEFORE/AFTER/INSTEAD OF</td><td>감사 로그(Audit Trail) 자동 기록, 참조 무결성 보완, 파생 데이터 자동 갱신</td><td>숨겨진 로직으로 디버깅 어려움, 연쇄 트리거(Cascading) 주의, DML 성능 영향, 트랜잭션 범위 확대</td></tr>
+              <tr><td>커서<br>(Cursor)</td><td>SELECT 결과 집합을 한 행씩 순차적으로 처리하는 포인터 메커니즘</td><td>행 단위 복잡한 처리, 집합 연산으로 해결 불가한 순차 처리</td><td>집합 기반 SQL 대비 매우 느림 (행 단위 왕복). 가능하면 집합 연산(JOIN, 윈도우 함수)으로 대체 권장</td></tr>
+            </table>
+            <div class="sql"><span class="cm">-- 감사 트리거 예시: 급여 변경 이력 자동 기록</span>
+<span class="kw">CREATE TRIGGER</span> <span class="tb">급여변경감사</span>
+<span class="kw">AFTER UPDATE ON</span> <span class="tb">직원</span>
+<span class="kw">FOR EACH ROW</span>
+<span class="kw">WHEN</span> (OLD.급여 <span class="op">&lt;&gt;</span> NEW.급여)
+<span class="kw">BEGIN</span>
+  <span class="kw">INSERT INTO</span> <span class="tb">급여변경이력</span>(사번, 변경전, 변경후, 변경일시, 변경자)
+  <span class="kw">VALUES</span>(OLD.사번, OLD.급여, NEW.급여, <span class="fn">SYSDATE</span>, <span class="fn">USER</span>);
+<span class="kw">END</span>;</div>
+          </div>
+          <div class="concl">
+            <div class="ct">Ⅳ. 결론</div>
+            <p>윈도우 함수는 복잡한 분석 쿼리(순위, 누적, 이동 평균)를 단일 SQL로 우아하게 표현할 수 있는 강력한 도구이다. 저장 프로시저·트리거는 DB 내 로직 캡슐화에 유용하나, 관리 복잡성과 DBMS 종속성을 고려하여 적절히 활용해야 한다. 감리 시에는 트리거의 연쇄 실행 가능성, 커서의 성능 영향 여부, 저장 프로시저의 버전 관리 체계(형상관리 포함 여부)를 점검한다.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    </div><!-- lq4 -->
+
+  </div>
+</div><!-- tp1 -->
+
+<script>
+function showType(i,b){
+  document.querySelectorAll('.type-panel').forEach((p,j)=>p.classList.toggle('active',i===j));
+  document.querySelectorAll('.type-btn').forEach(x=>x.classList.remove('active'));
+  b.classList.add('active');
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+function showQ(i,t,b){
+  var pid=t==='s'?0:1;
+  document.querySelectorAll('#tp'+pid+' .q-panel').forEach((p,j)=>p.classList.toggle('active',i===j));
+  b.parentElement.querySelectorAll('.q-btn').forEach(x=>x.classList.remove('active'));
+  b.classList.add('active');
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+function tgl(btn){
+  var body=btn.nextElementSibling;
+  var arr=btn.querySelector('.aarr');
+  var open=body.classList.toggle('open');
+  arr.classList.toggle('open',open);
+  btn.querySelector('.alab').textContent=open?'📄 답안 닫기':'📄 모범 답안 보기';
+}
+</script>
+</body>
+</html>
