@@ -1,0 +1,1207 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>IDS/IPS/방화벽 기출유형 문제 & 모범답안</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700;900&family=Noto+Serif+KR:wght@400;600;700&family=JetBrains+Mono:wght@400;600&display=swap');
+:root{
+  --bg:#f5f7fa;--white:#fff;--surface2:#eef1f6;--border:#dde3ec;--bl:#eef1f6;
+  --blue:#1d4ed8;--bblue:#3b82f6;--bluebg:#eff6ff;--blb:#bfdbfe;
+  --red:#b91c1c;--redbg:#fef2f2;--rdb:#fecaca;
+  --green:#065f46;--gbg:#ecfdf5;--gb:#a7f3d0;
+  --ora:#92400e;--obg:#fffbeb;--ob:#fde68a;
+  --pur:#5b21b6;--pubg:#f5f3ff;--pub:#ddd6fe;
+  --tea:#0f766e;--tbg:#f0fdfa;--tb:#99f6e4;
+  --rose:#9f1239;--rbg:#fff1f2;--roseb:#fecdd3;
+  --text:#111827;--text2:#374151;--text3:#6b7280;--text4:#9ca3af;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--text);font-family:'Noto Sans KR',sans-serif;font-size:14px;line-height:1.6}
+
+.hdr{background:linear-gradient(135deg,#7f1d1d 0%,#b91c1c 50%,#dc2626 100%);color:#fff;padding:28px 24px 22px;position:relative;overflow:hidden}
+.hdr::after{content:'';position:absolute;right:-60px;top:-60px;width:220px;height:220px;border-radius:50%;background:rgba(255,255,255,0.05)}
+.hdr::before{content:'';position:absolute;left:-40px;bottom:-40px;width:160px;height:160px;border-radius:50%;background:rgba(220,38,38,0.15)}
+.hi{max-width:1100px;margin:0 auto;position:relative}
+.heyebrow{font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:#fca5a5;margin-bottom:6px}
+.htitle{font-size:clamp(18px,3.5vw,26px);font-weight:900;margin-bottom:6px;font-family:'Noto Serif KR',serif}
+.hsub{font-size:12px;color:#fecaca}
+.hpills{display:flex;flex-wrap:wrap;gap:6px;margin-top:14px}
+.hpill{background:rgba(255,255,255,0.12);border:1px solid rgba(255,255,255,0.2);padding:3px 11px;border-radius:20px;font-size:11px;color:#fee2e2}
+
+.type-nav{background:var(--white);border-bottom:3px solid var(--border);display:flex;max-width:100%;overflow-x:auto;scrollbar-width:none;box-shadow:0 2px 8px rgba(0,0,0,0.06);position:sticky;top:0;z-index:200}
+.type-nav::-webkit-scrollbar{display:none}
+.type-btn{flex:1;min-width:160px;padding:14px 16px;background:none;border:none;border-bottom:4px solid transparent;cursor:pointer;font-family:inherit;font-size:13px;font-weight:700;color:var(--text3);transition:all 0.18s;display:flex;align-items:center;justify-content:center;gap:8px}
+.type-btn:hover{color:var(--red);background:var(--redbg)}
+.type-btn.active{color:var(--red);border-bottom-color:var(--red);background:var(--redbg)}
+.type-badge{font-size:10px;padding:2px 8px;border-radius:10px;font-weight:700}
+.tb-short{background:#fef3c7;color:#92400e}
+.tb-long{background:#ede9fe;color:#5b21b6}
+
+.q-nav{background:#fff;border-bottom:1px solid var(--border);overflow-x:auto;white-space:nowrap;padding:0 16px;scrollbar-width:none;box-shadow:0 1px 4px rgba(0,0,0,0.04)}
+.q-nav::-webkit-scrollbar{display:none}
+.q-btn{display:inline-block;padding:10px 13px;font-size:12px;font-weight:600;color:var(--text3);background:none;border:none;border-bottom:3px solid transparent;cursor:pointer;font-family:inherit;transition:all .15s}
+.q-btn:hover{color:var(--red)}
+.q-btn.active{color:var(--red);border-bottom-color:var(--red)}
+
+.main{max-width:1100px;margin:0 auto;padding:24px 16px 80px}
+.type-panel{display:none}
+.type-panel.active{display:block}
+.q-panel{display:none}
+.q-panel.active{display:block}
+
+.qcard{background:var(--white);border:1px solid var(--border);border-radius:14px;overflow:hidden;box-shadow:0 2px 12px rgba(0,0,0,0.05);margin-bottom:20px}
+.qhdr{padding:18px 22px 14px;border-bottom:1px solid var(--bl);display:flex;align-items:flex-start;gap:14px}
+.qdomain{flex-shrink:0;padding:4px 11px;border-radius:20px;font-size:10px;font-weight:700;letter-spacing:0.5px;margin-top:2px;background:#fef2f2;color:#b91c1c;border:1px solid #fecaca}
+.qmeta{flex:1}
+.qtype-label{font-size:10px;color:var(--text3);font-weight:600;letter-spacing:0.5px;margin-bottom:4px}
+.qtitle{font-size:15px;font-weight:800;color:var(--text);line-height:1.45}
+.qbody{background:var(--bg);padding:16px 22px;border-bottom:1px solid var(--bl)}
+.qitems{margin-top:8px;display:flex;flex-direction:column;gap:6px}
+.qitem{display:flex;gap:10px;align-items:flex-start;font-size:13px;color:var(--text2)}
+.qlabel{font-weight:700;color:var(--red);min-width:20px;flex-shrink:0}
+.qhints{display:flex;flex-wrap:wrap;gap:6px;margin-top:12px}
+.qhint{background:var(--redbg);border:1px solid var(--rdb);color:var(--red);font-size:10px;font-weight:600;padding:2px 8px;border-radius:5px}
+
+.acard{background:var(--white)}
+.atoggle{width:100%;padding:14px 22px;background:none;border:none;display:flex;align-items:center;justify-content:space-between;cursor:pointer;font-family:inherit;transition:background .15s}
+.atoggle:hover{background:var(--redbg)}
+.alabel{font-size:13px;font-weight:700;color:var(--red)}
+.aarrow{font-size:16px;color:var(--red);transition:transform .25s}
+.aarrow.open{transform:rotate(180deg)}
+.abody{display:none;padding:0 22px 24px}
+.abody.open{display:block}
+
+.atitle{font-size:17px;font-weight:900;color:var(--text);font-family:'Noto Serif KR',serif;padding:18px 0 6px;border-bottom:2px solid var(--red);margin-bottom:16px}
+.asec{margin-bottom:18px}
+.asectitle{font-size:12px;font-weight:800;color:#fff;padding:5px 12px;border-radius:6px;display:inline-block;margin-bottom:11px}
+.s1{background:#b91c1c}
+.s2{background:#059669}
+.s3{background:#7c3aed}
+.s4{background:#d97706}
+.s5{background:#0d9488}
+.s6{background:#1d4ed8}
+.s7{background:#be185d}
+
+.ap{font-size:13px;color:var(--text2);line-height:1.85;margin-bottom:10px}
+
+.atable{width:100%;border-collapse:collapse;font-size:12px;margin:8px 0 12px}
+.atable th{background:var(--surface2);color:var(--text2);font-weight:700;padding:8px 12px;border:1px solid var(--border);text-align:center}
+.atable td{padding:8px 12px;border:1px solid var(--border);vertical-align:top;line-height:1.6}
+.atable td:first-child{font-weight:600;color:var(--red);background:var(--redbg);text-align:center;white-space:nowrap}
+.atable tr:nth-child(even) td:not(:first-child){background:#fafbfd}
+
+.aol{padding-left:0;list-style:none;display:flex;flex-direction:column;gap:9px;margin:6px 0}
+.aol li{display:flex;gap:10px;align-items:flex-start;font-size:13px;color:var(--text2);line-height:1.7}
+.onum{flex-shrink:0;width:22px;height:22px;border-radius:50%;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;margin-top:1px;color:#fff}
+.on1{background:#b91c1c}
+.on2{background:#059669}
+.on3{background:#7c3aed}
+.on4{background:#d97706}
+.on5{background:#0d9488}
+.on6{background:#1d4ed8}
+
+.sub{margin-top:6px;display:flex;flex-direction:column;gap:4px}
+.si{display:flex;gap:8px;font-size:12px;color:var(--text3)}
+.si::before{content:'▸';color:#ef4444;flex-shrink:0}
+
+.dbox{background:#f8fafc;border:1px solid var(--border);border-left:3px solid var(--red);border-radius:8px;padding:12px 16px;margin:10px 0;font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--text2);line-height:1.8;overflow-x:auto;white-space:pre}
+
+.kbox{border-radius:8px;padding:12px 16px;margin:10px 0;font-size:12px;line-height:1.75}
+.kb-red{background:var(--redbg);border:1px solid var(--rdb);color:var(--red)}
+.kb-blue{background:var(--bluebg);border:1px solid var(--blb);color:#1e40af}
+.kb-green{background:var(--gbg);border:1px solid var(--gb);color:var(--green)}
+.kb-ora{background:var(--obg);border:1px solid var(--ob);color:var(--ora)}
+.kb-pur{background:var(--pubg);border:1px solid var(--pub);color:var(--pur)}
+.kb-tea{background:var(--tbg);border:1px solid var(--tb);color:var(--tea)}
+.kbt{font-weight:700;margin-bottom:5px;font-size:11px;letter-spacing:0.4px}
+
+.concl{background:linear-gradient(135deg,var(--redbg),var(--pubg));border:1px solid var(--rdb);border-radius:8px;padding:14px 16px;margin-top:14px}
+.concl-title{font-weight:700;color:var(--red);font-size:12px;margin-bottom:6px}
+.concl p{font-size:12px;color:var(--text2);line-height:1.75}
+
+.chips{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px}
+.chip{font-size:11px;padding:3px 10px;border-radius:6px;font-weight:600}
+.ct{background:var(--obg);color:var(--ora);border:1px solid var(--ob)}
+.cp{background:var(--gbg);color:var(--green);border:1px solid var(--gb)}
+.cs{background:var(--redbg);color:var(--red);border:1px solid var(--rdb)}
+
+.sgrid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:10px 0}
+@media(max-width:640px){.sgrid{grid-template-columns:1fr}}
+.scard{background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:12px 14px}
+.scard-title{font-size:11px;font-weight:700;color:var(--red);margin-bottom:5px}
+.scard p{font-size:12px;color:var(--text2);line-height:1.65}
+
+.q-counter{font-size:11px;color:var(--text4);margin-bottom:14px;font-weight:600;letter-spacing:0.5px}
+</style>
+</head>
+<body>
+
+<header class="hdr">
+  <div class="hi">
+    <div class="heyebrow">🛡️ 보안 · IDS / IPS / FIREWALL</div>
+    <div class="htitle">컴퓨터시스템응용기술사<br>IDS / IPS / 방화벽 분야 기출유형 문제 &amp; 모범답안</div>
+    <div class="hsub">단답형 5문제 (1~2페이지) + 논술형 5문제 (3~4페이지) · 전 문항 모범답안 수록</div>
+    <div class="hpills">
+      <span class="hpill">단답형 10~15점</span>
+      <span class="hpill">논술형 25점</span>
+      <span class="hpill">기술사 실전 형식</span>
+      <span class="hpill">감리 포인트 포함</span>
+    </div>
+  </div>
+</header>
+
+<nav class="type-nav">
+  <button class="type-btn active" onclick="showType(0,this)">
+    📝 단답형 문제
+    <span class="type-badge tb-short">1~2페이지 · 5문제</span>
+  </button>
+  <button class="type-btn" onclick="showType(1,this)">
+    📄 논술형 문제
+    <span class="type-badge tb-long">3~4페이지 · 5문제</span>
+  </button>
+</nav>
+
+<!-- ══════════════════════════════════════════
+     단답형
+══════════════════════════════════════════ -->
+<div class="type-panel active" id="tp0">
+  <nav class="q-nav">
+    <button class="q-btn active" onclick="showQ(0,this,'tp0')">①방화벽 유형</button>
+    <button class="q-btn" onclick="showQ(1,this,'tp0')">②IDS 탐지 방식</button>
+    <button class="q-btn" onclick="showQ(2,this,'tp0')">③DMZ 구조</button>
+    <button class="q-btn" onclick="showQ(3,this,'tp0')">④IPS vs IDS</button>
+    <button class="q-btn" onclick="showQ(4,this,'tp0')">⑤WAF 개념</button>
+  </nav>
+  <div class="main">
+
+    <!-- 단답 1: 방화벽 유형 -->
+    <div class="q-panel active" id="tp0_q0">
+    <div class="q-counter">📝 단답형 1번 / 5번</div>
+    <div class="qcard">
+      <div class="qhdr">
+        <span class="qdomain">보안 · 방화벽</span>
+        <div class="qmeta">
+          <div class="qtype-label">1교시 단답형 · 10~15점 · 1~2페이지 분량</div>
+          <div class="qtitle">방화벽(Firewall)의 개념과 동작 원리를 설명하고, 패킷 필터링·스테이트풀 인스펙션·애플리케이션 게이트웨이·차세대 방화벽(NGFW) 4가지 유형을 비교하시오.</div>
+        </div>
+      </div>
+      <div class="qbody">
+        <div class="qhints">
+          <span class="qhint">4세대 방화벽 계보</span><span class="qhint">OSI 계층별 동작</span><span class="qhint">NGFW 필수 포함</span>
+        </div>
+      </div>
+      <div class="acard">
+        <button class="atoggle" onclick="toggleA(this)">
+          <span class="alabel">📄 모범 답안 보기</span>
+          <span class="aarrow">▼</span>
+        </button>
+        <div class="abody">
+          <div class="atitle">방화벽의 개념·동작 원리 및 4가지 유형 비교</div>
+          <div class="chips">
+            <span class="chip ct">⏱ 목표 15분</span>
+            <span class="chip cp">📄 1.5~2페이지</span>
+            <span class="chip cs">💯 10~15점</span>
+          </div>
+          <div class="asec">
+            <div class="asectitle s1">Ⅰ. 방화벽의 개념 및 기본 동작 원리</div>
+            <div class="ap">방화벽(Firewall)은 신뢰할 수 있는 내부 네트워크와 신뢰할 수 없는 외부 네트워크(인터넷) 사이에 위치하여, 미리 정의된 보안 정책(ACL)에 따라 트래픽을 허용(Allow)·차단(Deny)·폐기(Drop)하는 네트워크 보안 장비이다. Default Deny(기본 거부) 원칙에 따라 명시적으로 허용된 트래픽만 통과시키는 Positive Security Model을 채택한다.</div>
+            <div class="dbox">방화벽 기본 동작 흐름
+
+외부 트래픽 유입
+    │
+    ▼
+[정책 매칭] → 출발지 IP · 목적지 IP · 포트 · 프로토콜 확인
+    │
+    ├─ 허용(Allow)  → 패킷 전달
+    ├─ 거부(Deny)   → 패킷 폐기 + 이벤트 로그 기록
+    └─ 묵시적 거부  → Default Deny (정책 미매칭 시 자동 차단)</div>
+          </div>
+          <div class="asec">
+            <div class="asectitle s2">Ⅱ. 방화벽 4가지 유형 비교</div>
+            <table class="atable">
+              <tr><th>유형</th><th>동작 OSI 계층</th><th>동작 원리</th><th>장점</th><th>단점</th></tr>
+              <tr><td>패킷 필터링<br>(Packet Filtering)</td><td>3~4계층<br>(네트워크·전송)</td><td>IP 헤더(출발지·목적지 IP/Port, 프로토콜)만 검사. 상태 추적 없음. ACL 기반 허용·차단</td><td>처리 속도 빠름, 구현 단순, 비용 낮음</td><td>응용계층 공격 탐지 불가, IP 스푸핑 취약, 세션 상태 추적 불가</td></tr>
+              <tr><td>스테이트풀 인스펙션<br>(Stateful Inspection)</td><td>3~4계층<br>(상태 테이블 포함)</td><td>세션 상태 테이블(State Table)로 연결 상태(SYN→ESTABLISHED→FIN) 추적. 허가된 세션의 응답 패킷만 허용</td><td>동적 포트 자동 허용, IP 스푸핑 방어, 성능·보안 균형</td><td>애플리케이션 계층 내용 검사 불가, 상태 테이블 고갈 공격(Syn Flood) 취약</td></tr>
+              <tr><td>애플리케이션 게이트웨이<br>(Application Gateway/Proxy)</td><td>7계층<br>(응용)</td><td>프록시로서 클라이언트-서버 사이에서 애플리케이션 프로토콜 완전 분석. HTTP/FTP/SMTP 등 특정 프로토콜 심층 검사</td><td>애플리케이션 계층 완전 검사, 콘텐츠 필터링, 내부 IP 은닉</td><td>처리 속도 느림, 프로토콜별 별도 프록시 필요, 새 서비스 대응 어려움</td></tr>
+              <tr><td>차세대 방화벽<br>(NGFW)</td><td>2~7계층<br>(전 계층 통합)</td><td>스테이트풀 + DPI(심층 패킷 검사) + IPS + 애플리케이션 인식 + 사용자 ID 기반 정책 + SSL 복호화 통합</td><td>APT 대응, 암호화 트래픽 검사, 단일 장비로 통합 보안</td><td>고성능 요구, 높은 비용, SSL 복호화 시 개인정보 이슈</td></tr>
+            </table>
+          </div>
+          <div class="asec">
+            <div class="asectitle s3">Ⅲ. 방화벽 발전 계보 및 세대 구분</div>
+            <div class="dbox">방화벽 세대별 발전
+
+1세대 (1988~) : 패킷 필터링 → IP/Port 기반 단순 ACL
+2세대 (1989~) : 스테이트풀 인스펙션 → 세션 상태 추적 (Check Point FW-1)
+3세대 (1994~) : 애플리케이션 게이트웨이(Proxy) → L7 프로토콜 분석
+4세대 (2007~) : NGFW → DPI + IPS + App-ID + User-ID + SSL 복호화 (Palo Alto Networks)</div>
+            <div class="kbox kb-red">
+              <div class="kbt">📌 NGFW 핵심 기능 (감리 포인트)</div>
+              ① <strong>App-ID</strong>: 포트 독립적 애플리케이션 식별 (WhatsApp, Zoom 등)<br>
+              ② <strong>User-ID</strong>: IP가 아닌 사용자 계정 기반 정책 적용<br>
+              ③ <strong>SSL/TLS 복호화</strong>: 암호화 트래픽 내 위협 탐지<br>
+              ④ <strong>통합 위협 관리(UTM)</strong>: IPS·Anti-Virus·URL 필터링 통합
+            </div>
+          </div>
+          <div class="concl">
+            <div class="concl-title">Ⅳ. 결론 — 감리 점검항목</div>
+            <p>방화벽 도입 시 감리 점검: ①방화벽 정책(ACL)의 Default Deny 원칙 적용 여부, ②불필요한 허용 규칙(Any-Any) 존재 여부, ③정책 변경 이력 관리(Change Management) 체계, ④NGFW의 경우 SSL 복호화 정책 및 개인정보 처리 절차 수립 여부, ⑤정기적 룰셋 검토·정리(Rule Cleanup) 수행 여부를 확인한다.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    </div>
+
+    <!-- 단답 2: IDS 탐지 방식 -->
+    <div class="q-panel" id="tp0_q1">
+    <div class="q-counter">📝 단답형 2번 / 5번</div>
+    <div class="qcard">
+      <div class="qhdr">
+        <span class="qdomain">보안 · IDS</span>
+        <div class="qmeta">
+          <div class="qtype-label">1교시 단답형 · 10~15점 · 1~2페이지 분량</div>
+          <div class="qtitle">침입탐지시스템(IDS)의 탐지 방식인 오용 탐지(Misuse Detection)와 이상 탐지(Anomaly Detection)를 비교하고, 각각의 오탐(False Positive)과 미탐(False Negative) 발생 특성을 설명하시오.</div>
+        </div>
+      </div>
+      <div class="qbody">
+        <div class="qhints">
+          <span class="qhint">핵심 빈출</span><span class="qhint">FP·FN 정의 필수</span><span class="qhint">머신러닝 탐지 연계</span>
+        </div>
+      </div>
+      <div class="acard">
+        <button class="atoggle" onclick="toggleA(this)">
+          <span class="alabel">📄 모범 답안 보기</span>
+          <span class="aarrow">▼</span>
+        </button>
+        <div class="abody">
+          <div class="atitle">IDS 탐지 방식 — 오용 탐지 vs 이상 탐지 및 오탐·미탐 특성</div>
+          <div class="chips">
+            <span class="chip ct">⏱ 목표 15분</span>
+            <span class="chip cp">📄 1.5~2페이지</span>
+            <span class="chip cs">💯 10~15점</span>
+          </div>
+          <div class="asec">
+            <div class="asectitle s1">Ⅰ. IDS 개념 및 탐지 방식 분류</div>
+            <div class="ap">IDS(Intrusion Detection System, 침입탐지시스템)는 네트워크 또는 호스트에서 비인가 접근·악의적 활동을 실시간으로 탐지하고 관리자에게 경보를 발생시키는 수동적 보안 장비이다. 탐지 방식은 크게 <strong>오용 탐지</strong>와 <strong>이상 탐지</strong>로 분류된다.</div>
+          </div>
+          <div class="asec">
+            <div class="asectitle s2">Ⅱ. 오용 탐지 vs 이상 탐지 비교</div>
+            <table class="atable">
+              <tr><th>비교 항목</th><th>오용 탐지 (Misuse Detection)<br>시그니처 기반</th><th>이상 탐지 (Anomaly Detection)<br>행위 기반</th></tr>
+              <tr><td>원리</td><td>알려진 공격 패턴(시그니처)과 트래픽 비교 매칭. 데이터베이스에 정의된 패턴과 일치 시 경보 발생</td><td>정상 행위 프로파일(Baseline)을 설정하고, 통계적으로 이탈한 행위를 탐지</td></tr>
+              <tr><td>탐지 대상</td><td>알려진 공격(Known Attack): CVE 취약점, 악성코드, 스캔 패턴</td><td>알려지지 않은 공격(Zero-day), 내부자 위협, APT</td></tr>
+              <tr><td>오탐(FP)</td><td>낮음 — 시그니처 매칭이 정확하므로 오경보 적음</td><td>높음 — 정상 행위 변화 시에도 경보 발생 (야간 백업, 신규 서비스 론칭 등)</td></tr>
+              <tr><td>미탐(FN)</td><td>높음 — 신규 공격, 변형 악성코드는 탐지 불가</td><td>낮음 — 패턴 무관하게 비정상 행위 탐지 가능</td></tr>
+              <tr><td>업데이트</td><td>시그니처 DB 주기적 갱신 필수 (공급업체 의존)</td><td>지속적 학습·모델 재훈련 필요</td></tr>
+              <tr><td>구현 기술</td><td>패턴 매칭 엔진, 정규표현식 (Snort, Suricata)</td><td>통계 기반, ML/DL(SVM·LSTM·Autoencoder), 엔트로피 분석</td></tr>
+              <tr><td>대표 제품</td><td>Snort, Suricata, McAfee NSP</td><td>Darktrace, Vectra AI, 사용자 행위 분석(UEBA)</td></tr>
+            </table>
+          </div>
+          <div class="asec">
+            <div class="asectitle s3">Ⅲ. 오탐(FP)과 미탐(FN) 개념 및 ROC 분석</div>
+            <table class="atable">
+              <tr><th>구분</th><th>정의</th><th>보안 영향</th><th>대응 방안</th></tr>
+              <tr><td>오탐<br>(False Positive)</td><td>정상 트래픽을 공격으로 잘못 탐지하여 불필요한 경보 발생</td><td>담당자 경보 피로(Alert Fatigue), 업무 차단, 신뢰도 저하</td><td>시그니처 튜닝, 화이트리스트 적용, 임계값 조정</td></tr>
+              <tr><td>미탐<br>(False Negative)</td><td>실제 공격을 정상으로 판단하여 탐지 누락</td><td>침해사고 미탐지, 보안 공백 발생, 치명적 위험</td><td>시그니처 DB 최신화, 탐지 규칙 강화, 계층 방어</td></tr>
+            </table>
+            <div class="kbox kb-red">
+              <div class="kbt">📌 탐지율·오탐율 트레이드오프 (ROC Curve)</div>
+              탐지 임계값을 낮추면 → 탐지율(DR) 향상, 오탐율(FPR) 증가<br>
+              탐지 임계값을 높이면 → 오탐율 감소, 미탐율(FNR) 증가<br>
+              <strong>최적 운영점</strong>: ROC 곡선 상에서 탐지율·오탐율 균형점 선택. AUC(Area Under Curve) 지표로 탐지 성능 평가
+            </div>
+          </div>
+          <div class="asec">
+            <div class="asectitle s4">Ⅳ. 하이브리드 탐지 방식 (최신 트렌드)</div>
+            <div class="ap">최신 IDS/IPS는 오용 탐지의 정확성과 이상 탐지의 제로데이 대응력을 결합한 <strong>하이브리드 방식</strong>을 채택한다. AI/ML 기반 이상 탐지로 의심 행위를 1차 선별하고, 시그니처 엔진으로 2차 정밀 분석하여 오탐을 최소화한다.</div>
+          </div>
+          <div class="concl">
+            <div class="concl-title">Ⅴ. 결론 — 감리 포인트</div>
+            <p>IDS 탐지 방식 선택 시: ①알려진 공격 중심 환경 → 오용 탐지 중심, ②내부자 위협·APT 대응 → 이상 탐지(UEBA) 추가 권장. 감리 시에는 ①시그니처 DB 최종 업데이트 일자, ②오탐율 통계·튜닝 이력, ③탐지 정책 검토 주기, ④주요 경보에 대한 대응 절차(Playbook) 존재 여부를 점검한다.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    </div>
+
+    <!-- 단답 3: DMZ 구조 -->
+    <div class="q-panel" id="tp0_q2">
+    <div class="q-counter">📝 단답형 3번 / 5번</div>
+    <div class="qcard">
+      <div class="qhdr">
+        <span class="qdomain">보안 · 네트워크 구조</span>
+        <div class="qmeta">
+          <div class="qtype-label">1교시 단답형 · 10~15점 · 1~2페이지 분량</div>
+          <div class="qtitle">DMZ(비무장지대) 네트워크 구조의 개념, 구성 방식(싱글 방화벽·듀얼 방화벽), 배치 서비스 유형 및 보안 효과를 설명하시오.</div>
+        </div>
+      </div>
+      <div class="qbody">
+        <div class="qhints">
+          <span class="qhint">네트워크 설계 필수</span><span class="qhint">싱글·듀얼 방화벽 구조 다이어그램</span><span class="qhint">공공 전산망 구성 연계</span>
+        </div>
+      </div>
+      <div class="acard">
+        <button class="atoggle" onclick="toggleA(this)">
+          <span class="alabel">📄 모범 답안 보기</span>
+          <span class="aarrow">▼</span>
+        </button>
+        <div class="abody">
+          <div class="atitle">DMZ 네트워크 구조 — 개념·구성 방식·배치 서비스·보안 효과</div>
+          <div class="chips">
+            <span class="chip ct">⏱ 목표 15분</span>
+            <span class="chip cp">📄 1.5~2페이지</span>
+            <span class="chip cs">💯 10~15점</span>
+          </div>
+          <div class="asec">
+            <div class="asectitle s1">Ⅰ. DMZ의 개념</div>
+            <div class="ap">DMZ(DeMilitarized Zone, 비무장지대)는 외부 인터넷과 내부 내부망 사이에 설정된 중립 네트워크 구간으로, 외부에서 접근이 필요한 서비스(웹서버·메일서버 등)를 내부망으로부터 격리하여 배치하는 네트워크 보안 아키텍처이다. DMZ 서버가 침해되더라도 내부망으로의 추가 침투를 방어하는 계층 방어(Defense-in-Depth) 전략이다.</div>
+          </div>
+          <div class="asec">
+            <div class="asectitle s2">Ⅱ. DMZ 구성 방식 비교</div>
+            <div class="dbox">① 싱글 방화벽 구조 (3-legged Firewall)
+
+  인터넷
+    │
+  [방화벽 - 인터페이스 3개]
+  ├── DMZ 구간 (eth1) ── [웹서버] [메일서버] [DNS]
+  └── 내부망 (eth2)   ── [DB서버] [내부시스템]
+
+  장점: 구성 단순, 비용 낮음
+  단점: 방화벽 단일 장애점(SPOF), 방화벽 침해 시 내부망 노출
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+② 듀얼 방화벽 구조 (Screened Subnet)
+
+  인터넷
+    │
+  [외부 방화벽] ── 외부→DMZ 트래픽 통제
+    │
+  [  DMZ 구간  ] ── [웹서버] [메일서버] [리버스 프록시]
+    │
+  [내부 방화벽] ── DMZ→내부망 트래픽 통제
+    │
+  [  내부망    ] ── [DB서버] [내부 애플리케이션]
+
+  장점: 이중 보안 계층, DMZ 침해 시 내부망 보호
+  단점: 비용·관리 복잡성 증가. 공공 기관·금융권 권장 구조</div>
+          </div>
+          <div class="asec">
+            <div class="asectitle s3">Ⅲ. DMZ 배치 서비스 및 트래픽 정책</div>
+            <table class="atable">
+              <tr><th>서비스 유형</th><th>DMZ 배치 이유</th><th>허용 트래픽 방향</th></tr>
+              <tr><td>웹서버 (HTTP/S)</td><td>외부 사용자의 직접 접근 필요</td><td>인터넷→DMZ 허용 / DMZ→내부망 제한(DB 포트만)</td></tr>
+              <tr><td>메일서버 (SMTP/IMAP)</td><td>외부 메일 수신·발신 처리</td><td>인터넷↔DMZ 25포트 허용</td></tr>
+              <tr><td>DNS 서버</td><td>외부 도메인 질의 응답</td><td>인터넷→DMZ 53포트 허용 (재귀 질의 차단)</td></tr>
+              <tr><td>리버스 프록시</td><td>내부 웹서버를 은닉하고 SSL 종료 처리</td><td>인터넷→DMZ 443 / DMZ→내부 8080(HTTP)</td></tr>
+              <tr><td>FTP 서버</td><td>파일 업·다운로드 서비스</td><td>인터넷→DMZ 21 허용 / Passive FTP 포트 범위 제한</td></tr>
+            </table>
+            <div class="kbox kb-red">
+              <div class="kbt">📌 DMZ 핵심 보안 원칙</div>
+              ① <strong>내부망→외부 직접 통신 차단</strong>: 내부 DB는 인터넷 직접 노출 절대 금지<br>
+              ② <strong>DMZ 서버 간 불필요 통신 차단</strong>: 수평 이동(Lateral Movement) 방어<br>
+              ③ <strong>내부망에서 DMZ 관리</strong>: SSH 관리 접속은 내부망→DMZ 방향만 허용<br>
+              ④ <strong>최소 권한 원칙</strong>: 각 서비스에 필요한 포트·프로토콜만 허용
+            </div>
+          </div>
+          <div class="concl">
+            <div class="concl-title">Ⅳ. 결론 — 공공 전산망 적용</div>
+            <p>「전자정부법」 및 국가정보원 「정보보안 관리실태 평가 기준」에 따르면, 외부에 서비스를 제공하는 공공기관은 DMZ 구성(듀얼 방화벽 권장)이 사실상 필수이다. 감리 시 DMZ 구간의 방화벽 정책, 서버 간 불필요 통신 여부, 내부망과의 격리 상태를 중점 점검한다.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    </div>
+
+    <!-- 단답 4: IPS vs IDS -->
+    <div class="q-panel" id="tp0_q3">
+    <div class="q-counter">📝 단답형 4번 / 5번</div>
+    <div class="qcard">
+      <div class="qhdr">
+        <span class="qdomain">보안 · IDS/IPS</span>
+        <div class="qmeta">
+          <div class="qtype-label">1교시 단답형 · 10~15점 · 1~2페이지 분량</div>
+          <div class="qtitle">IDS(침입탐지시스템)와 IPS(침입방지시스템)의 차이점을 비교하고, NIDS·HIDS·NIPS·HIPS의 각 개념과 배치 위치·탐지 특성을 설명하시오.</div>
+        </div>
+      </div>
+      <div class="qbody">
+        <div class="qhints">
+          <span class="qhint">4종 분류 비교표</span><span class="qhint">인라인 vs 아웃오브밴드</span><span class="qhint">HIDS OSSEC 언급</span>
+        </div>
+      </div>
+      <div class="acard">
+        <button class="atoggle" onclick="toggleA(this)">
+          <span class="alabel">📄 모범 답안 보기</span>
+          <span class="aarrow">▼</span>
+        </button>
+        <div class="abody">
+          <div class="atitle">IDS vs IPS 비교 및 NIDS·HIDS·NIPS·HIPS 분류</div>
+          <div class="chips">
+            <span class="chip ct">⏱ 목표 15분</span>
+            <span class="chip cp">📄 1.5~2페이지</span>
+            <span class="chip cs">💯 10~15점</span>
+          </div>
+          <div class="asec">
+            <div class="asectitle s1">Ⅰ. IDS와 IPS의 핵심 차이</div>
+            <table class="atable">
+              <tr><th>비교 항목</th><th>IDS (침입탐지시스템)</th><th>IPS (침입방지시스템)</th></tr>
+              <tr><td>동작 방식</td><td>수동적 (Passive) — 탐지 후 경보 발생</td><td>능동적 (Active) — 탐지 즉시 자동 차단</td></tr>
+              <tr><td>트래픽 경로</td><td>아웃오브밴드 (Out-of-Band) — 트래픽 복사본 분석</td><td>인라인 (In-Line) — 트래픽 경로에 직접 삽입</td></tr>
+              <tr><td>대응 속도</td><td>사람의 판단 후 수동 대응</td><td>실시간 자동 차단 (밀리초 이내)</td></tr>
+              <tr><td>오탐 영향</td><td>낮음 — 오탐 시 경보만 발생</td><td>높음 — 오탐 시 정상 트래픽 차단 가능</td></tr>
+              <tr><td>네트워크 영향</td><td>없음 — 트래픽 경로 외 배치</td><td>있음 — 장애 시 네트워크 단절 위험 (Fail-Open/Fail-Close)</td></tr>
+              <tr><td>주요 기능</td><td>탐지·로깅·경보·포렌식 지원</td><td>탐지·차단·세션 종료·패킷 드롭·IP 차단</td></tr>
+            </table>
+          </div>
+          <div class="asec">
+            <div class="asectitle s2">Ⅱ. NIDS·HIDS·NIPS·HIPS 4종 분류</div>
+            <table class="atable">
+              <tr><th>유형</th><th>배치 위치</th><th>탐지 대상</th><th>장점</th><th>단점</th><th>대표 도구</th></tr>
+              <tr><td>NIDS<br>(네트워크 IDS)</td><td>네트워크 세그먼트. 스위치 미러링 포트(SPAN) 연결</td><td>네트워크 트래픽 전체</td><td>광범위 탐지, 호스트 부하 없음</td><td>암호화 트래픽 탐지 어려움, 고속 환경 패킷 유실 가능</td><td>Snort, Suricata, Zeek</td></tr>
+              <tr><td>HIDS<br>(호스트 IDS)</td><td>개별 호스트(서버·PC)에 에이전트 설치</td><td>시스템 로그·파일 무결성·레지스트리·프로세스</td><td>암호화 트래픽 탐지, 내부 공격 탐지</td><td>호스트 자원 소모, 배포·관리 복잡</td><td>OSSEC, Wazuh, Tripwire</td></tr>
+              <tr><td>NIPS<br>(네트워크 IPS)</td><td>네트워크 경계에 인라인 배치 (방화벽 뒤)</td><td>네트워크 트래픽 실시간 차단</td><td>자동 차단, 광범위 보호</td><td>오탐 시 정상 서비스 차단 위험</td><td>Cisco Firepower, Palo Alto IPS</td></tr>
+              <tr><td>HIPS<br>(호스트 IPS)</td><td>개별 호스트에 에이전트 설치 (인라인)</td><td>프로세스·메모리·API 호출 실시간 차단</td><td>제로데이 공격·랜섬웨어 행위 차단</td><td>높은 자원 소모, 오탐 시 서비스 중단</td><td>Carbon Black, CrowdStrike Falcon</td></tr>
+            </table>
+          </div>
+          <div class="asec">
+            <div class="asectitle s3">Ⅲ. 배치 구조 및 Fail-Safe 정책</div>
+            <div class="dbox">IPS 인라인 배치 구조
+
+인터넷 → [방화벽] → [NIPS ← 인라인] → [스위치] → 내부망
+                        │
+                     트래픽 분석·차단
+                     (정상 패킷 통과 / 악성 패킷 Drop)
+
+Fail-Open : IPS 장애 시 트래픽 그대로 통과 → 가용성 우선
+Fail-Close: IPS 장애 시 트래픽 차단         → 보안 우선 (공공 금융 권장)</div>
+          </div>
+          <div class="concl">
+            <div class="concl-title">Ⅳ. 결론 — 감리 포인트</div>
+            <p>감리 시 IDS/IPS 점검항목: ①NIDS의 SPAN 포트 설정 정확성, ②IPS Fail-Open/Close 정책 적정성, ③시그니처 DB 최신화 주기, ④HIDS의 파일 무결성 모니터링(FIM) 설정 및 기준 파일 최신화, ⑤경보-대응 연계 절차(SIEM 연동 여부)를 확인한다.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    </div>
+
+    <!-- 단답 5: WAF -->
+    <div class="q-panel" id="tp0_q4">
+    <div class="q-counter">📝 단답형 5번 / 5번</div>
+    <div class="qcard">
+      <div class="qhdr">
+        <span class="qdomain">보안 · WAF</span>
+        <div class="qmeta">
+          <div class="qtype-label">1교시 단답형 · 10~15점 · 1~2페이지 분량</div>
+          <div class="qtitle">웹 애플리케이션 방화벽(WAF: Web Application Firewall)의 개념, 동작 방식, OWASP Top 10 연계 차단 기능 및 일반 방화벽·IPS와의 차이점을 설명하시오.</div>
+        </div>
+      </div>
+      <div class="qbody">
+        <div class="qhints">
+          <span class="qhint">OWASP Top 10 연계</span><span class="qhint">양방향 검사</span><span class="qhint">클라우드 WAF 언급</span>
+        </div>
+      </div>
+      <div class="acard">
+        <button class="atoggle" onclick="toggleA(this)">
+          <span class="alabel">📄 모범 답안 보기</span>
+          <span class="aarrow">▼</span>
+        </button>
+        <div class="abody">
+          <div class="atitle">WAF의 개념·동작 방식·OWASP Top 10 연계 및 방화벽·IPS와의 차이</div>
+          <div class="chips">
+            <span class="chip ct">⏱ 목표 15분</span>
+            <span class="chip cp">📄 1.5~2페이지</span>
+            <span class="chip cs">💯 10~15점</span>
+          </div>
+          <div class="asec">
+            <div class="asectitle s1">Ⅰ. WAF의 개념 및 동작 방식</div>
+            <div class="ap">WAF(웹 애플리케이션 방화벽)는 HTTP/HTTPS 트래픽을 심층 검사하여 웹 애플리케이션을 대상으로 한 공격(SQL Injection, XSS 등)을 탐지·차단하는 L7 계층 보안 장비이다. 웹 서버 앞단에 인라인으로 배치되어 클라이언트 요청(Request)과 서버 응답(Response)을 양방향으로 검사한다.</div>
+            <div class="dbox">WAF 동작 흐름 (인라인 배치)
+
+사용자 HTTP 요청
+    │
+    ▼
+[WAF 요청 검사]
+  ├─ 헤더·URL·파라미터·쿠키·페이로드 분석
+  ├─ SQL Injection 패턴 탐지 → 차단
+  ├─ XSS 스크립트 탐지 → 차단
+  ├─ CSRF 토큰 검증
+  └─ 허용 → 웹서버 전달
+    │
+    ▼
+[웹서버 응답]
+    │
+    ▼
+[WAF 응답 검사] → 민감정보 유출(주민번호·카드번호) 탐지·마스킹
+    │
+    ▼
+사용자에게 전달</div>
+          </div>
+          <div class="asec">
+            <div class="asectitle s2">Ⅱ. OWASP Top 10 연계 WAF 차단 기능 (2021)</div>
+            <table class="atable">
+              <tr><th>순위</th><th>취약점</th><th>WAF 차단 방식</th></tr>
+              <tr><td>A01</td><td>Broken Access Control (접근 통제 취약점)</td><td>URL 접근 패턴 제어, 비인가 경로 접근 차단</td></tr>
+              <tr><td>A02</td><td>Cryptographic Failures (암호화 실패)</td><td>HTTP→HTTPS 강제 리다이렉트, 민감 데이터 응답 마스킹</td></tr>
+              <tr><td>A03</td><td>Injection (SQL·LDAP·OS 인젝션)</td><td>악성 SQL 구문(', OR 1=1 등) 정규식 탐지·차단</td></tr>
+              <tr><td>A07</td><td>XSS (크로스사이트 스크립팅)</td><td>&lt;script&gt; 태그·이벤트 핸들러 탐지, 응답 인코딩</td></tr>
+              <tr><td>A04</td><td>Insecure Design (비안전 설계)</td><td>비정상 요청 속도 제한(Rate Limiting), 봇 차단</td></tr>
+              <tr><td>A10</td><td>SSRF (서버 사이드 요청 위조)</td><td>내부 IP 대역 요청·비허가 URL 호출 차단</td></tr>
+            </table>
+          </div>
+          <div class="asec">
+            <div class="asectitle s3">Ⅲ. WAF vs 방화벽 vs IPS 비교</div>
+            <table class="atable">
+              <tr><th>구분</th><th>일반 방화벽</th><th>IPS (네트워크)</th><th>WAF</th></tr>
+              <tr><td>검사 계층</td><td>L3~L4 (IP/Port)</td><td>L3~L7 (DPI)</td><td>L7 (HTTP/HTTPS 전용)</td></tr>
+              <tr><td>탐지 대상</td><td>포트·프로토콜 기반</td><td>알려진 네트워크 공격</td><td>웹 애플리케이션 공격</td></tr>
+              <tr><td>SSL 복호화</td><td>NGFW만 가능</td><td>부분 가능</td><td>필수 (HTTPS 검사 위해)</td></tr>
+              <tr><td>HTTP 파라미터 분석</td><td>불가</td><td>제한적</td><td>완전 분석</td></tr>
+              <tr><td>배치 형태</td><td>네트워크 경계</td><td>인라인/아웃오브밴드</td><td>웹서버 앞단 인라인/리버스 프록시</td></tr>
+              <tr><td>법적 의무</td><td>—</td><td>—</td><td>개인정보보호법, 전자금융감독규정 WAF 설치 권고</td></tr>
+            </table>
+            <div class="kbox kb-red">
+              <div class="kbt">WAF 운영 모드</div>
+              • <strong>탐지 모드(Detection)</strong>: 공격 탐지 후 로그만 기록. 초기 도입 시 오탐 분석 목적<br>
+              • <strong>차단 모드(Prevention)</strong>: 공격 탐지 즉시 자동 차단. 운영 안정화 후 전환<br>
+              • <strong>클라우드 WAF</strong>: AWS WAF, Cloudflare WAF — DNS 기반 트래픽 라우팅, 관리형 룰셋 자동 제공
+            </div>
+          </div>
+          <div class="concl">
+            <div class="concl-title">Ⅳ. 결론 — 감리 포인트</div>
+            <p>「개인정보보호법」 및 「전자금융감독규정」에서 개인정보 처리 웹서비스에 WAF 설치를 권고한다. 감리 시: ①WAF 차단 모드 적용 여부, ②OWASP Top 10 대응 룰셋 최신화, ③응답 페이지 정보 마스킹(주민번호·카드번호) 설정, ④WAF 우회 차단 설정(IP 직접 접속 차단) 여부를 점검한다.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    </div>
+
+  </div>
+</div><!-- /tp0 -->
+
+<!-- ══════════════════════════════════════════
+     논술형
+══════════════════════════════════════════ -->
+<div class="type-panel" id="tp1">
+  <nav class="q-nav">
+    <button class="q-btn active" onclick="showQ(0,this,'tp1')">①방화벽 정책 설계</button>
+    <button class="q-btn" onclick="showQ(1,this,'tp1')">②IDS/IPS 구축</button>
+    <button class="q-btn" onclick="showQ(2,this,'tp1')">③Zero Trust 보안</button>
+    <button class="q-btn" onclick="showQ(3,this,'tp1')">④네트워크 보안 아키텍처</button>
+    <button class="q-btn" onclick="showQ(4,this,'tp1')">⑤SIEM과 SOC 구축</button>
+  </nav>
+  <div class="main">
+
+    <!-- 논술 1: 방화벽 정책 설계 -->
+    <div class="q-panel active" id="tp1_q0">
+    <div class="q-counter">📄 논술형 1번 / 5번</div>
+    <div class="qcard">
+      <div class="qhdr">
+        <span class="qdomain">보안 · 방화벽</span>
+        <div class="qmeta">
+          <div class="qtype-label">2~4교시 논술형 · 25점 · 3~4페이지 분량</div>
+          <div class="qtitle">공공기관 정보시스템을 위한 방화벽 정책 설계에 대하여 다음을 설명하시오.</div>
+        </div>
+      </div>
+      <div class="qbody">
+        <div class="qitems">
+          <div class="qitem"><span class="qlabel">가.</span><span>방화벽 정책 수립의 기본 원칙과 접근 통제 모델(MAC·DAC·RBAC)과의 연계</span></div>
+          <div class="qitem"><span class="qlabel">나.</span><span>인터넷 서비스 제공 공공기관의 3-Tier 네트워크 구조(인터넷망·DMZ·내부망) 설계 및 방화벽 정책 구체 사례</span></div>
+          <div class="qitem"><span class="qlabel">다.</span><span>방화벽 정책 운영·변경 관리 절차 및 정기 감사(Audit) 방안</span></div>
+        </div>
+        <div class="qhints">
+          <span class="qhint">국가정보원 가이드 연계</span><span class="qhint">3-Tier 구조도</span><span class="qhint">정책 변경 관리 프로세스</span>
+        </div>
+      </div>
+      <div class="acard">
+        <button class="atoggle" onclick="toggleA(this)">
+          <span class="alabel">📄 모범 답안 보기</span>
+          <span class="aarrow">▼</span>
+        </button>
+        <div class="abody">
+          <div class="atitle">공공기관 방화벽 정책 설계 — 원칙·3-Tier 구조·운영·감사</div>
+          <div class="chips">
+            <span class="chip ct">⏱ 목표 30분</span>
+            <span class="chip cp">📄 3.5~4페이지</span>
+            <span class="chip cs">💯 25점</span>
+          </div>
+          <div class="asec">
+            <div class="asectitle s1">Ⅰ. 개요</div>
+            <div class="ap">방화벽 정책(Firewall Policy)은 네트워크를 통과하는 트래픽에 대한 허용·차단 기준을 정의한 보안 규칙의 집합이다. 공공기관은 「전자정부법」·「정보보안관리 실태평가 기준」(국가정보원)에 따라 방화벽을 필수 보안 장비로 구축하고 체계적인 정책 관리가 요구된다.</div>
+          </div>
+          <div class="asec">
+            <div class="asectitle s2">Ⅱ. 가. 방화벽 정책 수립 기본 원칙</div>
+            <ul class="aol">
+              <li><span class="onum on2">1</span><div><strong>최소 권한 원칙 (Least Privilege)</strong>: 업무 수행에 필요한 최소한의 포트·프로토콜·IP만 허용. Any-Any 규칙 금지</div></li>
+              <li><span class="onum on2">2</span><div><strong>Default Deny (묵시적 거부)</strong>: 명시적으로 허용되지 않은 모든 트래픽을 자동 차단. 정책 마지막 규칙에 Deny All 명시</div></li>
+              <li><span class="onum on2">3</span><div><strong>최소 노출 원칙</strong>: 외부 공개 서비스는 최소화하고, 반드시 필요한 서비스만 DMZ에 배치</div></li>
+              <li><span class="onum on2">4</span><div><strong>계층 방어 (Defense-in-Depth)</strong>: 단일 방화벽 의존 탈피. 외부·내부 방화벽 이중화 및 IPS·WAF 다층 배치</div></li>
+              <li><span class="onum on2">5</span><div><strong>접근 통제 모델 연계</strong>
+                <div class="sub">
+                  <div class="si"><strong>MAC (강제 접근 통제)</strong>: 보안 등급 기반. 국가 기밀 시스템에 적용. 방화벽 정책을 보안 등급별로 강제</div>
+                  <div class="si"><strong>DAC (임의 접근 통제)</strong>: 자원 소유자가 접근 권한 부여. 일반 업무망 파일 공유에 적용</div>
+                  <div class="si"><strong>RBAC (역할 기반 접근 통제)</strong>: 직책·부서 역할 기반 정책. 방화벽 관리 계정 권한 분리에 활용 (읽기 전용·정책 수정·전체 관리자)</div>
+                </div>
+              </div></li>
+            </ul>
+          </div>
+          <div class="asec">
+            <div class="asectitle s3">Ⅲ. 나. 공공기관 3-Tier 네트워크 구조 및 방화벽 정책</div>
+            <div class="dbox">공공기관 3-Tier 네트워크 구조 (듀얼 방화벽 기반)
+
+인터넷(불신망)
+    │
+[외부 방화벽 (NGFW)] ← 정책 Zone: Untrust→DMZ
+    │
+─────────────────── DMZ (비무장지대) ──────────────────
+  [웹서버 :443]  [리버스프록시]  [메일서버:25]  [DNS:53]
+─────────────────────────────────────────────────────
+    │
+[내부 방화벽 (스테이트풀)] ← 정책 Zone: DMZ→Trust
+    │
+─────────────────── 내부망 (업무망) ──────────────────
+  [WAS 서버]  [DB 서버]  [내부 PC]  [관리 서버]
+─────────────────────────────────────────────────────
+    │
+[추가 방화벽] ← 보안 구역 분리 (DB존·관리존 격리)</div>
+            <table class="atable">
+              <tr><th>출발지</th><th>목적지</th><th>포트</th><th>허용·거부</th><th>목적</th></tr>
+              <tr><td>인터넷(Any)</td><td>웹서버(DMZ)</td><td>TCP 443 (HTTPS)</td><td>허용</td><td>공공 웹서비스 제공</td></tr>
+              <tr><td>인터넷(Any)</td><td>메일서버(DMZ)</td><td>TCP 25 (SMTP)</td><td>허용</td><td>외부 메일 수신</td></tr>
+              <tr><td>인터넷(Any)</td><td>DMZ 전체</td><td>기타 포트</td><td>거부</td><td>불필요 포트 차단</td></tr>
+              <tr><td>DMZ 웹서버</td><td>내부 WAS</td><td>TCP 8080</td><td>허용</td><td>웹↔WAS 연동</td></tr>
+              <tr><td>내부 WAS</td><td>DB 서버</td><td>TCP 1521 (Oracle)</td><td>허용</td><td>WAS↔DB 연동</td></tr>
+              <tr><td>DMZ(Any)</td><td>내부망(DB)</td><td>TCP 1521</td><td>거부</td><td>DMZ→DB 직접 접근 차단</td></tr>
+              <tr><td>내부 PC</td><td>인터넷(Any)</td><td>TCP 80/443</td><td>허용(프록시 경유)</td><td>인터넷 접근 (Proxy 통과)</td></tr>
+              <tr><td>내부망(Any)</td><td>인터넷(Any)</td><td>기타</td><td>거부</td><td>비업무 포트 외부 접근 차단</td></tr>
+              <tr><td>관리 PC</td><td>방화벽/서버</td><td>TCP 22 (SSH)</td><td>허용 (관리 IP만)</td><td>관리자 접근 제한</td></tr>
+            </table>
+          </div>
+          <div class="asec">
+            <div class="asectitle s4">Ⅳ. 다. 방화벽 정책 운영·변경관리 및 정기 감사</div>
+            <div class="dbox">방화벽 정책 변경관리 절차 (Change Management)
+
+① 변경 요청(CR) 접수
+   → 요청자: 업무 담당자 / 승인자: 정보보안 담당자
+② 위험 영향 분석 (Risk Assessment)
+   → 추가 허용 정책의 보안 위험 평가
+③ 변경 승인 (CAB: Change Advisory Board)
+   → 긴급 변경: 정보보안 담당자 단독 승인 후 사후 CAB 보고
+④ 변경 적용 (실무 엔지니어 수행)
+   → 방화벽 정책 수정 + 변경 전후 스크린샷 기록
+⑤ 변경 검증 (테스트)
+   → 허용 트래픽 정상 통과 + 기존 서비스 영향 없음 확인
+⑥ 변경 완료 기록
+   → 변경일시·변경내용·승인자·적용자·사유 로그 보존 (5년)</div>
+            <ul class="aol">
+              <li><span class="onum on4">1</span><div><strong>정기 감사 (Quarterly Rule Review)</strong>: 분기별 방화벽 룰셋 전체 검토. 미사용 규칙·과도 허용 규칙·중복 규칙 제거 (Rule Cleanup)</div></li>
+              <li><span class="onum on4">2</span><div><strong>방화벽 로그 분석</strong>: SIEM 연동으로 차단 이벤트·비정상 접근 시도 자동 분석. 주 1회 이상 검토</div></li>
+              <li><span class="onum on4">3</span><div><strong>침투 테스트 연계</strong>: 연 1회 이상 방화벽 정책 유효성 검증을 위한 침투 테스트(Penetration Test) 수행</div></li>
+              <li><span class="onum on4">4</span><div><strong>국정원 보안성 검토</strong>: 공공기관은 방화벽 정책 변경 시 국가정보원 「정보보안 관리실태 평가」 기준 준수 확인</div></li>
+            </ul>
+          </div>
+          <div class="concl">
+            <div class="concl-title">Ⅴ. 결론</div>
+            <p>방화벽 정책은 최초 설계만큼 지속적인 운영·관리가 중요하다. 공공기관은 「전자정부법」·「개인정보보호법」·국가정보원 보안 지침을 준수하여 Default Deny 원칙 기반의 최소 권한 정책을 수립하고, 변경관리 절차와 정기 감사를 통해 정책 품질을 유지해야 한다. 장기적으로는 NGFW+IPS+WAF의 통합 보안 아키텍처와 SIEM 연동을 통해 지능형 위협에 대응해야 한다.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    </div>
+
+    <!-- 논술 2: IDS/IPS 구축 -->
+    <div class="q-panel" id="tp1_q1">
+    <div class="q-counter">📄 논술형 2번 / 5번</div>
+    <div class="qcard">
+      <div class="qhdr">
+        <span class="qdomain">보안 · IDS/IPS</span>
+        <div class="qmeta">
+          <div class="qtype-label">2~4교시 논술형 · 25점 · 3~4페이지 분량</div>
+          <div class="qtitle">공공기관 네트워크 침입탐지·방지 시스템 구축에 대하여 다음을 설명하시오.</div>
+        </div>
+      </div>
+      <div class="qbody">
+        <div class="qitems">
+          <div class="qitem"><span class="qlabel">가.</span><span>IDS/IPS 구축 단계(계획·설계·구현·운영) 및 각 단계별 주요 활동</span></div>
+          <div class="qitem"><span class="qlabel">나.</span><span>네트워크 기반(NIDS/NIPS)과 호스트 기반(HIDS/HIPS)의 병행 구축 아키텍처 및 상호 보완 방안</span></div>
+          <div class="qitem"><span class="qlabel">다.</span><span>IDS/IPS 성능 지표(탐지율·오탐율·처리 성능) 및 튜닝 방법론, 감리 점검항목</span></div>
+        </div>
+        <div class="qhints">
+          <span class="qhint">구축 4단계 프로세스</span><span class="qhint">NIDS+HIDS 병행</span><span class="qhint">성능 KPI 정의</span>
+        </div>
+      </div>
+      <div class="acard">
+        <button class="atoggle" onclick="toggleA(this)">
+          <span class="alabel">📄 모범 답안 보기</span>
+          <span class="aarrow">▼</span>
+        </button>
+        <div class="abody">
+          <div class="atitle">IDS/IPS 구축 단계·병행 아키텍처·성능 지표 및 감리 점검항목</div>
+          <div class="chips">
+            <span class="chip ct">⏱ 목표 30분</span>
+            <span class="chip cp">📄 3.5~4페이지</span>
+            <span class="chip cs">💯 25점</span>
+          </div>
+          <div class="asec">
+            <div class="asectitle s1">Ⅰ. 개요</div>
+            <div class="ap">IDS/IPS는 방화벽이 차단하지 못하는 허용된 포트를 통한 공격(SQL Injection, 웜 전파, 내부자 위협)을 탐지·차단하는 보완적 보안 장비이다. 공공기관은 「정보보안관리 실태평가」에서 침입탐지·방지 시스템 구축을 필수 평가 항목으로 규정하고 있다.</div>
+          </div>
+          <div class="asec">
+            <div class="asectitle s2">Ⅱ. 가. IDS/IPS 구축 4단계</div>
+            <div class="dbox">IDS/IPS 구축 단계별 주요 활동
+
+1단계 [계획]
+  ├─ 보호 대상 자산 식별 및 위협 분석 (위험 평가)
+  ├─ IDS/IPS 유형 선택 (NIDS/NIPS/HIDS/HIPS)
+  ├─ 배치 위치·방식 결정 (인라인/아웃오브밴드)
+  └─ 예산·일정·담당 인력 계획 수립
+
+2단계 [설계]
+  ├─ 네트워크 토폴로지 설계 (배치 구조도 작성)
+  ├─ 탐지 정책(시그니처 규칙) 초안 수립
+  ├─ SIEM 연동 방안 설계 (로그 전송 포맷·주기)
+  └─ Fail-Open/Fail-Close 정책 결정
+
+3단계 [구현]
+  ├─ 하드웨어·소프트웨어 설치 및 네트워크 연결
+  ├─ 초기 시그니처 DB 적용 및 기준 정책 설정
+  ├─ 탐지 모드(Detection Mode)로 2~4주 운영
+  ├─ 오탐 분석·화이트리스트 적용·정책 튜닝
+  └─ 차단 모드(Prevention Mode) 전환
+
+4단계 [운영]
+  ├─ 시그니처 DB 정기 업데이트 (최소 주 1회)
+  ├─ 경보 모니터링 및 침해 대응 (Incident Response)
+  ├─ 성능 지표 주기적 측정 및 분기별 정책 검토
+  └─ 연간 침투 테스트로 탐지 유효성 검증</div>
+          </div>
+          <div class="asec">
+            <div class="asectitle s3">Ⅲ. 나. NIDS/NIPS + HIDS/HIPS 병행 구축 아키텍처</div>
+            <div class="dbox">NIDS/NIPS + HIDS/HIPS 병행 아키텍처
+
+인터넷
+    │
+[외부 방화벽]
+    │
+─── DMZ ─────────────────────────────────────────
+  [웹서버]    [메일서버]     [DNS]
+  [HIPS 에이전트] × 각 서버 설치 ← 호스트 보호
+─────────────────────────────────────────────────
+    │
+[NIPS ← 인라인 배치]  ← DMZ→내부망 트래픽 검사
+    │
+[내부 방화벽]
+    │
+─── 내부망 ──────────────────────────────────────
+  [WAS]  [DB]   [내부PC]
+  [HIDS 에이전트] × 서버 설치  ← 파일무결성·로그감사
+─────────────────────────────────────────────────
+    │
+[NIDS ← 스위치 미러링 포트(SPAN)]  ← 내부망 트래픽 모니터링
+    │
+    ▼
+[SIEM] ← NIDS·HIDS·방화벽·서버 로그 통합 수집·분석</div>
+            <table class="atable">
+              <tr><th>구분</th><th>NIDS/NIPS</th><th>HIDS/HIPS</th><th>상호 보완</th></tr>
+              <tr><td>탐지 범위</td><td>네트워크 전체 트래픽</td><td>개별 호스트 내부 이벤트</td><td>NIDS가 못 보는 암호화·내부 위협을 HIDS 보완</td></tr>
+              <tr><td>암호화 트래픽</td><td>탐지 어려움 (복호화 필요)</td><td>복호화 후 검사 가능</td><td>HIDS로 암호화 채널 내 공격 탐지</td></tr>
+              <tr><td>내부자 위협</td><td>네트워크 단에서 탐지 제한</td><td>파일 접근·명령어 실행 탐지</td><td>HIDS의 사용자 행위 감사 로그로 보완</td></tr>
+              <tr><td>제로데이 대응</td><td>시그니처 없으면 탐지 불가</td><td>이상 프로세스·메모리 변조 탐지</td><td>HIPS의 행위 기반 탐지로 보완</td></tr>
+            </table>
+          </div>
+          <div class="asec">
+            <div class="asectitle s4">Ⅳ. 다. IDS/IPS 성능 지표 및 튜닝 방법론</div>
+            <table class="atable">
+              <tr><th>성능 지표(KPI)</th><th>정의</th><th>목표 기준</th><th>측정 방법</th></tr>
+              <tr><td>탐지율 (DR)</td><td>실제 공격 중 탐지한 비율 = TP/(TP+FN)</td><td>≥ 95%</td><td>공격 시뮬레이션(Metasploit) 후 탐지 수 측정</td></tr>
+              <tr><td>오탐율 (FPR)</td><td>정상 트래픽 중 잘못 탐지한 비율 = FP/(FP+TN)</td><td>≤ 5%</td><td>정상 트래픽 테스트 후 경보 발생 수 측정</td></tr>
+              <tr><td>처리 성능</td><td>초당 검사 가능한 트래픽 처리량 (Gbps)</td><td>네트워크 대역폭의 120% 이상</td><td>Ixia·IXLOAD 성능 테스트 도구</td></tr>
+              <tr><td>지연 시간 (Latency)</td><td>IPS 패킷 검사로 인한 추가 지연</td><td>≤ 1ms (인라인 IPS)</td><td>패킷 캡처 후 타임스탬프 분석</td></tr>
+              <tr><td>업타임</td><td>IDS/IPS 가용성</td><td>≥ 99.9%</td><td>모니터링 시스템 가용성 기록</td></tr>
+            </table>
+            <div class="kbox kb-red">
+              <div class="kbt">IDS/IPS 튜닝 방법론 (4단계)</div>
+              ① <strong>베이스라인 수립</strong>: 정상 트래픽 패턴 2~4주 분석. 업무 시간·야간·주말 패턴 수집<br>
+              ② <strong>오탐 분석</strong>: Top 10 오탐 규칙 식별 → 해당 규칙 임계값 조정 또는 화이트리스트 추가<br>
+              ③ <strong>미탐 분석</strong>: 침투 테스트 결과 미탐 공격 유형 분석 → 커스텀 시그니처 추가<br>
+              ④ <strong>지속 최적화</strong>: 분기별 전체 규칙 검토. 미사용·중복 규칙 비활성화로 성능 향상
+            </div>
+          </div>
+          <div class="concl">
+            <div class="concl-title">Ⅴ. 결론 — 감리 점검항목</div>
+            <p>IDS/IPS 감리 시 필수 점검: ①탐지 모드→차단 모드 전환 완료 여부, ②시그니처 DB 업데이트 이력(최근 7일 이내), ③오탐율 통계 기록 및 튜닝 이력, ④SIEM 연동 및 실시간 경보 체계, ⑤연간 침투 테스트·탐지 유효성 검증 수행 여부, ⑥HIDS 파일 무결성 모니터링(FIM) 기준 파일 최신화 여부를 확인한다.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    </div>
+
+    <!-- 논술 3: Zero Trust -->
+    <div class="q-panel" id="tp1_q2">
+    <div class="q-counter">📄 논술형 3번 / 5번</div>
+    <div class="qcard">
+      <div class="qhdr">
+        <span class="qdomain">보안 · Zero Trust</span>
+        <div class="qmeta">
+          <div class="qtype-label">2~4교시 논술형 · 25점 · 3~4페이지 분량</div>
+          <div class="qtitle">제로 트러스트(Zero Trust) 보안 모델에 대하여 다음을 설명하시오.</div>
+        </div>
+      </div>
+      <div class="qbody">
+        <div class="qitems">
+          <div class="qitem"><span class="qlabel">가.</span><span>제로 트러스트의 개념, 등장 배경 및 전통적 경계 기반 보안 모델(Perimeter Security)과의 비교</span></div>
+          <div class="qitem"><span class="qlabel">나.</span><span>NIST SP 800-207 기반 제로 트러스트 아키텍처(ZTA)의 핵심 구성요소 및 동작 원리</span></div>
+          <div class="qitem"><span class="qlabel">다.</span><span>방화벽·IDS/IPS와 제로 트러스트의 상호 역할 및 공공기관 제로 트러스트 도입 전략</span></div>
+        </div>
+        <div class="qhints">
+          <span class="qhint">NIST SP 800-207</span><span class="qhint">최신 빈출 트렌드</span><span class="qhint">Never Trust Always Verify</span>
+        </div>
+      </div>
+      <div class="acard">
+        <button class="atoggle" onclick="toggleA(this)">
+          <span class="alabel">📄 모범 답안 보기</span>
+          <span class="aarrow">▼</span>
+        </button>
+        <div class="abody">
+          <div class="atitle">제로 트러스트 보안 모델 — 개념·ZTA 구성요소·방화벽 연계·공공 도입 전략</div>
+          <div class="chips">
+            <span class="chip ct">⏱ 목표 30분</span>
+            <span class="chip cp">📄 3.5~4페이지</span>
+            <span class="chip cs">💯 25점</span>
+          </div>
+          <div class="asec">
+            <div class="asectitle s1">Ⅰ. 가. 제로 트러스트 개념 및 등장 배경</div>
+            <div class="ap">제로 트러스트(Zero Trust)는 "절대 신뢰하지 말고, 항상 검증하라(Never Trust, Always Verify)"는 보안 철학으로, 네트워크 위치(내부·외부)에 관계없이 모든 사용자·기기·서비스에 대해 지속적인 인증·인가·검증을 수행하는 보안 모델이다. 2010년 John Kindervag(Forrester)가 처음 제안하였다.</div>
+            <div class="kbox kb-red">
+              <div class="kbt">제로 트러스트 등장 배경</div>
+              ① <strong>경계 붕괴</strong>: 클라우드·원격근무 확산으로 내부/외부 경계 소멸 (Deperimeterization)<br>
+              ② <strong>내부자 위협</strong>: 방화벽이 허용한 내부망에서의 공격 증가<br>
+              ③<strong>APT 공격</strong>: 합법적 자격증명 탈취 후 내부 횡적 이동(Lateral Movement)으로 핵심 자산 공격<br>
+              ④ <strong>BYOD·IoT</strong>: 다양한 비관리 기기의 네트워크 접근 증가
+            </div>
+            <table class="atable">
+              <tr><th>비교 항목</th><th>전통적 경계 보안 (Castle-and-Moat)</th><th>제로 트러스트</th></tr>
+              <tr><td>신뢰 기반</td><td>네트워크 위치 기반 (내부=신뢰)</td><td>신뢰 없음. 모든 접근 검증</td></tr>
+              <tr><td>인증</td><td>경계 통과 시 1회 인증</td><td>접근 시마다 지속적 재검증 (동적 정책)</td></tr>
+              <tr><td>접근 범위</td><td>VPN 연결 시 내부망 전체 접근</td><td>마이크로세그멘테이션으로 필요 리소스만</td></tr>
+              <tr><td>가시성</td><td>경계 트래픽만 모니터링</td><td>내부 트래픽 포함 전 트래픽 모니터링</td></tr>
+              <tr><td>취약점</td><td>경계 돌파 시 내부 무방비</td><td>계층적 검증으로 피해 확산 차단</td></tr>
+            </table>
+          </div>
+          <div class="asec">
+            <div class="asectitle s2">Ⅱ. 나. NIST SP 800-207 ZTA 핵심 구성요소</div>
+            <div class="dbox">NIST SP 800-207 제로 트러스트 아키텍처 (ZTA)
+
+  [데이터 플레인]
+  주체(Subject) → [PEP: 정책 집행 포인트] → 리소스(Resource)
+  사용자/기기        (게이트웨이·프록시)       (애플리케이션·DB)
+
+  [제어 플레인]
+  PEP ←──────→ [PE: 정책 엔진] ←── 신뢰 알고리즘 실행
+                [PA: 정책 관리자]
+
+  [신뢰 신호 소스 (Signals)]
+  ├─ CDM : 자산 관리 시스템 (기기 보안 상태)
+  ├─ SIEM: 위협 인텔리전스 (과거 행동 패턴)
+  ├─ IdP : 신원 관리 시스템 (사용자 인증)
+  ├─ PKI : 디지털 인증서 관리
+  └─ 네트워크 위치·시간·위험 점수 등</div>
+            <ul class="aol">
+              <li><span class="onum on2">1</span><div><strong>PE (Policy Engine, 정책 엔진)</strong>: 접근 허용·거부 최종 결정 주체. 신뢰 알고리즘으로 위험 점수 계산. CDM·위협 인텔리전스·행동 분석 데이터 종합 판단</div></li>
+              <li><span class="onum on2">2</span><div><strong>PA (Policy Administrator, 정책 관리자)</strong>: PE의 결정에 따라 PEP에게 세션 생성/종료 명령 전달. 자격증명(토큰·인증서) 발급·폐지</div></li>
+              <li><span class="onum on2">3</span><div><strong>PEP (Policy Enforcement Point, 정책 집행 포인트)</strong>: 실제 트래픽을 허용·차단하는 집행 장치. API 게이트웨이·리버스 프록시·마이크로세그멘테이션 게이트웨이 형태</div></li>
+              <li><span class="onum on2">4</span><div><strong>마이크로세그멘테이션</strong>: 내부망을 최소 단위(워크로드·애플리케이션·데이터)로 세분화. 동-서(East-West) 트래픽도 검증. 랜섬웨어 횡적 이동 차단</div></li>
+              <li><span class="onum on2">5</span><div><strong>지속적 모니터링</strong>: 세션 중에도 지속적으로 위험 점수 재평가. 이상 행위 탐지 시 세션 즉시 종료 (동적 정책)</div></li>
+            </ul>
+          </div>
+          <div class="asec">
+            <div class="asectitle s3">Ⅲ. 다. 방화벽·IDS/IPS와 제로 트러스트 상호 역할 및 공공 도입 전략</div>
+            <table class="atable">
+              <tr><th>보안 장비</th><th>전통적 역할</th><th>ZTA에서의 역할</th></tr>
+              <tr><td>방화벽 (NGFW)</td><td>외부→내부 경계 보호</td><td>PEP 역할 수행. 마이크로세그멘테이션 게이트웨이. 동-서 트래픽 검사</td></tr>
+              <tr><td>IDS/IPS</td><td>알려진 공격 탐지·차단</td><td>신뢰 신호(Signals) 공급. 행위 이상 탐지 결과를 PE에 전달하여 동적 정책 변경</td></tr>
+              <tr><td>WAF</td><td>웹 공격 차단</td><td>API 게이트웨이·PEP 역할. 마이크로서비스 간 API 접근 통제</td></tr>
+              <tr><td>SIEM</td><td>로그 통합·이벤트 분석</td><td>위협 인텔리전스 제공. PE의 신뢰 점수 계산에 활용</td></tr>
+            </table>
+            <div class="kbox kb-pur">
+              <div class="kbt">공공기관 제로 트러스트 도입 전략 (단계적)</div>
+              <strong>1단계 (기반 구축)</strong>: IAM 강화(MFA 의무화), 특권 계정 관리(PAM), 자산 인벤토리 구축<br>
+              <strong>2단계 (가시성 확보)</strong>: SIEM·NDR 도입, 내부망 트래픽 전수 모니터링, 사용자·기기 행위 분석(UEBA)<br>
+              <strong>3단계 (정책 엔진 구축)</strong>: ZTA 아키텍처 설계, 마이크로세그멘테이션 적용, PEP 도입<br>
+              <strong>4단계 (완전 ZTA)</strong>: 모든 리소스 접근 제로 트러스트 정책 적용, 지속적 검증·자동화
+            </div>
+          </div>
+          <div class="concl">
+            <div class="concl-title">Ⅳ. 결론</div>
+            <p>제로 트러스트는 경계 기반 보안의 한계를 극복하는 현대적 보안 패러다임이다. 방화벽·IDS/IPS는 ZTA에서도 PEP·신뢰 신호 공급자 역할로 계속 활용된다. 미국 연방정부는 CISA의 「ZTA 로드맵(2022)」으로 의무화를 진행 중이며, 국내 공공기관도 「국가 사이버보안 기본계획」에 따라 단계적 ZTA 도입이 요구된다.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    </div>
+
+    <!-- 논술 4: 네트워크 보안 아키텍처 -->
+    <div class="q-panel" id="tp1_q3">
+    <div class="q-counter">📄 논술형 4번 / 5번</div>
+    <div class="qcard">
+      <div class="qhdr">
+        <span class="qdomain">보안 · 네트워크 아키텍처</span>
+        <div class="qmeta">
+          <div class="qtype-label">2~4교시 논술형 · 25점 · 3~4페이지 분량</div>
+          <div class="qtitle">지능형 지속 공격(APT)에 대응하기 위한 네트워크 보안 아키텍처에 대하여 다음을 설명하시오.</div>
+        </div>
+      </div>
+      <div class="qbody">
+        <div class="qitems">
+          <div class="qitem"><span class="qlabel">가.</span><span>APT(Advanced Persistent Threat) 공격의 개념, 단계(Kill Chain) 및 기존 방화벽·IDS의 한계</span></div>
+          <div class="qitem"><span class="qlabel">나.</span><span>APT 대응을 위한 다층 방어(Defense-in-Depth) 아키텍처 구성 — 방화벽·IPS·샌드박스·EDR·NDR·SIEM 통합</span></div>
+          <div class="qitem"><span class="qlabel">다.</span><span>위협 인텔리전스(Threat Intelligence)와 MITRE ATT&amp;CK 프레임워크 활용 방안</span></div>
+        </div>
+        <div class="qhints">
+          <span class="qhint">Cyber Kill Chain 7단계</span><span class="qhint">MITRE ATT&amp;CK 연계</span><span class="qhint">샌드박스·EDR 최신 기술</span>
+        </div>
+      </div>
+      <div class="acard">
+        <button class="atoggle" onclick="toggleA(this)">
+          <span class="alabel">📄 모범 답안 보기</span>
+          <span class="aarrow">▼</span>
+        </button>
+        <div class="abody">
+          <div class="atitle">APT 대응 다층 방어 아키텍처 — Kill Chain·다층방어·위협 인텔리전스</div>
+          <div class="chips">
+            <span class="chip ct">⏱ 목표 30분</span>
+            <span class="chip cp">📄 3.5~4페이지</span>
+            <span class="chip cs">💯 25점</span>
+          </div>
+          <div class="asec">
+            <div class="asectitle s1">Ⅰ. 가. APT 개념·Kill Chain·기존 보안의 한계</div>
+            <div class="ap">APT(Advanced Persistent Threat, 지능형 지속 공격)는 특정 조직·국가를 목표로 장기간(수개월~수년)에 걸쳐 은밀하게 침투하여 정보를 탈취하거나 시스템을 파괴하는 고도화된 사이버 공격이다. 전통적 방화벽·시그니처 기반 IDS는 APT의 제로데이 취약점 악용과 암호화 C2 통신을 탐지하는 데 구조적 한계가 있다.</div>
+            <div class="dbox">Cyber Kill Chain (Lockheed Martin, 7단계)
+
+1. Reconnaissance  (정찰)  : 표적 조직 정보 수집 (OSINT·소셜미디어)
+2. Weaponization   (무장화): 악성코드·익스플로잇 제작 (제로데이+페이로드)
+3. Delivery        (전달)  : 이메일 첨부·USB·워터링홀로 악성코드 전달
+4. Exploitation    (취약점 악용): 취약점 실행으로 시스템 침투 (Zero-day)
+5. Installation    (설치)  : 지속성 확보 (백도어·루트킷·레지스트리 등록)
+6. C2 Communication(C2 통신): 공격자 서버와 암호화 통신 채널 수립
+7. Actions on Objectives(목적달성): 데이터 탈취·파괴·랜섬웨어 실행</div>
+            <div class="kbox kb-red">
+              <div class="kbt">기존 방화벽·IDS의 APT 대응 한계</div>
+              ① <strong>제로데이 공격</strong>: 시그니처 없으므로 오용 탐지 IDS 우회<br>
+              ② <strong>암호화 C2 통신</strong>: HTTPS·DNS over HTTPS 사용으로 방화벽 탐지 회피<br>
+              ③ <strong>합법적 도구 악용</strong>: PowerShell·WMI 등 정상 도구를 공격에 활용 (Living-off-the-Land)<br>
+              ④ <strong>낮고 느린 공격</strong>: 장기간 소량 트래픽으로 임계값 기반 탐지 회피
+            </div>
+          </div>
+          <div class="asec">
+            <div class="asectitle s2">Ⅱ. 나. APT 대응 다층 방어 아키텍처</div>
+            <div class="dbox">APT 대응 다층 방어(Defense-in-Depth) 아키텍처
+
+[계층 1 — 네트워크 경계]
+  NGFW (방화벽·DPI) + IPS (시그니처·이상 탐지)
+  → 알려진 공격 패턴·비허가 포트 1차 차단
+
+[계층 2 — 이메일·웹 게이트웨이]
+  SEG (보안 이메일 게이트웨이): 악성 첨부·피싱 차단
+  SWG (보안 웹 게이트웨이): 악성 URL·다운로드 차단
+
+[계층 3 — 샌드박스 (동적 분석)]
+  의심 파일·URL → 격리 가상 환경에서 실행 후 행위 분석
+  → 알려지지 않은 악성코드 탐지 (제로데이 대응)
+
+[계층 4 — 엔드포인트 (EDR)]
+  EDR (Endpoint Detection & Response): 프로세스·메모리·API 호출 실시간 모니터링
+  → 설치(Installation)·C2 통신 단계 탐지·차단
+
+[계층 5 — 네트워크 탐지 (NDR)]
+  NDR (Network Detection & Response): 내부 트래픽 AI 분석
+  → C2 통신·횡적 이동(Lateral Movement) 행위 탐지
+
+[계층 6 — 통합 분석 (SIEM/SOAR)]
+  전 계층 로그·이벤트 통합 수집
+  → 상관 분석(Correlation)으로 APT 공격 체인 탐지
+  → SOAR 자동 대응 플레이북 실행</div>
+            <table class="atable">
+              <tr><th>Kill Chain 단계</th><th>대응 보안 장비</th><th>탐지·차단 방법</th></tr>
+              <tr><td>정찰 (1단계)</td><td>웹 방화벽(WAF), IPS</td><td>외부 포트 스캔·디렉터리 열거 탐지, 허니팟 배치</td></tr>
+              <tr><td>전달 (3단계)</td><td>SEG, SWG, 샌드박스</td><td>악성 첨부·URL 동적 분석, 스팸 필터링</td></tr>
+              <tr><td>취약점 악용 (4단계)</td><td>IPS, EDR(HIPS)</td><td>익스플로잇 시그니처, 메모리 보호(DEP·ASLR)</td></tr>
+              <tr><td>설치 (5단계)</td><td>EDR, HIDS</td><td>비정상 프로세스·레지스트리 변경 탐지</td></tr>
+              <tr><td>C2 통신 (6단계)</td><td>NDR, DNS Firewall, IPS</td><td>이상 DNS 요청·암호화 C2 트래픽 행위 분석</td></tr>
+              <tr><td>목적 달성 (7단계)</td><td>NDR, DLP, SIEM</td><td>대량 데이터 외부 전송 탐지, 비정상 접근 경보</td></tr>
+            </table>
+          </div>
+          <div class="asec">
+            <div class="asectitle s3">Ⅲ. 다. 위협 인텔리전스와 MITRE ATT&amp;CK 활용</div>
+            <div class="ap"><strong>위협 인텔리전스(Threat Intelligence)</strong>는 알려진 공격자 TTP(전술·기술·절차), IoC(침해 지표: 악성 IP·도메인·해시), 취약점 정보를 수집·분석하여 선제적 방어에 활용하는 정보이다.</div>
+            <ul class="aol">
+              <li><span class="onum on5">1</span><div><strong>MITRE ATT&CK 프레임워크</strong>: 실제 APT 그룹의 TTP를 14가지 전술(Tactic)·수백 개의 기술(Technique)로 체계화한 지식 베이스
+                <div class="sub">
+                  <div class="si">14개 전술: Reconnaissance·Resource Development·Initial Access·Execution·Persistence·Privilege Escalation·Defense Evasion·Credential Access·Discovery·Lateral Movement·Collection·C2·Exfiltration·Impact</div>
+                  <div class="si">활용: IDS/IPS 탐지 규칙을 ATT&CK 기술 번호(T-ID)로 매핑 → 탐지 커버리지 가시화</div>
+                </div>
+              </div></li>
+              <li><span class="onum on5">2</span><div><strong>IoC 기반 자동 차단</strong>: STIX/TAXII 표준으로 위협 인텔리전스 공유. SIEM·방화벽·IPS에 악성 IP·도메인 자동 반영 (Threat Intel Feed)</div></li>
+              <li><span class="onum on5">3</span><div><strong>레드팀·퍼플팀 연계</strong>: ATT&CK 기반 공격 시뮬레이션(Atomic Red Team)으로 탐지 공백 식별 후 탐지 규칙 보강</div></li>
+            </ul>
+          </div>
+          <div class="concl">
+            <div class="concl-title">Ⅳ. 결론</div>
+            <p>APT 공격은 단일 보안 장비로 대응이 불가능하며, Kill Chain 각 단계별 다층 방어 아키텍처와 MITRE ATT&CK 기반 탐지 규칙 정렬이 필수이다. 공공기관은 국가사이버안보센터(NCSC)의 사이버위협 인텔리전스 공유 체계(KrCERT/CC)를 활용하고, SIEM-SOAR 통합으로 대응 자동화를 구현하여 APT 대응 역량을 강화해야 한다.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    </div>
+
+    <!-- 논술 5: SIEM과 SOC -->
+    <div class="q-panel" id="tp1_q4">
+    <div class="q-counter">📄 논술형 5번 / 5번</div>
+    <div class="qcard">
+      <div class="qhdr">
+        <span class="qdomain">보안 · SIEM/SOC</span>
+        <div class="qmeta">
+          <div class="qtype-label">2~4교시 논술형 · 25점 · 3~4페이지 분량</div>
+          <div class="qtitle">보안 정보 및 이벤트 관리(SIEM)와 보안 운영 센터(SOC) 구축에 대하여 다음을 설명하시오.</div>
+        </div>
+      </div>
+      <div class="qbody">
+        <div class="qitems">
+          <div class="qitem"><span class="qlabel">가.</span><span>SIEM(Security Information and Event Management)의 개념, 핵심 기능 및 방화벽·IDS/IPS·WAF와의 연동 방식</span></div>
+          <div class="qitem"><span class="qlabel">나.</span><span>SOC(Security Operations Center)의 구성 요소, 티어(Tier) 구조 및 침해사고 대응 프로세스(IR)</span></div>
+          <div class="qitem"><span class="qlabel">다.</span><span>SOAR(Security Orchestration Automation and Response)를 활용한 자동화 대응 방안 및 공공기관 SOC 구축 모델</span></div>
+        </div>
+        <div class="qhints">
+          <span class="qhint">SIEM 핵심 기능 6가지</span><span class="qhint">SOAR 플레이북</span><span class="qhint">공공 SOC 구축 모델</span>
+        </div>
+      </div>
+      <div class="acard">
+        <button class="atoggle" onclick="toggleA(this)">
+          <span class="alabel">📄 모범 답안 보기</span>
+          <span class="aarrow">▼</span>
+        </button>
+        <div class="abody">
+          <div class="atitle">SIEM·SOC 구축 — 핵심 기능·티어 구조·IR·SOAR 자동화·공공 적용</div>
+          <div class="chips">
+            <span class="chip ct">⏱ 목표 30분</span>
+            <span class="chip cp">📄 3.5~4페이지</span>
+            <span class="chip cs">💯 25점</span>
+          </div>
+          <div class="asec">
+            <div class="asectitle s1">Ⅰ. 가. SIEM의 개념 및 핵심 기능</div>
+            <div class="ap">SIEM(보안 정보 및 이벤트 관리)은 조직 내 방화벽·IDS/IPS·서버·엔드포인트 등 모든 보안 장비의 로그·이벤트를 중앙에서 실시간으로 수집·정규화·상관 분석하여 보안 위협을 탐지하고 대응하는 통합 보안 플랫폼이다.</div>
+            <table class="atable">
+              <tr><th>핵심 기능</th><th>내용</th><th>대표 사례</th></tr>
+              <tr><td>로그 수집·정규화</td><td>Syslog·SNMP·API로 이기종 로그 수집. CEF·LEEF 포맷으로 정규화</td><td>방화벽 차단 로그, IPS 경보, 서버 인증 로그 통합</td></tr>
+              <tr><td>실시간 이벤트 상관분석</td><td>복수 이벤트를 연관 분석. 공격 체인 탐지 (Correlation Rules)</td><td>3회 로그인 실패 + 새 계정 생성 = 계정 탈취 의심</td></tr>
+              <tr><td>이상 행위 탐지 (UEBA)</td><td>사용자·엔티티 행위 분석으로 내부자 위협·계정 탈취 탐지</td><td>평소 9시 출근 사용자가 새벽 3시 대량 파일 다운로드</td></tr>
+              <tr><td>위협 인텔리전스 연계</td><td>STIX/TAXII로 외부 위협 피드 연동. 악성 IP·도메인 자동 매칭</td><td>접속 IP를 CTI Feed와 대조 → 북한 IP 접속 탐지</td></tr>
+              <tr><td>컴플라이언스 보고</td><td>로그 보존·감사 보고서 자동 생성. 법령 준수 증적 제공</td><td>개인정보보호법, 정보보호법 감사 로그 6개월 보존</td></tr>
+              <tr><td>대시보드·시각화</td><td>실시간 보안 현황 가시화. 경보 우선순위별 분류·표시</td><td>지역별 공격 맵, 상위 경보 Top 10, 트렌드 분석</td></tr>
+            </table>
+            <div class="dbox">SIEM 연동 아키텍처
+
+방화벽 (Syslog) ─────┐
+IPS 경보 (CEF)   ─────┤
+WAF 로그 (REST)  ─────┼─→ [SIEM 로그 수집기] → [정규화·파싱] → [상관분석 엔진]
+서버 OS 로그      ─────┤                                              │
+AD/IAM 인증 로그  ─────┘                                              ▼
+                                                               [경보 발생·우선순위 분류]
+                                                                       │
+                                                         ┌─────────────┴──────────────┐
+                                                         ▼                            ▼
+                                                    [SOC 분석관]                 [SOAR 자동 대응]</div>
+          </div>
+          <div class="asec">
+            <div class="asectitle s2">Ⅱ. 나. SOC 구성 요소 및 티어 구조</div>
+            <table class="atable">
+              <tr><th>SOC 티어</th><th>역할</th><th>주요 활동</th><th>인력</th></tr>
+              <tr><td>Tier 1<br>(경보 트리아지)</td><td>1차 경보 모니터링·분류. 24×7 실시간 감시</td><td>경보 수신·분류·오탐 필터링·Tier 2 에스컬레이션</td><td>주니어 분석관. SIEM 대시보드 모니터링</td></tr>
+              <tr><td>Tier 2<br>(침해사고 대응)</td><td>침해사고 심층 분석·조사</td><td>포렌식 분석·공격 범위 파악·봉쇄 조치·보고서 작성</td><td>시니어 분석관. Splunk·ELK 숙련자</td></tr>
+              <tr><td>Tier 3<br>(위협 사냥)</td><td>선제적 위협 헌팅(Threat Hunting)</td><td>ATT&CK 기반 TTPs 능동 탐색·탐지 규칙 개선·취약점 연구</td><td>전문 보안 연구원. 리버스엔지니어링 역량</td></tr>
+              <tr><td>SOC 관리자</td><td>SOC 전체 운영 관리</td><td>SLA 관리·인력 운영·경영진 보고·규정 준수</td><td>CISO 직속. CISSP 등 자격 보유</td></tr>
+            </table>
+            <div class="kbox kb-tea">
+              <div class="kbt">침해사고 대응 프로세스 (IR: Incident Response — NIST SP 800-61)</div>
+              <strong>① 준비 (Preparation)</strong>: IR 계획·플레이북 수립, 도구 배비, 훈련<br>
+              <strong>② 탐지·분석 (Detection &amp; Analysis)</strong>: SIEM 경보·로그 분석, 침해 범위 파악<br>
+              <strong>③ 봉쇄 (Containment)</strong>: 단기(감염 시스템 격리)·장기(공격 벡터 차단) 봉쇄<br>
+              <strong>④ 제거 (Eradication)</strong>: 악성코드 제거, 취약점 패치, 백도어 삭제<br>
+              <strong>⑤ 복구 (Recovery)</strong>: 시스템 복원, 모니터링 강화, 서비스 재개<br>
+              <strong>⑥ 교훈 도출 (Lessons Learned)</strong>: 사후 분석·보고서 작성·재발 방지 대책
+            </div>
+          </div>
+          <div class="asec">
+            <div class="asectitle s3">Ⅲ. 다. SOAR 자동화 대응 및 공공기관 SOC 구축 모델</div>
+            <div class="ap"><strong>SOAR(Security Orchestration Automation and Response)</strong>는 반복적 보안 대응 작업을 플레이북(Playbook)으로 자동화하여 대응 시간을 단축하고 분석관의 부담을 줄이는 플랫폼이다.</div>
+            <div class="dbox">SOAR 자동화 플레이북 예시 — 피싱 이메일 대응
+
+Trigger: SIEM에서 "악성 첨부 파일 탐지" 경보 수신
+    │
+    ▼
+[자동 1단계] IP·도메인·파일 해시 → Threat Intel Feed 조회 (VirusTotal·MISP)
+    │
+    ▼
+[자동 2단계] 악성 판정 → 해당 사용자 계정 임시 비활성화 (AD 연동)
+    │
+    ▼
+[자동 3단계] 이메일 서버에서 동일 발신자 메일 전체 격리 (SEG API 호출)
+    │
+    ▼
+[자동 4단계] 악성 IP 방화벽 차단 명령 (Firewall API Push)
+    │
+    ▼
+[자동 5단계] Tier 1 분석관에게 요약 보고서 + 승인 요청 전송
+    │
+    ▼
+[분석관 승인] → 추가 포렌식 조사 또는 대응 완료 처리</div>
+            <table class="atable">
+              <tr><th>구분</th><th>자체 구축 SOC</th><th>외부 위탁 (MSSP)</th><th>하이브리드 (권장)</th></tr>
+              <tr><td>비용</td><td>초기 투자 높음</td><td>운영 비용 확정적</td><td>핵심 내부 + 모니터링 외부</td></tr>
+              <tr><td>전문성</td><td>자체 인력 확보 필요</td><td>전문 업체 활용</td><td>핵심 역량 내부화</td></tr>
+              <tr><td>데이터 통제</td><td>완전 통제</td><td>외부 유출 위험</td><td>민감 데이터 내부 처리</td></tr>
+              <tr><td>공공 적용</td><td>중앙행정기관</td><td>중소 공공기관</td><td>지방자치단체·공공기관</td></tr>
+            </table>
+            <div class="kbox kb-red">
+              <div class="kbt">공공기관 SOC 구축 필수 고려사항</div>
+              ① <strong>국가사이버안보센터(NCSC) 연계</strong>: 사이버위협 정보 공유 체계 연동<br>
+              ② <strong>개인정보 처리</strong>: SOC 로그 수집 시 개인정보보호법 준수. 로그 내 개인정보 마스킹<br>
+              ③ <strong>보안 인력</strong>: 「정보보호 전문인력 배치 기준」에 따른 CISO·정보보호 담당자 법적 의무화<br>
+              ④ <strong>로그 보존</strong>: 개인정보보호법·정보통신망법 상 접속 기록 최소 1년 보존 의무
+            </div>
+          </div>
+          <div class="concl">
+            <div class="concl-title">Ⅳ. 결론</div>
+            <p>SIEM-SOC-SOAR의 통합 보안 운영 체계는 방화벽·IDS/IPS 등 개별 보안 장비의 사각지대를 해소하고 신속한 침해사고 대응을 가능하게 한다. 공공기관은 「정보보호 및 개인정보보호 관리체계(ISMS-P)」 인증 요건에 따라 사고 대응 체계를 필수 구축해야 하며, SOAR 자동화 도입으로 분석관 역량을 고부가가치 위협 헌팅에 집중시키는 성숙한 보안 운영 모델로 발전시켜야 한다.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    </div>
+
+  </div>
+</div><!-- /tp1 -->
+
+<script>
+function showType(idx,btn){
+  document.querySelectorAll('.type-panel').forEach((p,i)=>p.classList.toggle('active',i===idx));
+  document.querySelectorAll('.type-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+function showQ(idx,btn,tpId){
+  var tp=document.getElementById(tpId);
+  tp.querySelectorAll('.q-panel').forEach((p,i)=>p.classList.toggle('active',i===idx));
+  btn.parentElement.querySelectorAll('.q-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+function toggleA(btn){
+  var body=btn.nextElementSibling;
+  var arrow=btn.querySelector('.aarrow');
+  var isOpen=body.classList.toggle('open');
+  arrow.classList.toggle('open',isOpen);
+  btn.querySelector('.alabel').textContent=isOpen?'📄 답안 닫기':'📄 모범 답안 보기';
+}
+</script>
+</body>
+</html>

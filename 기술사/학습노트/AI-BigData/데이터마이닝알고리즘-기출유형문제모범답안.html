@@ -1,0 +1,1221 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>데이터마이닝 알고리즘 기출유형 문제 & 모범답안</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700;900&family=Noto+Serif+KR:wght@400;600;700&family=JetBrains+Mono:wght@400;600&display=swap');
+:root{
+  --bg:#f5f7fa;--white:#fff;--s2:#eef1f6;--border:#dde3ec;--bl:#eef1f6;
+  --blue:#1d4ed8;--bblue:#3b82f6;--bbg:#eff6ff;--bbd:#bfdbfe;
+  --red:#b91c1c;--rbg:#fef2f2;--rbd:#fecaca;
+  --green:#065f46;--gbg:#ecfdf5;--gbd:#a7f3d0;
+  --ora:#92400e;--obg:#fffbeb;--obd:#fde68a;
+  --pur:#5b21b6;--pbg:#f5f3ff;--pbd:#ddd6fe;
+  --tea:#0f766e;--tbg:#f0fdfa;--tbd:#99f6e4;
+  --rose:#9f1239;--rosbg:#fff1f2;--rosbd:#fecdd3;
+  --indigo:#3730a3;--ibg:#eef2ff;--ibd:#c7d2fe;
+  --text:#111827;--text2:#374151;--text3:#6b7280;--text4:#9ca3af;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--text);font-family:'Noto Sans KR',sans-serif;font-size:14px;line-height:1.6}
+
+.hdr{background:linear-gradient(135deg,#1e1b4b 0%,#3730a3 50%,#4f46e5 100%);color:#fff;padding:28px 24px 22px;position:relative;overflow:hidden}
+.hdr::after{content:'';position:absolute;right:-60px;top:-60px;width:220px;height:220px;border-radius:50%;background:rgba(255,255,255,0.05)}
+.hdr::before{content:'';position:absolute;left:-40px;bottom:-40px;width:160px;height:160px;border-radius:50%;background:rgba(79,70,229,0.12)}
+.hi{max-width:1100px;margin:0 auto;position:relative}
+.heyebrow{font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:#a5b4fc;margin-bottom:6px}
+.htitle{font-size:clamp(18px,3.5vw,26px);font-weight:900;margin-bottom:6px;font-family:'Noto Serif KR',serif}
+.hsub{font-size:12px;color:#c7d2fe}
+.hpills{display:flex;flex-wrap:wrap;gap:6px;margin-top:14px}
+.hpill{background:rgba(255,255,255,0.12);border:1px solid rgba(255,255,255,0.2);padding:3px 11px;border-radius:20px;font-size:11px;color:#e0e7ff}
+
+.type-nav{background:var(--white);border-bottom:3px solid var(--border);display:flex;max-width:100%;overflow-x:auto;scrollbar-width:none;box-shadow:0 2px 8px rgba(0,0,0,0.06);position:sticky;top:0;z-index:200}
+.type-nav::-webkit-scrollbar{display:none}
+.type-btn{flex:1;min-width:160px;padding:14px 16px;background:none;border:none;border-bottom:4px solid transparent;cursor:pointer;font-family:inherit;font-size:13px;font-weight:700;color:var(--text3);transition:all .18s;display:flex;align-items:center;justify-content:center;gap:8px}
+.type-btn:hover{color:var(--indigo);background:var(--ibg)}
+.type-btn.active{color:var(--indigo);border-bottom-color:var(--indigo);background:var(--ibg)}
+.tb-s{background:#fef3c7;color:#92400e;font-size:10px;padding:2px 8px;border-radius:10px;font-weight:700}
+.tb-l{background:#ede9fe;color:#5b21b6;font-size:10px;padding:2px 8px;border-radius:10px;font-weight:700}
+
+.q-nav{background:#fff;border-bottom:1px solid var(--border);overflow-x:auto;white-space:nowrap;padding:0 16px;scrollbar-width:none;box-shadow:0 1px 4px rgba(0,0,0,0.04)}
+.q-nav::-webkit-scrollbar{display:none}
+.q-btn{display:inline-block;padding:10px 12px;font-size:12px;font-weight:600;color:var(--text3);background:none;border:none;border-bottom:3px solid transparent;cursor:pointer;font-family:inherit;transition:all .15s}
+.q-btn:hover{color:var(--indigo)}
+.q-btn.active{color:var(--indigo);border-bottom-color:var(--indigo)}
+
+.main{max-width:1100px;margin:0 auto;padding:24px 16px 80px}
+.type-panel{display:none}
+.type-panel.active{display:block}
+.q-panel{display:none}
+.q-panel.active{display:block}
+
+.qcard{background:var(--white);border:1px solid var(--border);border-radius:14px;overflow:hidden;box-shadow:0 2px 12px rgba(0,0,0,0.05);margin-bottom:20px}
+.qhdr{padding:18px 22px 14px;border-bottom:1px solid var(--bl);display:flex;align-items:flex-start;gap:14px}
+.qdomain{flex-shrink:0;padding:4px 11px;border-radius:20px;font-size:10px;font-weight:700;letter-spacing:.5px;margin-top:2px;background:var(--ibg);color:var(--indigo);border:1px solid var(--ibd)}
+.qmeta{flex:1}
+.qtype{font-size:10px;color:var(--text3);font-weight:600;letter-spacing:.5px;margin-bottom:4px}
+.qtitle{font-size:15px;font-weight:800;color:var(--text);line-height:1.45}
+.qbody{background:var(--bg);padding:16px 22px;border-bottom:1px solid var(--bl)}
+.qitems{margin-top:8px;display:flex;flex-direction:column;gap:6px}
+.qitem{display:flex;gap:10px;align-items:flex-start;font-size:13px;color:var(--text2)}
+.qlabel{font-weight:700;color:var(--indigo);min-width:20px;flex-shrink:0}
+.qhints{display:flex;flex-wrap:wrap;gap:6px;margin-top:12px}
+.qhint{background:var(--ibg);border:1px solid var(--ibd);color:var(--indigo);font-size:10px;font-weight:600;padding:2px 8px;border-radius:5px}
+
+.acard{background:var(--white)}
+.atoggle{width:100%;padding:14px 22px;background:none;border:none;display:flex;align-items:center;justify-content:space-between;cursor:pointer;font-family:inherit;transition:background .15s}
+.atoggle:hover{background:var(--ibg)}
+.alabel{font-size:13px;font-weight:700;color:var(--indigo)}
+.aarrow{font-size:16px;color:var(--indigo);transition:transform .25s}
+.aarrow.open{transform:rotate(180deg)}
+.abody{display:none;padding:0 22px 24px}
+.abody.open{display:block}
+
+.atitle{font-size:17px;font-weight:900;color:var(--text);font-family:'Noto Serif KR',serif;padding:18px 0 6px;border-bottom:2px solid var(--indigo);margin-bottom:16px}
+.asec{margin-bottom:18px}
+.ast{font-size:12px;font-weight:800;color:#fff;padding:5px 12px;border-radius:6px;display:inline-block;margin-bottom:11px}
+.s1{background:var(--indigo)}
+.s2c{background:#059669}
+.s3{background:#7c3aed}
+.s4{background:#d97706}
+.s5{background:#dc2626}
+.s6{background:#0d9488}
+.s7{background:#be185d}
+.s8{background:#0369a1}
+
+.ap{font-size:13px;color:var(--text2);line-height:1.85;margin-bottom:10px}
+
+.atable{width:100%;border-collapse:collapse;font-size:12px;margin:8px 0 12px}
+.atable th{background:var(--s2);color:var(--text2);font-weight:700;padding:8px 12px;border:1px solid var(--border);text-align:center}
+.atable td{padding:8px 12px;border:1px solid var(--border);vertical-align:top;line-height:1.6}
+.atable td:first-child{font-weight:600;color:var(--indigo);background:var(--ibg);text-align:center;white-space:nowrap}
+.atable tr:nth-child(even) td:not(:first-child){background:#fafbfd}
+
+.aol{padding-left:0;list-style:none;display:flex;flex-direction:column;gap:9px;margin:6px 0}
+.aol li{display:flex;gap:10px;align-items:flex-start;font-size:13px;color:var(--text2);line-height:1.7}
+.onum{flex-shrink:0;width:22px;height:22px;border-radius:50%;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;margin-top:1px;color:#fff}
+.n1{background:var(--indigo)} .n2{background:#059669} .n3{background:#7c3aed}
+.n4{background:#d97706} .n5{background:#dc2626} .n6{background:#0d9488}
+
+.sub{margin-top:6px;display:flex;flex-direction:column;gap:4px}
+.si{display:flex;gap:8px;font-size:12px;color:var(--text3)}
+.si::before{content:'▸';color:var(--bblue);flex-shrink:0}
+
+.dbox{background:#f8fafc;border:1px solid var(--border);border-left:3px solid var(--indigo);border-radius:8px;padding:12px 16px;margin:10px 0;font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--text2);line-height:1.8;overflow-x:auto;white-space:pre}
+
+.kbox{border-radius:8px;padding:12px 16px;margin:10px 0;font-size:12px;line-height:1.75}
+.kb-ind{background:var(--ibg);border:1px solid var(--ibd);color:var(--indigo)}
+.kb-grn{background:var(--gbg);border:1px solid var(--gbd);color:var(--green)}
+.kb-ora{background:var(--obg);border:1px solid var(--obd);color:var(--ora)}
+.kb-red{background:var(--rbg);border:1px solid var(--rbd);color:var(--red)}
+.kb-pur{background:var(--pbg);border:1px solid var(--pbd);color:var(--pur)}
+.kb-tea{background:var(--tbg);border:1px solid var(--tbd);color:var(--tea)}
+.kb-rose{background:var(--rosbg);border:1px solid var(--rosbd);color:var(--rose)}
+.kbt{font-weight:700;margin-bottom:4px;font-size:11px;letter-spacing:.4px}
+
+.concl{background:linear-gradient(135deg,var(--ibg),var(--pbg));border:1px solid var(--ibd);border-radius:8px;padding:14px 16px;margin-top:14px}
+.concl-title{font-weight:700;color:var(--indigo);font-size:12px;margin-bottom:6px}
+.concl p{font-size:12px;color:var(--text2);line-height:1.75}
+
+.chips{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px}
+.chip{font-size:11px;padding:3px 10px;border-radius:6px;font-weight:600}
+.ct{background:var(--obg);color:var(--ora);border:1px solid var(--obd)}
+.cp{background:var(--gbg);color:var(--green);border:1px solid var(--gbd)}
+.cs{background:var(--rbg);color:var(--red);border:1px solid var(--rbd)}
+
+.sgrid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:10px 0}
+@media(max-width:640px){.sgrid{grid-template-columns:1fr}}
+.sc{background:var(--s2);border:1px solid var(--border);border-radius:8px;padding:12px 14px}
+.sc-title{font-size:11px;font-weight:700;color:var(--indigo);margin-bottom:5px}
+.sc p{font-size:12px;color:var(--text2);line-height:1.7}
+
+.qcnt{font-size:11px;color:var(--text4);margin-bottom:16px;font-weight:600;letter-spacing:.5px}
+
+/* math formula style */
+.formula{background:#f8fafc;border:1px solid var(--ibd);border-radius:6px;padding:10px 14px;margin:8px 0;font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--indigo);line-height:1.9}
+</style>
+</head>
+<body>
+
+<header class="hdr">
+  <div class="hi">
+    <div class="heyebrow">🔍 데이터마이닝 알고리즘 · DATA MINING ALGORITHMS</div>
+    <div class="htitle">컴퓨터시스템응용기술사<br>데이터마이닝 알고리즘 분야 기출유형 문제 &amp; 모범답안</div>
+    <div class="hsub">단답형 5문제 (1~2페이지) + 논술형 5문제 (3~4페이지) · 전 문항 모범답안 수록</div>
+    <div class="hpills">
+      <span class="hpill">단답형 10~15점</span>
+      <span class="hpill">논술형 25점</span>
+      <span class="hpill">기술사 실전 형식</span>
+      <span class="hpill">분류·군집·연관·회귀·앙상블 총망라</span>
+    </div>
+  </div>
+</header>
+
+<nav class="type-nav">
+  <button class="type-btn active" onclick="showType(0,this)">
+    📝 단답형 문제
+    <span class="tb-s">1~2페이지 · 5문제</span>
+  </button>
+  <button class="type-btn" onclick="showType(1,this)">
+    📄 논술형 문제
+    <span class="tb-l">3~4페이지 · 5문제</span>
+  </button>
+</nav>
+
+<!-- ════════════════════════════════════
+     단답형
+════════════════════════════════════ -->
+<div class="type-panel active" id="tp0">
+<nav class="q-nav">
+  <button class="q-btn active" onclick="showQ(0,'s')">①의사결정트리</button>
+  <button class="q-btn" onclick="showQ(1,'s')">②K-Means 군집화</button>
+  <button class="q-btn" onclick="showQ(2,'s')">③Apriori 연관규칙</button>
+  <button class="q-btn" onclick="showQ(3,'s')">④나이브 베이즈</button>
+  <button class="q-btn" onclick="showQ(4,'s')">⑤평가지표</button>
+</nav>
+<div class="main">
+
+<!-- S1 의사결정트리 -->
+<div class="q-panel active" id="s0">
+<div class="qcnt">📝 단답형 1번 / 5번</div>
+<div class="qcard">
+  <div class="qhdr">
+    <span class="qdomain">데이터마이닝</span>
+    <div class="qmeta">
+      <div class="qtype">1교시 단답형 · 10~15점 · 1~2페이지 분량</div>
+      <div class="qtitle">의사결정트리(Decision Tree) 알고리즘에 대하여 분할 기준인 정보이득(Information Gain), 지니 불순도(Gini Impurity), 이득비(Gain Ratio)의 개념과 계산 방법, 각각의 특징을 비교 설명하시오.</div>
+    </div>
+  </div>
+  <div class="qbody">
+    <div class="qhints">
+      <span class="qhint">ID3·C4.5·CART 알고리즘 연계</span>
+      <span class="qhint">수식 계산 예시 필수</span>
+      <span class="qhint">과적합 방지 가지치기 포함</span>
+    </div>
+  </div>
+  <div class="acard">
+    <button class="atoggle" onclick="tog(this)">
+      <span class="alabel">📄 모범 답안 보기</span><span class="aarrow">▼</span>
+    </button>
+    <div class="abody">
+      <div class="atitle">의사결정트리 분할 기준 — 정보이득·지니 불순도·이득비 비교</div>
+      <div class="chips">
+        <span class="chip ct">⏱ 목표 15분</span>
+        <span class="chip cp">📄 1.5~2페이지</span>
+        <span class="chip cs">💯 10~15점</span>
+      </div>
+      <div class="asec">
+        <div class="ast s1">Ⅰ. 의사결정트리 개요</div>
+        <div class="ap">의사결정트리는 데이터의 특성(Feature)을 기준으로 노드를 분할하여 트리 형태의 분류·회귀 모델을 구성하는 지도 학습 알고리즘이다. 어떤 특성으로, 어떤 값에서 분할할지를 결정하는 기준이 핵심이다.</div>
+      </div>
+      <div class="asec">
+        <div class="ast s2c">Ⅱ. 정보이득 (Information Gain) — ID3, C4.5</div>
+        <div class="formula">엔트로피 H(S) = -Σ pᵢ · log₂(pᵢ)      (pᵢ: 클래스 i의 비율)
+
+정보이득 IG(S, A) = H(S) - Σ (|Sᵥ|/|S|) · H(Sᵥ)
+                    (A: 특성, Sᵥ: A=v인 부분집합)
+
+예시: 14개 데이터 중 긍정 9개, 부정 5개
+  H(S) = -(9/14)log₂(9/14) - (5/14)log₂(5/14) ≈ 0.940 bits
+  속성 A 분할 후: H(S₁)=0.811, H(S₂)=1.000
+  IG(S,A) = 0.940 - [(8/14)×0.811 + (6/14)×1.000] ≈ 0.048 bits</div>
+        <div class="kbox kb-ind">
+          <div class="kbt">특징</div>
+          • 값의 종류가 많은 특성(고유도 높은 속성) 선호 편향 발생 → 이득비로 보완<br>
+          • ID3 알고리즘에서 사용, 다중 분기 트리 생성
+        </div>
+      </div>
+      <div class="asec">
+        <div class="ast s3">Ⅲ. 이득비 (Gain Ratio) — C4.5</div>
+        <div class="formula">분할정보 SplitInfo(S, A) = -Σ (|Sᵥ|/|S|) · log₂(|Sᵥ|/|S|)
+
+이득비 GR(S, A) = IG(S, A) / SplitInfo(S, A)
+
+목적: 값의 종류가 많은 특성에 불이익(패널티) 부여
+     → 정보이득의 고유도 편향 보정</div>
+        <div class="kbox kb-grn">
+          <div class="kbt">특징</div>
+          • C4.5 알고리즘에서 사용. 연속형 특성 처리 가능 (이진 분할)<br>
+          • 결측값 처리, 가지치기(pruning) 지원. ID3보다 실용적
+        </div>
+      </div>
+      <div class="asec">
+        <div class="ast s4">Ⅳ. 지니 불순도 (Gini Impurity) — CART</div>
+        <div class="formula">Gini(S) = 1 - Σ pᵢ²       (pᵢ: 클래스 i의 비율)
+
+분할 후 가중 지니: Gini(S, A) = Σ (|Sᵥ|/|S|) · Gini(Sᵥ)
+지니 감소량: ΔGini = Gini(S) - Gini(S, A)  → 최대화하는 A 선택
+
+예시: 긍정 3/5, 부정 2/5인 노드
+  Gini = 1 - (3/5)² - (2/5)² = 1 - 0.36 - 0.16 = 0.480</div>
+        <div class="kbox kb-ora">
+          <div class="kbt">특징</div>
+          • CART(Classification and Regression Trees) 알고리즘 사용<br>
+          • 항상 이진 분할(Binary Split). 연속형·범주형 모두 처리<br>
+          • 로그 연산 불필요 → 계산 속도가 엔트로피보다 빠름<br>
+          • sklearn의 DecisionTreeClassifier 기본값
+        </div>
+      </div>
+      <div class="asec">
+        <div class="ast s5">Ⅴ. 3가지 분할 기준 비교</div>
+        <table class="atable">
+          <tr><th>기준</th><th>수식</th><th>범위</th><th>사용 알고리즘</th><th>특징</th></tr>
+          <tr><td>정보이득</td><td>IG = H(S) - 가중엔트로피</td><td>0 이상</td><td>ID3</td><td>고유도 편향, 다중 분기</td></tr>
+          <tr><td>이득비</td><td>GR = IG / SplitInfo</td><td>0~1</td><td>C4.5, C5.0</td><td>편향 보정, 결측 처리</td></tr>
+          <tr><td>지니 불순도</td><td>Gini = 1 - Σpᵢ²</td><td>0~0.5(이진)</td><td>CART</td><td>빠른 계산, 이진 분할</td></tr>
+        </table>
+      </div>
+      <div class="asec">
+        <div class="ast s6">Ⅵ. 과적합 방지 — 가지치기(Pruning)</div>
+        <div class="sgrid">
+          <div class="sc"><div class="sc-title">사전 가지치기 (Pre-pruning)</div><p>트리 성장 중 최소 샘플 수(min_samples_split), 최대 깊이(max_depth), 최소 불순도 개선량 임계값 설정으로 성장 조기 중단</p></div>
+          <div class="sc"><div class="sc-title">사후 가지치기 (Post-pruning)</div><p>완전 성장 후 검증 세트 오류를 기준으로 서브트리를 리프 노드로 대체 (Reduced Error Pruning, Cost-Complexity Pruning)</p></div>
+        </div>
+      </div>
+      <div class="concl">
+        <div class="concl-title">결론 — 감리·실무 포인트</div>
+        <p>의사결정트리는 해석 가능성(Explainability)이 높아 공공·금융 등 규제 산업에서 선호된다. 실무에서는 CART 기반 Random Forest나 Gradient Boosting으로 성능을 보완하며, 감리 시 모델 해석 가능성 및 특성 중요도(Feature Importance) 문서화 여부를 점검한다.</p>
+      </div>
+    </div>
+  </div>
+</div>
+</div><!-- /s0 -->
+
+<!-- S2 K-Means -->
+<div class="q-panel" id="s1">
+<div class="qcnt">📝 단답형 2번 / 5번</div>
+<div class="qcard">
+  <div class="qhdr">
+    <span class="qdomain">데이터마이닝</span>
+    <div class="qmeta">
+      <div class="qtype">1교시 단답형 · 10~15점 · 1~2페이지 분량</div>
+      <div class="qtitle">K-Means 군집화 알고리즘의 동작 원리, 목적함수, 초기 중심점 선택 문제(K-Means++ 포함), 최적 K 결정 방법(Elbow Method, 실루엣 계수)을 설명하시오.</div>
+    </div>
+  </div>
+  <div class="qbody">
+    <div class="qhints">
+      <span class="qhint">비지도 학습 핵심</span><span class="qhint">목적함수 WCSS 수식</span><span class="qhint">K-Means++ 개선점</span>
+    </div>
+  </div>
+  <div class="acard">
+    <button class="atoggle" onclick="tog(this)">
+      <span class="alabel">📄 모범 답안 보기</span><span class="aarrow">▼</span>
+    </button>
+    <div class="abody">
+      <div class="atitle">K-Means 군집화 — 동작 원리·목적함수·K-Means++·최적 K 결정</div>
+      <div class="chips">
+        <span class="chip ct">⏱ 목표 15분</span>
+        <span class="chip cp">📄 1.5~2페이지</span>
+        <span class="chip cs">💯 10~15점</span>
+      </div>
+      <div class="asec">
+        <div class="ast s1">Ⅰ. K-Means 개요 및 동작 원리</div>
+        <div class="ap">K-Means는 데이터를 K개의 군집으로 분할하는 비지도 학습 군집화 알고리즘으로, 각 데이터 포인트를 가장 가까운 중심점(Centroid)에 할당하고 중심점을 반복 갱신하여 수렴하는 방식이다.</div>
+        <div class="dbox">K-Means 알고리즘 동작 절차
+
+1단계 [초기화]   K개의 초기 중심점(centroid) μ₁,...,μₖ 임의 선택
+2단계 [할당]     각 데이터 xᵢ를 가장 가까운 중심점의 군집에 할당
+                 cᵢ = argmin_k ||xᵢ - μₖ||²
+3단계 [갱신]     각 군집의 중심점을 소속 데이터의 평균으로 갱신
+                 μₖ = (1/|Cₖ|) Σ xᵢ  (xᵢ ∈ Cₖ)
+4단계 [반복]     2~3단계를 중심점 변화가 없을 때까지(또는 ε 이하) 반복
+수렴 보장: 유한 번의 반복으로 반드시 수렴 (단, 지역 최솟값 가능)</div>
+      </div>
+      <div class="asec">
+        <div class="ast s2c">Ⅱ. 목적함수 (WCSS)</div>
+        <div class="formula">목적함수 WCSS (Within-Cluster Sum of Squares, 군집 내 제곱합)
+
+J = Σₖ Σ_{xᵢ∈Cₖ} ||xᵢ - μₖ||²    → 최소화 목표
+
+WCSS가 작을수록 군집 내 응집도가 높음 (밀집된 군집)
+단, K를 늘릴수록 WCSS는 단조 감소 → 최적 K 판단 기준 필요</div>
+      </div>
+      <div class="asec">
+        <div class="ast s3">Ⅲ. 초기 중심점 문제 및 K-Means++ 개선</div>
+        <div class="kbox kb-red">
+          <div class="kbt">⚠️ 초기 중심점 선택의 문제</div>
+          임의 초기화 시 지역 최솟값(Local Optimum)에 빠질 수 있어 군집 품질이 불안정. 실행마다 결과가 다를 수 있음
+        </div>
+        <div class="kbox kb-grn">
+          <div class="kbt">✅ K-Means++ (Arthur &amp; Vassilvitskii, 2007) 개선 방법</div>
+          1. 첫 번째 중심점 μ₁을 데이터 중 균등 무작위 선택<br>
+          2. 나머지 중심점 μₖ를 기존 중심점과의 <strong>거리²에 비례한 확률</strong>로 선택<br>
+             → 먼 곳의 데이터가 다음 중심점으로 선택될 확률 높음<br>
+          3. K개 중심점 확보 후 일반 K-Means 실행<br>
+          효과: WCSS O(log K) 근사 보장, 수렴 속도 향상, 안정적 결과
+        </div>
+      </div>
+      <div class="asec">
+        <div class="ast s4">Ⅳ. 최적 K 결정 방법</div>
+        <div class="sgrid">
+          <div class="sc">
+            <div class="sc-title">📐 Elbow Method (엘보우 방법)</div>
+            <p>K=1,2,...,n에 따른 WCSS 변화를 시각화. WCSS가 급격히 감소하다 완만해지는 '팔꿈치(Elbow)' 지점을 최적 K로 선택. 주관적 판단 필요</p>
+          </div>
+          <div class="sc">
+            <div class="sc-title">📐 실루엣 계수 (Silhouette Coefficient)</div>
+            <p>s(i) = (b(i) - a(i)) / max(a(i), b(i))<br>
+            a(i): 같은 군집 내 평균 거리 (응집도)<br>
+            b(i): 가장 가까운 타 군집까지 평균 거리 (분리도)<br>
+            범위: -1~+1. +1에 가까울수록 우수. 평균 실루엣이 최대인 K 선택</p>
+          </div>
+        </div>
+      </div>
+      <div class="asec">
+        <div class="ast s5">Ⅴ. K-Means 한계 및 대안 알고리즘</div>
+        <table class="atable">
+          <tr><th>한계</th><th>원인</th><th>대안 알고리즘</th></tr>
+          <tr><td>K 사전 지정 필요</td><td>K가 미지인 경우 적용 어려움</td><td>DBSCAN, 계층적 군집화</td></tr>
+          <tr><td>구형 군집만 탐지</td><td>유클리드 거리 기반</td><td>Spectral Clustering, DBSCAN</td></tr>
+          <tr><td>이상값(Outlier) 민감</td><td>평균 기반 중심점</td><td>K-Medoids (PAM)</td></tr>
+          <tr><td>스케일 민감</td><td>거리 기반 계산</td><td>사전 표준화(StandardScaler) 필수</td></tr>
+        </table>
+      </div>
+      <div class="concl">
+        <div class="concl-title">결론</div>
+        <p>K-Means는 대용량 데이터에 효율적인 군집화 알고리즘으로, 고객 세분화·문서 군집화·이미지 압축 등에 널리 활용된다. 공공 데이터 분석 시 사전 표준화, K-Means++ 초기화, 실루엣 계수를 통한 K 결정의 세 단계를 거쳐 신뢰성 있는 군집 결과를 도출해야 한다.</p>
+      </div>
+    </div>
+  </div>
+</div>
+</div><!-- /s1 -->
+
+<!-- S3 Apriori -->
+<div class="q-panel" id="s2">
+<div class="qcnt">📝 단답형 3번 / 5번</div>
+<div class="qcard">
+  <div class="qhdr">
+    <span class="qdomain">데이터마이닝</span>
+    <div class="qmeta">
+      <div class="qtype">1교시 단답형 · 10~15점 · 1~2페이지 분량</div>
+      <div class="qtitle">연관 규칙 마이닝(Association Rule Mining)에서 Apriori 알고리즘의 동작 원리, 지지도·신뢰도·향상도의 정의와 계산, 그리고 Apriori의 한계와 FP-Growth 알고리즘의 개선 방안을 설명하시오.</div>
+    </div>
+  </div>
+  <div class="qbody">
+    <div class="qhints">
+      <span class="qhint">장바구니 분석 대표 문제</span><span class="qhint">3가지 척도 계산 필수</span><span class="qhint">FP-Tree 구조 설명</span>
+    </div>
+  </div>
+  <div class="acard">
+    <button class="atoggle" onclick="tog(this)">
+      <span class="alabel">📄 모범 답안 보기</span><span class="aarrow">▼</span>
+    </button>
+    <div class="abody">
+      <div class="atitle">Apriori 알고리즘 — 동작 원리·평가 척도·FP-Growth 개선</div>
+      <div class="chips">
+        <span class="chip ct">⏱ 목표 15분</span>
+        <span class="chip cp">📄 1.5~2페이지</span>
+        <span class="chip cs">💯 10~15점</span>
+      </div>
+      <div class="asec">
+        <div class="ast s1">Ⅰ. 연관 규칙 마이닝 개요</div>
+        <div class="ap">연관 규칙 마이닝은 대규모 트랜잭션 데이터에서 항목 간의 흥미로운 상관 관계를 발견하는 기법이다. "X를 구매한 고객은 Y도 구매한다(X→Y)"와 같은 패턴을 탐지하며, 장바구니 분석·추천 시스템·크로스셀링 전략에 활용된다.</div>
+      </div>
+      <div class="asec">
+        <div class="ast s2c">Ⅱ. 3가지 평가 척도</div>
+        <div class="formula">지지도 (Support): 전체 트랜잭션 중 X와 Y가 함께 등장하는 비율
+  Support(X→Y) = P(X∪Y) = |T(X∪Y)| / |T|
+
+신뢰도 (Confidence): X가 등장한 트랜잭션 중 Y도 등장하는 비율  [조건부 확률]
+  Confidence(X→Y) = P(Y|X) = Support(X∪Y) / Support(X)
+
+향상도 (Lift): X 구매가 Y 구매에 얼마나 영향을 주는지 (독립성 대비)
+  Lift(X→Y) = Confidence(X→Y) / Support(Y)
+            = P(X∪Y) / (P(X)·P(Y))
+  해석: Lift>1 양의 상관, Lift=1 독립, Lift<1 음의 상관
+
+예시: T=100건, X∪Y=30건, X=40건, Y=50건
+  Support = 30/100 = 0.30 (30%)
+  Confidence = 0.30/0.40 = 0.75 (75%)
+  Lift = 0.75/0.50 = 1.5  → 양의 연관성</div>
+      </div>
+      <div class="asec">
+        <div class="ast s3">Ⅲ. Apriori 알고리즘 동작 원리</div>
+        <div class="kbox kb-ind">
+          <div class="kbt">Apriori 원리 (핵심 성질)</div>
+          빈번한 항목집합의 모든 부분집합도 빈번하다 → <strong>역도: 비빈번한 항목집합의 상위 집합은 비빈번</strong><br>
+          → 최소 지지도 미충족 집합 발견 시 해당 집합을 포함하는 모든 상위 집합을 가지치기 (Pruning)
+        </div>
+        <div class="dbox">Apriori 동작 절차 (min_support = 0.3 가정)
+
+1단계: 모든 1-항목집합의 지지도 계산 → min_support 이상인 L₁ 생성
+2단계: L₁로부터 2-항목집합 후보(C₂) 생성 → 지지도 계산 → L₂ 생성
+3단계: L₂로부터 C₃ 생성 → 가지치기(부분집합이 L₂에 없으면 제거) → L₃ 생성
+...반복... 더 이상 빈번 항목집합이 생성되지 않을 때까지
+
+시간복잡도: O(2^n · |T|) — 항목 수 n에 지수적 증가
+문제점: 데이터베이스를 반복 스캔 (k-항목집합마다 1회 스캔)</div>
+      </div>
+      <div class="asec">
+        <div class="ast s4">Ⅳ. Apriori 한계 및 FP-Growth 개선</div>
+        <div class="kbox kb-red">
+          <div class="kbt">Apriori의 한계</div>
+          ① 다중 데이터베이스 스캔: k 단계마다 전체 DB 스캔 → I/O 비용 높음<br>
+          ② 방대한 후보 집합 생성: 항목 수 n이 클 때 후보 수 폭증 (2ⁿ-1)<br>
+          ③ 메모리 사용: 대용량 후보 집합을 메모리에 유지
+        </div>
+        <div class="kbox kb-grn">
+          <div class="kbt">✅ FP-Growth (Frequent Pattern Growth) 개선</div>
+          <strong>핵심 아이디어</strong>: 데이터베이스를 FP-Tree(압축 트리 구조)로 2회만 스캔하여 후보 생성 없이 빈번 패턴 추출<br><br>
+          동작 절차:<br>
+          1. DB 1차 스캔 → 빈번 1-항목집합 추출 및 빈도 내림차순 정렬<br>
+          2. DB 2차 스캔 → 트랜잭션별 정렬된 항목으로 FP-Tree 구성<br>
+          3. FP-Tree에서 조건부 패턴 베이스(Conditional Pattern Base) 추출<br>
+          4. 조건부 FP-Tree로부터 재귀적 빈번 패턴 마이닝<br><br>
+          <strong>성능 비교</strong>: Apriori 대비 10~100배 빠른 수행 속도, 메모리 효율적
+        </div>
+      </div>
+      <div class="concl">
+        <div class="concl-title">결론</div>
+        <p>연관 규칙 마이닝은 전자상거래 추천 시스템, 의료 진단 패턴 발견, 공공 민원 서비스 패턴 분석 등에 활용된다. 대용량 데이터 환경에서는 FP-Growth 또는 분산처리 기반 PFP-Growth(Spark)를 적용하며, 향상도(Lift)가 1.2 이상인 규칙을 실용적 연관 규칙으로 선별하는 것이 일반적이다.</p>
+      </div>
+    </div>
+  </div>
+</div>
+</div><!-- /s2 -->
+
+<!-- S4 나이브 베이즈 -->
+<div class="q-panel" id="s3">
+<div class="qcnt">📝 단답형 4번 / 5번</div>
+<div class="qcard">
+  <div class="qhdr">
+    <span class="qdomain">데이터마이닝</span>
+    <div class="qmeta">
+      <div class="qtype">1교시 단답형 · 10~15점 · 1~2페이지 분량</div>
+      <div class="qtitle">나이브 베이즈(Naive Bayes) 분류기의 베이즈 정리 기반 원리, 조건부 독립 가정, 3가지 변형(가우시안·다항식·베르누이), 그리고 영확률 문제(Zero Probability Problem)와 라플라스 스무딩 해결 방안을 설명하시오.</div>
+    </div>
+  </div>
+  <div class="qbody">
+    <div class="qhints">
+      <span class="qhint">베이즈 정리 수식 필수</span><span class="qhint">스팸 필터링 대표 사례</span><span class="qhint">라플라스 스무딩 계산</span>
+    </div>
+  </div>
+  <div class="acard">
+    <button class="atoggle" onclick="tog(this)">
+      <span class="alabel">📄 모범 답안 보기</span><span class="aarrow">▼</span>
+    </button>
+    <div class="abody">
+      <div class="atitle">나이브 베이즈 — 베이즈 정리·조건부 독립·3종 변형·라플라스 스무딩</div>
+      <div class="chips">
+        <span class="chip ct">⏱ 목표 15분</span>
+        <span class="chip cp">📄 1.5~2페이지</span>
+        <span class="chip cs">💯 10~15점</span>
+      </div>
+      <div class="asec">
+        <div class="ast s1">Ⅰ. 베이즈 정리 기반 분류 원리</div>
+        <div class="formula">베이즈 정리:
+  P(C|X) = P(X|C) · P(C) / P(X)
+  사후확률 = 우도 × 사전확률 / 증거
+
+나이브 베이즈 분류:
+  C* = argmax_C P(C) · Π P(xᵢ|C)    (조건부 독립 가정 적용)
+
+'나이브(Naive)': 모든 특성 x₁, x₂,..., xₙ이 클래스 C 조건에서
+               서로 조건부 독립이라는 단순화(naive) 가정
+
+예시: 스팸 분류 — '무료', '클릭' 등 단어 등장 여부로 스팸 확률 계산</div>
+      </div>
+      <div class="asec">
+        <div class="ast s2c">Ⅱ. 3가지 나이브 베이즈 변형</div>
+        <table class="atable">
+          <tr><th>변형</th><th>특성 유형</th><th>가능도 P(xᵢ|C)</th><th>대표 활용</th></tr>
+          <tr><td>가우시안<br>(Gaussian NB)</td><td>연속형(실수)</td><td>정규분포 가정<br>P(xᵢ|C) = N(μ_c, σ²_c)</td><td>센서 데이터, 의료 진단, 연속 수치 분류</td></tr>
+          <tr><td>다항식<br>(Multinomial NB)</td><td>이산형(빈도)</td><td>다항분포 기반 단어 빈도</td><td>텍스트 분류, 문서 카테고리화</td></tr>
+          <tr><td>베르누이<br>(Bernoulli NB)</td><td>이진형(0/1)</td><td>단어 등장 여부(존재=1, 미존재=0)</td><td>스팸 필터링, 짧은 텍스트 분류</td></tr>
+        </table>
+      </div>
+      <div class="asec">
+        <div class="ast s3">Ⅲ. 영확률 문제 및 라플라스 스무딩</div>
+        <div class="kbox kb-red">
+          <div class="kbt">⚠️ 영확률 문제 (Zero Probability Problem)</div>
+          훈련 데이터에 없는 특성값이 테스트에 등장하면 P(xᵢ|C)=0<br>
+          → 전체 곱이 0이 되어 올바른 분류 불가
+        </div>
+        <div class="formula">라플라스 스무딩 (Laplace Smoothing, α=1):
+
+  P(xᵢ|C) = (count(xᵢ, C) + α) / (count(C) + α·|V|)
+
+  count(xᵢ, C): 클래스 C에서 특성 xᵢ의 등장 횟수
+  count(C):     클래스 C의 전체 특성 빈도 합
+  |V|:          전체 특성 종류 수(어휘 크기)
+  α:            스무딩 파라미터 (기본값 1)
+
+예시: '경품'이 훈련 데이터 스팸에 0번 등장, |V|=1000, count(spam)=5000
+  스무딩 전: P('경품'|spam) = 0/5000 = 0
+  스무딩 후: P('경품'|spam) = (0+1)/(5000+1000) = 1/6000 ≈ 0.000167</div>
+      </div>
+      <div class="asec">
+        <div class="ast s4">Ⅳ. 장단점 및 적용 지침</div>
+        <table class="atable">
+          <tr><th>구분</th><th>내용</th></tr>
+          <tr><td>장점</td><td>학습·분류 속도 매우 빠름 O(nd). 소규모 데이터에서도 우수한 성능. 온라인 학습(incremental) 가능. 다중 클래스 분류 자연스러움</td></tr>
+          <tr><td>단점</td><td>조건부 독립 가정이 현실적으로 성립하기 어려움. 특성 간 상관관계 무시. 연속형 변수에 분포 가정 필요</td></tr>
+          <tr><td>활용</td><td>이메일 스팸 필터(베르누이), 뉴스 카테고리 분류(다항식), 의료 진단 보조(가우시안)</td></tr>
+        </table>
+      </div>
+      <div class="concl">
+        <div class="concl-title">결론</div>
+        <p>나이브 베이즈는 단순한 가정에도 불구하고 텍스트 분류에서 SVM·딥러닝과 경쟁할 만한 성능을 보이며, 계산 효율성이 뛰어나 실시간 처리 시스템에 적합하다. 공공 민원 텍스트 자동 분류, 문서 카테고리화에 기본 베이스라인 모델로 활용된다.</p>
+      </div>
+    </div>
+  </div>
+</div>
+</div><!-- /s3 -->
+
+<!-- S5 평가지표 -->
+<div class="q-panel" id="s4">
+<div class="qcnt">📝 단답형 5번 / 5번</div>
+<div class="qcard">
+  <div class="qhdr">
+    <span class="qdomain">데이터마이닝</span>
+    <div class="qmeta">
+      <div class="qtype">1교시 단답형 · 10~15점 · 1~2페이지 분량</div>
+      <div class="qtitle">분류 모델의 성능 평가 지표인 혼동 행렬(Confusion Matrix), 정밀도(Precision), 재현율(Recall), F1-Score, ROC 곡선 및 AUC의 개념과 계산 방법을 설명하고, 불균형 데이터셋(Imbalanced Dataset)에서의 평가 방법을 논하시오.</div>
+    </div>
+  </div>
+  <div class="qbody">
+    <div class="qhints">
+      <span class="qhint">혼동행렬 4요소 필수</span><span class="qhint">정밀도·재현율 트레이드오프</span><span class="qhint">불균형 데이터 대처법</span>
+    </div>
+  </div>
+  <div class="acard">
+    <button class="atoggle" onclick="tog(this)">
+      <span class="alabel">📄 모범 답안 보기</span><span class="aarrow">▼</span>
+    </button>
+    <div class="abody">
+      <div class="atitle">분류 모델 평가 지표 — 혼동행렬·Precision·Recall·F1·ROC/AUC·불균형 처리</div>
+      <div class="chips">
+        <span class="chip ct">⏱ 목표 15분</span>
+        <span class="chip cp">📄 1.5~2페이지</span>
+        <span class="chip cs">💯 10~15점</span>
+      </div>
+      <div class="asec">
+        <div class="ast s1">Ⅰ. 혼동 행렬 (Confusion Matrix)</div>
+        <div class="formula">           예측: Positive    예측: Negative
+실제: Positive   TP (진양성)      FN (위음성)  ← 실제 양성을 음성으로 예측 (Type Ⅱ Error)
+실제: Negative   FP (위양성)      TN (진음성)  ← 실제 음성을 양성으로 예측 (Type Ⅰ Error)
+
+정확도 (Accuracy)  = (TP+TN) / (TP+FP+FN+TN)
+정밀도 (Precision) = TP / (TP+FP)    ← 예측 Positive 중 실제 Positive 비율
+재현율 (Recall)    = TP / (TP+FN)    ← 실제 Positive 중 예측 Positive 비율  [민감도]
+특이도 (Specificity)= TN / (TN+FP)   ← 실제 Negative 중 예측 Negative 비율
+F1-Score           = 2 · (Precision·Recall) / (Precision+Recall)  [조화평균]</div>
+      </div>
+      <div class="asec">
+        <div class="ast s2c">Ⅱ. 정밀도-재현율 트레이드오프</div>
+        <div class="kbox kb-ind">
+          <div class="kbt">Precision vs Recall 상충 관계</div>
+          분류 임계값(Threshold)을 낮추면: Recall ↑, Precision ↓ (더 많이 Positive로 예측)<br>
+          분류 임계값을 높이면: Precision ↑, Recall ↓ (확실한 것만 Positive로 예측)<br><br>
+          <strong>상황별 우선 지표 선택:</strong><br>
+          • 암 진단·사기 탐지: <strong>Recall 최대화</strong> (놓치는 것이 치명적, FN 최소화)<br>
+          • 스팸 필터링: <strong>Precision 최대화</strong> (정상 메일을 스팸으로 오분류 방지, FP 최소화)
+        </div>
+      </div>
+      <div class="asec">
+        <div class="ast s3">Ⅲ. ROC 곡선 및 AUC</div>
+        <div class="formula">ROC (Receiver Operating Characteristic) 곡선:
+  X축: FPR (False Positive Rate) = FP/(FP+TN) = 1 - Specificity
+  Y축: TPR (True Positive Rate)  = TP/(TP+FN) = Recall
+  임계값 0→1 변화에 따른 (FPR, TPR) 궤적
+
+AUC (Area Under the ROC Curve):
+  AUC=1.0: 완벽한 분류기
+  AUC=0.5: 무작위 분류기 (대각선)
+  AUC<0.5: 무작위보다 나쁨 (레이블 반전 필요)
+
+해석 기준:
+  0.9~1.0: 탁월(Excellent)  |  0.8~0.9: 우수(Good)
+  0.7~0.8: 양호(Fair)       |  0.5~0.7: 불량(Poor)</div>
+      </div>
+      <div class="asec">
+        <div class="ast s4">Ⅳ. 불균형 데이터셋 평가 및 대처</div>
+        <div class="kbox kb-red">
+          <div class="kbt">⚠️ 불균형 데이터의 문제</div>
+          정상:사기 = 99:1 데이터에서 "모두 정상" 예측 시 Accuracy=99% → 무의미한 지표<br>
+          → 정확도(Accuracy) 대신 <strong>Precision·Recall·F1·AUC-PR(PR Curve)</strong> 사용
+        </div>
+        <table class="atable">
+          <tr><th>대처 방법</th><th>내용</th><th>특징</th></tr>
+          <tr><td>과표본화<br>(Oversampling)</td><td>소수 클래스 샘플 증가. SMOTE: 소수 샘플 간 보간으로 합성 데이터 생성</td><td>데이터 손실 없음. 과적합 위험</td></tr>
+          <tr><td>과소표본화<br>(Undersampling)</td><td>다수 클래스 샘플 무작위 제거</td><td>학습 속도 향상. 정보 손실</td></tr>
+          <tr><td>클래스 가중치</td><td>소수 클래스에 높은 가중치 부여 (class_weight='balanced')</td><td>데이터 변경 없이 적용. 대부분 알고리즘 지원</td></tr>
+          <tr><td>앙상블 기법</td><td>BalancedBaggingClassifier, EasyEnsemble</td><td>강력한 성능. 계산 비용 높음</td></tr>
+          <tr><td>평가 지표</td><td>Macro/Weighted F1, AUPRC(PR-AUC), Kappa 계수</td><td>불균형에 강건한 평가 척도</td></tr>
+        </table>
+      </div>
+      <div class="concl">
+        <div class="concl-title">결론</div>
+        <p>분류 모델 평가는 단일 지표보다 혼동행렬 전체 분석 및 ROC/PR 곡선을 종합하는 것이 바람직하다. 의료·금융 분야의 불균형 데이터 환경에서는 SMOTE+Precision·Recall 중심 평가가 필수이며, 공공 AI 서비스 감리 시 모델 공정성(Fairness) 지표도 함께 점검해야 한다.</p>
+      </div>
+    </div>
+  </div>
+</div>
+</div><!-- /s4 -->
+
+</div><!-- /main -->
+</div><!-- /tp0 -->
+
+<!-- ════════════════════════════════════
+     논술형
+════════════════════════════════════ -->
+<div class="type-panel" id="tp1">
+<nav class="q-nav">
+  <button class="q-btn active" onclick="showQ(0,'l')">①랜덤포레스트·앙상블</button>
+  <button class="q-btn" onclick="showQ(1,'l')">②SVM</button>
+  <button class="q-btn" onclick="showQ(2,'l')">③신경망·딥러닝</button>
+  <button class="q-btn" onclick="showQ(3,'l')">④차원축소</button>
+  <button class="q-btn" onclick="showQ(4,'l')">⑤이상탐지</button>
+</nav>
+<div class="main">
+
+<!-- L1 랜덤포레스트·앙상블 -->
+<div class="q-panel active" id="l0">
+<div class="qcnt">📄 논술형 1번 / 5번</div>
+<div class="qcard">
+  <div class="qhdr">
+    <span class="qdomain">데이터마이닝</span>
+    <div class="qmeta">
+      <div class="qtype">2~4교시 논술형 · 25점 · 3~4페이지 분량</div>
+      <div class="qtitle">앙상블 학습(Ensemble Learning)에 대하여 다음을 설명하시오.</div>
+    </div>
+  </div>
+  <div class="qbody">
+    <div class="qitems">
+      <div class="qitem"><span class="qlabel">가.</span><span>앙상블 학습의 개념과 편향-분산 트레이드오프(Bias-Variance Tradeoff)와의 관계</span></div>
+      <div class="qitem"><span class="qlabel">나.</span><span>배깅(Bagging)·부스팅(Boosting)·스태킹(Stacking)의 원리와 대표 알고리즘 비교 (Random Forest, AdaBoost, Gradient Boosting, XGBoost)</span></div>
+      <div class="qitem"><span class="qlabel">다.</span><span>XGBoost의 핵심 기술(정규화·병렬처리·결측값 처리)과 공공데이터 분석 적용 시 고려사항</span></div>
+    </div>
+    <div class="qhints">
+      <span class="qhint">편향-분산 연계 필수</span><span class="qhint">배깅vs부스팅 비교표</span><span class="qhint">XGBoost 세부 기술 포함</span>
+    </div>
+  </div>
+  <div class="acard">
+    <button class="atoggle" onclick="tog(this)">
+      <span class="alabel">📄 모범 답안 보기</span><span class="aarrow">▼</span>
+    </button>
+    <div class="abody">
+      <div class="atitle">앙상블 학습 — Bias-Variance·배깅·부스팅·스태킹·XGBoost 핵심 기술</div>
+      <div class="chips">
+        <span class="chip ct">⏱ 목표 30분</span>
+        <span class="chip cp">📄 3.5~4페이지</span>
+        <span class="chip cs">💯 25점</span>
+      </div>
+      <div class="asec">
+        <div class="ast s1">Ⅰ. 개요 — 앙상블 학습의 개념</div>
+        <div class="ap">앙상블 학습(Ensemble Learning)은 다수의 개별 학습기(Base Learner, Weak Learner)를 결합하여 단일 모델보다 우수한 예측 성능을 달성하는 기법이다. "집단 지성(Wisdom of Crowds)" 원리에 기반하며, 개별 모델의 오류가 서로 상쇄되어 전체 성능이 향상된다.</div>
+      </div>
+      <div class="asec">
+        <div class="ast s2c">Ⅱ. 가. 편향-분산 트레이드오프와 앙상블</div>
+        <div class="formula">예측 오류 = 편향² + 분산 + 환경 노이즈(줄일 수 없음)
+
+편향(Bias): 모델이 실제 관계를 단순화하여 발생하는 오류
+           고편향 = 과소적합(Underfitting) → 단순 모델 (선형회귀, 깊이 제한 DT)
+
+분산(Variance): 학습 데이터에 따라 모델이 크게 변동하는 정도
+              고분산 = 과적합(Overfitting)  → 복잡한 모델 (깊은 DT, 고차 다항식)</div>
+        <div class="sgrid">
+          <div class="sc"><div class="sc-title">배깅 → 분산 감소</div><p>독립적인 다수 모델을 병렬 학습 후 평균/투표로 결합. 개별 모델의 분산을 평균화하여 전체 분산 감소. 고분산 모델(깊은 DT)에 효과적</p></div>
+          <div class="sc"><div class="sc-title">부스팅 → 편향 감소</div><p>이전 모델의 오류에 집중하여 순차적으로 모델 보완. 약한 학습기를 강한 학습기로 결합. 고편향 모델(얕은 DT)에 효과적</p></div>
+        </div>
+      </div>
+      <div class="asec">
+        <div class="ast s3">Ⅲ. 나. 배깅·부스팅·스태킹 비교</div>
+        <table class="atable">
+          <tr><th>방식</th><th>핵심 원리</th><th>학습 방식</th><th>결합 방법</th><th>대표 알고리즘</th></tr>
+          <tr><td>배깅<br>(Bagging)</td><td>부트스트랩 샘플링으로 독립적 다수 모델 학습</td><td>병렬 (독립)</td><td>다수결 투표 / 평균</td><td>Random Forest</td></tr>
+          <tr><td>부스팅<br>(Boosting)</td><td>이전 모델의 오분류 샘플에 가중치 증가하며 순차 학습</td><td>순차 (의존)</td><td>가중 합산</td><td>AdaBoost, GBM, XGBoost, LightGBM</td></tr>
+          <tr><td>스태킹<br>(Stacking)</td><td>복수의 기본 모델(Level 0)의 예측을 메타 모델(Level 1)로 재학습</td><td>2단계 (계층)</td><td>메타 모델 예측</td><td>StackingClassifier</td></tr>
+        </table>
+        <div class="ap"><strong>Random Forest</strong>: 배깅 + 랜덤 특성 선택(Feature Randomness). 각 노드에서 √n개 특성만 후보로 사용 → 트리 간 상관성 감소 → 분산 추가 감소</div>
+        <div class="dbox">Gradient Boosting 원리 (경사 하강법 기반 부스팅)
+
+1. F₀(x) = 초기 예측 (평균값)
+2. for m=1 to M:
+   a. 잔차(Residual) rᵢ = yᵢ - Fₘ₋₁(xᵢ) 계산
+   b. rᵢ에 약한 학습기 hₘ(x) 피팅
+   c. Fₘ(x) = Fₘ₋₁(x) + η·hₘ(x)   [η: 학습률, Shrinkage]
+3. 최종 예측: F_M(x)</div>
+      </div>
+      <div class="asec">
+        <div class="ast s4">Ⅳ. 다. XGBoost 핵심 기술</div>
+        <ul class="aol">
+          <li><span class="onum n4">1</span><div><strong>정규화 (Regularization)</strong>: 목적함수에 L1(Lasso)·L2(Ridge) 정규화 항 추가로 과적합 방지
+            <div class="sub">
+              <div class="si">Obj = Σ L(yᵢ, ŷᵢ) + Σ[γT + (1/2)λ||w||²] (T: 리프 수, w: 리프 가중치)</div>
+              <div class="si">GBM 대비 과적합 제어 능력 탁월</div>
+            </div>
+          </div></li>
+          <li><span class="onum n4">2</span><div><strong>근사 분할 알고리즘 (Approximate Split Finding)</strong>: 전체 데이터 정렬 대신 분위수(Quantile Sketch) 기반 후보 분할점 제안 → 메모리 효율 및 속도 향상
+          </div></li>
+          <li><span class="onum n4">3</span><div><strong>병렬 처리 (Parallelization)</strong>: 특성 단위 병렬 정렬 및 분할점 탐색. GPU 지원. 단일 트리 학습 내에서 병렬화 (부스팅 특성상 트리 간 순차는 불가)
+          </div></li>
+          <li><span class="onum n4">4</span><div><strong>결측값 자동 처리 (Sparsity-aware Split)</strong>: 결측값 데이터를 좌/우 하위 노드로 보내보고 더 나은 분할 방향 자동 학습
+          </div></li>
+          <li><span class="onum n4">5</span><div><strong>조기 종료 (Early Stopping)</strong>: 검증 세트 성능 개선이 없으면 부스팅 반복 조기 종료 → 과적합 방지 + 효율성
+          </div></li>
+        </ul>
+        <div class="kbox kb-ora">
+          <div class="kbt">공공데이터 분석 적용 시 고려사항</div>
+          ① <strong>해석가능성</strong>: XGBoost는 블랙박스 특성 → SHAP(SHapley Additive exPlanations) 값으로 특성 기여도 설명, 공공 의사결정 근거 마련<br>
+          ② <strong>데이터 전처리</strong>: 공공 데이터의 결측값·이상값 비율 높음 → XGBoost의 자동 결측 처리 활용하되 사전 EDA 필수<br>
+          ③ <strong>하이퍼파라미터 튜닝</strong>: n_estimators, max_depth, learning_rate, subsample를 교차검증(k-fold CV) 기반 Grid·Bayesian 최적화<br>
+          ④ <strong>공정성 검토</strong>: 성별·지역 등 민감 특성이 간접적으로 포함될 경우 편향 분석 필수 (Fairness-aware ML)<br>
+          ⑤ <strong>재현성</strong>: random_state 고정, 모델 버전·학습 데이터 해시 기록으로 감사 추적성 확보
+        </div>
+      </div>
+      <div class="concl">
+        <div class="concl-title">Ⅴ. 결론</div>
+        <p>앙상블 학습은 Kaggle·데이터 분석 경진대회의 압도적 우승 알고리즘이며, 실무 정형 데이터 예측 모델의 사실상 표준이다. Random Forest는 해석 가능성과 안정성, XGBoost·LightGBM은 성능과 속도를 중시하는 환경에 적합하다. 공공 AI 도입 시 SHAP 기반 설명가능 AI(XAI)와 결합하여 모델 투명성을 확보하는 것이 「인공지능 윤리 기준」 준수의 핵심이다.</p>
+      </div>
+    </div>
+  </div>
+</div>
+</div><!-- /l0 -->
+
+<!-- L2 SVM -->
+<div class="q-panel" id="l1">
+<div class="qcnt">📄 논술형 2번 / 5번</div>
+<div class="qcard">
+  <div class="qhdr">
+    <span class="qdomain">데이터마이닝</span>
+    <div class="qmeta">
+      <div class="qtype">2~4교시 논술형 · 25점 · 3~4페이지 분량</div>
+      <div class="qtitle">서포트 벡터 머신(Support Vector Machine)에 대하여 다음을 설명하시오.</div>
+    </div>
+  </div>
+  <div class="qbody">
+    <div class="qitems">
+      <div class="qitem"><span class="qlabel">가.</span><span>SVM의 최대 마진(Maximum Margin) 분류 원리와 서포트 벡터, 하드/소프트 마진의 개념</span></div>
+      <div class="qitem"><span class="qlabel">나.</span><span>커널 트릭(Kernel Trick)의 원리와 주요 커널 함수(선형·다항식·RBF·시그모이드) 비교</span></div>
+      <div class="qitem"><span class="qlabel">다.</span><span>SVM의 하이퍼파라미터(C, γ) 튜닝 방법 및 대용량 데이터 환경에서의 한계와 대안</span></div>
+    </div>
+    <div class="qhints">
+      <span class="qhint">마진 최대화 수식</span><span class="qhint">커널 트릭 개념 필수</span><span class="qhint">C·γ 트레이드오프</span>
+    </div>
+  </div>
+  <div class="acard">
+    <button class="atoggle" onclick="tog(this)">
+      <span class="alabel">📄 모범 답안 보기</span><span class="aarrow">▼</span>
+    </button>
+    <div class="abody">
+      <div class="atitle">SVM — 최대 마진 분류·커널 트릭·하이퍼파라미터 튜닝·한계와 대안</div>
+      <div class="chips">
+        <span class="chip ct">⏱ 목표 30분</span>
+        <span class="chip cp">📄 3.5~4페이지</span>
+        <span class="chip cs">💯 25점</span>
+      </div>
+      <div class="asec">
+        <div class="ast s1">Ⅰ. 개요 — SVM의 개념</div>
+        <div class="ap">SVM(Support Vector Machine)은 Vapnik이 1995년 제안한 지도 학습 알고리즘으로, 두 클래스 사이의 결정 경계(초평면)를 최대 마진으로 설정하여 일반화 성능을 극대화하는 분류·회귀 모델이다. 구조적 위험 최소화(SRM) 원리에 기반하며, 소규모 고차원 데이터에서 탁월한 성능을 발휘한다.</div>
+      </div>
+      <div class="asec">
+        <div class="ast s2c">Ⅱ. 가. 최대 마진 분류 원리</div>
+        <div class="formula">결정 초평면: w·x + b = 0  (w: 가중치 벡터, b: 편향)
+
+마진(Margin) = 2 / ||w||   → 마진 최대화 = ||w|| 최소화
+
+최적화 문제 (하드 마진):
+  최소화: (1/2)||w||²
+  조건:  yᵢ(w·xᵢ + b) ≥ 1  (∀i)
+
+서포트 벡터(Support Vector): 결정 경계에 가장 가까운 데이터 포인트
+  → yᵢ(w·xᵢ + b) = 1인 샘플들. 초평면 결정에만 영향</div>
+        <div class="kbox kb-ind">
+          <div class="kbt">하드 마진 vs 소프트 마진</div>
+          <strong>하드 마진(Hard Margin)</strong>: 모든 샘플이 마진 경계 밖에 위치해야 함. 선형 분리 가능 데이터에만 적용 가능. 이상값(Outlier)에 민감<br><br>
+          <strong>소프트 마진(Soft Margin)</strong>: 슬랙 변수(ξᵢ≥0) 도입으로 일부 오분류 허용<br>
+          최소화: (1/2)||w||² + C·Σξᵢ  (C: 정규화 파라미터)<br>
+          C가 크면: 오분류 허용 적음(하드 마진에 가까움, 과적합 위험)<br>
+          C가 작으면: 오분류 허용 많음(더 넓은 마진, 과소적합 위험)
+        </div>
+      </div>
+      <div class="asec">
+        <div class="ast s3">Ⅲ. 나. 커널 트릭 (Kernel Trick)</div>
+        <div class="ap">커널 트릭은 데이터를 명시적으로 고차원 공간에 투영(φ(x))하지 않고, 커널 함수 K(xᵢ,xⱼ)=φ(xᵢ)·φ(xⱼ)를 통해 내적(dot product)만 계산하여 비선형 분류를 가능하게 하는 기법이다.</div>
+        <div class="formula">선형 분류 불가 → 고차원 특성 공간으로 매핑 후 선형 분류 가능
+x → φ(x) : 저차원 → 고차원(또는 무한 차원) 매핑
+커널함수: K(xᵢ,xⱼ) = φ(xᵢ)ᵀ·φ(xⱼ)  (내적 계산만으로 효율적 처리)</div>
+        <table class="atable">
+          <tr><th>커널 함수</th><th>수식</th><th>특징</th><th>적합 데이터</th></tr>
+          <tr><td>선형 (Linear)</td><td>K(x,z) = xᵀz</td><td>커널 트릭 미사용. 고차원 희소 데이터에 효율적</td><td>텍스트 분류, 유전자 데이터</td></tr>
+          <tr><td>다항식 (Polynomial)</td><td>K(x,z) = (γxᵀz+r)ᵈ</td><td>d차 다항 특성 생성. 차수 d 선택 필요</td><td>이미지 분류, 자연어처리</td></tr>
+          <tr><td>RBF/가우시안</td><td>K(x,z) = exp(-γ||x-z||²)</td><td>무한 차원 매핑. 가장 널리 사용. γ로 결정경계 유연성 조절</td><td>대부분의 분류 문제 (기본값)</td></tr>
+          <tr><td>시그모이드</td><td>K(x,z) = tanh(γxᵀz+r)</td><td>신경망과 유사. 양정치(PSD) 보장 안 됨</td><td>신경망 대안으로 제한적 사용</td></tr>
+        </table>
+      </div>
+      <div class="asec">
+        <div class="ast s4">Ⅳ. 다. 하이퍼파라미터 튜닝 및 한계·대안</div>
+        <div class="kbox kb-ora">
+          <div class="kbt">C와 γ 하이퍼파라미터 튜닝 전략</div>
+          <strong>C (오분류 패널티)</strong>: 크면 결정 경계 복잡(과적합), 작으면 단순(과소적합)<br>
+          <strong>γ (RBF 커널 폭)</strong>: 크면 결정 경계 복잡·지역적(과적합), 작으면 부드러움(과소적합)<br><br>
+          탐색 범위: C ∈ {0.01, 0.1, 1, 10, 100}, γ ∈ {0.001, 0.01, 0.1, 1}<br>
+          방법: Grid Search + k-Fold CV, Random Search, Bayesian Optimization<br>
+          권장: 로그 스케일로 그리드 설정. 5-Fold CV 기준 최적 C·γ 선택
+        </div>
+        <table class="atable">
+          <tr><th>한계</th><th>원인</th><th>대안</th></tr>
+          <tr><td>대용량 데이터 비효율</td><td>학습 시간 O(n²)~O(n³). n이 커지면 급격히 느려짐</td><td>SGD SVM, LinearSVC (O(n)), 또는 커널 근사(Nystroem)</td></tr>
+          <tr><td>멀티클래스 미지원</td><td>이진 분류 알고리즘이 기본</td><td>One-vs-One(OvO), One-vs-Rest(OvR) 전략 사용</td></tr>
+          <tr><td>확률 추정 어려움</td><td>결정 함수가 확률 아님</td><td>Platt Scaling(교정 후처리)으로 확률 변환</td></tr>
+          <tr><td>블랙박스</td><td>비선형 커널 SVM은 해석 어려움</td><td>SHAP, LIME으로 부분 설명</td></tr>
+        </table>
+      </div>
+      <div class="concl">
+        <div class="concl-title">Ⅴ. 결론</div>
+        <p>SVM은 고차원·소규모 데이터에서의 강력한 일반화 성능으로 바이오인포매틱스·이미지 인식·텍스트 분류 분야에서 기준 모델로 활용된다. 대용량 환경에서는 LinearSVC, 커널 근사(Random Fourier Features)를 적용하거나, 딥러닝 모델로 전환하는 것이 현실적이다. SVM의 이론적 엄밀성은 기계 학습 이론 교육 및 소규모 분석 업무에서 여전히 중요한 위치를 차지한다.</p>
+      </div>
+    </div>
+  </div>
+</div>
+</div><!-- /l1 -->
+
+<!-- L3 신경망·딥러닝 -->
+<div class="q-panel" id="l2">
+<div class="qcnt">📄 논술형 3번 / 5번</div>
+<div class="qcard">
+  <div class="qhdr">
+    <span class="qdomain">데이터마이닝</span>
+    <div class="qmeta">
+      <div class="qtype">2~4교시 논술형 · 25점 · 3~4페이지 분량</div>
+      <div class="qtitle">인공신경망(ANN) 및 딥러닝에 대하여 다음을 설명하시오.</div>
+    </div>
+  </div>
+  <div class="qbody">
+    <div class="qitems">
+      <div class="qitem"><span class="qlabel">가.</span><span>다층 퍼셉트론(MLP)의 구조, 순전파(Forward Propagation), 역전파(Backpropagation) 학습 원리</span></div>
+      <div class="qitem"><span class="qlabel">나.</span><span>과적합 방지 기법 — 드롭아웃(Dropout), 배치 정규화(Batch Normalization), 조기 종료(Early Stopping), L1/L2 정규화 비교</span></div>
+      <div class="qitem"><span class="qlabel">다.</span><span>CNN(합성곱 신경망)과 RNN/LSTM의 구조적 특징 및 대표 활용 분야 비교</span></div>
+    </div>
+    <div class="qhints">
+      <span class="qhint">역전파 경사하강법 연계</span><span class="qhint">과적합 방지 4기법 비교</span><span class="qhint">CNN vs RNN 구조 다이어그램</span>
+    </div>
+  </div>
+  <div class="acard">
+    <button class="atoggle" onclick="tog(this)">
+      <span class="alabel">📄 모범 답안 보기</span><span class="aarrow">▼</span>
+    </button>
+    <div class="abody">
+      <div class="atitle">ANN·딥러닝 — MLP·역전파·과적합 방지·CNN·RNN/LSTM 비교</div>
+      <div class="chips">
+        <span class="chip ct">⏱ 목표 30분</span>
+        <span class="chip cp">📄 3.5~4페이지</span>
+        <span class="chip cs">💯 25점</span>
+      </div>
+      <div class="asec">
+        <div class="ast s1">Ⅰ. 개요 — 인공신경망의 개념</div>
+        <div class="ap">인공신경망(ANN)은 인간 뇌의 뉴런 구조에서 영감을 받아 입력층·은닉층·출력층으로 구성된 계층적 학습 모델이다. 딥러닝은 은닉층을 2개 이상 쌓은 심층 신경망으로, 특성 추출을 자동화하여 이미지·음성·자연어 분야에서 혁신적 성능을 달성하였다.</div>
+      </div>
+      <div class="asec">
+        <div class="ast s2c">Ⅱ. 가. MLP 구조 및 역전파 학습 원리</div>
+        <div class="dbox">MLP 구조:
+입력층(x₁,...,xₙ) → [은닉층1: h=σ(Wx+b)] → [은닉층2: ...] → 출력층(ŷ)
+
+순전파 (Forward Propagation):
+  zˡ = Wˡ·aˡ⁻¹ + bˡ       (선형 변환)
+  aˡ = σ(zˡ)              (비선형 활성화 함수 적용)
+  최종: ŷ = softmax(z^L)    (분류) 또는 선형(회귀)
+
+손실함수: L = -(1/n)Σ[y·log(ŷ) + (1-y)·log(1-ŷ)]  (교차 엔트로피)
+
+역전파 (Backpropagation) — 연쇄 법칙(Chain Rule):
+  δL/δWˡ = δL/δaˡ · δaˡ/δzˡ · δzˡ/δWˡ
+  Wˡ ← Wˡ - η·(δL/δWˡ)    (경사 하강법, η: 학습률)</div>
+        <div class="kbox kb-ind">
+          <div class="kbt">활성화 함수 비교</div>
+          <strong>Sigmoid</strong>: σ(x)=1/(1+e⁻ˣ), 출력 0~1. 기울기 소실(Vanishing Gradient) 문제<br>
+          <strong>ReLU</strong>: max(0,x). 기울기 소실 완화, 계산 빠름. Dying ReLU 문제<br>
+          <strong>Leaky ReLU</strong>: max(0.01x,x). Dying ReLU 개선<br>
+          <strong>Softmax</strong>: 다중 클래스 출력층. Σ출력=1 보장
+        </div>
+      </div>
+      <div class="asec">
+        <div class="ast s3">Ⅲ. 나. 과적합 방지 기법 비교</div>
+        <table class="atable">
+          <tr><th>기법</th><th>원리</th><th>효과</th><th>적용 시점</th><th>주요 파라미터</th></tr>
+          <tr><td>드롭아웃<br>(Dropout)</td><td>학습 중 뉴런을 p 확률로 랜덤 비활성화. 추론 시 전체 사용하고 (1-p) 스케일 보정</td><td>앙상블 효과. 뉴런 공동 적응 방지</td><td>완전연결층·RNN 후</td><td>p(드롭 확률): 0.2~0.5</td></tr>
+          <tr><td>배치 정규화<br>(Batch Norm)</td><td>미니배치 단위로 각 층의 입력을 정규화(평균0, 분산1) 후 γ·x+β로 스케일·시프트</td><td>기울기 소실·폭주 방지. 학습 안정화 및 가속</td><td>선형변환과 활성화 함수 사이</td><td>momentum, ε</td></tr>
+          <tr><td>조기 종료<br>(Early Stopping)</td><td>검증 손실이 일정 에폭 동안 개선되지 않으면 학습 중단</td><td>과적합 지점 이전 학습 중단</td><td>에폭 종료 시마다</td><td>patience(인내 에폭 수)</td></tr>
+          <tr><td>L2 정규화<br>(Weight Decay)</td><td>손실함수에 가중치 제곱합 패널티 추가: L = L₀ + λΣwᵢ²</td><td>가중치 크기 억제, 부드러운 결정 경계</td><td>옵티마이저 설정 시</td><td>λ(정규화 강도)</td></tr>
+        </table>
+        <div class="kbox kb-grn">
+          <div class="kbt">실무 적용 지침</div>
+          배치 정규화(BN) → 드롭아웃 → 조기 종료 순서로 적용이 일반적.<br>
+          BN 사용 시 드롭아웃 불필요한 경우 많음. L2 정규화는 옵티마이저의 weight_decay로 설정
+        </div>
+      </div>
+      <div class="asec">
+        <div class="ast s4">Ⅳ. 다. CNN과 RNN/LSTM 비교</div>
+        <table class="atable">
+          <tr><th>구분</th><th>CNN (합성곱 신경망)</th><th>RNN/LSTM</th></tr>
+          <tr><td>핵심 연산</td><td>합성곱(Convolution): 필터가 입력을 슬라이딩하며 특성 추출</td><td>순환(Recurrence): 이전 은닉 상태 hₜ₋₁과 현재 입력 xₜ를 결합</td></tr>
+          <tr><td>특화 데이터</td><td>공간적 구조(Grid) 데이터 — 이미지, 동영상</td><td>순차적·시계열 데이터 — 텍스트, 음성, 주가</td></tr>
+          <tr><td>주요 층</td><td>Convolution층 + Pooling층 + Fully Connected층</td><td>RNN 셀 / LSTM 셀 (입력·망각·출력 게이트)</td></tr>
+          <tr><td>장기 의존성</td><td>고정 수용 영역(Receptive Field)으로 원거리 의존성 약함</td><td>LSTM: 셀 상태(Cell State)로 장기 의존성 해결</td></tr>
+          <tr><td>기울기 소실</td><td>깊어질수록 발생 (ResNet의 Skip Connection으로 해결)</td><td>RNN 심각. LSTM 게이트 구조로 완화</td></tr>
+          <tr><td>병렬 처리</td><td>가능 (배치 처리 효율적)</td><td>어려움 (순차 처리)</td></tr>
+          <tr><td>대표 아키텍처</td><td>LeNet, AlexNet, VGG, ResNet, EfficientNet</td><td>Vanilla RNN, LSTM, GRU, Bi-LSTM</td></tr>
+          <tr><td>최신 대안</td><td>Vision Transformer (ViT)</td><td>Transformer (Self-Attention), BERT, GPT</td></tr>
+        </table>
+        <div class="dbox">LSTM 게이트 구조 (장기 의존성 해결)
+
+망각 게이트: fₜ = σ(Wf·[hₜ₋₁, xₜ] + bf)  → 셀 상태 정보 얼마나 잊을지
+입력 게이트: iₜ = σ(Wi·[hₜ₋₁, xₜ] + bi)  → 새 정보 얼마나 저장할지
+후보 셀상태: C̃ₜ = tanh(Wc·[hₜ₋₁, xₜ] + bc)
+셀 상태 갱신: Cₜ = fₜ⊙Cₜ₋₁ + iₜ⊙C̃ₜ
+출력 게이트: oₜ = σ(Wo·[hₜ₋₁, xₜ] + bo)
+은닉 상태:   hₜ = oₜ⊙tanh(Cₜ)</div>
+      </div>
+      <div class="concl">
+        <div class="concl-title">Ⅴ. 결론</div>
+        <p>딥러닝은 대규모 데이터와 GPU 연산의 결합으로 이미지·음성·자연어 분야에서 인간 수준 이상의 성능을 달성하였다. CNN은 이미지 분류·객체 탐지·의료 영상 분석에, LSTM은 자연어처리·시계열 예측에 특화되며, 최근에는 Transformer가 두 도메인 모두에서 이를 대체하는 추세이다. 공공 AI 서비스 적용 시 XAI와 공정성 검증을 병행해야 한다.</p>
+      </div>
+    </div>
+  </div>
+</div>
+</div><!-- /l2 -->
+
+<!-- L4 차원축소 -->
+<div class="q-panel" id="l3">
+<div class="qcnt">📄 논술형 4번 / 5번</div>
+<div class="qcard">
+  <div class="qhdr">
+    <span class="qdomain">데이터마이닝</span>
+    <div class="qmeta">
+      <div class="qtype">2~4교시 논술형 · 25점 · 3~4페이지 분량</div>
+      <div class="qtitle">차원 축소(Dimensionality Reduction)에 대하여 다음을 설명하시오.</div>
+    </div>
+  </div>
+  <div class="qbody">
+    <div class="qitems">
+      <div class="qitem"><span class="qlabel">가.</span><span>차원의 저주(Curse of Dimensionality) 개념과 고차원 데이터에서 발생하는 문제점</span></div>
+      <div class="qitem"><span class="qlabel">나.</span><span>주성분 분석(PCA)의 수학적 원리(공분산 행렬, 고유값 분해), 동작 절차 및 적용 방법</span></div>
+      <div class="qitem"><span class="qlabel">다.</span><span>t-SNE, UMAP 등 비선형 차원 축소 기법과 PCA의 비교, 각 기법의 적합 활용 상황</span></div>
+    </div>
+    <div class="qhints">
+      <span class="qhint">차원의 저주 정의 필수</span><span class="qhint">PCA 수식·고유값 분해</span><span class="qhint">PCA vs t-SNE 비교표</span>
+    </div>
+  </div>
+  <div class="acard">
+    <button class="atoggle" onclick="tog(this)">
+      <span class="alabel">📄 모범 답안 보기</span><span class="aarrow">▼</span>
+    </button>
+    <div class="abody">
+      <div class="atitle">차원 축소 — 차원의 저주·PCA 원리·t-SNE·UMAP 비교</div>
+      <div class="chips">
+        <span class="chip ct">⏱ 목표 30분</span>
+        <span class="chip cp">📄 3.5~4페이지</span>
+        <span class="chip cs">💯 25점</span>
+      </div>
+      <div class="asec">
+        <div class="ast s1">Ⅰ. 가. 차원의 저주 (Curse of Dimensionality)</div>
+        <div class="ap">차원의 저주는 Bellman이 명명한 개념으로, 특성(Feature) 수가 증가할수록 데이터 공간의 부피가 기하급수적으로 커져 데이터가 희소해지고, 거리 기반 알고리즘의 성능이 급격히 저하되는 현상이다.</div>
+        <ul class="aol">
+          <li><span class="onum n1">1</span><div><strong>거리 척도 무력화</strong>: 고차원에서는 모든 데이터 쌍 간의 거리가 유사해짐 (거리 집중 현상). K-NN·SVM·군집화 알고리즘 성능 저하
+          </div></li>
+          <li><span class="onum n1">2</span><div><strong>과적합 위험 증가</strong>: 샘플 수 대비 특성 수가 많은 경우 p/n >> 1 상황. 모델이 노이즈까지 학습
+          </div></li>
+          <li><span class="onum n1">3</span><div><strong>계산 복잡도 폭증</strong>: 특성 공간 탐색에 필요한 데이터 수가 지수적으로 증가. d차원 균일 커버리지를 위해 n ∝ r^d 샘플 필요
+          </div></li>
+          <li><span class="onum n1">4</span><div><strong>다중공선성(Multicollinearity)</strong>: 특성 간 높은 상관관계로 모델 학습 불안정. 회귀 모델 계수 해석 불가
+          </div></li>
+        </ul>
+      </div>
+      <div class="asec">
+        <div class="ast s2c">Ⅱ. 나. PCA (주성분 분석) 원리 및 동작 절차</div>
+        <div class="ap">PCA는 데이터의 분산을 최대로 보존하는 새로운 직교 좌표계(주성분)를 찾아 고차원 데이터를 저차원으로 선형 변환하는 비지도 차원 축소 기법이다.</div>
+        <div class="formula">PCA 수학적 원리:
+
+1. 데이터 중심화: X_centered = X - μ  (평균 차감)
+2. 공분산 행렬 계산: C = (1/n) X_centeredᵀ · X_centered  (p×p 행렬)
+3. 고유값 분해(Eigendecomposition): C = V · Λ · Vᵀ
+   V: 고유벡터 행렬 (주성분 방향), Λ: 고유값 대각행렬 (분산량)
+4. 고유값 내림차순 정렬 → 상위 k개 고유벡터 선택 (주성분)
+5. 저차원 투영: Z = X_centered · Vₖ  (n×k 행렬)
+
+설명 분산 비율: Σᵢ₌₁ᵏ λᵢ / Σᵢ₌₁ᵖ λᵢ  → 누적 분산 95% 이상이 되는 k 선택</div>
+        <div class="kbox kb-grn">
+          <div class="kbt">PCA 적용 시 주요 고려사항</div>
+          ① <strong>사전 표준화 필수</strong>: 특성별 스케일이 다를 때 StandardScaler 적용 (분산이 큰 특성이 주성분 지배 방지)<br>
+          ② <strong>스크리 플롯(Scree Plot)</strong>: 고유값 감소 추이로 적절한 k 결정 (엘보우 지점)<br>
+          ③ <strong>해석 가능성</strong>: 주성분은 원래 특성의 선형 결합 → 도메인 해석 어려움<br>
+          ④ <strong>지도 학습 전처리</strong>: 분류·회귀 전 특성 수 축소로 학습 속도 향상 및 다중공선성 제거
+        </div>
+      </div>
+      <div class="asec">
+        <div class="ast s3">Ⅲ. 다. 비선형 차원 축소 기법 비교</div>
+        <table class="atable">
+          <tr><th>기법</th><th>원리</th><th>특징</th><th>장점</th><th>단점</th><th>적합 상황</th></tr>
+          <tr><td>PCA</td><td>분산 최대화 선형 투영 (고유값 분해)</td><td>선형 변환. 새 데이터 변환 가능</td><td>빠름, 결정론적, 해석 가능</td><td>비선형 구조 포착 불가</td><td>특성 추출, 노이즈 제거, 전처리</td></tr>
+          <tr><td>t-SNE</td><td>고차원 점 쌍 간 유사도를 저차원에서 보존 (t분포 기반 KL Divergence 최소화)</td><td>비선형. 군집 구조 시각화에 탁월</td><td>복잡한 비선형 구조 탐지</td><td>느림 O(n²), 랜덤 결과, 새 데이터 변환 불가, 거리 해석 불가</td><td>2D/3D 시각화, 탐색적 데이터 분석</td></tr>
+          <tr><td>UMAP</td><td>리만 기하학·위상적 데이터 분석 기반. 지역·전역 구조 모두 보존</td><td>t-SNE보다 빠름. 전역 구조 보존 우수</td><td>속도 빠름, 확장성, 새 데이터 변환 가능</td><td>하이퍼파라미터 민감 (n_neighbors, min_dist)</td><td>대용량 데이터 시각화, 전처리 파이프라인</td></tr>
+          <tr><td>오토인코더<br>(Autoencoder)</td><td>신경망으로 인코더(압축)·디코더(복원) 학습. 병목층이 저차원 표현</td><td>고도 비선형. 대규모 데이터 적합</td><td>복잡한 비선형 구조 학습</td><td>학습 비용 높음, 해석 어려움</td><td>이미지·음성 압축, 이상 탐지</td></tr>
+        </table>
+        <div class="dbox">차원 축소 기법 선택 가이드
+
+목적: 전처리(특성 추출)    → PCA (빠름, 결정론적, 역변환 가능)
+목적: 2D/3D 시각화         → t-SNE (군집 구분 우수) 또는 UMAP (빠름, 대용량)
+목적: 딥러닝 특성 표현 학습 → Autoencoder (VAE 포함)
+데이터: 선형 구조 강함       → PCA
+데이터: 비선형·다양체 구조   → t-SNE / UMAP / Kernel PCA</div>
+      </div>
+      <div class="concl">
+        <div class="concl-title">Ⅳ. 결론</div>
+        <p>차원 축소는 데이터 탐색, 시각화, 노이즈 제거, 학습 효율 향상을 위한 필수 전처리 기법이다. PCA는 빠르고 해석 가능한 선형 기법으로 지도 학습 전처리에 적합하고, t-SNE·UMAP은 군집 구조 시각화에 탁월하다. 공공 데이터 분석에서는 설명가능성을 위해 PCA 기반 전처리 후 모델링하는 방식이 권장되며, 주성분의 설명 분산 비율을 보고서에 명시해야 한다.</p>
+      </div>
+    </div>
+  </div>
+</div>
+</div><!-- /l3 -->
+
+<!-- L5 이상탐지 -->
+<div class="q-panel" id="l4">
+<div class="qcnt">📄 논술형 5번 / 5번</div>
+<div class="qcard">
+  <div class="qhdr">
+    <span class="qdomain">데이터마이닝</span>
+    <div class="qmeta">
+      <div class="qtype">2~4교시 논술형 · 25점 · 3~4페이지 분량</div>
+      <div class="qtitle">이상 탐지(Anomaly Detection)에 대하여 다음을 설명하시오.</div>
+    </div>
+  </div>
+  <div class="qbody">
+    <div class="qitems">
+      <div class="qitem"><span class="qlabel">가.</span><span>이상 탐지의 개념, 이상치의 3가지 유형(점 이상치·맥락 이상치·집단 이상치), 이상 탐지와 분류 문제의 차이점</span></div>
+      <div class="qitem"><span class="qlabel">나.</span><span>이상 탐지 알고리즘 비교 — 통계 기반(Z-Score, IQR), 밀도 기반(LOF), 트리 기반(Isolation Forest), 딥러닝 기반(Autoencoder)</span></div>
+      <div class="qitem"><span class="qlabel">다.</span><span>공공·금융 분야에서의 이상 탐지 적용 사례 및 실시간 이상 탐지 시스템 아키텍처</span></div>
+    </div>
+    <div class="qhints">
+      <span class="qhint">3가지 이상치 유형 구분</span><span class="qhint">알고리즘 4종 비교표</span><span class="qhint">실시간 시스템 아키텍처 다이어그램</span>
+    </div>
+  </div>
+  <div class="acard">
+    <button class="atoggle" onclick="tog(this)">
+      <span class="alabel">📄 모범 답안 보기</span><span class="aarrow">▼</span>
+    </button>
+    <div class="abody">
+      <div class="atitle">이상 탐지 — 유형 분류·알고리즘 4종 비교·공공 적용 사례·실시간 아키텍처</div>
+      <div class="chips">
+        <span class="chip ct">⏱ 목표 30분</span>
+        <span class="chip cp">📄 3.5~4페이지</span>
+        <span class="chip cs">💯 25점</span>
+      </div>
+      <div class="asec">
+        <div class="ast s1">Ⅰ. 가. 이상 탐지 개념 및 이상치 유형</div>
+        <div class="ap">이상 탐지(Anomaly Detection)는 대다수 정상 데이터의 패턴에서 현저히 벗어난 데이터 포인트(이상치, Anomaly·Outlier)를 자동으로 식별하는 기법이다. 레이블이 없거나 이상치가 극히 드문 데이터 환경에서 비지도 또는 반지도 학습 방식으로 동작하며, 분류 문제와 구분된다.</div>
+        <table class="atable">
+          <tr><th>이상치 유형</th><th>정의</th><th>예시</th></tr>
+          <tr><td>점 이상치<br>(Point Anomaly)</td><td>개별 데이터 포인트 자체가 정상 분포에서 크게 벗어난 경우</td><td>평균 거래금액 5만원 대비 단일 거래 500만원 발생</td></tr>
+          <tr><td>맥락 이상치<br>(Contextual Anomaly)</td><td>특정 맥락(시간·공간)에서만 이상으로 간주되는 경우. 다른 맥락에서는 정상</td><td>한여름 기온 30°C는 정상, 한겨울 기온 30°C는 이상</td></tr>
+          <tr><td>집단 이상치<br>(Collective Anomaly)</td><td>개별 포인트는 정상이지만, 연속된 패턴이 집단적으로 이상인 경우</td><td>정상 심박수지만 수 시간 연속 일정한 패턴은 부정맥 의심</td></tr>
+        </table>
+        <div class="kbox kb-ind">
+          <div class="kbt">이상 탐지 vs 분류 문제의 차이</div>
+          <strong>분류</strong>: 레이블된 훈련 데이터 필요. 정상·이상 모두 학습<br>
+          <strong>이상 탐지</strong>: 이상 레이블 없거나 매우 희소 → 정상 패턴만 학습 후 이탈 탐지<br>
+          이상치 비율 0.1~1% 수준 → 불균형 분류 문제로도 접근 가능
+        </div>
+      </div>
+      <div class="asec">
+        <div class="ast s2c">Ⅱ. 나. 이상 탐지 알고리즘 비교</div>
+        <table class="atable">
+          <tr><th>기법</th><th>원리</th><th>이상 판정 기준</th><th>장점</th><th>단점</th><th>적합 상황</th></tr>
+          <tr><td>Z-Score<br>(통계 기반)</td><td>각 값이 평균에서 표준편차의 몇 배인지 측정</td><td>|z| = |x-μ|/σ &gt; 3 이상치</td><td>단순, 빠름, 해석 쉬움</td><td>정규분포 가정. 다변량 이상 탐지 어려움</td><td>단일 변수, 정규 분포 데이터</td></tr>
+          <tr><td>IQR<br>(비모수 통계)</td><td>4분위 범위 기반 이상 경계 설정</td><td>x &lt; Q1-1.5·IQR 또는 x &gt; Q3+1.5·IQR</td><td>분포 가정 없음, 강건</td><td>다변량 미지원. 상자수염 그림과 동일</td><td>비정규 분포, 단변량 탐색</td></tr>
+          <tr><td>LOF<br>(밀도 기반)</td><td>각 포인트의 지역 밀도를 k-최근접 이웃 밀도와 비교</td><td>LOF 점수 >> 1 이상치 (주변보다 밀도 낮음)</td><td>밀도 불균일 데이터 처리. 지역적 이상 탐지</td><td>k 선택 민감. 고차원 성능 저하. O(n²)</td><td>군집 크기·밀도 불균일 데이터</td></tr>
+          <tr><td>Isolation Forest<br>(트리 기반)</td><td>랜덤 분할로 데이터를 격리. 이상치는 적은 분할로 격리됨</td><td>평균 경로 길이 짧을수록 이상 점수 높음</td><td>빠름 O(n), 고차원 적합, 스케일 불필요</td><td>지역적 이상 탐지 약함</td><td>고차원, 대용량, 글로벌 이상 탐지</td></tr>
+          <tr><td>Autoencoder<br>(딥러닝 기반)</td><td>정상 데이터로 훈련된 오토인코더의 복원 오류(Reconstruction Error)가 크면 이상</td><td>복원 오류 &gt; 임계값 이상치</td><td>비선형 복잡 패턴 학습. 시계열·이미지 이상 탐지</td><td>학습 비용 높음. 임계값 설정 어려움</td><td>이미지·시계열·로그 데이터 이상 탐지</td></tr>
+        </table>
+        <div class="formula">LOF (Local Outlier Factor) 계산:
+
+1. k-최근접 이웃(k-NN) 거리 계산
+2. 도달 가능 거리(Reachability Distance):
+   reach-dist_k(p, o) = max(k-dist(o), dist(p, o))
+3. 지역 도달 가능 밀도(LRD):
+   lrd_k(p) = 1 / (Σ reach-dist_k(p,o) / k)
+4. LOF 점수:
+   LOF_k(p) = (Σ lrd_k(o)/lrd_k(p)) / k
+   LOF ≈ 1: 정상, LOF >> 1: 이상치</div>
+      </div>
+      <div class="asec">
+        <div class="ast s4">Ⅲ. 다. 공공·금융 적용 사례 및 실시간 아키텍처</div>
+        <div class="sgrid">
+          <div class="sc"><div class="sc-title">🏦 금융 분야 — 신용카드 사기 탐지</div><p>정상 거래 패턴 학습 후 거래 금액·위치·빈도 이상 탐지. Isolation Forest + Autoencoder 앙상블. 실시간 200ms 이내 탐지 필요</p></div>
+          <div class="sc"><div class="sc-title">🏥 의료 분야 — 의료비 부정 청구</div><p>진료 패턴 LOF 기반 이상 점수 산출. 정상 의사 대비 현저히 다른 청구 패턴 탐지. 건강보험심사평가원 활용</p></div>
+          <div class="sc"><div class="sc-title">🖥️ IT 인프라 — 네트워크 침입 탐지</div><p>네트워크 트래픽 시계열 Autoencoder 적용. 복원 오류 급증 시 침입(DDoS·랜섬웨어) 경보. SIEM 연동</p></div>
+          <div class="sc"><div class="sc-title">🏭 제조 — 설비 예지 보전</div><p>센서 데이터 다변량 이상 탐지. 고장 발생 전 이상 패턴 조기 탐지. 계획 정비로 비용 절감</p></div>
+        </div>
+        <div class="dbox">실시간 이상 탐지 시스템 아키텍처
+
+[데이터 수집]
+ 센서·트랜잭션·로그 → Kafka/Kinesis (스트리밍 수집)
+          │
+          ▼
+[실시간 전처리] Apache Flink / Spark Streaming
+ 특성 엔지니어링·정규화·슬라이딩 윈도우 집계
+          │
+          ▼
+[이상 탐지 모델 추론]
+ 경량 Isolation Forest / Autoencoder 추론 서버 (ML serving)
+ 이상 점수(Anomaly Score) 산출 → 임계값 비교
+          │
+    ┌─────┴──────┐
+  정상           이상 (Alert)
+    │               │
+    ▼               ▼
+[정상 저장]     [알림 발송] → Slack/이메일/SMS
+ 데이터레이크    [케이스 등록] → Jira/ITSM
+ (S3/HDFS)      [SIEM 연동] → Splunk/ELK
+          │
+          ▼
+[모델 재학습 파이프라인] (드리프트 모니터링)
+ 개념 드리프트(Concept Drift) 감지 → 주기적 모델 재학습</div>
+        <div class="kbox kb-tea">
+          <div class="kbt">공공 부문 이상 탐지 적용 시 핵심 고려사항</div>
+          ① <strong>오탐(False Positive) 관리</strong>: 공공 서비스에서 정상 거래를 이상으로 탐지하면 민원 발생 → Precision 우선 튜닝<br>
+          ② <strong>설명 가능성</strong>: 이상 판정 근거를 SHAP·LOF 기여 특성으로 설명 (행정 처분 근거 필요)<br>
+          ③ <strong>개인정보보호</strong>: 행동 패턴 분석 시 개인정보보호법·GDPR 준수. 가명처리·차분 프라이버시 적용<br>
+          ④ <strong>모델 드리프트</strong>: 계절성·제도 변화로 정상 패턴이 변하면 모델 재학습 필요. 성능 지속 모니터링
+        </div>
+      </div>
+      <div class="concl">
+        <div class="concl-title">Ⅳ. 결론</div>
+        <p>이상 탐지는 금융 사기·사이버 보안·의료 이상·산업 설비 관리 분야의 핵심 데이터마이닝 기술이다. 통계적 기법(Z-Score·IQR)은 단순하고 해석 가능하나, 고차원·비선형 데이터에는 Isolation Forest·Autoencoder가 효과적이다. 실시간 스트리밍 환경에서는 Kafka + Flink + 경량 ML 모델 조합을 활용하며, 공공 시스템에서는 오탐률 관리, 설명가능성 확보, 개인정보 보호를 통합적으로 고려해야 한다.</p>
+      </div>
+    </div>
+  </div>
+</div>
+</div><!-- /l4 -->
+
+</div><!-- /main -->
+</div><!-- /tp1 -->
+
+<script>
+function showType(idx,btn){
+  document.querySelectorAll('.type-panel').forEach((p,i)=>p.classList.toggle('active',i===idx));
+  document.querySelectorAll('.type-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+function showQ(idx,t){
+  var pre=t==='s'?'s':'l';
+  var tp=t==='s'?0:1;
+  document.querySelectorAll('#tp'+tp+' .q-panel').forEach((p,i)=>p.classList.toggle('active',i===idx));
+  document.querySelectorAll('#tp'+tp+' .q-nav .q-btn').forEach(b=>b.classList.remove('active'));
+  document.querySelectorAll('#tp'+tp+' .q-nav .q-btn')[idx].classList.add('active');
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+function tog(btn){
+  var body=btn.nextElementSibling;
+  var arrow=btn.querySelector('.aarrow');
+  var open=body.classList.toggle('open');
+  arrow.classList.toggle('open',open);
+  btn.querySelector('.alabel').textContent=open?'📄 답안 닫기':'📄 모범 답안 보기';
+}
+</script>
+</body>
+</html>

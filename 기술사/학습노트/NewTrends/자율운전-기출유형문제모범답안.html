@@ -1,0 +1,1113 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>자율운전 기출유형 문제 & 모범답안</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700;900&family=Noto+Serif+KR:wght@400;600;700&family=JetBrains+Mono:wght@400;600&display=swap');
+:root{
+  --bg:#f5f7fa;--white:#fff;--surface2:#eef1f6;--border:#dde3ec;--bl:#eef1f6;
+  --blue:#1d4ed8;--bblue:#3b82f6;--bluebg:#eff6ff;--blb:#bfdbfe;
+  --red:#b91c1c;--redbg:#fef2f2;--rdb:#fecaca;
+  --green:#065f46;--gbg:#ecfdf5;--gb:#a7f3d0;
+  --ora:#92400e;--obg:#fffbeb;--ob:#fde68a;
+  --pur:#5b21b6;--pubg:#f5f3ff;--pub:#ddd6fe;
+  --tea:#0f766e;--tbg:#f0fdfa;--tb:#99f6e4;
+  --rose:#9f1239;--rbg:#fff1f2;--roseb:#fecdd3;
+  --slate:#0f172a;
+  --text:#111827;--text2:#374151;--text3:#6b7280;--text4:#9ca3af;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--text);font-family:'Noto Sans KR',sans-serif;font-size:14px;line-height:1.6}
+
+.hdr{background:linear-gradient(135deg,#0f172a 0%,#1e3a5f 40%,#1d4ed8 80%,#0ea5e9 100%);color:#fff;padding:28px 24px 22px;position:relative;overflow:hidden}
+.hdr::after{content:'';position:absolute;right:-60px;top:-60px;width:240px;height:240px;border-radius:50%;background:rgba(14,165,233,0.1)}
+.hdr::before{content:'';position:absolute;left:-40px;bottom:-50px;width:180px;height:180px;border-radius:50%;background:rgba(29,78,216,0.15)}
+.hi{max-width:1100px;margin:0 auto;position:relative}
+.heyebrow{font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:#7dd3fc;margin-bottom:6px}
+.htitle{font-size:clamp(18px,3.5vw,26px);font-weight:900;margin-bottom:6px;font-family:'Noto Serif KR',serif}
+.hsub{font-size:12px;color:#bae6fd}
+.hpills{display:flex;flex-wrap:wrap;gap:6px;margin-top:14px}
+.hpill{background:rgba(255,255,255,0.12);border:1px solid rgba(255,255,255,0.2);padding:3px 11px;border-radius:20px;font-size:11px;color:#e0f2fe}
+
+.type-nav{background:var(--white);border-bottom:3px solid var(--border);display:flex;max-width:100%;overflow-x:auto;scrollbar-width:none;box-shadow:0 2px 8px rgba(0,0,0,0.06);position:sticky;top:0;z-index:200}
+.type-nav::-webkit-scrollbar{display:none}
+.type-btn{flex:1;min-width:160px;padding:14px 16px;background:none;border:none;border-bottom:4px solid transparent;cursor:pointer;font-family:inherit;font-size:13px;font-weight:700;color:var(--text3);transition:all 0.18s;display:flex;align-items:center;justify-content:center;gap:8px}
+.type-btn:hover{color:var(--blue);background:var(--bluebg)}
+.type-btn.active{color:var(--blue);border-bottom-color:var(--blue);background:var(--bluebg)}
+.type-badge{font-size:10px;padding:2px 8px;border-radius:10px;font-weight:700}
+.tb-short{background:#fef3c7;color:#92400e}
+.tb-long{background:#ede9fe;color:#5b21b6}
+
+.q-nav{background:#fff;border-bottom:1px solid var(--border);overflow-x:auto;white-space:nowrap;padding:0 16px;scrollbar-width:none;box-shadow:0 1px 4px rgba(0,0,0,0.04)}
+.q-nav::-webkit-scrollbar{display:none}
+.q-btn{display:inline-block;padding:10px 12px;font-size:12px;font-weight:600;color:var(--text3);background:none;border:none;border-bottom:3px solid transparent;cursor:pointer;font-family:inherit;transition:all .15s}
+.q-btn:hover{color:var(--blue)}
+.q-btn.active{color:var(--blue);border-bottom-color:var(--blue)}
+
+.main{max-width:1100px;margin:0 auto;padding:24px 16px 80px}
+.type-panel{display:none}
+.type-panel.active{display:block}
+.q-panel{display:none}
+.q-panel.active{display:block}
+
+.qcard{background:var(--white);border:1px solid var(--border);border-radius:14px;overflow:hidden;box-shadow:0 2px 12px rgba(0,0,0,0.05);margin-bottom:20px}
+.qhdr{padding:18px 22px 14px;border-bottom:1px solid var(--bl);display:flex;align-items:flex-start;gap:14px}
+.qdomain{flex-shrink:0;padding:4px 11px;border-radius:20px;font-size:10px;font-weight:700;letter-spacing:0.5px;margin-top:2px}
+.badge-av{background:#e0f2fe;color:#0369a1;border:1px solid #bae6fd}
+.qmeta{flex:1}
+.qtype{font-size:10px;color:var(--text3);font-weight:600;letter-spacing:0.5px;margin-bottom:4px}
+.qtitle{font-size:15px;font-weight:800;color:var(--text);line-height:1.45}
+.qbody{background:var(--bg);padding:16px 22px;border-bottom:1px solid var(--bl)}
+.qitems{margin-top:8px;display:flex;flex-direction:column;gap:6px}
+.qitem{display:flex;gap:10px;align-items:flex-start;font-size:13px;color:var(--text2)}
+.qlabel{font-weight:700;color:var(--blue);min-width:20px;flex-shrink:0}
+.qhints{display:flex;flex-wrap:wrap;gap:6px;margin-top:12px}
+.qhint{background:var(--bluebg);border:1px solid var(--blb);color:var(--blue);font-size:10px;font-weight:600;padding:2px 8px;border-radius:5px}
+
+.acard{background:var(--white)}
+.atoggle{width:100%;padding:14px 22px;background:none;border:none;display:flex;align-items:center;justify-content:space-between;cursor:pointer;font-family:inherit;transition:background .15s}
+.atoggle:hover{background:var(--bluebg)}
+.alabel{font-size:13px;font-weight:700;color:var(--blue)}
+.aarrow{font-size:16px;color:var(--blue);transition:transform .25s}
+.aarrow.open{transform:rotate(180deg)}
+.abody{display:none;padding:0 22px 24px}
+.abody.open{display:block}
+
+.atitle{font-size:17px;font-weight:900;color:var(--text);font-family:'Noto Serif KR',serif;padding:18px 0 6px;border-bottom:2px solid var(--blue);margin-bottom:16px}
+.asec{margin-bottom:18px}
+.asectitle{font-size:12px;font-weight:800;color:#fff;padding:5px 12px;border-radius:6px;display:inline-block;margin-bottom:11px}
+.s1{background:var(--blue)}
+.s2{background:#059669}
+.s3{background:#7c3aed}
+.s4{background:#d97706}
+.s5{background:#dc2626}
+.s6{background:#0d9488}
+.s7{background:#0369a1}
+
+.ap{font-size:13px;color:var(--text2);line-height:1.85;margin-bottom:10px}
+
+.atable{width:100%;border-collapse:collapse;font-size:12px;margin:8px 0 12px}
+.atable th{background:var(--surface2);color:var(--text2);font-weight:700;padding:8px 12px;border:1px solid var(--border);text-align:center}
+.atable td{padding:8px 12px;border:1px solid var(--border);vertical-align:top;line-height:1.6}
+.atable td:first-child{font-weight:600;color:var(--blue);background:var(--bluebg);text-align:center;white-space:nowrap}
+.atable tr:nth-child(even) td:not(:first-child){background:#fafbfd}
+
+.aol{padding-left:0;list-style:none;display:flex;flex-direction:column;gap:9px;margin:6px 0}
+.aol li{display:flex;gap:10px;align-items:flex-start;font-size:13px;color:var(--text2);line-height:1.7}
+.onum{flex-shrink:0;width:22px;height:22px;border-radius:50%;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;margin-top:1px;color:#fff}
+.on1{background:var(--blue)}.on2{background:#059669}.on3{background:#7c3aed}.on4{background:#d97706}.on5{background:#dc2626}.on6{background:#0d9488}
+
+.sub{margin-top:6px;display:flex;flex-direction:column;gap:4px}
+.si{display:flex;gap:8px;font-size:12px;color:var(--text3)}
+.si::before{content:'▸';color:var(--bblue);flex-shrink:0}
+
+.dbox{background:#f8fafc;border:1px solid var(--border);border-left:3px solid var(--blue);border-radius:8px;padding:12px 16px;margin:10px 0;font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--text2);line-height:1.8;overflow-x:auto;white-space:pre}
+
+.kbox{border-radius:8px;padding:12px 16px;margin:10px 0;font-size:12px;line-height:1.75}
+.kb-blue{background:var(--bluebg);border:1px solid var(--blb);color:#1e40af}
+.kb-green{background:var(--gbg);border:1px solid var(--gb);color:var(--green)}
+.kb-ora{background:var(--obg);border:1px solid var(--ob);color:var(--ora)}
+.kb-red{background:var(--redbg);border:1px solid var(--rdb);color:var(--red)}
+.kb-pur{background:var(--pubg);border:1px solid var(--pub);color:var(--pur)}
+.kb-tea{background:var(--tbg);border:1px solid var(--tb);color:var(--tea)}
+.kb-sky{background:#f0f9ff;border:1px solid #bae6fd;color:#0369a1}
+.kbt{font-weight:700;margin-bottom:4px;font-size:11px;letter-spacing:0.4px}
+
+.concl{background:linear-gradient(135deg,var(--bluebg),#f0f9ff);border:1px solid var(--blb);border-radius:8px;padding:14px 16px;margin-top:14px}
+.concl-title{font-weight:700;color:var(--blue);font-size:12px;margin-bottom:6px}
+.concl p{font-size:12px;color:var(--text2);line-height:1.75}
+
+.chips{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px}
+.chip{font-size:11px;padding:3px 10px;border-radius:6px;font-weight:600}
+.ct{background:var(--obg);color:var(--ora);border:1px solid var(--ob)}
+.cp{background:var(--gbg);color:var(--green);border:1px solid var(--gb)}
+.cs{background:var(--redbg);color:var(--red);border:1px solid var(--rdb)}
+
+.short-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:10px 0}
+@media(max-width:640px){.short-grid{grid-template-columns:1fr}}
+.scard{background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:12px 14px}
+.scard-title{font-size:11px;font-weight:700;color:var(--blue);margin-bottom:6px}
+.scard p{font-size:12px;color:var(--text2);line-height:1.7}
+
+.q-counter{font-size:11px;color:var(--text4);margin-bottom:16px;font-weight:600;letter-spacing:0.5px}
+
+/* level SAE colors */
+.sae0{background:#f1f5f9;color:#475569;border:1px solid #cbd5e1}
+.sae1{background:#fef9c3;color:#854d0e;border:1px solid #fde047}
+.sae2{background:#fef3c7;color:#92400e;border:1px solid #fcd34d}
+.sae3{background:#ffedd5;color:#9a3412;border:1px solid #fb923c}
+.sae4{background:#dcfce7;color:#166534;border:1px solid #86efac}
+.sae5{background:#dbeafe;color:#1e40af;border:1px solid #93c5fd}
+.sae-pill{display:inline-block;padding:2px 8px;border-radius:8px;font-size:11px;font-weight:700;margin:1px}
+</style>
+</head>
+<body>
+
+<header class="hdr">
+  <div class="hi">
+    <div class="heyebrow">🚗 자율운전 · AUTONOMOUS DRIVING TECHNOLOGY</div>
+    <div class="htitle">컴퓨터시스템응용기술사<br>자율운전 분야 기출유형 문제 &amp; 모범답안</div>
+    <div class="hsub">단답형 5문제 (1~2페이지) + 논술형 5문제 (3~4페이지) · 전 문항 모범답안 수록</div>
+    <div class="hpills">
+      <span class="hpill">SAE 자동화 레벨</span>
+      <span class="hpill">센서 퓨전</span>
+      <span class="hpill">V2X 통신</span>
+      <span class="hpill">AI 인지·판단</span>
+      <span class="hpill">기능 안전 ISO 26262</span>
+    </div>
+  </div>
+</header>
+
+<nav class="type-nav">
+  <button class="type-btn active" onclick="showType(0,this)">
+    📝 단답형 문제
+    <span class="type-badge tb-short">1~2페이지 · 5문제</span>
+  </button>
+  <button class="type-btn" onclick="showType(1,this)">
+    📄 논술형 문제
+    <span class="type-badge tb-long">3~4페이지 · 5문제</span>
+  </button>
+</nav>
+
+<!-- ══════════════════════════════════════
+     단답형
+══════════════════════════════════════ -->
+<div class="type-panel active" id="tp0">
+<nav class="q-nav">
+  <button class="q-btn active" onclick="showQ(0,this,'tp0')">①SAE 자동화 레벨</button>
+  <button class="q-btn" onclick="showQ(1,this,'tp0')">②자율주행 센서</button>
+  <button class="q-btn" onclick="showQ(2,this,'tp0')">③HD맵과 SLAM</button>
+  <button class="q-btn" onclick="showQ(3,this,'tp0')">④V2X 통신</button>
+  <button class="q-btn" onclick="showQ(4,this,'tp0')">⑤기능안전 ISO 26262</button>
+</nav>
+<div class="main">
+
+<!-- S1: SAE 레벨 -->
+<div class="q-panel active" id="tp0q0">
+<div class="q-counter">📝 단답형 1번 / 5번</div>
+<div class="qcard">
+  <div class="qhdr">
+    <span class="qdomain badge-av">자율운전</span>
+    <div class="qmeta">
+      <div class="qtype">1교시 단답형 · 10~15점 · 1~2페이지</div>
+      <div class="qtitle">SAE(미국자동차공학회) J3016 기준 자동화 레벨 0~5단계의 정의, 운전 주체, 작동 설계 영역(ODD), 대표 기술을 설명하시오.</div>
+    </div>
+  </div>
+  <div class="qbody">
+    <div class="qhints">
+      <span class="qhint">SAE J3016 표준</span><span class="qhint">레벨 3·4 경계 핵심</span><span class="qhint">ODD 개념 필수</span>
+    </div>
+  </div>
+  <div class="acard">
+    <button class="atoggle" onclick="toggleA(this)"><span class="alabel">📄 모범 답안 보기</span><span class="aarrow">▼</span></button>
+    <div class="abody">
+      <div class="atitle">SAE J3016 자동화 레벨 0~5단계 — 정의·운전주체·ODD·대표 기술</div>
+      <div class="chips"><span class="chip ct">⏱ 15분</span><span class="chip cp">📄 1.5~2페이지</span><span class="chip cs">💯 10~15점</span></div>
+
+      <div class="asec">
+        <div class="asectitle s1">Ⅰ. 개요 — SAE J3016 표준의 의미</div>
+        <div class="ap">SAE J3016(2021 개정)은 자동화 수준을 0~5단계로 정의한 국제 표준으로, 자율주행 시스템(ADS: Automated Driving System)의 DDT(Dynamic Driving Task: 조향·가감속·주변 모니터링) 수행 주체가 인간인지 시스템인지를 기준으로 레벨을 구분한다.</div>
+      </div>
+
+      <div class="asec">
+        <div class="asectitle s2">Ⅱ. 자동화 레벨 0~5 상세</div>
+        <table class="atable">
+          <tr><th>레벨</th><th>명칭</th><th>DDT 주체</th><th>ODD</th><th>폴백 주체</th><th>대표 기술·사례</th></tr>
+          <tr><td><span class="sae-pill sae0">Lv.0</span></td><td>비자동화<br>(No Automation)</td><td>인간 전담</td><td>없음</td><td>인간</td><td>일반 차량. 경고음·긴급제동(AEBS)만 보조</td></tr>
+          <tr><td><span class="sae-pill sae1">Lv.1</span></td><td>운전자 보조<br>(Driver Assistance)</td><td>인간 주도+<br>시스템 일부</td><td>제한적</td><td>인간</td><td>ACC(적응형 크루즈), LKAS(차선유지)</td></tr>
+          <tr><td><span class="sae-pill sae2">Lv.2</span></td><td>부분 자동화<br>(Partial Automation)</td><td>인간 감시<br>+시스템 조향·가감속</td><td>제한적</td><td>인간</td><td>Tesla Autopilot, GM Super Cruise (시선 감지 필요)</td></tr>
+          <tr><td><span class="sae-pill sae3">Lv.3</span></td><td>조건부 자동화<br>(Conditional Automation)</td><td>시스템 주도<br>(ODD 내)</td><td>특정 조건</td><td>인간<br>(요청 시 인수)</td><td>Mercedes Drive Pilot (독일 고속도로 60km/h 이하), Honda SENSING Elite</td></tr>
+          <tr><td><span class="sae-pill sae4">Lv.4</span></td><td>고도 자동화<br>(High Automation)</td><td>시스템 전담<br>(ODD 내)</td><td>지리적 한정</td><td>시스템<br>(MRM 수행)</td><td>Waymo One(피닉스 지오펜스), 국내 판교 자율주행 셔틀</td></tr>
+          <tr><td><span class="sae-pill sae5">Lv.5</span></td><td>완전 자동화<br>(Full Automation)</td><td>시스템 전담</td><td>무제한</td><td>시스템</td><td>미실현 (기술·법·인프라 미완)</td></tr>
+        </table>
+        <div class="kbox kb-sky">
+          <div class="kbt">📌 레벨 3 vs 레벨 4 핵심 차이 — 폴백(Fallback) 주체</div>
+          <strong>레벨 3</strong>: ODD 이탈·시스템 한계 시 인간 운전자가 개입 요청에 응답해야 함 (DDT Fallback = 인간)<br>
+          <strong>레벨 4</strong>: 인간 개입 불필요. 시스템이 스스로 최소 위험 조건(MRC: Minimal Risk Condition)으로 차량 정지 수행<br>
+          → 이 차이가 법적 책임 소재의 분기점이 됨
+        </div>
+      </div>
+
+      <div class="asec">
+        <div class="asectitle s3">Ⅲ. ODD(Operational Design Domain) 개념</div>
+        <div class="ap">ODD는 자율주행 시스템이 정상 작동할 수 있도록 설계된 운영 조건의 집합이다. 지리적 영역(고속도로/도심), 날씨(맑음/우천), 조명(주간/야간), 속도 범위, 도로 유형 등을 포함하며, ODD 이탈 시 시스템은 폴백을 수행해야 한다.</div>
+        <div class="short-grid">
+          <div class="scard"><div class="scard-title">🗺️ 지리적 조건</div><p>지오펜싱(Geofencing): GPS 기반 특정 구역 내 운행 한정. 맵 커버리지 영역</p></div>
+          <div class="scard"><div class="scard-title">🌦️ 환경 조건</div><p>날씨(눈·비·안개), 조명(주간·야간), 노면 상태 등. 현재 대부분 Lv.4는 양호 날씨 한정</p></div>
+          <div class="scard"><div class="scard-title">🚦 도로 조건</div><p>도로 유형(고속도로·도심·비포장), 속도 제한, 차선 수, 신호 체계 유무</p></div>
+          <div class="scard"><div class="scard-title">⚡ 시스템 조건</div><p>센서 상태, 고정밀지도 커버리지, V2X 인프라 가용성, 차량 상태 조건</p></div>
+        </div>
+      </div>
+
+      <div class="concl">
+        <div class="concl-title">Ⅳ. 결론 — 국내 법제화 현황</div>
+        <p>국내 「자율주행자동차 상용화 촉진 및 지원에 관한 법률(자율주행법, 2020)」은 SAE 레벨 3 이상을 자율주행차로 정의하고 임시운행 허가 제도를 운영한다. 2027년 레벨 4 상용화를 목표로 세종·판교 등 자율주행 특구를 지정·운영 중이다.</p>
+      </div>
+    </div>
+  </div>
+</div>
+</div><!-- /tp0q0 -->
+
+<!-- S2: 자율주행 센서 -->
+<div class="q-panel" id="tp0q1">
+<div class="q-counter">📝 단답형 2번 / 5번</div>
+<div class="qcard">
+  <div class="qhdr">
+    <span class="qdomain badge-av">자율운전</span>
+    <div class="qmeta">
+      <div class="qtype">1교시 단답형 · 10~15점 · 1~2페이지</div>
+      <div class="qtitle">자율주행에 사용되는 주요 센서(LiDAR, 카메라, RADAR, 초음파)의 동작 원리, 장단점, 센서 퓨전(Sensor Fusion)의 필요성을 설명하시오.</div>
+    </div>
+  </div>
+  <div class="qbody">
+    <div class="qhints">
+      <span class="qhint">4종 센서 비교표 필수</span><span class="qhint">센서 퓨전 레벨</span><span class="qhint">Tesla vs Waymo 전략 비교</span>
+    </div>
+  </div>
+  <div class="acard">
+    <button class="atoggle" onclick="toggleA(this)"><span class="alabel">📄 모범 답안 보기</span><span class="aarrow">▼</span></button>
+    <div class="abody">
+      <div class="atitle">자율주행 4대 센서 원리·장단점 비교 및 센서 퓨전의 필요성</div>
+      <div class="chips"><span class="chip ct">⏱ 15분</span><span class="chip cp">📄 1.5~2페이지</span><span class="chip cs">💯 10~15점</span></div>
+
+      <div class="asec">
+        <div class="asectitle s1">Ⅰ. 개요 — 자율주행 인지 시스템</div>
+        <div class="ap">자율주행 인지(Perception) 시스템은 차량 주변 환경을 실시간으로 감지·분석하는 핵심 기능으로, 단일 센서의 한계를 극복하기 위해 다종 센서를 조합하는 센서 퓨전이 필수적이다.</div>
+      </div>
+
+      <div class="asec">
+        <div class="asectitle s2">Ⅱ. 4대 센서 비교</div>
+        <table class="atable">
+          <tr><th>센서</th><th>동작 원리</th><th>탐지 거리</th><th>장점</th><th>단점</th><th>주요 용도</th></tr>
+          <tr><td>LiDAR<br>(라이다)</td><td>905nm·1550nm 레이저 펄스 발사 후 반사 시간(ToF) 측정 → 3D 포인트 클라우드 생성</td><td>50~300m</td><td>고정밀 3D 거리 측정, 형상 인식 우수, 날씨 영향 적음(1550nm)</td><td>고가(수백만~수천만 원), 강우·눈에 취약(905nm), 색상 인식 불가</td><td>3D 지도 생성, 물체 형상 파악, 점유 격자 맵</td></tr>
+          <tr><td>카메라</td><td>CCD/CMOS 이미지 센서로 광학 이미지 획득. 딥러닝(CNN)으로 객체 인식·분류</td><td>0~200m (스테레오 50m)</td><td>저비용, 색상·텍스트·신호 인식, 차선 인식 우수</td><td>조명 의존성(야간·역광), 3D 거리 직접 측정 불가, 우천 성능 저하</td><td>신호등·차선·표지판 인식, 보행자 탐지</td></tr>
+          <tr><td>RADAR<br>(레이더)</td><td>마이크로파(76~77GHz) 발사 후 반사 신호로 거리·속도(도플러 효과) 측정</td><td>0.15~250m</td><td>악천후(눈·비·안개)에도 강인, 상대 속도 직접 측정, 저비용</td><td>낮은 각도 해상도, 형상 인식 불가, 금속 반사체 오탐</td><td>ACC, 충돌 경고, 고속도로 주행 지원</td></tr>
+          <tr><td>초음파</td><td>40kHz 초음파 발사 후 반사 시간으로 근거리 거리 측정</td><td>0.1~8m</td><td>저비용, 저속 근거리 신뢰성 높음</td><td>속도 측정 불가, 고속 불가, 소음 환경 취약</td><td>주차 지원, 저속 후방 경고</td></tr>
+        </table>
+      </div>
+
+      <div class="asec">
+        <div class="asectitle s3">Ⅲ. 센서 퓨전(Sensor Fusion)의 필요성 및 방법</div>
+        <div class="kbox kb-blue">
+          <div class="kbt">센서 퓨전 필요성 — 단일 센서의 결정적 한계</div>
+          LiDAR만: 비용 과대, 색상·신호 인식 불가<br>
+          카메라만: 야간·역광·악천후에 치명적 성능 저하, 거리 정확도 부족<br>
+          RADAR만: 형상 분류 불가, 낮은 해상도<br>
+          → <strong>상호 보완적 융합으로 안전성·신뢰성 확보</strong>
+        </div>
+        <table class="atable">
+          <tr><th>퓨전 레벨</th><th>방법</th><th>특징</th></tr>
+          <tr><td>로우 레벨 퓨전<br>(Raw Data)</td><td>센서별 원시 데이터를 직접 결합 후 처리</td><td>정보 손실 최소화. 처리량·연산 부하 큼</td></tr>
+          <tr><td>피처 레벨 퓨전</td><td>각 센서에서 추출한 특징(객체 바운딩박스 등) 결합</td><td>균형적 접근. 자율주행 주류 방식</td></tr>
+          <tr><td>디시전 레벨 퓨전<br>(High Level)</td><td>각 센서가 독립 판단 후 결과를 투표·가중치로 결합</td><td>구현 단순. 정보 손실 큼. 저비용 시스템에 적합</td></tr>
+        </table>
+        <div class="kbox kb-green">
+          <div class="kbt">Tesla vs Waymo 센서 전략 비교</div>
+          <strong>Tesla (Vision-Only)</strong>: 카메라 9개+RADAR(FSD v11부터 카메라 단독). AI 비전 중심. 저비용·대량 데이터 학습 강점. 악천후·엣지 케이스 취약<br>
+          <strong>Waymo (Full Sensor Stack)</strong>: LiDAR+카메라+RADAR 완전 융합. 높은 신뢰성. 고비용·제한적 ODD. 레벨 4 달성
+        </div>
+      </div>
+
+      <div class="concl">
+        <div class="concl-title">Ⅳ. 결론</div>
+        <p>자율주행 안전성의 핵심은 다양한 환경 조건에서의 강인한 인지 능력이다. 단일 센서 의존 전략은 특정 조건에서 치명적 실패를 일으킬 수 있으므로, SAE 레벨 4 이상에서는 중복 센서 설계와 다중 퓨전 전략을 통한 하드웨어 이중화가 기능안전(ISO 26262) 달성의 전제 조건이다.</p>
+      </div>
+    </div>
+  </div>
+</div>
+</div><!-- /tp0q1 -->
+
+<!-- S3: HD맵과 SLAM -->
+<div class="q-panel" id="tp0q2">
+<div class="q-counter">📝 단답형 3번 / 5번</div>
+<div class="qcard">
+  <div class="qhdr">
+    <span class="qdomain badge-av">자율운전</span>
+    <div class="qmeta">
+      <div class="qtype">1교시 단답형 · 10~15점 · 1~2페이지</div>
+      <div class="qtitle">자율주행의 위치 인식 기술인 HD맵(고정밀지도)과 SLAM(동시 위치 추정 및 지도 생성)의 개념, 원리, 차이점, 상호 보완 방법을 설명하시오.</div>
+    </div>
+  </div>
+  <div class="qbody">
+    <div class="qhints">
+      <span class="qhint">HD맵 레이어 구조</span><span class="qhint">SLAM 종류 비교</span><span class="qhint">위치 추정 정확도 cm 수준</span>
+    </div>
+  </div>
+  <div class="acard">
+    <button class="atoggle" onclick="toggleA(this)"><span class="alabel">📄 모범 답안 보기</span><span class="aarrow">▼</span></button>
+    <div class="abody">
+      <div class="atitle">HD맵의 구조·원리와 SLAM 기술 비교 및 상호 보완 방안</div>
+      <div class="chips"><span class="chip ct">⏱ 15분</span><span class="chip cp">📄 1.5~2페이지</span><span class="chip cs">💯 10~15점</span></div>
+
+      <div class="asec">
+        <div class="asectitle s1">Ⅰ. 개요 — 자율주행의 위치 인식 중요성</div>
+        <div class="ap">자율주행 차량은 GPS의 수 미터 오차로는 부족하고 차선 수준(10~20cm 이내) 정밀 위치 추정이 필요하다. HD맵 기반 사전 정보 활용과 SLAM 기반 실시간 환경 인식을 결합하는 것이 현재 최선의 접근이다.</div>
+      </div>
+
+      <div class="asec">
+        <div class="asectitle s2">Ⅱ. HD맵 (고정밀지도, High Definition Map)</div>
+        <div class="ap">HD맵은 자율주행 전용으로 제작된 cm 단위 정밀도의 3D 디지털 지도로, 사전에 수집된 정적 환경 정보를 담고 있다.</div>
+        <table class="atable">
+          <tr><th>레이어</th><th>포함 정보</th><th>정밀도</th></tr>
+          <tr><td>도로 레이어</td><td>차선 경계·중심선, 도로 곡률·경사·폭, 분기점</td><td>±5~20cm</td></tr>
+          <tr><td>의미 레이어</td><td>신호등·표지판·정지선 위치, 제한 속도, 차선 속성(버스전용·추월금지)</td><td>±20cm</td></tr>
+          <tr><td>랜드마크 레이어</td><td>건물 외벽·전신주·가드레일 등 고정 구조물 (위치 추정 기준점)</td><td>±10cm</td></tr>
+          <tr><td>동적 레이어</td><td>실시간 공사·사고·교통 정보 (V2X·클라우드로 갱신)</td><td>실시간</td></tr>
+        </table>
+        <div class="kbox kb-sky">
+          <div class="kbt">HD맵 기반 위치 추정 원리</div>
+          사전 수집 LiDAR 포인트 클라우드(HD맵) vs 실시간 LiDAR 스캔 데이터를 <strong>NDT(Normal Distribution Transform) 또는 ICP(Iterative Closest Point) 매칭</strong>하여 cm 수준 자차 위치 결정
+        </div>
+      </div>
+
+      <div class="asec">
+        <div class="asectitle s3">Ⅲ. SLAM (Simultaneous Localization and Mapping)</div>
+        <div class="ap">SLAM은 사전 지도 없이 센서 데이터만으로 <strong>동시에</strong> 자신의 위치를 추정하고 환경 지도를 생성하는 알고리즘이다.</div>
+        <table class="atable">
+          <tr><th>SLAM 종류</th><th>사용 센서</th><th>원리</th><th>특징</th></tr>
+          <tr><td>LiDAR SLAM<br>(예: Cartographer, LOAM)</td><td>LiDAR</td><td>포인트 클라우드 매칭으로 위치·지도 동시 추정</td><td>고정밀, 야외 강인. 연산 부하 높음</td></tr>
+          <tr><td>Visual SLAM<br>(예: ORB-SLAM3)</td><td>카메라</td><td>특징점(ORB·SIFT) 추적으로 카메라 자세 추정</td><td>저비용, 텍스처 부족 환경 취약</td></tr>
+          <tr><td>IMU+SLAM<br>(Tightly Coupled)</td><td>LiDAR/Camera + IMU</td><td>IMU로 고주파 움직임 보정, SLAM으로 드리프트 누적 오차 제거</td><td>가장 강인. 고속 주행 적합</td></tr>
+        </table>
+      </div>
+
+      <div class="asec">
+        <div class="asectitle s4">Ⅳ. HD맵 vs SLAM 비교 및 상호 보완</div>
+        <table class="atable">
+          <tr><th>구분</th><th>HD맵</th><th>SLAM</th></tr>
+          <tr><td>사전 정보</td><td>필요 (사전 매핑)</td><td>불필요</td></tr>
+          <tr><td>미지 환경 대응</td><td>불가 (맵 미구축 지역)</td><td>가능</td></tr>
+          <tr><td>동적 객체 대응</td><td>취약 (정적 정보 중심)</td><td>실시간 탐지</td></tr>
+          <tr><td>유지보수</td><td>지속 갱신 필요 (도로 변경 시)</td><td>자동 갱신</td></tr>
+          <tr><td>정밀도</td><td>높음 (cm 수준)</td><td>환경·알고리즘에 따라 가변</td></tr>
+          <tr><td>상호 보완</td><td colspan="2">HD맵으로 초기 위치 제공 → SLAM으로 실시간 보정 및 동적 변화 탐지 → 클라우드 HD맵 갱신 피드백 루프</td></tr>
+        </table>
+      </div>
+
+      <div class="concl">
+        <div class="concl-title">Ⅴ. 결론</div>
+        <p>HD맵은 풍부한 사전 정보로 고정밀 위치 추정을 지원하지만 유지보수 비용과 미커버 지역 한계가 있다. SLAM은 HD맵 미구축 지역과 동적 환경에서 보완 역할을 한다. 최근에는 차량이 주행하며 HD맵을 자동 갱신하는 크라우드소싱 방식(Mobileye, HERE, TomTom)이 주목받고 있다.</p>
+      </div>
+    </div>
+  </div>
+</div>
+</div><!-- /tp0q2 -->
+
+<!-- S4: V2X -->
+<div class="q-panel" id="tp0q3">
+<div class="q-counter">📝 단답형 4번 / 5번</div>
+<div class="qcard">
+  <div class="qhdr">
+    <span class="qdomain badge-av">자율운전</span>
+    <div class="qmeta">
+      <div class="qtype">1교시 단답형 · 10~15점 · 1~2페이지</div>
+      <div class="qtitle">자율주행을 위한 V2X(Vehicle-to-Everything) 통신 기술의 종류(V2V, V2I, V2P, V2N), 통신 방식(DSRC vs C-V2X), 보안 위협 및 대응 방안을 설명하시오.</div>
+    </div>
+  </div>
+  <div class="qbody">
+    <div class="qhints">
+      <span class="qhint">DSRC vs C-V2X 비교</span><span class="qhint">5G NR-V2X</span><span class="qhint">PKI 기반 보안</span>
+    </div>
+  </div>
+  <div class="acard">
+    <button class="atoggle" onclick="toggleA(this)"><span class="alabel">📄 모범 답안 보기</span><span class="aarrow">▼</span></button>
+    <div class="abody">
+      <div class="atitle">V2X 통신 종류·DSRC vs C-V2X 비교·보안 위협 및 대응 방안</div>
+      <div class="chips"><span class="chip ct">⏱ 15분</span><span class="chip cp">📄 1.5~2페이지</span><span class="chip cs">💯 10~15점</span></div>
+
+      <div class="asec">
+        <div class="asectitle s1">Ⅰ. V2X 통신의 개념 및 필요성</div>
+        <div class="ap">V2X(Vehicle-to-Everything)는 차량이 다른 차량·도로 인프라·보행자·네트워크와 통신하여 센서 단독으로는 인지 불가능한 정보(비가시(NLOS) 구간 차량, 신호등 정보, 응급차량 접근)를 공유함으로써 자율주행 안전성을 높이는 통신 인프라이다.</div>
+      </div>
+
+      <div class="asec">
+        <div class="asectitle s2">Ⅱ. V2X 통신 종류</div>
+        <table class="atable">
+          <tr><th>종류</th><th>통신 대상</th><th>주요 메시지</th><th>활용 사례</th></tr>
+          <tr><td>V2V<br>(Vehicle-to-Vehicle)</td><td>주변 차량</td><td>BSM(기본안전메시지): 위치·속도·방향·제동</td><td>추돌 경고(FCW), 교차로 충돌 경고(CIPV), 협력 군집 주행(Platooning)</td></tr>
+          <tr><td>V2I<br>(Vehicle-to-Infrastructure)</td><td>신호등·RSU·톨게이트</td><td>SPAT(신호위상·타이밍), MAP(교차로 형상)</td><td>녹색 파도(Green Wave) 속도 제어, 공사 구간 사전 경고</td></tr>
+          <tr><td>V2P<br>(Vehicle-to-Pedestrian)</td><td>보행자·자전거</td><td>PSM(보행자 안전 메시지)</td><td>스쿨존 보행자 경고, 시각장애인 보행 지원</td></tr>
+          <tr><td>V2N<br>(Vehicle-to-Network)</td><td>클라우드·MEC</td><td>HD맵 갱신, 교통 정보, OTA 업데이트</td><td>실시간 HD맵 갱신, 원격 운행 모니터링, 소프트웨어 OTA</td></tr>
+        </table>
+      </div>
+
+      <div class="asec">
+        <div class="asectitle s3">Ⅲ. DSRC vs C-V2X 통신 방식 비교</div>
+        <table class="atable">
+          <tr><th>비교 항목</th><th>DSRC (IEEE 802.11p / WAVE)</th><th>C-V2X (LTE-V2X · 5G NR-V2X)</th></tr>
+          <tr><td>표준</td><td>IEEE 802.11p, ETSI ITS-G5</td><td>3GPP Release 14(LTE-V2X), R16(5G NR-V2X)</td></tr>
+          <tr><td>주파수</td><td>5.9GHz 대역 10MHz</td><td>5.9GHz (PC5 사이드링크) + 셀룰러</td></tr>
+          <tr><td>지연 시간</td><td>2~50ms</td><td>1~10ms (5G NR-V2X)</td></tr>
+          <tr><td>통신 범위</td><td>300~1000m (직접)</td><td>300~1000m(PC5 직접) + 수km(네트워크)</td></tr>
+          <tr><td>인프라 의존</td><td>낮음 (V2V 직접 통신)</td><td>높음 (LTE/5G 기지국)</td></tr>
+          <tr><td>보급 현황</td><td>미국 일부, EU 표준 채택 국가</td><td>한국·중국·미국 신규 채택 추세</td></tr>
+          <tr><td>V2X 고급 기능</td><td>제한적</td><td>협력 인지(Collective Perception), 원격 주행 지원</td></tr>
+        </table>
+      </div>
+
+      <div class="asec">
+        <div class="asectitle s4">Ⅳ. V2X 보안 위협 및 대응 방안</div>
+        <table class="atable">
+          <tr><th>보안 위협</th><th>공격 내용</th><th>대응 방안</th></tr>
+          <tr><td>스푸핑(Spoofing)</td><td>위조 차량 위치·신호 정보 전송으로 주변 차량 오동작 유도</td><td>PKI 기반 디지털 서명 메시지 검증 (V2X PKI, IEEE 1609.2)</td></tr>
+          <tr><td>DoS 공격</td><td>대량의 위조 메시지로 V2X 채널 포화</td><td>메시지 빈도 제한, 이상 탐지(Misbehavior Detection)</td></tr>
+          <tr><td>재전송 공격</td><td>이전 메시지 재전송으로 위험 상황 조작</td><td>타임스탬프·시퀀스 번호 포함, 짧은 유효기간 인증서</td></tr>
+          <tr><td>프라이버시 침해</td><td>차량 ID 추적으로 이동 경로 파악</td><td>가명 인증서(Pseudonym Certificate) 주기적 교체 (5분 이내)</td></tr>
+          <tr><td>중간자 공격</td><td>V2I 메시지 도청·변조</td><td>RSU(Road Side Unit)의 하드웨어 보안 모듈(HSM), TLS 1.3</td></tr>
+        </table>
+      </div>
+
+      <div class="concl">
+        <div class="concl-title">Ⅴ. 결론</div>
+        <p>V2X는 자율주행 차량의 센서 한계를 극복하는 협력 인지(Cooperative Perception)의 핵심 인프라이다. 국내는 「자율주행차법」 및 「C-ITS 확산 로드맵(국토부, 2030)」에 따라 C-V2X(5G) 기반 인프라를 전국 확대하고 있으며, V2X PKI 체계 구축과 가명 인증서 운용 기준 법제화가 진행 중이다.</p>
+      </div>
+    </div>
+  </div>
+</div>
+</div><!-- /tp0q3 -->
+
+<!-- S5: ISO 26262 -->
+<div class="q-panel" id="tp0q4">
+<div class="q-counter">📝 단답형 5번 / 5번</div>
+<div class="qcard">
+  <div class="qhdr">
+    <span class="qdomain badge-av">자율운전</span>
+    <div class="qmeta">
+      <div class="qtype">1교시 단답형 · 10~15점 · 1~2페이지</div>
+      <div class="qtitle">자동차 기능안전 국제표준 ISO 26262의 개요, ASIL(Automotive Safety Integrity Level) 등급 분류 기준, 안전 수명주기 및 자율주행 확장 표준 ISO/SAE 21434와의 관계를 설명하시오.</div>
+    </div>
+  </div>
+  <div class="qbody">
+    <div class="qhints">
+      <span class="qhint">ASIL A~D + QM</span><span class="qhint">위험 분석 HARA</span><span class="qhint">ISO 21434 사이버보안</span>
+    </div>
+  </div>
+  <div class="acard">
+    <button class="atoggle" onclick="toggleA(this)"><span class="alabel">📄 모범 답안 보기</span><span class="aarrow">▼</span></button>
+    <div class="abody">
+      <div class="atitle">ISO 26262 기능안전 — ASIL 등급·안전 수명주기·ISO/SAE 21434 연계</div>
+      <div class="chips"><span class="chip ct">⏱ 15분</span><span class="chip cp">📄 1.5~2페이지</span><span class="chip cs">💯 10~15점</span></div>
+
+      <div class="asec">
+        <div class="asectitle s1">Ⅰ. ISO 26262 개요</div>
+        <div class="ap">ISO 26262는 3,500kg 이하 승용차의 전기·전자(E/E) 시스템을 대상으로 하는 자동차 기능안전 국제표준(2011 초판, 2018 2판)이다. 시스템 오동작으로 인한 사고 위험을 허용 수준으로 낮추기 위해 개발 전 생명주기에 걸친 안전 요구사항과 검증 활동을 정의한다. 자율주행 시스템(ADS)은 ISO 26262 기반 위에 ISO 21448(SOTIF)와 ISO/SAE 21434(사이버보안)를 함께 적용한다.</div>
+      </div>
+
+      <div class="asec">
+        <div class="asectitle s2">Ⅱ. ASIL(Automotive Safety Integrity Level) 등급</div>
+        <div class="ap">HARA(Hazard Analysis and Risk Assessment)를 통해 위험의 <strong>심각도(S)</strong> × <strong>노출도(E)</strong> × <strong>제어가능성(C)</strong>을 평가하여 ASIL 등급을 결정한다.</div>
+        <table class="atable">
+          <tr><th>ASIL</th><th>위험 수준</th><th>PMH(고장 확률)</th><th>해당 기능 예시</th></tr>
+          <tr><td>QM</td><td>품질 관리 수준 (비안전)</td><td>제한 없음</td><td>라디오, 에어컨 제어</td></tr>
+          <tr><td>ASIL A</td><td>가장 낮은 안전 무결성</td><td>≤100 PMH</td><td>와이퍼, 실내 조명</td></tr>
+          <tr><td>ASIL B</td><td>중간 낮은 안전 무결성</td><td>≤10 PMH</td><td>파워윈도우, 경보 시스템</td></tr>
+          <tr><td>ASIL C</td><td>중간 높은 안전 무결성</td><td>≤1 PMH</td><td>ABS 제어, ADAS 기능</td></tr>
+          <tr><td>ASIL D</td><td>가장 높은 안전 무결성</td><td>≤0.1 PMH</td><td>스티어링 제어, 자율주행 핵심 판단, 에어백 ECU</td></tr>
+        </table>
+        <div class="kbox kb-ora">
+          <div class="kbt">ASIL 결정 요소 (S × E × C 조합)</div>
+          <strong>심각도(S0~S3)</strong>: S0=부상 없음 ~ S3=생명 위협<br>
+          <strong>노출도(E0~E4)</strong>: E0=불가능 ~ E4=높은 확률로 발생<br>
+          <strong>제어가능성(C0~C3)</strong>: C0=항상 제어 가능 ~ C3=거의 제어 불가<br>
+          → 자율주행 조향·제동: S3·E4·C3 = <strong>ASIL D</strong> (최고 등급)
+        </div>
+      </div>
+
+      <div class="asec">
+        <div class="asectitle s3">Ⅲ. ISO 26262 안전 수명주기 및 확장 표준</div>
+        <div class="dbox">ISO 26262 V-사이클 안전 수명주기
+
+[관리 수준]
+ 안전 계획 수립 → 기능안전 평가 → 안전 케이스 작성
+
+[시스템 수준]                          [시스템 수준]
+ HARA(위험분석/리스크평가)    ←검증→    시스템 통합 테스트
+  → 안전 목표(Safety Goal)            시스템 안전 검증
+  → ASIL 등급 결정
+
+[HW/SW 수준]                           [HW/SW 수준]
+ HW/SW 안전 요구사항 도출   ←검증→    HW/SW 단위·통합 테스트
+
+[구현]
+ HW 설계 / SW 코딩 (MISRA-C, 정적분석)</div>
+        <table class="atable">
+          <tr><th>확장 표준</th><th>대상</th><th>핵심 개념</th></tr>
+          <tr><td>ISO 26262</td><td>E/E 시스템 기능안전</td><td>무작위 HW 고장 및 시스템 설계 오류 대응. ASIL 등급 기반 안전 요구사항</td></tr>
+          <tr><td>ISO 21448<br>(SOTIF)</td><td>성능 한계로 인한 위험<br>(Intended Functionality)</td><td>정상 동작하는 시스템이라도 기능 한계(센서 인지 실패, 엣지 케이스)로 발생하는 위험 대응. 자율주행 AI 인지 실패 대응</td></tr>
+          <tr><td>ISO/SAE 21434</td><td>차량 사이버보안</td><td>TARA(위협 분석 및 리스크 평가), CAL(사이버보안 보증 레벨), 공급망 사이버보안 관리</td></tr>
+        </table>
+      </div>
+
+      <div class="concl">
+        <div class="concl-title">Ⅳ. 결론</div>
+        <p>자율주행 시스템은 ISO 26262(기능안전) + ISO 21448(SOTIF) + ISO/SAE 21434(사이버보안)의 3중 안전 프레임워크를 동시에 충족해야 한다. 특히 AI 기반 인지·판단 시스템은 ISO 26262만으로는 커버되지 않는 SOTIF 영역(미학습 시나리오)을 별도로 검증해야 하며, 이를 위한 시나리오 기반 테스트와 V&amp;V(검증 및 확인) 방법론이 활발히 연구되고 있다.</p>
+      </div>
+    </div>
+  </div>
+</div>
+</div><!-- /tp0q4 -->
+
+</div><!-- /main -->
+</div><!-- /tp0 -->
+
+<!-- ══════════════════════════════════════
+     논술형
+══════════════════════════════════════ -->
+<div class="type-panel" id="tp1">
+<nav class="q-nav">
+  <button class="q-btn active" onclick="showQ(0,this,'tp1')">①자율주행 시스템 아키텍처</button>
+  <button class="q-btn" onclick="showQ(1,this,'tp1')">②AI 인지·판단 기술</button>
+  <button class="q-btn" onclick="showQ(2,this,'tp1')">③협력자율주행(CAV)</button>
+  <button class="q-btn" onclick="showQ(3,this,'tp1')">④자율주행 윤리·법제도</button>
+  <button class="q-btn" onclick="showQ(4,this,'tp1')">⑤자율주행 사이버보안</button>
+</nav>
+<div class="main">
+
+<!-- L1: 자율주행 시스템 아키텍처 -->
+<div class="q-panel active" id="tp1q0">
+<div class="q-counter">📄 논술형 1번 / 5번</div>
+<div class="qcard">
+  <div class="qhdr">
+    <span class="qdomain badge-av">자율운전</span>
+    <div class="qmeta">
+      <div class="qtype">2~4교시 논술형 · 25점 · 3~4페이지</div>
+      <div class="qtitle">자율주행 시스템의 전체 아키텍처에 대하여 다음을 설명하시오.</div>
+    </div>
+  </div>
+  <div class="qbody">
+    <div class="qitems">
+      <div class="qitem"><span class="qlabel">가.</span><span>자율주행 시스템의 인지(Perception)·판단(Planning)·제어(Control) 3단계 파이프라인 구조와 각 단계의 기능</span></div>
+      <div class="qitem"><span class="qlabel">나.</span><span>HD맵, 센서 퓨전, 경로 계획(Global·Local·Behavior Planning) 알고리즘의 동작 원리</span></div>
+      <div class="qitem"><span class="qlabel">다.</span><span>자율주행 컴퓨팅 플랫폼(차량용 SoC)의 요구사항 및 차세대 중앙집중식 E/E 아키텍처로의 전환 방향</span></div>
+    </div>
+    <div class="qhints">
+      <span class="qhint">파이프라인 다이어그램 필수</span><span class="qhint">경로 계획 3단계</span><span class="qhint">Zonal 아키텍처 최신 트렌드</span>
+    </div>
+  </div>
+  <div class="acard">
+    <button class="atoggle" onclick="toggleA(this)"><span class="alabel">📄 모범 답안 보기</span><span class="aarrow">▼</span></button>
+    <div class="abody">
+      <div class="atitle">자율주행 인지·판단·제어 파이프라인, 경로 계획 알고리즘, 차량 E/E 아키텍처 전환</div>
+      <div class="chips"><span class="chip ct">⏱ 30분</span><span class="chip cp">📄 3.5~4페이지</span><span class="chip cs">💯 25점</span></div>
+
+      <div class="asec">
+        <div class="asectitle s1">Ⅰ. 개요</div>
+        <div class="ap">자율주행 시스템은 인간 운전자의 기능을 대체하는 복합 임베디드 시스템으로, 실시간 환경 인지 → 행동 판단 → 차량 제어의 3단계 파이프라인이 10~100ms 주기로 반복 실행된다. 이 파이프라인의 설계 품질이 자율주행 안전성을 결정짓는다.</div>
+      </div>
+
+      <div class="asec">
+        <div class="asectitle s2">Ⅱ. 가. 인지·판단·제어 3단계 파이프라인</div>
+        <div class="dbox">자율주행 시스템 전체 파이프라인
+
+┌──────────────────────────────────────────────────────────┐
+│  [센서 입력]                                                 │
+│  LiDAR·Camera·RADAR·IMU·GPS → 로우 데이터 수집(10~100Hz)   │
+└────────────────────────┬─────────────────────────────────┘
+                         ↓
+┌──────────────────────────────────────────────────────────┐
+│  [인지 (Perception)]                                         │
+│  ① 센서 전처리: 노이즈 제거, 캘리브레이션, 시간 동기화         │
+│  ② 센서 퓨전: LiDAR+Camera 융합 → 3D 객체 탐지              │
+│  ③ 객체 인식: 차량·보행자·표지판·차선 분류 (딥러닝 CNN)       │
+│  ④ 객체 추적: 칼만필터·SORT로 객체 이동 예측 (다중 객체 추적) │
+│  ⑤ 자차 위치 추정: HD맵 매칭 + GPS/IMU 융합 (EKF/UKF)       │
+│  ⑥ 점유 격자 맵(Occupancy Grid) 생성: 장애물 공간 표현       │
+└────────────────────────┬─────────────────────────────────┘
+                         ↓
+┌──────────────────────────────────────────────────────────┐
+│  [판단 (Planning)]                                           │
+│  ① Global Planning: 출발지~목적지 최적 경로 (Dijkstra/A*)   │
+│  ② Behavior Planning: 차선 변경·추월·정지 등 행동 결정       │
+│     (유한 상태 기계 FSM 또는 행동 트리 BT)                   │
+│  ③ Local Planning: 장애물 회피·주행 궤적 생성                │
+│     (Polynomial Curve / Frenet Frame / Model Predictive)   │
+└────────────────────────┬─────────────────────────────────┘
+                         ↓
+┌──────────────────────────────────────────────────────────┐
+│  [제어 (Control)]                                            │
+│  ① 종방향 제어: PID / MPC로 가속·제동 제어                   │
+│  ② 횡방향 제어: Pure Pursuit / Stanley 알고리즘으로 조향 제어 │
+│  ③ 하위 안전 모니터: ASIL-D 기능안전 게이트웨이               │
+│  → CAN/CAN-FD → 조향 ECU · 제동 ECU · 파워트레인 ECU        │
+└──────────────────────────────────────────────────────────┘</div>
+      </div>
+
+      <div class="asec">
+        <div class="asectitle s3">Ⅲ. 나. 경로 계획 알고리즘 상세</div>
+        <table class="atable">
+          <tr><th>단계</th><th>알고리즘</th><th>입력</th><th>출력</th><th>특징</th></tr>
+          <tr><td>Global Planning<br>(전역 계획)</td><td>Dijkstra, A*, D* Lite</td><td>HD맵 도로 네트워크 그래프, 출발·목적지</td><td>도로 수준 경로 시퀀스</td><td>실시간 변경 드묾. 재계획 트리거: 도로 폐쇄·우회</td></tr>
+          <tr><td>Behavior Planning<br>(행동 계획)</td><td>FSM, MCTS, 강화학습(RL)</td><td>Global Path, 인지 결과, 교통 규칙</td><td>행동 명령 (Keep Lane / Change Lane / Stop)</td><td>교통 상황 해석. 레벨 4에서 가장 복잡한 계층</td></tr>
+          <tr><td>Local Planning<br>(지역 계획)</td><td>Frenet Frame, Polynomial Trajectory, Model Predictive Control</td><td>행동 명령, 점유 격자 맵, 차량 운동학 모델</td><td>시간-공간 궤적 (x,y,v,a,t)</td><td>100ms 이내 재계획. 부드럽고 안전한 궤적 보장</td></tr>
+        </table>
+        <div class="kbox kb-blue">
+          <div class="kbt">Frenet Frame 궤적 계획 원리</div>
+          도로 중심선 기준의 종방향(s)·횡방향(d) 좌표계로 변환 → 다항식 후보 궤적 다수 생성 → 비용 함수(안전성·편안함·효율성) 최소화 궤적 선택 → 원래 좌표계 변환 출력
+        </div>
+      </div>
+
+      <div class="asec">
+        <div class="asectitle s4">Ⅳ. 다. 차량 E/E 아키텍처 전환</div>
+        <div class="ap">기존 분산형(Distributed) ECU 아키텍처는 수십~수백 개의 개별 ECU가 CAN 버스로 연결된 구조로, 자율주행 연산 요구량(수십 TOPS)을 감당하지 못하고 소프트웨어 업데이트(OTA)가 어렵다.</div>
+        <table class="atable">
+          <tr><th>아키텍처</th><th>구조</th><th>특징</th><th>대표 사례</th></tr>
+          <tr><td>분산형<br>(Legacy Distributed)</td><td>기능별 ECU 70~150개 + CAN 버스</td><td>하드웨어 중심 개발, 업그레이드 어려움, 낮은 연산 성능</td><td>기존 내연기관 차량</td></tr>
+          <tr><td>도메인 중앙집중<br>(Domain Centralized)</td><td>파워트레인·샤시·ADAS 등 도메인별 DCU(도메인 컨트롤 유닛)</td><td>도메인 내 통합, Ethernet 백본 도입</td><td>Tesla Model 3, BMW iX</td></tr>
+          <tr><td>존 기반<br>(Zonal Architecture)</td><td>차량 물리 위치별 존 컨트롤러 + 중앙 Vehicle Computer</td><td>배선 최소화, OTA 용이, SDV(Software Defined Vehicle) 기반</td><td>Tesla FSD Computer, Volkswagen E3</td></tr>
+          <tr><td>클라우드 연결<br>(Cloud-Native)</td><td>차량 엣지 + 클라우드 AI + MEC 협력</td><td>V2X 통합, 실시간 HD맵 갱신, 원격 감독</td><td>Waymo Driver, 카카오모빌리티</td></tr>
+        </table>
+        <div class="kbox kb-pur">
+          <div class="kbt">자율주행 SoC 요구사항</div>
+          ① <strong>연산 성능</strong>: 200~2,000 TOPS (AI 추론 + 센서 처리)<br>
+          ② <strong>기능안전</strong>: ASIL-D 인증, 락스텝 코어, ECC 메모리<br>
+          ③ <strong>실시간성</strong>: 하드 실시간 OS (AUTOSAR Adaptive, QNX)<br>
+          ④ <strong>보안</strong>: HSM(하드웨어 보안 모듈), 안전 부트, 메모리 격리<br>
+          ⑤ <strong>전력 효율</strong>: 15~50W (열설계 제약)<br>
+          대표 칩: NVIDIA DRIVE Orin(254TOPS), Qualcomm Snapdragon Ride, Mobileye EyeQ6
+        </div>
+      </div>
+
+      <div class="concl">
+        <div class="concl-title">Ⅴ. 결론</div>
+        <p>자율주행 시스템 아키텍처는 센서 퓨전·인지·판단·제어의 유기적 통합과 함께 기능안전·사이버보안·실시간성을 동시에 만족해야 하는 복합 시스템 설계 과제이다. 차량 E/E 아키텍처의 Zonal·SDV(소프트웨어 정의 차량) 전환이 가속화되면서, 자동차 산업은 하드웨어 중심에서 소프트웨어 중심 개발 방식(AUTOSAR Adaptive, CI/CD OTA)으로 패러다임이 이동하고 있다.</p>
+      </div>
+    </div>
+  </div>
+</div>
+</div><!-- /tp1q0 -->
+
+<!-- L2: AI 인지·판단 기술 -->
+<div class="q-panel" id="tp1q1">
+<div class="q-counter">📄 논술형 2번 / 5번</div>
+<div class="qcard">
+  <div class="qhdr">
+    <span class="qdomain badge-av">자율운전</span>
+    <div class="qmeta">
+      <div class="qtype">2~4교시 논술형 · 25점 · 3~4페이지</div>
+      <div class="qtitle">자율주행의 AI 기반 인지 및 판단 기술에 대하여 다음을 설명하시오.</div>
+    </div>
+  </div>
+  <div class="qbody">
+    <div class="qitems">
+      <div class="qitem"><span class="qlabel">가.</span><span>딥러닝 기반 객체 탐지 알고리즘(YOLO, PointPillars, BEV Transformer)의 원리와 특징</span></div>
+      <div class="qitem"><span class="qlabel">나.</span><span>자율주행 AI의 한계(긴 꼬리 분포 Long-Tail, 적대적 공격, 분포 이탈 OOD)와 안전성 확보 방안</span></div>
+      <div class="qitem"><span class="qlabel">다.</span><span>자율주행 AI 검증 방법 — 시뮬레이션 기반 테스트(SiL/HiL/ViL)와 실도로 테스트의 비교 및 한계</span></div>
+    </div>
+    <div class="qhints">
+      <span class="qhint">BEV 변환 최신 트렌드</span><span class="qhint">Long-Tail 문제 핵심</span><span class="qhint">SiL·HiL·ViL 3단계</span>
+    </div>
+  </div>
+  <div class="acard">
+    <button class="atoggle" onclick="toggleA(this)"><span class="alabel">📄 모범 답안 보기</span><span class="aarrow">▼</span></button>
+    <div class="abody">
+      <div class="atitle">자율주행 딥러닝 인지 알고리즘·AI 한계·SiL/HiL/ViL 검증 방법 비교</div>
+      <div class="chips"><span class="chip ct">⏱ 30분</span><span class="chip cp">📄 3.5~4페이지</span><span class="chip cs">💯 25점</span></div>
+
+      <div class="asec">
+        <div class="asectitle s1">Ⅰ. 개요</div>
+        <div class="ap">자율주행 인지는 실시간으로 주변 환경의 차량·보행자·장애물을 정확히 분류하고 위치를 추정하는 핵심 기능이다. 딥러닝 기반 알고리즘이 주류가 되었으나, 예외 상황(엣지 케이스)에서의 AI 실패와 이를 안전하게 검증하는 방법이 자율주행 상용화의 핵심 과제이다.</div>
+      </div>
+
+      <div class="asec">
+        <div class="asectitle s2">Ⅱ. 가. 딥러닝 객체 탐지 알고리즘</div>
+        <ul class="aol">
+          <li><span class="onum on2">1</span><div>
+            <strong>YOLO (You Only Look Once) — 카메라 2D 탐지</strong>
+            <div class="sub">
+              <div class="si">원리: 이미지를 격자(Grid Cell)로 분할 → 각 셀에서 바운딩 박스·클래스 확률 동시 예측. 1-stage Detector (회귀 방식)</div>
+              <div class="si">특징: 30~100FPS 실시간 처리 가능, 소형 물체 탐지 상대적 약점</div>
+              <div class="si">최신: YOLOv8·YOLO-World — 오픈 어휘 탐지(Open Vocabulary Detection)</div>
+            </div>
+          </div></li>
+          <li><span class="onum on2">2</span><div>
+            <strong>PointPillars — LiDAR 3D 탐지</strong>
+            <div class="sub">
+              <div class="si">원리: LiDAR 포인트 클라우드를 기둥(Pillar) 형태 2D 격자로 변환 → CNN으로 고속 처리</div>
+              <div class="si">특징: 실시간 3D 탐지(62ms/프레임). PointNet 대비 10배 이상 빠름</div>
+              <div class="si">적용: Waymo·Uber ATG 실차 적용</div>
+            </div>
+          </div></li>
+          <li><span class="onum on2">3</span><div>
+            <strong>BEV Transformer (Bird's Eye View) — 멀티카메라 융합</strong>
+            <div class="sub">
+              <div class="si">원리: 여러 카메라 이미지를 Transformer의 Cross-Attention으로 BEV(조감도) 특징 맵으로 변환 → 3D 객체 탐지·차선 분할 통합 수행</div>
+              <div class="si">대표 모델: BEVFormer(Tesla FSD 유사), BEVFusion(LiDAR+Camera 통합)</div>
+              <div class="si">특징: LiDAR 불필요(카메라 전용 가능), 공간 일관성 높음. 연산 집약적</div>
+            </div>
+          </div></li>
+        </ul>
+      </div>
+
+      <div class="asec">
+        <div class="asectitle s3">Ⅲ. 나. 자율주행 AI의 한계와 안전성 확보</div>
+        <table class="atable">
+          <tr><th>AI 한계</th><th>내용</th><th>안전성 확보 방안</th></tr>
+          <tr><td>긴 꼬리 분포<br>(Long-Tail)</td><td>학습 데이터에 희귀 시나리오(역주행 차량, 도로 위 동물, 규격 외 장애물)가 극히 드물어 모델이 대응 실패. SOTIF(ISO 21448) 핵심 문제</td><td>시나리오 기반 테스트, 생성 AI로 엣지케이스 합성 데이터 확보 (SyntheticAI), 강화학습으로 희귀 시나리오 탐색</td></tr>
+          <tr><td>적대적 공격<br>(Adversarial Attack)</td><td>정지 표지판에 스티커 부착만으로 AI가 'Speed Limit 45'로 오인식. 물리적 패치 공격도 가능</td><td>적대적 학습(Adversarial Training), 앙상블 모델, 다중 센서 교차 검증으로 단일 센서 오인식 보완</td></tr>
+          <tr><td>분포 이탈<br>(Out-of-Distribution)</td><td>학습 분포를 벗어난 입력(처음 보는 도로 환경, 극한 기상)에서 신뢰도 과대 평가·오작동</td><td>불확실성 추정(Bayesian Deep Learning, MC-Dropout), OOD 탐지기로 시스템에 불확실 상황 알림 → 운전자 인계</td></tr>
+          <tr><td>설명 불가능성<br>(Black Box)</td><td>딥러닝 판단 근거 불투명 → 사고 원인 분석·책임 소재 파악 곤란</td><td>XAI(설명 가능 AI): Grad-CAM으로 인식 근거 시각화, Attention Map 분석, 규칙 기반 상위 행동 계획 레이어 유지</td></tr>
+        </table>
+      </div>
+
+      <div class="asec">
+        <div class="asectitle s4">Ⅳ. 다. 자율주행 AI 검증 방법 비교 (SiL·HiL·ViL·실도로)</div>
+        <table class="atable">
+          <tr><th>검증 방법</th><th>개념</th><th>장점</th><th>단점</th><th>대표 도구</th></tr>
+          <tr><td>SiL<br>(Software-in-the-Loop)</td><td>가상 시뮬레이터에서 SW 알고리즘 단독 검증. 실제 HW 없음</td><td>완전 자동화 가능, 대규모 시나리오 병렬 실행, 저비용</td><td>현실과 차이(Sim-to-Real Gap), 센서 모델 한계</td><td>CARLA, LGSVL, Apollo Simulation</td></tr>
+          <tr><td>HiL<br>(Hardware-in-the-Loop)</td><td>실제 ECU를 시뮬레이션 환경에 연결하여 검증. 실제 HW+가상 환경</td><td>실제 ECU 동작 검증. 실시간성 보장</td><td>고비용(ECU 장비), 완전한 차량 거동 재현 한계</td><td>dSPACE, NI HIL, Vector CANoe</td></tr>
+          <tr><td>ViL<br>(Vehicle-in-the-Loop)</td><td>실제 차량을 롤러 다이나모미터 또는 폐쇄 주행 시험장에서 가상 환경 연동 테스트</td><td>실제 차량 거동 반영, 제어 검증 정확도 높음</td><td>고비용·복잡 설비, 기상·지형 조건 제한</td><td>AVL InMotion, CARISSMA</td></tr>
+          <tr><td>실도로 테스트<br>(On-Road Testing)</td><td>공도 또는 자율주행 시험 특구에서 실제 주행 검증</td><td>현실 재현 완벽, 예상치 못한 시나리오 발견</td><td>안전 위험, 극히 낮은 희귀 사고 포착률 (수억 km 필요), 법·허가 제약</td><td>CAE 주행 로그, Black Box 데이터</td></tr>
+        </table>
+        <div class="kbox kb-blue">
+          <div class="kbt">📌 자율주행 검증 V-사이클 적용</div>
+          알고리즘 개발 → <strong>SiL</strong>(수억 km 시뮬레이션) → <strong>HiL</strong>(ECU 실시간 검증) → <strong>ViL</strong>(폐쇄 구간 차량 검증) → <strong>실도로</strong>(허가 구역·감독 하) → 상용화<br>
+          RAND 연구소: 자율주행 인간 수준 안전 입증에 약 <strong>110억 마일(177억 km)</strong> 주행 테스트 필요 → 시뮬레이션 없이 실도로만으로는 불가능
+        </div>
+      </div>
+
+      <div class="concl">
+        <div class="concl-title">Ⅴ. 결론</div>
+        <p>자율주행 AI의 상용화는 긴 꼬리 분포·OOD·적대적 공격 등 근본적인 AI 안전성 과제를 해결해야 한다. 검증 방법론으로는 SiL-HiL-ViL-실도로의 단계적 V-사이클을 적용하고, ISO 21448(SOTIF)에 따른 시나리오 기반 검증 체계를 국제적으로 표준화하는 작업이 진행 중이다. 생성 AI 기반 합성 데이터와 디지털 트윈을 활용한 검증 가속화가 핵심 기술 트렌드이다.</p>
+      </div>
+    </div>
+  </div>
+</div>
+</div><!-- /tp1q1 -->
+
+<!-- L3: 협력자율주행(CAV) -->
+<div class="q-panel" id="tp1q2">
+<div class="q-counter">📄 논술형 3번 / 5번</div>
+<div class="qcard">
+  <div class="qhdr">
+    <span class="qdomain badge-av">자율운전</span>
+    <div class="qmeta">
+      <div class="qtype">2~4교시 논술형 · 25점 · 3~4페이지</div>
+      <div class="qtitle">협력자율주행(CAV: Connected and Autonomous Vehicle)에 대하여 다음을 설명하시오.</div>
+    </div>
+  </div>
+  <div class="qbody">
+    <div class="qitems">
+      <div class="qitem"><span class="qlabel">가.</span><span>C-ITS(협력 지능형 교통 시스템)의 개념, 구성 요소 및 서비스 유형</span></div>
+      <div class="qitem"><span class="qlabel">나.</span><span>협력 군집 주행(Platooning)의 원리, CACC(협력 적응형 크루즈컨트롤) 동작 메커니즘, 기대 효과</span></div>
+      <div class="qitem"><span class="qlabel">다.</span><span>디지털 트윈(Digital Twin) 기반 자율주행 인프라 관리 방안 및 국내 C-ITS 추진 현황</span></div>
+    </div>
+    <div class="qhints">
+      <span class="qhint">C-ITS 서비스 목록</span><span class="qhint">Platooning 연료절감 효과</span><span class="qhint">국내 세종·판교 C-ITS</span>
+    </div>
+  </div>
+  <div class="acard">
+    <button class="atoggle" onclick="toggleA(this)"><span class="alabel">📄 모범 답안 보기</span><span class="aarrow">▼</span></button>
+    <div class="abody">
+      <div class="atitle">C-ITS 구성·서비스, 협력 군집주행(CACC), 디지털트윈 인프라 관리 및 국내 추진 현황</div>
+      <div class="chips"><span class="chip ct">⏱ 30분</span><span class="chip cp">📄 3.5~4페이지</span><span class="chip cs">💯 25점</span></div>
+
+      <div class="asec">
+        <div class="asectitle s1">Ⅰ. 개요</div>
+        <div class="ap">협력자율주행(CAV)은 개별 차량의 센서 기반 자율주행에 V2X 통신을 통한 협력 인지·판단을 더한 진화된 패러다임이다. 차량 간·차량-인프라 간 실시간 정보 공유로 단독 자율주행의 한계(NLOS 사각지대, 돌발 상황 대응 지연)를 극복한다.</div>
+      </div>
+
+      <div class="asec">
+        <div class="asectitle s2">Ⅱ. 가. C-ITS 개념·구성 및 서비스</div>
+        <div class="ap">C-ITS(Cooperative Intelligent Transport System, 협력 지능형 교통 시스템)는 차량-인프라-사람이 실시간으로 정보를 공유하는 통합 교통 시스템이다.</div>
+        <table class="atable">
+          <tr><th>구성 요소</th><th>역할</th><th>통신 방식</th></tr>
+          <tr><td>OBU (On-Board Unit)</td><td>차량 탑재 V2X 통신 장치. BSM·SPAT 송수신</td><td>DSRC (WAVE) / C-V2X (PC5)</td></tr>
+          <tr><td>RSU (Road Side Unit)</td><td>도로변 인프라 장치. 신호·공사·속도 정보 방송</td><td>DSRC / C-V2X / 셀룰러</td></tr>
+          <tr><td>TMC (교통 관제 센터)</td><td>실시간 교통 데이터 수집·분석·배포</td><td>5G / LTE / 광통신</td></tr>
+          <tr><td>MEC (모바일 엣지 컴퓨팅)</td><td>기지국 근처 저지연 AI 처리. 협력 인지 지원</td><td>5G NR (Uu)</td></tr>
+        </table>
+        <div class="ap" style="margin-top:10px"><strong>C-ITS 주요 서비스 (국토부 15대 서비스)</strong></div>
+        <div class="short-grid">
+          <div class="scard"><div class="scard-title">🚨 안전 서비스</div><p>전방 차량 급정지 경고(EEBL), 비가시 구간 위험 차량 경고, 공사 구간 진입 경고, 보행자 충돌 경고(DNPW)</p></div>
+          <div class="scard"><div class="scard-title">🚦 교통 효율 서비스</div><p>신호 위상·타이밍 정보(SPAT) 제공, 녹색 파도 속도 안내(GLOSA), 교차로 통행 권고</p></div>
+          <div class="scard"><div class="scard-title">🌐 정보 서비스</div><p>실시간 도로 위험(빙판·낙하물) 경보, 정밀 지도 갱신 정보, 주차장 정보 안내</p></div>
+          <div class="scard"><div class="scard-title">🚑 우선 통행</div><p>긴급차량 접근 경보, 긴급차량 신호 우선 제어(EVP)</p></div>
+        </div>
+      </div>
+
+      <div class="asec">
+        <div class="asectitle s3">Ⅲ. 나. 협력 군집 주행(Platooning) 및 CACC</div>
+        <div class="dbox">협력 군집 주행 구성
+
+[선두 차량 (Lead Vehicle)]
+  └─ 인간 운전 또는 자율주행
+  └─ 속도·경로·가속도 정보를 V2V BSM으로 실시간 방송
+
+[후속 차량 1, 2, ..., N (Follower Vehicles)]
+  ├─ CACC 시스템: V2V 수신 + RADAR/LiDAR 통합 제어
+  ├─ 차간 거리: 10~15m (ACC 대비 1/3 수준 유지 가능)
+  └─ 응답 시간: &lt;100ms (사람 반응 1~2초 vs CACC 0.1초)</div>
+        <div class="ap"><strong>CACC(Cooperative Adaptive Cruise Control) 동작 원리:</strong><br>
+        기존 ACC는 전방 RADAR 센서만 사용 → 앞차 제동 감지 후 반응 (지연 500~1000ms)<br>
+        CACC는 V2V로 선두 차량의 가속도 변화를 <strong>직접 수신</strong> → 예측적 제어로 지연 100ms 이하 달성</div>
+        <table class="atable">
+          <tr><th>효과</th><th>수치</th><th>근거</th></tr>
+          <tr><td>연료 절감</td><td>후속 차량 10~20%, 선두 5~8%</td><td>공기 저항(항력) 감소. 차간 거리 15m 유지 기준</td></tr>
+          <tr><td>도로 용량 증가</td><td>20~40%</td><td>차간 거리 단축으로 동일 도로에 더 많은 차량</td></tr>
+          <tr><td>사고 감소</td><td>추돌 사고 80% 감소 추정</td><td>일관된 제동 반응으로 연쇄 추돌 방지</td></tr>
+          <tr><td>탄소 감소</td><td>CO₂ 10~15% 절감</td><td>물류 차량(장거리 트럭) 적용 시 효과 극대화</td></tr>
+        </table>
+      </div>
+
+      <div class="asec">
+        <div class="asectitle s4">Ⅳ. 다. 디지털 트윈 기반 자율주행 인프라 관리 및 국내 현황</div>
+        <div class="kbox kb-green">
+          <div class="kbt">디지털 트윈(Digital Twin) 기반 C-ITS 인프라 관리</div>
+          ① <strong>RSU·신호등 디지털 트윈</strong>: 실물 인프라의 상태(고장·지연)를 실시간 미러링하여 예측 유지보수<br>
+          ② <strong>교통 흐름 시뮬레이션</strong>: 실시간 수집 데이터로 디지털 트윈에서 교통 시나리오 사전 예측·최적화<br>
+          ③ <strong>자율주행 시험 가상화</strong>: 신규 알고리즘을 디지털 트윈 도시에서 안전하게 사전 검증 후 실제 적용<br>
+          ④ <strong>사이버-물리 통합 보안</strong>: 디지털 트윈에서 V2X 사이버 공격 시뮬레이션으로 대응 방안 사전 검증
+        </div>
+        <table class="atable">
+          <tr><th>국내 C-ITS 추진 현황</th><th>내용</th></tr>
+          <tr><td>세종시 자율주행 특구</td><td>C-ITS 인프라 구축 완료. 15대 서비스 실증. BRT·셔틀 자율주행 운행</td></tr>
+          <tr><td>판교 제로시티</td><td>레벨 4 자율주행 실증 환경. V2X RSU 130여 개 설치. 판교~수원 자율주행 고속도로 연계</td></tr>
+          <tr><td>고속도로 C-ITS</td><td>경부·서해안고속도로 일부 구간 C-ITS 구축. 공사 구간 경보·SPAT 서비스</td></tr>
+          <tr><td>법제화</td><td>「자율주행법」·「도로교통법」 개정으로 레벨 3 상용화 허가. 2027년 레벨 4 목표</td></tr>
+        </table>
+      </div>
+
+      <div class="concl">
+        <div class="concl-title">Ⅴ. 결론</div>
+        <p>협력자율주행은 개별 자율주행의 한계를 V2X·C-ITS로 보완하여 진정한 '시스템으로서의 자율주행'을 실현하는 방향이다. 협력 군집 주행은 물류·대중교통 분야에서 연료 절감과 도로 효율 향상으로 경제적 파급 효과가 크다. 디지털 트윈 기반 인프라 관리와 5G NR-V2X 확대를 통해 2030년까지 전국 단위 C-ITS 구축이 국내 목표이다.</p>
+      </div>
+    </div>
+  </div>
+</div>
+</div><!-- /tp1q2 -->
+
+<!-- L4: 자율주행 윤리·법제도 -->
+<div class="q-panel" id="tp1q3">
+<div class="q-counter">📄 논술형 4번 / 5번</div>
+<div class="qcard">
+  <div class="qhdr">
+    <span class="qdomain badge-av">자율운전</span>
+    <div class="qmeta">
+      <div class="qtype">2~4교시 논술형 · 25점 · 3~4페이지</div>
+      <div class="qtitle">자율주행 자동차의 윤리적·법적·사회적 이슈(ELSI)에 대하여 다음을 설명하시오.</div>
+    </div>
+  </div>
+  <div class="qbody">
+    <div class="qitems">
+      <div class="qitem"><span class="qlabel">가.</span><span>트롤리 딜레마(Trolley Problem)와 알고리즘 윤리 — 자율주행 AI의 의사결정 윤리 프레임워크</span></div>
+      <div class="qitem"><span class="qlabel">나.</span><span>자율주행 사고 시 법적 책임 소재 (제조사·운전자·소프트웨어 개발사·인프라 운영자) 및 국내외 법제 현황</span></div>
+      <div class="qitem"><span class="qlabel">다.</span><span>자율주행 데이터의 개인정보 보호 이슈 및 데이터 거버넌스 방안</span></div>
+    </div>
+    <div class="qhints">
+      <span class="qhint">MIT 모럴머신 실험</span><span class="qhint">제조물책임법 연계</span><span class="qhint">개인정보보호법 적용</span>
+    </div>
+  </div>
+  <div class="acard">
+    <button class="atoggle" onclick="toggleA(this)"><span class="alabel">📄 모범 답안 보기</span><span class="aarrow">▼</span></button>
+    <div class="abody">
+      <div class="atitle">자율주행 윤리 프레임워크·법적 책임 소재·개인정보 거버넌스</div>
+      <div class="chips"><span class="chip ct">⏱ 30분</span><span class="chip cp">📄 3.5~4페이지</span><span class="chip cs">💯 25점</span></div>
+
+      <div class="asec">
+        <div class="asectitle s1">Ⅰ. 개요</div>
+        <div class="ap">자율주행 기술은 교통 안전·효율성 향상의 잠재력과 함께, 윤리적 의사결정 알고리즘화, 사고 책임 귀속의 법적 공백, 방대한 개인 이동 데이터 수집이라는 복합적 ELSI(Ethical, Legal, Social Issues)를 수반한다. 기술 개발과 제도 정비가 반드시 병행되어야 한다.</div>
+      </div>
+
+      <div class="asec">
+        <div class="asectitle s2">Ⅱ. 가. 자율주행 알고리즘 윤리 프레임워크</div>
+        <div class="ap"><strong>트롤리 딜레마의 자율주행 버전</strong>: "브레이크 고장 시 직진하면 5명 보행자 사망, 우회전하면 탑승자 사망 — AI는 어떻게 결정해야 하는가?"</div>
+        <table class="atable">
+          <tr><th>윤리 이론</th><th>자율주행 적용</th><th>한계</th></tr>
+          <tr><td>공리주의<br>(Utilitarianism)</td><td>최소 피해 인원 결정 (5명 vs 1명 → 1명 희생 선택). 결과 최적화 알고리즘 구현 가능</td><td>희생자 결정에 연령·사회적 가치 개입 시 차별 문제. MIT 모럴머신: 국가별 도덕 판단 차이 존재</td></tr>
+          <tr><td>의무론<br>(Deontology, Kant)</td><td>탑승자를 수단으로 사용 금지. "AI는 인명 피해를 최소화하려 노력하되 의도적 희생 금지"</td><td>행동 결정 기준의 알고리즘화 어려움</td></tr>
+          <tr><td>덕 윤리<br>(Virtue Ethics)</td><td>신중함·배려의 덕목을 AI에 내재화. 구체적 규칙보다 맥락적 판단</td><td>알고리즘 형식화·검증 매우 어려움</td></tr>
+        </table>
+        <div class="kbox kb-blue">
+          <div class="kbt">독일 연방 자율주행 윤리 지침(2017년, 세계 최초) 핵심 원칙</div>
+          ① 인명 보호이 재산 보호보다 항상 우선<br>
+          ② 연령·성별·신체 조건에 의한 희생자 선택 금지<br>
+          ③ 탑승자와 비탑승자를 차별하는 프로그래밍 불허<br>
+          ④ 자율주행 시스템은 사고 경위를 기록·공개해야 함 (블랙박스 의무화)
+        </div>
+      </div>
+
+      <div class="asec">
+        <div class="asectitle s3">Ⅲ. 나. 자율주행 사고 법적 책임 소재</div>
+        <table class="atable">
+          <tr><th>레벨</th><th>사고 시 주요 책임 주체</th><th>적용 법률</th><th>쟁점</th></tr>
+          <tr><td>레벨 1~2</td><td>운전자 (ADAS는 보조 도구)</td><td>도로교통법, 자동차손해배상보장법</td><td>운전자 과실 중심. 기존 법 적용 가능</td></tr>
+          <tr><td>레벨 3</td><td>ODD 내: 시스템/제조사<br>ODD 이탈 인계 후: 운전자</td><td>제조물책임법, 자율주행자동차법</td><td>인계 요청 후 운전자 미응답 시 책임 분배 불명확</td></tr>
+          <tr><td>레벨 4~5</td><td>제조사 (시스템 결함)<br>소프트웨어 개발사<br>인프라 운영자 (V2X 오작동)</td><td>제조물책임법, 자율주행법 특례</td><td>SW 결함의 제조물 해당 여부, 보험 체계 재편 필요</td></tr>
+        </table>
+        <div class="kbox kb-red">
+          <div class="kbt">국내외 법제 현황</div>
+          <strong>국내</strong>: 「자율주행자동차법(2020)」 — 레벨 3 임시운행 허가·보험 의무화. 「제조물책임법」 — SW를 제조물로 포함하는 개정 논의 중<br>
+          <strong>독일</strong>: 2021년 세계 최초 레벨 4 공도 법제화. 제조사 민사 책임 원칙<br>
+          <strong>미국</strong>: 州별 규제 상이. NHTSA AV 가이드라인. 캘리포니아 DMV 허가제<br>
+          <strong>EU</strong>: AI Act(2024)에서 자율주행을 '고위험 AI 시스템'으로 분류 → 적합성 평가 의무화
+        </div>
+      </div>
+
+      <div class="asec">
+        <div class="asectitle s4">Ⅳ. 다. 자율주행 데이터 개인정보 보호 및 거버넌스</div>
+        <div class="ap">자율주행 차량은 360° 카메라·LiDAR로 주변 보행자·차량 번호판·건물 외관을 수집하며, GPS로 탑승자의 이동 경로를 기록한다. 이는 방대한 개인정보를 포함하며 개인정보보호법·GDPR의 적용을 받는다.</div>
+        <ul class="aol">
+          <li><span class="onum on4">1</span><div><strong>수집 최소화 원칙</strong>: 자율주행에 불필요한 보행자 얼굴·번호판 데이터는 수집 즉시 익명화(마스킹·블러링). 최소 보존 기간 적용</div></li>
+          <li><span class="onum on4">2</span><div><strong>목적 명확화</strong>: 안전·자율주행 개선 목적의 데이터 활용 범위를 명시적으로 고지·동의 수령. 마케팅·제3자 제공 원칙 금지</div></li>
+          <li><span class="onum on4">3</span><div><strong>데이터 거버넌스 체계</strong>: 차량-OEM-클라우드 간 데이터 흐름 투명화. 차량 데이터 접근 권한 체계화 (운전자·정부·제조사·보험사)</div></li>
+          <li><span class="onum on4">4</span><div><strong>블랙박스(EDR) 의무화</strong>: 사고 전 30초 주행 데이터 보존 의무 (국내 「자동차관리법」). 개인정보와 안전 데이터 분리 관리</div></li>
+          <li><span class="onum on4">5</span><div><strong>국가 간 데이터 이전</strong>: 자율주행 데이터의 해외 서버 전송 시 개인정보보호법·GDPR 표준 계약 조항(SCC) 준수. 중국의 '자동차 데이터 보안 규정(2021)' 등 각국 데이터 로컬라이제이션 규제 대응</div></li>
+        </ul>
+      </div>
+
+      <div class="concl">
+        <div class="concl-title">Ⅴ. 결론</div>
+        <p>자율주행의 ELSI 문제는 기술 표준화만큼 중요한 사회적 과제이다. 윤리 알고리즘의 투명성 확보(XAI), 명확한 법적 책임 체계 구축, 프라이버시 침해 방지를 위한 Privacy by Design 원칙 적용이 상용화의 전제 조건이다. 기술 개발·제도 정비·사회적 합의가 균형 있게 진행될 때만 자율주행의 사회적 수용이 가능하다.</p>
+      </div>
+    </div>
+  </div>
+</div>
+</div><!-- /tp1q3 -->
+
+<!-- L5: 자율주행 사이버보안 -->
+<div class="q-panel" id="tp1q4">
+<div class="q-counter">📄 논술형 5번 / 5번</div>
+<div class="qcard">
+  <div class="qhdr">
+    <span class="qdomain badge-av">자율운전</span>
+    <div class="qmeta">
+      <div class="qtype">2~4교시 논술형 · 25점 · 3~4페이지</div>
+      <div class="qtitle">자율주행 자동차의 사이버보안에 대하여 다음을 설명하시오.</div>
+    </div>
+  </div>
+  <div class="qbody">
+    <div class="qitems">
+      <div class="qitem"><span class="qlabel">가.</span><span>자율주행 차량의 공격 표면(Attack Surface)과 대표적 사이버 공격 유형 및 실제 사례</span></div>
+      <div class="qitem"><span class="qlabel">나.</span><span>ISO/SAE 21434(자동차 사이버보안) 표준의 주요 내용 — TARA, CAL, 공급망 보안</span></div>
+      <div class="qitem"><span class="qlabel">다.</span><span>차량 사이버보안 아키텍처 설계 원칙 및 OTA(Over-The-Air) 소프트웨어 업데이트 보안 방안</span></div>
+    </div>
+    <div class="qhints">
+      <span class="qhint">Miller·Valasek 지프 해킹 사례</span><span class="qhint">TARA 방법론</span><span class="qhint">OTA 보안 단계</span>
+    </div>
+  </div>
+  <div class="acard">
+    <button class="atoggle" onclick="toggleA(this)"><span class="alabel">📄 모범 답안 보기</span><span class="aarrow">▼</span></button>
+    <div class="abody">
+      <div class="atitle">자율주행 차량 공격 표면·사이버 공격 유형·ISO/SAE 21434·OTA 보안</div>
+      <div class="chips"><span class="chip ct">⏱ 30분</span><span class="chip cp">📄 3.5~4페이지</span><span class="chip cs">💯 25점</span></div>
+
+      <div class="asec">
+        <div class="asectitle s1">Ⅰ. 개요</div>
+        <div class="ap">자율주행 차량은 수억 라인의 소프트웨어, 다수의 외부 통신 인터페이스(V2X·OTA·텔레매틱스·OBD-II), 50~150개 ECU로 구성된 복잡한 사이버-물리 시스템이다. 사이버 공격은 단순 서비스 장애를 넘어 탑승자·보행자의 생명과 직결되는 물리적 위해를 초래할 수 있어 기능안전(ISO 26262)과 동등한 수준의 보안 체계가 요구된다.</div>
+      </div>
+
+      <div class="asec">
+        <div class="asectitle s2">Ⅱ. 가. 자율주행 차량 공격 표면 및 공격 유형</div>
+        <div class="dbox">자율주행 차량 공격 표면 (Attack Surface)
+
+외부 연결:
+  ├─ V2X (DSRC/C-V2X) → 위조 메시지로 가상 장애물·신호 삽입
+  ├─ 텔레매틱스 (LTE/5G TCU) → 원격 차량 제어 탈취
+  ├─ Wi-Fi/Bluetooth → 근거리 페어링 공격, 펌웨어 변조
+  ├─ OTA 업데이트 서버 → 악성 SW 배포
+  └─ GPS 수신기 → 스푸핑으로 위치 오도
+
+내부 네트워크:
+  ├─ CAN 버스 (비암호화) → 악성 프레임 주입 (Replay·Injection)
+  ├─ CAN-FD / Ethernet → 중간자 공격(MitM)
+  └─ OBD-II 포트 → 물리 접근 후 ECU 플래싱
+
+센서 공격:
+  ├─ LiDAR: 레이저 펄스 재밍·스푸핑 → 유령 객체 생성
+  ├─ Camera: 적대적 패치, 강한 빛으로 인식 방해
+  └─ GPS: 스푸핑으로 위치 오도 (오염된 경로 탐색)</div>
+        <table class="atable">
+          <tr><th>공격 유형</th><th>내용</th><th>실제 사례</th><th>피해 영향</th></tr>
+          <tr><td>원격 차량 탈취</td><td>텔레매틱스 서버 취약점 → CAN 메시지 주입 → 조향·제동 제어</td><td>Miller·Valasek(2015): Jeep Cherokee 원격 해킹 → 141만대 리콜</td><td>인명 피해 가능. 리콜 비용 1.5억달러</td></tr>
+          <tr><td>OTA 공급망 공격</td><td>업데이트 서버 침해 → 악성 펌웨어 배포</td><td>Toyota(2023) 공급업체 서버 침해로 고객 데이터 노출</td><td>대규모 차량 SW 감염 가능</td></tr>
+          <tr><td>GPS 스푸핑</td><td>위조 GPS 신호 방송 → 차량 위치 오도·잘못된 경로</td><td>상하이·모스크바 공항 인근 GPS 스푸핑 다수 보고</td><td>자율주행 차량 길 이탈</td></tr>
+          <tr><td>V2X 메시지 위조</td><td>가상 긴급차량·사고 메시지 방송 → 교통 혼란 유발</td><td>실험적 검증(연구 논문). 실제 사고 사례 미공개</td><td>불필요한 제동·차선 변경 → 연쇄 추돌</td></tr>
+        </table>
+      </div>
+
+      <div class="asec">
+        <div class="asectitle s3">Ⅲ. 나. ISO/SAE 21434 표준 주요 내용</div>
+        <div class="ap">ISO/SAE 21434(2021)는 자동차 사이버보안 엔지니어링 국제표준으로, 차량 개발 전 생명주기에 걸친 사이버보안 활동을 정의한다.</div>
+        <ul class="aol">
+          <li><span class="onum on3">1</span><div><strong>TARA (Threat Analysis and Risk Assessment, 위협 분석 및 리스크 평가)</strong>
+            <div class="sub">
+              <div class="si"><strong>자산 식별</strong>: 보호 대상 사이버 자산(조향 ECU, 개인정보, 암호화 키) 식별</div>
+              <div class="si"><strong>위협 시나리오</strong>: STRIDE 방법론(Spoofing·Tampering·Repudiation·Info Disclosure·DoS·Elevation) 적용</div>
+              <div class="si"><strong>영향 분석</strong>: 안전·재정·운영·프라이버시 측면 피해 영향 평가 (Safety, Financial, Operational, Privacy)</div>
+              <div class="si"><strong>CAL 결정</strong>: 공격 실현 가능성 × 피해 영향 → CAL 1~4 등급 결정 (ISO 26262 ASIL과 유사)</div>
+            </div>
+          </div></li>
+          <li><span class="onum on3">2</span><div><strong>CAL (Cybersecurity Assurance Level)</strong>: CAL 1(최저)~CAL 4(최고). 등급에 따라 요구되는 보안 통제·검증 활동 수준 결정. CAL 4는 원격 차량 제어 ECU 등 안전 직결 기능에 적용</div></li>
+          <li><span class="onum on3">3</span><div><strong>공급망 보안(Supply Chain)</strong>: OEM이 Tier-1·Tier-2 부품 공급업체의 사이버보안 역량을 계약·감사로 관리. SBOM(소프트웨어 부품 명세서) 요구. 각 ECU 공급업체가 CSMS(사이버보안 관리 시스템) 운영 의무</div></li>
+        </ul>
+        <div class="kbox kb-pur">
+          <div class="kbt">ISO 26262 vs ISO/SAE 21434 비교</div>
+          <strong>ISO 26262</strong>: 무작위적 HW 고장 + 설계 오류 (비의도적) 대응. ASIL 등급<br>
+          <strong>ISO/SAE 21434</strong>: 악의적 사이버 공격 (의도적) 대응. CAL 등급<br>
+          → 두 표준은 서로 보완적이며, 현대 자율주행 차량은 두 표준 동시 준수 필요
+        </div>
+      </div>
+
+      <div class="asec">
+        <div class="asectitle s4">Ⅳ. 다. 차량 사이버보안 아키텍처 설계 및 OTA 보안</div>
+        <ul class="aol">
+          <li><span class="onum on4">1</span><div><strong>보안 아키텍처 설계 원칙</strong>
+            <div class="sub">
+              <div class="si"><strong>네트워크 분리(Segmentation)</strong>: 파워트레인·ADAS·인포테인먼트 도메인 방화벽으로 격리. ADAS 도메인 침해가 엔진 ECU로 전파 차단</div>
+              <div class="si"><strong>최소 권한 원칙(Least Privilege)</strong>: ECU 간 통신 권한을 필요 최소로 제한. CAN ID 화이트리스트 기반 필터링</div>
+              <div class="si"><strong>HSM (Hardware Security Module)</strong>: ECU 내 암호화 키 안전 보관. 안전 부트(Secure Boot)·메모리 암호화</div>
+              <div class="si"><strong>IDS/IPS (침입 탐지·방지)</strong>: 차량용 IDS(AUTOSAR SecOC)로 CAN 버스 이상 메시지 탐지. 행위 기반 이상 탐지</div>
+              <div class="si"><strong>VSOC (Vehicle Security Operations Center)</strong>: 클라우드 기반 차량 보안 이벤트 중앙 모니터링·분석·대응</div>
+            </div>
+          </div></li>
+          <li><span class="onum on4">2</span><div><strong>OTA 소프트웨어 업데이트 보안 (UNECE WP.29 규정 R156 준수)</strong>
+            <div class="sub">
+              <div class="si"><strong>코드 서명(Code Signing)</strong>: 업데이트 패키지를 OEM 개인키로 서명 → ECU에서 공개키 검증 후 적용</div>
+              <div class="si"><strong>전송 보안</strong>: TLS 1.3으로 업데이트 서버-차량 간 암호화 채널. 인증서 고정(Certificate Pinning)</div>
+              <div class="si"><strong>롤백 방지(Anti-Rollback)</strong>: 이전 취약 버전으로의 다운그레이드 방지. 버전 카운터를 HSM에 보관</div>
+              <div class="si"><strong>원자적 업데이트(Atomic Update)</strong>: A/B 파티션 방식으로 업데이트 실패 시 이전 버전 자동 복구. 주행 중 업데이트 금지 (안전 정차 시만 적용)</div>
+              <div class="si"><strong>무결성 검증</strong>: SHA-256 해시로 다운로드 패키지 변조 여부 확인. 부분 업데이트 지원으로 대역폭 최소화</div>
+            </div>
+          </div></li>
+        </ul>
+      </div>
+
+      <div class="concl">
+        <div class="concl-title">Ⅴ. 결론</div>
+        <p>자율주행 차량의 사이버보안은 생명 안전과 직결된 최고 우선순위 과제이다. ISO/SAE 21434 TARA 기반 위험 식별, 심층 방어(Defense-in-Depth) 아키텍처, VSOC 기반 실시간 모니터링, 그리고 UNECE WP.29 기반 안전한 OTA 체계를 갖추는 것이 자율주행 상용화의 필수 조건이다. 국내에서는 「자동차관리법」 개정으로 CSMS(사이버보안 관리 시스템) 인증 의무화가 진행되고 있으며, 제조사-공급망-인프라 전반의 보안 생태계 구축이 요구된다.</p>
+      </div>
+    </div>
+  </div>
+</div>
+</div><!-- /tp1q4 -->
+
+</div><!-- /main -->
+</div><!-- /tp1 -->
+
+<script>
+function showType(idx,btn){
+  document.querySelectorAll('.type-panel').forEach((p,i)=>p.classList.toggle('active',i===idx));
+  document.querySelectorAll('.type-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+function showQ(idx,btn,tpId){
+  var tp=document.getElementById(tpId);
+  tp.querySelectorAll('.q-panel').forEach((p,i)=>p.classList.toggle('active',i===idx));
+  btn.parentElement.querySelectorAll('.q-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+function toggleA(btn){
+  var body=btn.nextElementSibling;
+  var arrow=btn.querySelector('.aarrow');
+  var isOpen=body.classList.toggle('open');
+  arrow.classList.toggle('open',isOpen);
+  btn.querySelector('.alabel').textContent=isOpen?'📄 답안 닫기':'📄 모범 답안 보기';
+}
+</script>
+</body>
+</html>

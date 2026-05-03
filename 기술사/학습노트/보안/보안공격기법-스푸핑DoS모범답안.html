@@ -1,0 +1,1137 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>보안 공격기법 기출유형 문제 & 모범답안</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700;900&family=Noto+Serif+KR:wght@400;600;700&family=JetBrains+Mono:wght@400;600&display=swap');
+:root{
+  --bg:#f5f7fa;--white:#fff;--surface2:#eef1f6;--border:#dde3ec;--bl:#eef1f6;
+  --blue:#1d4ed8;--bblue:#3b82f6;--bluebg:#eff6ff;--blb:#bfdbfe;
+  --red:#b91c1c;--redbg:#fef2f2;--rdb:#fecaca;
+  --green:#065f46;--gbg:#ecfdf5;--gb:#a7f3d0;
+  --ora:#92400e;--obg:#fffbeb;--ob:#fde68a;
+  --pur:#5b21b6;--pubg:#f5f3ff;--pub:#ddd6fe;
+  --tea:#0f766e;--tbg:#f0fdfa;--tb:#99f6e4;
+  --rose:#9f1239;--rbg:#fff1f2;--roseb:#fecdd3;
+  --text:#111827;--text2:#374151;--text3:#6b7280;--text4:#9ca3af;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--text);font-family:'Noto Sans KR',sans-serif;font-size:14px;line-height:1.6}
+
+.hdr{background:linear-gradient(135deg,#450a0a 0%,#7f1d1d 50%,#991b1b 100%);color:#fff;padding:28px 24px 22px;position:relative;overflow:hidden}
+.hdr::after{content:'';position:absolute;right:-60px;top:-60px;width:220px;height:220px;border-radius:50%;background:rgba(255,255,255,0.04)}
+.hdr::before{content:'';position:absolute;left:-40px;bottom:-40px;width:160px;height:160px;border-radius:50%;background:rgba(239,68,68,0.1)}
+.hi{max-width:1100px;margin:0 auto;position:relative}
+.heyebrow{font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:#fca5a5;margin-bottom:6px}
+.htitle{font-size:clamp(18px,3.5vw,26px);font-weight:900;margin-bottom:6px;font-family:'Noto Serif KR',serif}
+.hsub{font-size:12px;color:#fecaca}
+.hpills{display:flex;flex-wrap:wrap;gap:6px;margin-top:14px}
+.hpill{background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.18);padding:3px 11px;border-radius:20px;font-size:11px;color:#fee2e2}
+
+.type-nav{background:var(--white);border-bottom:3px solid var(--border);display:flex;overflow-x:auto;scrollbar-width:none;box-shadow:0 2px 8px rgba(0,0,0,0.06);position:sticky;top:0;z-index:200}
+.type-nav::-webkit-scrollbar{display:none}
+.type-btn{flex:1;min-width:160px;padding:14px 16px;background:none;border:none;border-bottom:4px solid transparent;cursor:pointer;font-family:inherit;font-size:13px;font-weight:700;color:var(--text3);transition:all .18s;display:flex;align-items:center;justify-content:center;gap:8px}
+.type-btn:hover{color:var(--red);background:var(--redbg)}
+.type-btn.active{color:var(--red);border-bottom-color:var(--red);background:var(--redbg)}
+.type-badge{font-size:10px;padding:2px 8px;border-radius:10px;font-weight:700}
+.tb-short{background:#fef3c7;color:#92400e}
+.tb-long{background:#ede9fe;color:#5b21b6}
+
+.q-nav{background:#fff;border-bottom:1px solid var(--border);overflow-x:auto;white-space:nowrap;padding:0 16px;scrollbar-width:none;box-shadow:0 1px 4px rgba(0,0,0,0.04)}
+.q-nav::-webkit-scrollbar{display:none}
+.q-btn{display:inline-block;padding:10px 12px;font-size:12px;font-weight:600;color:var(--text3);background:none;border:none;border-bottom:3px solid transparent;cursor:pointer;font-family:inherit;transition:all .15s}
+.q-btn:hover{color:var(--red)}
+.q-btn.active{color:var(--red);border-bottom-color:var(--red)}
+
+.main{max-width:1100px;margin:0 auto;padding:24px 16px 80px}
+.type-panel{display:none}.type-panel.active{display:block}
+.q-panel{display:none}.q-panel.active{display:block}
+
+.qcard{background:var(--white);border:1px solid var(--border);border-radius:14px;overflow:hidden;box-shadow:0 2px 12px rgba(0,0,0,0.05);margin-bottom:20px}
+.qhdr{padding:18px 22px 14px;border-bottom:1px solid var(--bl);display:flex;align-items:flex-start;gap:14px}
+.qdomain{flex-shrink:0;padding:4px 11px;border-radius:20px;font-size:10px;font-weight:700;letter-spacing:0.5px;margin-top:2px}
+.badge-sec{background:#fef2f2;color:#b91c1c;border:1px solid #fecaca}
+.qmeta{flex:1}
+.qtype-lbl{font-size:10px;color:var(--text3);font-weight:600;letter-spacing:0.5px;margin-bottom:4px}
+.qtitle{font-size:15px;font-weight:800;color:var(--text);line-height:1.45}
+.qbody{background:var(--bg);padding:16px 22px;border-bottom:1px solid var(--bl)}
+.qitems{margin-top:8px;display:flex;flex-direction:column;gap:6px}
+.qitem{display:flex;gap:10px;align-items:flex-start;font-size:13px;color:var(--text2)}
+.qlabel{font-weight:700;color:var(--red);min-width:20px;flex-shrink:0}
+.qhints{display:flex;flex-wrap:wrap;gap:6px;margin-top:12px}
+.qhint{background:var(--redbg);border:1px solid var(--rdb);color:var(--red);font-size:10px;font-weight:600;padding:2px 8px;border-radius:5px}
+
+.acard{background:var(--white)}
+.atoggle{width:100%;padding:14px 22px;background:none;border:none;display:flex;align-items:center;justify-content:space-between;cursor:pointer;font-family:inherit;transition:background .15s}
+.atoggle:hover{background:var(--redbg)}
+.alabel{font-size:13px;font-weight:700;color:var(--red)}
+.aarrow{font-size:16px;color:var(--red);transition:transform .25s}
+.aarrow.open{transform:rotate(180deg)}
+.abody{display:none;padding:0 22px 24px}
+.abody.open{display:block}
+
+.atitle{font-size:17px;font-weight:900;color:var(--text);font-family:'Noto Serif KR',serif;padding:18px 0 6px;border-bottom:2px solid var(--red);margin-bottom:16px}
+.asec{margin-bottom:18px}
+.asectitle{font-size:12px;font-weight:800;color:#fff;padding:5px 12px;border-radius:6px;display:inline-block;margin-bottom:11px}
+.s1{background:#1d4ed8}.s2{background:#059669}.s3{background:#7c3aed}
+.s4{background:#d97706}.s5{background:#dc2626}.s6{background:#0d9488}.s7{background:#be185d}
+
+.ap{font-size:13px;color:var(--text2);line-height:1.85;margin-bottom:10px}
+
+.atable{width:100%;border-collapse:collapse;font-size:12px;margin:8px 0 12px}
+.atable th{background:var(--surface2);color:var(--text2);font-weight:700;padding:8px 12px;border:1px solid var(--border);text-align:center}
+.atable td{padding:8px 12px;border:1px solid var(--border);vertical-align:top;line-height:1.6}
+.atable td:first-child{font-weight:600;color:var(--red);background:var(--redbg);text-align:center;white-space:nowrap}
+.atable tr:nth-child(even) td:not(:first-child){background:#fafbfd}
+
+.aol{padding-left:0;list-style:none;display:flex;flex-direction:column;gap:9px;margin:6px 0}
+.aol li{display:flex;gap:10px;align-items:flex-start;font-size:13px;color:var(--text2);line-height:1.7}
+.onum{flex-shrink:0;width:22px;height:22px;border-radius:50%;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;margin-top:1px;color:#fff}
+.on1{background:#1d4ed8}.on2{background:#059669}.on3{background:#7c3aed}
+.on4{background:#d97706}.on5{background:#dc2626}.on6{background:#0d9488}
+
+.sub{margin-top:5px;display:flex;flex-direction:column;gap:3px}
+.si{display:flex;gap:8px;font-size:12px;color:var(--text3)}
+.si::before{content:'▸';color:#ef4444;flex-shrink:0}
+
+.dbox{background:#fafafa;border:1px solid var(--border);border-left:3px solid var(--red);border-radius:8px;padding:12px 16px;margin:10px 0;font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--text2);line-height:1.8;overflow-x:auto;white-space:pre}
+
+.kbox{border-radius:8px;padding:12px 16px;margin:10px 0;font-size:12px;line-height:1.75}
+.kb-blue{background:var(--bluebg);border:1px solid var(--blb);color:#1e40af}
+.kb-green{background:var(--gbg);border:1px solid var(--gb);color:var(--green)}
+.kb-ora{background:var(--obg);border:1px solid var(--ob);color:var(--ora)}
+.kb-red{background:var(--redbg);border:1px solid var(--rdb);color:var(--red)}
+.kb-pur{background:var(--pubg);border:1px solid var(--pub);color:var(--pur)}
+.kb-tea{background:var(--tbg);border:1px solid var(--tb);color:var(--tea)}
+.kbt{font-weight:700;margin-bottom:4px;font-size:11px;letter-spacing:0.4px}
+
+.concl{background:linear-gradient(135deg,var(--redbg),var(--pubg));border:1px solid var(--rdb);border-radius:8px;padding:14px 16px;margin-top:14px}
+.concl-title{font-weight:700;color:var(--red);font-size:12px;margin-bottom:6px}
+.concl p{font-size:12px;color:var(--text2);line-height:1.75}
+
+.chips{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px}
+.chip{font-size:11px;padding:3px 10px;border-radius:6px;font-weight:600}
+.ct{background:var(--obg);color:var(--ora);border:1px solid var(--ob)}
+.cp{background:var(--gbg);color:var(--green);border:1px solid var(--gb)}
+.cs{background:var(--redbg);color:var(--red);border:1px solid var(--rdb)}
+
+.short-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:10px 0}
+@media(max-width:640px){.short-grid{grid-template-columns:1fr}}
+.scard{background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:11px 13px}
+.scard-title{font-size:11px;font-weight:700;color:var(--red);margin-bottom:5px}
+.scard p{font-size:12px;color:var(--text2);line-height:1.7}
+
+.q-counter{font-size:11px;color:var(--text4);margin-bottom:14px;font-weight:600;letter-spacing:0.5px}
+</style>
+</head>
+<body>
+
+<header class="hdr">
+  <div class="hi">
+    <div class="heyebrow">🔴 보안 공격기법 · SECURITY ATTACK TECHNIQUES</div>
+    <div class="htitle">컴퓨터시스템응용기술사<br>스푸핑 / DoS · DDoS 공격기법 기출유형 문제 &amp; 모범답안</div>
+    <div class="hsub">단답형 5문제 (1~2페이지) + 논술형 5문제 (3~4페이지) · 전 문항 모범답안 수록</div>
+    <div class="hpills">
+      <span class="hpill">스푸핑 전 유형</span>
+      <span class="hpill">DoS · DDoS · DRDoS</span>
+      <span class="hpill">APT · 사이버킬체인</span>
+      <span class="hpill">대응 기법 완전 정리</span>
+    </div>
+  </div>
+</header>
+
+<nav class="type-nav">
+  <button class="type-btn active" onclick="showType(0,this)">
+    📝 단답형 문제
+    <span class="type-badge tb-short">1~2페이지 · 5문제</span>
+  </button>
+  <button class="type-btn" onclick="showType(1,this)">
+    📄 논술형 문제
+    <span class="type-badge tb-long">3~4페이지 · 5문제</span>
+  </button>
+</nav>
+
+<!-- ═══════════════ 단답형 ═══════════════ -->
+<div class="type-panel active" id="tp0">
+  <nav class="q-nav">
+    <button class="q-btn active" onclick="showQ(0,this,'tp0')">①IP스푸핑</button>
+    <button class="q-btn" onclick="showQ(1,this,'tp0')">②ARP스푸핑</button>
+    <button class="q-btn" onclick="showQ(2,this,'tp0')">③DNS스푸핑</button>
+    <button class="q-btn" onclick="showQ(3,this,'tp0')">④DoS 유형</button>
+    <button class="q-btn" onclick="showQ(4,this,'tp0')">⑤세션하이재킹</button>
+  </nav>
+  <div class="main">
+
+<!-- S1 IP 스푸핑 -->
+<div class="q-panel active" id="tp0q0">
+<div class="q-counter">📝 단답형 1번 / 5번</div>
+<div class="qcard">
+  <div class="qhdr">
+    <span class="qdomain badge-sec">보안 / 공격기법</span>
+    <div class="qmeta">
+      <div class="qtype-lbl">1교시 단답형 · 10~15점 · 1~2페이지 분량</div>
+      <div class="qtitle">IP 스푸핑(IP Spoofing)의 개념, 동작 원리, 공격 절차 및 대응 방안을 설명하시오.</div>
+    </div>
+  </div>
+  <div class="qbody">
+    <div class="qhints">
+      <span class="qhint">TCP/IP 계층 연계</span><span class="qhint">신뢰 관계 공격</span><span class="qhint">ingress filtering 필수</span>
+    </div>
+  </div>
+  <div class="acard">
+    <button class="atoggle" onclick="toggleA(this)">
+      <span class="alabel">📄 모범 답안 보기</span><span class="aarrow">▼</span>
+    </button>
+    <div class="abody">
+      <div class="atitle">IP 스푸핑의 개념·동작 원리·공격 절차 및 대응 방안</div>
+      <div class="chips">
+        <span class="chip ct">⏱ 목표 15분</span>
+        <span class="chip cp">📄 1.5~2페이지</span>
+        <span class="chip cs">💯 10~15점</span>
+      </div>
+      <div class="asec">
+        <div class="asectitle s1">Ⅰ. 개념</div>
+        <div class="ap">IP 스푸핑(IP Spoofing)은 공격자가 IP 패킷의 출발지 IP 주소(Source IP)를 신뢰받는 다른 호스트의 주소로 위조하여, 피해자 시스템이 공격자를 신뢰할 수 있는 호스트로 착각하게 만드는 네트워크 계층(L3) 공격 기법이다. TCP의 3-Way Handshake 신뢰 관계를 악용하며, DoS·세션 하이재킹·반사 공격의 기반이 된다.</div>
+      </div>
+      <div class="asec">
+        <div class="asectitle s2">Ⅱ. 동작 원리 및 공격 절차</div>
+        <div class="dbox">IP 스푸핑 공격 절차 (Blind Spoofing 기준)
+
+[사전 단계]
+ ① 공격자가 피해자(B)와 신뢰 관계에 있는 신뢰 호스트(A) 식별
+ ② 신뢰 호스트(A)를 SYN Flood 등으로 무력화 (응답 불가 상태)
+
+[공격 단계]
+ ③ 공격자가 출발지 IP를 A의 IP로 위조한 SYN 패킷 → 피해자(B) 전송
+ ④ 피해자(B)가 SYN-ACK를 A(위조된 IP)로 응답 → 공격자는 못 받음
+ ⑤ 공격자가 B의 ISN(초기 순서번호)을 예측하여 ACK 패킷 전송
+    (Blind Spoofing: 응답 패킷 미수신 상태에서 ISN 추측)
+ ⑥ B는 신뢰 호스트 A로부터의 연결로 인식 → 공격자의 명령 수행</div>
+      </div>
+      <div class="asec">
+        <div class="asectitle s3">Ⅲ. 공격 유형 분류</div>
+        <table class="atable">
+          <tr><th>유형</th><th>설명</th><th>활용 공격</th></tr>
+          <tr><td>Blind Spoofing</td><td>공격자가 응답 패킷을 받지 못하는 상태에서 ISN 추측으로 공격. 동일 네트워크 외부에서 수행</td><td>신뢰 관계 우회, DoS</td></tr>
+          <tr><td>Non-Blind Spoofing</td><td>공격자가 피해자와 같은 서브넷에 있어 응답 패킷 스니핑 가능. ISN 추측 불필요</td><td>세션 하이재킹 전 단계</td></tr>
+          <tr><td>반사 공격<br>(Reflection)</td><td>출발지 IP를 피해자 IP로 위조하여 반사 서버로 대량 요청. 반사 서버가 피해자에게 응답 전송</td><td>DRDoS, Smurf Attack</td></tr>
+        </table>
+      </div>
+      <div class="asec">
+        <div class="asectitle s4">Ⅳ. 대응 방안</div>
+        <table class="atable">
+          <tr><th>대응 기법</th><th>내용</th><th>적용 계층</th></tr>
+          <tr><td>Ingress Filtering<br>(RFC 2827)</td><td>라우터·방화벽에서 내부 네트워크 주소를 출발지로 하는 외부 유입 패킷 차단. 위조 IP 패킷 입구 차단</td><td>네트워크(L3)</td></tr>
+          <tr><td>Egress Filtering</td><td>내부에서 출발지 IP가 자사 IP 대역이 아닌 패킷의 외부 발신 차단</td><td>네트워크(L3)</td></tr>
+          <tr><td>uRPF<br>(Unicast RPF)</td><td>라우팅 테이블을 역방향으로 검사하여 출발지 IP의 경로가 수신 인터페이스와 일치하지 않으면 패킷 폐기</td><td>라우터</td></tr>
+          <tr><td>ISN 랜덤화</td><td>TCP 초기 순서번호를 예측 불가능하게 랜덤 생성. Blind Spoofing의 ISN 추측 무력화</td><td>전송(L4)</td></tr>
+          <tr><td>IPsec</td><td>IP 계층에서 패킷 출발지 인증(AH 헤더). 위조 IP 패킷 인증 실패로 폐기</td><td>네트워크(L3)</td></tr>
+        </table>
+      </div>
+      <div class="concl">
+        <div class="concl-title">Ⅴ. 결론 — 감리 포인트</div>
+        <p>IP 스푸핑은 단독 공격보다 DDoS·세션 하이재킹·ARP 스푸핑의 선행 단계로 활용된다. 네트워크 장비 감리 시 Ingress/Egress Filtering 설정 여부, uRPF 활성화, 경계 라우터의 ACL 정책을 필수 점검항목으로 확인해야 한다.</p>
+      </div>
+    </div>
+  </div>
+</div>
+</div><!-- /tp0q0 -->
+
+<!-- S2 ARP 스푸핑 -->
+<div class="q-panel" id="tp0q1">
+<div class="q-counter">📝 단답형 2번 / 5번</div>
+<div class="qcard">
+  <div class="qhdr">
+    <span class="qdomain badge-sec">보안 / 공격기법</span>
+    <div class="qmeta">
+      <div class="qtype-lbl">1교시 단답형 · 10~15점 · 1~2페이지 분량</div>
+      <div class="qtitle">ARP 스푸핑(ARP Spoofing)의 개념, 공격 원리, ARP 캐시 포이즈닝과의 관계 및 대응 방안을 설명하시오.</div>
+    </div>
+  </div>
+  <div class="qbody">
+    <div class="qhints">
+      <span class="qhint">데이터링크 계층(L2)</span><span class="qhint">MITM 선행 공격</span><span class="qhint">Dynamic ARP Inspection</span>
+    </div>
+  </div>
+  <div class="acard">
+    <button class="atoggle" onclick="toggleA(this)">
+      <span class="alabel">📄 모범 답안 보기</span><span class="aarrow">▼</span>
+    </button>
+    <div class="abody">
+      <div class="atitle">ARP 스푸핑의 개념·공격 원리·ARP 캐시 포이즈닝 및 대응 방안</div>
+      <div class="chips">
+        <span class="chip ct">⏱ 목표 15분</span>
+        <span class="chip cp">📄 1.5~2페이지</span>
+        <span class="chip cs">💯 10~15점</span>
+      </div>
+      <div class="asec">
+        <div class="asectitle s1">Ⅰ. ARP 프로토콜 개념 및 취약점</div>
+        <div class="ap">ARP(Address Resolution Protocol)는 IP 주소로부터 MAC 주소를 얻기 위한 데이터링크 계층(L2) 프로토콜이다. ARP는 설계상 <strong>비인증(Stateless)</strong> 방식으로, 요청 없이 수신한 ARP Reply도 무조건 캐시에 저장하는 취약점(Gratuitous ARP 악용)이 있다. ARP 스푸핑은 이 취약점을 이용해 피해자의 ARP 캐시를 위조하는 공격이다.</div>
+      </div>
+      <div class="asec">
+        <div class="asectitle s2">Ⅱ. 공격 원리 및 ARP 캐시 포이즈닝</div>
+        <div class="dbox">ARP 스푸핑 / ARP 캐시 포이즈닝 공격 흐름
+
+[정상 환경]
+  PC-A (IP:192.168.1.2) ←→ 게이트웨이 (IP:192.168.1.1, MAC:AA:AA)
+
+[공격 수행 — 공격자 MAC: CC:CC]
+ ① 공격자가 PC-A에게 위조 ARP Reply 전송:
+    "192.168.1.1 (게이트웨이)의 MAC은 CC:CC(공격자)입니다"
+ ② 공격자가 게이트웨이에게 위조 ARP Reply 전송:
+    "192.168.1.2 (PC-A)의 MAC은 CC:CC(공격자)입니다"
+
+[결과 — MITM(중간자 공격) 성립]
+  PC-A → (CC:CC 경유) → 게이트웨이  : 공격자가 패킷 도청·변조
+  ARP 캐시 포이즈닝: PC-A와 게이트웨이의 ARP 캐시 테이블이 위조된 상태</div>
+        <div class="kbox kb-red">
+          <div class="kbt">ARP 스푸핑 vs ARP 캐시 포이즈닝</div>
+          • <strong>ARP 스푸핑</strong>: 위조된 ARP 응답 패킷을 전송하는 공격 행위 자체<br>
+          • <strong>ARP 캐시 포이즈닝</strong>: ARP 스푸핑의 결과로 피해자의 ARP 캐시 테이블이 오염된 상태<br>
+          → 원인(스푸핑) → 결과(포이즈닝)의 관계. 혼용하여 사용되기도 함
+        </div>
+      </div>
+      <div class="asec">
+        <div class="asectitle s3">Ⅲ. 파생 공격</div>
+        <div class="short-grid">
+          <div class="scard"><div class="scard-title">🕵️ MITM (중간자 공격)</div><p>도청·변조: HTTPS 트래픽도 SSL Strip으로 평문 전환 후 가로채기 가능</p></div>
+          <div class="scard"><div class="scard-title">🚫 ARP 기반 DoS</div><p>게이트웨이의 MAC을 존재하지 않는 주소로 위조 → 특정 호스트의 외부 통신 완전 차단</p></div>
+          <div class="scard"><div class="scard-title">🎣 피싱/세션 탈취</div><p>은행·포털 트래픽 가로채 쿠키·세션 토큰 탈취, 위조 로그인 페이지로 리다이렉트</p></div>
+          <div class="scard"><div class="scard-title">💉 악성코드 삽입</div><p>HTTP 응답에 악성 스크립트 삽입. 드라이브바이 다운로드 유발</p></div>
+        </div>
+      </div>
+      <div class="asec">
+        <div class="asectitle s4">Ⅳ. 대응 방안</div>
+        <table class="atable">
+          <tr><th>대응 기법</th><th>내용</th></tr>
+          <tr><td>정적 ARP 항목<br>(Static ARP)</td><td>게이트웨이·서버 등 중요 호스트의 IP-MAC 매핑을 정적으로 설정. ARP Reply 무시. 소규모 환경에 적합</td></tr>
+          <tr><td>DAI<br>(Dynamic ARP Inspection)</td><td>스위치에서 DHCP Snooping 바인딩 테이블 기반으로 ARP 패킷의 IP-MAC 일치 여부 검증. 불일치 패킷 차단. IEEE 802.1X 연계</td></tr>
+          <tr><td>DHCP Snooping</td><td>신뢰할 수 있는 포트(Trusted Port)를 통한 DHCP 응답만 허용. IP-MAC-포트 바인딩 테이블 생성으로 DAI 기반 제공</td></tr>
+          <tr><td>암호화 통신</td><td>HTTPS·TLS 강제 사용(HSTS)으로 도청 무력화. SSL Strip 방지</td></tr>
+          <tr><td>ARP 탐지 도구</td><td>ARPwatch, XArp 등으로 ARP 캐시 변경 실시간 모니터링·경보</td></tr>
+        </table>
+      </div>
+      <div class="concl">
+        <div class="concl-title">Ⅴ. 결론</div>
+        <p>ARP 스푸핑은 내부 네트워크에서 가장 빈번히 발생하는 MITM 공격의 기반 기술이다. 스위치 보안 설정(DAI + DHCP Snooping + 포트 보안)의 3중 적용과 전 구간 암호화(Zero Trust 네트워크)가 핵심 대응 전략이다.</p>
+      </div>
+    </div>
+  </div>
+</div>
+</div><!-- /tp0q1 -->
+
+<!-- S3 DNS 스푸핑 -->
+<div class="q-panel" id="tp0q2">
+<div class="q-counter">📝 단답형 3번 / 5번</div>
+<div class="qcard">
+  <div class="qhdr">
+    <span class="qdomain badge-sec">보안 / 공격기법</span>
+    <div class="qmeta">
+      <div class="qtype-lbl">1교시 단답형 · 10~15점 · 1~2페이지 분량</div>
+      <div class="qtitle">DNS 스푸핑(DNS Spoofing)과 DNS 캐시 포이즈닝(DNS Cache Poisoning)의 개념, 공격 절차 및 DNSSEC을 포함한 대응 방안을 설명하시오.</div>
+    </div>
+  </div>
+  <div class="qbody">
+    <div class="qhints">
+      <span class="qhint">Kaminsky 공격</span><span class="qhint">DNSSEC 필수</span><span class="qhint">DNS over HTTPS 최신 트렌드</span>
+    </div>
+  </div>
+  <div class="acard">
+    <button class="atoggle" onclick="toggleA(this)">
+      <span class="alabel">📄 모범 답안 보기</span><span class="aarrow">▼</span>
+    </button>
+    <div class="abody">
+      <div class="atitle">DNS 스푸핑·캐시 포이즈닝 개념·공격 절차 및 DNSSEC 대응</div>
+      <div class="chips">
+        <span class="chip ct">⏱ 목표 15분</span>
+        <span class="chip cp">📄 1.5~2페이지</span>
+        <span class="chip cs">💯 10~15점</span>
+      </div>
+      <div class="asec">
+        <div class="asectitle s1">Ⅰ. 개념 및 DNS 취약점</div>
+        <div class="ap">DNS 스푸핑은 공격자가 위조된 DNS 응답을 피해자에게 먼저 전송하여 사용자를 악성 IP로 유도하는 공격이다. DNS 프로토콜은 UDP 기반(포트 53)으로 설계상 응답 인증 메커니즘이 없어, 먼저 도착한 응답을 정답으로 처리하는 취약점을 가진다.</div>
+      </div>
+      <div class="asec">
+        <div class="asectitle s2">Ⅱ. 공격 절차</div>
+        <div class="dbox">DNS 스푸핑 공격 흐름 (로컬 네트워크 기준)
+
+ ① 공격자가 ARP 스푸핑으로 MITM 위치 선점
+ ② 피해자 PC → DNS Query: "www.bank.co.kr의 IP는?" (UDP/53)
+ ③ 공격자가 실제 DNS 서버보다 먼저 위조 DNS 응답 전송:
+    "www.bank.co.kr → 공격자 IP (1.2.3.4)"
+ ④ 피해자 PC가 위조 응답을 캐시에 저장 (DNS 캐시 포이즈닝)
+ ⑤ 피해자가 피싱 사이트(공격자 서버)에 접속 → 자격증명 탈취
+
+DNS 캐시 포이즈닝 (Kaminsky 공격, 2008):
+ ① 공격자가 재귀 DNS 서버에 존재하지 않는 하위 도메인 대량 쿼리
+    ex) random1234.bank.co.kr
+ ② 재귀 서버가 권한 서버에 질의하는 동안,
+    공격자가 트랜잭션 ID(16bit = 65536 경우의 수)를 무차별 대입
+    위조 응답 + NS 레코드 조작: bank.co.kr → 공격자 DNS 서버
+ ③ 성공 시 전체 도메인 영역(zone) 하이재킹</div>
+      </div>
+      <div class="asec">
+        <div class="asectitle s3">Ⅲ. 대응 방안 — DNSSEC 중심</div>
+        <table class="atable">
+          <tr><th>대응 기법</th><th>내용</th><th>효과</th></tr>
+          <tr><td>DNSSEC<br>(DNS Security Extension)</td><td>DNS 응답에 디지털 서명(RSA/ECDSA) 추가. 공개키 기반으로 응답 무결성·인증 검증. RRSIG·DNSKEY·DS·NSEC 레코드 활용</td><td>위조 응답 탐지·차단 (근본 해결책)</td></tr>
+          <tr><td>DNS over HTTPS<br>(DoH, RFC 8484)</td><td>DNS 질의·응답을 HTTPS(443) 암호화 터널로 전송. 도청·스푸핑 방지</td><td>전송 구간 암호화 (Cloudflare 1.1.1.1)</td></tr>
+          <tr><td>DNS over TLS<br>(DoT, RFC 7858)</td><td>DNS를 TLS(853) 암호화 채널로 전송</td><td>전송 구간 암호화</td></tr>
+          <tr><td>Source Port 랜덤화</td><td>DNS 쿼리 시 출발지 포트를 랜덤 선택. 트랜잭션 ID(16bit) + 포트(16bit) 조합으로 예측 공간 확장 (2^32)</td><td>Kaminsky 공격 완화</td></tr>
+          <tr><td>TTL 관리</td><td>짧은 TTL로 포이즈닝된 캐시의 영향 기간 최소화</td><td>피해 범위 축소</td></tr>
+        </table>
+        <div class="kbox kb-blue">
+          <div class="kbt">📌 DNSSEC 검증 흐름</div>
+          DNS 응답 수신 → RRSIG(디지털 서명) 추출 → DNSKEY(공개키) 조회<br>
+          → 서명 검증 → 일치 시 신뢰 / 불일치 시 SERVFAIL 반환 (응답 폐기)
+        </div>
+      </div>
+      <div class="concl">
+        <div class="concl-title">Ⅳ. 결론</div>
+        <p>DNS 스푸핑은 피싱·파밍 공격의 핵심 수단으로, DNSSEC 도입이 근본적 해결책이나 전 세계 도입률이 낮다는 한계가 있다. 단기적으로는 Source Port 랜덤화·DoH/DoT를 적용하고, 장기적으로 DNSSEC 전면 도입과 DANE(DNS-based Authentication of Named Entities)을 통한 TLS 인증서 검증 연계가 권장된다.</p>
+      </div>
+    </div>
+  </div>
+</div>
+</div><!-- /tp0q2 -->
+
+<!-- S4 DoS 유형 -->
+<div class="q-panel" id="tp0q3">
+<div class="q-counter">📝 단답형 4번 / 5번</div>
+<div class="qcard">
+  <div class="qhdr">
+    <span class="qdomain badge-sec">보안 / 공격기법</span>
+    <div class="qmeta">
+      <div class="qtype-lbl">1교시 단답형 · 10~15점 · 1~2페이지 분량</div>
+      <div class="qtitle">서비스 거부 공격(DoS)의 주요 유형인 SYN Flooding, Smurf Attack, Ping of Death, Teardrop Attack의 공격 원리와 대응 방안을 비교 설명하시오.</div>
+    </div>
+  </div>
+  <div class="qbody">
+    <div class="qhints">
+      <span class="qhint">TCP/IP 취약점 계층별 분류</span><span class="qhint">SYN Cookie 필수</span><span class="qhint">비교표 구성</span>
+    </div>
+  </div>
+  <div class="acard">
+    <button class="atoggle" onclick="toggleA(this)">
+      <span class="alabel">📄 모범 답안 보기</span><span class="aarrow">▼</span>
+    </button>
+    <div class="abody">
+      <div class="atitle">DoS 주요 유형 — SYN Flooding·Smurf·Ping of Death·Teardrop 비교</div>
+      <div class="chips">
+        <span class="chip ct">⏱ 목표 15분</span>
+        <span class="chip cp">📄 1.5~2페이지</span>
+        <span class="chip cs">💯 10~15점</span>
+      </div>
+      <div class="asec">
+        <div class="asectitle s1">Ⅰ. DoS 공격 개요</div>
+        <div class="ap">서비스 거부 공격(DoS: Denial of Service)은 공격자가 대량의 패킷이나 비정상 패킷을 전송하여 피해자 시스템의 자원(CPU·메모리·대역폭·연결)을 고갈시켜 정상 사용자의 서비스 이용을 불가능하게 하는 공격이다.</div>
+      </div>
+      <div class="asec">
+        <div class="asectitle s2">Ⅱ. 유형별 공격 원리 및 대응 비교</div>
+        <table class="atable">
+          <tr><th>공격 유형</th><th>악용 취약점</th><th>공격 원리</th><th>대응 방안</th></tr>
+          <tr><td>SYN Flooding</td><td>TCP 3-Way Handshake의 Half-Open 연결 자원 소모</td><td>위조 출발지 IP로 대량 SYN 전송 → 서버가 SYN-ACK 후 대기 (Backlog 큐 고갈, 정상 연결 불가)</td><td>SYN Cookie, SYN Backlog 크기 증가, SYN Rate Limiting, 방화벽 임계값 설정</td></tr>
+          <tr><td>Smurf Attack</td><td>ICMP + 브로드캐스트 + IP 스푸핑 조합</td><td>출발지 IP를 피해자 IP로 위조 → 브로드캐스트 주소로 ICMP Echo 전송 → 네트워크 내 모든 호스트가 피해자에게 ICMP Reply 폭주 (증폭 공격)</td><td>브로드캐스트 ICMP 비활성화(directed broadcast 차단), Ingress Filtering, 반사 네트워크 차단</td></tr>
+          <tr><td>Ping of Death</td><td>IP 단편화 재조합 시 버퍼 오버플로</td><td>IP 최대 크기(65,535 byte) 초과 ICMP 패킷을 단편화하여 전송. 재조합 시 버퍼 오버플로 → 시스템 충돌·재부팅</td><td>ICMP 패킷 크기 필터링(방화벽), OS 패치(재조합 버퍼 크기 검증), 대형 ICMP 패킷 차단</td></tr>
+          <tr><td>Teardrop Attack</td><td>IP 단편화 오프셋 값 조작</td><td>IP 단편 패킷의 오프셋 값을 중복·겹치도록 위조하여 전송. 재조합 과정에서 오버랩 처리 오류 → 커널 크래시·시스템 다운</td><td>IP 단편 오프셋 검증 (OS 패치), 단편 패킷 재조합 타임아웃 설정, 방화벽에서 비정상 단편 차단</td></tr>
+        </table>
+      </div>
+      <div class="asec">
+        <div class="asectitle s3">Ⅲ. SYN Cookie 동작 원리 (SYN Flooding 핵심 대응)</div>
+        <div class="dbox">SYN Cookie 동작 방식
+
+정상 TCP:  Client SYN → Server: Backlog 큐에 저장 후 SYN-ACK
+SYN Cookie: Client SYN → Server: 큐 미사용,
+             SYN-ACK의 ISN에 해시값(IP·포트·타임스탬프) 암호화 삽입
+             Client ACK 수신 시 ISN 검증 → 정상이면 연결 수립
+             → Backlog 큐를 사용하지 않아 SYN Flooding 무력화</div>
+      </div>
+      <div class="kbox kb-blue">
+        <div class="kbt">📌 계층별 분류 암기</div>
+        L3(네트워크): Smurf, Ping of Death, Teardrop<br>
+        L4(전송): SYN Flooding, ACK Flooding, UDP Flooding<br>
+        L7(응용): HTTP Flood, Slowloris, CC 공격
+      </div>
+      <div class="concl">
+        <div class="concl-title">Ⅳ. 결론</div>
+        <p>Smurf·Ping of Death·Teardrop은 현대 OS 패치로 대부분 완화되었으나, SYN Flooding은 여전히 DDoS의 핵심 공격으로 사용된다. SYN Cookie + Rate Limiting + Anti-DDoS 장비의 조합이 현실적 방어 전략이다.</p>
+      </div>
+    </div>
+  </div>
+</div>
+</div><!-- /tp0q3 -->
+
+<!-- S5 세션 하이재킹 -->
+<div class="q-panel" id="tp0q4">
+<div class="q-counter">📝 단답형 5번 / 5번</div>
+<div class="qcard">
+  <div class="qhdr">
+    <span class="qdomain badge-sec">보안 / 공격기법</span>
+    <div class="qmeta">
+      <div class="qtype-lbl">1교시 단답형 · 10~15점 · 1~2페이지 분량</div>
+      <div class="qtitle">세션 하이재킹(Session Hijacking)의 개념, TCP 세션 하이재킹의 공격 절차, 웹 세션 하이재킹 기법 및 대응 방안을 설명하시오.</div>
+    </div>
+  </div>
+  <div class="qbody">
+    <div class="qhints">
+      <span class="qhint">TCP ISN 예측</span><span class="qhint">쿠키 탈취</span><span class="qhint">토큰 보안 최신 트렌드</span>
+    </div>
+  </div>
+  <div class="acard">
+    <button class="atoggle" onclick="toggleA(this)">
+      <span class="alabel">📄 모범 답안 보기</span><span class="aarrow">▼</span>
+    </button>
+    <div class="abody">
+      <div class="atitle">세션 하이재킹 — TCP 공격 절차·웹 세션 탈취 기법·대응 방안</div>
+      <div class="chips">
+        <span class="chip ct">⏱ 목표 15분</span>
+        <span class="chip cp">📄 1.5~2페이지</span>
+        <span class="chip cs">💯 10~15점</span>
+      </div>
+      <div class="asec">
+        <div class="asectitle s1">Ⅰ. 세션 하이재킹의 개념</div>
+        <div class="ap">세션 하이재킹(Session Hijacking)은 합법적으로 수립된 세션을 공격자가 중간에 탈취하여 인증된 사용자인 것처럼 서버와 통신하는 공격이다. TCP 계층에서의 시퀀스 번호 예측 또는 애플리케이션 계층에서의 세션 토큰·쿠키 탈취 방식으로 수행된다.</div>
+      </div>
+      <div class="asec">
+        <div class="asectitle s2">Ⅱ. TCP 세션 하이재킹 공격 절차</div>
+        <div class="dbox">TCP 세션 하이재킹 절차
+
+[전제] 공격자가 ARP 스푸핑으로 MITM 위치 확보
+
+① 공격자가 Client-Server 간 TCP 세션 모니터링
+   → 현재 시퀀스 번호(SEQ)·확인응답 번호(ACK) 파악
+
+② 공격자가 클라이언트에게 RST 패킷 또는 대량 패킷 전송
+   → 클라이언트를 세션에서 이탈시킴 (Desynchronization)
+
+③ 공격자가 클라이언트로 위장하여 서버에 패킷 전송:
+   출발지IP = 클라이언트IP, SEQ = 서버가 기대하는 다음 번호
+
+④ 서버는 정상 클라이언트의 패킷으로 인식 → 세션 하이재킹 성공
+   공격자가 서버에 인증 없이 명령 실행 가능</div>
+      </div>
+      <div class="asec">
+        <div class="asectitle s3">Ⅲ. 웹 세션 하이재킹 기법</div>
+        <table class="atable">
+          <tr><th>기법</th><th>공격 방법</th><th>필요 조건</th></tr>
+          <tr><td>쿠키 스니핑</td><td>비암호화 HTTP 구간에서 세션 쿠키 도청 (ARP 스푸핑 + Wireshark)</td><td>MITM 위치, HTTP 평문 통신</td></tr>
+          <tr><td>XSS 기반 탈취</td><td>악성 JS 스크립트로 document.cookie 탈취 후 공격자 서버로 전송</td><td>XSS 취약점 존재, HttpOnly 플래그 미설정</td></tr>
+          <tr><td>세션 고정<br>(Session Fixation)</td><td>공격자가 미리 알고 있는 세션 ID를 피해자에게 부여. 피해자 로그인 후 동일 세션 ID로 접근</td><td>로그인 후 세션 ID 미갱신</td></tr>
+          <tr><td>URL 파라미터<br>세션 ID 노출</td><td>세션 ID가 URL에 포함될 때 Referer 헤더·로그를 통해 탈취</td><td>세션 ID URL 포함(JSESSIONID 등)</td></tr>
+          <tr><td>CSRF 연계</td><td>인증된 사용자의 세션으로 공격자가 의도한 요청을 강제 실행</td><td>CSRF 토큰 미적용</td></tr>
+        </table>
+      </div>
+      <div class="asec">
+        <div class="asectitle s4">Ⅳ. 대응 방안</div>
+        <table class="atable">
+          <tr><th>대응 계층</th><th>대응 방안</th><th>설명</th></tr>
+          <tr><td>전송 계층</td><td>TLS 전 구간 적용(HTTPS), HSTS</td><td>쿠키 스니핑·TCP 스니핑 무력화</td></tr>
+          <tr><td>쿠키 보안</td><td>Secure·HttpOnly·SameSite 플래그 설정</td><td>Secure: HTTPS만 전송 / HttpOnly: JS 접근 차단 / SameSite: CSRF 방지</td></tr>
+          <tr><td>세션 관리</td><td>로그인 후 세션 ID 재생성, 세션 만료 시간 단축</td><td>Session Fixation·토큰 재사용 방지</td></tr>
+          <tr><td>다중 검증</td><td>세션 ID 외 IP·User-Agent 바인딩 검증, MFA 적용</td><td>세션 탈취 후 이용 어렵게 함</td></tr>
+          <tr><td>입력 검증</td><td>CSP(Content Security Policy), XSS 방어</td><td>XSS 기반 쿠키 탈취 차단</td></tr>
+        </table>
+      </div>
+      <div class="concl">
+        <div class="concl-title">Ⅴ. 결론</div>
+        <p>세션 하이재킹은 인증 우회의 대표적 수단으로, 웹 환경에서는 XSS + 쿠키 탈취 조합이 가장 빈번하다. 전 구간 TLS(HTTPS) + HttpOnly/Secure 쿠키 + 로그인 후 세션 재생성의 3요소가 핵심 방어 조치이며, 최신 동향으로는 세션리스(Stateless) JWT 토큰 방식과 FIDO2 기반 패스키(Passkey)로의 전환이 세션 탈취 근본 해결책으로 주목된다.</p>
+      </div>
+    </div>
+  </div>
+</div>
+</div><!-- /tp0q4 -->
+
+  </div><!-- /main -->
+</div><!-- /tp0 -->
+
+<!-- ═══════════════ 논술형 ═══════════════ -->
+<div class="type-panel" id="tp1">
+  <nav class="q-nav">
+    <button class="q-btn active" onclick="showQ(0,this,'tp1')">①DDoS·DRDoS</button>
+    <button class="q-btn" onclick="showQ(1,this,'tp1')">②APT 공격</button>
+    <button class="q-btn" onclick="showQ(2,this,'tp1')">③랜섬웨어</button>
+    <button class="q-btn" onclick="showQ(3,this,'tp1')">④사이버킬체인</button>
+    <button class="q-btn" onclick="showQ(4,this,'tp1')">⑤공격 대응 체계</button>
+  </nav>
+  <div class="main">
+
+<!-- L1 DDoS·DRDoS -->
+<div class="q-panel active" id="tp1q0">
+<div class="q-counter">📄 논술형 1번 / 5번</div>
+<div class="qcard">
+  <div class="qhdr">
+    <span class="qdomain badge-sec">보안 / 공격기법</span>
+    <div class="qmeta">
+      <div class="qtype-lbl">2~4교시 논술형 · 25점 · 3~4페이지 분량</div>
+      <div class="qtitle">DDoS(분산 서비스 거부) 및 DRDoS(분산 반사 서비스 거부) 공격에 대하여 다음을 설명하시오.</div>
+    </div>
+  </div>
+  <div class="qbody">
+    <div class="qitems">
+      <div class="qitem"><span class="qlabel">가.</span><span>DoS·DDoS·DRDoS의 개념과 공격 구조 차이점</span></div>
+      <div class="qitem"><span class="qlabel">나.</span><span>DDoS 공격 유형 (볼류메트릭·프로토콜·애플리케이션 계층)과 대표 공격 기법</span></div>
+      <div class="qitem"><span class="qlabel">다.</span><span>DRDoS 공격 원리(반사·증폭 메커니즘)와 주요 프로토콜별 증폭 배율 및 종합 대응 방안</span></div>
+    </div>
+    <div class="qhints">
+      <span class="qhint">봇넷 구조 필수</span><span class="qhint">DNS·NTP 증폭 비교</span><span class="qhint">ISP·CDN 협력 대응</span>
+    </div>
+  </div>
+  <div class="acard">
+    <button class="atoggle" onclick="toggleA(this)">
+      <span class="alabel">📄 모범 답안 보기</span><span class="aarrow">▼</span>
+    </button>
+    <div class="abody">
+      <div class="atitle">DoS·DDoS·DRDoS 공격 구조·유형·증폭 원리 및 종합 대응 방안</div>
+      <div class="chips">
+        <span class="chip ct">⏱ 목표 30분</span>
+        <span class="chip cp">📄 3.5~4페이지</span>
+        <span class="chip cs">💯 25점</span>
+      </div>
+      <div class="asec">
+        <div class="asectitle s1">Ⅰ. 가. DoS·DDoS·DRDoS 개념 및 공격 구조 차이</div>
+        <table class="atable">
+          <tr><th>구분</th><th>개념</th><th>공격 주체</th><th>탐지 난이도</th><th>특징</th></tr>
+          <tr><td>DoS</td><td>단일 공격자가 피해자에게 직접 대량 패킷 전송</td><td>단일 호스트</td><td>낮음 (출발지 추적 용이)</td><td>공격자 IP 차단으로 방어 가능</td></tr>
+          <tr><td>DDoS</td><td>봇넷(좀비 PC 수만~수백만 대)이 일제히 피해자에게 공격 트래픽 전송</td><td>C&amp;C + 봇넷</td><td>높음 (분산 출발지)</td><td>출발지 차단으로 방어 어려움. 대역폭 고갈</td></tr>
+          <tr><td>DRDoS</td><td>출발지 IP를 피해자 IP로 위조한 요청을 반사 서버(Reflector)에 전송. 반사 서버의 응답이 피해자에게 집중</td><td>공격자 + 반사서버</td><td>매우 높음 (반사서버 정상 IP)</td><td>공격자 IP 은폐. 증폭(Amplification) 효과로 소규모 공격으로 대규모 피해</td></tr>
+        </table>
+        <div class="dbox">DDoS 봇넷 공격 구조
+
+[공격자] → C&amp;C 서버(명령) → [봇마스터]
+                                    ↓ 공격 명령
+         [봇넷: 감염 PC/IoT 수백만 대]
+                   ↓ ↓ ↓ (대량 트래픽)
+              [피해자 서버] ← 서비스 불가
+
+DRDoS 반사·증폭 구조:
+ [공격자(위조IP=피해자)]→ 반사서버 → [피해자]에게 대용량 응답 폭주
+ 증폭배율: 응답크기 / 요청크기</div>
+      </div>
+      <div class="asec">
+        <div class="asectitle s2">Ⅱ. 나. DDoS 공격 유형 분류</div>
+        <table class="atable">
+          <tr><th>유형</th><th>목표</th><th>대표 공격</th><th>탐지 기준</th></tr>
+          <tr><td>볼류메트릭<br>(Volumetric)</td><td>대역폭 고갈</td><td>UDP Flooding, ICMP Flooding, DNS 증폭, NTP 증폭. 수 Tbps 규모 가능</td><td>Bps(초당 비트), PPS(초당 패킷) 임계값</td></tr>
+          <tr><td>프로토콜<br>(Protocol)</td><td>서버·방화벽·L4 장비 연결 자원 고갈</td><td>SYN Flooding, ACK Flooding, Smurf. 방화벽 상태 테이블 고갈</td><td>SYN 수신/완료 비율, PPS 임계값</td></tr>
+          <tr><td>애플리케이션<br>(Application, L7)</td><td>서버 처리 자원(CPU·DB) 고갈</td><td>HTTP Flood(GET/POST), Slowloris(연결 점유), CC 공격(캐시 우회), SSL Exhaustion</td><td>RPS(초당 요청), 비정상 User-Agent, 세션 패턴</td></tr>
+        </table>
+        <div class="kbox kb-red">
+          <div class="kbt">Slowloris 공격 원리</div>
+          HTTP 연결을 맺은 후 헤더를 극도로 천천히 전송(완성하지 않음). 서버의 최대 동시 연결 수(MaxConnections) 고갈 → 정상 연결 불가. 소량의 패킷으로 대형 서버도 마비 가능
+        </div>
+      </div>
+      <div class="asec">
+        <div class="asectitle s3">Ⅲ. 다. DRDoS 증폭 원리 및 프로토콜별 증폭 배율</div>
+        <table class="atable">
+          <tr><th>반사 프로토콜</th><th>포트</th><th>증폭 배율</th><th>공격 방식</th></tr>
+          <tr><td>DNS</td><td>UDP/53</td><td>약 54배</td><td>ANY 쿼리 요청(수십B) → 대형 DNS 응답(수KB)</td></tr>
+          <tr><td>NTP</td><td>UDP/123</td><td>약 556배 (최대)</td><td>monlist 명령 요청(234B) → 최대 48개 클라이언트 목록 응답(46KB)</td></tr>
+          <tr><td>SSDP</td><td>UDP/1900</td><td>약 30배</td><td>UPnP 장치에 M-SEARCH 요청 → 디바이스 정보 응답</td></tr>
+          <tr><td>Memcached</td><td>UDP/11211</td><td>약 51,000배</td><td>대용량 데이터 저장 후 get 요청 → 저장된 데이터 전체 응답 (2018년 1.7Tbps 공격)</td></tr>
+          <tr><td>CLDAP</td><td>UDP/389</td><td>약 70배</td><td>MS LDAP 서비스 악용</td></tr>
+          <tr><td>Chargen</td><td>UDP/19</td><td>약 358배</td><td>문자 생성 프로토콜 악용</td></tr>
+        </table>
+        <div class="asectitle s4" style="margin-top:16px">Ⅳ. 종합 대응 방안</div>
+        <ul class="aol">
+          <li><span class="onum on4">1</span><div><strong>네트워크 계층 대응</strong>
+            <div class="sub">
+              <div class="si">Ingress/Egress Filtering(RFC 2827): IP 위조 패킷 입·출구 차단으로 DRDoS 공격자 은폐 방지</div>
+              <div class="si">BCP38/BCP84 준수: ISP 차원의 출발지 IP 유효성 검증</div>
+              <div class="si">Null Routing(Blackhole): 공격 트래픽 목적지를 Null로 라우팅(전체 차단). BGP Blackhole 커뮤니티 활용</div>
+            </div>
+          </div></li>
+          <li><span class="onum on4">2</span><div><strong>ISP·CDN 협력 대응 (업스트림 정화)</strong>
+            <div class="sub">
+              <div class="si">ISP의 업스트림 차단(Upstream Filtering): 공격 트래픽이 피해자 네트워크 도달 전 ISP 단에서 차단</div>
+              <div class="si">BGP Anycast: CDN(Cloudflare, Akamai)의 전 세계 분산 흡수. 수백 Tbps 용량으로 볼류메트릭 흡수</div>
+              <div class="si">Scrubbing Center: 트래픽을 세정 센터로 우회하여 공격 트래픽 제거 후 정상 트래픽만 전달</div>
+            </div>
+          </div></li>
+          <li><span class="onum on4">3</span><div><strong>애플리케이션 계층 대응</strong>
+            <div class="sub">
+              <div class="si">Rate Limiting: 출발지 IP당 초당 요청 수 제한. 임계값 초과 시 차단</div>
+              <div class="si">CAPTCHA·JS Challenge: 봇·정상 클라이언트 구분. L7 봇 트래픽 차단</div>
+              <div class="si">WAF(웹 애플리케이션 방화벽): HTTP Flood·Slowloris 패턴 탐지·차단</div>
+            </div>
+          </div></li>
+          <li><span class="onum on4">4</span><div><strong>반사 서버 취약점 조치</strong>
+            <div class="sub">
+              <div class="si">NTP monlist 비활성화, DNS 오픈 리졸버 제거, Memcached UDP 비활성화</div>
+              <div class="si">Source Address Validation(BCP38): 반사 서버가 위조 IP 응답을 보내지 않도록 ISP 단 설정</div>
+            </div>
+          </div></li>
+        </ul>
+      </div>
+      <div class="concl">
+        <div class="concl-title">Ⅴ. 결론</div>
+        <p>DDoS·DRDoS는 단일 조직의 방어만으로는 한계가 있으며, ISP·CDN·CERT 간 협력이 필수이다. 국내에서는 KISA의 「DDoS 대피소」 서비스를 통해 중소기업·공공기관에 무료 트래픽 세정 서비스를 제공하고 있다. 최근 IoT 봇넷(Mirai 변종)과 AI 기반 적응형 DDoS 공격의 증가에 대비하여 ML 기반 이상 트래픽 탐지 시스템 도입이 시급하다.</p>
+      </div>
+    </div>
+  </div>
+</div>
+</div><!-- /tp1q0 -->
+
+<!-- L2 APT 공격 -->
+<div class="q-panel" id="tp1q1">
+<div class="q-counter">📄 논술형 2번 / 5번</div>
+<div class="qcard">
+  <div class="qhdr">
+    <span class="qdomain badge-sec">보안 / 공격기법</span>
+    <div class="qmeta">
+      <div class="qtype-lbl">2~4교시 논술형 · 25점 · 3~4페이지 분량</div>
+      <div class="qtitle">APT(Advanced Persistent Threat) 공격에 대하여 다음을 설명하시오.</div>
+    </div>
+  </div>
+  <div class="qbody">
+    <div class="qitems">
+      <div class="qitem"><span class="qlabel">가.</span><span>APT 공격의 개념, 특성 및 일반 공격과의 차이점</span></div>
+      <div class="qitem"><span class="qlabel">나.</span><span>APT 공격 단계별 절차 (정찰→무기화→전달→익스플로잇→설치→C&amp;C→목표달성)</span></div>
+      <div class="qitem"><span class="qlabel">다.</span><span>APT 공격에 활용되는 주요 기법 (스피어피싱·워터링홀·제로데이·측면 이동)과 단계별 대응 방안</span></div>
+    </div>
+    <div class="qhints">
+      <span class="qhint">사이버킬체인 7단계</span><span class="qhint">MITRE ATT&amp;CK 연계</span><span class="qhint">공공기관 침해 사례</span>
+    </div>
+  </div>
+  <div class="acard">
+    <button class="atoggle" onclick="toggleA(this)">
+      <span class="alabel">📄 모범 답안 보기</span><span class="aarrow">▼</span>
+    </button>
+    <div class="abody">
+      <div class="atitle">APT 공격 특성·킬체인 절차·주요 기법 및 단계별 대응 방안</div>
+      <div class="chips">
+        <span class="chip ct">⏱ 목표 30분</span>
+        <span class="chip cp">📄 3.5~4페이지</span>
+        <span class="chip cs">💯 25점</span>
+      </div>
+      <div class="asec">
+        <div class="asectitle s1">Ⅰ. 가. APT의 개념 및 일반 공격과의 차이</div>
+        <div class="ap">APT(지능형 지속위협)는 특정 표적(국가기관·방산·금융·인프라)을 정해 수개월~수년에 걸쳐 은밀하게 침투·내부 장기 잠복·정보 탈취를 수행하는 고도화된 사이버 공격이다. 국가 지원(State-Sponsored) 해킹 그룹이 주로 수행하며, 제로데이 취약점·커스텀 악성코드를 활용한다.</div>
+        <table class="atable">
+          <tr><th>비교 항목</th><th>일반 사이버 공격</th><th>APT 공격</th></tr>
+          <tr><td>목적</td><td>금전적 이익(불특정 다수)</td><td>특정 표적 정보 탈취·파괴·장기 거점 확보</td></tr>
+          <tr><td>표적</td><td>불특정 다수</td><td>특정 조직·산업·국가</td></tr>
+          <tr><td>지속 기간</td><td>단기(수 시간~수 일)</td><td>장기(수 개월~수 년)</td></tr>
+          <tr><td>공격 도구</td><td>공개 익스플로잇·기성 악성코드</td><td>커스텀 RAT·제로데이·은닉 루트킷</td></tr>
+          <tr><td>탐지 난이도</td><td>낮음~중간</td><td>매우 높음 (정상 행위 위장, Living off the Land)</td></tr>
+          <tr><td>주체</td><td>해킹 그룹, 스크립트 키디</td><td>국가 지원 APT 그룹 (Lazarus, APT28, APT41 등)</td></tr>
+        </table>
+      </div>
+      <div class="asec">
+        <div class="asectitle s2">Ⅱ. 나. APT 공격 단계별 절차 (사이버킬체인 7단계)</div>
+        <div class="dbox">APT 사이버킬체인 (Lockheed Martin, 2011)
+
+1단계 [정찰 Reconnaissance]
+  ├ 수동: OSINT(LinkedIn·SNS·WHOIS·Shodan), 이메일 수집
+  └ 능동: 포트스캔·배너그래빙 (탐지 위험)
+  목적: 피해자 조직 구조, 핵심 인물, 사용 기술 파악
+
+2단계 [무기화 Weaponization]
+  ├ 제로데이·알려진 취약점 악용 익스플로잇 제작
+  └ 커스텀 RAT(원격 접근 트로이목마)·드로퍼 악성코드 개발
+  목적: 표적 환경에 최적화된 공격 도구 준비
+
+3단계 [전달 Delivery]
+  ├ 스피어피싱 이메일 (악성 첨부파일·링크)
+  ├ 워터링홀 공격 (자주 방문 사이트 감염)
+  └ USB 드롭·공급망(Supply Chain) 타협
+  목적: 악성 코드를 표적 시스템에 전달
+
+4단계 [익스플로잇 Exploitation]
+  └ 취약점 코드 실행: 브라우저·Office·PDF·OS 취약점 악용
+  목적: 표적 시스템에서 코드 실행 권한 획득
+
+5단계 [설치 Installation]
+  ├ 지속성 확보: 레지스트리·시작프로그램·서비스 등록
+  └ 루트킷·백도어 설치, 합법 프로세스(svchost, powershell)에 은닉
+  목적: 재부팅 후에도 감염 유지 (지속성)
+
+6단계 [C&amp;C 통신 Command &amp; Control]
+  ├ HTTP/HTTPS·DNS 터널링·SNS 등 정상 채널 위장
+  └ 공격자가 감염 시스템 원격 제어, 추가 악성코드 다운로드
+  목적: 감염 시스템 원격 제어 채널 확보
+
+7단계 [목표 달성 Actions on Objectives]
+  ├ 데이터 탈취(Exfiltration): 민감 문서·자격증명 외부 전송
+  ├ 측면 이동(Lateral Movement): 내부 다른 시스템으로 확산
+  ├ 권한 상승(Privilege Escalation): 관리자 권한 획득
+  └ 파괴·사보타주: 데이터 삭제, ICS/SCADA 공격</div>
+      </div>
+      <div class="asec">
+        <div class="asectitle s3">Ⅲ. 다. 주요 기법 및 단계별 대응 방안</div>
+        <table class="atable">
+          <tr><th>공격 기법</th><th>설명</th><th>대응 방안</th></tr>
+          <tr><td>스피어피싱<br>(Spear Phishing)</td><td>특정 대상 맞춤형 이메일. 실존 인물 사칭, 업무 관련 첨부파일(악성 매크로·LNK 파일)</td><td>이메일 샌드박스 분석, DMARC/SPF/DKIM, 사용자 보안 인식 교육, 첨부파일 실행 차단 정책</td></tr>
+          <tr><td>워터링홀<br>(Watering Hole)</td><td>표적이 자주 방문하는 웹사이트를 사전 감염. 방문 시 드라이브바이 다운로드로 악성코드 설치</td><td>취약점 패치 최신화, 브라우저 샌드박스, NoScript/광고차단, 웹 게이트웨이 URL 필터링</td></tr>
+          <tr><td>제로데이 공격<br>(Zero-Day)</td><td>아직 패치되지 않은 취약점 악용. 탐지 어려움. CVE 미공개 상태에서 사용</td><td>행위 기반 탐지(EDR), 가상화·샌드박스 격리, 최소 권한 원칙, 네트워크 마이크로세그멘테이션</td></tr>
+          <tr><td>측면 이동<br>(Lateral Movement)</td><td>초기 거점에서 내부 네트워크로 확산. Pass-the-Hash·PsExec·WMI 활용. 정상 관리 도구(LoL) 사용</td><td>네트워크 세그멘테이션, 계정 권한 최소화, 특권 계정 관리(PAM), EDR 행위 탐지, 내부 동서 트래픽 모니터링</td></tr>
+          <tr><td>C&amp;C 은닉</td><td>DNS 터널링·HTTPS 채널·SNS·클라우드 서비스로 C&amp;C 통신 은닉. 정상 트래픽과 혼재</td><td>DNS 이상 쿼리 탐지, TLS 인스펙션, UEBA(사용자·개체 행위 분석), 국가별 IP 차단, IoC(침해지표) 기반 차단</td></tr>
+        </table>
+        <div class="kbox kb-pur">
+          <div class="kbt">MITRE ATT&amp;CK 프레임워크 활용</div>
+          ATT&amp;CK(Adversarial Tactics, Techniques &amp; Common Knowledge)는 14개 전술(Tactic)·수백 개 기술(Technique)로 APT 공격 행위를 체계화한 지식 베이스.<br>
+          활용: ① 자사 방어 커버리지 매핑 ② Red Team 시나리오 설계 ③ 탐지 룰셋(Sigma·YARA) 작성 ④ 사고 대응 시 공격자 TTP 분류
+        </div>
+      </div>
+      <div class="concl">
+        <div class="concl-title">Ⅳ. 결론</div>
+        <p>APT는 단일 보안 솔루션으로 방어가 불가능하며, 가시성(Visibility)·탐지(Detection)·대응(Response)의 순환 체계가 필수이다. 「국가 사이버위기 관리 매뉴얼」에 따라 침해 발생 즉시 KISA·NCSC에 신고하고, XDR(eXtended Detection and Response)과 위협 인텔리전스(CTI) 공유로 능동적 APT 방어 체계를 구축해야 한다.</p>
+      </div>
+    </div>
+  </div>
+</div>
+</div><!-- /tp1q1 -->
+
+<!-- L3 랜섬웨어 -->
+<div class="q-panel" id="tp1q2">
+<div class="q-counter">📄 논술형 3번 / 5번</div>
+<div class="qcard">
+  <div class="qhdr">
+    <span class="qdomain badge-sec">보안 / 공격기법</span>
+    <div class="qmeta">
+      <div class="qtype-lbl">2~4교시 논술형 · 25점 · 3~4페이지 분량</div>
+      <div class="qtitle">랜섬웨어(Ransomware) 공격에 대하여 다음을 설명하시오.</div>
+    </div>
+  </div>
+  <div class="qbody">
+    <div class="qitems">
+      <div class="qitem"><span class="qlabel">가.</span><span>랜섬웨어의 개념, 발전 역사 및 최신 유형 (RaaS, 이중 협박, 트리플 협박)</span></div>
+      <div class="qitem"><span class="qlabel">나.</span><span>랜섬웨어의 동작 단계와 암호화 메커니즘 (대칭+비대칭 조합)</span></div>
+      <div class="qitem"><span class="qlabel">다.</span><span>공공·기업의 랜섬웨어 대응 방안 (예방·탐지·복구) 및 3-2-1 백업 원칙</span></div>
+    </div>
+    <div class="qhints">
+      <span class="qhint">RaaS 최신 트렌드</span><span class="qhint">암호화 이중 조합 원리</span><span class="qhint">3-2-1 백업 필수</span>
+    </div>
+  </div>
+  <div class="acard">
+    <button class="atoggle" onclick="toggleA(this)">
+      <span class="alabel">📄 모범 답안 보기</span><span class="aarrow">▼</span>
+    </button>
+    <div class="abody">
+      <div class="atitle">랜섬웨어 유형·암호화 메커니즘 및 예방·탐지·복구 대응 방안</div>
+      <div class="chips">
+        <span class="chip ct">⏱ 목표 30분</span>
+        <span class="chip cp">📄 3.5~4페이지</span>
+        <span class="chip cs">💯 25점</span>
+      </div>
+      <div class="asec">
+        <div class="asectitle s1">Ⅰ. 가. 랜섬웨어 개념 및 발전 역사·최신 유형</div>
+        <div class="ap">랜섬웨어(Ransomware)는 피해자의 파일·시스템을 암호화하거나 접근 차단한 후 복호화 키 제공 대가로 금전(주로 비트코인)을 요구하는 악성코드이다. 1989년 AIDS Trojan을 시초로, 2017년 WannaCry·NotPetya의 글로벌 대유행 이후 RaaS 형태로 진화하였다.</div>
+        <table class="atable">
+          <tr><th>유형</th><th>설명</th><th>대표 사례</th></tr>
+          <tr><td>단순 암호화<br>(1세대)</td><td>파일 암호화 후 복호화 키 요구. 단일 공격자</td><td>CryptoLocker(2013), CTB-Locker</td></tr>
+          <tr><td>RaaS<br>(Ransomware as a Service)</td><td>랜섬웨어 개발자가 코드를 서비스로 제공. 운영자(Operator)가 공격, 수익 분배 (개발자 20~30%)</td><td>LockBit, REvil(Sodinokibi), BlackCat</td></tr>
+          <tr><td>이중 협박<br>(Double Extortion)</td><td>암호화 전 데이터 먼저 탈취. 복호화 + 데이터 공개 차단의 이중 협박</td><td>Maze(2019), Cl0p, ALPHV</td></tr>
+          <tr><td>트리플 협박<br>(Triple Extortion)</td><td>이중 협박 + 피해자 고객·파트너에게 직접 연락하여 추가 압박</td><td>LockBit 3.0, Dark Side</td></tr>
+          <tr><td>Wiper 랜섬웨어</td><td>금전 목적 없이 복호화 불가능하게 파괴 목적으로 설계. 국가 사이버 전쟁 수단</td><td>NotPetya(2017), Shamoon</td></tr>
+        </table>
+      </div>
+      <div class="asec">
+        <div class="asectitle s2">Ⅱ. 나. 랜섬웨어 동작 단계 및 암호화 메커니즘</div>
+        <div class="dbox">랜섬웨어 동작 단계
+
+1단계 [초기 침투]: 스피어피싱 이메일·취약점 악용·RDP 무차별 대입
+2단계 [내부 정찰]: 네트워크 매핑, 백업 서버·도메인 컨트롤러 위치 파악
+3단계 [권한 상승]: 로컬 관리자 → 도메인 관리자 권한 탈취
+4단계 [측면 이동]: PsExec·WMI로 내부 시스템 전파
+5단계 [데이터 탈취]: 민감 데이터 압축·외부 C&amp;C 전송 (이중 협박 준비)
+6단계 [방어 무력화]: 백신·EDR 종료, 볼륨 섀도우 복사본(VSS) 삭제
+7단계 [암호화 실행]: 파일 암호화 실행
+8단계 [협박 메시지]: 복호화 키 요구 메시지 표시, 다크웹 게시 협박</div>
+        <div class="kbox kb-blue">
+          <div class="kbt">암호화 메커니즘 — 대칭 + 비대칭 조합</div>
+          ① <strong>랜섬웨어 공격자</strong>: RSA 키쌍(공개키PK/개인키SK) 사전 생성. PK만 악성코드에 내장<br>
+          ② <strong>감염 시</strong>: 악성코드가 AES 세션키(256bit) 랜덤 생성 → AES로 피해자 파일 대량 암호화<br>
+          ③ <strong>키 보호</strong>: AES 세션키를 공격자 RSA 공개키(PK)로 암호화하여 저장<br>
+          ④ <strong>복호화 조건</strong>: 피해자가 몸값 지불 후 공격자의 RSA 개인키(SK)로 AES 키 복호화 → 파일 복구<br><br>
+          <strong>※ 설계 이유</strong>: AES만 사용 시 코드 분석으로 키 노출 위험. RSA로 AES 키를 보호하여 공격자만 복호화 가능하게 함
+        </div>
+      </div>
+      <div class="asec">
+        <div class="asectitle s3">Ⅲ. 다. 랜섬웨어 대응 방안 (예방·탐지·복구)</div>
+        <ul class="aol">
+          <li><span class="onum on2">1</span><div><strong>예방 (Prevent)</strong>
+            <div class="sub">
+              <div class="si"><strong>취약점 패치</strong>: 운영체제·소프트웨어 보안 패치 즉시 적용 (WannaCry는 EternalBlue SMB 취약점 악용 — MS17-010 패치로 방어)</div>
+              <div class="si"><strong>이메일 보안</strong>: 샌드박스 분석, 악성 첨부파일 차단, DMARC·SPF·DKIM 적용</div>
+              <div class="si"><strong>RDP 보안</strong>: RDP(3389) 방화벽 차단 또는 VPN 뒤에만 허용, MFA 적용, 계정 잠금 정책</div>
+              <div class="si"><strong>최소 권한 원칙</strong>: 도메인 관리자 계정 일상 업무 사용 금지, PAM(특권접근관리) 도입</div>
+              <div class="si"><strong>네트워크 세그멘테이션</strong>: 백업 서버를 업무망과 완전 분리. 측면 이동 차단</div>
+            </div>
+          </div></li>
+          <li><span class="onum on3">2</span><div><strong>탐지 (Detect)</strong>
+            <div class="sub">
+              <div class="si"><strong>EDR(Endpoint Detection and Response)</strong>: 파일 대량 암호화 행위, VSS 삭제 명령(vssadmin), 이상 프로세스 생성 실시간 탐지·차단</div>
+              <div class="si"><strong>SIEM 연계</strong>: 비정상 파일 접근 패턴, C&amp;C 통신 IoC(침해지표) 탐지</div>
+              <div class="si"><strong>허니팟·데코이 파일</strong>: 접근 시 즉시 경보 발생하는 미끼 파일로 초기 감지</div>
+            </div>
+          </div></li>
+          <li><span class="onum on4">3</span><div><strong>복구 (Recover) — 3-2-1 백업 원칙</strong>
+            <div class="kbox kb-green" style="margin-top:8px">
+              <div class="kbt">3-2-1 백업 원칙 (NIST 권장)</div>
+              <strong>3</strong>: 데이터 사본을 최소 3개 유지 (원본 + 2개 백업)<br>
+              <strong>2</strong>: 서로 다른 2가지 미디어에 저장 (HDD·테이프·클라우드)<br>
+              <strong>1</strong>: 백업 사본 중 1개는 오프사이트(오프라인·격리 네트워크) 보관<br><br>
+              <strong>확장: 3-2-1-1-0 원칙</strong>: 추가로 1개는 변경 불가(Immutable) 백업, 복구 테스트 오류 0건 보장
+            </div>
+            <div class="sub" style="margin-top:4px">
+              <div class="si">몸값 지불 금지 원칙: 지불해도 복호화 보장 없음(40%만 완전 복구). 추가 공격 유발</div>
+              <div class="si">사고 대응: 감염 시스템 즉시 네트워크 격리 → 포렌식 보존 → KISA·수사기관 신고 → 백업으로 복구</div>
+            </div>
+          </div></li>
+        </ul>
+      </div>
+      <div class="concl">
+        <div class="concl-title">Ⅳ. 결론</div>
+        <p>랜섬웨어는 RaaS 생태계로 진입 장벽이 낮아져 공격 빈도가 급증하고 있다. 공공기관은 「사이버 위기 대응 매뉴얼」에 따라 ①백업 체계 검증, ②EDR 전 단말 배포, ③MFA 전면 적용을 우선 이행해야 한다. 사전 예방이 사후 복구보다 비용 효율이 100배 이상 높으며, 정기적인 백업 복구 훈련(Ransomware Drill)이 필수이다.</p>
+      </div>
+    </div>
+  </div>
+</div>
+</div><!-- /tp1q2 -->
+
+<!-- L4 사이버킬체인 -->
+<div class="q-panel" id="tp1q3">
+<div class="q-counter">📄 논술형 4번 / 5번</div>
+<div class="qcard">
+  <div class="qhdr">
+    <span class="qdomain badge-sec">보안 / 공격기법</span>
+    <div class="qmeta">
+      <div class="qtype-lbl">2~4교시 논술형 · 25점 · 3~4페이지 분량</div>
+      <div class="qtitle">사이버킬체인(Cyber Kill Chain)과 MITRE ATT&amp;CK 프레임워크에 대하여 다음을 설명하시오.</div>
+    </div>
+  </div>
+  <div class="qbody">
+    <div class="qitems">
+      <div class="qitem"><span class="qlabel">가.</span><span>사이버킬체인의 개념 및 7단계 절차와 각 단계에서의 방어자 대응 활동</span></div>
+      <div class="qitem"><span class="qlabel">나.</span><span>MITRE ATT&amp;CK 프레임워크의 개념, 구성 요소(전술·기술·절차) 및 사이버킬체인과의 비교</span></div>
+      <div class="qitem"><span class="qlabel">다.</span><span>Diamond Model of Intrusion Analysis의 개념과 위협 인텔리전스(CTI) 활용 방안</span></div>
+    </div>
+    <div class="qhints">
+      <span class="qhint">킬체인 7단계 암기 필수</span><span class="qhint">ATT&amp;CK 매트릭스 구조</span><span class="qhint">CTI 공유 체계 STIX/TAXII</span>
+    </div>
+  </div>
+  <div class="acard">
+    <button class="atoggle" onclick="toggleA(this)">
+      <span class="alabel">📄 모범 답안 보기</span><span class="aarrow">▼</span>
+    </button>
+    <div class="abody">
+      <div class="atitle">사이버킬체인 7단계·MITRE ATT&amp;CK 비교·Diamond 모델·CTI 활용</div>
+      <div class="chips">
+        <span class="chip ct">⏱ 목표 30분</span>
+        <span class="chip cp">📄 3.5~4페이지</span>
+        <span class="chip cs">💯 25점</span>
+      </div>
+      <div class="asec">
+        <div class="asectitle s1">Ⅰ. 가. 사이버킬체인 7단계 및 방어자 대응</div>
+        <div class="ap">사이버킬체인(Cyber Kill Chain)은 Lockheed Martin이 2011년 군사적 킬체인 개념을 사이버보안에 적용한 APT 공격 분석·방어 프레임워크이다. 7단계 중 어느 한 단계라도 차단하면 공격이 실패한다는 원칙에 기반한다.</div>
+        <table class="atable">
+          <tr><th>단계</th><th>공격자 활동</th><th>방어자 대응 (Detect·Deny·Disrupt·Degrade·Deceive·Destroy)</th></tr>
+          <tr><td>1. 정찰<br>Reconnaissance</td><td>OSINT·능동 스캔으로 표적 정보 수집</td><td><strong>Detect</strong>: 외부 스캔 탐지 (IDS), 웹 노출 정보 최소화, 직원 SNS 보안 교육</td></tr>
+          <tr><td>2. 무기화<br>Weaponization</td><td>취약점 익스플로잇·악성코드 제작</td><td><strong>Deny</strong>: 위협 인텔리전스 수집으로 TTPs 사전 파악. 공격자 인프라 사전 모니터링</td></tr>
+          <tr><td>3. 전달<br>Delivery</td><td>스피어피싱·워터링홀·USB</td><td><strong>Deny</strong>: 이메일 샌드박스, 웹 게이트웨이 URL 필터링, 외부 매체 통제 정책</td></tr>
+          <tr><td>4. 익스플로잇<br>Exploitation</td><td>취약점 코드 실행</td><td><strong>Disrupt</strong>: 패치 관리, DEP·ASLR 활성화, 애플리케이션 화이트리스트, EDR</td></tr>
+          <tr><td>5. 설치<br>Installation</td><td>백도어·루트킷 설치, 지속성 확보</td><td><strong>Disrupt</strong>: EDR 행위 탐지, 파일 무결성 검사(FIM), 레지스트리 변경 모니터링</td></tr>
+          <tr><td>6. C&amp;C 통신<br>Command &amp; Control</td><td>원격 제어 채널 수립</td><td><strong>Disrupt</strong>: DNS 싱크홀, TLS 인스펙션, 이상 DNS 쿼리 탐지, C&amp;C IoC 차단</td></tr>
+          <tr><td>7. 목표 달성<br>Actions on Objectives</td><td>데이터 탈취·파괴·측면 이동</td><td><strong>Deceive</strong>: DLP(데이터유출방지), 허니팟, 마이크로세그멘테이션, SOAR 자동 대응</td></tr>
+        </table>
+      </div>
+      <div class="asec">
+        <div class="asectitle s2">Ⅱ. 나. MITRE ATT&amp;CK 프레임워크 및 사이버킬체인 비교</div>
+        <div class="ap">MITRE ATT&amp;CK(Adversarial Tactics, Techniques &amp; Common Knowledge)는 실제 관측된 공격자의 행위를 14개 전술(Tactic)·수백 개 기술(Technique)·절차(Procedure)로 체계화한 지식 베이스이다(2013년 MITRE 공개).</div>
+        <table class="atable">
+          <tr><th>비교 항목</th><th>사이버킬체인</th><th>MITRE ATT&amp;CK</th></tr>
+          <tr><td>관점</td><td>선형 순서 (공격 흐름)</td><td>전술별 기술 매트릭스 (세부 행위)</td></tr>
+          <tr><td>단계/항목 수</td><td>7단계 (고수준)</td><td>14개 전술, 200+ 기술, 400+ 절차 (세부)</td></tr>
+          <tr><td>적용 목적</td><td>공격 단계 조기 차단 전략</td><td>탐지 룰 개발, 레드팀 시나리오, 방어 커버리지 평가</td></tr>
+          <tr><td>커버 범위</td><td>외부 침투 중심 (침투 전~실행)</td><td>침투 후 내부 행위(측면이동·권한상승 등) 상세 커버</td></tr>
+          <tr><td>갱신 주기</td><td>정적 (변경 없음)</td><td>분기별 갱신 (새 TTP 지속 추가)</td></tr>
+        </table>
+        <div class="kbox kb-pur">
+          <div class="kbt">ATT&amp;CK TTP 구조</div>
+          <strong>전술(Tactic)</strong>: 공격자의 목적(예: TA0001 Initial Access)<br>
+          <strong>기술(Technique)</strong>: 목적 달성 방법(예: T1566 Phishing)<br>
+          <strong>절차(Procedure)</strong>: 특정 그룹의 구체적 구현(예: Lazarus가 사용한 특정 피싱 이메일 도구)<br><br>
+          활용: Navigator 도구로 방어 커버리지 히트맵 시각화, Sigma 룰로 SIEM 탐지 자동화
+        </div>
+      </div>
+      <div class="asec">
+        <div class="asectitle s3">Ⅲ. 다. Diamond 모델 및 위협 인텔리전스(CTI)</div>
+        <div class="dbox">Diamond Model of Intrusion Analysis (Caltagirone, 2013)
+
+         [적대자(Adversary)]
+              / \
+             /   \
+     [능력(Capability)] ── [인프라(Infrastructure)]
+             \   /
+              \ /
+          [피해자(Victim)]
+
+4개 꼭짓점 관계:
+ • 적대자가 능력(악성코드·TTPs)을 사용해
+ • 인프라(C&amp;C 서버·도메인)를 통해
+ • 피해자를 공격
+→ 하나의 사건이 다이아몬드 하나. 사건 연결로 캠페인 분석</div>
+        <table class="atable">
+          <tr><th>CTI 활용 방안</th><th>내용</th></tr>
+          <tr><td>IoC(침해지표) 공유</td><td>악성 IP·도메인·해시값을 STIX/TAXII 표준으로 자동화 공유. KISA·ISAC·MISP 플랫폼 활용</td></tr>
+          <tr><td>위협 그룹 프로파일링</td><td>ATT&amp;CK 그룹 페이지에서 Lazarus·Kimsuky 등 주요 APT 그룹의 TTPs 분석</td></tr>
+          <tr><td>사전 방어 (Proactive)</td><td>CTI 기반 방어 취약점 선제 파악. 공격자가 사용할 인프라 사전 차단</td></tr>
+          <tr><td>사고 대응 가속화</td><td>침해 발생 시 CTI와 Diamond 모델로 공격자 귀속(Attribution) 및 추가 공격 경로 예측</td></tr>
+        </table>
+      </div>
+      <div class="concl">
+        <div class="concl-title">Ⅳ. 결론</div>
+        <p>사이버킬체인은 공격 흐름을 이해하는 전략적 프레임워크, ATT&amp;CK는 세부 탐지·대응을 위한 전술적 도구, Diamond 모델은 사건 분석의 구조화 도구로 상호 보완적이다. 국내 KISA·국정원과의 CTI 공유 체계를 구축하고, MITRE ATT&amp;CK 기반 보안 운영 성숙도(SOC Maturity)를 정기 평가하여 방어 커버리지를 지속 향상시켜야 한다.</p>
+      </div>
+    </div>
+  </div>
+</div>
+</div><!-- /tp1q3 -->
+
+<!-- L5 공격 대응 체계 -->
+<div class="q-panel" id="tp1q4">
+<div class="q-counter">📄 논술형 5번 / 5번</div>
+<div class="qcard">
+  <div class="qhdr">
+    <span class="qdomain badge-sec">보안 / 공격기법</span>
+    <div class="qmeta">
+      <div class="qtype-lbl">2~4교시 논술형 · 25점 · 3~4페이지 분량</div>
+      <div class="qtitle">네트워크 기반 보안 공격 탐지·대응 체계에 대하여 다음을 설명하시오.</div>
+    </div>
+  </div>
+  <div class="qbody">
+    <div class="qitems">
+      <div class="qitem"><span class="qlabel">가.</span><span>IDS(침입탐지시스템)와 IPS(침입방지시스템)의 개념, 탐지 기법 (시그니처·이상·행위), 오탐(False Positive)과 미탐(False Negative) 문제</span></div>
+      <div class="qitem"><span class="qlabel">나.</span><span>방화벽(Firewall)·WAF·IDS/IPS·SIEM·SOAR·EDR의 역할 비교 및 통합 보안 운영 체계(SOC)</span></div>
+      <div class="qitem"><span class="qlabel">다.</span><span>제로 트러스트(Zero Trust) 아키텍처의 개념, 핵심 원칙 및 공공 정보시스템 적용 방안</span></div>
+    </div>
+    <div class="qhints">
+      <span class="qhint">오탐·미탐 트레이드오프</span><span class="qhint">SOC 계층 구조</span><span class="qhint">제로트러스트 최신 트렌드</span>
+    </div>
+  </div>
+  <div class="acard">
+    <button class="atoggle" onclick="toggleA(this)">
+      <span class="alabel">📄 모범 답안 보기</span><span class="aarrow">▼</span>
+    </button>
+    <div class="abody">
+      <div class="atitle">IDS·IPS 탐지 기법·보안 솔루션 비교·SOC 체계 및 제로 트러스트 적용</div>
+      <div class="chips">
+        <span class="chip ct">⏱ 목표 30분</span>
+        <span class="chip cp">📄 3.5~4페이지</span>
+        <span class="chip cs">💯 25점</span>
+      </div>
+      <div class="asec">
+        <div class="asectitle s1">Ⅰ. 가. IDS·IPS 개념·탐지 기법·오탐/미탐 문제</div>
+        <div class="ap">IDS(침입탐지시스템)는 네트워크 또는 호스트에서 공격을 탐지하고 경보를 발생시키는 수동형 보안 시스템이고, IPS(침입방지시스템)는 탐지와 동시에 공격 트래픽을 차단하는 능동형 보안 시스템이다.</div>
+        <table class="atable">
+          <tr><th>탐지 기법</th><th>원리</th><th>장점</th><th>단점</th></tr>
+          <tr><td>시그니처 기반<br>(Signature)</td><td>알려진 공격 패턴(시그니처) DB와 패킷 비교. 오탐 낮음</td><td>탐지 정확도 높음, 처리 속도 빠름</td><td>제로데이·변형 공격 탐지 불가. DB 최신화 필수</td></tr>
+          <tr><td>이상 탐지<br>(Anomaly)</td><td>정상 트래픽 기준선(Baseline) 학습 후 편차 탐지. 통계·ML 기반</td><td>제로데이·내부자 공격 탐지 가능</td><td>오탐율 높음. 기준선 구축·유지 어려움</td></tr>
+          <tr><td>행위 기반<br>(Behavior)</td><td>프로세스 행위 패턴 분석. API 호출·파일 접근·네트워크 행위 모니터링</td><td>우회 공격·APT 탐지 효과적</td><td>연산 자원 소모 높음. 정상 행위와 구분 어려움</td></tr>
+        </table>
+        <div class="kbox kb-red">
+          <div class="kbt">오탐(FP) vs 미탐(FN) 트레이드오프</div>
+          • <strong>False Positive(오탐)</strong>: 정상 트래픽을 공격으로 판단 → 업무 장애, 분석팀 피로<br>
+          • <strong>False Negative(미탐)</strong>: 실제 공격을 탐지 못함 → 보안 사고 발생<br>
+          • <strong>임계값 조정</strong>: 낮추면 → FP 증가·FN 감소 (민감도↑). 높이면 → FP 감소·FN 증가 (특이도↑)<br>
+          • <strong>최적화</strong>: ROC 곡선 분석으로 임계값 결정. 화이트리스트 튜닝으로 FP 최소화
+        </div>
+      </div>
+      <div class="asec">
+        <div class="asectitle s2">Ⅱ. 나. 보안 솔루션 역할 비교 및 통합 SOC 체계</div>
+        <table class="atable">
+          <tr><th>솔루션</th><th>계층</th><th>역할</th><th>특징</th></tr>
+          <tr><td>방화벽<br>(Firewall)</td><td>L3~L4</td><td>IP·포트 기반 접근 제어. 허용/차단 정책 적용</td><td>상태 기반(Stateful) 패킷 검사. 애플리케이션 공격 탐지 불가</td></tr>
+          <tr><td>WAF<br>(Web Application Firewall)</td><td>L7</td><td>HTTP/HTTPS 트래픽 검사. SQL Injection·XSS·CSRF 등 웹 공격 차단</td><td>OWASP Top 10 기반 규칙. 역방향 프록시로 배치. 방화벽 보완</td></tr>
+          <tr><td>IDS/IPS</td><td>L3~L7</td><td>패턴 기반 공격 탐지(IDS)·차단(IPS). 시그니처·이상 탐지</td><td>IDS: 수동(경보만) / IPS: 능동(인라인 차단). 최신 시그니처 갱신 필수</td></tr>
+          <tr><td>SIEM<br>(Security Information and Event Management)</td><td>분석 계층</td><td>전사 로그·이벤트 수집·상관 분석·대시보드. 위협 탐지·규정 준수 리포팅</td><td>Splunk·IBM QRadar·LogRhythm. 수동 대응 한계. SOAR 연계 자동화</td></tr>
+          <tr><td>SOAR<br>(Security Orchestration, Automation and Response)</td><td>대응 계층</td><td>보안 이벤트에 대한 자동화 대응 플레이북 실행. 평균 대응시간(MTTR) 단축</td><td>Palo Alto XSOAR, IBM Resilient. SIEM 경보 → SOAR 자동 격리·차단</td></tr>
+          <tr><td>EDR<br>(Endpoint Detection and Response)</td><td>엔드포인트</td><td>단말 행위 실시간 모니터링·위협 탐지·격리. 포렌식 아티팩트 수집</td><td>CrowdStrike·SentinelOne·MS Defender. 랜섬웨어·파일리스 공격 탐지</td></tr>
+        </table>
+        <div class="dbox">통합 SOC(보안운영센터) 아키텍처
+
+[탐지 레이어]
+  SIEM ← (로그) ← 방화벽·IDS/IPS·WAF·EDR·서버·네트워크
+  
+[분석 레이어]
+  SIEM 상관 분석 → 위협 경보 생성 → SOC 분석가 (Tier 1/2/3)
+  CTI 피드 연계 (STIX/TAXII) + UEBA (사용자행위분석)
+
+[대응 레이어]
+  SOAR 플레이북 자동화:
+  경보 수신 → 자동 IoC 조회 → 위협 확인 → 자동 격리/차단
+  → 티켓 생성 → 사고 대응 → 사후 분석(Post-mortem)</div>
+      </div>
+      <div class="asec">
+        <div class="asectitle s3">Ⅲ. 다. 제로 트러스트 아키텍처 및 공공 적용</div>
+        <div class="ap">제로 트러스트(Zero Trust)는 "절대 신뢰하지 말고, 항상 검증하라(Never Trust, Always Verify)"는 원칙에 기반한 보안 아키텍처이다. 기존의 경계 기반(Perimeter) 보안이 내부 트래픽을 신뢰하는 한계를 극복하기 위해 John Kindervag(Forrester, 2010)가 제안하였다.</div>
+        <ul class="aol">
+          <li><span class="onum on6">1</span><div><strong>핵심 원칙</strong>
+            <div class="sub">
+              <div class="si"><strong>최소 권한 접근(Least Privilege)</strong>: 사용자·기기가 업무에 필요한 최소 자원만 접근. 과도한 권한 제거</div>
+              <div class="si"><strong>명시적 검증(Explicit Verification)</strong>: 모든 접근에 대해 신원(ID)·기기 상태·위치·행위를 동적으로 검증</div>
+              <div class="si"><strong>침해 가정(Assume Breach)</strong>: 내부 네트워크도 이미 침해되었다고 가정. 측면 이동 차단을 위한 마이크로세그멘테이션</div>
+            </div>
+          </div></li>
+          <li><span class="onum on6">2</span><div><strong>제로 트러스트 구성 요소</strong>
+            <div class="sub">
+              <div class="si"><strong>PEP(정책 집행 포인트)</strong>: 모든 접근 요청의 허용·차단을 집행</div>
+              <div class="si"><strong>PDP(정책 결정 포인트)</strong>: ID·기기·컨텍스트 기반으로 접근 여부 동적 결정 (NIST SP 800-207)</div>
+              <div class="si"><strong>ID 관리</strong>: IDAM + MFA + 조건부 접근 (사용자·서비스 계정 포함)</div>
+              <div class="si"><strong>마이크로세그멘테이션</strong>: 네트워크를 소규모 구역으로 분할, 구역 간 트래픽 최소화</div>
+            </div>
+          </div></li>
+          <li><span class="onum on6">3</span><div><strong>공공 정보시스템 적용 방안 (NIST SP 800-207 기준)</strong>
+            <div class="sub">
+              <div class="si">단계 1: ID 기반 보안 강화 (MFA 전면 도입, 특권계정 PAM)</div>
+              <div class="si">단계 2: 기기 신뢰도 검증 (단말 보안 상태 확인, 미준수 단말 접근 차단)</div>
+              <div class="si">단계 3: 마이크로세그멘테이션 도입 (업무 중요도별 네트워크 분리)</div>
+              <div class="si">단계 4: 지속적 모니터링 (SIEM·UEBA 연계, 이상 행위 실시간 탐지)</div>
+              <div class="si">국내 근거: 「국가 정보보안 기본지침」 제로트러스트 도입 권고(2023), 행안부 「제로트러스트 가이드라인 1.0(2023)」</div>
+            </div>
+          </div></li>
+        </ul>
+      </div>
+      <div class="concl">
+        <div class="concl-title">Ⅳ. 결론</div>
+        <p>현대 사이버 위협은 경계 보안만으로 방어가 불가능하며, IDS/IPS·SIEM·SOAR·EDR의 통합 SOC 체계와 제로 트러스트 아키텍처의 결합이 필수적이다. 공공 부문에서는 행안부의 「제로트러스트 가이드라인」에 따라 단계적 전환 로드맵을 수립하고, ML 기반 이상 탐지(UEBA)와 위협 인텔리전스(CTI) 공유를 통해 능동적 사이버 방어 체계를 구현해야 한다.</p>
+      </div>
+    </div>
+  </div>
+</div>
+</div><!-- /tp1q4 -->
+
+  </div><!-- /main -->
+</div><!-- /tp1 -->
+
+<script>
+function showType(idx,btn){
+  document.querySelectorAll('.type-panel').forEach((p,i)=>p.classList.toggle('active',i===idx));
+  document.querySelectorAll('.type-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  // reset q nav
+  var tp=document.getElementById('tp'+idx);
+  tp.querySelectorAll('.q-panel').forEach((p,i)=>p.classList.toggle('active',i===0));
+  tp.querySelectorAll('.q-btn').forEach((b,i)=>b.classList.toggle('active',i===0));
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+function showQ(idx,btn,tpId){
+  var tp=document.getElementById(tpId);
+  tp.querySelectorAll('.q-panel').forEach((p,i)=>p.classList.toggle('active',i===idx));
+  btn.parentElement.querySelectorAll('.q-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+function toggleA(btn){
+  var body=btn.nextElementSibling;
+  var arrow=btn.querySelector('.aarrow');
+  var isOpen=body.classList.toggle('open');
+  arrow.classList.toggle('open',isOpen);
+  btn.querySelector('.alabel').textContent=isOpen?'📄 답안 닫기':'📄 모범 답안 보기';
+}
+</script>
+</body>
+</html>

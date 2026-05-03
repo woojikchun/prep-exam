@@ -1,0 +1,1180 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>소프트웨어공학 기출 유형 문제 & 모범답안</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700;900&family=Noto+Serif+KR:wght@400;600;700&family=JetBrains+Mono:wght@400;600&display=swap');
+:root{
+  --bg:#f5f7fa;--white:#fff;--surface2:#eef1f6;--border:#dde3ec;--bl:#eef1f6;
+  --blue:#1d4ed8;--bblue:#3b82f6;--bluebg:#eff6ff;--blb:#bfdbfe;
+  --red:#b91c1c;--redbg:#fef2f2;--rdb:#fecaca;
+  --green:#065f46;--gbg:#ecfdf5;--gb:#a7f3d0;
+  --ora:#92400e;--obg:#fffbeb;--ob:#fde68a;
+  --pur:#5b21b6;--pubg:#f5f3ff;--pub:#ddd6fe;
+  --tea:#0f766e;--tbg:#f0fdfa;--tb:#99f6e4;
+  --rose:#9f1239;--rbg:#fff1f2;--roseb:#fecdd3;
+  --text:#111827;--text2:#374151;--text3:#6b7280;--text4:#9ca3af;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--text);font-family:'Noto Sans KR',sans-serif;font-size:14px;line-height:1.6}
+
+/* HEADER */
+.hdr{background:linear-gradient(135deg,#1e3a8a 0%,#1d4ed8 55%,#4f46e5 100%);color:#fff;padding:28px 24px 22px;position:relative;overflow:hidden}
+.hdr::after{content:'';position:absolute;right:-60px;top:-60px;width:220px;height:220px;border-radius:50%;background:rgba(255,255,255,0.05)}
+.hdr::before{content:'';position:absolute;left:-40px;bottom:-40px;width:160px;height:160px;border-radius:50%;background:rgba(79,70,229,0.15)}
+.hi{max-width:1100px;margin:0 auto;position:relative}
+.heyebrow{font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:#93c5fd;margin-bottom:6px}
+.htitle{font-size:clamp(18px,3.5vw,26px);font-weight:900;margin-bottom:6px;font-family:'Noto Serif KR',serif}
+.hsub{font-size:12px;color:#bfdbfe}
+.hpills{display:flex;flex-wrap:wrap;gap:6px;margin-top:14px}
+.hpill{background:rgba(255,255,255,0.12);border:1px solid rgba(255,255,255,0.2);padding:3px 11px;border-radius:20px;font-size:11px;color:#e0f2fe}
+
+/* TYPE NAV */
+.type-nav{background:var(--white);border-bottom:3px solid var(--border);display:flex;max-width:100%;overflow-x:auto;scrollbar-width:none;box-shadow:0 2px 8px rgba(0,0,0,0.06);position:sticky;top:0;z-index:200}
+.type-nav::-webkit-scrollbar{display:none}
+.type-btn{flex:1;min-width:160px;padding:14px 16px;background:none;border:none;border-bottom:4px solid transparent;cursor:pointer;font-family:inherit;font-size:13px;font-weight:700;color:var(--text3);transition:all 0.18s;display:flex;align-items:center;justify-content:center;gap:8px}
+.type-btn:hover{color:var(--blue);background:var(--bluebg)}
+.type-btn.active{color:var(--blue);border-bottom-color:var(--blue);background:var(--bluebg)}
+.type-badge{font-size:10px;padding:2px 8px;border-radius:10px;font-weight:700}
+.tb-short{background:#fef3c7;color:#92400e}
+.tb-long{background:#ede9fe;color:#5b21b6}
+
+/* Q NAV */
+.q-nav{background:#fff;border-bottom:1px solid var(--border);overflow-x:auto;white-space:nowrap;padding:0 16px;scrollbar-width:none;box-shadow:0 1px 4px rgba(0,0,0,0.04)}
+.q-nav::-webkit-scrollbar{display:none}
+.q-btn{display:inline-block;padding:10px 12px;font-size:12px;font-weight:600;color:var(--text3);background:none;border:none;border-bottom:3px solid transparent;cursor:pointer;font-family:inherit;transition:all .15s}
+.q-btn:hover{color:var(--blue)}
+.q-btn.active{color:var(--blue);border-bottom-color:var(--blue)}
+
+/* MAIN */
+.main{max-width:1100px;margin:0 auto;padding:24px 16px 80px}
+.type-panel{display:none}
+.type-panel.active{display:block}
+.q-panel{display:none}
+.q-panel.active{display:block}
+
+/* QUESTION CARD */
+.qcard{background:var(--white);border:1px solid var(--border);border-radius:14px;overflow:hidden;box-shadow:0 2px 12px rgba(0,0,0,0.05);margin-bottom:20px}
+.qhdr{padding:18px 22px 14px;border-bottom:1px solid var(--bl);display:flex;align-items:flex-start;gap:14px}
+.qdomain{flex-shrink:0;padding:4px 11px;border-radius:20px;font-size:10px;font-weight:700;letter-spacing:0.5px;margin-top:2px}
+.qmeta{flex:1}
+.qtype{font-size:10px;color:var(--text3);font-weight:600;letter-spacing:0.5px;margin-bottom:4px}
+.qtitle{font-size:15px;font-weight:800;color:var(--text);line-height:1.45}
+.qbody{background:var(--bg);padding:16px 22px;border-bottom:1px solid var(--bl)}
+.qitems{margin-top:8px;display:flex;flex-direction:column;gap:6px}
+.qitem{display:flex;gap:10px;align-items:flex-start;font-size:13px;color:var(--text2)}
+.qlabel{font-weight:700;color:var(--blue);min-width:20px;flex-shrink:0}
+.qhints{display:flex;flex-wrap:wrap;gap:6px;margin-top:12px}
+.qhint{background:var(--bluebg);border:1px solid var(--blb);color:var(--blue);font-size:10px;font-weight:600;padding:2px 8px;border-radius:5px}
+
+/* ANSWER */
+.acard{background:var(--white)}
+.atoggle{width:100%;padding:14px 22px;background:none;border:none;display:flex;align-items:center;justify-content:space-between;cursor:pointer;font-family:inherit;transition:background .15s}
+.atoggle:hover{background:var(--bluebg)}
+.alabel{font-size:13px;font-weight:700;color:var(--blue)}
+.aarrow{font-size:16px;color:var(--blue);transition:transform .25s}
+.aarrow.open{transform:rotate(180deg)}
+.abody{display:none;padding:0 22px 24px}
+.abody.open{display:block}
+
+/* ANSWER CONTENT */
+.atitle{font-size:17px;font-weight:900;color:var(--text);font-family:'Noto Serif KR',serif;padding:18px 0 6px;border-bottom:2px solid var(--blue);margin-bottom:16px}
+.asec{margin-bottom:18px}
+.asectitle{font-size:12px;font-weight:800;color:#fff;padding:5px 12px;border-radius:6px;display:inline-block;margin-bottom:11px}
+.s1{background:var(--blue)}
+.s2{background:#059669}
+.s3{background:#7c3aed}
+.s4{background:#d97706}
+.s5{background:#dc2626}
+.s6{background:#0d9488}
+.s7{background:#be185d}
+
+.ap{font-size:13px;color:var(--text2);line-height:1.85;margin-bottom:10px}
+
+.atable{width:100%;border-collapse:collapse;font-size:12px;margin:8px 0 12px}
+.atable th{background:var(--surface2);color:var(--text2);font-weight:700;padding:8px 12px;border:1px solid var(--border);text-align:center}
+.atable td{padding:8px 12px;border:1px solid var(--border);vertical-align:top;line-height:1.6}
+.atable td:first-child{font-weight:600;color:var(--blue);background:var(--bluebg);text-align:center;white-space:nowrap}
+.atable tr:nth-child(even) td:not(:first-child){background:#fafbfd}
+
+.aol{padding-left:0;list-style:none;display:flex;flex-direction:column;gap:9px;margin:6px 0}
+.aol li{display:flex;gap:10px;align-items:flex-start;font-size:13px;color:var(--text2);line-height:1.7}
+.onum{flex-shrink:0;width:22px;height:22px;border-radius:50%;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;margin-top:1px;color:#fff}
+.on1{background:var(--blue)}
+.on2{background:#059669}
+.on3{background:#7c3aed}
+.on4{background:#d97706}
+.on5{background:#dc2626}
+.on6{background:#0d9488}
+
+.sub{margin-top:6px;display:flex;flex-direction:column;gap:4px}
+.si{display:flex;gap:8px;font-size:12px;color:var(--text3)}
+.si::before{content:'▸';color:var(--bblue);flex-shrink:0}
+
+.dbox{background:#f8fafc;border:1px solid var(--border);border-left:3px solid var(--blue);border-radius:8px;padding:12px 16px;margin:10px 0;font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--text2);line-height:1.8;overflow-x:auto;white-space:pre}
+
+.kbox{border-radius:8px;padding:12px 16px;margin:10px 0;font-size:12px;line-height:1.75}
+.kb-blue{background:var(--bluebg);border:1px solid var(--blb);color:#1e40af}
+.kb-green{background:var(--gbg);border:1px solid var(--gb);color:var(--green)}
+.kb-ora{background:var(--obg);border:1px solid var(--ob);color:var(--ora)}
+.kb-red{background:var(--redbg);border:1px solid var(--rdb);color:var(--red)}
+.kb-pur{background:var(--pubg);border:1px solid var(--pub);color:var(--pur)}
+.kb-tea{background:var(--tbg);border:1px solid var(--tb);color:var(--tea)}
+.kb-rose{background:var(--rbg);border:1px solid var(--roseb);color:var(--rose)}
+.kbt{font-weight:700;margin-bottom:4px;font-size:11px;letter-spacing:0.4px}
+
+.concl{background:linear-gradient(135deg,var(--bluebg),var(--pubg));border:1px solid var(--blb);border-radius:8px;padding:14px 16px;margin-top:14px}
+.concl-title{font-weight:700;color:var(--blue);font-size:12px;margin-bottom:6px}
+.concl p{font-size:12px;color:var(--text2);line-height:1.75}
+
+.chips{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px}
+.chip{font-size:11px;padding:3px 10px;border-radius:6px;font-weight:600}
+.ct{background:var(--obg);color:var(--ora);border:1px solid var(--ob)}
+.cp{background:var(--gbg);color:var(--green);border:1px solid var(--gb)}
+.cs{background:var(--redbg);color:var(--red);border:1px solid var(--rdb)}
+
+.badge-sw{background:#ecfdf5;color:#065f46;border:1px solid #a7f3d0}
+
+/* 단답형 specific */
+.short-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:10px 0}
+@media(max-width:640px){.short-grid{grid-template-columns:1fr}}
+.scard{background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:12px 14px}
+.scard-title{font-size:11px;font-weight:700;color:var(--blue);margin-bottom:6px;letter-spacing:0.3px}
+.scard p{font-size:12px;color:var(--text2);line-height:1.7}
+
+/* score info for short */
+.sq-info{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:4px}
+.sq-chip{font-size:11px;padding:2px 8px;border-radius:5px;font-weight:600}
+.short-time{background:#fef3c7;color:#92400e;border:1px solid #fde68a}
+.short-pg{background:#ecfdf5;color:#065f46;border:1px solid #a7f3d0}
+.short-pt{background:#fef2f2;color:#b91c1c;border:1px solid #fecaca}
+
+/* code highlight */
+.code{font-family:'JetBrains Mono',monospace;font-size:11px;background:#f1f5f9;padding:2px 6px;border-radius:4px;color:#1e40af}
+
+/* divider */
+hr.div{border:none;border-top:1px solid var(--bl);margin:14px 0}
+
+/* progress indicator */
+.q-counter{font-size:11px;color:var(--text4);margin-bottom:16px;font-weight:600;letter-spacing:0.5px}
+</style>
+</head>
+<body>
+
+<header class="hdr">
+  <div class="hi">
+    <div class="heyebrow">📐 소프트웨어공학 · SOFTWARE ENGINEERING</div>
+    <div class="htitle">컴퓨터시스템응용기술사<br>소프트웨어공학 분야 기출유형 문제 &amp; 모범답안</div>
+    <div class="hsub">단답형 5문제 (1~2페이지) + 논술형 5문제 (3~4페이지) · 전 문항 모범답안 수록</div>
+    <div class="hpills">
+      <span class="hpill">단답형 10~15점</span>
+      <span class="hpill">논술형 25점</span>
+      <span class="hpill">기술사 실전 형식</span>
+      <span class="hpill">빈출 핵심 토픽 총정리</span>
+    </div>
+  </div>
+</header>
+
+<nav class="type-nav">
+  <button class="type-btn active" onclick="showType(0,this)">
+    📝 단답형 문제
+    <span class="type-badge tb-short">1~2페이지 · 5문제</span>
+  </button>
+  <button class="type-btn" onclick="showType(1,this)">
+    📄 논술형 문제
+    <span class="type-badge tb-long">3~4페이지 · 5문제</span>
+  </button>
+</nav>
+
+<!-- ═══════════════════════════════════════════════════════
+     단답형 섹션
+═══════════════════════════════════════════════════════ -->
+<div class="type-panel active" id="tp0">
+  <nav class="q-nav">
+    <button class="q-btn active" onclick="showQ('s',0,this)">①SOLID 원칙</button>
+    <button class="q-btn" onclick="showQ('s',1,this)">②테스트 레벨</button>
+    <button class="q-btn" onclick="showQ('s',2,this)">③형상관리(SCM)</button>
+    <button class="q-btn" onclick="showQ('s',3,this)">④GoF 디자인패턴</button>
+    <button class="q-btn" onclick="showQ('s',4,this)">⑤소프트웨어 결함</button>
+  </nav>
+  <div class="main">
+
+    <!-- S1: SOLID -->
+    <div class="q-panel active" id="sq0">
+    <div class="q-counter">📝 단답형 1번 / 5번</div>
+    <div class="qcard">
+      <div class="qhdr">
+        <span class="qdomain badge-sw">소프트웨어공학</span>
+        <div class="qmeta">
+          <div class="qtype">1교시 단답형 · 10~15점 · 1~2페이지 분량</div>
+          <div class="qtitle">객체지향 설계 원칙인 SOLID에 대하여 각 원칙의 개념, 위반 사례, 적용 효과를 설명하시오.</div>
+        </div>
+      </div>
+      <div class="qbody">
+        <div class="qhints">
+          <span class="qhint">OOP 핵심 빈출</span><span class="qhint">Clean Architecture 연계</span><span class="qhint">각 원칙별 1~2줄 정의 필수</span>
+        </div>
+      </div>
+      <div class="acard">
+        <button class="atoggle" onclick="toggleA(this)">
+          <span class="alabel">📄 모범 답안 보기</span>
+          <span class="aarrow">▼</span>
+        </button>
+        <div class="abody">
+          <div class="atitle">객체지향 설계 원칙 SOLID — 개념·위반 사례·적용 효과</div>
+          <div class="chips">
+            <span class="chip ct">⏱ 목표 15분</span>
+            <span class="chip cp">📄 1.5~2페이지</span>
+            <span class="chip cs">💯 10~15점</span>
+          </div>
+          <div class="asec">
+            <div class="asectitle s1">Ⅰ. SOLID 원칙의 개념</div>
+            <div class="ap">SOLID는 Robert C. Martin(Uncle Bob)이 정립한 객체지향 설계의 5가지 핵심 원칙으로, 유지보수성·확장성·재사용성이 높은 소프트웨어를 개발하기 위한 설계 지침이다.</div>
+          </div>
+          <div class="asec">
+            <div class="asectitle s2">Ⅱ. 5가지 원칙 상세</div>
+            <table class="atable">
+              <tr><th>원칙</th><th>Full Name</th><th>핵심 개념</th><th>위반 사례</th><th>적용 효과</th></tr>
+              <tr><td>S</td><td>Single Responsibility<br>단일 책임 원칙</td><td>클래스는 하나의 변경 이유(책임)만 가져야 한다. 클래스는 하나의 역할만 담당</td><td>User 클래스가 인증·DB저장·이메일 발송을 모두 처리</td><td>응집도 향상, 변경 영향 범위 최소화</td></tr>
+              <tr><td>O</td><td>Open/Closed<br>개방·폐쇄 원칙</td><td>확장에는 열려 있고, 수정에는 닫혀 있어야 한다. 기존 코드 수정 없이 기능 추가</td><td>새 결제수단 추가 시 기존 if-else 블록 수정 필요</td><td>기존 코드 안정성 유지, 기능 추가 용이</td></tr>
+              <tr><td>L</td><td>Liskov Substitution<br>리스코프 치환 원칙</td><td>자식 클래스는 부모 클래스를 대체할 수 있어야 한다. IS-A 관계 엄격 준수</td><td>Rectangle 상속 Square에서 setWidth 오동작</td><td>다형성 안정적 활용, 상속 구조 신뢰성</td></tr>
+              <tr><td>I</td><td>Interface Segregation<br>인터페이스 분리 원칙</td><td>클라이언트는 사용하지 않는 메서드에 의존하지 않아야 한다. 뚱뚱한 인터페이스 분리</td><td>Printable에 scan(), fax()까지 강제 구현</td><td>불필요한 의존성 제거, 인터페이스 명확화</td></tr>
+              <tr><td>D</td><td>Dependency Inversion<br>의존성 역전 원칙</td><td>고수준 모듈은 저수준 모듈에 의존하지 않고, 둘 다 추상화(인터페이스)에 의존해야 한다</td><td>Service 클래스가 MySQLRepository를 직접 import</td><td>결합도 감소, 테스트 용이성·유연성 향상</td></tr>
+            </table>
+          </div>
+          <div class="asec">
+            <div class="asectitle s3">Ⅲ. 원칙 간 상호 관계 및 적용 방법</div>
+            <div class="dbox">SOLID 원칙 적용 패턴
+
+S + D → 의존성 주입(DI): 책임을 분리하고 인터페이스에 의존
+O + D → 전략 패턴(Strategy): 알고리즘 교체 시 기존 코드 수정 없음
+I + D → 인터페이스 기반 설계: 세분화된 인터페이스로 DIP 구현
+L     → 설계 시 계약(Contract) 명세 작성, 사전·사후 조건 검증
+
+예시(Java/Kotlin):
+  // DIP 적용 전
+  class OrderService { val repo = MySQLOrderRepository() }
+
+  // DIP 적용 후
+  class OrderService(private val repo: OrderRepository)  // 인터페이스 주입</div>
+            <div class="kbox kb-blue">
+              <div class="kbt">📌 한 줄 암기 (SOLID)</div>
+              <strong>S</strong>-하나의 책임 &nbsp;|&nbsp; <strong>O</strong>-수정없이 확장 &nbsp;|&nbsp; <strong>L</strong>-자식은 부모 대체 &nbsp;|&nbsp; <strong>I</strong>-작은 인터페이스 &nbsp;|&nbsp; <strong>D</strong>-추상화에 의존
+            </div>
+          </div>
+          <div class="concl">
+            <div class="concl-title">Ⅳ. 결론 — 감리 포인트</div>
+            <p>SOLID 원칙은 DDD, 클린 아키텍처, 마이크로서비스 아키텍처의 설계 기반이 된다. 코드 리뷰 및 정적 분석 도구(SonarQube의 응집도·결합도 메트릭)를 통해 SOLID 위반 여부를 자동 점검할 수 있으며, 감리 시에는 모듈 간 의존성 그래프(패키지 결합도)를 주요 점검 항목으로 확인한다.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    </div><!-- /sq0 -->
+
+    <!-- S2: 테스트 레벨 -->
+    <div class="q-panel" id="sq1">
+    <div class="q-counter">📝 단답형 2번 / 5번</div>
+    <div class="qcard">
+      <div class="qhdr">
+        <span class="qdomain badge-sw">소프트웨어공학</span>
+        <div class="qmeta">
+          <div class="qtype">1교시 단답형 · 10~15점 · 1~2페이지 분량</div>
+          <div class="qtitle">소프트웨어 테스트의 4가지 레벨(단위·통합·시스템·인수 테스트)의 개념, 목적, 담당 주체, 기법을 비교 설명하시오.</div>
+        </div>
+      </div>
+      <div class="qbody">
+        <div class="qhints">
+          <span class="qhint">V-모델 연계</span><span class="qhint">ISTQB 기준</span><span class="qhint">비교표 필수</span>
+        </div>
+      </div>
+      <div class="acard">
+        <button class="atoggle" onclick="toggleA(this)">
+          <span class="alabel">📄 모범 답안 보기</span>
+          <span class="aarrow">▼</span>
+        </button>
+        <div class="abody">
+          <div class="atitle">소프트웨어 테스트 레벨 — 개념·목적·담당주체·기법 비교</div>
+          <div class="chips">
+            <span class="chip ct">⏱ 목표 15분</span>
+            <span class="chip cp">📄 1.5~2페이지</span>
+            <span class="chip cs">💯 10~15점</span>
+          </div>
+          <div class="asec">
+            <div class="asectitle s1">Ⅰ. 개요 — 테스트 레벨의 개념</div>
+            <div class="ap">소프트웨어 테스트 레벨은 개발 생명주기의 각 단계에 대응하는 테스트 활동의 계층 구조로, ISTQB(국제 소프트웨어 테스팅 자격위원회) 및 V-모델을 기반으로 단위→통합→시스템→인수 테스트의 4단계로 구성된다.</div>
+            <div class="dbox">V-모델 대응 관계
+
+요구사항 분석 ─────────────────────── 인수 테스트(AT)
+  아키텍처 설계 ─────────────────── 시스템 테스트(ST)
+    상세 설계 ─────────────────── 통합 테스트(IT)
+      구현(코딩) ─────────────── 단위 테스트(UT)
+                   ↑개발 방향        ↑테스트 방향</div>
+          </div>
+          <div class="asec">
+            <div class="asectitle s2">Ⅱ. 4가지 테스트 레벨 비교</div>
+            <table class="atable">
+              <tr><th>구분</th><th>단위 테스트</th><th>통합 테스트</th><th>시스템 테스트</th><th>인수 테스트</th></tr>
+              <tr><td>대상</td><td>개별 함수·메서드·클래스</td><td>모듈 간 인터페이스</td><td>통합된 전체 시스템</td><td>최종 사용자 관점의 시스템</td></tr>
+              <tr><td>목적</td><td>컴포넌트 단독 동작 검증</td><td>모듈 간 연동 오류 탐지</td><td>기능·비기능 요구사항 충족</td><td>인도 전 비즈니스 요구 확인</td></tr>
+              <tr><td>담당</td><td>개발자</td><td>개발자·테스터</td><td>테스트팀(독립)</td><td>고객·사용자·QA</td></tr>
+              <tr><td>주요 기법</td><td>화이트박스, JUnit/pytest, 목(Mock) 객체</td><td>빅뱅, 하향식, 상향식, 샌드위치 통합</td><td>블랙박스, 성능·보안·호환성 테스트</td><td>알파/베타 테스트, UAT, 계약 인수 테스트</td></tr>
+              <tr><td>V-모델 대응</td><td>상세 설계</td><td>아키텍처 설계</td><td>시스템 요구사항</td><td>비즈니스 요구사항</td></tr>
+              <tr><td>결함 비용</td><td>가장 낮음 (조기 발견)</td><td>낮음</td><td>높음</td><td>가장 높음 (운영 후)</td></tr>
+            </table>
+          </div>
+          <div class="asec">
+            <div class="asectitle s3">Ⅲ. 통합 테스트 전략 상세</div>
+            <div class="short-grid">
+              <div class="scard">
+                <div class="scard-title">🔼 빅뱅(Big Bang)</div>
+                <p>모든 모듈을 한꺼번에 통합 후 테스트. 결함 원인 추적 어려움. 소규모 시스템 적합</p>
+              </div>
+              <div class="scard">
+                <div class="scard-title">⬇️ 하향식(Top-Down)</div>
+                <p>상위 모듈부터 하위로. 스텁(Stub) 사용. 초기에 설계 검증 가능</p>
+              </div>
+              <div class="scard">
+                <div class="scard-title">⬆️ 상향식(Bottom-Up)</div>
+                <p>하위 모듈부터 상위로. 드라이버(Driver) 사용. 핵심 모듈 조기 검증</p>
+              </div>
+              <div class="scard">
+                <div class="scard-title">🥪 샌드위치(Sandwich)</div>
+                <p>하향식+상향식 병행. 스텁·드라이버 모두 필요. 대규모 프로젝트 적합</p>
+              </div>
+            </div>
+          </div>
+          <div class="kbox kb-blue">
+            <div class="kbt">📌 감리 포인트 — 테스트 레벨별 체크</div>
+            ① 단위 테스트 커버리지(구문·분기) 목표치(80% 이상) 달성 여부<br>
+            ② 통합 테스트 시나리오가 인터페이스 명세서와 일치하는가<br>
+            ③ 시스템 테스트에 비기능(성능·보안·가용성) 항목 포함 여부<br>
+            ④ 인수 테스트 결과가 계약 요구사항 충족 기준과 연결되었는가
+          </div>
+          <div class="concl">
+            <div class="concl-title">Ⅳ. 결론</div>
+            <p>테스트 레벨을 단계적으로 수행함으로써 결함 조기 발견 비용을 최소화할 수 있다(IBM 연구: 생산 이후 발견 결함 수정 비용 = 설계 단계 대비 100배). 최근 CI/CD 파이프라인에서는 단위·통합 테스트를 자동화(Test Automation)하여 품질 게이트(Quality Gate)로 활용한다.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    </div><!-- /sq1 -->
+
+    <!-- S3: 형상관리 -->
+    <div class="q-panel" id="sq2">
+    <div class="q-counter">📝 단답형 3번 / 5번</div>
+    <div class="qcard">
+      <div class="qhdr">
+        <span class="qdomain badge-sw">소프트웨어공학</span>
+        <div class="qmeta">
+          <div class="qtype">1교시 단답형 · 10~15점 · 1~2페이지 분량</div>
+          <div class="qtitle">소프트웨어 형상관리(SCM: Software Configuration Management)의 개념, 주요 활동, 기준선(Baseline)의 역할 및 대표 도구를 설명하시오.</div>
+        </div>
+      </div>
+      <div class="qbody">
+        <div class="qhints">
+          <span class="qhint">IEEE 828 표준</span><span class="qhint">Git 연계</span><span class="qhint">감리 빈출</span>
+        </div>
+      </div>
+      <div class="acard">
+        <button class="atoggle" onclick="toggleA(this)">
+          <span class="alabel">📄 모범 답안 보기</span>
+          <span class="aarrow">▼</span>
+        </button>
+        <div class="abody">
+          <div class="atitle">SCM의 개념·주요 활동·기준선(Baseline)·대표 도구</div>
+          <div class="chips">
+            <span class="chip ct">⏱ 목표 15분</span>
+            <span class="chip cp">📄 1.5~2페이지</span>
+            <span class="chip cs">💯 10~15점</span>
+          </div>
+          <div class="asec">
+            <div class="asectitle s1">Ⅰ. SCM의 개념</div>
+            <div class="ap">소프트웨어 형상관리(SCM)는 소프트웨어 제품의 무결성·추적성·가시성을 보장하기 위해 형상 항목(Configuration Item)의 식별·통제·감사·상태 보고를 체계적으로 관리하는 프로세스이다. IEEE 828 표준을 기반으로 하며, 소프트웨어 개발 전 생명주기에 걸쳐 적용된다.</div>
+          </div>
+          <div class="asec">
+            <div class="asectitle s2">Ⅱ. SCM 4대 주요 활동</div>
+            <ul class="aol">
+              <li><span class="onum on1">1</span><div><strong>형상 식별(Configuration Identification)</strong>: 관리 대상 형상 항목(CI) 선정 및 고유 식별자 부여. 소스코드·문서·데이터베이스 스키마·테스트 케이스 등 포함</div></li>
+              <li><span class="onum on2">2</span><div><strong>형상 통제(Configuration Control)</strong>: CI에 대한 변경 요청(CR) 검토·승인·추적. CCB(형상통제위원회)가 변경 승인. 변경 이력 관리</div></li>
+              <li><span class="onum on3">3</span><div><strong>형상 감사(Configuration Audit)</strong>: CI가 명세·계약·표준에 부합하는지 독립적으로 검증. 기능 형상 감사(FCA)·물리 형상 감사(PCA)</div></li>
+              <li><span class="onum on4">4</span><div><strong>형상 상태 보고(Configuration Status Accounting)</strong>: CI의 현재 상태·변경 이력·승인 현황을 기록·보고. 관리자·개발자에게 시각화 제공</div></li>
+            </ul>
+          </div>
+          <div class="asec">
+            <div class="asectitle s3">Ⅲ. 기준선(Baseline)의 역할</div>
+            <div class="ap">기준선은 특정 시점에 공식 검토·승인된 형상의 스냅숏으로, 변경 통제의 기준점이 된다. 기준선 이후의 변경은 반드시 CCB 승인을 거쳐야 한다.</div>
+            <table class="atable">
+              <tr><th>기준선 유형</th><th>설정 시점</th><th>포함 항목</th></tr>
+              <tr><td>기능 기준선</td><td>요구사항 확정 후</td><td>SRS(소프트웨어 요구사항 명세서)</td></tr>
+              <tr><td>할당 기준선</td><td>아키텍처 설계 완료 후</td><td>설계 명세서, 인터페이스 정의서</td></tr>
+              <tr><td>제품 기준선</td><td>시스템 테스트 완료 후 인도 전</td><td>소스코드, 실행파일, 테스트 케이스·결과</td></tr>
+            </table>
+          </div>
+          <div class="asec">
+            <div class="asectitle s4">Ⅳ. 대표 도구 비교</div>
+            <table class="atable">
+              <tr><th>도구</th><th>유형</th><th>특징</th><th>브랜치 전략</th></tr>
+              <tr><td>Git</td><td>분산형 DVCS</td><td>오프라인 작업, 경량 브랜치, 오픈소스 표준</td><td>Git Flow / GitHub Flow / Trunk-Based</td></tr>
+              <tr><td>SVN</td><td>중앙집중식</td><td>단순한 운영, 디렉터리 레벨 권한 관리</td><td>trunk/branches/tags</td></tr>
+              <tr><td>Jira+Git</td><td>통합 이슈추적</td><td>이슈-커밋 연계로 변경 추적성 강화</td><td>이슈번호 기반 브랜치</td></tr>
+            </table>
+          </div>
+          <div class="concl">
+            <div class="concl-title">Ⅴ. 결론 — 감리 점검항목</div>
+            <p>공공 정보화사업 감리 시 SCM 점검항목: ①형상관리 계획서 존재 여부, ②CCB 구성 및 운영 여부, ③커밋 메시지와 변경요청서(CR) 연계 추적성, ④릴리즈 버전 태깅 및 배포 이력 기록, ⑤브랜치 전략 준수 여부를 확인한다.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    </div><!-- /sq2 -->
+
+    <!-- S4: GoF 디자인패턴 -->
+    <div class="q-panel" id="sq3">
+    <div class="q-counter">📝 단답형 4번 / 5번</div>
+    <div class="qcard">
+      <div class="qhdr">
+        <span class="qdomain badge-sw">소프트웨어공학</span>
+        <div class="qmeta">
+          <div class="qtype">1교시 단답형 · 10~15점 · 1~2페이지 분량</div>
+          <div class="qtitle">GoF(Gang of Four) 디자인 패턴의 3가지 분류와 각 분류별 대표 패턴 2개씩을 선택하여 개념, 구조, 활용 사례를 설명하시오.</div>
+        </div>
+      </div>
+      <div class="qbody">
+        <div class="qhints">
+          <span class="qhint">23가지 패턴 분류 암기</span><span class="qhint">생성·구조·행위</span><span class="qhint">실제 적용 예시 필수</span>
+        </div>
+      </div>
+      <div class="acard">
+        <button class="atoggle" onclick="toggleA(this)">
+          <span class="alabel">📄 모범 답안 보기</span>
+          <span class="aarrow">▼</span>
+        </button>
+        <div class="abody">
+          <div class="atitle">GoF 디자인 패턴 3분류 및 대표 패턴 6종</div>
+          <div class="chips">
+            <span class="chip ct">⏱ 목표 15분</span>
+            <span class="chip cp">📄 1.5~2페이지</span>
+            <span class="chip cs">💯 10~15점</span>
+          </div>
+          <div class="asec">
+            <div class="asectitle s1">Ⅰ. GoF 디자인 패턴 개요</div>
+            <div class="ap">GoF(Gang of Four) 디자인 패턴은 1994년 Gamma 외 4인이 객체지향 설계에서 반복적으로 나타나는 문제를 유형화한 23가지 설계 패턴이다. 생성(Creational) 5종, 구조(Structural) 7종, 행위(Behavioral) 11종으로 분류된다.</div>
+          </div>
+          <div class="asec">
+            <div class="asectitle s2">Ⅱ. 생성 패턴 (Creational) — 객체 생성 방식 추상화</div>
+            <ul class="aol">
+              <li><span class="onum on2">①</span><div>
+                <strong>싱글톤(Singleton)</strong>: 클래스의 인스턴스를 하나만 생성하고 전역 접근점을 제공하는 패턴
+                <div class="sub"><div class="si">구조: private 생성자 + static 인스턴스 변수 + getInstance() 메서드</div><div class="si">활용: DB 커넥션 풀, 로그 관리자, 설정(Config) 객체</div><div class="si">주의: 멀티스레드 환경에서 double-checked locking 또는 Eager initialization 필요</div></div>
+              </div></li>
+              <li><span class="onum on2">②</span><div>
+                <strong>팩토리 메서드(Factory Method)</strong>: 객체 생성 인터페이스를 정의하되, 어떤 클래스를 생성할지는 서브클래스가 결정하는 패턴
+                <div class="sub"><div class="si">구조: Creator(추상 팩토리 메서드) → ConcreteCreator(구체 구현) → Product</div><div class="si">활용: 로그 핸들러(FileLogger/DBLogger), 결제 수단 생성(KakaoPay/NaverPay)</div><div class="si">OCP 준수: 새 Product 추가 시 기존 코드 수정 불필요</div></div>
+              </div></li>
+            </ul>
+          </div>
+          <div class="asec">
+            <div class="asectitle s3">Ⅲ. 구조 패턴 (Structural) — 클래스·객체 조합 방식</div>
+            <ul class="aol">
+              <li><span class="onum on3">①</span><div>
+                <strong>어댑터(Adapter)</strong>: 호환되지 않는 인터페이스를 가진 클래스들이 함께 동작할 수 있도록 변환 래퍼를 제공하는 패턴
+                <div class="sub"><div class="si">구조: Target 인터페이스 ← Adapter(래퍼) → Adaptee(기존 클래스)</div><div class="si">활용: 구버전 결제 API → 신규 인터페이스 연동, JSON↔XML 변환</div></div>
+              </div></li>
+              <li><span class="onum on3">②</span><div>
+                <strong>데코레이터(Decorator)</strong>: 객체에 동적으로 책임(기능)을 추가하는 패턴. 상속 대신 구성(Composition)을 통해 기능 확장
+                <div class="sub"><div class="si">구조: Component ← ConcreteComponent / Decorator → ConcreteDecorator</div><div class="si">활용: Java InputStream → BufferedInputStream → DataInputStream (중첩 래핑)</div></div>
+              </div></li>
+            </ul>
+          </div>
+          <div class="asec">
+            <div class="asectitle s4">Ⅳ. 행위 패턴 (Behavioral) — 객체 간 통신·알고리즘</div>
+            <ul class="aol">
+              <li><span class="onum on4">①</span><div>
+                <strong>옵저버(Observer)</strong>: 주체(Subject)의 상태 변화를 여러 관찰자(Observer)에게 자동으로 알리는 발행-구독 패턴
+                <div class="sub"><div class="si">구조: Subject(attach/detach/notify) ← ConcreteSubject / Observer ← ConcreteObserver</div><div class="si">활용: GUI 이벤트 핸들러, 주식 시세 알림, Spring ApplicationEvent</div></div>
+              </div></li>
+              <li><span class="onum on4">②</span><div>
+                <strong>전략(Strategy)</strong>: 알고리즘 군을 캡슐화하여 상호 교체 가능하게 하는 패턴. 런타임에 알고리즘 선택
+                <div class="sub"><div class="si">구조: Context(전략 보유) → Strategy(인터페이스) ← ConcreteStrategy(구체 알고리즘)</div><div class="si">활용: 정렬 알고리즘 교체, 결제 수단 선택(신용카드/페이팔/암호화폐)</div></div>
+              </div></li>
+            </ul>
+          </div>
+          <div class="kbox kb-blue">
+            <div class="kbt">📌 분류별 전체 목록 암기</div>
+            <strong>생성(5)</strong>: Singleton, Factory Method, Abstract Factory, Builder, Prototype<br>
+            <strong>구조(7)</strong>: Adapter, Bridge, Composite, Decorator, Facade, Flyweight, Proxy<br>
+            <strong>행위(11)</strong>: Chain of Responsibility, Command, Interpreter, Iterator, Mediator, Memento, Observer, State, Strategy, Template Method, Visitor
+          </div>
+          <div class="concl">
+            <div class="concl-title">Ⅴ. 결론</div>
+            <p>GoF 패턴은 팀 간 공통 설계 언어(Vocabulary)를 제공하여 의사소통 효율을 높인다. 현대 프레임워크(Spring의 DI·AOP, React의 상태관리, Kubernetes의 Controller)는 GoF 패턴을 적극 활용하고 있으며, 패턴의 무분별한 적용보다 문제 상황에 맞는 선택이 중요하다.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    </div><!-- /sq3 -->
+
+    <!-- S5: 소프트웨어 결함 -->
+    <div class="q-panel" id="sq4">
+    <div class="q-counter">📝 단답형 5번 / 5번</div>
+    <div class="qcard">
+      <div class="qhdr">
+        <span class="qdomain badge-sw">소프트웨어공학</span>
+        <div class="qmeta">
+          <div class="qtype">1교시 단답형 · 10~15점 · 1~2페이지 분량</div>
+          <div class="qtitle">소프트웨어 결함(Defect) 관련 용어인 오류(Error), 결점(Fault), 고장(Failure)의 차이를 정의하고, 결함 밀도(Defect Density), 결함 제거율(DRE)의 개념과 활용 방법을 설명하시오.</div>
+        </div>
+      </div>
+      <div class="qbody">
+        <div class="qhints">
+          <span class="qhint">IEEE 용어 표준</span><span class="qhint">메트릭 계산식 필수</span><span class="qhint">품질 측정 연계</span>
+        </div>
+      </div>
+      <div class="acard">
+        <button class="atoggle" onclick="toggleA(this)">
+          <span class="alabel">📄 모범 답안 보기</span>
+          <span class="aarrow">▼</span>
+        </button>
+        <div class="abody">
+          <div class="atitle">소프트웨어 결함 용어 체계 및 품질 메트릭 (DRE·결함 밀도)</div>
+          <div class="chips">
+            <span class="chip ct">⏱ 목표 15분</span>
+            <span class="chip cp">📄 1.5~2페이지</span>
+            <span class="chip cs">💯 10~15점</span>
+          </div>
+          <div class="asec">
+            <div class="asectitle s1">Ⅰ. 결함 관련 핵심 용어 정의</div>
+            <table class="atable">
+              <tr><th>용어</th><th>IEEE 표준 정의</th><th>예시</th></tr>
+              <tr><td>오류 (Error)</td><td>개발자가 코드를 잘못 작성하는 <strong>인간의 실수</strong>. 결점을 유발하는 원인 행위</td><td>개발자가 배열 인덱스를 0 대신 1부터 시작하도록 잘못 코딩</td></tr>
+              <tr><td>결점 (Fault)</td><td>오류로 인해 소프트웨어 내에 존재하는 <strong>코드 결함</strong>. 고장을 일으킬 수 있는 잠재적 문제</td><td>코드에 잠재된 배열 범위 초과 구문</td></tr>
+              <tr><td>고장 (Failure)</td><td>결점이 실행되어 시스템이 <strong>요구사항을 충족하지 못하는 상태</strong>. 사용자가 체감하는 문제</td><td>실행 시 ArrayIndexOutOfBoundsException 발생으로 시스템 중단</td></tr>
+            </table>
+            <div class="dbox">결함 발생 흐름 (IEEE 610.12)
+
+사람의 실수(Error) → 코드에 결점 존재(Fault)
+      → 결점 실행 시 고장 발생(Failure) → 사용자 불만·장애</div>
+          </div>
+          <div class="asec">
+            <div class="asectitle s2">Ⅱ. 결함 밀도 (Defect Density)</div>
+            <div class="kbox kb-blue">
+              <div class="kbt">📐 결함 밀도 계산식</div>
+              <strong>결함 밀도(DD) = 발견된 결함 수 / 소프트웨어 규모(천 라인 또는 기능점수)</strong><br><br>
+              예시: 10만 라인 코드에서 결함 50개 발견 → DD = 50 / 100 = <strong>0.5 결함/KLOC</strong><br>
+              활용: 업계 벤치마크(1.0 결함/KLOC 이하) 대비 품질 수준 평가. 릴리즈 가능 여부 판단 기준
+            </div>
+          </div>
+          <div class="asec">
+            <div class="asectitle s3">Ⅲ. 결함 제거율 (DRE: Defect Removal Efficiency)</div>
+            <div class="kbox kb-green">
+              <div class="kbt">📐 DRE 계산식</div>
+              <strong>DRE = (인도 전 제거 결함 수) / (인도 전 제거 결함 수 + 인도 후 발견 결함 수) × 100%</strong><br><br>
+              예시: 인도 전 90개 제거, 인도 후 10개 발견 → DRE = 90/(90+10) × 100 = <strong>90%</strong><br>
+              세계적 수준: DRE ≥ 95% (CMM Level 5 조직). 공공 프로젝트 목표: DRE ≥ 85%
+            </div>
+            <table class="atable">
+              <tr><th>DRE 수준</th><th>품질 평가</th><th>개선 방향</th></tr>
+              <tr><td>95% 이상</td><td>세계적 수준</td><td>현행 프로세스 유지·벤치마킹</td></tr>
+              <tr><td>85~95%</td><td>양호</td><td>리뷰·인스펙션 강화</td></tr>
+              <tr><td>85% 미만</td><td>개선 필요</td><td>테스트 단계 조기화, 정적 분석 도입</td></tr>
+            </table>
+          </div>
+          <div class="concl">
+            <div class="concl-title">Ⅳ. 결론 — 감리 활용</div>
+            <p>감리 시 결함 밀도와 DRE는 소프트웨어 품질 수준을 정량적으로 평가하는 핵심 지표이다. 「SW사업 감리 점검기준」에서도 테스트 결과 분석 시 결함 추세 분석, 결함 밀도, 미해결 결함 현황을 필수 점검항목으로 규정하고 있다.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    </div><!-- /sq4 -->
+
+  </div><!-- /main -->
+</div><!-- /tp0 -->
+
+<!-- ═══════════════════════════════════════════════════════
+     논술형 섹션
+═══════════════════════════════════════════════════════ -->
+<div class="type-panel" id="tp1">
+  <nav class="q-nav">
+    <button class="q-btn active" onclick="showQ('l',0,this)">①아키텍처 패턴</button>
+    <button class="q-btn" onclick="showQ('l',1,this)">②소프트웨어 품질</button>
+    <button class="q-btn" onclick="showQ('l',2,this)">③소프트웨어 유지보수</button>
+    <button class="q-btn" onclick="showQ('l',3,this)">④애자일 방법론</button>
+    <button class="q-btn" onclick="showQ('l',4,this)">⑤CI/CD 파이프라인</button>
+  </nav>
+  <div class="main">
+
+    <!-- L1: 아키텍처 패턴 -->
+    <div class="q-panel active" id="lq0">
+    <div class="q-counter">📄 논술형 1번 / 5번</div>
+    <div class="qcard">
+      <div class="qhdr">
+        <span class="qdomain badge-sw">소프트웨어공학</span>
+        <div class="qmeta">
+          <div class="qtype">2~4교시 논술형 · 25점 · 3~4페이지 분량</div>
+          <div class="qtitle">소프트웨어 아키텍처 패턴에 대하여 다음을 설명하시오.</div>
+        </div>
+      </div>
+      <div class="qbody">
+        <div class="qitems">
+          <div class="qitem"><span class="qlabel">가.</span><span>모놀리식(Monolithic), 마이크로서비스(MSA), 서버리스(Serverless) 아키텍처의 개념과 특징</span></div>
+          <div class="qitem"><span class="qlabel">나.</span><span>세 아키텍처의 확장성·유지보수성·장애 격리·운영 복잡도 측면 비교</span></div>
+          <div class="qitem"><span class="qlabel">다.</span><span>공공 정보시스템에서의 아키텍처 선택 기준 및 모놀리식에서 MSA로의 전환 전략</span></div>
+        </div>
+        <div class="qhints">
+          <span class="qhint">최신 출제 유력</span><span class="qhint">3-way 비교표 필수</span><span class="qhint">전환 전략 Strangler Fig 포함</span>
+        </div>
+      </div>
+      <div class="acard">
+        <button class="atoggle" onclick="toggleA(this)">
+          <span class="alabel">📄 모범 답안 보기</span>
+          <span class="aarrow">▼</span>
+        </button>
+        <div class="abody">
+          <div class="atitle">모놀리식·MSA·서버리스 아키텍처 비교 및 공공 시스템 전환 전략</div>
+          <div class="chips">
+            <span class="chip ct">⏱ 목표 30분</span>
+            <span class="chip cp">📄 3.5~4페이지</span>
+            <span class="chip cs">💯 25점</span>
+          </div>
+          <div class="asec">
+            <div class="asectitle s1">Ⅰ. 개요 — 소프트웨어 아키텍처 패턴의 중요성</div>
+            <div class="ap">소프트웨어 아키텍처는 시스템의 전체 구조·컴포넌트·상호작용을 정의하는 고수준 설계 결정으로, 품질 속성(가용성·확장성·유지보수성)과 비즈니스 민첩성에 직접적인 영향을 미친다. 최근 클라우드·DevOps 확산으로 아키텍처 선택의 중요성이 더욱 높아지고 있다.</div>
+          </div>
+          <div class="asec">
+            <div class="asectitle s2">Ⅱ. 가. 세 아키텍처의 개념과 특징</div>
+            <ul class="aol">
+              <li><span class="onum on2">1</span><div><strong>모놀리식(Monolithic) 아키텍처</strong>: 모든 기능(UI·비즈니스 로직·데이터 접근)이 하나의 배포 단위로 통합된 단일 애플리케이션 구조
+                <div class="sub">
+                  <div class="si">장점: 개발 단순성, 트랜잭션 관리 용이, 초기 개발 속도 빠름, 디버깅 편의성</div>
+                  <div class="si">단점: 특정 기능의 변경이 전체 재배포 유발, 기술 스택 종속, 수평 확장 비효율(전체 복제)</div>
+                  <div class="si">적합: 소규모 팀, 단순 도메인, MVP(최소 기능 제품) 개발 단계</div>
+                </div>
+              </div></li>
+              <li><span class="onum on2">2</span><div><strong>마이크로서비스(MSA) 아키텍처</strong>: 비즈니스 기능을 독립적으로 배포 가능한 작은 서비스 단위로 분해하여 운영하는 아키텍처
+                <div class="sub">
+                  <div class="si">장점: 독립 배포·확장, 기술 스택 다양화, 장애 격리, 팀 자율성(Conway's Law)</div>
+                  <div class="si">단점: 분산 트랜잭션 복잡성, 서비스 간 네트워크 통신 비용, 운영 인프라 복잡성 증가</div>
+                  <div class="si">적합: 대규모 팀, 복잡한 도메인, 높은 확장성·가용성 요구 서비스</div>
+                </div>
+              </div></li>
+              <li><span class="onum on2">3</span><div><strong>서버리스(Serverless) 아키텍처</strong>: 클라우드 플랫폼이 서버 관리를 담당하고 개발자는 함수(Function) 단위 코드만 작성·배포하는 아키텍처(FaaS)
+                <div class="sub">
+                  <div class="si">장점: 인프라 관리 불필요, 요청 기반 자동 스케일링, 유휴 비용 없음 (pay-per-use)</div>
+                  <div class="si">단점: Cold Start 지연, 실행 시간 제한(AWS Lambda 15분), 벤더 종속, 디버깅 어려움</div>
+                  <div class="si">적합: 이벤트 기반 처리, 배치 작업, API 백엔드, 간헐적 워크로드</div>
+                </div>
+              </div></li>
+            </ul>
+          </div>
+          <div class="asec">
+            <div class="asectitle s3">Ⅲ. 나. 세 아키텍처 비교</div>
+            <table class="atable">
+              <tr><th>비교 항목</th><th>모놀리식</th><th>MSA</th><th>서버리스</th></tr>
+              <tr><td>배포 단위</td><td>단일 패키지 전체</td><td>서비스별 독립 배포</td><td>함수(Function) 단위</td></tr>
+              <tr><td>확장성</td><td>전체 복제(비효율)</td><td>서비스별 독립 확장</td><td>자동 무제한 확장</td></tr>
+              <tr><td>장애 격리</td><td>하나의 버그로 전체 장애</td><td>서비스 단위 격리</td><td>함수 단위 격리</td></tr>
+              <tr><td>유지보수성</td><td>코드 복잡도 증가 시 저하</td><td>서비스별 독립 유지보수</td><td>함수 분산으로 관리 어려움</td></tr>
+              <tr><td>데이터 관리</td><td>단일 DB (ACID 용이)</td><td>서비스별 DB 분리 (Saga 필요)</td><td>외부 스토리지 의존</td></tr>
+              <tr><td>운영 복잡도</td><td>낮음</td><td>높음 (K8s, 서비스메시)</td><td>중간 (플랫폼 관리 위임)</td></tr>
+              <tr><td>초기 비용</td><td>낮음</td><td>높음</td><td>낮음 (사용량 기반)</td></tr>
+              <tr><td>대표 사례</td><td>초기 스타트업, 레거시 ERP</td><td>Netflix, Amazon, 카카오</td><td>AWS Lambda, Google Cloud Functions</td></tr>
+            </table>
+          </div>
+          <div class="asec">
+            <div class="asectitle s4">Ⅳ. 다. 공공 정보시스템 아키텍처 선택 기준 및 전환 전략</div>
+            <div class="kbox kb-ora">
+              <div class="kbt">공공 정보시스템 아키텍처 선택 기준</div>
+              ① <strong>서비스 규모</strong>: 일 트랜잭션 1만 건 이하 → 모놀리식, 10만 건 이상 → MSA 고려<br>
+              ② <strong>팀 역량</strong>: 컨테이너·쿠버네티스 운영 역량 보유 여부<br>
+              ③ <strong>법적 요구사항</strong>: 개인정보 보호를 위한 서비스 경계 분리 필요성<br>
+              ④ <strong>예산·일정</strong>: MSA 전환은 모놀리식 대비 초기 비용 2~3배, 기간 1.5배 산정<br>
+              ⑤ <strong>클라우드 전환 계획</strong>: G-Cloud 연계 시 컨테이너 기반 MSA 권장
+            </div>
+            <div class="ap" style="margin-top:12px"><strong>모놀리식 → MSA 전환 전략: Strangler Fig Pattern</strong></div>
+            <div class="dbox">Strangler Fig(교살자 무화과) 패턴 — 단계적 전환 전략
+
+1단계 [식별]      DDD Bounded Context 분석으로 서비스 후보 도출
+                  변경 빈도 높고 독립 확장 필요 기능 우선 선정
+
+2단계 [분리 시작] API Gateway를 앞단에 배치
+                  신규 기능 → 마이크로서비스로 개발
+                  기존 기능 → 모놀리식 유지 (Strangler Facade)
+
+3단계 [점진적 이동] 기존 모놀리식 기능을 하나씩 마이크로서비스로 분리
+                   Anti-Corruption Layer로 레거시 인터페이스 보호
+                   Database per Service 원칙 적용 (데이터 분리)
+
+4단계 [완전 전환]  모놀리식 제거, 전체 MSA 운영
+                   서비스메시(Istio), 분산추적(Jaeger) 도입</div>
+            <div class="kbox kb-pur">
+              <div class="kbt">전환 시 핵심 고려사항</div>
+              ① <strong>데이터 분리 전략</strong>: Shared DB → Database per Service 전환 시 Saga 패턴으로 분산 트랜잭션 보장<br>
+              ② <strong>API Gateway</strong>: 인증·인가·라우팅·로드밸런싱 통합 관리 (Kong, AWS API Gateway)<br>
+              ③ <strong>서비스 검색(Service Discovery)</strong>: Eureka, Consul로 동적 서비스 등록·탐색<br>
+              ④ <strong>장애 허용(Resilience)</strong>: Circuit Breaker(Resilience4j), Retry, Timeout 적용
+            </div>
+          </div>
+          <div class="concl">
+            <div class="concl-title">Ⅴ. 결론</div>
+            <p>아키텍처 선택은 기술적 우수성보다 조직 규모·비즈니스 도메인 복잡성·운영 역량을 종합 고려해야 한다. 공공 부문에서는 「전자정부 SW아키텍처 가이드」에 따라 클라우드 네이티브 MSA를 권장하되, 기존 레거시 시스템은 Strangler Fig 패턴으로 점진적 전환을 통해 서비스 연속성을 유지하면서 현대화를 추진해야 한다.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    </div><!-- /lq0 -->
+
+    <!-- L2: 소프트웨어 품질 -->
+    <div class="q-panel" id="lq1">
+    <div class="q-counter">📄 논술형 2번 / 5번</div>
+    <div class="qcard">
+      <div class="qhdr">
+        <span class="qdomain badge-sw">소프트웨어공학</span>
+        <div class="qmeta">
+          <div class="qtype">2~4교시 논술형 · 25점 · 3~4페이지 분량</div>
+          <div class="qtitle">소프트웨어 품질 모델에 대하여 다음을 설명하시오.</div>
+        </div>
+      </div>
+      <div class="qbody">
+        <div class="qitems">
+          <div class="qitem"><span class="qlabel">가.</span><span>ISO/IEC 25010(SQuaRE) 품질 모델의 품질 특성 8가지와 각 하위 특성</span></div>
+          <div class="qitem"><span class="qlabel">나.</span><span>소프트웨어 테스트 기법 — 블랙박스(동치 분할, 경계값 분석, 결정 테이블)와 화이트박스(구문·분기·MC/DC 커버리지) 비교</span></div>
+          <div class="qitem"><span class="qlabel">다.</span><span>품질 보증(QA)과 품질 통제(QC)의 차이 및 공공 정보화사업에서의 적용 방안</span></div>
+        </div>
+        <div class="qhints">
+          <span class="qhint">ISO 25010 암기 필수</span><span class="qhint">테스트 기법 비교</span><span class="qhint">QA/QC 구분 중요</span>
+        </div>
+      </div>
+      <div class="acard">
+        <button class="atoggle" onclick="toggleA(this)">
+          <span class="alabel">📄 모범 답안 보기</span>
+          <span class="aarrow">▼</span>
+        </button>
+        <div class="abody">
+          <div class="atitle">ISO/IEC 25010 품질 모델·테스트 기법 비교·QA vs QC 및 공공 적용</div>
+          <div class="chips">
+            <span class="chip ct">⏱ 목표 30분</span>
+            <span class="chip cp">📄 3.5~4페이지</span>
+            <span class="chip cs">💯 25점</span>
+          </div>
+          <div class="asec">
+            <div class="asectitle s1">Ⅰ. 개요 — 소프트웨어 품질의 개념</div>
+            <div class="ap">소프트웨어 품질은 명시적·묵시적 요구사항을 충족하는 소프트웨어의 특성 집합으로, ISO/IEC 25010(SQuaRE: System and Software Quality Requirements and Evaluation)은 이를 체계적으로 정의하는 국제 표준이다.</div>
+          </div>
+          <div class="asec">
+            <div class="asectitle s2">Ⅱ. 가. ISO/IEC 25010 품질 특성 8가지</div>
+            <table class="atable">
+              <tr><th>품질 특성</th><th>정의</th><th>주요 하위 특성</th></tr>
+              <tr><td>기능 적합성<br>(Functional Suitability)</td><td>명시된 기능적 요구사항을 충족하는 정도</td><td>기능 완전성, 기능 정확성, 기능 적절성</td></tr>
+              <tr><td>성능 효율성<br>(Performance Efficiency)</td><td>자원 사용 대비 성능 수준</td><td>시간 효율성, 자원 활용성, 수용 능력</td></tr>
+              <tr><td>호환성<br>(Compatibility)</td><td>다른 제품·시스템·환경과 정보 교환 능력</td><td>공존성, 상호 운용성</td></tr>
+              <tr><td>사용성<br>(Usability)</td><td>사용자가 목표 달성 시 효과성·효율성·만족도</td><td>적절성 인식성, 학습성, 운용성, UI 심미성, 접근성</td></tr>
+              <tr><td>신뢰성<br>(Reliability)</td><td>특정 조건에서 기능을 유지하는 능력</td><td>성숙성, 가용성, 결함 허용성, 회복성</td></tr>
+              <tr><td>보안성<br>(Security)</td><td>허가된 접근 수준에서 정보·데이터 보호</td><td>기밀성, 무결성, 부인방지성, 책임 추적성, 인증성</td></tr>
+              <tr><td>유지보수성<br>(Maintainability)</td><td>수정·개선의 효과성·효율성</td><td>모듈성, 재사용성, 분석성, 변경성, 시험성</td></tr>
+              <tr><td>이식성<br>(Portability)</td><td>다른 환경으로의 이전 능력</td><td>적응성, 설치성, 대체성</td></tr>
+            </table>
+            <div class="kbox kb-blue">
+              <div class="kbt">📌 한 줄 암기 (기성호사신보유이)</div>
+              <strong>기</strong>능적합성 · <strong>성</strong>능효율성 · <strong>호</strong>환성 · <strong>사</strong>용성 · <strong>신</strong>뢰성 · <strong>보</strong>안성 · <strong>유</strong>지보수성 · <strong>이</strong>식성
+            </div>
+          </div>
+          <div class="asec">
+            <div class="asectitle s3">Ⅲ. 나. 테스트 기법 비교</div>
+            <table class="atable">
+              <tr><th>구분</th><th>기법</th><th>원리</th><th>적용 예시</th></tr>
+              <tr><td rowspan="3">블랙박스<br>(명세 기반)<br>내부 구조 무관</td><td>동치 분할<br>(Equivalence Partitioning)</td><td>입력값을 동일하게 처리되는 클래스로 분할. 각 클래스에서 1개 대표값 선택</td><td>나이 입력(0~100): 음수, 0~100, 101 이상의 3개 클래스</td></tr>
+              <tr><td>경계값 분석<br>(Boundary Value Analysis)</td><td>동치 경계 직전·직후 값 테스트. 경계에서 결함 발생 빈도 높음</td><td>1~100 유효: 0, 1, 2, 99, 100, 101 테스트</td></tr>
+              <tr><td>결정 테이블<br>(Decision Table)</td><td>조건 조합별 예상 행동 표로 정의. 복잡한 비즈니스 규칙 검증</td><td>할인 정책: 회원등급+구매금액+쿠폰 조합별 할인율</td></tr>
+              <tr><td rowspan="3">화이트박스<br>(구조 기반)<br>내부 코드 분석</td><td>구문 커버리지<br>(Statement Coverage)</td><td>모든 실행 가능 구문이 최소 1회 실행. C0 커버리지</td><td>if(a&gt;0) x=1; else x=2; → 두 분기 모두 실행</td></tr>
+              <tr><td>분기 커버리지<br>(Branch Coverage)</td><td>모든 분기(True/False)를 최소 1회 실행. C1 커버리지. 구문보다 강한 기준</td><td>모든 if-else, switch-case 분기 실행</td></tr>
+              <tr><td>MC/DC<br>(Modified Condition/Decision Coverage)</td><td>각 조건이 독립적으로 결정에 영향을 미치는 경우 포함. 항공·안전 필수 소프트웨어(DO-178C)</td><td>if(A &amp;&amp; B): A=T&amp;B=T, A=T&amp;B=F, A=F&amp;B=T 테스트</td></tr>
+            </table>
+          </div>
+          <div class="asec">
+            <div class="asectitle s4">Ⅳ. 다. QA vs QC 및 공공 정보화사업 적용</div>
+            <table class="atable">
+              <tr><th>구분</th><th>품질 보증 (QA)</th><th>품질 통제 (QC)</th></tr>
+              <tr><td>목적</td><td>프로세스가 올바른지 확인 (예방 중심)</td><td>제품이 올바른지 확인 (탐지 중심)</td></tr>
+              <tr><td>성격</td><td>프로세스 지향, 사전적·능동적</td><td>제품 지향, 사후적·수동적</td></tr>
+              <tr><td>활동</td><td>프로세스 감사, 표준 정의, 교육 훈련</td><td>테스트 수행, 코드 리뷰, 인스펙션</td></tr>
+              <tr><td>담당</td><td>QA팀, PMO, 감리사</td><td>테스트팀, 개발자</td></tr>
+              <tr><td>시점</td><td>개발 전 과정(상시)</td><td>산출물 완성 후</td></tr>
+              <tr><td>공공 적용</td><td>감리, ISO 9001 인증, CMMI 평가</td><td>소프트웨어 시험성적서, 납품 전 검수</td></tr>
+            </table>
+            <div class="kbox kb-green">
+              <div class="kbt">공공 정보화사업 품질 적용 체계</div>
+              ① <strong>QA (감리)</strong>: 「소프트웨어 진흥법」 제48조에 따른 의무 감리로 QA 기능 수행<br>
+              ② <strong>QC (시험)</strong>: 행정안전부 「소프트웨어 시험·인증 기준」에 따른 기능·성능·보안 시험<br>
+              ③ <strong>정량 지표</strong>: 결함 밀도 ≤1.0/KLOC, DRE ≥85%, 성능 응답시간 3초 이내(공공 기준)<br>
+              ④ <strong>보안 시험</strong>: 「전자정부법」 제45조에 따른 보안성 검토 및 취약점 분석
+            </div>
+          </div>
+          <div class="concl">
+            <div class="concl-title">Ⅴ. 결론</div>
+            <p>ISO/IEC 25010은 소프트웨어 품질을 체계적으로 정의하고 측정하는 국제 표준으로, 공공 정보화사업의 품질 기준 및 감리 점검 기준으로 활용된다. 블랙박스·화이트박스 테스트 기법을 병행하고, QA(감리)와 QC(테스트)를 균형 있게 적용함으로써 소프트웨어 품질을 종합적으로 보장해야 한다.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    </div><!-- /lq1 -->
+
+    <!-- L3: 소프트웨어 유지보수 -->
+    <div class="q-panel" id="lq2">
+    <div class="q-counter">📄 논술형 3번 / 5번</div>
+    <div class="qcard">
+      <div class="qhdr">
+        <span class="qdomain badge-sw">소프트웨어공학</span>
+        <div class="qmeta">
+          <div class="qtype">2~4교시 논술형 · 25점 · 3~4페이지 분량</div>
+          <div class="qtitle">소프트웨어 유지보수에 대하여 다음을 설명하시오.</div>
+        </div>
+      </div>
+      <div class="qbody">
+        <div class="qitems">
+          <div class="qitem"><span class="qlabel">가.</span><span>ISO/IEC 14764에서 정의한 소프트웨어 유지보수의 4가지 유형과 각각의 특징</span></div>
+          <div class="qitem"><span class="qlabel">나.</span><span>Lehman의 소프트웨어 진화 법칙 중 핵심 5가지 법칙과 유지보수 관리에의 시사점</span></div>
+          <div class="qitem"><span class="qlabel">다.</span><span>레거시 시스템의 현대화(Legacy Modernization) 전략 및 기술 부채(Technical Debt) 관리 방안</span></div>
+        </div>
+        <div class="qhints">
+          <span class="qhint">ISO 14764 필수 암기</span><span class="qhint">Lehman 8법칙</span><span class="qhint">기술부채 최신 트렌드</span>
+        </div>
+      </div>
+      <div class="acard">
+        <button class="atoggle" onclick="toggleA(this)">
+          <span class="alabel">📄 모범 답안 보기</span>
+          <span class="aarrow">▼</span>
+        </button>
+        <div class="abody">
+          <div class="atitle">SW 유지보수 유형·Lehman 진화 법칙·레거시 현대화 및 기술 부채 관리</div>
+          <div class="chips">
+            <span class="chip ct">⏱ 목표 30분</span>
+            <span class="chip cp">📄 3.5~4페이지</span>
+            <span class="chip cs">💯 25점</span>
+          </div>
+          <div class="asec">
+            <div class="asectitle s1">Ⅰ. 개요 — 소프트웨어 유지보수의 개념</div>
+            <div class="ap">소프트웨어 유지보수는 인도 후 결함 수정, 성능 향상, 변화하는 환경에 적응하기 위해 소프트웨어를 수정하는 활동이다. Boehm 연구에 따르면 소프트웨어 총 생명주기 비용의 60~80%가 유지보수 단계에서 발생하며, 이를 체계적으로 관리하는 것이 핵심이다.</div>
+          </div>
+          <div class="asec">
+            <div class="asectitle s2">Ⅱ. 가. ISO/IEC 14764 유지보수 4가지 유형</div>
+            <table class="atable">
+              <tr><th>유형</th><th>정의</th><th>목적</th><th>비중</th><th>예시</th></tr>
+              <tr><td>수정 유지보수<br>(Corrective)</td><td>운영 중 발견된 결함·오류를 수정하는 활동</td><td>결함 제거, 서비스 복구</td><td>약 17%</td><td>운영 중 NullPointerException 수정</td></tr>
+              <tr><td>예방 유지보수<br>(Preventive)</td><td>향후 발생 가능한 결함을 사전에 예방하기 위한 수정 활동</td><td>신뢰성·유지보수성 향상</td><td>약 5%</td><td>레거시 코드 리팩토링, 문서화 강화</td></tr>
+              <tr><td>완전화 유지보수<br>(Perfective)</td><td>사용자 요구·성능 향상을 위한 기능 개선</td><td>품질·기능 향상</td><td>약 60%</td><td>신규 기능 추가, UI/UX 개선</td></tr>
+              <tr><td>적응 유지보수<br>(Adaptive)</td><td>변화된 환경(OS·HW·법령)에 맞게 소프트웨어 수정</td><td>환경 적합성 유지</td><td>약 18%</td><td>OS 업그레이드, 법령 개정 반영</td></tr>
+            </table>
+            <div class="kbox kb-blue">
+              <div class="kbt">📌 한 줄 암기 (수예완적)</div>
+              <strong>수</strong>정(결함제거) · <strong>예</strong>방(사전예방) · <strong>완</strong>전화(기능향상, 최다 60%) · <strong>적</strong>응(환경변화)
+            </div>
+          </div>
+          <div class="asec">
+            <div class="asectitle s3">Ⅲ. 나. Lehman의 소프트웨어 진화 법칙 (핵심 5가지)</div>
+            <ul class="aol">
+              <li><span class="onum on3">1</span><div><strong>지속적 변화 법칙 (Law of Continuing Change)</strong>: E-type 소프트웨어는 변화에 적응하지 않으면 실용성이 점차 감소한다
+                <div class="sub"><div class="si">시사점: 유지보수를 선택이 아닌 필수 활동으로 계획에 포함해야 함</div></div>
+              </div></li>
+              <li><span class="onum on3">2</span><div><strong>증가하는 복잡도 법칙 (Law of Increasing Complexity)</strong>: 프로그램은 진화할수록 복잡도가 증가한다. 복잡도 감소를 위한 별도 작업 없이는 엔트로피가 증가
+                <div class="sub"><div class="si">시사점: 지속적 리팩토링, 아키텍처 리뷰를 통한 복잡도 억제 필요</div></div>
+              </div></li>
+              <li><span class="onum on3">3</span><div><strong>자기 조절 법칙 (Law of Self Regulation)</strong>: 소프트웨어 진화 과정은 자기 조절적이며, 제품 및 프로세스 측정치는 정규 분포를 따름
+                <div class="sub"><div class="si">시사점: 측정 기반 관리(CBM)로 이상 징후 조기 탐지</div></div>
+              </div></li>
+              <li><span class="onum on3">4</span><div><strong>조직적 안정성 법칙 (Law of Conservation of Organizational Stability)</strong>: 소프트웨어 진화의 평균 속도는 생명주기 전반에 걸쳐 일정하게 유지됨
+                <div class="sub"><div class="si">시사점: 릴리즈 속도를 무리하게 높이면 품질 저하 발생. 지속 가능한 속도 유지</div></div>
+              </div></li>
+              <li><span class="onum on3">5</span><div><strong>계속적인 성장 법칙 (Law of Conservation of Familiarity)</strong>: 사용자 만족도 유지를 위해 시스템이 제공하는 기능적 내용이 지속적으로 증가해야 함
+                <div class="sub"><div class="si">시사점: 완전화 유지보수가 전체의 60% 차지하는 이유. 기능 확장 예산 확보 필수</div></div>
+              </div></li>
+            </ul>
+          </div>
+          <div class="asec">
+            <div class="asectitle s4">Ⅳ. 다. 레거시 현대화 전략 및 기술 부채 관리</div>
+            <table class="atable">
+              <tr><th>현대화 전략</th><th>내용</th><th>적합 상황</th><th>비용</th></tr>
+              <tr><td>유지(Retain)</td><td>현행 유지, 최소한의 수정만 수행</td><td>단기 운영, 이전 비용 > 효익</td><td>최저</td></tr>
+              <tr><td>리호스팅(Rehost)</td><td>코드 변경 없이 클라우드·신규 HW로 이전 (Lift &amp; Shift)</td><td>빠른 클라우드 전환 필요</td><td>낮음</td></tr>
+              <tr><td>리플랫폼(Replatform)</td><td>최소 코드 수정으로 플랫폼 최적화 (예: DB → 관리형 RDS)</td><td>부분 최적화</td><td>중간</td></tr>
+              <tr><td>리팩토링(Refactor)</td><td>코드·아키텍처 전면 재설계 (MSA 전환 등)</td><td>복잡도 높은 레거시</td><td>높음</td></tr>
+              <tr><td>재구축(Rebuild)</td><td>새로운 기술 스택으로 전면 재개발</td><td>비즈니스 요구 근본 변화</td><td>최고</td></tr>
+              <tr><td>폐기(Retire)</td><td>기능 통폐합 후 시스템 제거</td><td>중복 시스템, 사용률 저조</td><td>절감</td></tr>
+            </table>
+            <div class="kbox kb-red">
+              <div class="kbt">기술 부채(Technical Debt) 관리 방안</div>
+              <strong>기술 부채</strong>: Ward Cunningham이 제시한 개념. 빠른 개발을 위해 임시방편적 설계·코드를 사용할 때 발생하는 미래의 추가 작업 비용<br><br>
+              ① <strong>가시화</strong>: SonarQube Technical Debt 지표, SQALE 메트릭으로 부채 규모 정량화<br>
+              ② <strong>우선순위 관리</strong>: 비용-효익 분석으로 부채 상환 우선순위 결정 (이자율 높은 부채 우선)<br>
+              ③ <strong>지속적 리팩토링</strong>: Boy Scout Rule - "코드를 발견했을 때보다 더 깔끔하게 두고 떠나라"<br>
+              ④ <strong>예방</strong>: 코딩 표준 준수, 코드 리뷰(PR 리뷰), 정적 분석 자동화(CI 파이프라인 통합)
+            </div>
+          </div>
+          <div class="concl">
+            <div class="concl-title">Ⅴ. 결론</div>
+            <p>소프트웨어 유지보수는 개발보다 비용이 크고 중요도가 높은 활동이다. Lehman 법칙에 따라 복잡도 증가는 불가피하므로, 지속적 리팩토링과 기술 부채 관리를 통해 소프트웨어 엔트로피를 통제해야 한다. 공공 레거시 시스템 현대화 시에는 6R 전략 중 비즈니스·기술 맥락에 맞는 전략을 선택하고, ISMP 단계에서 현대화 로드맵을 수립해야 한다.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    </div><!-- /lq2 -->
+
+    <!-- L4: 애자일 방법론 -->
+    <div class="q-panel" id="lq3">
+    <div class="q-counter">📄 논술형 4번 / 5번</div>
+    <div class="qcard">
+      <div class="qhdr">
+        <span class="qdomain badge-sw">소프트웨어공학</span>
+        <div class="qmeta">
+          <div class="qtype">2~4교시 논술형 · 25점 · 3~4페이지 분량</div>
+          <div class="qtitle">애자일(Agile) 방법론에 대하여 다음을 설명하시오.</div>
+        </div>
+      </div>
+      <div class="qbody">
+        <div class="qitems">
+          <div class="qitem"><span class="qlabel">가.</span><span>애자일 선언문(Agile Manifesto)의 4가지 가치와 12원칙의 핵심 내용</span></div>
+          <div class="qitem"><span class="qlabel">나.</span><span>스크럼(Scrum), XP(eXtreme Programming), 칸반(Kanban)의 개념·절차·특징 비교</span></div>
+          <div class="qitem"><span class="qlabel">다.</span><span>공공 정보화사업에서 애자일 적용의 특수성과 PMO 연계 방안</span></div>
+        </div>
+        <div class="qhints">
+          <span class="qhint">4가지 가치 암기 필수</span><span class="qhint">스크럼 이벤트 5가지</span><span class="qhint">공공 적용 제약 중요</span>
+        </div>
+      </div>
+      <div class="acard">
+        <button class="atoggle" onclick="toggleA(this)">
+          <span class="alabel">📄 모범 답안 보기</span>
+          <span class="aarrow">▼</span>
+        </button>
+        <div class="abody">
+          <div class="atitle">애자일 선언문·스크럼·XP·칸반 비교 및 공공 정보화사업 적용</div>
+          <div class="chips">
+            <span class="chip ct">⏱ 목표 30분</span>
+            <span class="chip cp">📄 3.5~4페이지</span>
+            <span class="chip cs">💯 25점</span>
+          </div>
+          <div class="asec">
+            <div class="asectitle s1">Ⅰ. 가. 애자일 선언문 — 4가지 가치와 12원칙</div>
+            <div class="kbox kb-blue">
+              <div class="kbt">애자일 선언문 4가지 핵심 가치 (2001년, 17인)</div>
+              ① <strong>개인과 상호작용</strong> ＞ 프로세스와 도구<br>
+              ② <strong>작동하는 소프트웨어</strong> ＞ 포괄적인 문서<br>
+              ③ <strong>고객과의 협력</strong> ＞ 계약 협상<br>
+              ④ <strong>변화에 대응하기</strong> ＞ 계획을 따르기<br>
+              <small style="color:var(--text3)">※ 좌측 가치가 우선이나, 우측 가치도 중요함을 인정</small>
+            </div>
+            <div class="ap" style="margin-top:10px"><strong>12원칙 핵심 요약:</strong></div>
+            <div class="short-grid">
+              <div class="scard"><div class="scard-title">🚀 가치 제공</div><p>고객 만족을 위해 가치 있는 소프트웨어를 조기에·지속적으로 인도. 작동하는 SW가 진척도 측정 기준</p></div>
+              <div class="scard"><div class="scard-title">🔄 변화 수용</div><p>개발 후반부에도 요구사항 변경을 환영. 변화가 고객의 경쟁 우위를 창출</p></div>
+              <div class="scard"><div class="scard-title">📦 짧은 반복</div><p>2주~2개월 단위 작동하는 SW 주기적 인도. 짧을수록 선호</p></div>
+              <div class="scard"><div class="scard-title">👥 협업·자율</div><p>비즈니스 담당자와 개발자 매일 협업. 동기 부여된 팀에게 자율과 신뢰 부여</p></div>
+            </div>
+          </div>
+          <div class="asec">
+            <div class="asectitle s2">Ⅱ. 나. 스크럼·XP·칸반 비교</div>
+            <table class="atable">
+              <tr><th>비교 항목</th><th>스크럼(Scrum)</th><th>XP(eXtreme Programming)</th><th>칸반(Kanban)</th></tr>
+              <tr><td>기원</td><td>Sutherland·Schwaber (1995)</td><td>Kent Beck (1999)</td><td>Toyota 린(Lean) 생산방식</td></tr>
+              <tr><td>핵심 개념</td><td>스프린트(Sprint) 기반 반복 개발</td><td>기술 실천법 중심</td><td>흐름(Flow) 기반 지속 인도</td></tr>
+              <tr><td>반복 주기</td><td>1~4주 Sprint (고정)</td><td>1~2주 Iteration</td><td>없음 (연속 흐름)</td></tr>
+              <tr><td>역할</td><td>PO·SM·Dev팀 3역할</td><td>고객·개발자·코치</td><td>별도 역할 없음</td></tr>
+              <tr><td>핵심 이벤트</td><td>스프린트 계획·데일리 스크럼·스프린트 리뷰·회고</td><td>페어프로그래밍·TDD·리팩토링·CI</td><td>WIP 제한·칸반 보드·리드타임 측정</td></tr>
+              <tr><td>산출물</td><td>제품·스프린트 백로그, 증분</td><td>사용자 스토리, 인수 테스트</td><td>칸반 보드, 흐름 메트릭(CFD)</td></tr>
+              <tr><td>변경 대응</td><td>스프린트 중 변경 제한</td><td>변경 환영 (지속 리팩토링)</td><td>언제든 새 항목 추가 가능</td></tr>
+              <tr><td>적합 상황</td><td>복잡한 제품 개발, 피처 팀</td><td>기술 품질 중시, 소규모 팀</td><td>지속적 서비스 운영, 유지보수</td></tr>
+            </table>
+            <div class="dbox">스크럼 프레임워크 흐름
+
+Product Backlog → [Sprint Planning] → Sprint Backlog
+                                            ↓
+                              Sprint (1~4주) ← Daily Scrum
+                                            ↓
+                              Sprint Review → 작동하는 SW 증분 인도
+                                            ↓
+                              Sprint Retrospective → 프로세스 개선</div>
+          </div>
+          <div class="asec">
+            <div class="asectitle s3">Ⅲ. 다. 공공 정보화사업 애자일 적용의 특수성</div>
+            <div class="kbox kb-ora">
+              <div class="kbt">공공 부문 애자일 적용의 제약 요인</div>
+              ① <strong>계약 방식</strong>: 총액 고정(FFP) 계약이 일반적 → 요구사항 변경 수용 어려움<br>
+              ② <strong>산출물 요구</strong>: 감리·검수를 위한 문서(설계서·시험서) 필수 제출<br>
+              ③ <strong>발주 조직 참여</strong>: 공공 PO(Product Owner)의 일상 참여 어려움<br>
+              ④ <strong>조달 규정</strong>: 선투입 후정산 방식이 애자일 반복 인도와 불일치
+            </div>
+            <ul class="aol">
+              <li><span class="onum on4">1</span><div><strong>하이브리드 애자일 적용</strong>: 폭포수(계획·계약) + 애자일(개발·테스트). 마일스톤은 폭포수로, 내부 개발은 스크럼으로 운영</div></li>
+              <li><span class="onum on4">2</span><div><strong>PMO 연계</strong>: PMO가 애자일 코치(Scrum Master) 역할 병행. 스프린트 번다운 차트를 PMO 보고 자료로 활용</div></li>
+              <li><span class="onum on4">3</span><div><strong>산출물 경량화</strong>: 「행안부 전자정부 SW아키텍처 가이드」의 애자일 적용 가이드라인에 따라 필수 산출물 최소화
+                <div class="sub"><div class="si">필수 유지: 요구사항 명세서(사용자 스토리 맵), 아키텍처 문서, 시험 결과서</div><div class="si">경량화 가능: 상세 설계서 → 코드+주석으로 대체, WBS → 스프린트 계획으로 대체</div></div>
+              </div></li>
+              <li><span class="onum on4">4</span><div><strong>발주자 Product Owner 지정</strong>: 발주 기관 내 실무 담당자를 PO로 지정하여 스프린트 리뷰에 의무 참여. 요구사항 변경 승인 권한 위임</div></li>
+            </ul>
+          </div>
+          <div class="concl">
+            <div class="concl-title">Ⅳ. 결론</div>
+            <p>애자일은 불확실성이 높고 요구사항이 자주 변화하는 환경에서 효과적인 방법론이다. 공공 정보화사업에서는 계약·감리 제도와의 조화를 위해 하이브리드 접근이 현실적이며, 「공공부문 애자일 적용 가이드라인(행안부, 2023)」에 따라 단계적으로 도입해야 한다. 성공 요인은 발주자의 적극적 참여와 문화적 변화에 있다.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    </div><!-- /lq3 -->
+
+    <!-- L5: CI/CD 파이프라인 -->
+    <div class="q-panel" id="lq4">
+    <div class="q-counter">📄 논술형 5번 / 5번</div>
+    <div class="qcard">
+      <div class="qhdr">
+        <span class="qdomain badge-sw">소프트웨어공학</span>
+        <div class="qmeta">
+          <div class="qtype">2~4교시 논술형 · 25점 · 3~4페이지 분량</div>
+          <div class="qtitle">CI/CD(지속적 통합/지속적 인도) 파이프라인에 대하여 다음을 설명하시오.</div>
+        </div>
+      </div>
+      <div class="qbody">
+        <div class="qitems">
+          <div class="qitem"><span class="qlabel">가.</span><span>CI(지속적 통합), CD(지속적 인도), CD(지속적 배포)의 개념과 차이점</span></div>
+          <div class="qitem"><span class="qlabel">나.</span><span>CI/CD 파이프라인의 단계별 구성과 품질 게이트(Quality Gate) 설계 방법</span></div>
+          <div class="qitem"><span class="qlabel">다.</span><span>배포 전략(블루-그린·카나리·롤링·A/B 테스트) 비교 및 공공 정보시스템 무중단 배포 적용 방안</span></div>
+        </div>
+        <div class="qhints">
+          <span class="qhint">DevOps 핵심 빈출</span><span class="qhint">배포 전략 4종 비교표</span><span class="qhint">품질 게이트 구체적 기준 제시</span>
+        </div>
+      </div>
+      <div class="acard">
+        <button class="atoggle" onclick="toggleA(this)">
+          <span class="alabel">📄 모범 답안 보기</span>
+          <span class="aarrow">▼</span>
+        </button>
+        <div class="abody">
+          <div class="atitle">CI/CD 파이프라인 구성·품질 게이트 설계 및 배포 전략 비교</div>
+          <div class="chips">
+            <span class="chip ct">⏱ 목표 30분</span>
+            <span class="chip cp">📄 3.5~4페이지</span>
+            <span class="chip cs">💯 25점</span>
+          </div>
+          <div class="asec">
+            <div class="asectitle s1">Ⅰ. 가. CI/CD 개념과 차이점</div>
+            <table class="atable">
+              <tr><th>구분</th><th>개념</th><th>핵심 활동</th><th>산출물</th></tr>
+              <tr><td>CI<br>(지속적 통합)</td><td>개발자가 코드 변경 시 자동으로 빌드·테스트하여 통합하는 관행. 하루에도 여러 번 메인 브랜치에 통합</td><td>코드 커밋·빌드·단위/통합 테스트·정적 분석</td><td>빌드 아티팩트, 테스트 리포트</td></tr>
+              <tr><td>CD<br>(지속적 인도)</td><td>CI를 거친 소프트웨어를 언제든지 스테이징 환경에 배포할 수 있는 상태로 유지. 배포는 사람이 승인</td><td>CI + 스테이징 배포·E2E 테스트·릴리즈 준비</td><td>릴리즈 후보(Release Candidate)</td></tr>
+              <tr><td>CD<br>(지속적 배포)</td><td>CI/CD의 최종 단계. 모든 테스트를 통과하면 자동으로 프로덕션에 배포. 인간 개입 최소화</td><td>자동 프로덕션 배포·모니터링·롤백 자동화</td><td>프로덕션 릴리즈</td></tr>
+            </table>
+            <div class="dbox">CI/CD 성숙도 모델
+
+레벨 1: Manual → 수동 빌드·테스트·배포
+레벨 2: CI     → 자동 빌드·단위 테스트 (PR마다)
+레벨 3: CD(인도) → 스테이징 자동 배포·E2E 테스트
+레벨 4: CD(배포) → 프로덕션 자동 배포 (완전 자동화)
+레벨 5: DevOps  → 모니터링 피드백 루프로 지속 개선</div>
+          </div>
+          <div class="asec">
+            <div class="asectitle s2">Ⅱ. 나. CI/CD 파이프라인 단계 및 품질 게이트 설계</div>
+            <div class="dbox">CI/CD 파이프라인 전체 구성
+
+코드 커밋(Git Push)
+    │
+    ▼
+[QG-1: 빌드 품질 게이트]
+  ┌─ 소스 코드 빌드 (Maven/Gradle/npm)
+  ├─ 단위 테스트 (JUnit/pytest) — 커버리지 ≥ 80%
+  ├─ 정적 코드 분석 (SonarQube) — 치명 결함 0건
+  └─ 보안 스캔 (SAST/Dependency Check)
+    │
+    ▼
+[QG-2: 통합 품질 게이트]
+  ┌─ 통합 테스트 (API 계약 테스트)
+  ├─ DAST 동적 보안 테스트 (OWASP ZAP)
+  └─ 컨테이너 이미지 빌드 및 취약점 스캔 (Trivy)
+    │
+    ▼  [스테이징 환경 자동 배포]
+[QG-3: 스테이징 품질 게이트]
+  ┌─ E2E 테스트 (Selenium/Cypress)
+  ├─ 성능 테스트 (JMeter) — 응답시간 ≤ 3초 (공공 기준)
+  └─ 인수 테스트 (UAT)
+    │
+    ▼  [릴리즈 승인 — 공공: 담당자 수동 승인]
+[프로덕션 배포]
+  └─ 배포 전략 적용 (Blue-Green / Rolling / Canary)
+    │
+    ▼
+[QG-4: 운영 품질 게이트]
+  ├─ 헬스체크·모니터링 (Prometheus/Grafana)
+  └─ 오류율 임계값 초과 시 자동 롤백</div>
+            <div class="kbox kb-blue">
+              <div class="kbt">품질 게이트(Quality Gate) 기준 예시 (공공 기준)</div>
+              ① 단위 테스트 커버리지 ≥ 80% (구문 기준)<br>
+              ② SonarQube: Critical·Blocker 결함 0건, Technical Debt Ratio ≤ 5%<br>
+              ③ 성능: 응답시간 ≤ 3초(95th percentile), TPS(목표 처리량) 달성<br>
+              ④ 보안: OWASP Top 10 항목 취약점 없음<br>
+              ⑤ 미해결 결함: 심각도 Critical 이상 0건 (릴리즈 차단)
+            </div>
+          </div>
+          <div class="asec">
+            <div class="asectitle s3">Ⅲ. 다. 배포 전략 비교 및 공공 무중단 배포 적용</div>
+            <table class="atable">
+              <tr><th>배포 전략</th><th>원리</th><th>다운타임</th><th>롤백 속도</th><th>리소스</th><th>공공 적용</th></tr>
+              <tr><td>블루-그린<br>(Blue-Green)</td><td>구(Blue)·신(Green) 환경을 동시 운영. 트래픽 일괄 전환 후 구 환경 대기</td><td>없음</td><td>즉시 (트래픽 재전환)</td><td>2배 필요</td><td>중요 민원 서비스. 즉시 롤백 필요 시</td></tr>
+              <tr><td>카나리<br>(Canary)</td><td>신버전에 트래픽 일부(1~5%)만 전송. 점진적 확대로 위험 분산</td><td>없음</td><td>빠름 (트래픽 조절)</td><td>약간 추가</td><td>고사용량 서비스. 점진적 안전 배포</td></tr>
+              <tr><td>롤링<br>(Rolling)</td><td>서버를 하나씩 순차적으로 신버전으로 교체. 구·신버전 공존 기간 존재</td><td>없음</td><td>느림 (순차 롤백)</td><td>기존과 동일</td><td>쿠버네티스 기본 전략. 일반 업무 시스템</td></tr>
+              <tr><td>A/B 테스트</td><td>사용자 특성(지역·연령)에 따라 A·B 버전으로 분리. 비즈니스 성과 측정 목적</td><td>없음</td><td>중간</td><td>추가 필요</td><td>UX 개선 실험. 민원 포털 UI 테스트</td></tr>
+            </table>
+            <ul class="aol" style="margin-top:12px">
+              <li><span class="onum on5">1</span><div><strong>공공 정보시스템 무중단 배포 권장 방안</strong>
+                <div class="sub">
+                  <div class="si">주요 민원 서비스(G4C·민원24): <strong>블루-그린</strong> 배포로 즉시 롤백 보장</div>
+                  <div class="si">내부 업무 시스템: <strong>롤링 배포</strong>로 자원 효율화</div>
+                  <div class="si">신규 기능 검증: <strong>카나리 배포</strong>로 위험 최소화 후 전체 확대</div>
+                </div>
+              </div></li>
+              <li><span class="onum on5">2</span><div><strong>공공 CI/CD 도입 고려사항</strong>
+                <div class="sub">
+                  <div class="si">「전자정부법」 시스템 변경 승인 절차와 CD(자동 배포) 간 충돌 조정 필요</div>
+                  <div class="si">변경관리 위원회(CAB) 승인을 CI/CD 파이프라인 품질 게이트에 통합</div>
+                  <div class="si">G-Cloud 클라우드 환경: ArgoCD·Flux로 GitOps 기반 배포 자동화</div>
+                </div>
+              </div></li>
+            </ul>
+          </div>
+          <div class="concl">
+            <div class="concl-title">Ⅳ. 결론</div>
+            <p>CI/CD 파이프라인은 소프트웨어 인도 속도와 품질을 동시에 향상시키는 DevOps의 핵심 실천이다. 공공 정보시스템에서는 법·제도적 제약을 고려한 하이브리드 접근이 필요하며, 품질 게이트를 파이프라인에 통합함으로써 자동화된 품질 보증 체계를 구축해야 한다. 장기적으로는 GitOps 방식과 정책-as-코드(OPA)를 도입하여 컴플라이언스를 자동화하는 것이 바람직하다.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    </div><!-- /lq4 -->
+
+  </div><!-- /main -->
+</div><!-- /tp1 -->
+
+<script>
+var curType=0;
+function showType(idx,btn){
+  curType=idx;
+  document.querySelectorAll('.type-panel').forEach((p,i)=>p.classList.toggle('active',i===idx));
+  document.querySelectorAll('.type-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+function showQ(prefix,idx,btn){
+  var sel=prefix==='s'?'sq':'lq';
+  document.querySelectorAll('#tp'+(prefix==='s'?0:1)+' .q-panel').forEach((p,i)=>p.classList.toggle('active',i===idx));
+  btn.parentElement.querySelectorAll('.q-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+function toggleA(btn){
+  var body=btn.nextElementSibling;
+  var arrow=btn.querySelector('.aarrow');
+  var isOpen=body.classList.toggle('open');
+  arrow.classList.toggle('open',isOpen);
+  btn.querySelector('.alabel').textContent=isOpen?'📄 답안 닫기':'📄 모범 답안 보기';
+}
+</script>
+</body>
+</html>

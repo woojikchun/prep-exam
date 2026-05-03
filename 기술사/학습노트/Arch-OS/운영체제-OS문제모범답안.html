@@ -1,0 +1,1188 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>운영체제(OS) 기출 유사문제 & 모범답안</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700;900&family=Noto+Serif+KR:wght@400;600;700&family=JetBrains+Mono:wght@400;600&display=swap');
+:root{
+  --bg:#f5f7fa;--white:#fff;--s2:#eef1f6;--border:#dde3ec;--bl:#eef1f6;
+  --blue:#1d4ed8;--blbg:#eff6ff;--blbd:#bfdbfe;
+  --red:#b91c1c;--redbg:#fef2f2;--redbd:#fecaca;
+  --green:#065f46;--grbg:#ecfdf5;--grbd:#a7f3d0;
+  --orange:#92400e;--orbg:#fffbeb;--orbd:#fde68a;
+  --purple:#5b21b6;--pubg:#f5f3ff;--pubd:#ddd6fe;
+  --teal:#0f766e;--tebg:#f0fdfa;--tebd:#99f6e4;
+  --text:#111827;--t2:#374151;--t3:#6b7280;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--text);font-family:'Noto Sans KR',sans-serif;font-size:14px;line-height:1.65}
+
+/* HEADER */
+.hdr{background:linear-gradient(135deg,#134e4a 0%,#0f766e 55%,#0d9488 100%);color:#fff;padding:28px 24px 22px;position:relative;overflow:hidden}
+.hdr::after{content:'';position:absolute;right:-50px;top:-50px;width:200px;height:200px;border-radius:50%;background:rgba(255,255,255,0.06)}
+.hdr-in{max-width:1100px;margin:0 auto;position:relative}
+.hdr-eye{font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:#5eead4;margin-bottom:6px}
+.hdr-title{font-size:clamp(18px,3.5vw,26px);font-weight:900;margin-bottom:5px;font-family:'Noto Serif KR',serif}
+.hdr-sub{font-size:12px;color:#99f6e4}
+.hdr-pills{display:flex;flex-wrap:wrap;gap:6px;margin-top:14px}
+.hdr-pill{background:rgba(255,255,255,0.12);border:1px solid rgba(255,255,255,0.2);padding:3px 12px;border-radius:20px;font-size:11px;color:#e0fdf4}
+
+/* SECTION TABS */
+.sec-nav{background:var(--white);border-bottom:2px solid var(--border);position:sticky;top:0;z-index:100;box-shadow:0 2px 8px rgba(0,0,0,0.06)}
+.sec-nav-inner{max-width:1100px;margin:0 auto;display:flex}
+.sec-btn{flex:1;padding:14px 8px;font-size:12px;font-weight:700;color:var(--t3);background:none;border:none;border-bottom:3px solid transparent;cursor:pointer;font-family:inherit;transition:all 0.18s;text-align:center}
+.sec-btn:hover{color:var(--teal)}
+.sec-btn.active{color:var(--teal);border-bottom-color:var(--teal);background:var(--tebg)}
+
+/* DOMAIN NAV */
+.dom-nav{background:var(--s2);border-bottom:1px solid var(--border);overflow-x:auto;white-space:nowrap;padding:0 16px;scrollbar-width:none}
+.dom-nav::-webkit-scrollbar{display:none}
+.dom-nav-inner{max-width:1100px;margin:0 auto}
+.dom-btn{display:inline-block;padding:10px 14px;font-size:12px;font-weight:600;color:var(--t3);background:none;border:none;border-bottom:3px solid transparent;cursor:pointer;font-family:inherit;transition:all 0.18s}
+.dom-btn:hover{color:var(--teal)}
+.dom-btn.active{color:var(--teal);border-bottom-color:var(--teal)}
+
+/* MAIN */
+.main{max-width:1100px;margin:0 auto;padding:24px 16px 60px}
+.section{display:none}
+.section.active{display:block}
+.panel{display:none}
+.panel.active{display:block}
+
+/* Q CARD */
+.q-card{background:var(--white);border:1px solid var(--border);border-radius:14px;overflow:hidden;box-shadow:0 2px 12px rgba(0,0,0,0.05);margin-bottom:28px}
+.q-head{padding:16px 22px 12px;border-bottom:1px solid var(--bl);display:flex;align-items:flex-start;gap:14px}
+.q-num-badge{flex-shrink:0;width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:900;color:#fff;margin-top:1px}
+.badge-short{background:var(--teal)}
+.badge-essay{background:var(--blue)}
+.q-meta{flex:1}
+.q-type-label{font-size:10px;font-weight:700;letter-spacing:0.5px;margin-bottom:4px}
+.lbl-short{color:var(--teal)}
+.lbl-essay{color:var(--blue)}
+.q-title{font-size:15px;font-weight:800;line-height:1.4;color:var(--text)}
+.q-body{background:var(--bg);padding:14px 22px;border-bottom:1px solid var(--bl)}
+.q-body-text{font-size:13px;color:var(--t2);line-height:1.75}
+.q-items{margin-top:8px;display:flex;flex-direction:column;gap:5px}
+.q-item{display:flex;gap:10px;font-size:13px;color:var(--t2)}
+.q-lbl{font-weight:700;color:var(--blue);min-width:18px;flex-shrink:0}
+.hint-row{display:flex;flex-wrap:wrap;gap:5px;margin-top:10px}
+.hint{font-size:10px;font-weight:600;padding:2px 8px;border-radius:5px}
+.hint-teal{background:var(--tebg);color:var(--teal);border:1px solid var(--tebd)}
+.hint-blue{background:var(--blbg);color:var(--blue);border:1px solid var(--blbd)}
+.hint-red{background:var(--redbg);color:var(--red);border:1px solid var(--redbd)}
+
+/* TOGGLE */
+.ans-card{background:var(--white)}
+.ans-toggle{width:100%;padding:13px 22px;background:none;border:none;display:flex;align-items:center;justify-content:space-between;cursor:pointer;font-family:inherit;transition:background 0.15s}
+.ans-toggle:hover{background:var(--tebg)}
+.ans-toggle-lbl{font-size:13px;font-weight:700;display:flex;align-items:center;gap:7px}
+.lbl-t{color:var(--teal)}
+.lbl-e{color:var(--blue)}
+.ans-arrow{font-size:15px;transition:transform 0.25s}
+.ans-arrow.open{transform:rotate(180deg)}
+.ans-body{display:none;padding:0 22px 24px}
+.ans-body.open{display:block}
+
+/* ANSWER CONTENT */
+.ans-title{font-size:16px;font-weight:900;font-family:'Noto Serif KR',serif;padding:16px 0 6px;border-bottom:2px solid var(--teal);margin-bottom:16px;color:var(--text)}
+.essay .ans-title{border-bottom-color:var(--blue)}
+.score-row{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:15px}
+.s-chip{font-size:11px;padding:3px 10px;border-radius:6px;font-weight:600}
+.ct{background:var(--orbg);color:var(--orange);border:1px solid var(--orbd)}
+.cp{background:var(--grbg);color:var(--green);border:1px solid var(--grbd)}
+.cs{background:var(--redbg);color:var(--red);border:1px solid var(--redbd)}
+
+.sec-t{font-size:13px;font-weight:800;color:#fff;padding:5px 12px;border-radius:6px;display:inline-block;margin-bottom:11px}
+.st-teal{background:var(--teal)}
+.st-blue{background:var(--blue)}
+.st-green{background:#059669}
+.st-purple{background:#7c3aed}
+.st-orange{background:#d97706}
+.st-red{background:#dc2626}
+
+.ans-p{font-size:13px;color:var(--t2);line-height:1.85;margin-bottom:9px}
+.ans-sec{margin-bottom:18px}
+
+/* TABLE */
+.atbl{width:100%;border-collapse:collapse;font-size:12px;margin:9px 0 13px}
+.atbl th{background:var(--s2);color:var(--t2);font-weight:700;padding:7px 11px;border:1px solid var(--border);text-align:center}
+.atbl td{padding:7px 11px;border:1px solid var(--border);vertical-align:top;line-height:1.6}
+.atbl td:first-child{font-weight:700;color:var(--teal);background:var(--tebg);text-align:center;white-space:nowrap}
+.essay .atbl td:first-child{color:var(--blue);background:var(--blbg)}
+.atbl tr:nth-child(even) td:not(:first-child){background:#fafbfd}
+
+/* LIST */
+.a-ol{list-style:none;display:flex;flex-direction:column;gap:9px;margin:7px 0}
+.a-ol li{display:flex;gap:9px;align-items:flex-start;font-size:13px;color:var(--t2);line-height:1.7}
+.on{flex-shrink:0;width:21px;height:21px;border-radius:50%;font-size:11px;font-weight:700;color:#fff;display:flex;align-items:center;justify-content:center;margin-top:1px}
+.on-t{background:var(--teal)} .on-b{background:var(--blue)} .on-g{background:#059669}
+.on-p{background:#7c3aed} .on-o{background:#d97706} .on-r{background:#dc2626}
+.sub-l{margin-top:5px;display:flex;flex-direction:column;gap:3px}
+.sub-i{display:flex;gap:7px;font-size:12px;color:var(--t3)}
+.sub-i::before{content:'▸';color:var(--teal);flex-shrink:0}
+
+/* DIAGRAM */
+.dbox{background:#f8fafc;border:1px solid var(--border);border-left:3px solid var(--teal);border-radius:8px;padding:13px 15px;margin:9px 0;font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--t2);line-height:1.8;overflow-x:auto;white-space:pre}
+.essay .dbox{border-left-color:var(--blue)}
+
+/* KEY BOX */
+.kbox{border-radius:8px;padding:11px 15px;margin:10px 0;font-size:12px;line-height:1.7}
+.kbox.teal{background:var(--tebg);border:1px solid var(--tebd);color:var(--teal)}
+.kbox.blue{background:var(--blbg);border:1px solid var(--blbd);color:#1e40af}
+.kbox.green{background:var(--grbg);border:1px solid var(--grbd);color:var(--green)}
+.kbox.orange{background:var(--orbg);border:1px solid var(--orbd);color:var(--orange)}
+.kbox.red{background:var(--redbg);border:1px solid var(--redbd);color:var(--red)}
+.kbox.purple{background:var(--pubg);border:1px solid var(--pubd);color:var(--purple)}
+.kb-t{font-weight:700;margin-bottom:3px;font-size:11px;letter-spacing:0.4px}
+
+/* CONCLUSION */
+.concl{background:linear-gradient(135deg,var(--tebg),var(--blbg));border:1px solid var(--tebd);border-radius:8px;padding:13px 15px;margin-top:13px}
+.essay .concl{background:linear-gradient(135deg,var(--blbg),var(--pubg));border-color:var(--blbd)}
+.concl-t{font-weight:700;font-size:12px;margin-bottom:5px;color:var(--teal)}
+.essay .concl-t{color:var(--blue)}
+.concl p{font-size:12px;color:var(--t2);line-height:1.75}
+
+/* SHORT ANSWER SPECIAL */
+.short-def{background:var(--tebg);border:1px solid var(--tebd);border-radius:8px;padding:12px 16px;margin-bottom:14px}
+.short-def .def-label{font-size:10px;font-weight:700;color:var(--teal);letter-spacing:0.5px;margin-bottom:4px}
+.short-def .def-text{font-size:13px;color:var(--text);font-weight:600;line-height:1.65}
+.mem-box{background:linear-gradient(135deg,#fef3c7,#fde68a);border:1px solid var(--orbd);border-radius:8px;padding:10px 14px;margin:10px 0;font-size:12px;color:var(--orange);font-weight:600}
+.mem-box .mem-t{font-size:10px;font-weight:700;letter-spacing:0.5px;margin-bottom:3px}
+
+/* DIVIDER */
+.divider{border:none;border-top:1px solid var(--bl);margin:14px 0}
+
+/* SECTION COUNTER */
+.q-count{display:flex;gap:10px;margin-bottom:20px;padding:14px 18px;background:var(--white);border:1px solid var(--border);border-radius:10px;align-items:center}
+.qc-icon{font-size:22px}
+.qc-label{font-size:12px;color:var(--t3)}
+.qc-val{font-size:16px;font-weight:900;color:var(--text)}
+</style>
+</head>
+<body>
+
+<header class="hdr">
+  <div class="hdr-in">
+    <div class="hdr-eye">PROFESSIONAL ENGINEER · COMPUTER SYSTEM APPLICATION</div>
+    <div class="hdr-title">운영체제(Operating System)<br>단답형 5문 + 논술형 5문 모범답안</div>
+    <div class="hdr-sub">컴퓨터시스템응용기술사 · 정보관리기술사 OS 분야 빈출 유사문제</div>
+    <div class="hdr-pills">
+      <span class="hdr-pill">단답형 1~2페이지 기준</span>
+      <span class="hdr-pill">논술형 3~4페이지 기준</span>
+      <span class="hdr-pill">기술사 실전 답안 형식</span>
+      <span class="hdr-pill">가~다 소문항 구조</span>
+    </div>
+  </div>
+</header>
+
+<!-- 대분류 탭 -->
+<nav class="sec-nav">
+  <div class="sec-nav-inner">
+    <button class="sec-btn active" onclick="showSec('short',this)">📝 단답형 문제 (5문)</button>
+    <button class="sec-btn" onclick="showSec('essay',this)">📖 논술형 문제 (5문)</button>
+  </div>
+</nav>
+
+<!-- 단답형 소분류 탭 -->
+<div id="short-nav" class="dom-nav">
+  <div class="dom-nav-inner">
+    <button class="dom-btn active" onclick="showPanel('s',0,this)">S1. 프로세스 vs 스레드</button>
+    <button class="dom-btn" onclick="showPanel('s',1,this)">S2. CPU 스케줄링</button>
+    <button class="dom-btn" onclick="showPanel('s',2,this)">S3. 메모리 관리·페이징</button>
+    <button class="dom-btn" onclick="showPanel('s',3,this)">S4. 페이지 교체 알고리즘</button>
+    <button class="dom-btn" onclick="showPanel('s',4,this)">S5. 파일 시스템 구조</button>
+  </div>
+</div>
+
+<!-- 논술형 소분류 탭 -->
+<div id="essay-nav" class="dom-nav" style="display:none">
+  <div class="dom-nav-inner">
+    <button class="dom-btn active" onclick="showPanel('e',0,this)">E1. 교착상태(Deadlock)</button>
+    <button class="dom-btn" onclick="showPanel('e',1,this)">E2. 가상 메모리</button>
+    <button class="dom-btn" onclick="showPanel('e',2,this)">E3. 프로세스 동기화</button>
+    <button class="dom-btn" onclick="showPanel('e',3,this)">E4. I/O 관리·디스크 스케줄링</button>
+    <button class="dom-btn" onclick="showPanel('e',4,this)">E5. 멀티코어 OS·동시성</button>
+  </div>
+</div>
+
+<main class="main">
+
+<!-- ═══════════════ 단답형 섹션 ═══════════════ -->
+<div class="section active" id="sec-short">
+
+<!-- S1. 프로세스 vs 스레드 -->
+<div class="panel active" id="s-p0">
+<div class="q-card">
+  <div class="q-head">
+    <span class="q-num-badge badge-short">S1</span>
+    <div class="q-meta">
+      <div class="q-type-label lbl-short">1교시 단답형 · 10점 · 목표 1~2페이지</div>
+      <div class="q-title">프로세스(Process)와 스레드(Thread)의 차이점을 설명하시오.</div>
+    </div>
+  </div>
+  <div class="q-body">
+    <div class="hint-row">
+      <span class="hint hint-teal">프로세스 vs 스레드 비교</span>
+      <span class="hint hint-teal">PCB·TCB 구조</span>
+      <span class="hint hint-red">매회 빈출 기본</span>
+    </div>
+  </div>
+  <div class="ans-card">
+    <button class="ans-toggle" onclick="toggleAns(this)">
+      <span class="ans-toggle-lbl lbl-t">📄 모범 답안 보기</span>
+      <span class="ans-arrow">▼</span>
+    </button>
+    <div class="ans-body">
+      <div class="ans-title">프로세스와 스레드의 개념·구조·차이점</div>
+      <div class="score-row">
+        <span class="s-chip ct">⏱ 목표 13분</span>
+        <span class="s-chip cp">📄 1~2페이지</span>
+        <span class="s-chip cs">💯 10점</span>
+      </div>
+
+      <div class="ans-sec">
+        <div class="sec-t st-teal">Ⅰ. 개념 정의</div>
+        <div class="short-def">
+          <div class="def-label">프로세스 (Process)</div>
+          <div class="def-text">운영체제로부터 독립된 메모리 공간(Code·Data·Heap·Stack)을 할당받아 실행 중인 프로그램의 인스턴스. 자원 할당의 기본 단위이며, PCB(Process Control Block)로 상태 관리.</div>
+        </div>
+        <div class="short-def" style="background:var(--blbg);border-color:var(--blbd)">
+          <div class="def-label" style="color:var(--blue)">스레드 (Thread)</div>
+          <div class="def-text">프로세스 내에서 실행되는 경량 실행 단위(Lightweight Process). 동일 프로세스 내의 Code·Data·Heap 영역을 공유하고, 각자 독립된 Stack과 레지스터를 보유. CPU 스케줄링의 기본 단위.</div>
+        </div>
+      </div>
+
+      <div class="ans-sec">
+        <div class="sec-t st-green">Ⅱ. 메모리 구조 비교</div>
+        <div class="dbox">프로세스 A                   프로세스 A (멀티스레드)
+┌─────────────┐              ┌─────────────────────────┐
+│   Code 영역  │              │       Code 영역 (공유)   │
+├─────────────┤              ├─────────────────────────┤
+│   Data 영역  │              │       Data 영역 (공유)   │
+├─────────────┤              ├─────────────────────────┤
+│   Heap 영역  │              │       Heap 영역 (공유)   │
+├─────────────┤              ├──────┬──────┬───────────┤
+│   Stack 영역 │              │Stack1│Stack2│  Stack3   │
+└─────────────┘              │(T1)  │(T2)  │  (T3)     │
+                              └──────┴──────┴───────────┘</div>
+      </div>
+
+      <div class="ans-sec">
+        <div class="sec-t st-purple">Ⅲ. 상세 비교표</div>
+        <table class="atbl">
+          <tr><th>비교 항목</th><th>프로세스</th><th>스레드</th></tr>
+          <tr><td>정의</td><td>실행 중인 프로그램의 독립 인스턴스</td><td>프로세스 내 경량 실행 단위</td></tr>
+          <tr><td>메모리</td><td>독립된 Code·Data·Heap·Stack</td><td>Code·Data·Heap 공유, Stack 독립</td></tr>
+          <tr><td>생성 비용</td><td>높음 (fork, 메모리 복사)</td><td>낮음 (같은 주소 공간 내 생성)</td></tr>
+          <tr><td>컨텍스트 스위치</td><td>느림 (TLB flush, 주소 공간 교체)</td><td>빠름 (주소 공간 유지, Stack만 전환)</td></tr>
+          <tr><td>통신(IPC)</td><td>Pipe·Socket·공유메모리 등 필요</td><td>공유 메모리 직접 접근 (동기화 필요)</td></tr>
+          <tr><td>독립성</td><td>강함 (한 프로세스 오류가 타 프로세스 무영향)</td><td>약함 (한 스레드 오류 시 전체 프로세스 영향)</td></tr>
+          <tr><td>관리 자료구조</td><td>PCB (PID, 상태, 레지스터, 메모리맵 등)</td><td>TCB (TID, 레지스터, Stack 포인터, 상태)</td></tr>
+        </table>
+      </div>
+
+      <div class="ans-sec">
+        <div class="sec-t st-orange">Ⅳ. 멀티프로세스 vs 멀티스레드</div>
+        <table class="atbl">
+          <tr><th>구분</th><th>멀티프로세스</th><th>멀티스레드</th></tr>
+          <tr><td>안정성</td><td>높음 (프로세스 격리)</td><td>낮음 (공유 메모리 취약)</td></tr>
+          <tr><td>자원 효율</td><td>낮음 (메모리 중복)</td><td>높음 (메모리 공유)</td></tr>
+          <tr><td>통신 속도</td><td>느림 (IPC 오버헤드)</td><td>빠름 (공유 변수)</td></tr>
+          <tr><td>적합 상황</td><td>Chrome 탭 분리, 독립 서비스</td><td>웹 서버, GUI 앱, 파일 처리</td></tr>
+        </table>
+      </div>
+
+      <div class="mem-box">
+        <div class="mem-t">📌 한 줄 암기</div>
+        프로세스 = 자원 할당 단위 (독립 메모리) | 스레드 = CPU 스케줄링 단위 (공유 메모리 + 독립 Stack)
+      </div>
+    </div>
+  </div>
+</div>
+</div><!-- /s-p0 -->
+
+<!-- S2. CPU 스케줄링 -->
+<div class="panel" id="s-p1">
+<div class="q-card">
+  <div class="q-head">
+    <span class="q-num-badge badge-short">S2</span>
+    <div class="q-meta">
+      <div class="q-type-label lbl-short">1교시 단답형 · 10점 · 목표 1~2페이지</div>
+      <div class="q-title">CPU 스케줄링 알고리즘의 종류를 분류하고, 각각의 특징과 적합 환경을 설명하시오.</div>
+    </div>
+  </div>
+  <div class="q-body">
+    <div class="hint-row">
+      <span class="hint hint-teal">선점형 vs 비선점형</span>
+      <span class="hint hint-teal">평균 대기시간·반환시간</span>
+      <span class="hint hint-red">빈출 비교 유형</span>
+    </div>
+  </div>
+  <div class="ans-card">
+    <button class="ans-toggle" onclick="toggleAns(this)">
+      <span class="ans-toggle-lbl lbl-t">📄 모범 답안 보기</span>
+      <span class="ans-arrow">▼</span>
+    </button>
+    <div class="ans-body">
+      <div class="ans-title">CPU 스케줄링 알고리즘의 분류·특징·적합 환경</div>
+      <div class="score-row">
+        <span class="s-chip ct">⏱ 목표 13분</span>
+        <span class="s-chip cp">📄 1~2페이지</span>
+        <span class="s-chip cs">💯 10점</span>
+      </div>
+
+      <div class="ans-sec">
+        <div class="sec-t st-teal">Ⅰ. 개요 및 평가 기준</div>
+        <div class="ans-p">CPU 스케줄링은 준비(Ready) 큐에 있는 프로세스 중 다음에 CPU를 할당할 프로세스를 결정하는 OS의 핵심 기능이다. 평가 기준: <strong>CPU 이용률·처리율(높을수록 좋음)</strong>, <strong>대기 시간·응답 시간·반환 시간(낮을수록 좋음)</strong>.</div>
+      </div>
+
+      <div class="ans-sec">
+        <div class="sec-t st-green">Ⅱ. 알고리즘 분류 및 특징</div>
+        <table class="atbl">
+          <tr><th>구분</th><th>알고리즘</th><th>원리</th><th>특징·문제점</th><th>적합 환경</th></tr>
+          <tr><td rowspan="3">비선점형<br>(Non-preemptive)</td><td>FCFS</td><td>도착 순서대로 CPU 할당</td><td>단순. 호위 효과(Convoy Effect) 발생</td><td>배치 처리 시스템</td></tr>
+          <tr><td>SJF</td><td>CPU 버스트 시간이 짧은 순</td><td>평균 대기시간 최소(증명됨). 기아(Starvation), 버스트 시간 예측 어려움</td><td>장기 스케줄링</td></tr>
+          <tr><td>Priority</td><td>우선순위 높은 순</td><td>기아 발생. 에이징(Aging)으로 해결</td><td>실시간·임베디드</td></tr>
+          <tr><td rowspan="3">선점형<br>(Preemptive)</td><td>SRT(SRTF)</td><td>잔여 버스트 시간 가장 짧은 순. 선점 가능</td><td>SJF의 선점형 버전. 잦은 컨텍스트 스위치</td><td>시분할 시스템</td></tr>
+          <tr><td>Round Robin(RR)</td><td>각 프로세스에 시간 할당량(q) 균등 배분</td><td>q 값이 관건: 크면 FCFS, 작으면 오버헤드 증가. 응답 시간 균일</td><td>시분할·대화형</td></tr>
+          <tr><td>다단계 큐<br>(MLQ/MLFQ)</td><td>우선순위 별 별도 큐. MLFQ는 큐 간 이동 허용</td><td>복잡하지만 유연. CPU/IO 바운드 분리 처리</td><td>범용 OS(Linux CFS 유사)</td></tr>
+        </table>
+      </div>
+
+      <div class="ans-sec">
+        <div class="sec-t st-orange">Ⅲ. Round Robin 타임 퀀텀 영향</div>
+        <div class="dbox">  q→∞  :  FCFS와 동일 (컨텍스트 스위치 최소)
+  q→0   :  프로세서 공유(Processor Sharing)에 수렴 (오버헤드 급증)
+  최적 q :  CPU 버스트의 80%를 q 이내에 처리 가능한 수준 (일반적으로 10~100ms)</div>
+      </div>
+
+      <div class="mem-box">
+        <div class="mem-t">📌 한 줄 암기</div>
+        비선점: FCFS·SJF·Priority | 선점: SRT·RR·MLQ | 현대 OS = CFS(Completely Fair Scheduler, 가중치 기반 RR)
+      </div>
+    </div>
+  </div>
+</div>
+</div><!-- /s-p1 -->
+
+<!-- S3. 메모리 관리 -->
+<div class="panel" id="s-p2">
+<div class="q-card">
+  <div class="q-head">
+    <span class="q-num-badge badge-short">S3</span>
+    <div class="q-meta">
+      <div class="q-type-label lbl-short">1교시 단답형 · 10점 · 목표 1~2페이지</div>
+      <div class="q-title">메모리 단편화(Fragmentation)의 종류와 해결 방법을 설명하시오.</div>
+    </div>
+  </div>
+  <div class="q-body">
+    <div class="hint-row">
+      <span class="hint hint-teal">내부·외부 단편화</span>
+      <span class="hint hint-teal">페이징·세그멘테이션</span>
+      <span class="hint hint-teal">압축(Compaction)</span>
+    </div>
+  </div>
+  <div class="ans-card">
+    <button class="ans-toggle" onclick="toggleAns(this)">
+      <span class="ans-toggle-lbl lbl-t">📄 모범 답안 보기</span>
+      <span class="ans-arrow">▼</span>
+    </button>
+    <div class="ans-body">
+      <div class="ans-title">메모리 단편화의 개념·종류·해결 방법</div>
+      <div class="score-row">
+        <span class="s-chip ct">⏱ 목표 13분</span>
+        <span class="s-chip cp">📄 1~2페이지</span>
+        <span class="s-chip cs">💯 10점</span>
+      </div>
+
+      <div class="ans-sec">
+        <div class="sec-t st-teal">Ⅰ. 단편화 개념 및 종류</div>
+        <table class="atbl">
+          <tr><th>구분</th><th>내부 단편화 (Internal Fragmentation)</th><th>외부 단편화 (External Fragmentation)</th></tr>
+          <tr><td>정의</td><td>할당된 메모리 블록 내부에 사용되지 않는 낭비 공간 발생</td><td>할당·해제가 반복되며 사용 가능한 메모리가 불연속 작은 조각으로 분산</td></tr>
+          <tr><td>발생 원인</td><td>고정 크기 파티션 또는 페이지 단위 할당 시 요청 크기와 할당 크기 불일치</td><td>가변 크기 파티션에서 프로세스 적재·제거 반복</td></tr>
+          <tr><td>예시</td><td>페이지 크기 4KB, 요청 3KB → 1KB 낭비</td><td>전체 여유 10KB이지만 3+4+3KB로 분산 → 8KB 연속 요청 실패</td></tr>
+          <tr><td>발생 환경</td><td>페이징, 고정 분할</td><td>세그멘테이션, 가변 분할, 동적 할당</td></tr>
+        </table>
+      </div>
+
+      <div class="ans-sec">
+        <div class="sec-t st-green">Ⅱ. 해결 방법</div>
+        <ul class="a-ol">
+          <li><span class="on on-t">1</span><div><strong>페이징(Paging)</strong>: 물리 메모리를 고정 크기 프레임, 논리 메모리를 동일 크기 페이지로 분할. 외부 단편화 제거. 내부 단편화는 소량 발생. 페이지 테이블로 매핑</div></li>
+          <li><span class="on on-t">2</span><div><strong>세그멘테이션(Segmentation)</strong>: 논리적 의미 단위(코드·데이터·스택)로 가변 분할. 내부 단편화 없음. 외부 단편화 발생 가능</div></li>
+          <li><span class="on on-t">3</span><div><strong>압축(Compaction)</strong>: 메모리 내 사용 중인 프로세스들을 한쪽으로 집합시켜 연속된 빈 공간 확보. 실행 중 이동 어려움 → 오버헤드 큼</div></li>
+          <li><span class="on on-t">4</span><div><strong>버디 시스템(Buddy System)</strong>: 2의 거듭제곱 크기 블록으로 분할·합병. 외부 단편화 최소화. Linux 커널 물리 메모리 관리에 사용</div></li>
+          <li><span class="on on-t">5</span><div><strong>슬랩 할당자(Slab Allocator)</strong>: 자주 사용되는 커널 오브젝트를 미리 할당·재사용. 내부 단편화 최소화. Linux 커널 캐시 메모리 관리</div></li>
+        </ul>
+      </div>
+
+      <div class="mem-box">
+        <div class="mem-t">📌 한 줄 암기</div>
+        내부 단편화 → 페이징 할당 단위 미사용 공간 | 외부 단편화 → 가변 분할 후 흩어진 빈 공간 | 해결: 페이징·압축·버디
+      </div>
+    </div>
+  </div>
+</div>
+</div><!-- /s-p2 -->
+
+<!-- S4. 페이지 교체 알고리즘 -->
+<div class="panel" id="s-p3">
+<div class="q-card">
+  <div class="q-head">
+    <span class="q-num-badge badge-short">S4</span>
+    <div class="q-meta">
+      <div class="q-type-label lbl-short">1교시 단답형 · 10점 · 목표 1~2페이지</div>
+      <div class="q-title">페이지 교체 알고리즘(OPT, FIFO, LRU, LFU)을 비교하고, Belady의 이상 현상을 설명하시오.</div>
+    </div>
+  </div>
+  <div class="q-body">
+    <div class="hint-row">
+      <span class="hint hint-teal">페이지 폴트율 비교</span>
+      <span class="hint hint-teal">Belady의 이상 현상</span>
+      <span class="hint hint-red">계산 문제 연계 출제 가능</span>
+    </div>
+  </div>
+  <div class="ans-card">
+    <button class="ans-toggle" onclick="toggleAns(this)">
+      <span class="ans-toggle-lbl lbl-t">📄 모범 답안 보기</span>
+      <span class="ans-arrow">▼</span>
+    </button>
+    <div class="ans-body">
+      <div class="ans-title">페이지 교체 알고리즘 비교 및 Belady의 이상 현상</div>
+      <div class="score-row">
+        <span class="s-chip ct">⏱ 목표 13분</span>
+        <span class="s-chip cp">📄 1~2페이지</span>
+        <span class="s-chip cs">💯 10점</span>
+      </div>
+
+      <div class="ans-sec">
+        <div class="sec-t st-teal">Ⅰ. 페이지 교체 알고리즘 개요</div>
+        <div class="ans-p">가상 메모리 환경에서 페이지 폴트(Page Fault) 발생 시 새 페이지를 메모리에 적재하기 위해 기존 페이지 중 하나를 제거해야 하는데, 이 때 어떤 페이지를 교체할지 결정하는 알고리즘이다.</div>
+      </div>
+
+      <div class="ans-sec">
+        <div class="sec-t st-green">Ⅱ. 알고리즘 비교</div>
+        <table class="atbl">
+          <tr><th>알고리즘</th><th>원리</th><th>페이지 폴트율</th><th>특징·한계</th></tr>
+          <tr><td>OPT (최적)</td><td>앞으로 가장 오래 사용되지 않을 페이지 교체</td><td>가장 낮음 (이론적 최적)</td><td>미래 참조 패턴 예측 불가 → 이론적 기준점(Upper Bound)</td></tr>
+          <tr><td>FIFO</td><td>메모리에 가장 오래 머문 페이지 교체</td><td>높음</td><td>구현 단순. Belady의 이상 현상 발생. 오래된 = 자주 쓰이는 페이지일 수 있음</td></tr>
+          <tr><td>LRU (최근 최소 사용)</td><td>가장 오랫동안 참조되지 않은 페이지 교체</td><td>OPT에 근접</td><td>스택 알고리즘 → Belady 이상 없음. 구현 비용 높음(카운터·스택 필요)</td></tr>
+          <tr><td>LFU (최소 사용 빈도)</td><td>참조 횟수가 가장 적은 페이지 교체</td><td>중간</td><td>초기에 많이 쓰인 오래된 페이지가 오래 남는 문제. 구현 복잡</td></tr>
+          <tr><td>Clock (NRU)</td><td>참조 비트(R-bit) 순환 검사, 0인 페이지 교체</td><td>LRU와 유사</td><td>LRU 근사 알고리즘. 구현 간단. Linux·Windows에서 실제 사용</td></tr>
+        </table>
+      </div>
+
+      <div class="ans-sec">
+        <div class="sec-t st-red">Ⅲ. Belady의 이상 현상 (Belady's Anomaly)</div>
+        <div class="kbox red">
+          <div class="kb-t">정의</div>
+          FIFO 알고리즘에서 프레임 수를 늘렸음에도 불구하고 페이지 폴트 횟수가 오히려 증가하는 현상. 직관에 반하는 이상 현상으로, <strong>스택 알고리즘(LRU·OPT)에서는 발생하지 않음.</strong>
+        </div>
+        <div class="dbox">참조 열: 1 2 3 4 1 2 5 1 2 3 4 5
+
+프레임 3개 → 페이지 폴트: 9회
+프레임 4개 → 페이지 폴트: 10회  ← 프레임 증가에도 폴트 증가! (Belady 이상)</div>
+        <div class="kbox teal">
+          <div class="kb-t">스택 알고리즘(Stack Algorithm)</div>
+          n 프레임에서 메모리에 있는 페이지 집합 ⊆ (n+1) 프레임에서 메모리에 있는 페이지 집합. 이 조건을 만족하면 프레임 증가 시 폴트 불증가 → LRU, OPT가 해당
+        </div>
+      </div>
+
+      <div class="mem-box">
+        <div class="mem-t">📌 한 줄 암기</div>
+        OPT(이론최적) &gt; LRU &gt; LFU &gt; Clock &gt; FIFO | Belady 이상: FIFO에서만 발생, LRU·OPT는 스택 알고리즘으로 면역
+      </div>
+    </div>
+  </div>
+</div>
+</div><!-- /s-p3 -->
+
+<!-- S5. 파일 시스템 -->
+<div class="panel" id="s-p4">
+<div class="q-card">
+  <div class="q-head">
+    <span class="q-num-badge badge-short">S5</span>
+    <div class="q-meta">
+      <div class="q-type-label lbl-short">1교시 단답형 · 10점 · 목표 1~2페이지</div>
+      <div class="q-title">파일 시스템의 디렉터리 구조와 파일 할당 방법(연속·연결·인덱스)을 비교하시오.</div>
+    </div>
+  </div>
+  <div class="q-body">
+    <div class="hint-row">
+      <span class="hint hint-teal">연속·연결·인덱스 할당</span>
+      <span class="hint hint-teal">FAT·inode 구조</span>
+      <span class="hint hint-blue">디스크 I/O 연계</span>
+    </div>
+  </div>
+  <div class="ans-card">
+    <button class="ans-toggle" onclick="toggleAns(this)">
+      <span class="ans-toggle-lbl lbl-t">📄 모범 답안 보기</span>
+      <span class="ans-arrow">▼</span>
+    </button>
+    <div class="ans-body">
+      <div class="ans-title">파일 시스템 디렉터리 구조 및 파일 할당 방법 비교</div>
+      <div class="score-row">
+        <span class="s-chip ct">⏱ 목표 13분</span>
+        <span class="s-chip cp">📄 1~2페이지</span>
+        <span class="s-chip cs">💯 10점</span>
+      </div>
+
+      <div class="ans-sec">
+        <div class="sec-t st-teal">Ⅰ. 디렉터리 구조 발전 단계</div>
+        <table class="atbl">
+          <tr><th>구조</th><th>특징</th><th>한계</th></tr>
+          <tr><td>1단계(단일)</td><td>모든 파일이 루트 디렉터리 하나에 존재</td><td>다중 사용자 파일명 충돌</td></tr>
+          <tr><td>2단계</td><td>사용자별 디렉터리 분리 (MFD/UFD 구조)</td><td>사용자 내 하위 디렉터리 불가</td></tr>
+          <tr><td>트리 구조</td><td>계층적 디렉터리 (현대 OS 표준)</td><td>파일 공유 시 절대경로 필요</td></tr>
+          <tr><td>비순환 그래프</td><td>링크(심볼릭·하드 링크)로 파일 공유</td><td>사이클 방지 필요, 링크 일관성 관리</td></tr>
+        </table>
+      </div>
+
+      <div class="ans-sec">
+        <div class="sec-t st-green">Ⅱ. 파일 할당 방법 비교</div>
+        <table class="atbl">
+          <tr><th>할당 방법</th><th>원리</th><th>장점</th><th>단점</th><th>예시</th></tr>
+          <tr><td>연속 할당<br>(Contiguous)</td><td>파일을 연속된 디스크 블록에 저장</td><td>순차·직접 접근 빠름. 구현 단순</td><td>외부 단편화. 파일 크기 사전 지정 필요</td><td>CD-ROM, DVD</td></tr>
+          <tr><td>연결 할당<br>(Linked)</td><td>각 블록이 다음 블록 포인터 보유. 체인 구조</td><td>외부 단편화 없음. 파일 크기 동적 증가</td><td>직접 접근 느림. 포인터 손상 시 전체 손실</td><td>FAT(File Allocation Table)</td></tr>
+          <tr><td>인덱스 할당<br>(Indexed)</td><td>인덱스 블록이 실제 데이터 블록 포인터 모두 보유</td><td>직접 접근 빠름. 외부 단편화 없음</td><td>인덱스 블록 저장 오버헤드. 소형 파일 낭비</td><td>UNIX inode, NTFS MFT</td></tr>
+        </table>
+        <div class="dbox">inode 구조 (UNIX 파일시스템)
+
+inode
+├── 직접 포인터 × 12  → 최대 48KB (4KB×12)
+├── 단일 간접 포인터  → 4KB × 1024 = 4MB
+├── 이중 간접 포인터  → 4MB × 1024 = 4GB
+└── 삼중 간접 포인터  → 4GB × 1024 = 4TB</div>
+      </div>
+
+      <div class="mem-box">
+        <div class="mem-t">📌 한 줄 암기</div>
+        연속(빠르나 단편화) → 연결(단편화 없으나 직접접근 불가, FAT) → 인덱스(직접접근+단편화 해결, inode)
+      </div>
+    </div>
+  </div>
+</div>
+</div><!-- /s-p4 -->
+
+</div><!-- /sec-short -->
+
+<!-- ═══════════════ 논술형 섹션 ═══════════════ -->
+<div class="section" id="sec-essay">
+
+<!-- E1. 교착상태 -->
+<div class="panel essay active" id="e-p0">
+<div class="q-card">
+  <div class="q-head">
+    <span class="q-num-badge badge-essay">E1</span>
+    <div class="q-meta">
+      <div class="q-type-label lbl-essay">2~4교시 논술형 · 25점 · 목표 3~4페이지</div>
+      <div class="q-title">교착상태(Deadlock)에 대하여 다음을 설명하시오.</div>
+    </div>
+  </div>
+  <div class="q-body">
+    <div class="q-items">
+      <div class="q-item"><span class="q-lbl">가.</span><span>교착상태의 개념과 발생 4가지 필요조건</span></div>
+      <div class="q-item"><span class="q-lbl">나.</span><span>교착상태 예방·회피·탐지·회복 방법 비교 및 은행원 알고리즘 동작 원리</span></div>
+      <div class="q-item"><span class="q-lbl">다.</span><span>자원 할당 그래프(RAG) 기반 탐지 방법 및 분산 시스템에서의 교착상태 처리</span></div>
+    </div>
+    <div class="hint-row">
+      <span class="hint hint-blue">매회 빈출 OS 핵심</span>
+      <span class="hint hint-blue">은행원 알고리즘 세부 원리</span>
+      <span class="hint hint-red">분산 교착상태 최신 트렌드</span>
+    </div>
+  </div>
+  <div class="ans-card">
+    <button class="ans-toggle" onclick="toggleAns(this)">
+      <span class="ans-toggle-lbl lbl-e">📄 모범 답안 보기</span>
+      <span class="ans-arrow">▼</span>
+    </button>
+    <div class="ans-body">
+      <div class="ans-title">교착상태의 필요조건·해결 방법(은행원 알고리즘 포함) 및 분산 시스템 처리</div>
+      <div class="score-row">
+        <span class="s-chip ct">⏱ 목표 25분</span>
+        <span class="s-chip cp">📄 3.5~4페이지</span>
+        <span class="s-chip cs">💯 25점</span>
+      </div>
+
+      <div class="ans-sec">
+        <div class="sec-t st-blue">Ⅰ. 개요 — 교착상태의 개념</div>
+        <div class="ans-p">교착상태(Deadlock)란 둘 이상의 프로세스가 서로 상대방이 점유한 자원의 해제를 무한히 대기하여 어떤 프로세스도 진행할 수 없는 영구 블로킹 상태이다. E.W. Dijkstra가 1965년 최초 정의하였으며, OS·DBMS·네트워크 등 자원 공유 환경에서 공통적으로 발생한다.</div>
+      </div>
+
+      <div class="ans-sec">
+        <div class="sec-t st-green">Ⅱ. 가. 교착상태 4가지 필요조건 (Coffman, 1971)</div>
+        <ul class="a-ol">
+          <li><span class="on on-g">1</span><div><strong>상호 배제(Mutual Exclusion)</strong>: 자원은 한 번에 하나의 프로세스만 사용 가능. 비공유 자원에 한해 성립
+            <div class="sub-l"><div class="sub-i">예: 프린터, 임계 구역, 잠금 장치</div></div>
+          </div></li>
+          <li><span class="on on-g">2</span><div><strong>점유와 대기(Hold and Wait)</strong>: 자원을 최소 하나 점유한 상태에서 타 프로세스가 점유한 자원을 추가 요청하며 대기
+            <div class="sub-l"><div class="sub-i">해결책: 프로세스 시작 전 필요 자원 모두 선언(All-or-Nothing)</div></div>
+          </div></li>
+          <li><span class="on on-g">3</span><div><strong>비선점(No Preemption)</strong>: 프로세스가 사용 중인 자원을 OS가 강제 회수 불가. 자발적 반납만 허용
+            <div class="sub-l"><div class="sub-i">해결책: CPU 레지스터·메모리는 선점 가능하도록 설계</div></div>
+          </div></li>
+          <li><span class="on on-g">4</span><div><strong>환형 대기(Circular Wait)</strong>: P0→P1→...→Pn→P0 형태의 순환 대기 체인 형성
+            <div class="sub-l"><div class="sub-i">해결책: 자원에 전역 순서 번호 부여, 오름차순 요청만 허용</div></div>
+          </div></li>
+        </ul>
+        <div class="kbox blue">
+          <div class="kb-t">핵심 원리</div>
+          4가지 조건이 <strong>모두 동시에</strong> 충족될 때만 교착상태 발생 가능. 예방(Prevention)은 4가지 조건 중 하나를 원천 차단하는 전략.
+        </div>
+      </div>
+
+      <div class="ans-sec">
+        <div class="sec-t st-purple">Ⅲ. 나. 해결 방법 비교 및 은행원 알고리즘</div>
+        <table class="atbl essay">
+          <tr><th>기법</th><th>전략</th><th>장점</th><th>단점</th><th>대표 방법</th></tr>
+          <tr><td>예방 (Prevention)</td><td>4가지 조건 중 하나 원천 차단</td><td>교착상태 원천 불가</td><td>자원 이용률 저하, 기아 가능</td><td>환형 대기 조건 제거</td></tr>
+          <tr><td>회피 (Avoidance)</td><td>자원 요청 시 안전 상태 유지 여부 사전 검사</td><td>교착상태 방지 + 자원 효율 개선</td><td>최대 자원 요구량 사전 선언 필요</td><td>은행원 알고리즘</td></tr>
+          <tr><td>탐지 (Detection)</td><td>교착상태 발생 허용 후 주기적 탐지</td><td>자원 이용률 최대화</td><td>탐지 비용, 회복 오버헤드</td><td>RAG·Wait-for 그래프</td></tr>
+          <tr><td>회복 (Recovery)</td><td>교착 프로세스 종료 또는 자원 선점</td><td>교착상태 해소</td><td>작업 손실, 기아 가능</td><td>희생자 선택, 롤백</td></tr>
+        </table>
+
+        <div class="kbox blue">
+          <div class="kb-t">은행원 알고리즘 (Banker's Algorithm, Dijkstra 1965)</div>
+          안전 상태(Safe State): 모든 프로세스가 순차적으로 자원을 할당받고 완료할 수 있는 <strong>안전 순서(Safe Sequence)</strong>가 존재하는 상태.<br>
+          자원 요청 시 가상으로 할당 후 안전 상태인지 검사 → 안전하면 실제 할당, 불안전하면 대기.
+        </div>
+        <div class="dbox">은행원 알고리즘 예시 (자원 1종류, 프로세스 3개)
+
+Available = 3,  Allocation = [1, 2, 2],  Max = [4, 6, 3]
+Need = Max - Allocation = [3, 4, 1]
+
+① P2(Need=1) → Available=3 ≥ 1 → 할당 → 완료 후 반납: Available=5
+② P0(Need=3) → Available=5 ≥ 3 → 할당 → 완료 후 반납: Available=9
+③ P1(Need=4) → Available=9 ≥ 4 → 할당 → 완료
+
+안전 순서: P2 → P0 → P1 ✓ → 안전 상태(Safe State)</div>
+      </div>
+
+      <div class="ans-sec">
+        <div class="sec-t st-orange">Ⅳ. 다. RAG 기반 탐지 및 분산 시스템 교착상태</div>
+        <div class="dbox">자원 할당 그래프(RAG) 탐지
+
+  ○: 프로세스   □: 자원 인스턴스
+  ○ → □ : 요청 간선   □ → ○ : 할당 간선
+
+  교착 탐지 예:
+  P1 ──요청──→ R1 ──할당──→ P2
+  P2 ──요청──→ R2 ──할당──→ P1  ← 사이클 형성 = 교착상태 ✓
+
+  단일 인스턴스: 사이클 = 교착상태 확정
+  다중 인스턴스: Wait-for 그래프 변환 + DFS 사이클 검출</div>
+
+        <ul class="a-ol">
+          <li><span class="on on-o">1</span><div><strong>분산 교착상태(Distributed Deadlock)</strong>: 여러 노드에 걸친 자원 요청 사이클. 단일 OS가 전체 상태 파악 불가
+            <div class="sub-l">
+              <div class="sub-i"><strong>글로벌 Wait-for 그래프 방식</strong>: 코디네이터가 각 노드의 로컬 Wait-for 그래프를 수집·합산하여 사이클 탐지</div>
+              <div class="sub-i"><strong>에지 체이싱(Edge Chasing)</strong>: 탐침(Probe) 메시지가 Wait-for 간선을 따라 전파, 발신 노드로 되돌아오면 교착 확정 (Chandy-Misra-Haas 알고리즘)</div>
+              <div class="sub-i"><strong>타임아웃 기반</strong>: 일정 시간 응답 없는 자원 요청을 교착으로 가정. 오탐 가능하나 구현 단순</div>
+            </div>
+          </div></li>
+          <li><span class="on on-o">2</span><div><strong>DBMS 교착상태 처리</strong>: 트랜잭션 단위 Wait-for 그래프 유지. 사이클 탐지 시 희생 트랜잭션(가장 적은 비용) 롤백. MySQL·Oracle 등 RDBMS에서 기본 구현</div></li>
+        </ul>
+      </div>
+
+      <div class="concl essay">
+        <div class="concl-t">Ⅴ. 결론</div>
+        <p>교착상태는 OS·DBMS·분산 시스템의 근본적 문제로, 실제 시스템은 대부분 탐지+회복 또는 타임아웃 방식을 채택한다. 마이크로서비스 환경에서는 분산 Lock(Redis Redlock, ZooKeeper)과 Saga 패턴을 통해 교착상태를 설계 단계에서 방지하며, 향후 트랜잭션 메모리(Transactional Memory) 기술이 소프트웨어적 교착상태를 하드웨어 수준에서 해결하는 방향으로 발전하고 있다.</p>
+      </div>
+    </div>
+  </div>
+</div>
+</div><!-- /e-p0 -->
+
+<!-- E2. 가상 메모리 -->
+<div class="panel essay" id="e-p1">
+<div class="q-card">
+  <div class="q-head">
+    <span class="q-num-badge badge-essay">E2</span>
+    <div class="q-meta">
+      <div class="q-type-label lbl-essay">2~4교시 논술형 · 25점 · 목표 3~4페이지</div>
+      <div class="q-title">가상 메모리(Virtual Memory)에 대하여 다음을 설명하시오.</div>
+    </div>
+  </div>
+  <div class="q-body">
+    <div class="q-items">
+      <div class="q-item"><span class="q-lbl">가.</span><span>가상 메모리의 개념, 페이징 기법, 페이지 테이블 구조 (다단계 페이지 테이블, TLB)</span></div>
+      <div class="q-item"><span class="q-lbl">나.</span><span>요구 페이징(Demand Paging)과 페이지 폴트 처리 과정</span></div>
+      <div class="q-item"><span class="q-lbl">다.</span><span>스레싱(Thrashing)의 개념, 발생 원인 및 해결 방안</span></div>
+    </div>
+    <div class="hint-row">
+      <span class="hint hint-blue">TLB·다단계 페이지 테이블 세부</span>
+      <span class="hint hint-blue">스레싱 핵심 빈출</span>
+      <span class="hint hint-red">Working Set 모델 연계</span>
+    </div>
+  </div>
+  <div class="ans-card">
+    <button class="ans-toggle" onclick="toggleAns(this)">
+      <span class="ans-toggle-lbl lbl-e">📄 모범 답안 보기</span>
+      <span class="ans-arrow">▼</span>
+    </button>
+    <div class="ans-body">
+      <div class="ans-title">가상 메모리의 페이징·TLB 구조, 요구 페이징 처리 과정 및 스레싱 해결 방안</div>
+      <div class="score-row">
+        <span class="s-chip ct">⏱ 목표 25분</span>
+        <span class="s-chip cp">📄 3.5~4페이지</span>
+        <span class="s-chip cs">💯 25점</span>
+      </div>
+
+      <div class="ans-sec">
+        <div class="sec-t st-blue">Ⅰ. 개요 — 가상 메모리의 개념</div>
+        <div class="ans-p">가상 메모리(Virtual Memory)는 프로세스가 실제 물리 메모리보다 큰 주소 공간을 사용할 수 있도록 지원하는 메모리 관리 기법이다. 프로세스의 일부만 물리 메모리에 적재하고 나머지는 보조 기억장치(Swap 영역)에 보관함으로써, 멀티프로그래밍 차수를 높이고 메모리 활용을 극대화한다.</div>
+      </div>
+
+      <div class="ans-sec">
+        <div class="sec-t st-green">Ⅱ. 가. 페이징 기법 및 페이지 테이블 구조</div>
+        <div class="dbox">주소 변환 과정 (논리 주소 → 물리 주소)
+
+논리 주소: [페이지 번호 p | 페이지 오프셋 d]
+                  │
+              페이지 테이블
+           p → 프레임 번호 f
+                  │
+물리 주소: [프레임 번호 f | 오프셋 d]
+
+예) 페이지 크기 4KB(12비트), 논리 주소 32비트
+→ 페이지 번호: 상위 20비트 (1M 페이지)
+→ 오프셋:     하위 12비트 (4KB 범위)</div>
+
+        <ul class="a-ol">
+          <li><span class="on on-g">1</span><div><strong>다단계 페이지 테이블</strong>: 페이지 테이블 자체의 메모리 낭비 문제 해결. 32비트 주소 공간에서 1단계 페이지 테이블은 4MB 소요 → 2단계(10/10/12) 또는 3단계 계층화로 실제 사용되는 부분만 할당
+            <div class="sub-l">
+              <div class="sub-i">x86-64: 4단계 페이지 테이블 (PML4·PDPT·PD·PT)</div>
+              <div class="sub-i">장점: 희소(Sparse) 주소 공간에서 메모리 절약</div>
+            </div>
+          </div></li>
+          <li><span class="on on-g">2</span><div><strong>TLB(Translation Lookaside Buffer)</strong>: 페이지 테이블 접근 시 메모리 참조 횟수(2회 이상) 오버헤드 해결을 위한 하드웨어 연관 캐시
+            <div class="sub-l">
+              <div class="sub-i">TLB Hit: TLB에서 프레임 번호 즉시 획득 → 메모리 1회 접근</div>
+              <div class="sub-i">TLB Miss: 페이지 테이블 참조 후 TLB 갱신 → 메모리 2회+ 접근</div>
+              <div class="sub-i">유효 접근 시간(EAT) = TLB Hit율 × 1회 접근 + (1-Hit율) × 2회 접근</div>
+              <div class="sub-i">컨텍스트 스위치 시 TLB 플러시 또는 ASID(Address Space ID) 태그로 구분</div>
+            </div>
+          </div></li>
+        </ul>
+      </div>
+
+      <div class="ans-sec">
+        <div class="sec-t st-purple">Ⅲ. 나. 요구 페이징 및 페이지 폴트 처리 과정</div>
+        <div class="kbox blue">
+          <div class="kb-t">요구 페이징(Demand Paging)</div>
+          프로세스의 모든 페이지를 처음부터 적재하지 않고, 실제 참조가 발생할 때만 물리 메모리에 적재하는 지연 적재(Lazy Loading) 전략. 순수 요구 페이징: 초기 메모리 적재 없이 첫 접근 시 폴트 발생.
+        </div>
+        <div class="dbox">페이지 폴트 처리 과정 (6단계)
+
+① 프로세스가 논리 주소 참조 → 페이지 테이블의 Valid Bit = 0 확인
+② OS에 페이지 폴트 트랩(Trap) 발생 → OS 인터럽트 처리
+③ 보조 기억장치(Swap) 내 해당 페이지 위치 확인
+④ 빈 프레임 탐색 → 없으면 페이지 교체 알고리즘 수행
+⑤ Swap → 물리 메모리 프레임에 페이지 적재 (I/O 수행)
+⑥ 페이지 테이블 갱신(Valid Bit=1, 프레임 번호) → 프로세스 재시작</div>
+        <div class="kbox green">
+          <div class="kb-t">페이지 폴트 처리 비용</div>
+          서비스 인터럽트(1~100μs) + 페이지 읽기(8ms) + 프로세스 재시작(1~100μs). 디스크 I/O(8ms)가 지배적 → 페이지 폴트율 최소화가 성능의 핵심.
+        </div>
+      </div>
+
+      <div class="ans-sec">
+        <div class="sec-t st-red">Ⅳ. 다. 스레싱(Thrashing) 개념·원인·해결</div>
+        <div class="kbox red">
+          <div class="kb-t">스레싱(Thrashing) 정의</div>
+          멀티프로그래밍 차수가 높아져 각 프로세스의 워킹 셋(Working Set)을 수용할 물리 메모리가 부족해지면, 프로세스들이 계속적으로 페이지 폴트와 교체를 반복하여 실제 유용한 작업보다 페이지 교체에 더 많은 시간을 소비하는 현상.
+        </div>
+        <div class="dbox">스레싱 발생 곡선
+
+CPU 이용률
+  ▲
+  │      ●
+  │    ●   ●
+  │  ●       ● ← 스레싱 발생 구간
+  │●           ●●●
+  └──────────────────── 멀티프로그래밍 차수
+         최적점 ↑ 이후 CPU 이용률 급락</div>
+
+        <table class="atbl essay">
+          <tr><th>해결 방안</th><th>원리</th><th>특징</th></tr>
+          <tr><td>Working Set 모델<br>(Peter Denning)</td><td>각 프로세스의 최근 △ 시간 내 참조 페이지 집합(WS) 합산이 물리 메모리 초과 시 일부 프로세스 일시 중단</td><td>지역성(Locality)에 기반. 스레싱 예방에 가장 효과적</td></tr>
+          <tr><td>페이지 폴트 빈도<br>(PFF) 기법</td><td>페이지 폴트율이 상한(Upper)을 초과하면 프레임 추가, 하한(Lower) 미만이면 프레임 회수</td><td>적응형 제어. 구현 단순. 반응 지연 가능</td></tr>
+          <tr><td>멀티프로그래밍<br>차수 조절</td><td>스레싱 탐지 시 일부 프로세스를 Swap-out → 나머지에 프레임 재분배</td><td>근본적 해결. 처리율 일시 감소</td></tr>
+          <tr><td>지역성 향상</td><td>프로그램 구조를 지역성(시간적·공간적)에 맞게 재설계</td><td>예: 배열 순차 접근, 자주 쓰는 함수 집중화</td></tr>
+        </table>
+      </div>
+
+      <div class="concl essay">
+        <div class="concl-t">Ⅴ. 결론</div>
+        <p>가상 메모리는 현대 OS의 핵심 추상화로서 멀티프로그래밍·프로세스 격리·메모리 보호를 동시에 실현한다. TLB·다단계 페이지 테이블은 주소 변환 성능을 보장하며, 스레싱 방지를 위한 Working Set 모델은 실시간 메모리 요구를 동적으로 파악한다. 최근 대용량 메모리(HBM)·CXL 기반 메모리 풀링 환경에서는 Huge Page(2MB·1GB) 적용으로 TLB 미스를 최소화하는 기술도 주목받고 있다.</p>
+      </div>
+    </div>
+  </div>
+</div>
+</div><!-- /e-p1 -->
+
+<!-- E3. 프로세스 동기화 -->
+<div class="panel essay" id="e-p2">
+<div class="q-card">
+  <div class="q-head">
+    <span class="q-num-badge badge-essay">E3</span>
+    <div class="q-meta">
+      <div class="q-type-label lbl-essay">2~4교시 논술형 · 25점 · 목표 3~4페이지</div>
+      <div class="q-title">프로세스 동기화(Process Synchronization)에 대하여 다음을 설명하시오.</div>
+    </div>
+  </div>
+  <div class="q-body">
+    <div class="q-items">
+      <div class="q-item"><span class="q-lbl">가.</span><span>임계 구역(Critical Section) 문제와 해결을 위한 3가지 요구 조건</span></div>
+      <div class="q-item"><span class="q-lbl">나.</span><span>세마포어(Semaphore)와 모니터(Monitor)의 개념 및 구현 원리 비교</span></div>
+      <div class="q-item"><span class="q-lbl">다.</span><span>생산자-소비자 문제(Producer-Consumer Problem)를 세마포어로 해결하는 방법</span></div>
+    </div>
+    <div class="hint-row">
+      <span class="hint hint-blue">임계 구역 3가지 조건 암기</span>
+      <span class="hint hint-blue">세마포어 P/V 연산</span>
+      <span class="hint hint-blue">모니터 vs 세마포어 비교</span>
+    </div>
+  </div>
+  <div class="ans-card">
+    <button class="ans-toggle" onclick="toggleAns(this)">
+      <span class="ans-toggle-lbl lbl-e">📄 모범 답안 보기</span>
+      <span class="ans-arrow">▼</span>
+    </button>
+    <div class="ans-body">
+      <div class="ans-title">임계 구역 요구 조건, 세마포어·모니터 비교 및 생산자-소비자 문제 해결</div>
+      <div class="score-row">
+        <span class="s-chip ct">⏱ 목표 25분</span>
+        <span class="s-chip cp">📄 3~4페이지</span>
+        <span class="s-chip cs">💯 25점</span>
+      </div>
+
+      <div class="ans-sec">
+        <div class="sec-t st-blue">Ⅰ. 개요</div>
+        <div class="ans-p">다중 프로세스·스레드가 공유 자원에 동시 접근할 때 실행 순서에 따라 결과가 달라지는 경쟁 조건(Race Condition)이 발생한다. 프로세스 동기화는 공유 자원에 대한 접근을 조율하여 데이터 일관성을 보장하는 메커니즘이다.</div>
+      </div>
+
+      <div class="ans-sec">
+        <div class="sec-t st-green">Ⅱ. 가. 임계 구역 문제 및 3가지 요구 조건</div>
+        <div class="kbox green">
+          <div class="kb-t">임계 구역(Critical Section)</div>
+          둘 이상의 프로세스가 동시에 접근해서는 안 되는 공유 자원 접근 코드 영역. Entry Section(진입 구역) → Critical Section → Exit Section(출구 구역) → Remainder Section 구조.
+        </div>
+        <ul class="a-ol">
+          <li><span class="on on-g">1</span><div><strong>상호 배제(Mutual Exclusion)</strong>: 한 프로세스가 임계 구역을 실행 중이면 다른 프로세스는 진입 불가. 가장 기본 조건</div></li>
+          <li><span class="on on-g">2</span><div><strong>진행(Progress)</strong>: 임계 구역을 실행 중인 프로세스가 없고 진입하려는 프로세스가 있을 때, 진입 결정이 무기한 연기되어서는 안 됨</div></li>
+          <li><span class="on on-g">3</span><div><strong>한정 대기(Bounded Waiting)</strong>: 프로세스가 임계 구역 진입 요청 후 허용되기 전까지 다른 프로세스가 임계 구역에 진입할 수 있는 횟수에 상한이 있어야 함 (기아 방지)</div></li>
+        </ul>
+      </div>
+
+      <div class="ans-sec">
+        <div class="sec-t st-purple">Ⅲ. 나. 세마포어와 모니터 비교</div>
+        <div class="dbox">세마포어(Semaphore) P/V 연산
+
+P(S) 연산 (Wait):   V(S) 연산 (Signal):
+  if S > 0:            S = S + 1
+    S = S - 1          if (대기 프로세스 있음):
+  else:                  대기 프로세스 1개 깨움
+    프로세스 Block
+
+이진 세마포어 (Binary Semaphore, Mutex):  S ∈ {0, 1}
+계수 세마포어 (Counting Semaphore):       S ∈ 정수 전체</div>
+
+        <table class="atbl essay">
+          <tr><th>비교 항목</th><th>세마포어 (Semaphore)</th><th>모니터 (Monitor)</th></tr>
+          <tr><td>제안자</td><td>E.W. Dijkstra (1965)</td><td>C.A.R. Hoare (1974)</td></tr>
+          <tr><td>추상화 수준</td><td>저수준 (프로그래머가 P/V 직접 호출)</td><td>고수준 (언어·컴파일러 수준 추상화)</td></tr>
+          <tr><td>상호 배제</td><td>P/V 연산의 올바른 배치 필요 (실수 가능)</td><td>모니터 진입 시 자동 상호 배제 보장</td></tr>
+          <tr><td>조건 동기화</td><td>별도 세마포어 변수로 구현</td><td>조건 변수(condition variable): wait()·signal()</td></tr>
+          <tr><td>사용 언어</td><td>C, 어셈블리 등 저수준 언어</td><td>Java(synchronized), Python(threading.Lock)</td></tr>
+          <tr><td>오류 가능성</td><td>높음 (P/V 순서 오류 시 교착·기아)</td><td>낮음 (자동 락 관리)</td></tr>
+        </table>
+      </div>
+
+      <div class="ans-sec">
+        <div class="sec-t st-orange">Ⅳ. 다. 생산자-소비자 문제 세마포어 해결</div>
+        <div class="kbox orange">
+          <div class="kb-t">문제 정의</div>
+          생산자(Producer)는 공유 버퍼에 아이템을 생산하고, 소비자(Consumer)는 아이템을 소비. 버퍼 오버플로우(생산자)·언더플로우(소비자) 방지 및 상호 배제 필요.
+        </div>
+        <div class="dbox">세마포어를 이용한 생산자-소비자 해결
+
+세마포어 3개 정의:
+  mutex   = 1   (상호 배제: 버퍼 접근 제어)
+  empty   = N   (빈 버퍼 슬롯 수, N = 버퍼 크기)
+  full    = 0   (채워진 버퍼 슬롯 수)
+
+생산자 프로세스:             소비자 프로세스:
+  while(true) {               while(true) {
+    item = produce();           P(full);      // 아이템 있을 때까지 대기
+    P(empty);  // 빈 슬롯 대기   P(mutex);     // 임계 구역 진입
+    P(mutex);  // 임계 구역 진입  item = remove_from_buffer();
+    add_to_buffer(item);        V(mutex);     // 임계 구역 퇴출
+    V(mutex);  // 임계 구역 퇴출  V(empty);     // 빈 슬롯 1 증가
+    V(full);   // 채운 슬롯 1 증가 consume(item);
+  }                           }
+
+핵심: P(empty)/P(full) 순서가 P(mutex)보다 반드시 먼저! (순서 역전 시 교착상태 발생)</div>
+      </div>
+
+      <div class="concl essay">
+        <div class="concl-t">Ⅴ. 결론</div>
+        <p>동기화는 멀티코어 환경에서 더욱 중요성이 증가하였으며, 세마포어·모니터 외에도 원자적 연산(Compare-and-Swap, CAS) 기반의 Lock-Free·Wait-Free 알고리즘이 현대 언어 런타임(Java Concurrent 패키지, C++ atomic)에 적용되고 있다. 마이크로서비스 환경에서는 분산 잠금(Redis Redlock, ZooKeeper) 메커니즘이 프로세스 동기화의 확장 형태로 활용된다.</p>
+      </div>
+    </div>
+  </div>
+</div>
+</div><!-- /e-p2 -->
+
+<!-- E4. I/O 관리 -->
+<div class="panel essay" id="e-p3">
+<div class="q-card">
+  <div class="q-head">
+    <span class="q-num-badge badge-essay">E4</span>
+    <div class="q-meta">
+      <div class="q-type-label lbl-essay">2~4교시 논술형 · 25점 · 목표 3~4페이지</div>
+      <div class="q-title">운영체제의 I/O 관리 및 디스크 스케줄링에 대하여 다음을 설명하시오.</div>
+    </div>
+  </div>
+  <div class="q-body">
+    <div class="q-items">
+      <div class="q-item"><span class="q-lbl">가.</span><span>I/O 수행 방식 (프로그램 제어 I/O, 인터럽트 구동 I/O, DMA 방식) 비교</span></div>
+      <div class="q-item"><span class="q-lbl">나.</span><span>디스크 스케줄링 알고리즘(FCFS·SSTF·SCAN·C-SCAN·LOOK) 비교</span></div>
+      <div class="q-item"><span class="q-lbl">다.</span><span>SSD 환경에서의 I/O 최적화 및 디스크 스케줄링 변화</span></div>
+    </div>
+    <div class="hint-row">
+      <span class="hint hint-blue">DMA·인터럽트 필수</span>
+      <span class="hint hint-blue">SCAN 계열 알고리즘 비교</span>
+      <span class="hint hint-red">SSD·NVMe 최신 트렌드</span>
+    </div>
+  </div>
+  <div class="ans-card">
+    <button class="ans-toggle" onclick="toggleAns(this)">
+      <span class="ans-toggle-lbl lbl-e">📄 모범 답안 보기</span>
+      <span class="ans-arrow">▼</span>
+    </button>
+    <div class="ans-body">
+      <div class="ans-title">I/O 수행 방식 비교, 디스크 스케줄링 알고리즘 및 SSD 환경 최적화</div>
+      <div class="score-row">
+        <span class="s-chip ct">⏱ 목표 25분</span>
+        <span class="s-chip cp">📄 3.5페이지</span>
+        <span class="s-chip cs">💯 25점</span>
+      </div>
+
+      <div class="ans-sec">
+        <div class="sec-t st-blue">Ⅰ. 가. I/O 수행 방식 비교</div>
+        <table class="atbl essay">
+          <tr><th>방식</th><th>동작 원리</th><th>CPU 개입</th><th>특징·적합 환경</th></tr>
+          <tr><td>프로그램 제어 I/O<br>(Polling/Busy-Wait)</td><td>CPU가 I/O 장치 상태를 반복 검사하며 완료 대기</td><td>매우 높음 (CPU 독점)</td><td>구현 단순. CPU 낭비 심함. 소형 임베디드·단순 장치</td></tr>
+          <tr><td>인터럽트 구동 I/O<br>(Interrupt-Driven)</td><td>I/O 요청 후 CPU는 다른 작업 수행. 완료 시 인터럽트 발생 → ISR 실행</td><td>중간 (I/O 완료 시만 개입)</td><td>범용 OS 표준. CPU 효율 향상. 인터럽트 오버헤드</td></tr>
+          <tr><td>직접 메모리 접근<br>(DMA)</td><td>DMA 컨트롤러가 CPU 대신 메모리↔장치 데이터 전송. 전송 완료 후 CPU에 인터럽트 1회</td><td>매우 낮음 (전송 완료 시만)</td><td>대용량 블록 전송(디스크·네트워크)에 적합. CPU 부하 최소. 현대 OS 표준</td></tr>
+        </table>
+        <div class="dbox">DMA 동작 흐름
+
+① CPU → DMA 컨트롤러: 전송 시작 주소·크기·방향 설정
+② CPU는 다른 작업 수행 (I/O와 병행)
+③ DMA → 메모리 버스를 점유하여 장치↔메모리 직접 전송 (사이클 스틸링)
+④ 전송 완료 → DMA가 CPU에 인터럽트 신호
+⑤ CPU → ISR 실행: 전송 결과 확인 및 다음 처리</div>
+      </div>
+
+      <div class="ans-sec">
+        <div class="sec-t st-green">Ⅱ. 나. 디스크 스케줄링 알고리즘 비교</div>
+        <div class="ans-p">디스크 I/O 성능 = 탐색 시간(Seek) + 회전 지연(Rotational Latency) + 전송 시간. 탐색 시간이 지배적이므로 헤드 이동 거리 최소화가 목표.</div>
+        <div class="dbox">디스크 헤드 위치 이동 예시 (초기 헤드: 53번 실린더)
+요청 큐: 98, 183, 37, 122, 14, 124, 65, 67
+
+FCFS : 53→98→183→37→122→14→124→65→67  이동: 640실린더
+SSTF : 53→65→67→37→14→98→122→124→183  이동: 236실린더
+SCAN : 53→65→67→98→122→124→183→↓37→14  이동: 299실린더 (엘리베이터)
+LOOK : SCAN과 유사, 실제 끝 실린더 아닌 마지막 요청까지만 이동
+C-SCAN: 0→끝 방향 이동 후 0으로 즉시 복귀, 균일 대기시간 보장</div>
+        <table class="atbl essay">
+          <tr><th>알고리즘</th><th>원리</th><th>총 이동거리</th><th>특징·문제점</th></tr>
+          <tr><td>FCFS</td><td>요청 도착 순서대로 처리</td><td>최대 (불규칙)</td><td>공정하나 비효율. 헤드 이동 최대</td></tr>
+          <tr><td>SSTF (최소 탐색)</td><td>현재 헤드에서 가장 가까운 요청 처리</td><td>작음</td><td>기아(Starvation) 발생 가능. 양 끝 요청 무한 대기</td></tr>
+          <tr><td>SCAN (엘리베이터)</td><td>한 방향으로 이동하며 처리, 끝에서 반전</td><td>중간</td><td>양방향 이동. 끝 실린더 요청은 대기 긺</td></tr>
+          <tr><td>C-SCAN</td><td>한 방향만 처리 후 반대 끝으로 즉시 이동</td><td>중간</td><td>균일한 대기 시간 보장. 실제 디스크 스케줄러 표준</td></tr>
+          <tr><td>LOOK / C-LOOK</td><td>SCAN/C-SCAN의 변형. 실제 요청 범위까지만 이동</td><td>SCAN보다 작음</td><td>불필요한 끝까지 이동 제거. 현대 OS 권장</td></tr>
+        </table>
+      </div>
+
+      <div class="ans-sec">
+        <div class="sec-t st-orange">Ⅲ. 다. SSD 환경에서의 I/O 최적화 및 스케줄링 변화</div>
+        <table class="atbl essay">
+          <tr><th>항목</th><th>HDD (전통 자기 디스크)</th><th>SSD / NVMe</th></tr>
+          <tr><td>탐색 시간</td><td>수 ms (기계적 헤드 이동)</td><td>거의 0 (기계 부품 없음)</td></tr>
+          <tr><td>임의 접근</td><td>순차 접근보다 현저히 느림</td><td>순차·임의 접근 성능 유사</td></tr>
+          <tr><td>스케줄링 필요성</td><td>필수 (탐색 최소화가 핵심)</td><td>불필요 또는 단순화 (NOOP·mq-deadline)</td></tr>
+          <tr><td>쓰기 특성</td><td>덮어쓰기 가능</td><td>페이지 단위 쓰기, 블록 단위 소거 필요 → FTL(Flash Translation Layer)이 관리</td></tr>
+          <tr><td>마모 관리</td><td>불필요</td><td>Wear Leveling (균일 소거 횟수), 쓰기 증폭(WA) 최소화</td></tr>
+        </table>
+        <ul class="a-ol">
+          <li><span class="on on-o">1</span><div><strong>Linux I/O 스케줄러 변화</strong>: HDD 시대의 CFQ(완전 공정 큐잉) → SSD/NVMe 시대의 mq-deadline·BFQ·NONE(NOOP) 채택. NVMe는 큐 깊이(QD) 수천 수준 → 병렬 처리로 스케줄링 대신 큐 관리가 핵심</div></li>
+          <li><span class="on on-o">2</span><div><strong>FTL 최적화</strong>: SSD 내부 FTL이 논리→물리 주소 변환·Wear Leveling·Garbage Collection을 수행. OS 수준의 TRIM(DISCARD) 명령으로 불필요 페이지를 FTL에 알려 GC 효율 향상</div></li>
+          <li><span class="on on-o">3</span><div><strong>io_uring (Linux 5.1+)</strong>: 비동기 I/O를 위한 커널-유저 공유 링 버퍼. 시스템 콜 오버헤드를 제거하여 NVMe SSD의 최대 IOPS를 실현. PostgreSQL, Nginx 등 고성능 서버에 적용</div></li>
+        </ul>
+      </div>
+
+      <div class="concl essay">
+        <div class="concl-t">Ⅴ. 결론</div>
+        <p>I/O 관리는 시스템 성능의 병목을 결정하는 핵심 기능이다. HDD 환경에서는 SCAN 계열 스케줄링이 표준이었으나, NVMe SSD 보급으로 스케줄링 경량화와 병렬 I/O 처리가 새로운 패러다임으로 자리 잡았다. 고성능 AI 서버·데이터센터에서는 io_uring·DPDK·RDMA 등 커널 우회(Bypass) 기술을 통해 수백만 IOPS를 실현하는 방향으로 발전하고 있다.</p>
+      </div>
+    </div>
+  </div>
+</div>
+</div><!-- /e-p3 -->
+
+<!-- E5. 멀티코어 OS·동시성 -->
+<div class="panel essay" id="e-p4">
+<div class="q-card">
+  <div class="q-head">
+    <span class="q-num-badge badge-essay">E5</span>
+    <div class="q-meta">
+      <div class="q-type-label lbl-essay">2~4교시 논술형 · 25점 · 목표 3~4페이지</div>
+      <div class="q-title">멀티코어 환경에서의 운영체제 설계와 동시성 제어에 대하여 다음을 설명하시오.</div>
+    </div>
+  </div>
+  <div class="q-body">
+    <div class="q-items">
+      <div class="q-item"><span class="q-lbl">가.</span><span>멀티코어 환경의 특징과 대칭형(SMP) vs 비대칭형(AMP) 멀티프로세싱 비교</span></div>
+      <div class="q-item"><span class="q-lbl">나.</span><span>멀티코어 스케줄링 이슈 (부하 균형, 프로세서 친화성, 이주 임계값)</span></div>
+      <div class="q-item"><span class="q-lbl">다.</span><span>캐시 일관성(Cache Coherency) 문제와 해결 프로토콜(MESI), 메모리 모델(Memory Ordering)</span></div>
+    </div>
+    <div class="hint-row">
+      <span class="hint hint-blue">SMP·AMP 비교</span>
+      <span class="hint hint-blue">MESI 프로토콜 원리</span>
+      <span class="hint hint-red">멀티코어 최신 출제 유력</span>
+    </div>
+  </div>
+  <div class="ans-card">
+    <button class="ans-toggle" onclick="toggleAns(this)">
+      <span class="ans-toggle-lbl lbl-e">📄 모범 답안 보기</span>
+      <span class="ans-arrow">▼</span>
+    </button>
+    <div class="ans-body">
+      <div class="ans-title">멀티코어 OS 설계 특징, 스케줄링 이슈 및 캐시 일관성·메모리 모델</div>
+      <div class="score-row">
+        <span class="s-chip ct">⏱ 목표 25분</span>
+        <span class="s-chip cp">📄 3.5~4페이지</span>
+        <span class="s-chip cs">💯 25점</span>
+      </div>
+
+      <div class="ans-sec">
+        <div class="sec-t st-blue">Ⅰ. 가. 멀티코어 환경 특징 및 SMP·AMP 비교</div>
+        <div class="ans-p">멀티코어 프로세서는 하나의 칩에 다수의 CPU 코어를 통합하여 진정한 병렬 처리(True Parallelism)를 실현한다. 단일 코어의 클럭 주파수 한계(Power Wall)를 극복하기 위해 등장하였으며, 코어 수 증가에 따라 OS 설계 복잡도가 지수적으로 증가한다.</div>
+        <table class="atbl essay">
+          <tr><th>비교 항목</th><th>SMP (대칭형 멀티프로세싱)</th><th>AMP (비대칭형 멀티프로세싱)</th></tr>
+          <tr><td>구조</td><td>모든 코어가 동등한 권한으로 공유 메모리 접근</td><td>마스터 코어가 OS 실행, 슬레이브 코어는 사용자 태스크만 처리</td></tr>
+          <tr><td>OS 실행</td><td>어느 코어에서나 OS 실행 가능</td><td>마스터 코어만 OS 실행</td></tr>
+          <tr><td>복잡성</td><td>높음 (동기화·경합 문제)</td><td>낮음 (설계 단순)</td></tr>
+          <tr><td>확장성</td><td>좋음 (코어 추가 용이)</td><td>제한적 (마스터 코어 병목)</td></tr>
+          <tr><td>적합 환경</td><td>범용 서버·워크스테이션 (Linux, Windows)</td><td>임베디드·RTOS (마스터-슬레이브 구조)</td></tr>
+        </table>
+        <div class="dbox">NUMA (Non-Uniform Memory Access) 아키텍처
+
+코어0~3 ─── 로컬 메모리 0 ←── 빠른 접근 (Local NUMA)
+   │                                    │
+  QPI/UPI (인터커넥트)
+   │                                    │
+코어4~7 ─── 로컬 메모리 1 ←── 원격 접근 (Remote NUMA, 2~3배 느림)
+
+NUMA 최적화: 프로세스를 로컬 메모리와 같은 NUMA 노드에 배치 (numactl, Linux NUMA 정책)</div>
+      </div>
+
+      <div class="ans-sec">
+        <div class="sec-t st-green">Ⅱ. 나. 멀티코어 스케줄링 이슈</div>
+        <ul class="a-ol">
+          <li><span class="on on-g">1</span><div><strong>부하 균형(Load Balancing)</strong>: 각 코어의 준비 큐에 프로세스가 균등히 분배되도록 조정.
+            <div class="sub-l">
+              <div class="sub-i"><strong>Push 이주</strong>: 과부하 코어의 태스크를 유휴 코어로 적극 이동 (주기적 검사)</div>
+              <div class="sub-i"><strong>Pull 이주</strong>: 유휴 코어가 바쁜 코어의 태스크를 가져옴 (즉시 반응)</div>
+              <div class="sub-i">Linux CFS는 run queue 불균형 임계값(migration threshold) 초과 시 이주 수행</div>
+            </div>
+          </div></li>
+          <li><span class="on on-g">2</span><div><strong>프로세서 친화성(Processor Affinity)</strong>: 프로세스를 특정 코어에 고정하여 캐시 warm-up 효과 유지.
+            <div class="sub-l">
+              <div class="sub-i"><strong>연성 친화성(Soft Affinity)</strong>: OS가 가능하면 같은 코어 선호. 필요 시 이주 허용 (Linux 기본)</div>
+              <div class="sub-i"><strong>경성 친화성(Hard Affinity)</strong>: 특정 코어에만 실행 강제 (taskset, sched_setaffinity())</div>
+            </div>
+          </div></li>
+          <li><span class="on on-g">3</span><div><strong>이주 임계값(Migration Threshold)</strong>: 코어 간 부하 차이가 일정 임계값 이상일 때만 태스크 이주. 캐시 무효화 비용 vs 부하 균형 트레이드오프</div></li>
+        </ul>
+      </div>
+
+      <div class="ans-sec">
+        <div class="sec-t st-red">Ⅲ. 다. 캐시 일관성(Cache Coherency) 및 MESI 프로토콜</div>
+        <div class="kbox red">
+          <div class="kb-t">캐시 일관성 문제</div>
+          멀티코어에서 각 코어가 독립 L1·L2 캐시를 보유할 때, 공유 데이터를 서로 다른 캐시가 각각 다른 버전으로 보유할 수 있는 문제. 한 코어의 쓰기가 다른 코어의 캐시에 즉시 반영되지 않으면 데이터 불일치 발생.
+        </div>
+        <div class="dbox">MESI 프로토콜 4가지 상태
+
+M (Modified)  : 캐시에만 존재, 메모리와 다름 (Dirty). 유일한 최신 복사본
+E (Exclusive)  : 캐시에만 존재, 메모리와 동일 (Clean). 타 캐시 복사본 없음
+S (Shared)    : 여러 캐시에 동시 존재. 메모리와 동일 (Read-Only)
+I (Invalid)   : 캐시 라인 무효. 접근 시 캐시 미스 발생
+
+상태 전이 예:
+Core0이 데이터 쓰기 → 자신은 M, 타 코어에 Invalidate 신호
+Core1이 같은 주소 읽기 → Core0이 M→S로 전환 + 메모리 갱신 + Core1 E 또는 S</div>
+
+        <table class="atbl essay">
+          <tr><th>메모리 모델</th><th>특징</th><th>예시</th></tr>
+          <tr><td>Sequential Consistency<br>(SC)</td><td>모든 코어가 모든 메모리 연산을 동일 순서로 관찰. 가장 강한 보장</td><td>이론적 이상. 성능 저하로 현실에서 미채택</td></tr>
+          <tr><td>Total Store Order<br>(TSO)</td><td>쓰기는 Write Buffer에 먼저 저장, 다른 코어 관찰 지연 허용</td><td>x86 아키텍처. 비교적 강한 모델</td></tr>
+          <tr><td>Release Consistency<br>(RC)</td><td>Acquire/Release 연산으로 동기화 경계 표시. 사이 연산은 재정렬 허용</td><td>ARM, C++ memory_order, Java volatile</td></tr>
+        </table>
+        <div class="kbox blue">
+          <div class="kb-t">메모리 장벽(Memory Barrier / Fence)</div>
+          프로그래머가 명시적으로 메모리 순서를 강제하는 명령. Load/Store Fence로 재정렬(Reordering)을 차단하여 멀티코어 동기화 보장. Java synchronized·volatile, C++ std::atomic이 내부적으로 메모리 장벽 삽입.
+        </div>
+      </div>
+
+      <div class="concl essay">
+        <div class="concl-t">Ⅴ. 결론</div>
+        <p>멀티코어 OS 설계는 부하 균형·캐시 친화성·메모리 일관성이 복잡하게 얽힌 문제이다. 현대 Linux 커널은 CFS(Completely Fair Scheduler)와 NUMA 인식 스케줄링으로 이를 해결하며, 하드웨어는 MESI 프로토콜·하드웨어 프리패처로 캐시 효율을 극대화한다. AI 학습 워크로드를 위한 수천 코어 환경(GPU, NPU)에서는 NUMA 토폴로지 인식 태스크 배치와 NVLink·CXL 캐시 코히런시 확장이 중요한 연구 과제로 부상하고 있다.</p>
+      </div>
+    </div>
+  </div>
+</div>
+</div><!-- /e-p4 -->
+
+</div><!-- /sec-essay -->
+</main>
+
+<script>
+function showSec(id, btn) {
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  document.getElementById('sec-' + id).classList.add('active');
+  document.querySelectorAll('.sec-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById('short-nav').style.display = (id === 'short') ? '' : 'none';
+  document.getElementById('essay-nav').style.display = (id === 'essay') ? '' : 'none';
+  // 첫 번째 패널 활성화
+  const prefix = id === 'short' ? 's' : 'e';
+  document.querySelectorAll('[id^="' + prefix + '-p"]').forEach((p,i) => p.classList.toggle('active', i===0));
+  document.querySelectorAll('#' + id + '-nav .dom-btn').forEach((b,i) => b.classList.toggle('active', i===0));
+  window.scrollTo({top:0, behavior:'smooth'});
+}
+
+function showPanel(prefix, idx, btn) {
+  document.querySelectorAll('[id^="' + prefix + '-p"]').forEach((p,i) => p.classList.toggle('active', i===idx));
+  btn.closest('.dom-nav').querySelectorAll('.dom-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  window.scrollTo({top:0, behavior:'smooth'});
+}
+
+function toggleAns(btn) {
+  const body = btn.nextElementSibling;
+  const arrow = btn.querySelector('.ans-arrow');
+  const isOpen = body.classList.toggle('open');
+  arrow.classList.toggle('open', isOpen);
+  btn.querySelector('.ans-toggle-lbl').textContent = isOpen ? '📄 답안 닫기' : '📄 모범 답안 보기';
+}
+</script>
+</body>
+</html>

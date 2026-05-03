@@ -1,0 +1,1317 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>인터럽트 종류와 처리 과정 기출유형 문제 & 모범답안</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700;900&family=Noto+Serif+KR:wght@400;600;700&family=JetBrains+Mono:wght@400;600&display=swap');
+:root{
+  --bg:#f5f7fa;--white:#fff;--surface2:#eef1f6;--border:#dde3ec;--bl:#eef1f6;
+  --blue:#1d4ed8;--bblue:#3b82f6;--bluebg:#eff6ff;--blb:#bfdbfe;
+  --red:#b91c1c;--redbg:#fef2f2;--rdb:#fecaca;
+  --green:#065f46;--gbg:#ecfdf5;--gb:#a7f3d0;
+  --ora:#92400e;--obg:#fffbeb;--ob:#fde68a;
+  --pur:#5b21b6;--pubg:#f5f3ff;--pub:#ddd6fe;
+  --tea:#0f766e;--tbg:#f0fdfa;--tb:#99f6e4;
+  --rose:#9f1239;--rbg:#fff1f2;--roseb:#fecdd3;
+  --text:#111827;--text2:#374151;--text3:#6b7280;--text4:#9ca3af;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--text);font-family:'Noto Sans KR',sans-serif;font-size:14px;line-height:1.6}
+
+.hdr{background:linear-gradient(135deg,#0f172a 0%,#1e3a5f 45%,#0369a1 100%);color:#fff;padding:28px 24px 22px;position:relative;overflow:hidden}
+.hdr::after{content:'';position:absolute;right:-60px;top:-60px;width:240px;height:240px;border-radius:50%;background:rgba(56,189,248,0.1)}
+.hdr::before{content:'';position:absolute;left:-40px;bottom:-40px;width:180px;height:180px;border-radius:50%;background:rgba(14,165,233,0.08)}
+.hi{max-width:1100px;margin:0 auto;position:relative}
+.heyebrow{font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:#7dd3fc;margin-bottom:6px}
+.htitle{font-size:clamp(18px,3.5vw,26px);font-weight:900;margin-bottom:6px;font-family:'Noto Serif KR',serif}
+.hsub{font-size:12px;color:#bae6fd}
+.hpills{display:flex;flex-wrap:wrap;gap:6px;margin-top:14px}
+.hpill{background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.2);padding:3px 11px;border-radius:20px;font-size:11px;color:#e0f2fe}
+
+.type-nav{background:var(--white);border-bottom:3px solid var(--border);display:flex;max-width:100%;overflow-x:auto;scrollbar-width:none;box-shadow:0 2px 8px rgba(0,0,0,0.06);position:sticky;top:0;z-index:200}
+.type-nav::-webkit-scrollbar{display:none}
+.type-btn{flex:1;min-width:160px;padding:14px 16px;background:none;border:none;border-bottom:4px solid transparent;cursor:pointer;font-family:inherit;font-size:13px;font-weight:700;color:var(--text3);transition:all 0.18s;display:flex;align-items:center;justify-content:center;gap:8px}
+.type-btn:hover{color:var(--blue);background:var(--bluebg)}
+.type-btn.active{color:var(--blue);border-bottom-color:var(--blue);background:var(--bluebg)}
+.tbadge{font-size:10px;padding:2px 8px;border-radius:10px;font-weight:700}
+.tb-s{background:#fef3c7;color:#92400e}
+.tb-l{background:#ede9fe;color:#5b21b6}
+
+.q-nav{background:#fff;border-bottom:1px solid var(--border);overflow-x:auto;white-space:nowrap;padding:0 16px;scrollbar-width:none;box-shadow:0 1px 4px rgba(0,0,0,0.04)}
+.q-nav::-webkit-scrollbar{display:none}
+.qbtn{display:inline-block;padding:10px 12px;font-size:12px;font-weight:600;color:var(--text3);background:none;border:none;border-bottom:3px solid transparent;cursor:pointer;font-family:inherit;transition:all .15s}
+.qbtn:hover{color:var(--blue)}
+.qbtn.active{color:var(--blue);border-bottom-color:var(--blue)}
+
+.main{max-width:1100px;margin:0 auto;padding:24px 16px 80px}
+.tp{display:none}.tp.active{display:block}
+.qp{display:none}.qp.active{display:block}
+
+.qcard{background:var(--white);border:1px solid var(--border);border-radius:14px;overflow:hidden;box-shadow:0 2px 12px rgba(0,0,0,0.05);margin-bottom:20px}
+.qhdr{padding:18px 22px 14px;border-bottom:1px solid var(--bl);display:flex;align-items:flex-start;gap:14px}
+.qdomain{flex-shrink:0;padding:4px 11px;border-radius:20px;font-size:10px;font-weight:700;letter-spacing:0.5px;margin-top:2px;background:#f0f9ff;color:#0369a1;border:1px solid #bae6fd}
+.qmeta{flex:1}
+.qtypelabel{font-size:10px;color:var(--text3);font-weight:600;letter-spacing:0.5px;margin-bottom:4px}
+.qtitle{font-size:15px;font-weight:800;color:var(--text);line-height:1.45}
+.qbody{background:var(--bg);padding:16px 22px;border-bottom:1px solid var(--bl)}
+.qitems{margin-top:8px;display:flex;flex-direction:column;gap:6px}
+.qitem{display:flex;gap:10px;align-items:flex-start;font-size:13px;color:var(--text2)}
+.qlb{font-weight:700;color:var(--blue);min-width:20px;flex-shrink:0}
+.hints{display:flex;flex-wrap:wrap;gap:6px;margin-top:12px}
+.hint{background:var(--bluebg);border:1px solid var(--blb);color:var(--blue);font-size:10px;font-weight:600;padding:2px 8px;border-radius:5px}
+
+.acard{background:var(--white)}
+.atog{width:100%;padding:14px 22px;background:none;border:none;display:flex;align-items:center;justify-content:space-between;cursor:pointer;font-family:inherit;transition:background .15s}
+.atog:hover{background:var(--bluebg)}
+.alb{font-size:13px;font-weight:700;color:var(--blue)}
+.aarr{font-size:16px;color:var(--blue);transition:transform .25s}
+.aarr.open{transform:rotate(180deg)}
+.abody{display:none;padding:0 22px 24px}
+.abody.open{display:block}
+
+.atitle{font-size:17px;font-weight:900;color:var(--text);font-family:'Noto Serif KR',serif;padding:18px 0 6px;border-bottom:2px solid var(--blue);margin-bottom:16px}
+.asec{margin-bottom:18px}
+.ast{font-size:12px;font-weight:800;color:#fff;padding:5px 12px;border-radius:6px;display:inline-block;margin-bottom:11px}
+.s1{background:var(--blue)}.s2{background:#059669}.s3{background:#7c3aed}
+.s4{background:#d97706}.s5{background:#dc2626}.s6{background:#0d9488}.s7{background:#be185d}
+
+.ap{font-size:13px;color:var(--text2);line-height:1.85;margin-bottom:10px}
+
+.at{width:100%;border-collapse:collapse;font-size:12px;margin:8px 0 12px}
+.at th{background:var(--surface2);color:var(--text2);font-weight:700;padding:8px 12px;border:1px solid var(--border);text-align:center}
+.at td{padding:8px 12px;border:1px solid var(--border);vertical-align:top;line-height:1.6}
+.at td:first-child{font-weight:600;color:var(--blue);background:var(--bluebg);text-align:center;white-space:nowrap}
+.at tr:nth-child(even) td:not(:first-child){background:#fafbfd}
+
+.aol{padding-left:0;list-style:none;display:flex;flex-direction:column;gap:9px;margin:6px 0}
+.aol li{display:flex;gap:10px;align-items:flex-start;font-size:13px;color:var(--text2);line-height:1.7}
+.on{flex-shrink:0;width:22px;height:22px;border-radius:50%;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;margin-top:1px;color:#fff}
+.on1{background:var(--blue)}.on2{background:#059669}.on3{background:#7c3aed}
+.on4{background:#d97706}.on5{background:#dc2626}.on6{background:#0d9488}
+
+.sub{margin-top:6px;display:flex;flex-direction:column;gap:4px}
+.si{display:flex;gap:8px;font-size:12px;color:var(--text3)}
+.si::before{content:'▸';color:var(--bblue);flex-shrink:0}
+
+.db{background:#f8fafc;border:1px solid var(--border);border-left:3px solid var(--blue);border-radius:8px;padding:12px 16px;margin:10px 0;font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--text2);line-height:1.85;overflow-x:auto;white-space:pre}
+
+.kb{border-radius:8px;padding:12px 16px;margin:10px 0;font-size:12px;line-height:1.75}
+.kbb{background:var(--bluebg);border:1px solid var(--blb);color:#1e40af}
+.kbg{background:var(--gbg);border:1px solid var(--gb);color:var(--green)}
+.kbo{background:var(--obg);border:1px solid var(--ob);color:var(--ora)}
+.kbr{background:var(--redbg);border:1px solid var(--rdb);color:var(--red)}
+.kbp{background:var(--pubg);border:1px solid var(--pub);color:var(--pur)}
+.kbt{background:var(--tbg);border:1px solid var(--tb);color:var(--tea)}
+.kbtl{font-weight:700;margin-bottom:4px;font-size:11px;letter-spacing:0.4px}
+
+.cl{background:linear-gradient(135deg,var(--bluebg),var(--pubg));border:1px solid var(--blb);border-radius:8px;padding:14px 16px;margin-top:14px}
+.clt{font-weight:700;color:var(--blue);font-size:12px;margin-bottom:6px}
+.cl p{font-size:12px;color:var(--text2);line-height:1.75}
+
+.chips{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px}
+.chip{font-size:11px;padding:3px 10px;border-radius:6px;font-weight:600}
+.ct{background:var(--obg);color:var(--ora);border:1px solid var(--ob)}
+.cp{background:var(--gbg);color:var(--green);border:1px solid var(--gb)}
+.cs{background:var(--redbg);color:var(--red);border:1px solid var(--rdb)}
+
+.sg{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:10px 0}
+@media(max-width:640px){.sg{grid-template-columns:1fr}}
+.sc{background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:12px 14px}
+.sc-t{font-size:11px;font-weight:700;color:var(--blue);margin-bottom:6px}
+.sc p{font-size:12px;color:var(--text2);line-height:1.7}
+
+.qcnt{font-size:11px;color:var(--text4);margin-bottom:16px;font-weight:600;letter-spacing:0.5px}
+</style>
+</head>
+<body>
+
+<header class="hdr">
+  <div class="hi">
+    <div class="heyebrow">⚡ 컴퓨터구조 / 운영체제 · INTERRUPT SYSTEM</div>
+    <div class="htitle">컴퓨터시스템응용기술사<br>인터럽트 종류와 처리 과정 (ISR · 인터럽트 벡터)</div>
+    <div class="hsub">단답형 5문제 (1~2페이지) + 논술형 5문제 (3~4페이지) · 전 문항 모범답안 수록</div>
+    <div class="hpills">
+      <span class="hpill">단답형 10~15점</span>
+      <span class="hpill">논술형 25점</span>
+      <span class="hpill">기술사 실전 형식</span>
+      <span class="hpill">컴퓨터구조·OS 핵심 토픽</span>
+    </div>
+  </div>
+</header>
+
+<nav class="type-nav">
+  <button class="type-btn active" onclick="showType(0,this)">
+    📝 단답형 문제 <span class="tbadge tb-s">1~2페이지 · 5문제</span>
+  </button>
+  <button class="type-btn" onclick="showType(1,this)">
+    📄 논술형 문제 <span class="tbadge tb-l">3~4페이지 · 5문제</span>
+  </button>
+</nav>
+
+<!-- ══════════════════════════════════════
+     단답형
+══════════════════════════════════════ -->
+<div class="tp active" id="tp0">
+<nav class="q-nav">
+  <button class="qbtn active" onclick="showQ(0,'s',this)">①인터럽트 정의·분류</button>
+  <button class="qbtn" onclick="showQ(1,'s',this)">②인터럽트 처리 과정</button>
+  <button class="qbtn" onclick="showQ(2,'s',this)">③인터럽트 벡터 테이블</button>
+  <button class="qbtn" onclick="showQ(3,'s',this)">④우선순위·다중 인터럽트</button>
+  <button class="qbtn" onclick="showQ(4,'s',this)">⑤인터럽트 vs 폴링 vs DMA</button>
+</nav>
+<div class="main">
+
+<!-- S1 -->
+<div class="qp active" id="s0">
+<div class="qcnt">📝 단답형 1번 / 5번</div>
+<div class="qcard">
+  <div class="qhdr">
+    <span class="qdomain">컴퓨터구조 / OS</span>
+    <div class="qmeta">
+      <div class="qtypelabel">1교시 단답형 · 10~15점 · 1~2페이지 분량</div>
+      <div class="qtitle">인터럽트(Interrupt)의 개념을 정의하고, 발생 원인에 따른 분류(하드웨어·소프트웨어·내부·외부)와 각 유형의 특징 및 대표 예시를 설명하시오.</div>
+    </div>
+  </div>
+  <div class="qbody">
+    <div class="hints">
+      <span class="hint">분류 체계 완전 암기</span><span class="hint">하드웨어·소프트웨어 구분</span><span class="hint">마스크 가능·불가능 연계</span>
+    </div>
+  </div>
+  <div class="acard">
+    <button class="atog" onclick="toggleA(this)">
+      <span class="alb">📄 모범 답안 보기</span><span class="aarr">▼</span>
+    </button>
+    <div class="abody">
+      <div class="atitle">인터럽트의 개념·발생 원인별 분류·유형별 특징 및 예시</div>
+      <div class="chips">
+        <span class="chip ct">⏱ 목표 15분</span>
+        <span class="chip cp">📄 1.5~2페이지</span>
+        <span class="chip cs">💯 10~15점</span>
+      </div>
+      <div class="asec">
+        <div class="ast s1">Ⅰ. 인터럽트의 개념</div>
+        <div class="ap">인터럽트(Interrupt)란 CPU가 현재 실행 중인 프로그램을 일시 중단(Suspend)하고, 보다 긴급하거나 우선순위가 높은 사건(Event)을 처리한 후 원래 프로그램으로 복귀하는 메커니즘이다. CPU와 주변장치 간의 비동기적 통신 수단으로, 폴링(Polling) 방식의 자원 낭비를 해결하며 시스템 효율을 극대화한다.</div>
+        <div class="kb kbb">
+          <div class="kbtl">📌 핵심 용어 정의</div>
+          <strong>인터럽트 요청(IRQ)</strong>: 인터럽트 발생 신호 &nbsp;|&nbsp;
+          <strong>ISR</strong>: 인터럽트 서비스 루틴 (처리 함수) &nbsp;|&nbsp;
+          <strong>인터럽트 벡터</strong>: ISR의 시작 주소를 저장한 테이블 항목 &nbsp;|&nbsp;
+          <strong>PSW</strong>: 프로그램 상태 워드 (PC·플래그 포함)
+        </div>
+      </div>
+      <div class="asec">
+        <div class="ast s2">Ⅱ. 발생 원인에 따른 분류</div>
+        <table class="at">
+          <tr><th>대분류</th><th>소분류</th><th>발생 원인</th><th>마스크 가능</th><th>대표 예시</th></tr>
+          <tr><td rowspan="2">하드웨어<br>인터럽트<br>(외부)</td><td>마스크 가능<br>(Maskable)</td><td>외부 장치의 IRQ 신호. CPU의 INTR 핀으로 입력. 인터럽트 플래그(IF)로 비활성화 가능</td><td>가능</td><td>키보드 입력, 마우스 클릭, 타이머, NIC 패킷 수신, 디스크 I/O 완료</td></tr>
+          <tr><td>마스크 불가능<br>(Non-Maskable, NMI)</td><td>하드웨어 오류 등 즉시 처리 필요 긴급 사건. CPU의 NMI 핀으로 입력. 무조건 처리</td><td>불가능</td><td>메모리 패리티 오류, 전원 이상(UPS), 하드웨어 고장 신호</td></tr>
+          <tr><td rowspan="3">소프트웨어<br>인터럽트<br>(내부)</td><td>트랩 (Trap)</td><td>프로그램 실행 중 의도적으로 발생. 소프트웨어가 명시적으로 호출. 동기적 발생</td><td>불가능</td><td>시스템 콜(INT 0x80), 디버그 중단점(Breakpoint, INT 3)</td></tr>
+          <tr><td>예외 (Exception)</td><td>프로그램 오류 또는 비정상 상태로 자동 발생. CPU 내부에서 감지</td><td>불가능</td><td>0으로 나누기(Divide by Zero), 페이지 폴트(Page Fault), 불법 명령어, 스택 오버플로</td></tr>
+          <tr><td>슈퍼바이저 호출<br>(SVC)</td><td>사용자 프로그램이 OS 서비스 요청 시 특권 모드 전환을 위해 명시적 발생</td><td>불가능</td><td>파일 읽기(read()), 프로세스 생성(fork()), 메모리 할당(malloc() 내부)</td></tr>
+        </table>
+      </div>
+      <div class="asec">
+        <div class="ast s3">Ⅲ. x86 기준 추가 분류 — 동기 vs 비동기</div>
+        <table class="at">
+          <tr><th>구분</th><th>동기 인터럽트 (Synchronous)</th><th>비동기 인터럽트 (Asynchronous)</th></tr>
+          <tr><td>발생 시점</td><td>현재 실행 명령과 동기적 (해당 명령 실행 직후)</td><td>현재 실행 명령과 무관한 시점에 발생</td></tr>
+          <tr><td>발생 원인</td><td>CPU 내부 오류·소프트웨어 트랩</td><td>외부 장치(하드웨어) IRQ 신호</td></tr>
+          <tr><td>예시</td><td>0 나누기, 페이지 폴트, 시스템 콜</td><td>타이머, 키보드, 디스크 I/O 완료</td></tr>
+          <tr><td>재현성</td><td>동일 조건에서 반드시 재발생</td><td>타이밍에 따라 비결정적</td></tr>
+        </table>
+      </div>
+      <div class="kb kbg">
+        <div class="kbtl">📌 한 줄 암기 — 인터럽트 분류 키워드</div>
+        <strong>하드웨어</strong>: 외부 장치 → IRQ → INTR/NMI 핀 &nbsp;|&nbsp;
+        <strong>소프트웨어</strong>: 트랩(의도적) · 예외(오류) · SVC(OS 요청) &nbsp;|&nbsp;
+        <strong>NMI</strong>: 마스크 불가. 즉시 처리 필수
+      </div>
+      <div class="cl">
+        <div class="clt">Ⅳ. 결론 — 감리 포인트</div>
+        <p>임베디드·실시간 시스템에서 인터럽트 분류는 우선순위 설계의 기반이 된다. NMI는 최고 우선순위로 무조건 처리되며, 마스크 가능 인터럽트는 임계 구역(Critical Section) 실행 시 IF(Interrupt Flag) 클리어로 일시 비활성화하여 원자성(Atomicity)을 보장한다. 감리 시 인터럽트 핸들러의 처리 시간(ISR 실행 지연) 및 누락 여부를 성능 점검 항목으로 확인한다.</p>
+      </div>
+    </div>
+  </div>
+</div>
+</div><!-- /s0 -->
+
+<!-- S2 -->
+<div class="qp" id="s1">
+<div class="qcnt">📝 단답형 2번 / 5번</div>
+<div class="qcard">
+  <div class="qhdr">
+    <span class="qdomain">컴퓨터구조 / OS</span>
+    <div class="qmeta">
+      <div class="qtypelabel">1교시 단답형 · 10~15점 · 1~2페이지 분량</div>
+      <div class="qtitle">인터럽트 발생 시 CPU의 처리 과정(컨텍스트 저장 → 벡터 탐색 → ISR 실행 → 컨텍스트 복원)을 단계별로 설명하고, 각 단계에서 하드웨어와 소프트웨어의 역할을 구분하여 설명하시오.</div>
+    </div>
+  </div>
+  <div class="qbody">
+    <div class="hints">
+      <span class="hint">6단계 흐름 완전 암기</span><span class="hint">HW·SW 역할 구분 핵심</span><span class="hint">PSW·PC 저장 필수 언급</span>
+    </div>
+  </div>
+  <div class="acard">
+    <button class="atog" onclick="toggleA(this)">
+      <span class="alb">📄 모범 답안 보기</span><span class="aarr">▼</span>
+    </button>
+    <div class="abody">
+      <div class="atitle">인터럽트 처리 과정 단계별 분석 — 하드웨어·소프트웨어 역할 구분</div>
+      <div class="chips">
+        <span class="chip ct">⏱ 목표 15분</span>
+        <span class="chip cp">📄 1.5~2페이지</span>
+        <span class="chip cs">💯 10~15점</span>
+      </div>
+      <div class="asec">
+        <div class="ast s1">Ⅰ. 인터럽트 처리 전체 흐름</div>
+        <div class="db">인터럽트 처리 전체 흐름도
+
+  현재 프로그램 실행 중
+          ↓
+  [1단계] 인터럽트 요청 감지 (HW)
+    → 장치가 IRQ 신호 → CPU의 INTR 핀 활성화
+    → CPU: 현재 명령어(Instruction) 실행 완료 후 인터럽트 확인
+          ↓
+  [2단계] 인터럽트 수락 및 컨텍스트 저장 (HW + OS)
+    → CPU: IF(Interrupt Flag) 클리어 → 추가 인터럽트 비활성화
+    → HW: PC(Program Counter), PSW(Program Status Word),
+           범용 레지스터 → 스택(Stack) 또는 PCB에 자동 저장
+          ↓
+  [3단계] 인터럽트 벡터 탐색 (HW)
+    → 인터럽트 번호(IRQ Number) 확인
+    → IVT(Interrupt Vector Table) 참조 → ISR 시작 주소 획득
+    → PC ← ISR 시작 주소 로드
+          ↓
+  [4단계] ISR(인터럽트 서비스 루틴) 실행 (SW — OS 커널)
+    → ISR 진입: 추가 레지스터 저장 (Prologue)
+    → 인터럽트 원인 처리 (장치 드라이버 호출, 데이터 처리)
+    → IRET 명령 직전: EOI(End of Interrupt) → PIC에 완료 통보
+          ↓
+  [5단계] 컨텍스트 복원 (HW + OS)
+    → ISR 에필로그: 저장했던 레지스터 복원 (Pop from Stack)
+    → HW: IRET 명령 실행 → PC·PSW 복원 → IF 재활성화
+          ↓
+  [6단계] 원래 프로그램 재개
+    → 중단 지점 다음 명령부터 실행 재개</div>
+      </div>
+      <div class="asec">
+        <div class="ast s2">Ⅱ. 단계별 하드웨어·소프트웨어 역할 구분</div>
+        <table class="at">
+          <tr><th>단계</th><th>하드웨어(HW) 역할</th><th>소프트웨어(SW/OS) 역할</th></tr>
+          <tr><td>① IRQ 감지</td><td>장치 → IRQ 신호 발생. PIC(인터럽트 컨트롤러)가 CPU INTR 핀 활성화</td><td>—</td></tr>
+          <tr><td>② 현재 명령 완료</td><td>CPU: 실행 중 명령어 완료 후 INTR 핀 확인 (명령어 경계에서 처리)</td><td>—</td></tr>
+          <tr><td>③ 컨텍스트 저장</td><td>CPU: PC·PSW 자동 스택 저장. IF 클리어 (추가 인터럽트 비활성화)</td><td>ISR Prologue: 추가 레지스터(범용) 스택 Push</td></tr>
+          <tr><td>④ 벡터 탐색</td><td>CPU: IRQ 번호 → IVT 인덱싱 → ISR 주소 → PC 로드</td><td>OS: IVT 초기화·유지 (부팅 시 등록)</td></tr>
+          <tr><td>⑤ ISR 실행</td><td>—</td><td>OS/드라이버: 원인 처리. EOI(PIC에 완료 통보)</td></tr>
+          <tr><td>⑥ 컨텍스트 복원</td><td>CPU: IRET 실행 → PC·PSW 스택 Pop. IF 재활성화</td><td>ISR Epilogue: 추가 레지스터 스택 Pop</td></tr>
+        </table>
+      </div>
+      <div class="asec">
+        <div class="ast s3">Ⅲ. 컨텍스트 저장 항목 상세</div>
+        <div class="db">저장되는 컨텍스트 (x86 기준, 스택에 자동 저장)
+
+  자동 저장 (HW):   PC (EIP/RIP) ← 복귀 주소 (다음 실행 명령)
+                    PSW (EFLAGS)  ← IF·ZF·CF 등 CPU 상태 플래그
+                    CS (코드 세그먼트 선택자, 보호 모드)
+
+  ISR Prologue (SW): EAX, EBX, ECX, EDX, ESI, EDI, EBP
+                     (ISR이 변경할 수 있는 범용 레지스터)
+
+  복원 순서 (역순):  레지스터 Pop → IRET (PC·PSW·CS 복원)
+                    → IF 재활성화 → 원래 프로그램 재개</div>
+      </div>
+      <div class="kb kbo">
+        <div class="kbtl">⚠️ 핵심 포인트 — 인터럽트 처리의 원자성</div>
+        ① ISR 진입 시 IF 클리어 → 처리 중 다른 인터럽트 차단 (중첩 방지)<br>
+        ② ISR은 가능한 짧게 설계 (Interrupt Latency 최소화) → Top-Half / Bottom-Half 구조<br>
+        ③ 컨텍스트 저장/복원의 완전성이 프로그램 투명성(Transparency) 보장의 핵심
+      </div>
+      <div class="cl">
+        <div class="clt">Ⅳ. 결론</div>
+        <p>인터럽트 처리 과정은 하드웨어(자동 저장·벡터 탐색)와 소프트웨어(ISR 실행·EOI)의 긴밀한 협력으로 이루어진다. 컨텍스트 저장과 복원의 완전성이 시스템 투명성을 보장하며, ISR 설계 시 처리 시간을 최소화하고 재진입(Reentrant) 가능성을 고려하는 것이 실시간 시스템의 핵심 설계 원칙이다.</p>
+      </div>
+    </div>
+  </div>
+</div>
+</div><!-- /s1 -->
+
+<!-- S3 -->
+<div class="qp" id="s2">
+<div class="qcnt">📝 단답형 3번 / 5번</div>
+<div class="qcard">
+  <div class="qhdr">
+    <span class="qdomain">컴퓨터구조 / OS</span>
+    <div class="qmeta">
+      <div class="qtypelabel">1교시 단답형 · 10~15점 · 1~2페이지 분량</div>
+      <div class="qtitle">인터럽트 벡터 테이블(IVT)의 개념, 구조, x86 실제 주소 모드와 보호 모드(IDT)에서의 구현 방식 차이, 그리고 인터럽트 벡터 등록 방법을 설명하시오.</div>
+    </div>
+  </div>
+  <div class="qbody">
+    <div class="hints">
+      <span class="hint">IVT vs IDT 구분 핵심</span><span class="hint">x86 실주소 구조 암기</span><span class="hint">IDT 게이트 유형</span>
+    </div>
+  </div>
+  <div class="acard">
+    <button class="atog" onclick="toggleA(this)">
+      <span class="alb">📄 모범 답안 보기</span><span class="aarr">▼</span>
+    </button>
+    <div class="abody">
+      <div class="atitle">인터럽트 벡터 테이블(IVT) 구조·IDT 비교·벡터 등록 방법</div>
+      <div class="chips">
+        <span class="chip ct">⏱ 목표 15분</span>
+        <span class="chip cp">📄 1.5~2페이지</span>
+        <span class="chip cs">💯 10~15점</span>
+      </div>
+      <div class="asec">
+        <div class="ast s1">Ⅰ. 인터럽트 벡터 테이블의 개념</div>
+        <div class="ap">인터럽트 벡터 테이블(IVT: Interrupt Vector Table)은 각 인터럽트 번호(벡터 번호)에 대응하는 ISR(인터럽트 서비스 루틴)의 시작 주소를 저장하는 메모리 내 테이블이다. CPU는 인터럽트 발생 시 이 테이블을 인덱싱하여 대응 ISR로 분기한다.</div>
+      </div>
+      <div class="asec">
+        <div class="ast s2">Ⅱ. x86 실제 주소 모드 IVT 구조</div>
+        <div class="db">x86 실제 주소 모드(Real Mode) IVT
+
+메모리 주소: 0x00000 ~ 0x003FF (1KB 고정)
+항목 수:     256개 (인터럽트 번호 0~255)
+항목 크기:   4바이트 (CS:IP — 세그먼트 2B + 오프셋 2B)
+총 크기:     256 × 4 = 1,024 바이트 (1KB)
+
+IVT 구조:
+┌──────────────────────────────────────────────┐
+│ 주소       │ 내용           │ 용도            │
+├────────────┼────────────────┼─────────────────┤
+│ 0x000~003  │ INT 0 벡터     │ 0 나누기 예외   │
+│ 0x004~007  │ INT 1 벡터     │ 디버그 예외     │
+│ 0x008~00B  │ INT 2 벡터     │ NMI            │
+│ 0x00C~00F  │ INT 3 벡터     │ 브레이크포인트  │
+│   ...      │    ...         │    ...          │
+│ 0x020~023  │ INT 8 벡터     │ IRQ0 (타이머)   │
+│ 0x024~027  │ INT 9 벡터     │ IRQ1 (키보드)   │
+│   ...      │    ...         │    ...          │
+│ 0x3FC~3FF  │ INT 255 벡터   │ 사용자 정의     │
+└──────────────────────────────────────────────┘
+
+접근 방법: 인터럽트 번호 n → 주소 = 4 × n
+           CS = [4n+2], IP = [4n]</div>
+      </div>
+      <div class="asec">
+        <div class="ast s3">Ⅲ. 보호 모드 IDT(Interrupt Descriptor Table)</div>
+        <div class="ap">보호 모드(Protected Mode)에서는 IVT 대신 IDT를 사용한다. IDT는 8바이트 게이트 디스크립터(Gate Descriptor)로 구성되며, IDTR 레지스터가 IDT의 베이스 주소와 크기를 가리킨다.</div>
+        <table class="at">
+          <tr><th>비교 항목</th><th>IVT (실제 주소 모드)</th><th>IDT (보호 모드)</th></tr>
+          <tr><td>위치</td><td>고정 (0x00000~0x003FF)</td><td>가변 (IDTR 레지스터로 지정)</td></tr>
+          <tr><td>항목 크기</td><td>4바이트 (CS:IP)</td><td>8바이트 (게이트 디스크립터)</td></tr>
+          <tr><td>총 크기</td><td>1KB (고정)</td><td>최대 2KB (256×8)</td></tr>
+          <tr><td>특권 레벨</td><td>없음 (모든 접근 허용)</td><td>DPL(Descriptor Privilege Level) 검사</td></tr>
+          <tr><td>게이트 유형</td><td>없음</td><td>인터럽트 게이트·트랩 게이트·태스크 게이트</td></tr>
+          <tr><td>IF 처리</td><td>ISR 진입 시 IF 자동 클리어</td><td>인터럽트 게이트: IF 클리어 / 트랩 게이트: IF 유지</td></tr>
+        </table>
+        <div class="db">IDT 게이트 디스크립터 구조 (8바이트)
+
+┌────────────┬─────────────────────────────────────────┐
+│ 비트       │ 내용                                    │
+├────────────┼─────────────────────────────────────────┤
+│ [63:48]    │ ISR 오프셋 상위 16비트                  │
+│ [47]       │ Present 비트 (1=유효 디스크립터)        │
+│ [46:45]    │ DPL (특권 레벨 0~3, 0=커널)            │
+│ [44]       │ 0 (시스템 세그먼트)                     │
+│ [43:40]    │ 게이트 유형 (1110=인터럽트, 1111=트랩) │
+│ [39:32]    │ 예약                                    │
+│ [31:16]    │ 세그먼트 선택자 (CS)                    │
+│ [15:00]    │ ISR 오프셋 하위 16비트                  │
+└────────────┴─────────────────────────────────────────┘</div>
+      </div>
+      <div class="asec">
+        <div class="ast s4">Ⅳ. 인터럽트 벡터 등록 방법</div>
+        <ul class="aol">
+          <li><span class="on on1">1</span><div><strong>BIOS/부트로더 단계</strong>: 시스템 부팅 시 BIOS가 기본 IVT 초기화. INT 0~7(CPU 예외)은 CPU 고정 사용</div></li>
+          <li><span class="on on2">2</span><div><strong>OS 커널 초기화</strong>: 부팅 시 OS가 <code style="font-family:monospace;font-size:11px">lidt</code> 명령으로 IDTR에 IDT 주소 로드. 각 IRQ별 ISR 주소 등록</div></li>
+          <li><span class="on on3">3</span><div><strong>디바이스 드라이버 등록</strong>: Linux: <code style="font-family:monospace;font-size:11px">request_irq()</code> API로 IRQ 번호와 핸들러 함수 등록. Windows: <code style="font-family:monospace;font-size:11px">IoConnectInterrupt()</code></div></li>
+          <li><span class="on on4">4</span><div><strong>동적 재등록</strong>: 드라이버 언로드 시 <code style="font-family:monospace;font-size:11px">free_irq()</code>로 등록 해제. 핫플러그 장치 지원</div></li>
+        </ul>
+      </div>
+      <div class="cl">
+        <div class="clt">Ⅴ. 결론</div>
+        <p>IVT/IDT는 인터럽트 기반 I/O의 핵심 자료구조로, CPU 아키텍처·동작 모드에 따라 구현 방식이 달라진다. 보호 모드 IDT는 DPL을 통해 특권 수준을 제어함으로써 사용자 프로그램이 임의로 시스템 인터럽트를 호출하는 것을 방지한다. 운영체제의 안정성은 IDT의 올바른 초기화와 특권 레벨 설정에 크게 의존한다.</p>
+      </div>
+    </div>
+  </div>
+</div>
+</div><!-- /s2 -->
+
+<!-- S4 -->
+<div class="qp" id="s3">
+<div class="qcnt">📝 단답형 4번 / 5번</div>
+<div class="qcard">
+  <div class="qhdr">
+    <span class="qdomain">컴퓨터구조 / OS</span>
+    <div class="qmeta">
+      <div class="qtypelabel">1교시 단답형 · 10~15점 · 1~2페이지 분량</div>
+      <div class="qtitle">다중 인터럽트(Multiple Interrupt) 환경에서의 우선순위 처리 방식(폴링·데이지 체인·PIC)과 인터럽트 중첩(Nested Interrupt) 허용 여부에 따른 처리 방법을 비교 설명하시오.</div>
+    </div>
+  </div>
+  <div class="qbody">
+    <div class="hints">
+      <span class="hint">PIC 동작 원리 필수</span><span class="hint">중첩 인터럽트 흐름도</span><span class="hint">마스킹 전략 연계</span>
+    </div>
+  </div>
+  <div class="acard">
+    <button class="atog" onclick="toggleA(this)">
+      <span class="alb">📄 모범 답안 보기</span><span class="aarr">▼</span>
+    </button>
+    <div class="abody">
+      <div class="atitle">다중 인터럽트 우선순위 처리 방식 및 중첩 인터럽트 처리 비교</div>
+      <div class="chips">
+        <span class="chip ct">⏱ 목표 15분</span>
+        <span class="chip cp">📄 1.5~2페이지</span>
+        <span class="chip cs">💯 10~15점</span>
+      </div>
+      <div class="asec">
+        <div class="ast s1">Ⅰ. 우선순위 처리 방식 비교</div>
+        <table class="at">
+          <tr><th>방식</th><th>동작 원리</th><th>장점</th><th>단점</th></tr>
+          <tr><td>소프트웨어<br>폴링<br>(SW Polling)</td><td>ISR 내에서 순서대로 각 장치의 인터럽트 플래그를 검사. 폴링 순서가 곧 우선순위</td><td>구현 단순. 하드웨어 추가 불필요</td><td>장치 수 증가 시 처리 지연. 저우선순위 장치 기아(Starvation)</td></tr>
+          <tr><td>데이지 체인<br>(Daisy Chain)</td><td>장치들을 직렬 연결. 우선순위 높은 장치가 버스 앞쪽. INTA 신호를 순차 전달하여 가장 먼저 응답한 장치가 자신의 벡터 번호 전송</td><td>하드웨어로 우선순위 자동 결정. 폴링보다 빠름</td><td>우선순위 변경 어려움. 하드웨어 재배선 필요. 선행 장치 고장 시 후속 장치 마비</td></tr>
+          <tr><td>PIC<br>(프로그래머블<br>인터럽트 컨트롤러)</td><td>인텔 8259A/APIC: CPU 외부에서 IRQ 우선순위 관리. 동시 다수 IRQ 중 가장 높은 우선순위 선택 → CPU에 INTR 전송 + 벡터 번호 제공. 소프트웨어로 우선순위 재프로그래밍 가능</td><td>유연한 우선순위 프로그래밍. 최대 15~255개 IRQ 지원. EOI 명령으로 명시적 완료 통보</td><td>하드웨어 추가 비용. APIC로 발전(멀티코어 지원)</td></tr>
+        </table>
+        <div class="db">PIC(8259A) 동작 구조 (마스터-슬레이브 구성)
+
+CPU ←─── INTR 신호 ─────── [마스터 PIC 8259A]
+     ────→ INTA 신호               │ IRQ0~IRQ7
+     ←─── 벡터 번호              IRQ2 → [슬레이브 PIC]
+                                         │ IRQ8~IRQ15
+
+우선순위: IRQ0(타이머) > IRQ1(키보드) > IRQ3~IRQ7
+          IRQ8~IRQ15 (슬레이브: IRQ2를 통해 캐스케이딩)
+EOI: ISR 완료 후 OS가 PIC에 EOI 명령 전송 필수</div>
+      </div>
+      <div class="asec">
+        <div class="ast s2">Ⅱ. 인터럽트 중첩(Nested Interrupt) 처리</div>
+        <table class="at">
+          <tr><th>구분</th><th>중첩 미허용 (순차 처리)</th><th>중첩 허용 (우선순위 기반)</th></tr>
+          <tr><td>IF 처리</td><td>ISR 진입 시 IF 클리어 유지 → 모든 인터럽트 차단</td><td>ISR 내 IF 재활성화 → 고우선순위 인터럽트 허용</td></tr>
+          <tr><td>처리 순서</td><td>먼저 발생한 ISR 완료 후 다음 처리 (FIFO)</td><td>현재 ISR 중 더 높은 우선순위 발생 시 즉시 중단 후 처리</td></tr>
+          <tr><td>스택 구조</td><td>단일 인터럽트 컨텍스트</td><td>스택에 인터럽트 컨텍스트 중첩 (Stack Depth 관리 필요)</td></tr>
+          <tr><td>응답 시간</td><td>저우선순위 ISR 중 지연 가능</td><td>고우선순위 인터럽트 즉시 처리 보장</td></tr>
+          <tr><td>위험성</td><td>긴급 인터럽트 지연 위험</td><td>스택 오버플로·재진입 문제 주의</td></tr>
+          <tr><td>적합 환경</td><td>일반 범용 OS (Linux 기본)</td><td>실시간 OS (RTOS), 임베디드 시스템</td></tr>
+        </table>
+        <div class="db">중첩 인터럽트 처리 흐름 (우선순위 A > B)
+
+[B의 ISR 실행 중]
+      ↓  A(고우선순위) 인터럽트 발생
+[IF 재활성화 상태 → A 인터럽트 수락]
+  → B의 ISR 컨텍스트 스택 저장
+  → A의 ISR 실행
+  → A 완료 → EOI
+  → B의 ISR 컨텍스트 복원 → B 계속 실행
+  → B 완료 → EOI
+  → 원래 프로그램 복귀
+
+스택 상태:
+  [원래 프로그램 컨텍스트] ← 최하위
+  [B의 ISR 컨텍스트]
+  [A의 ISR 컨텍스트]       ← 최상위 (현재 실행)</div>
+      </div>
+      <div class="cl">
+        <div class="clt">Ⅲ. 결론 — 현대 시스템의 APIC</div>
+        <p>멀티코어 시스템에서는 PIC 대신 APIC(Advanced PIC)가 사용된다. 각 CPU 코어마다 Local APIC가 있고, I/O APIC가 장치 IRQ를 관리하며 특정 코어로 인터럽트를 라우팅한다. 이를 통해 인터럽트 부하를 여러 코어에 분산하는 Interrupt Affinity 설정이 가능하며, 고성능 서버 환경에서의 인터럽트 처리 성능을 크게 향상시킨다.</p>
+      </div>
+    </div>
+  </div>
+</div>
+</div><!-- /s3 -->
+
+<!-- S5 -->
+<div class="qp" id="s4">
+<div class="qcnt">📝 단답형 5번 / 5번</div>
+<div class="qcard">
+  <div class="qhdr">
+    <span class="qdomain">컴퓨터구조 / OS</span>
+    <div class="qmeta">
+      <div class="qtypelabel">1교시 단답형 · 10~15점 · 1~2페이지 분량</div>
+      <div class="qtitle">I/O 처리 방식인 폴링(Polling), 인터럽트 기반 I/O(Interrupt-Driven I/O), DMA(Direct Memory Access)의 동작 원리·CPU 사용률·적합 환경을 비교하고, 각 방식의 CPU 개입 시점을 설명하시오.</div>
+    </div>
+  </div>
+  <div class="qbody">
+    <div class="hints">
+      <span class="hint">3-way 비교표 핵심</span><span class="hint">CPU 사용률 그래프 표현</span><span class="hint">DMA 사이클 스틸링 언급</span>
+    </div>
+  </div>
+  <div class="acard">
+    <button class="atog" onclick="toggleA(this)">
+      <span class="alb">📄 모범 답안 보기</span><span class="aarr">▼</span>
+    </button>
+    <div class="abody">
+      <div class="atitle">폴링 · 인터럽트 기반 I/O · DMA 동작 원리·CPU 사용률·적합 환경 비교</div>
+      <div class="chips">
+        <span class="chip ct">⏱ 목표 15분</span>
+        <span class="chip cp">📄 1.5~2페이지</span>
+        <span class="chip cs">💯 10~15점</span>
+      </div>
+      <div class="asec">
+        <div class="ast s1">Ⅰ. 세 가지 I/O 방식 비교</div>
+        <table class="at">
+          <tr><th>비교 항목</th><th>폴링 (Polling)</th><th>인터럽트 기반 I/O</th><th>DMA</th></tr>
+          <tr><td>동작 원리</td><td>CPU가 장치 상태 레지스터를 주기적으로 반복 검사. 준비 상태 확인 시 데이터 전송</td><td>장치가 준비되면 CPU에 IRQ 신호. CPU는 ISR에서 데이터 처리. 대기 중 다른 작업 가능</td><td>DMA 컨트롤러가 CPU 개입 없이 메모리↔장치 간 데이터 직접 전송. 완료 후 CPU에 인터럽트</td></tr>
+          <tr><td>CPU 개입</td><td>전송 전·중·후 지속 개입 (Busy-Waiting)</td><td>전송 완료 시 ISR 처리만</td><td>초기 설정 + 완료 인터럽트만</td></tr>
+          <tr><td>CPU 사용률</td><td>높음 (대기 중 CPU 점유)</td><td>중간 (인터럽트 오버헤드)</td><td>낮음 (전송 중 CPU 자유)</td></tr>
+          <tr><td>응답 지연</td><td>낮음 (즉시 감지 가능)</td><td>중간 (인터럽트 처리 지연)</td><td>낮음 (DMA 완료 인터럽트)</td></tr>
+          <tr><td>구현 복잡도</td><td>낮음</td><td>중간</td><td>높음 (DMA 컨트롤러 필요)</td></tr>
+          <tr><td>대역폭</td><td>낮음</td><td>중간</td><td>높음 (병렬 전송 가능)</td></tr>
+          <tr><td>적합 환경</td><td>응답 시간 초중요·소량 데이터 (GPIO, 간단한 센서)</td><td>일반 키보드·마우스·네트워크 이벤트 처리</td><td>대용량 데이터 전송 (디스크·네트워크 NIC·GPU)</td></tr>
+        </table>
+      </div>
+      <div class="asec">
+        <div class="ast s2">Ⅱ. CPU 개입 시점 상세 분석</div>
+        <div class="db">각 방식의 CPU 개입 시점 비교
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+[폴링]  CPU가 계속 상태 확인 (Busy-Wait)
+  시간: ──██████████████████████████████──▶
+  CPU:  [폴링][폴링][폴링][폴링][전송][폴링][폴링]
+  효율: 낮음. CPU가 대기 중 아무 유용한 작업 불가
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+[인터럽트 기반 I/O]
+  시간: ──────────────────────────────────▶
+  CPU:  [유용한 작업...............][ISR][ 유용한 작업 ]
+  장치:                           ↑IRQ 발생
+  효율: 높음. 대기 시간에 다른 프로세스 실행 가능
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+[DMA]
+  시간: ──────────────────────────────────▶
+  CPU:  [DMA 설정][유용한 작업 계속...][완료 ISR]
+  DMA:             [──────데이터 전송──────↑]
+  효율: 최고. 대용량 전송 중 CPU 완전 자유.
+        단, 버스 충돌: DMA가 버스 사용 시 CPU는
+        대기 (사이클 스틸링, Cycle Stealing)</div>
+      </div>
+      <div class="asec">
+        <div class="ast s3">Ⅲ. DMA 동작 과정 상세</div>
+        <ul class="aol">
+          <li><span class="on on3">1</span><div><strong>DMA 설정 (CPU)</strong>: CPU가 DMA 컨트롤러에 소스 주소·목적지 주소·전송 크기·방향(메모리→장치 or 역방향) 레지스터 설정 후 DMA 시작 명령</div></li>
+          <li><span class="on on3">2</span><div><strong>버스 요청 (DMA)</strong>: DMA 컨트롤러가 시스템 버스(메모리 버스) 사용 요청. CPU에 HOLD 신호 전송 → CPU는 HLDA로 버스 양보</div></li>
+          <li><span class="on on3">3</span><div><strong>데이터 전송 (DMA 독립)</strong>: DMA가 버스를 직접 제어하여 장치↔메모리 데이터 이동. 블록 전송(Burst) 또는 사이클 스틸링 방식</div></li>
+          <li><span class="on on3">4</span><div><strong>완료 통보 (인터럽트)</strong>: 전송 완료 시 DMA → CPU에 인터럽트 발생. CPU의 ISR에서 완료 처리 및 다음 전송 설정</div></li>
+        </ul>
+      </div>
+      <div class="cl">
+        <div class="clt">Ⅳ. 결론 — 현대 시스템에서의 활용</div>
+        <p>현대 시스템은 세 가지 방식을 혼합 사용한다. NVMe SSD는 다수의 큐(Queue)와 DMA를 통해 초고속 전송을 실현하며, 네트워크 카드는 인터럽트 코얼레싱(Interrupt Coalescing)으로 인터럽트 빈도를 줄여 CPU 오버헤드를 감소시킨다. 인터럽트 방식은 커널 개발에서 Top-Half(빠른 ISR)/Bottom-Half(지연 처리) 구조로 발전하여 응답성과 처리량을 동시에 확보한다.</p>
+      </div>
+    </div>
+  </div>
+</div>
+</div><!-- /s4 -->
+
+</div><!-- /main -->
+</div><!-- /tp0 -->
+
+<!-- ══════════════════════════════════════
+     논술형
+══════════════════════════════════════ -->
+<div class="tp" id="tp1">
+<nav class="q-nav">
+  <button class="qbtn active" onclick="showQ(0,'l',this)">①인터럽트 처리 전체 아키텍처</button>
+  <button class="qbtn" onclick="showQ(1,'l',this)">②예외·트랩·시스템 콜</button>
+  <button class="qbtn" onclick="showQ(2,'l',this)">③RTOS 인터럽트 설계</button>
+  <button class="qbtn" onclick="showQ(3,'l',this)">④인터럽트와 프로세스 스케줄링</button>
+  <button class="qbtn" onclick="showQ(4,'l',this)">⑤현대 멀티코어·가상화 환경</button>
+</nav>
+<div class="main">
+
+<!-- L1 -->
+<div class="qp active" id="l0">
+<div class="qcnt">📄 논술형 1번 / 5번</div>
+<div class="qcard">
+  <div class="qhdr">
+    <span class="qdomain">컴퓨터구조 / OS</span>
+    <div class="qmeta">
+      <div class="qtypelabel">2~4교시 논술형 · 25점 · 3~4페이지 분량</div>
+      <div class="qtitle">인터럽트 처리 아키텍처에 대하여 다음을 설명하시오.</div>
+    </div>
+  </div>
+  <div class="qbody">
+    <div class="qitems">
+      <div class="qitem"><span class="qlb">가.</span><span>인터럽트의 종류를 발생 원인·마스크 가능 여부·동기/비동기에 따라 체계적으로 분류하고 각 유형의 특징을 설명하시오.</span></div>
+      <div class="qitem"><span class="qlb">나.</span><span>인터럽트 발생 시 CPU의 처리 과정을 컨텍스트 저장, ISR 실행, EOI 전송, 컨텍스트 복원 단계로 나누어 하드웨어와 운영체제의 역할을 구분하여 설명하시오.</span></div>
+      <div class="qitem"><span class="qlb">다.</span><span>ISR(인터럽트 서비스 루틴) 설계 시 고려사항 — Top-Half/Bottom-Half 구조, 재진입(Reentrant), 처리 시간 최소화 방안을 설명하시오.</span></div>
+    </div>
+    <div class="hints">
+      <span class="hint">분류 체계 + 처리 흐름 + ISR 설계 3단계</span><span class="hint">Linux Top/Bottom Half 구체 기술</span>
+    </div>
+  </div>
+  <div class="acard">
+    <button class="atog" onclick="toggleA(this)">
+      <span class="alb">📄 모범 답안 보기</span><span class="aarr">▼</span>
+    </button>
+    <div class="abody">
+      <div class="atitle">인터럽트 종류 분류·처리 과정 상세·ISR 설계 고려사항</div>
+      <div class="chips">
+        <span class="chip ct">⏱ 목표 30분</span>
+        <span class="chip cp">📄 3.5~4페이지</span>
+        <span class="chip cs">💯 25점</span>
+      </div>
+      <div class="asec">
+        <div class="ast s1">Ⅰ. 개요 — 인터럽트의 필요성과 개념</div>
+        <div class="ap">인터럽트는 CPU와 주변 장치·소프트웨어 간의 비동기적 이벤트 통신 메커니즘으로, CPU가 각 장치의 상태를 지속 확인하는 폴링 방식의 비효율을 해결하기 위해 고안되었다. 인터럽트 기반 설계는 CPU가 실제 처리가 필요한 순간에만 장치를 서비스함으로써 시스템 처리량과 응답성을 동시에 향상시킨다.</div>
+      </div>
+      <div class="asec">
+        <div class="ast s2">Ⅱ. 가. 인터럽트 종류 체계적 분류</div>
+        <table class="at">
+          <tr><th>분류 기준</th><th>유형</th><th>핵심 특징</th><th>대표 예시</th></tr>
+          <tr><td rowspan="2">발생 원인</td><td>하드웨어 인터럽트</td><td>외부 장치가 CPU의 INTR/NMI 핀에 신호 전달. CPU 명령과 비동기적 발생</td><td>타이머, 키보드, 디스크 I/O 완료, NIC 패킷 수신</td></tr>
+          <tr><td>소프트웨어 인터럽트</td><td>프로그램 실행 중 명령어 또는 CPU 내부 조건에 의해 동기적 발생</td><td>시스템 콜, 0 나누기, 페이지 폴트, 디버그 브레이크포인트</td></tr>
+          <tr><td rowspan="2">마스크 가능 여부</td><td>마스크 가능<br>(Maskable)</td><td>IF(Interrupt Flag) 클리어로 일시 비활성화 가능. 임계 구역 보호에 활용</td><td>IRQ0~IRQ15 하드웨어 인터럽트 대부분</td></tr>
+          <tr><td>마스크 불가능<br>(Non-Maskable, NMI)</td><td>어떤 상황에서도 무조건 즉시 처리. 시스템 긴급 상황 전용</td><td>메모리 패리티 오류, 전원 이상, 하드웨어 고장</td></tr>
+          <tr><td rowspan="2">동기/비동기</td><td>동기 인터럽트<br>(Synchronous)</td><td>현재 실행 명령어의 직접 결과로 발생. 동일 조건 재현 시 반드시 재발생</td><td>0 나누기, 페이지 폴트, 불법 명령어, 시스템 콜(트랩)</td></tr>
+          <tr><td>비동기 인터럽트<br>(Asynchronous)</td><td>외부 장치의 임의 타이밍 발생. 비결정적·예측 불가</td><td>키보드 입력, 타이머, 디스크 I/O 완료, NIC 인터럽트</td></tr>
+          <tr><td rowspan="3">소프트웨어<br>세부 분류</td><td>트랩 (Trap)</td><td>의도적 인터럽트. 명시적 INT 명령. 동기적. 다음 명령부터 복귀</td><td>INT 0x80(Linux 시스템 콜), INT 3(디버깅)</td></tr>
+          <tr><td>예외 (Exception/Fault)</td><td>비의도적 오류. CPU가 자동 감지. 오류 명령 재실행 또는 중단</td><td>페이지 폴트(재실행), 0 나누기(중단), GPF</td></tr>
+          <tr><td>어보트 (Abort)</td><td>복구 불가능한 심각 오류. 프로세스·시스템 강제 종료</td><td>이중 폴트(Double Fault), 머신 체크 예외</td></tr>
+        </table>
+      </div>
+      <div class="asec">
+        <div class="ast s3">Ⅲ. 나. 인터럽트 처리 과정 — HW/OS 역할 구분</div>
+        <div class="db">인터럽트 처리 상세 흐름 (x86 보호 모드 기준)
+
+① [HW] 장치 → PIC(APIC)에 IRQ 신호
+② [HW] PIC: 우선순위 중재 → CPU의 INTR 핀 활성화 + 벡터 번호 준비
+③ [HW] CPU: 현재 명령어 실행 완료 (명령어 경계)
+④ [HW] CPU: IF 확인 → 마스크 가능 인터럽트 수락 결정
+⑤ [HW] CPU: 자동 컨텍스트 저장 (스택 Push)
+           → SS:ESP, EFLAGS(PSW), CS:EIP 순서로 스택에 자동 저장
+           → IF 자동 클리어 (추가 인터럽트 차단)
+           → 특권 레벨 전환 (사용자 모드 → 커널 모드)
+⑥ [HW] CPU: IDTR → IDT[벡터번호] → 게이트 디스크립터 읽기
+           → DPL 검사 (접근 권한 확인)
+           → ISR 주소 → CS:EIP 로드 → ISR로 분기
+⑦ [OS/Driver] ISR Prologue: 추가 레지스터 저장 (PUSHA 또는 개별 Push)
+⑧ [OS/Driver] 인터럽트 원인 처리:
+           → 장치 상태 레지스터 읽기
+           → 데이터 버퍼 처리 (필요 시 DMA 트리거)
+           → 대기 프로세스 깨우기 (wake_up())
+⑨ [OS/Driver] EOI(End of Interrupt) → PIC/APIC에 전송
+           → PIC의 ISR(In-Service Register) 클리어
+           → 다음 인터럽트 처리 가능 상태로 전환
+⑩ [OS/Driver] ISR Epilogue: 추가 레지스터 복원 (POPA 또는 개별 Pop)
+⑪ [HW] IRET(Interrupt Return) 명령 실행:
+           → EIP·CS·EFLAGS 스택에서 자동 복원
+           → IF 재활성화 (EFLAGS 복원으로 자동)
+           → 특권 레벨 복귀 (커널 → 사용자 모드)
+⑫ [CPU] 원래 프로그램 중단 지점 다음 명령부터 재개</div>
+        <div class="kb kbb">
+          <div class="kbtl">📌 단계별 핵심 포인트</div>
+          • 5단계 자동 저장: HW가 담당 → OS 개입 없음. PC·PSW만 자동 저장 (범용 레지스터는 ISR이 별도 저장)<br>
+          • 9단계 EOI: PIC에 반드시 전송해야 다음 인터럽트 처리 가능 → 누락 시 해당 IRQ 라인 마비<br>
+          • 11단계 IRET: 단순 RET와 달리 특권 레벨·EFLAGS까지 원자적으로 복원
+        </div>
+      </div>
+      <div class="asec">
+        <div class="ast s4">Ⅳ. 다. ISR 설계 고려사항</div>
+        <div class="ap"><strong>1. Top-Half / Bottom-Half 구조 (Linux 사례)</strong></div>
+        <div class="db">ISR Top-Half / Bottom-Half 분리 구조
+
+인터럽트 발생 → [Top-Half: ISR 즉시 실행]
+  ├─ 최소한의 긴급 처리만 수행
+  ├─ 하드웨어 레지스터 읽기 (버퍼로 복사)
+  ├─ 인터럽트 확인·ACK 전송
+  └─ Bottom-Half 스케줄링 요청 → ISR 종료
+                    ↓ (ISR 종료 후 적절한 시점에 실행)
+             [Bottom-Half: 지연 처리]
+  Linux 구현 방법:
+  ① Softirq   : 커널 고정 시 소프트 인터럽트. 동일 타입 병렬 실행 가능
+  ② Tasklet   : Softirq 기반. 동일 Tasklet 동시 실행 불가. 단순 구현
+  ③ Work Queue: 프로세스 컨텍스트에서 실행. 슬립 가능. 가장 유연</div>
+        <ul class="aol" style="margin-top:12px">
+          <li><span class="on on4">2</span><div><strong>재진입성(Reentrancy) 설계</strong>: 동일 ISR이 중단된 상태에서 같은 ISR이 다시 호출될 수 있음. 전역 변수·정적 변수 사용 금지. 스택 기반 지역 변수만 사용. 공유 자원 접근 시 스핀락(Spinlock) 사용 (ISR 컨텍스트에서는 mutex 사용 불가 — 슬립 금지)</div></li>
+          <li><span class="on on5">3</span><div><strong>처리 시간 최소화</strong>: ISR 내 긴 루프·대기·I/O 블로킹 금지. 처리 지연 시 Interrupt Latency 증가 → 실시간성 훼손. 긴 처리는 Bottom-Half로 위임. ISR 처리 시간 목표: 마이크로초 단위 이내</div></li>
+          <li><span class="on on6">4</span><div><strong>중요 레지스터 완전 저장·복원</strong>: ISR이 사용하는 모든 레지스터를 Prologue에서 저장, Epilogue에서 복원. 복원 누락 시 원래 프로그램 상태 오염 → 예측 불가능 오동작</div></li>
+        </ul>
+      </div>
+      <div class="cl">
+        <div class="clt">Ⅴ. 결론</div>
+        <p>인터럽트는 운영체제의 핵심 메커니즘으로, 올바른 분류와 처리 과정의 이해는 시스템 소프트웨어 개발·디버깅·성능 튜닝의 기반이 된다. ISR 설계 시 Top-Half/Bottom-Half 분리, 재진입성 보장, 처리 시간 최소화의 세 원칙을 준수해야 하며, 감리 시에는 인터럽트 핸들러의 실행 시간 프로파일링과 누락 EOI 여부를 주요 점검항목으로 확인한다.</p>
+      </div>
+    </div>
+  </div>
+</div>
+</div><!-- /l0 -->
+
+<!-- L2 -->
+<div class="qp" id="l1">
+<div class="qcnt">📄 논술형 2번 / 5번</div>
+<div class="qcard">
+  <div class="qhdr">
+    <span class="qdomain">컴퓨터구조 / OS</span>
+    <div class="qmeta">
+      <div class="qtypelabel">2~4교시 논술형 · 25점 · 3~4페이지 분량</div>
+      <div class="qtitle">소프트웨어 인터럽트 — 예외(Exception), 트랩(Trap), 시스템 콜(System Call)에 대하여 다음을 설명하시오.</div>
+    </div>
+  </div>
+  <div class="qbody">
+    <div class="qitems">
+      <div class="qitem"><span class="qlb">가.</span><span>예외(Fault·Trap·Abort)의 3가지 유형과 각각의 복귀 동작 차이를 설명하시오.</span></div>
+      <div class="qitem"><span class="qlb">나.</span><span>시스템 콜의 개념, x86 리눅스에서의 시스템 콜 처리 흐름(INT 0x80 방식과 SYSCALL 명령 비교), 특권 레벨 전환 과정을 설명하시오.</span></div>
+      <div class="qitem"><span class="qlb">다.</span><span>페이지 폴트(Page Fault) 예외의 처리 과정과 요구 페이징(Demand Paging) 및 Copy-on-Write와의 연관성을 설명하시오.</span></div>
+    </div>
+    <div class="hints">
+      <span class="hint">Fault/Trap/Abort 복귀 차이 핵심</span><span class="hint">시스템 콜 흐름도 필수</span><span class="hint">페이지 폴트 → 요구 페이징 연계</span>
+    </div>
+  </div>
+  <div class="acard">
+    <button class="atog" onclick="toggleA(this)">
+      <span class="alb">📄 모범 답안 보기</span><span class="aarr">▼</span>
+    </button>
+    <div class="abody">
+      <div class="atitle">예외 유형·시스템 콜 처리 흐름·페이지 폴트와 요구 페이징 연계 분석</div>
+      <div class="chips">
+        <span class="chip ct">⏱ 목표 30분</span>
+        <span class="chip cp">📄 3.5~4페이지</span>
+        <span class="chip cs">💯 25점</span>
+      </div>
+      <div class="asec">
+        <div class="ast s1">Ⅰ. 개요</div>
+        <div class="ap">소프트웨어 인터럽트는 프로그램 실행 중 CPU 내부 조건이나 소프트웨어 명령에 의해 동기적으로 발생하는 인터럽트이다. 예외·트랩·시스템 콜은 모두 IVT/IDT를 통해 OS 커널로 제어를 전달하나, 발생 원인·복귀 동작·목적에서 차이가 있다.</div>
+      </div>
+      <div class="asec">
+        <div class="ast s2">Ⅱ. 가. 예외(Exception) 3가지 유형 — 복귀 동작 비교</div>
+        <table class="at">
+          <tr><th>유형</th><th>정의</th><th>복귀 동작</th><th>예시</th></tr>
+          <tr><td>폴트 (Fault)</td><td>오류 발생 명령 전에 CPU가 감지. 핸들러가 조건을 수정하면 <strong>오류 발생 명령을 재실행</strong> 가능</td><td>오류 명령으로 복귀 (EIP = 오류 명령 주소). 핸들러가 원인 해결 후 재시도</td><td>페이지 폴트(Page Fault) → 페이지 로드 후 명령 재실행. 세그먼트 폴트 초기 감지</td></tr>
+          <tr><td>트랩 (Trap)</td><td>의도적으로 발생시키는 인터럽트. 발생 명령 완료 후 <strong>다음 명령으로 복귀</strong></td><td>트랩 발생 명령 다음 명령으로 복귀 (EIP = 트랩 명령 + 1). 시스템 콜에 활용</td><td>INT 0x80 (시스템 콜), INT 3 (디버그 중단점). SYSCALL 명령</td></tr>
+          <tr><td>어보트 (Abort)</td><td>복구 불가능한 심각한 하드웨어 오류. <strong>프로세스 또는 시스템 강제 종료</strong>. 복귀 없음</td><td>복귀 없음. 프로세스 종료(SIGSEGV) 또는 시스템 패닉(커널 오류)</td><td>이중 폴트(Double Fault), 머신 체크 예외(MCE), 심각한 세그멘테이션 폴트</td></tr>
+        </table>
+        <div class="db">예외 유형별 EIP 복귀 주소 비교
+
+┌─────────────────────────────────────────────────────────┐
+│  폴트 (Fault):  EIP → 오류 발생 명령 주소               │
+│  ADD [0xBAD], EAX  ← 페이지 폴트 발생                  │
+│                                                         │
+│  핸들러 실행 → 페이지 로드 → IRET                       │
+│                      ↓                                  │
+│  ADD [0xBAD], EAX  ← 동일 명령 재실행 (폴트 복구)       │
+├─────────────────────────────────────────────────────────┤
+│  트랩 (Trap):   EIP → 트랩 명령 다음 주소               │
+│  INT 0x80          ← 시스템 콜 트랩 발생               │
+│                                                         │
+│  핸들러 실행 → IRET                                     │
+│                      ↓                                  │
+│  MOV EAX, [결과]   ← 다음 명령 실행 (트랩 통과)         │
+└─────────────────────────────────────────────────────────┘</div>
+      </div>
+      <div class="asec">
+        <div class="ast s3">Ⅲ. 나. 시스템 콜 처리 흐름 및 특권 레벨 전환</div>
+        <table class="at">
+          <tr><th>항목</th><th>INT 0x80 방식 (x86 구형)</th><th>SYSCALL 명령 (x86-64 현대)</th></tr>
+          <tr><td>방식</td><td>소프트웨어 인터럽트 (IDT 경유)</td><td>Fast System Call (MSR 레지스터 경유)</td></tr>
+          <tr><td>처리 경로</td><td>IDT[0x80] → 게이트 디스크립터 → 시스템 콜 핸들러</td><td>MSR_LSTAR 레지스터에 저장된 핸들러 주소 직접 참조</td></tr>
+          <tr><td>성능</td><td>느림 (IDT 참조·특권 레벨 검사 오버헤드)</td><td>빠름 (IDT 없이 직접 분기)</td></tr>
+          <tr><td>호출 규약</td><td>EAX=시스템 콜 번호, EBX·ECX·EDX=인수</td><td>RAX=시스템 콜 번호, RDI·RSI·RDX·R10·R8·R9=인수</td></tr>
+          <tr><td>복귀 명령</td><td>IRET</td><td>SYSRET (더 빠름)</td></tr>
+        </table>
+        <div class="db">Linux 시스템 콜 처리 흐름 (SYSCALL 방식, x86-64)
+
+[사용자 모드 (Ring 3)]
+  1. 응용 프로그램: open("file", O_RDONLY) 호출
+  2. libc: RAX ← 시스템 콜 번호 (2 = sys_open)
+           RDI ← 인수1 ("file" 주소)
+           RSI ← 인수2 (O_RDONLY 플래그)
+  3. SYSCALL 명령 실행
+         ↓
+[특권 레벨 전환: Ring 3 → Ring 0 (커널 모드)]
+  4. CPU: RIP → RCX 저장 (복귀 주소 보존)
+          RFLAGS → R11 저장
+          MSR_LSTAR → RIP 로드 (커널 엔트리 포인트)
+          CS·SS 변경 → 커널 코드 세그먼트
+          커널 스택으로 전환 (TSS.RSP0 참조)
+         ↓
+[커널 모드 (Ring 0)]
+  5. entry_SYSCALL_64(): 레지스터 저장, 스택 전환
+  6. sys_call_table[RAX] → sys_open() 호출
+  7. 파일 열기 처리, fd 반환값 → RAX 저장
+  8. SYSRET 명령
+         ↓
+[특권 레벨 복귀: Ring 0 → Ring 3]
+  9. RCX → RIP 복원 (사용자 복귀 주소)
+     R11 → RFLAGS 복원
+     사용자 스택으로 전환
+  10. libc: 반환값(fd) 확인 → 응용 프로그램 복귀</div>
+      </div>
+      <div class="asec">
+        <div class="ast s4">Ⅳ. 다. 페이지 폴트 처리 — 요구 페이징·CoW 연계</div>
+        <div class="ap">페이지 폴트는 프로세스가 물리 메모리에 없는 페이지(또는 접근 권한 없는 페이지)에 접근할 때 발생하는 폴트(Fault) 유형 예외이다. OS는 페이지 폴트 핸들러에서 원인을 분류하여 처리한다.</div>
+        <table class="at">
+          <tr><th>페이지 폴트 원인</th><th>처리 방법</th><th>연관 기술</th></tr>
+          <tr><td>유효 접근이나 물리 메모리에 없음</td><td>디스크(스왑·파일)에서 페이지 로드 → PTE 갱신 → 명령 재실행</td><td>요구 페이징 (Demand Paging)</td></tr>
+          <tr><td>CoW 페이지에 쓰기 시도</td><td>부모·자식이 공유하던 물리 페이지를 복사 후 새 물리 페이지 할당. 쓰기 허용 PTE로 변경</td><td>Copy-on-Write (CoW)</td></tr>
+          <tr><td>스택 확장 필요</td><td>스택 영역에 새 페이지 할당 (Stack Growing)</td><td>스택 동적 확장</td></tr>
+          <tr><td>잘못된 주소 접근</td><td>SIGSEGV 시그널 → 프로세스 강제 종료</td><td>세그멘테이션 폴트</td></tr>
+        </table>
+        <div class="db">요구 페이징 + Copy-on-Write 연계 흐름
+
+[요구 페이징]  프로세스 실행 → 페이지 접근 → 페이지 폴트
+               → OS: 디스크에서 페이지 로드
+               → 페이지 테이블 엔트리(PTE) 업데이트 (Present=1)
+               → 폴트 발생 명령 재실행 → 정상 수행
+
+[Copy-on-Write]  fork() 호출 시:
+  부모:  [페이지A] ─┐       → PTE: 읽기 전용 (CoW 플래그)
+  자식:  [페이지A] ─┘ (공유)
+                    ↓ 자식이 페이지A에 쓰기 시도
+               → 페이지 폴트 (CoW 트리거)
+               → OS: 페이지A 복사 → [페이지A'] 생성
+               → 자식 PTE: 페이지A' 가리킴, 쓰기 허용
+  부모:  [페이지A] (변경 없음)
+  자식:  [페이지A'] (독립 복사본) → 쓰기 성공</div>
+        <div class="kb kbg">
+          <div class="kbtl">CoW의 이점</div>
+          fork()시 전체 메모리 복사 대신 공유 후 필요 시에만 복사 → 메모리 효율·프로세스 생성 속도 극적 향상.<br>
+          Linux에서 fork()가 O(1)에 가까운 성능을 달성하는 핵심 기술.
+        </div>
+      </div>
+      <div class="cl">
+        <div class="clt">Ⅴ. 결론</div>
+        <p>소프트웨어 인터럽트(예외·트랩·시스템 콜)는 OS와 하드웨어, 사용자 프로그램 간의 인터페이스를 구성하는 핵심 메커니즘이다. 특히 페이지 폴트는 요구 페이징·CoW·스왑 등 현대 메모리 관리의 중추적 역할을 담당하며, 시스템 콜의 SYSCALL/SYSRET 경로 최적화는 I/O 집약적 서버 성능에 직접적인 영향을 미친다.</p>
+      </div>
+    </div>
+  </div>
+</div>
+</div><!-- /l1 -->
+
+<!-- L3 -->
+<div class="qp" id="l2">
+<div class="qcnt">📄 논술형 3번 / 5번</div>
+<div class="qcard">
+  <div class="qhdr">
+    <span class="qdomain">컴퓨터구조 / RTOS</span>
+    <div class="qmeta">
+      <div class="qtypelabel">2~4교시 논술형 · 25점 · 3~4페이지 분량</div>
+      <div class="qtitle">실시간 운영체제(RTOS) 환경에서의 인터럽트 처리에 대하여 다음을 설명하시오.</div>
+    </div>
+  </div>
+  <div class="qbody">
+    <div class="qitems">
+      <div class="qitem"><span class="qlb">가.</span><span>인터럽트 지연(Interrupt Latency)·처리 지연(Interrupt Processing Latency)·응답 지연(Response Latency)의 개념과 구성 요소, 각 지연을 최소화하는 방법</span></div>
+      <div class="qitem"><span class="qlb">나.</span><span>RTOS에서의 인터럽트 우선순위와 태스크 우선순위의 관계, ISR과 태스크 간의 동기화 메커니즘(세마포어·메시지 큐·이벤트 플래그)</span></div>
+      <div class="qitem"><span class="qlb">다.</span><span>인터럽트 마스킹(Interrupt Masking)을 이용한 임계 구역(Critical Section) 보호 방법과 우선순위 역전(Priority Inversion) 문제 및 해결 방안</span></div>
+    </div>
+    <div class="hints">
+      <span class="hint">Interrupt Latency 3요소 구분</span><span class="hint">우선순위 역전 필수</span><span class="hint">PCP·PI 프로토콜 비교</span>
+    </div>
+  </div>
+  <div class="acard">
+    <button class="atog" onclick="toggleA(this)">
+      <span class="alb">📄 모범 답안 보기</span><span class="aarr">▼</span>
+    </button>
+    <div class="abody">
+      <div class="atitle">RTOS 인터럽트 지연 분석·ISR-태스크 동기화·임계 구역 보호 및 우선순위 역전 해결</div>
+      <div class="chips">
+        <span class="chip ct">⏱ 목표 30분</span>
+        <span class="chip cp">📄 3.5~4페이지</span>
+        <span class="chip cs">💯 25점</span>
+      </div>
+      <div class="asec">
+        <div class="ast s1">Ⅰ. 개요 — RTOS에서 인터럽트의 중요성</div>
+        <div class="ap">실시간 운영체제(RTOS)에서 인터럽트 처리의 결정론적(Deterministic) 응답 시간은 시스템 정확성의 핵심이다. 자동차 에어백 제어, 의료 장비, 산업 제어 시스템에서 인터럽트 응답 지연이 허용 임계값을 초과하면 물리적 피해가 발생할 수 있다.</div>
+      </div>
+      <div class="asec">
+        <div class="ast s2">Ⅱ. 가. 인터럽트 지연 구성 요소와 최소화 방법</div>
+        <div class="db">인터럽트 지연 분류 (총 응답 지연 = 모든 구성 요소의 합)
+
+                  IRQ 발생
+                     │
+          ┌──────────▼──────────┐
+          │  Interrupt Latency   │  ← CPU가 인터럽트를 인식하는 데 걸리는 시간
+          │  (인터럽트 지연)      │   = 현재 명령 완료 시간 + IF 비활성화 시간
+          └──────────┬──────────┘
+                     │  ISR 진입
+          ┌──────────▼──────────┐
+          │  Processing Latency  │  ← ISR 실행 시간
+          │  (처리 지연)          │   = ISR 코드 실행 시간 (Top-Half)
+          └──────────┬──────────┘
+                     │  ISR 완료
+          ┌──────────▼──────────┐
+          │  Preemption Latency  │  ← 고우선순위 태스크가 스케줄링되는 시간
+          │  (선점 지연)          │   = 컨텍스트 스위칭 오버헤드
+          └──────────┬──────────┘
+                     │  태스크 실행
+          ┌──────────▼──────────┐
+          │  Task Response Time  │  ← 태스크가 실제 처리를 완료하는 시간
+          └─────────────────────┘</div>
+        <table class="at">
+          <tr><th>지연 유형</th><th>발생 원인</th><th>최소화 방법</th></tr>
+          <tr><td>인터럽트 지연<br>(Interrupt Latency)</td><td>임계 구역 내 인터럽트 마스킹 시간. 긴 ISR 실행으로 인한 차단 시간</td><td>마스킹 시간 최소화. 임계 구역을 가능한 짧게. 비마스킹 구간 최대화</td></tr>
+          <tr><td>처리 지연<br>(Processing Latency)</td><td>ISR 코드 자체 실행 시간. 캐시 미스. 긴 루프</td><td>ISR 코드 최소화 (Top-Half만). 코드 캐시 워밍업. 인라인 어셈블리 활용</td></tr>
+          <tr><td>선점 지연<br>(Preemption Latency)</td><td>비선점 OS에서 현재 태스크 완료 대기. 컨텍스트 스위칭 시간</td><td>완전 선점형(Fully Preemptive) 커널 사용. 컨텍스트 크기 최소화</td></tr>
+        </table>
+      </div>
+      <div class="asec">
+        <div class="ast s3">Ⅲ. 나. ISR과 태스크 간 동기화 메커니즘</div>
+        <div class="ap">ISR은 특수한 컨텍스트(인터럽트 컨텍스트)에서 실행되므로 일반 태스크와 달리 슬립(Sleep) 불가능하다. ISR과 태스크 간 통신에는 슬립 없이 즉시 반환하는 메커니즘이 필요하다.</div>
+        <table class="at">
+          <tr><th>동기화 메커니즘</th><th>ISR에서의 사용</th><th>동작 방식</th><th>활용 사례</th></tr>
+          <tr><td>바이너리 세마포어<br>(Binary Semaphore)</td><td>ISR에서 Give(Signal) 가능. Get(Wait)는 태스크에서만</td><td>ISR: 이벤트 완료 시 세마포어 Release. 태스크: 세마포어 대기 중 슬립 → 릴리즈 시 깨어남</td><td>UART 수신 완료 시 처리 태스크 깨우기</td></tr>
+          <tr><td>메시지 큐<br>(Message Queue)</td><td>ISR에서 Put(Enqueue) 가능. Timeout=0 필수</td><td>ISR: 데이터 포함 메시지 큐에 전송. 태스크: 큐에서 메시지 수신·처리</td><td>네트워크 패킷 버퍼링·처리 분리</td></tr>
+          <tr><td>이벤트 플래그<br>(Event Flag)</td><td>ISR에서 플래그 Set/Clear 가능</td><td>ISR: 비트마스크로 이벤트 표시. 태스크: 특정 비트 조합 대기 (AND/OR 조건)</td><td>여러 장치 이벤트를 단일 태스크에서 처리</td></tr>
+          <tr><td>순환 버퍼<br>(Ring Buffer)</td><td>ISR에서 Write, 태스크에서 Read. 락 없이 구현 가능</td><td>Lock-free 설계: 생산자(ISR) Index ≠ 소비자(Task) Index 시 데이터 존재</td><td>로그 수집, 고속 데이터 스트림 처리</td></tr>
+        </table>
+      </div>
+      <div class="asec">
+        <div class="ast s4">Ⅳ. 다. 임계 구역 보호와 우선순위 역전 문제</div>
+        <div class="ap"><strong>인터럽트 마스킹 기반 임계 구역 보호:</strong></div>
+        <div class="db">임계 구역 보호 (인터럽트 마스킹)
+
+  /* 임계 구역 진입 */
+  flags = save_irq_flags();     // 현재 IF 상태 저장
+  cli();                        // 인터럽트 비활성화 (IF = 0)
+
+  /* 임계 구역 코드 */
+  shared_data++;                // 공유 변수 원자적 수정 보장
+
+  /* 임계 구역 탈출 */
+  restore_irq_flags(flags);     // IF 상태 복원 (인터럽트 재활성화)
+
+⚠️ 주의: 마스킹 시간 최소화 필수
+         I/O 작업·슬립·루프 내 마스킹 금지
+         멀티코어에서는 스핀락 추가 필요</div>
+        <div class="ap" style="margin-top:12px"><strong>우선순위 역전(Priority Inversion)과 해결 방안:</strong></div>
+        <div class="db">우선순위 역전 발생 시나리오
+
+태스크: H(높음) > M(중간) > L(낮음)
+
+1. L이 공유 자원(뮤텍스) 획득
+2. H가 깨어나 공유 자원 요청 → 뮤텍스 대기 (H 블로킹)
+3. M이 깨어나 L 선점 → M 실행 (인터럽트 없음)
+4. ⚠️ H는 L 대기 중인데 L은 M에 의해 선점 상태
+   → 사실상 H가 M보다 낮은 우선순위로 실행되는 역전 발생!
+   → Mars Pathfinder(1997) 실제 장애 사례</div>
+        <table class="at">
+          <tr><th>해결 방안</th><th>원리</th><th>장점</th><th>단점</th></tr>
+          <tr><td>우선순위 상속<br>(Priority Inheritance, PI)</td><td>L이 H가 필요한 자원 보유 시 L의 우선순위를 H 수준으로 임시 상승. 자원 반환 시 원복</td><td>구현 직관적. 무한 대기 방지</td><td>상속 체인이 길어지면 복잡. 분석 어려움</td></tr>
+          <tr><td>우선순위 상한 프로토콜<br>(Priority Ceiling Protocol, PCP)</td><td>각 자원에 최고 우선순위 상한값(Ceiling) 사전 정의. 자원 획득 시 상한값으로 즉시 상승</td><td>교착상태 방지도 동시에 해결. 분석 용이</td><td>자원별 상한값 사전 계산 필요</td></tr>
+          <tr><td>인터럽트 마스킹</td><td>자원 접근 구간에 인터럽트 비활성화 → 선점 자체를 방지</td><td>단순. 오버헤드 낮음</td><td>인터럽트 지연 증가. 멀티코어 미적용</td></tr>
+        </table>
+      </div>
+      <div class="cl">
+        <div class="clt">Ⅴ. 결론</div>
+        <p>RTOS에서 인터럽트 처리의 결정론적 응답 시간 보장은 시스템 안전성의 핵심이다. 인터럽트 지연을 최소화하기 위해 ISR은 Top-Half 최소 처리·Bottom-Half 지연 처리 구조를 따르고, ISR-태스크 간 동기화는 Non-blocking 메커니즘을 사용해야 한다. 우선순위 역전은 PI 또는 PCP 프로토콜로 반드시 해결해야 하며, 이는 항공·자동차·의료 등 안전 필수(Safety-Critical) 시스템의 IEC 61508·DO-178C 인증 요건이기도 하다.</p>
+      </div>
+    </div>
+  </div>
+</div>
+</div><!-- /l2 -->
+
+<!-- L4 -->
+<div class="qp" id="l3">
+<div class="qcnt">📄 논술형 4번 / 5번</div>
+<div class="qcard">
+  <div class="qhdr">
+    <span class="qdomain">컴퓨터구조 / OS</span>
+    <div class="qmeta">
+      <div class="qtypelabel">2~4교시 논술형 · 25점 · 3~4페이지 분량</div>
+      <div class="qtitle">인터럽트와 프로세스 스케줄링의 관계에 대하여 다음을 설명하시오.</div>
+    </div>
+  </div>
+  <div class="qbody">
+    <div class="qitems">
+      <div class="qitem"><span class="qlb">가.</span><span>타이머 인터럽트(Timer Interrupt)를 이용한 선점형 스케줄링(Preemptive Scheduling)의 동작 원리와 타임 퀀텀(Time Quantum) 결정이 시스템 성능에 미치는 영향</span></div>
+      <div class="qitem"><span class="qlb">나.</span><span>인터럽트 발생 시 컨텍스트 스위칭(Context Switching)의 과정, 비용 분석, PCB(Process Control Block)에 저장되는 정보</span></div>
+      <div class="qitem"><span class="qlb">다.</span><span>인터럽트 기반 I/O 완료 통지와 프로세스 상태 전이(대기→준비) 메커니즘 및 Linux의 wait_queue를 이용한 구현 방식</span></div>
+    </div>
+    <div class="hints">
+      <span class="hint">타이머 인터럽트 → 스케줄링 연결</span><span class="hint">PCB 저장 항목 완전 암기</span><span class="hint">wait_queue 구현 상세</span>
+    </div>
+  </div>
+  <div class="acard">
+    <button class="atog" onclick="toggleA(this)">
+      <span class="alb">📄 모범 답안 보기</span><span class="aarr">▼</span>
+    </button>
+    <div class="abody">
+      <div class="atitle">타이머 인터럽트·선점 스케줄링·컨텍스트 스위칭·I/O 완료 프로세스 상태 전이</div>
+      <div class="chips">
+        <span class="chip ct">⏱ 목표 30분</span>
+        <span class="chip cp">📄 3.5~4페이지</span>
+        <span class="chip cs">💯 25점</span>
+      </div>
+      <div class="asec">
+        <div class="ast s1">Ⅰ. 개요</div>
+        <div class="ap">현대 OS의 멀티태스킹은 인터럽트 메커니즘에 의존한다. 타이머 인터럽트는 선점형 스케줄링의 핵심 기반이며, I/O 완료 인터럽트는 블로킹된 프로세스를 준비 상태로 전환하는 트리거가 된다. 인터럽트와 프로세스 스케줄링의 상호작용을 이해하는 것은 OS 설계의 핵심이다.</div>
+      </div>
+      <div class="asec">
+        <div class="ast s2">Ⅱ. 가. 타이머 인터럽트와 선점형 스케줄링</div>
+        <div class="db">타이머 인터럽트 기반 선점형 스케줄링 흐름
+
+PIT/HPET → IRQ0 → CPU의 INTR 핀
+                        ↓
+              [타이머 ISR (timer_interrupt)]
+                ① jiffies 카운터 증가
+                ② 현재 프로세스 CPU 시간 감소 (time_slice--)
+                ③ 타임 퀀텀 소진 여부 확인 (time_slice == 0)
+                    ├─ 미소진: IRET → 현재 프로세스 계속 실행
+                    └─ 소진:   need_resched 플래그 Set
+                              ↓ ISR 종료 후
+              [스케줄러 호출 (schedule())]
+                ④ 현재 프로세스 → 준비 큐로 이동 (TASK_RUNNING)
+                ⑤ 스케줄링 알고리즘 실행 (CFS, O(1) 등)
+                ⑥ 가장 높은 우선순위 프로세스 선택
+                ⑦ 컨텍스트 스위칭 실행</div>
+        <table class="at">
+          <tr><th>타임 퀀텀 크기</th><th>장점</th><th>단점</th><th>적합 환경</th></tr>
+          <tr><td>짧은 퀀텀<br>(1~10ms)</td><td>빠른 응답성·반응성 향상. 인터랙티브 작업 우수</td><td>컨텍스트 스위칭 빈도 증가 → CPU 오버헤드</td><td>대화형 시스템·데스크탑 OS</td></tr>
+          <tr><td>긴 퀀텀<br>(100ms~)</td><td>컨텍스트 스위칭 감소 → 처리량(Throughput) 향상</td><td>응답 지연 증가. 인터랙티브 성능 저하</td><td>배치 처리·서버·HPC</td></tr>
+          <tr><td>Linux CFS</td><td>동적 타임 슬라이스. 우선순위·실행 이력 기반 조정 (Vruntime)</td><td>복잡한 구현</td><td>범용 OS. 공정성(Fairness) 극대화</td></tr>
+        </table>
+      </div>
+      <div class="asec">
+        <div class="ast s3">Ⅲ. 나. 컨텍스트 스위칭 — 과정·비용·PCB</div>
+        <div class="db">컨텍스트 스위칭 상세 과정
+
+[프로세스 A 실행 중]
+      ↓ 타이머 인터럽트 또는 시스템 콜
+① CPU 레지스터 → PCB_A에 저장
+   (PC, SP, PSW, 범용 레지스터, FPU 상태)
+② 프로세스 A의 메모리 맵 (페이지 테이블 베이스 주소) 저장
+③ A의 상태를 TASK_RUNNING → TASK_INTERRUPTIBLE/STOPPED 변경
+
+④ 스케줄러: 준비 큐에서 프로세스 B 선택
+
+⑤ PCB_B에서 레지스터 상태 복원
+   (PC, SP, PSW, 범용 레지스터, FPU 상태)
+⑥ CR3 레지스터 ← B의 페이지 테이블 주소 로드
+   (TLB 플러시 발생 → 메모리 접근 초기 성능 저하)
+⑦ 프로세스 B 실행 재개</div>
+        <table class="at">
+          <tr><th>PCB 저장 항목</th><th>내용</th><th>역할</th></tr>
+          <tr><td>프로세스 식별 정보</td><td>PID, PPID, UID, GID</td><td>프로세스 식별·소유권</td></tr>
+          <tr><td>CPU 레지스터 상태</td><td>PC, SP, PSW(EFLAGS), 범용 레지스터, FPU/SSE 상태</td><td>실행 재개를 위한 CPU 상태 완전 보존</td></tr>
+          <tr><td>프로세스 상태</td><td>RUNNING, READY, WAITING, STOPPED</td><td>스케줄러의 스케줄링 대상 결정</td></tr>
+          <tr><td>메모리 관리 정보</td><td>페이지 테이블 베이스 주소, 세그먼트 디스크립터, 메모리 맵</td><td>프로세스별 독립 주소 공간 전환</td></tr>
+          <tr><td>입출력 상태</td><td>열린 파일 디스크립터 목록, I/O 요청 상태</td><td>I/O 완료 시 올바른 프로세스에 결과 전달</td></tr>
+          <tr><td>스케줄링 정보</td><td>우선순위, CPU 사용 시간, 타임 퀀텀 잔여량, Vruntime(CFS)</td><td>공정한 CPU 시간 배분</td></tr>
+          <tr><td>계정 정보</td><td>생성 시간, 총 CPU 사용 시간, 컨텍스트 스위칭 횟수</td><td>자원 사용량 통계·과금</td></tr>
+        </table>
+        <div class="kb kbo">
+          <div class="kbtl">컨텍스트 스위칭 비용 분석</div>
+          직접 비용: 레지스터 저장/복원 (수백 나노초) &nbsp;|&nbsp; CR3 변경 → TLB 플러시 (수 마이크로초)<br>
+          간접 비용: 캐시 워밍업 비용 (새 프로세스 코드·데이터 캐시 미스 급증) → 수십~수백 마이크로초<br>
+          최소화 방법: 스레드 사용(같은 주소 공간 → TLB 플러시 없음), PCID(Process-Context ID)로 TLB 부분 보존
+        </div>
+      </div>
+      <div class="asec">
+        <div class="ast s4">Ⅳ. 다. I/O 완료 인터럽트와 프로세스 상태 전이</div>
+        <div class="db">I/O 완료 인터럽트 → 프로세스 상태 전이 흐름
+
+프로세스 A: read() 시스템 콜 발생
+      ↓
+  OS: I/O 요청 발행 (디스크 컨트롤러에 명령)
+      A의 상태: RUNNING → WAITING (wait_queue 등록)
+      스케줄러: 다른 프로세스 B 실행 선택
+      ↓ [디스크 I/O 완료]
+디스크 컨트롤러 → IRQ → CPU → 디스크 ISR 실행
+  ISR:
+    ① 전송된 데이터를 버퍼로 복사 (또는 DMA 완료 확인)
+    ② wait_queue에서 대기 중인 프로세스 A 탐색
+    ③ wake_up(&A의 wait_queue)
+         → A의 상태: WAITING → READY (준비 큐로 이동)
+         → need_resched 플래그 Set (우선순위 비교)
+    ④ IRET
+      ↓ [스케줄러 재실행]
+  우선순위 비교: A(깨어난) vs 현재 실행 중 B
+    → A 우선순위 > B: 선점 컨텍스트 스위칭 → A 즉시 실행
+    → A 우선순위 ≤ B: B 계속 실행, A는 준비 큐 대기</div>
+        <div class="ap"><strong>Linux wait_queue 구현 방식:</strong></div>
+        <div class="db">Linux wait_queue 사용 패턴 (커널 드라이버)
+
+/* 대기 큐 선언 */
+DECLARE_WAIT_QUEUE_HEAD(my_wait_queue);
+int data_ready = 0;
+
+/* 프로세스 대기 (시스템 콜 컨텍스트) */
+wait_event_interruptible(my_wait_queue, data_ready != 0);
+/* → 조건 false이면 TASK_INTERRUPTIBLE로 슬립 */
+
+/* ISR에서 깨우기 (인터럽트 컨텍스트) */
+void my_irq_handler(int irq, void *dev_id) {
+    // 데이터 처리
+    data_ready = 1;
+    wake_up_interruptible(&my_wait_queue);  /* 대기 프로세스 깨우기 */
+}
+
+/* 상태 전이 흐름 */
+프로세스: RUNNING → (wait_event) → SLEEPING(WAITING)
+ISR:      wake_up() 호출
+프로세스: SLEEPING → RUNNING(READY) → (스케줄러 선택) → RUNNING</div>
+      </div>
+      <div class="cl">
+        <div class="clt">Ⅴ. 결론</div>
+        <p>인터럽트와 프로세스 스케줄링은 현대 OS 멀티태스킹의 두 기둥이다. 타이머 인터럽트는 선점 스케줄링을 가능하게 하고, I/O 완료 인터럽트는 차단된 프로세스를 깨워 CPU 활용률을 극대화한다. 컨텍스트 스위칭의 TLB 비용과 캐시 오염을 최소화하는 것이 고성능 서버 시스템 설계의 핵심 과제이며, PCID·스레드 풀·비동기 I/O(io_uring) 등이 이를 위한 현대적 해법이다.</p>
+      </div>
+    </div>
+  </div>
+</div>
+</div><!-- /l3 -->
+
+<!-- L5 -->
+<div class="qp" id="l4">
+<div class="qcnt">📄 논술형 5번 / 5번</div>
+<div class="qcard">
+  <div class="qhdr">
+    <span class="qdomain">컴퓨터구조 / 가상화</span>
+    <div class="qmeta">
+      <div class="qtypelabel">2~4교시 논술형 · 25점 · 3~4페이지 분량</div>
+      <div class="qtitle">멀티코어 및 가상화 환경에서의 인터럽트 처리에 대하여 다음을 설명하시오.</div>
+    </div>
+  </div>
+  <div class="qbody">
+    <div class="qitems">
+      <div class="qitem"><span class="qlb">가.</span><span>APIC(Advanced Programmable Interrupt Controller) 아키텍처 — Local APIC·I/O APIC의 역할과 멀티코어 환경에서의 인터럽트 분배(IRQ Affinity) 메커니즘</span></div>
+      <div class="qitem"><span class="qlb">나.</span><span>가상화 환경(하이퍼바이저)에서의 인터럽트 가상화 — 가상 인터럽트 처리 흐름, VMM의 역할, vCPU와 물리 CPU 인터럽트 매핑</span></div>
+      <div class="qitem"><span class="qlb">다.</span><span>인터럽트 처리 성능 최적화 기법 — 인터럽트 코얼레싱(Coalescing), NAPI(네트워크), 인터럽트 스레딩(Threaded IRQ), io_uring 비동기 I/O와의 관계</span></div>
+    </div>
+    <div class="hints">
+      <span class="hint">APIC 구조 다이어그램</span><span class="hint">인터럽트 가상화 VMM 역할</span><span class="hint">io_uring 최신 트렌드</span>
+    </div>
+  </div>
+  <div class="acard">
+    <button class="atog" onclick="toggleA(this)">
+      <span class="alb">📄 모범 답안 보기</span><span class="aarr">▼</span>
+    </button>
+    <div class="abody">
+      <div class="atitle">APIC 멀티코어 인터럽트 분배·가상화 인터럽트·성능 최적화 기법</div>
+      <div class="chips">
+        <span class="chip ct">⏱ 목표 30분</span>
+        <span class="chip cp">📄 3.5~4페이지</span>
+        <span class="chip cs">💯 25점</span>
+      </div>
+      <div class="asec">
+        <div class="ast s1">Ⅰ. 개요</div>
+        <div class="ap">단일 코어·단일 시스템 시대의 PIC 기반 인터럽트 아키텍처는 멀티코어·가상화 환경의 요구사항을 충족하지 못한다. APIC는 멀티코어 환경에서 인터럽트를 여러 코어에 분산하고, 가상화 환경에서는 VMM이 인터럽트 가상화를 담당하여 게스트 OS에 투명한 인터럽트 처리를 제공한다.</div>
+      </div>
+      <div class="asec">
+        <div class="ast s2">Ⅱ. 가. APIC 아키텍처 — Local APIC·I/O APIC·IRQ Affinity</div>
+        <div class="db">APIC 아키텍처 구조 (멀티코어 시스템)
+
+                    ┌─────────────────────────────────┐
+                    │           I/O APIC               │
+                    │  (장치 인터럽트 수신·분배)         │
+                    │  IRQ0(타이머)→ Core 0            │
+                    │  IRQ1(키보드)→ Core 0            │
+                    │  IRQ8(NIC)  → Core 1·2 (RSS)   │
+                    │  IRQ14(디스크)→ Core 3           │
+                    └──────────────┬──────────────────┘
+                                   │ APIC 버스 (MSI/MSI-X)
+          ┌────────────────────────┼──────────────────────┐
+          ▼                        ▼                       ▼
+  [Core 0]                [Core 1]                [Core N]
+  Local APIC              Local APIC              Local APIC
+  ├─ 타이머 인터럽트        ├─ 타이머 인터럽트       ├─ 타이머 인터럽트
+  ├─ IPI 송수신            ├─ IPI 송수신            ├─ IPI 송수신
+  └─ 자체 오류 처리         └─ 자체 오류 처리        └─ 자체 오류 처리
+
+IPI(Inter-Processor Interrupt): 코어 간 신호 전달
+  TLB 플러시 요청, 스케줄러 알림, 전원 관리 명령</div>
+        <table class="at">
+          <tr><th>구성 요소</th><th>역할</th><th>위치</th></tr>
+          <tr><td>Local APIC</td><td>각 CPU 코어별 인터럽트 수신·처리. 타이머·IPI·성능 카운터 인터럽트 관리. 우선순위 중재(TPR/PPR 레지스터)</td><td>각 CPU 코어 내부 (on-chip)</td></tr>
+          <tr><td>I/O APIC</td><td>외부 장치 IRQ 수신. 인터럽트 라우팅 테이블(IRT)에 따라 특정 Local APIC로 전달. MSI/MSI-X 지원</td><td>칩셋 내 (PCH)</td></tr>
+          <tr><td>IRQ Affinity</td><td>특정 IRQ를 특정 CPU 코어로 고정 할당. /proc/irq/N/smp_affinity 파일로 설정. NUMA 노드 최적화에 활용</td><td>OS 소프트웨어 정책</td></tr>
+        </table>
+        <div class="kb kbb">
+          <div class="kbtl">IRQ Affinity 최적화 사례 — 고성능 네트워크</div>
+          NIC의 RSS(Receive-Side Scaling): 수신 패킷을 여러 큐로 분산 → 각 큐가 다른 CPU 코어의 IRQ에 매핑<br>
+          → 네트워크 처리 부하를 모든 코어에 균등 분산 → 처리량 N배 향상<br>
+          설정: <code style="font-family:monospace;font-size:11px">echo 4 > /proc/irq/24/smp_affinity</code> (Core 2에 IRQ 24 고정)
+        </div>
+      </div>
+      <div class="asec">
+        <div class="ast s3">Ⅲ. 나. 가상화 환경에서의 인터럽트 가상화</div>
+        <div class="db">가상화 환경 인터럽트 처리 흐름 (Type-1 하이퍼바이저)
+
+[물리 하드웨어]  장치 → 물리 IRQ 발생
+                              ↓
+[VMM/하이퍼바이저] 물리 인터럽트 수신 (Ring -1)
+  ① 물리 IRQ 처리 (VMM 자체 핸들러)
+  ② 현재 실행 중인 vCPU 확인
+  ③ 해당 게스트 VM의 가상 인터럽트 큐에 주입
+  ④ vCPU에 가상 인터럽트 알림 (VM-Entry 시 처리)
+                              ↓
+[게스트 OS (Ring 0 in VM)]  가상 인터럽트 수신
+  ⑤ 게스트 IDT → 게스트 ISR 실행 (물리 인터럽트처럼 동작)
+  ⑥ 게스트 EOI 명령 → VMM이 가로채서(Trap) 처리
+                              ↓
+[가상화 인터럽트 기술 발전]
+  소프트웨어 가상화: VMM이 모든 인터럽트 에뮬레이션 → 오버헤드 높음
+  하드웨어 지원:     Intel VT-x APIC-v: 게스트가 LAPIC에 직접 접근
+                    AMD SVM AVIC: Advanced Virtual Interrupt Controller</div>
+        <table class="at">
+          <tr><th>가상화 방식</th><th>동작</th><th>성능</th><th>구현</th></tr>
+          <tr><td>완전 에뮬레이션<br>(Full Emulation)</td><td>VMM이 모든 APIC 접근 트랩·에뮬레이션. 게스트 인터럽트마다 VM Exit 발생</td><td>낮음 (VM Exit 오버헤드)</td><td>QEMU/KVM 기본</td></tr>
+          <tr><td>하드웨어 지원<br>(APIC-v / AVIC)</td><td>CPU 하드웨어가 게스트 LAPIC 가상화. VM Exit 없이 직접 처리. 완료 시에만 VMM 개입</td><td>높음 (VM Exit 최소화)</td><td>Intel VT-x APIC-v, AMD-V AVIC</td></tr>
+          <tr><td>SR-IOV + MSI-X</td><td>물리 NIC의 가상 함수(VF)를 게스트에 직접 할당. 게스트 인터럽트가 VMM 경유 없이 물리 처리</td><td>최고 (VMM 우회)</td><td>물리 NIC SR-IOV 지원 필요</td></tr>
+        </table>
+      </div>
+      <div class="asec">
+        <div class="ast s4">Ⅳ. 다. 인터럽트 처리 성능 최적화 기법</div>
+        <ul class="aol">
+          <li><span class="on on4">1</span><div><strong>인터럽트 코얼레싱(Interrupt Coalescing)</strong>: 여러 인터럽트를 묶어서 한 번에 처리. NIC이 여러 패킷을 수신해도 일정 시간/패킷 수 기준으로 인터럽트 1회만 발생. Intel ethtool: <code style="font-family:monospace;font-size:11px">ethtool -C eth0 rx-usecs 50</code>. 처리량 향상 vs 지연 트레이드오프</div></li>
+          <li><span class="on on4">2</span><div><strong>NAPI(New API) — 네트워크 폴링 하이브리드</strong>: 고속 네트워크에서 인터럽트 과부하 문제 해결. 첫 패킷 인터럽트로 NAPI 활성화 → 이후 인터럽트 비활성화 + 소프트IRQ에서 폴링으로 남은 패킷 일괄 처리 → 큐 소진 시 인터럽트 재활성화. 100Gbps 이상 네트워크에서 필수</div></li>
+          <li><span class="on on5">3</span><div><strong>인터럽트 스레딩(Threaded IRQ)</strong>: 기존 ISR Top-Half/Bottom-Half 대신 ISR을 커널 스레드로 분리 실행. <code style="font-family:monospace;font-size:11px">request_threaded_irq()</code>. ISR 내 슬립 가능. PREEMPT_RT(실시간 패치)에서 완전 선점형 인터럽트 처리 가능. 지연 예측성(Determinism) 향상</div></li>
+          <li><span class="on on6">4</span><div><strong>io_uring (Linux 5.1+) — 인터럽트 의존도 감소</strong>: 사용자 공간과 커널 공간 간의 공유 링 버퍼로 I/O 요청·완료를 시스템 콜·인터럽트 없이 처리. 제출 큐(SQ)·완료 큐(CQ)를 통한 비동기 배치 처리. I/O 집약적 워크로드에서 인터럽트 오버헤드를 획기적으로 감소</div></li>
+        </ul>
+        <div class="db">io_uring vs 전통 인터럽트 기반 I/O 비교
+
+[전통 인터럽트 기반 read()]
+  사용자: read() 시스템 콜 → 커널 진입 (시스템 콜 오버헤드)
+  커널: I/O 요청 → 프로세스 SLEEP
+  디스크 ISR: 완료 인터럽트 → 프로세스 WAKE
+  커널: 데이터 복사 → 사용자 공간 복귀 (시스템 콜 반환)
+  오버헤드: 시스템 콜 2회 + 인터럽트 1회 + 컨텍스트 스위칭
+
+[io_uring 비동기 I/O]
+  사용자: SQ(제출 큐)에 I/O 요청 기록 (시스템 콜 없음)
+  커널: SQ 폴링 → I/O 실행 (io_uring 커널 스레드)
+  완료: CQ(완료 큐)에 결과 기록 (인터럽트 최소)
+  사용자: CQ 폴링으로 결과 확인 (시스템 콜 없음)
+  오버헤드: 사실상 0 (공유 메모리 링 버퍼만 사용)</div>
+      </div>
+      <div class="cl">
+        <div class="clt">Ⅴ. 결론</div>
+        <p>멀티코어·가상화 환경에서 인터럽트 아키텍처는 APIC 기반 분산 처리, 하드웨어 지원 가상화(APIC-v·AVIC), NAPI·io_uring 등 소프트웨어 최적화 기법이 총동원되어 진화하고 있다. 클라우드 데이터센터에서는 SR-IOV로 물리 장치를 게스트에 직접 할당하여 인터럽트 가상화 오버헤드를 제거하며, io_uring의 폴링 기반 I/O는 100만 IOPS 이상의 NVMe 스토리지 환경에서 인터럽트 기반 한계를 뛰어넘는 핵심 기술로 자리잡고 있다.</p>
+      </div>
+    </div>
+  </div>
+</div>
+</div><!-- /l4 -->
+
+</div><!-- /main -->
+</div><!-- /tp1 -->
+
+<script>
+function showType(idx,btn){
+  document.querySelectorAll('.tp').forEach((p,i)=>p.classList.toggle('active',i===idx));
+  document.querySelectorAll('.type-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+function showQ(idx,t,btn){
+  var pid=t==='s'?'tp0':'tp1';
+  document.querySelectorAll('#'+pid+' .qp').forEach((p,i)=>p.classList.toggle('active',i===idx));
+  btn.parentElement.querySelectorAll('.qbtn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+function toggleA(btn){
+  var body=btn.nextElementSibling;
+  var arrow=btn.querySelector('.aarr');
+  var isOpen=body.classList.toggle('open');
+  arrow.classList.toggle('open',isOpen);
+  btn.querySelector('.alb').textContent=isOpen?'📄 답안 닫기':'📄 모범 답안 보기';
+}
+</script>
+</body>
+</html>

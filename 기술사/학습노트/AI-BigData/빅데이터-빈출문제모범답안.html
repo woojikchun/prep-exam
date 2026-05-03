@@ -1,0 +1,1188 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>컴퓨터시스템응용기술사 — BigData 빈출문제 모범답안</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700;900&family=Noto+Serif+KR:wght@400;600;700&family=JetBrains+Mono:wght@400;600&display=swap');
+:root{
+  --bg:#f5f7fa;--white:#fff;--s2:#eef1f6;--border:#dde3ec;--bl:#eef1f6;
+  --blue:#1d4ed8;--blu:#eff6ff;--blub:#bfdbfe;
+  --red:#b91c1c;--redb:#fef2f2;--redbr:#fecaca;
+  --green:#065f46;--greeb:#ecfdf5;--greenbr:#a7f3d0;
+  --orange:#92400e;--orb:#fffbeb;--orbr:#fde68a;
+  --purple:#5b21b6;--purb:#f5f3ff;--purbr:#ddd6fe;
+  --teal:#0f766e;--tealb:#f0fdfa;--tealbr:#99f6e4;
+  --text:#111827;--t2:#374151;--t3:#6b7280;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--text);font-family:'Noto Sans KR',sans-serif;font-size:14px;line-height:1.6}
+
+/* HEADER */
+.hdr{background:linear-gradient(135deg,#064e3b 0%,#065f46 50%,#047857 100%);color:#fff;padding:28px 24px 22px;position:relative;overflow:hidden}
+.hdr::after{content:'';position:absolute;right:-60px;top:-60px;width:220px;height:220px;border-radius:50%;background:rgba(255,255,255,0.05)}
+.hi{max-width:1100px;margin:0 auto;position:relative}
+.eyebrow{font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:#6ee7b7;margin-bottom:6px}
+.hdr h1{font-size:clamp(18px,3.5vw,26px);font-weight:900;margin-bottom:6px;font-family:'Noto Serif KR',serif}
+.hdr-sub{font-size:12px;color:#a7f3d0}
+.pills{display:flex;flex-wrap:wrap;gap:6px;margin-top:14px}
+.pill{background:rgba(255,255,255,0.12);border:1px solid rgba(255,255,255,0.2);padding:3px 12px;border-radius:20px;font-size:11px;color:#d1fae5}
+
+/* TYPE NAV */
+.type-nav{background:var(--white);border-bottom:3px solid var(--border);display:flex;position:sticky;top:0;z-index:200;box-shadow:0 2px 8px rgba(0,0,0,0.07)}
+.type-btn{flex:1;padding:14px 8px;font-size:13px;font-weight:700;color:var(--t3);background:none;border:none;border-bottom:4px solid transparent;cursor:pointer;font-family:inherit;transition:all .2s;text-align:center}
+.type-btn:hover{color:#059669}
+.type-btn.active{color:#059669;border-bottom-color:#059669;background:var(--tealb)}
+
+/* SUB NAV */
+.sub-nav{background:var(--white);border-bottom:1px solid var(--border);overflow-x:auto;white-space:nowrap;padding:0 16px;scrollbar-width:none}
+.sub-nav::-webkit-scrollbar{display:none}
+.sub-btn{display:inline-block;padding:10px 14px;font-size:12px;font-weight:600;color:var(--t3);background:none;border:none;border-bottom:2px solid transparent;cursor:pointer;font-family:inherit;transition:all .18s}
+.sub-btn:hover{color:var(--blue)}
+.sub-btn.active{color:var(--blue);border-bottom-color:var(--blue)}
+
+/* LAYOUT */
+.main{max-width:1100px;margin:0 auto;padding:24px 16px 80px}
+.section{display:none}.section.active{display:block}
+.panel{display:none}.panel.active{display:block}
+
+/* Q CARD */
+.qcard{background:var(--white);border:1px solid var(--border);border-radius:14px;overflow:hidden;box-shadow:0 2px 12px rgba(0,0,0,0.05);margin-bottom:28px}
+.qhead{padding:16px 22px 12px;border-bottom:1px solid var(--bl);display:flex;align-items:flex-start;gap:12px}
+.qbadge{flex-shrink:0;padding:4px 11px;border-radius:20px;font-size:10px;font-weight:700;margin-top:2px}
+.qnum{font-size:10px;color:var(--t3);font-weight:600;letter-spacing:.5px;margin-bottom:3px}
+.qtitle{font-size:15px;font-weight:800;color:var(--text);line-height:1.4}
+.qbody{background:var(--bg);padding:14px 22px;border-bottom:1px solid var(--bl)}
+.qtext{font-size:13px;color:var(--t2);line-height:1.8}
+.qitems{margin-top:8px;display:flex;flex-direction:column;gap:5px}
+.qi{display:flex;gap:10px;align-items:flex-start;font-size:13px;color:var(--t2)}
+.ql{font-weight:700;color:var(--blue);min-width:20px;flex-shrink:0}
+.hints{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}
+.hint{background:var(--tealb);border:1px solid var(--tealbr);color:var(--teal);font-size:10px;font-weight:600;padding:2px 8px;border-radius:5px}
+
+/* ANSWER TOGGLE */
+.ans-wrap{background:var(--white)}
+.atoggle{width:100%;padding:13px 22px;background:none;border:none;display:flex;align-items:center;justify-content:space-between;cursor:pointer;font-family:inherit;transition:background .15s}
+.atoggle:hover{background:var(--tealb)}
+.atoggle-label{font-size:13px;font-weight:700;color:#059669;display:flex;align-items:center;gap:8px}
+.arrow{font-size:15px;color:#059669;transition:transform .25s}
+.arrow.open{transform:rotate(180deg)}
+.abody{display:none;padding:0 22px 22px}
+.abody.open{display:block}
+
+/* ANSWER CONTENT */
+.atitle{font-size:17px;font-weight:900;color:var(--text);font-family:'Noto Serif KR',serif;padding:16px 0 6px;border-bottom:2px solid #059669;margin-bottom:16px}
+.asec{margin-bottom:18px}
+.asec-title{font-size:13px;font-weight:800;color:#fff;padding:5px 12px;border-radius:6px;display:inline-block;margin-bottom:10px}
+.sc1{background:#1d4ed8}.sc2{background:#059669}.sc3{background:#7c3aed}
+.sc4{background:#d97706}.sc5{background:#dc2626}.sc6{background:#0d9488}
+
+.ap{font-size:13px;color:var(--t2);line-height:1.85;margin-bottom:10px}
+
+.atable{width:100%;border-collapse:collapse;font-size:12px;margin:10px 0 14px}
+.atable th{background:var(--s2);color:var(--t2);font-weight:700;padding:8px 12px;border:1px solid var(--border);text-align:center}
+.atable td{padding:8px 12px;border:1px solid var(--border);vertical-align:top;line-height:1.6}
+.atable td:first-child{font-weight:600;color:var(--blue);background:var(--blu);text-align:center}
+.atable tr:nth-child(even) td:not(:first-child){background:#fafbfd}
+
+.aol{padding-left:0;list-style:none;display:flex;flex-direction:column;gap:9px;margin:8px 0}
+.aol li{display:flex;gap:10px;align-items:flex-start;font-size:13px;color:var(--t2);line-height:1.7}
+.onum{flex-shrink:0;width:22px;height:22px;border-radius:50%;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;margin-top:1px;color:#fff}
+.on1{background:#1d4ed8}.on2{background:#059669}.on3{background:#7c3aed}.on4{background:#d97706}.on5{background:#dc2626}
+
+.sub-list{margin-top:5px;display:flex;flex-direction:column;gap:4px}
+.sub-i{display:flex;gap:8px;font-size:12px;color:var(--t3)}
+.sub-i::before{content:'▸';color:#059669;flex-shrink:0}
+
+.dbox{background:#f8fafc;border:1px solid var(--border);border-left:3px solid #059669;border-radius:8px;padding:14px 16px;margin:10px 0;font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--t2);line-height:1.8;overflow-x:auto;white-space:pre}
+
+.kbox{border-radius:8px;padding:12px 16px;margin:12px 0;font-size:12px;line-height:1.75}
+.kbox.blue{background:var(--blu);border:1px solid var(--blub);color:#1e40af}
+.kbox.green{background:var(--greeb);border:1px solid var(--greenbr);color:var(--green)}
+.kbox.orange{background:var(--orb);border:1px solid var(--orbr);color:var(--orange)}
+.kbox.red{background:var(--redb);border:1px solid var(--redbr);color:var(--red)}
+.kbox.purple{background:var(--purb);border:1px solid var(--purbr);color:var(--purple)}
+.kbox.teal{background:var(--tealb);border:1px solid var(--tealbr);color:var(--teal)}
+.kb-title{font-weight:700;margin-bottom:5px;font-size:11px;letter-spacing:.5px}
+
+.conc{background:linear-gradient(135deg,var(--tealb),var(--greeb));border:1px solid var(--tealbr);border-radius:8px;padding:14px 16px;margin-top:14px}
+.conc-title{font-weight:700;color:#059669;font-size:12px;margin-bottom:5px}
+.conc p{font-size:12px;color:var(--t2);line-height:1.75}
+
+.chips{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px}
+.chip{font-size:11px;padding:3px 10px;border-radius:6px;font-weight:600}
+.ct{background:var(--orb);color:var(--orange);border:1px solid var(--orbr)}
+.cp{background:var(--greeb);color:var(--green);border:1px solid var(--greenbr)}
+.cs{background:var(--redb);color:var(--red);border:1px solid var(--redbr)}
+.ctype{background:var(--purb);color:var(--purple);border:1px solid var(--purbr)}
+
+/* BADGE COLORS */
+.b-short{background:#d1fae5;color:#065f46;border:1px solid #a7f3d0}
+.b-essay{background:#dbeafe;color:#1d4ed8;border:1px solid #bfdbfe}
+
+/* SHORT ANSWER SPECIFIC */
+.sa-point{background:var(--tealb);border-left:3px solid #059669;padding:10px 14px;border-radius:0 8px 8px 0;margin:10px 0;font-size:12px;color:var(--teal)}
+.sa-key{font-weight:700}
+
+/* section label badge */
+.sec-label{display:inline-block;background:var(--tealb);border:1px solid var(--tealbr);color:var(--teal);font-size:11px;font-weight:700;padding:3px 10px;border-radius:6px;margin-bottom:16px}
+</style>
+</head>
+<body>
+
+<header class="hdr">
+  <div class="hi">
+    <div class="eyebrow">PROFESSIONAL ENGINEER · COMPUTER SYSTEM APPLICATION</div>
+    <h1>BigData(빅데이터) 분야<br>단답형 5문제 + 논술형 5문제 모범답안</h1>
+    <div class="hdr-sub">컴퓨터시스템응용기술사 기출 유형 완전 재현 · 실전 답안 형식</div>
+    <div class="pills">
+      <span class="pill">단답형 1~2페이지 기준</span>
+      <span class="pill">논술형 3~4페이지 기준</span>
+      <span class="pill">개념→원리→비교→대책→결론 구조</span>
+    </div>
+  </div>
+</header>
+
+<div class="type-nav">
+  <button class="type-btn active" onclick="showType(0,this)">📝 단답형 문제 (5문제 · 1~2페이지)</button>
+  <button class="type-btn" onclick="showType(1,this)">📄 논술형 문제 (5문제 · 3~4페이지)</button>
+</div>
+
+<!-- ===================== 단답형 ===================== -->
+<div class="section active" id="sec0">
+  <div style="background:var(--white);border-bottom:1px solid var(--border)">
+    <nav class="sub-nav">
+      <button class="sub-btn active" onclick="showPanel('s',0,this)">Q1. MapReduce</button>
+      <button class="sub-btn" onclick="showPanel('s',1,this)">Q2. Lambda Architecture</button>
+      <button class="sub-btn" onclick="showPanel('s',2,this)">Q3. NoSQL 유형</button>
+      <button class="sub-btn" onclick="showPanel('s',3,this)">Q4. 데이터 레이크</button>
+      <button class="sub-btn" onclick="showPanel('s',4,this)">Q5. 데이터 품질</button>
+    </nav>
+  </div>
+  <main class="main">
+
+  <!-- S-Q1 -->
+  <div class="panel active" id="sp0">
+  <div class="qcard">
+    <div class="qhead">
+      <span class="qbadge b-short">단답형</span>
+      <div>
+        <div class="qnum">단답형 Q1 · 1교시 · 10점</div>
+        <div class="qtitle">MapReduce의 처리 원리와 Word Count 예시를 설명하시오.</div>
+      </div>
+    </div>
+    <div class="qbody">
+      <div class="qtext">MapReduce의 개념, Map 단계와 Reduce 단계의 역할, Shuffle/Sort 과정, 그리고 Word Count를 예시로 전체 흐름을 설명하시오.</div>
+      <div class="hints">
+        <span class="hint">Hadoop 핵심</span><span class="hint">빈출 기초</span><span class="hint">다이어그램 필수</span>
+      </div>
+    </div>
+    <div class="ans-wrap">
+      <button class="atoggle" onclick="toggleA(this)">
+        <span class="atoggle-label">📄 모범 답안 보기</span>
+        <span class="arrow">▼</span>
+      </button>
+      <div class="abody">
+        <div class="atitle">MapReduce의 처리 원리와 Word Count 예시</div>
+        <div class="chips">
+          <span class="chip ct">⏱ 목표 10분</span>
+          <span class="chip cp">📄 1~1.5페이지</span>
+          <span class="chip cs">💯 10점</span>
+        </div>
+
+        <div class="asec">
+          <div class="asec-title sc1">Ⅰ. MapReduce 개념</div>
+          <div class="ap">MapReduce는 Google이 2004년 발표한 대용량 데이터 병렬 처리 프레임워크로, 분산 클러스터에서 Map과 Reduce 두 단계의 함수형 프로그래밍 모델을 통해 페타바이트급 데이터를 처리한다. Hadoop의 핵심 처리 엔진으로 구현되었다.</div>
+        </div>
+
+        <div class="asec">
+          <div class="asec-title sc2">Ⅱ. 처리 단계 및 원리</div>
+          <div class="dbox">입력 데이터 (HDFS)
+    │
+    ├─ [Input Split] : 데이터를 블록(128MB) 단위로 분할
+    │
+    ├─ [Map 단계]
+    │     각 Split에 Map 함수 병렬 적용
+    │     Input  : (key1, value1)
+    │     Output : list(key2, value2)   ← 중간 키-값 쌍 생성
+    │
+    ├─ [Shuffle & Sort]
+    │     중간 결과를 키(key2) 기준으로 정렬·그룹핑
+    │     동일한 키를 가진 값들을 같은 Reducer로 전송
+    │
+    ├─ [Reduce 단계]
+    │     Reduce 함수로 같은 키의 값 목록을 집계
+    │     Input  : (key2, list(value2))
+    │     Output : list(key3, value3)  ← 최종 결과
+    │
+    └─ 결과 저장 (HDFS)</div>
+          <div class="atable" style="margin-top:12px">
+            <table>
+              <tr><th>단계</th><th>역할</th><th>처리 주체</th></tr>
+              <tr><td>Input Split</td><td>입력 데이터를 블록 단위로 분할하여 Mapper에 할당</td><td>JobTracker / ResourceManager</td></tr>
+              <tr><td>Map</td><td>각 레코드에 사용자 정의 함수 적용 → 중간 키-값 쌍 생성</td><td>Mapper (각 DataNode)</td></tr>
+              <tr><td>Shuffle &amp; Sort</td><td>중간 키 기준 정렬·그룹핑 후 네트워크 전송</td><td>MapReduce 프레임워크 자동 수행</td></tr>
+              <tr><td>Reduce</td><td>같은 키의 값 목록을 집계·변환하여 최종 결과 산출</td><td>Reducer</td></tr>
+            </table>
+          </div>
+        </div>
+
+        <div class="asec">
+          <div class="asec-title sc3">Ⅲ. Word Count 예시</div>
+          <div class="dbox">입력: "Hello World Hello Hadoop World"
+
+[Map 결과]
+  (Hello,1) (World,1) (Hello,1) (Hadoop,1) (World,1)
+
+[Shuffle &amp; Sort 후]
+  Hello  → [1, 1]
+  Hadoop → [1]
+  World  → [1, 1]
+
+[Reduce 결과]
+  (Hello, 2)
+  (Hadoop, 1)
+  (World, 2)</div>
+        </div>
+
+        <div class="kbox teal">
+          <div class="kb-title">📌 MapReduce 한계 및 발전</div>
+          ① <strong>디스크 I/O 병목</strong>: Map·Reduce 단계마다 HDFS에 중간 결과 저장 → Spark의 인메모리(RDD) 처리로 극복<br>
+          ② <strong>실시간 처리 불가</strong>: 배치 처리 전용 → Flink·Spark Streaming으로 보완<br>
+          ③ <strong>반복 알고리즘 비효율</strong>: ML 학습 등 반복 작업에 취약
+        </div>
+      </div>
+    </div>
+  </div>
+  </div><!-- /sp0 -->
+
+  <!-- S-Q2 -->
+  <div class="panel" id="sp1">
+  <div class="qcard">
+    <div class="qhead">
+      <span class="qbadge b-short">단답형</span>
+      <div>
+        <div class="qnum">단답형 Q2 · 1교시 · 10점</div>
+        <div class="qtitle">Lambda Architecture의 구성과 각 계층의 역할을 설명하시오.</div>
+      </div>
+    </div>
+    <div class="qbody">
+      <div class="qtext">Lambda Architecture의 개념, Batch Layer·Speed Layer·Serving Layer의 역할과 데이터 흐름, 그리고 Kappa Architecture와의 비교를 설명하시오.</div>
+      <div class="hints">
+        <span class="hint">실시간+배치 처리 핵심</span><span class="hint">Kappa 비교 빈출</span>
+      </div>
+    </div>
+    <div class="ans-wrap">
+      <button class="atoggle" onclick="toggleA(this)">
+        <span class="atoggle-label">📄 모범 답안 보기</span>
+        <span class="arrow">▼</span>
+      </button>
+      <div class="abody">
+        <div class="atitle">Lambda Architecture의 구성 및 계층별 역할</div>
+        <div class="chips">
+          <span class="chip ct">⏱ 목표 12분</span>
+          <span class="chip cp">📄 1.5~2페이지</span>
+          <span class="chip cs">💯 10점</span>
+        </div>
+
+        <div class="asec">
+          <div class="asec-title sc1">Ⅰ. 개념</div>
+          <div class="ap">Lambda Architecture는 Nathan Marz(2011)가 제안한 빅데이터 처리 아키텍처로, 배치 처리(정확성)와 실시간 처리(신속성)를 병렬로 운영하여 대용량 데이터에 대한 임의 쿼리를 낮은 지연시간으로 처리하는 분산 데이터 처리 설계 패턴이다.</div>
+        </div>
+
+        <div class="asec">
+          <div class="asec-title sc2">Ⅱ. 3계층 구성 및 데이터 흐름</div>
+          <div class="dbox">원시 데이터 입력 (Kafka / Flume)
+         ┌─────────────┴──────────────┐
+   [Batch Layer]               [Speed Layer]
+   모든 데이터 저장(HDFS)        최근 데이터만 처리
+   주기적 배치 뷰 생성           실시간 증분 뷰 생성
+   (Hadoop/Spark)              (Spark Streaming/Flink)
+   높은 정확도, 높은 지연        낮은 지연, 근사 정확도
+         └─────────────┬──────────────┘
+                [Serving Layer]
+                배치 뷰 + 실시간 뷰 병합하여 쿼리 응답
+                (HBase, Cassandra, Druid)</div>
+          <table class="atable">
+            <tr><th>계층</th><th>역할</th><th>특성</th><th>기술 스택</th></tr>
+            <tr><td>Batch Layer</td><td>전체 데이터셋 저장 및 주기적 배치 뷰 재계산</td><td>고정확도, 고지연(수 시간~수 일)</td><td>HDFS, Hadoop, Spark</td></tr>
+            <tr><td>Speed Layer</td><td>최근 미처리 데이터의 실시간 증분 뷰 생성</td><td>저지연, 근사 정확도</td><td>Spark Streaming, Flink, Storm</td></tr>
+            <tr><td>Serving Layer</td><td>배치 뷰 + 실시간 뷰 병합하여 쿼리 응답</td><td>읽기 최적화, 색인</td><td>HBase, Cassandra, Druid</td></tr>
+          </table>
+        </div>
+
+        <div class="asec">
+          <div class="asec-title sc3">Ⅲ. Lambda vs Kappa Architecture 비교</div>
+          <table class="atable">
+            <tr><th>구분</th><th>Lambda Architecture</th><th>Kappa Architecture</th></tr>
+            <tr><td>처리 경로</td><td>배치 + 실시간 이중 경로</td><td>스트리밍 단일 경로</td></tr>
+            <tr><td>복잡성</td><td>높음 (두 시스템 운영)</td><td>낮음 (단일 시스템)</td></tr>
+            <tr><td>정확성</td><td>높음 (배치로 보정)</td><td>중간 (스트림만으로 처리)</td></tr>
+            <tr><td>적합 상황</td><td>과거 데이터 재처리 필요, 높은 정확도 요구</td><td>실시간 중심, 단순 처리 파이프라인</td></tr>
+            <tr><td>대표 사례</td><td>광고 분석, 추천 시스템</td><td>실시간 이상 탐지, 로그 처리</td></tr>
+          </table>
+        </div>
+
+        <div class="kbox teal">
+          <div class="kb-title">📌 최근 트렌드</div>
+          스트리밍 처리 기술(Apache Flink, Kafka Streams)의 발전으로 Kappa Architecture 채택이 증가하고 있으며,
+          배치·스트리밍을 통합하는 <strong>통합 처리 플랫폼(Apache Beam, Spark Structured Streaming)</strong>이 주목받고 있다.
+        </div>
+      </div>
+    </div>
+  </div>
+  </div><!-- /sp1 -->
+
+  <!-- S-Q3 -->
+  <div class="panel" id="sp2">
+  <div class="qcard">
+    <div class="qhead">
+      <span class="qbadge b-short">단답형</span>
+      <div>
+        <div class="qnum">단답형 Q3 · 1교시 · 10점</div>
+        <div class="qtitle">NoSQL 데이터베이스의 4가지 유형과 각각의 특징 및 적합 사례를 설명하시오.</div>
+      </div>
+    </div>
+    <div class="qbody">
+      <div class="qtext">NoSQL의 개념과 RDBMS와의 차이점(CAP 이론 연계), Key-Value·Document·Column-Family·Graph 4가지 유형의 구조·특징·대표 제품·사용 사례를 설명하시오.</div>
+      <div class="hints">
+        <span class="hint">CAP 이론 연계</span><span class="hint">유형별 비교표 필수</span><span class="hint">빈출</span>
+      </div>
+    </div>
+    <div class="ans-wrap">
+      <button class="atoggle" onclick="toggleA(this)">
+        <span class="atoggle-label">📄 모범 답안 보기</span>
+        <span class="arrow">▼</span>
+      </button>
+      <div class="abody">
+        <div class="atitle">NoSQL 4가지 유형, 특징 및 적합 사례</div>
+        <div class="chips">
+          <span class="chip ct">⏱ 목표 12분</span>
+          <span class="chip cp">📄 1.5~2페이지</span>
+          <span class="chip cs">💯 10점</span>
+        </div>
+
+        <div class="asec">
+          <div class="asec-title sc1">Ⅰ. NoSQL 개념 및 RDBMS 비교</div>
+          <div class="ap">NoSQL(Not Only SQL)은 관계형 DB의 테이블·스키마·ACID 트랜잭션을 고집하지 않고, 수평적 확장성(Scale-Out)과 유연한 스키마를 통해 대용량·비정형 데이터를 처리하기 위한 비관계형 데이터베이스 총칭이다.</div>
+          <div class="kbox blue">
+            <div class="kb-title">CAP 이론 연계</div>
+            CAP 이론: 분산 시스템은 일관성(C)·가용성(A)·분단 내성(P) 중 동시에 2가지만 보장 가능.<br>
+            RDBMS는 CA 보장 / NoSQL은 AP 또는 CP 선택적 보장 → 유연한 일관성 모델(BASE) 채택
+          </div>
+        </div>
+
+        <div class="asec">
+          <div class="asec-title sc2">Ⅱ. NoSQL 4가지 유형</div>
+          <table class="atable">
+            <tr><th>유형</th><th>데이터 모델</th><th>특징</th><th>대표 제품</th><th>적합 사례</th></tr>
+            <tr><td>Key-Value</td><td>키-값 쌍의 해시맵 구조</td><td>단순 구조, 최고 속도. 값의 내용 기반 쿼리 불가</td><td>Redis, DynamoDB, Memcached</td><td>세션 관리, 캐싱, 장바구니, 리더보드</td></tr>
+            <tr><td>Document</td><td>JSON/BSON 형태의 문서 저장. 중첩 구조 지원</td><td>유연한 스키마, 문서 내 필드 검색 가능</td><td>MongoDB, Couchbase, Firestore</td><td>상품 카탈로그, 블로그, CMS, 사용자 프로필</td></tr>
+            <tr><td>Column-Family</td><td>Row Key + Column Family + Timestamp 3차원 구조</td><td>쓰기 최적화(LSM-Tree). 와이드 컬럼. 희소 데이터 처리</td><td>Apache Cassandra, HBase, Bigtable</td><td>시계열 데이터, IoT, 로그, 추천 이력</td></tr>
+            <tr><td>Graph</td><td>노드(Node) + 엣지(Edge) + 프로퍼티 그래프 모델</td><td>관계 탐색 최적화. 다단계 JOIN 불필요</td><td>Neo4j, Amazon Neptune, TigerGraph</td><td>SNS 관계도, 사기 탐지, 지식 그래프, 경로 탐색</td></tr>
+          </table>
+        </div>
+
+        <div class="kbox green">
+          <div class="kb-title">📌 선택 기준 요약</div>
+          단순 읽기/캐싱 → Key-Value | 반정형 문서 조회 → Document<br>
+          대용량 쓰기·시계열 → Column-Family | 관계 탐색 중심 → Graph
+        </div>
+      </div>
+    </div>
+  </div>
+  </div><!-- /sp2 -->
+
+  <!-- S-Q4 -->
+  <div class="panel" id="sp3">
+  <div class="qcard">
+    <div class="qhead">
+      <span class="qbadge b-short">단답형</span>
+      <div>
+        <div class="qnum">단답형 Q4 · 1교시 · 10점</div>
+        <div class="qtitle">데이터 레이크(Data Lake)의 개념, 데이터 웨어하우스(DW)와의 차이, 그리고 데이터 레이크하우스(Data Lakehouse)를 설명하시오.</div>
+      </div>
+    </div>
+    <div class="qbody">
+      <div class="qtext">데이터 레이크의 정의와 아키텍처, Data Lake vs Data Warehouse 비교, 데이터 늪(Data Swamp) 문제, 그리고 Delta Lake 기반 Data Lakehouse 개념을 설명하시오.</div>
+      <div class="hints">
+        <span class="hint">최신 트렌드 Lakehouse</span><span class="hint">DW 비교 빈출</span>
+      </div>
+    </div>
+    <div class="ans-wrap">
+      <button class="atoggle" onclick="toggleA(this)">
+        <span class="atoggle-label">📄 모범 답안 보기</span>
+        <span class="arrow">▼</span>
+      </button>
+      <div class="abody">
+        <div class="atitle">데이터 레이크 개념, DW 비교 및 데이터 레이크하우스</div>
+        <div class="chips">
+          <span class="chip ct">⏱ 목표 12분</span>
+          <span class="chip cp">📄 1.5~2페이지</span>
+          <span class="chip cs">💯 10점</span>
+        </div>
+
+        <div class="asec">
+          <div class="asec-title sc1">Ⅰ. 데이터 레이크 개념</div>
+          <div class="ap">데이터 레이크(Data Lake)는 정형·반정형·비정형 모든 유형의 원시 데이터(Raw Data)를 ELT(Extract-Load-Transform) 방식으로 스키마 적용 없이 저장하는 중앙 집중식 저장소이다. Schema-on-Read 방식으로 분석 시점에 스키마를 정의한다.</div>
+        </div>
+
+        <div class="asec">
+          <div class="asec-title sc2">Ⅱ. 데이터 레이크 vs 데이터 웨어하우스 비교</div>
+          <table class="atable">
+            <tr><th>구분</th><th>데이터 레이크</th><th>데이터 웨어하우스(DW)</th></tr>
+            <tr><td>데이터 유형</td><td>정형+반정형+비정형 (원시 데이터)</td><td>정형 데이터 중심 (처리된 데이터)</td></tr>
+            <tr><td>스키마 방식</td><td>Schema-on-Read (분석 시 정의)</td><td>Schema-on-Write (적재 시 정의)</td></tr>
+            <tr><td>적재 방식</td><td>ELT (Extract-Load-Transform)</td><td>ETL (Extract-Transform-Load)</td></tr>
+            <tr><td>비용</td><td>낮음 (오브젝트 스토리지 기반)</td><td>높음 (전용 하드웨어·SW)</td></tr>
+            <tr><td>사용자</td><td>데이터 과학자, ML 엔지니어</td><td>비즈니스 애널리스트, 경영진</td></tr>
+            <tr><td>쿼리 성능</td><td>상대적으로 낮음</td><td>최적화된 고성능 쿼리</td></tr>
+            <tr><td>대표 기술</td><td>AWS S3 + Glue, ADLS, GCS</td><td>Snowflake, Redshift, BigQuery</td></tr>
+          </table>
+        </div>
+
+        <div class="asec">
+          <div class="asec-title sc3">Ⅲ. 데이터 레이크하우스(Lakehouse)</div>
+          <div class="ap">데이터 늪(Data Swamp) 문제(데이터 품질 저하, 거버넌스 부재)를 해결하고 DW의 ACID 트랜잭션·성능과 Lake의 유연성·저비용을 결합한 통합 아키텍처이다.</div>
+          <div class="kbox teal">
+            <div class="kb-title">핵심 기술</div>
+            <strong>Delta Lake</strong>: HDFS/S3 위에 ACID 트랜잭션 레이어 추가 (Databricks 개발)<br>
+            <strong>Apache Iceberg</strong>: 스냅샷 기반 테이블 관리, 스키마 진화, Time Travel<br>
+            <strong>Apache Hudi</strong>: 증분 데이터 처리(Upsert), 데이터 레이크 레코드 수준 업데이트
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  </div><!-- /sp3 -->
+
+  <!-- S-Q5 -->
+  <div class="panel" id="sp4">
+  <div class="qcard">
+    <div class="qhead">
+      <span class="qbadge b-short">단답형</span>
+      <div>
+        <div class="qnum">단답형 Q5 · 1교시 · 10점</div>
+        <div class="qtitle">빅데이터의 데이터 품질(Data Quality) 6가지 차원과 관리 방안을 설명하시오.</div>
+      </div>
+    </div>
+    <div class="qbody">
+      <div class="qtext">빅데이터 환경에서 데이터 품질의 개념, 정확성·완전성·일관성·적시성·유일성·유효성 6개 차원의 정의와 측정 지표, 그리고 데이터 거버넌스와의 연계 방안을 설명하시오.</div>
+      <div class="hints">
+        <span class="hint">데이터 거버넌스 연계</span><span class="hint">공공 데이터 관련 빈출</span>
+      </div>
+    </div>
+    <div class="ans-wrap">
+      <button class="atoggle" onclick="toggleA(this)">
+        <span class="atoggle-label">📄 모범 답안 보기</span>
+        <span class="arrow">▼</span>
+      </button>
+      <div class="abody">
+        <div class="atitle">빅데이터 데이터 품질 6차원 및 관리 방안</div>
+        <div class="chips">
+          <span class="chip ct">⏱ 목표 12분</span>
+          <span class="chip cp">📄 1.5~2페이지</span>
+          <span class="chip cs">💯 10점</span>
+        </div>
+
+        <div class="asec">
+          <div class="asec-title sc1">Ⅰ. 데이터 품질의 개념</div>
+          <div class="ap">데이터 품질(Data Quality)이란 데이터가 사용 목적에 부합하는 정도로, 빅데이터 환경에서 다양성(Variety)·속도(Velocity)·양(Volume)의 증가로 품질 관리가 더욱 복잡해진다. 저품질 데이터는 AI 모델 편향, 의사결정 오류, 규제 위반으로 이어진다.</div>
+        </div>
+
+        <div class="asec">
+          <div class="asec-title sc2">Ⅱ. 데이터 품질 6가지 차원</div>
+          <table class="atable">
+            <tr><th>차원</th><th>정의</th><th>측정 지표 예시</th></tr>
+            <tr><td>정확성 (Accuracy)</td><td>데이터가 실제 현실을 올바르게 반영하는 정도</td><td>오류 레코드 비율, 참조 데이터와의 일치율</td></tr>
+            <tr><td>완전성 (Completeness)</td><td>필수 데이터가 누락 없이 존재하는 정도</td><td>NULL 값 비율, 필수 필드 누락률</td></tr>
+            <tr><td>일관성 (Consistency)</td><td>동일 데이터가 여러 시스템에서 동일한 값을 갖는 정도</td><td>시스템 간 불일치 레코드 수, 중복 비율</td></tr>
+            <tr><td>적시성 (Timeliness)</td><td>데이터가 요구되는 시점에 최신 상태로 제공되는 정도</td><td>데이터 지연 시간, 최신성 비율</td></tr>
+            <tr><td>유일성 (Uniqueness)</td><td>동일한 실체가 중복 없이 하나만 존재하는 정도</td><td>중복 레코드 비율, 키 중복률</td></tr>
+            <tr><td>유효성 (Validity)</td><td>데이터가 정의된 형식·범위·도메인 규칙을 준수하는 정도</td><td>도메인 규칙 위반 비율, 형식 오류 수</td></tr>
+          </table>
+        </div>
+
+        <div class="asec">
+          <div class="asec-title sc3">Ⅲ. 데이터 품질 관리 방안 (거버넌스 연계)</div>
+          <ul class="aol">
+            <li><span class="onum on1">1</span><div><strong>데이터 프로파일링</strong>: 입력 데이터의 통계적 특성·분포·이상값을 자동 분석하여 품질 현황 파악 (Great Expectations, Deequ)</div></li>
+            <li><span class="onum on2">2</span><div><strong>데이터 품질 규칙 자동화</strong>: 파이프라인에 품질 검증 단계 삽입 → 규칙 위반 시 알림·격리(Quarantine)</div></li>
+            <li><span class="onum on3">3</span><div><strong>데이터 카탈로그</strong>: 메타데이터·데이터 계보(Lineage) 관리로 출처 추적 및 신뢰도 표시 (Alation, Datahub)</div></li>
+            <li><span class="onum on4">4</span><div><strong>데이터 거버넌스 조직</strong>: CDO(최고 데이터 책임자), 데이터 스튜어드 지정, 품질 KPI 정기 보고</div></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+  </div><!-- /sp4 -->
+
+  </main>
+</div><!-- /sec0 -->
+
+<!-- ===================== 논술형 ===================== -->
+<div class="section" id="sec1">
+  <div style="background:var(--white);border-bottom:1px solid var(--border)">
+    <nav class="sub-nav">
+      <button class="sub-btn active" onclick="showPanel('e',0,this)">Q1. Hadoop 에코시스템</button>
+      <button class="sub-btn" onclick="showPanel('e',1,this)">Q2. Apache Spark</button>
+      <button class="sub-btn" onclick="showPanel('e',2,this)">Q3. 데이터 파이프라인</button>
+      <button class="sub-btn" onclick="showPanel('e',3,this)">Q4. 빅데이터 보안</button>
+      <button class="sub-btn" onclick="showPanel('e',4,this)">Q5. 실시간 스트리밍</button>
+    </nav>
+  </div>
+  <main class="main">
+
+  <!-- E-Q1 -->
+  <div class="panel active" id="ep0">
+  <div class="qcard">
+    <div class="qhead">
+      <span class="qbadge b-essay">논술형</span>
+      <div>
+        <div class="qnum">논술형 Q1 · 2~4교시 · 25점</div>
+        <div class="qtitle">Hadoop 에코시스템의 구성과 역할, 그리고 데이터 처리 파이프라인을 설명하시오.</div>
+      </div>
+    </div>
+    <div class="q-body" style="background:var(--bg);padding:14px 22px;border-bottom:1px solid var(--bl)">
+      <div class="qitems">
+        <div class="qi"><span class="ql">가.</span><span>Hadoop의 핵심 구성요소(HDFS, YARN, MapReduce)의 아키텍처와 역할</span></div>
+        <div class="qi"><span class="ql">나.</span><span>Hadoop 에코시스템 주요 컴포넌트(Hive, HBase, Pig, Sqoop, Kafka, Oozie 등)의 역할과 상호 관계</span></div>
+        <div class="qi"><span class="ql">다.</span><span>Hadoop 기반 엔터프라이즈 빅데이터 파이프라인 설계 및 도입 시 고려사항</span></div>
+      </div>
+      <div class="hints" style="margin-top:12px">
+        <span class="hint">HDFS 내부 구조 필수</span><span class="hint">에코시스템 전체 그림</span><span class="hint">134회 유사</span>
+      </div>
+    </div>
+    <div class="ans-wrap">
+      <button class="atoggle" onclick="toggleA(this)">
+        <span class="atoggle-label">📄 모범 답안 보기</span>
+        <span class="arrow">▼</span>
+      </button>
+      <div class="abody">
+        <div class="atitle">Hadoop 에코시스템 구성·역할 및 엔터프라이즈 빅데이터 파이프라인 설계</div>
+        <div class="chips">
+          <span class="chip ct">⏱ 목표 25분</span>
+          <span class="chip cp">📄 3.5~4페이지</span>
+          <span class="chip cs">💯 25점</span>
+        </div>
+
+        <div class="asec">
+          <div class="asec-title sc1">Ⅰ. 개요 — Hadoop의 개념</div>
+          <div class="ap">Hadoop은 Apache 재단이 개발한 오픈소스 분산 컴퓨팅 프레임워크로, Google의 GFS·MapReduce 논문(2003~2004)을 기반으로 구현되었다. 수백~수천 대의 범용 서버(Commodity Hardware)에 데이터를 분산 저장·처리하여 페타바이트급 빅데이터를 처리하는 사실상 표준 플랫폼이다.</div>
+        </div>
+
+        <div class="asec">
+          <div class="asec-title sc2">Ⅱ. 가. Hadoop 핵심 구성요소</div>
+          <div class="kbox blue">
+            <div class="kb-title">① HDFS (Hadoop Distributed File System)</div>
+            블록 단위(기본 128MB)로 데이터를 분할하여 3개 노드에 복제(Replication Factor=3) 저장.<br>
+            <strong>NameNode</strong>: 메타데이터(파일명·블록 위치·권한) 관리. SPOF 해결을 위해 HA(Active-Standby) 구성.<br>
+            <strong>DataNode</strong>: 실제 블록 저장. 주기적으로 NameNode에 Heartbeat·Block Report 전송.<br>
+            <strong>Secondary NameNode</strong>: EditLog와 FsImage를 주기적으로 병합(Checkpoint). HA 환경에서는 Standby NameNode가 대체.
+          </div>
+          <div class="dbox">HDFS 파일 저장 구조
+
+  NameNode
+  ┌──────────────────────────────────┐
+  │ 파일명 → [블록1:DN1,DN3] [블록2:DN1,DN2] │
+  │ (FsImage + EditLog)              │
+  └──────────────────────────────────┘
+          ↕ Heartbeat (3초)
+  DataNode1   DataNode2   DataNode3
+  [블록1] [블록2]  [블록2]     [블록1]
+  (복제본 3개로 장애 내성 확보)</div>
+
+          <div class="kbox green" style="margin-top:12px">
+            <div class="kb-title">② YARN (Yet Another Resource Negotiator)</div>
+            Hadoop 2.0에서 도입된 클러스터 자원 관리자. MapReduce 외 다양한 처리 엔진(Spark, Flink) 지원.<br>
+            <strong>ResourceManager</strong>: 전체 클러스터 자원 조율 및 ApplicationMaster 관리.<br>
+            <strong>NodeManager</strong>: 각 노드의 Container 실행·모니터링.<br>
+            <strong>ApplicationMaster</strong>: 애플리케이션별 자원 요청·태스크 스케줄링 담당.
+          </div>
+          <div class="kbox orange">
+            <div class="kb-title">③ MapReduce</div>
+            분산 병렬 처리 프레임워크. Map → Shuffle&amp;Sort → Reduce 3단계 처리. 디스크 기반 처리로 높은 내결함성을 제공하나 반복 처리에 비효율적. → Apache Spark(인메모리)으로 대체 추세.
+          </div>
+        </div>
+
+        <div class="asec">
+          <div class="asec-title sc3">Ⅲ. 나. Hadoop 에코시스템 주요 컴포넌트</div>
+          <table class="atable">
+            <tr><th>컴포넌트</th><th>역할</th><th>특징</th></tr>
+            <tr><td>Apache Hive</td><td>HDFS 데이터에 대한 SQL 인터페이스(HiveQL) 제공</td><td>DW 기능 구현. 내부적으로 MapReduce/Tez/Spark로 변환 실행</td></tr>
+            <tr><td>Apache HBase</td><td>HDFS 위의 컬럼 패밀리 기반 NoSQL 실시간 읽기/쓰기</td><td>Google Bigtable 기반. 수십억 행 데이터의 저지연 접근</td></tr>
+            <tr><td>Apache Pig</td><td>Pig Latin 스크립트 언어로 ETL 처리</td><td>복잡한 MapReduce를 단순 스크립트로 표현. 현재는 Spark로 대체 추세</td></tr>
+            <tr><td>Apache Sqoop</td><td>RDBMS ↔ HDFS 간 대용량 데이터 이관</td><td>병렬 임포트/익스포트. JDBC 기반. Kafka Connector로 대체 추세</td></tr>
+            <tr><td>Apache Kafka</td><td>분산 메시지 큐 기반 실시간 데이터 스트리밍 플랫폼</td><td>Producer-Topic-Consumer 구조. 수백만 TPS 처리. 스트리밍 파이프라인 허브</td></tr>
+            <tr><td>Apache Spark</td><td>인메모리 기반 범용 대용량 데이터 처리 엔진</td><td>MapReduce 대비 최대 100배 빠름. ML(MLlib), 스트리밍, SQL, GraphX 지원</td></tr>
+            <tr><td>Apache Oozie</td><td>Hadoop 작업(MapReduce, Hive, Pig) 워크플로우 스케줄러</td><td>DAG(방향 비순환 그래프) 기반 워크플로우 정의. Airflow로 대체 추세</td></tr>
+            <tr><td>Apache ZooKeeper</td><td>분산 시스템 협조(Coordination) 서비스</td><td>NameNode HA, HBase 마스터 선출, 분산 락 관리</td></tr>
+          </table>
+        </div>
+
+        <div class="asec">
+          <div class="asec-title sc4">Ⅳ. 다. 엔터프라이즈 빅데이터 파이프라인 설계</div>
+          <div class="dbox">엔터프라이즈 Hadoop 기반 빅데이터 파이프라인
+
+[수집 계층]
+  RDBMS/ERP → Sqoop → HDFS
+  로그/IoT   → Flume → Kafka → Spark Streaming → HDFS
+
+[저장 계층]
+  원시 데이터    : HDFS (Data Lake — ELT)
+  실시간 조회   : HBase (NoSQL — 저지연)
+  분석용 DW    : Hive (HiveQL — BI 연동)
+
+[처리 계층]
+  배치 처리   : Spark (SparkSQL, MLlib)
+  스트리밍   : Spark Structured Streaming / Flink
+
+[서비스 계층]
+  BI 도구  : Tableau, Power BI → Hive/Impala 연결
+  REST API : Presto / Trino → 임시 분석 쿼리
+
+[운영 관리]
+  워크플로우 : Apache Airflow (DAG 스케줄링)
+  모니터링   : Ambari, Grafana + Prometheus</div>
+          <table class="atable">
+            <tr><th>고려사항</th><th>내용</th></tr>
+            <tr><td>데이터 거버넌스</td><td>Apache Atlas로 메타데이터·데이터 계보(Lineage) 관리, 데이터 분류체계 수립</td></tr>
+            <tr><td>보안</td><td>Kerberos 인증, Apache Ranger로 컬럼 수준 접근 제어(ABAC), TLS 암호화</td></tr>
+            <tr><td>고가용성(HA)</td><td>NameNode HA(Active-Standby + ZooKeeper), YARN ResourceManager HA 구성</td></tr>
+            <tr><td>비용 최적화</td><td>Cold 데이터는 S3/GCS로 Tiering, 컴퓨팅·스토리지 분리 아키텍처(클라우드 네이티브)</td></tr>
+          </table>
+        </div>
+
+        <div class="conc">
+          <div class="conc-title">Ⅴ. 결론</div>
+          <p>Hadoop 에코시스템은 빅데이터 처리의 사실상 표준으로, HDFS·YARN을 기반으로 다양한 컴포넌트가 데이터 수집-저장-처리-서비스 전 과정을 지원한다. 최근에는 클라우드 네이티브 환경에서 컴퓨팅·스토리지 분리(S3 + Spark on K8s), Apache Iceberg 기반 Data Lakehouse 아키텍처로 발전하고 있으며, 기업은 온프레미스 Hadoop과 클라우드 하이브리드 전략을 병행하는 추세이다.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  </div><!-- /ep0 -->
+
+  <!-- E-Q2 -->
+  <div class="panel" id="ep1">
+  <div class="qcard">
+    <div class="qhead">
+      <span class="qbadge b-essay">논술형</span>
+      <div>
+        <div class="qnum">논술형 Q2 · 2~4교시 · 25점</div>
+        <div class="qtitle">Apache Spark의 아키텍처와 핵심 추상화 개념을 설명하고, 빅데이터 처리 최적화 방안을 논하시오.</div>
+      </div>
+    </div>
+    <div class="q-body" style="background:var(--bg);padding:14px 22px;border-bottom:1px solid var(--bl)">
+      <div class="qitems">
+        <div class="qi"><span class="ql">가.</span><span>Spark 아키텍처(Driver, Executor, Cluster Manager)와 실행 모델(Job→Stage→Task)</span></div>
+        <div class="qi"><span class="ql">나.</span><span>RDD, DataFrame, Dataset의 개념과 차이점, 그리고 Catalyst Optimizer의 역할</span></div>
+        <div class="qi"><span class="ql">다.</span><span>Spark 성능 최적화 기법(파티셔닝, 캐싱, 셔플 최소화, 브로드캐스트 조인) 및 MapReduce 대비 장단점</span></div>
+      </div>
+      <div class="hints" style="margin-top:12px">
+        <span class="hint">인메모리 처리 원리</span><span class="hint">최신 Spark 3.x 연계</span><span class="hint">성능 최적화 빈출</span>
+      </div>
+    </div>
+    <div class="ans-wrap">
+      <button class="atoggle" onclick="toggleA(this)">
+        <span class="atoggle-label">📄 모범 답안 보기</span>
+        <span class="arrow">▼</span>
+      </button>
+      <div class="abody">
+        <div class="atitle">Apache Spark 아키텍처·추상화·성능 최적화 및 MapReduce 비교</div>
+        <div class="chips">
+          <span class="chip ct">⏱ 목표 25분</span>
+          <span class="chip cp">📄 3.5~4페이지</span>
+          <span class="chip cs">💯 25점</span>
+        </div>
+
+        <div class="asec">
+          <div class="asec-title sc1">Ⅰ. 개요</div>
+          <div class="ap">Apache Spark는 UC Berkeley AMPLab이 개발(2009)한 인메모리 기반 범용 분산 데이터 처리 엔진으로, Hadoop MapReduce의 디스크 I/O 병목을 극복하고 배치·스트리밍·ML·그래프 처리를 단일 플랫폼에서 지원한다. MapReduce 대비 인메모리 처리 시 최대 100배, 디스크 기반 처리 시 최대 10배 빠른 성능을 제공한다.</div>
+        </div>
+
+        <div class="asec">
+          <div class="asec-title sc2">Ⅱ. 가. Spark 아키텍처 및 실행 모델</div>
+          <div class="dbox">Spark 클러스터 아키텍처
+
+사용자 코드(spark-submit)
+      │
+  [Driver Program]
+  SparkContext 생성
+  DAG 생성 → Logical Plan → Physical Plan
+  Task 스케줄링 → Executor 배포
+      │ 자원 요청
+  [Cluster Manager]  (YARN / Kubernetes / Standalone)
+  │
+  ├─ [Executor A (Worker Node 1)]
+  │    Task1-1 / Task1-2  (각 Task = 1개 파티션 처리)
+  │    인메모리 캐시(RDD Cache)
+  │
+  └─ [Executor B (Worker Node 2)]
+       Task2-1 / Task2-2</div>
+          <table class="atable">
+            <tr><th>실행 단위</th><th>설명</th><th>특징</th></tr>
+            <tr><td>Job</td><td>하나의 Action(collect, save 등) 호출로 생성되는 최상위 실행 단위</td><td>사용자 Action당 1개 Job 생성</td></tr>
+            <tr><td>Stage</td><td>Shuffle 경계로 분리된 Task 집합. Narrow/Wide Dependency로 구분</td><td>Wide Transformation(groupBy, join)마다 Stage 경계 생성</td></tr>
+            <tr><td>Task</td><td>하나의 파티션을 처리하는 최소 실행 단위. Executor의 스레드에서 실행</td><td>파티션 수 = Task 수 (기본값 200개)</td></tr>
+          </table>
+        </div>
+
+        <div class="asec">
+          <div class="asec-title sc3">Ⅲ. 나. RDD·DataFrame·Dataset 비교 및 Catalyst Optimizer</div>
+          <table class="atable">
+            <tr><th>추상화</th><th>도입 버전</th><th>특징</th><th>최적화</th><th>타입 안전성</th></tr>
+            <tr><td>RDD</td><td>Spark 1.0</td><td>분산 불변 컬렉션. 저수준 API. 직접 제어 가능</td><td>수동 최적화 필요</td><td>없음 (런타임 타입)</td></tr>
+            <tr><td>DataFrame</td><td>Spark 1.3</td><td>스키마 있는 분산 테이블(Row 컬렉션). SQL 인터페이스 지원</td><td>Catalyst + Tungsten 자동 최적화</td><td>없음 (런타임 타입)</td></tr>
+            <tr><td>Dataset</td><td>Spark 1.6</td><td>타입 안전한 DataFrame. Encoder 기반 직렬화</td><td>Catalyst + Tungsten + Encoder 최적화</td><td>있음 (컴파일 타입 검사)</td></tr>
+          </table>
+          <div class="kbox purple">
+            <div class="kb-title">Catalyst Optimizer 동작 원리 (Spark SQL)</div>
+            ① 미해결 Logical Plan → ② Analyzed Plan (스키마 검증) → ③ Optimized Logical Plan (술어 푸시다운, 상수 접기, 조인 재정렬) → ④ Physical Plan 생성 → ⑤ Cost-Based Optimization(CBO)으로 최적 Physical Plan 선택 → ⑥ RDD 실행 코드 생성(Code Generation, Tungsten)
+          </div>
+        </div>
+
+        <div class="asec">
+          <div class="asec-title sc4">Ⅳ. 다. Spark 성능 최적화 기법</div>
+          <ul class="aol">
+            <li><span class="onum on1">1</span><div><strong>파티셔닝(Partitioning)</strong>: 데이터를 처리 목적에 맞게 분할하여 병렬성 극대화.
+              <div class="sub-list">
+                <div class="sub-i">파티션 수 = 코어 수 × 2~3배 권장 (기본값 spark.sql.shuffle.partitions=200)</div>
+                <div class="sub-i">repartition(): 균등 분산 (Shuffle 발생) / coalesce(): 축소 (Shuffle 없음)</div>
+              </div>
+            </div></li>
+            <li><span class="onum on2">2</span><div><strong>캐싱(Caching)</strong>: 반복 사용 데이터를 메모리에 캐시하여 재계산 방지.
+              <div class="sub-list">
+                <div class="sub-i">persist(MEMORY_AND_DISK): 메모리 부족 시 디스크 Spill</div>
+                <div class="sub-i">cache() = persist(MEMORY_ONLY). 반복 ML 학습 루프에 필수</div>
+              </div>
+            </div></li>
+            <li><span class="onum on3">3</span><div><strong>셔플 최소화</strong>: Wide Transformation(groupByKey, join) 줄이기.
+              <div class="sub-list">
+                <div class="sub-i">groupByKey → reduceByKey/aggregateByKey (Map 측 사전 집계로 네트워크 전송량 감소)</div>
+                <div class="sub-i">Adaptive Query Execution(AQE, Spark 3.0): 런타임 통계 기반 동적 파티션 병합</div>
+              </div>
+            </div></li>
+            <li><span class="onum on4">4</span><div><strong>브로드캐스트 조인(Broadcast Join)</strong>: 소규모 테이블(기본 10MB 이하)을 모든 Executor에 브로드캐스트하여 Shuffle 없는 조인.
+              <div class="sub-list">
+                <div class="sub-i">spark.broadcast.threshold 조정으로 임계값 변경 가능 (권장: 50~200MB)</div>
+              </div>
+            </div></li>
+          </ul>
+          <table class="atable" style="margin-top:14px">
+            <tr><th>구분</th><th>MapReduce</th><th>Apache Spark</th></tr>
+            <tr><td>처리 방식</td><td>디스크 기반 (중간 결과 HDFS 저장)</td><td>인메모리 기반 (RDD 메모리 캐시)</td></tr>
+            <tr><td>처리 속도</td><td>기준(1x)</td><td>인메모리 최대 100x, 디스크 10x</td></tr>
+            <tr><td>처리 유형</td><td>배치 전용</td><td>배치+스트리밍+ML+그래프 통합</td></tr>
+            <tr><td>반복 처리</td><td>매 반복마다 디스크 I/O → 비효율</td><td>캐시 사용으로 반복 처리 효율적</td></tr>
+            <tr><td>언어 지원</td><td>Java 중심</td><td>Scala, Java, Python, R, SQL</td></tr>
+            <tr><td>장애 내성</td><td>Lineage 없음, 체크포인트 기반</td><td>RDD Lineage로 부분 재계산</td></tr>
+          </table>
+        </div>
+
+        <div class="conc">
+          <div class="conc-title">Ⅴ. 결론</div>
+          <p>Apache Spark는 인메모리 처리, Catalyst Optimizer, Tungsten 실행 엔진을 통해 빅데이터 처리의 속도와 범용성을 획기적으로 향상시켰다. Spark 3.x의 Adaptive Query Execution(AQE), Dynamic Partition Pruning, GPU 가속(Rapids) 기능으로 지속 발전 중이며, Kubernetes 위에서 실행되는 클라우드 네이티브 Spark가 현대적 빅데이터 아키텍처의 표준으로 자리잡고 있다.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  </div><!-- /ep1 -->
+
+  <!-- E-Q3 -->
+  <div class="panel" id="ep2">
+  <div class="qcard">
+    <div class="qhead">
+      <span class="qbadge b-essay">논술형</span>
+      <div>
+        <div class="qnum">논술형 Q3 · 2~4교시 · 25점</div>
+        <div class="qtitle">빅데이터 ETL/ELT 데이터 파이프라인의 설계 원칙과 Apache Kafka를 활용한 실시간 데이터 통합 방안을 설명하시오.</div>
+      </div>
+    </div>
+    <div class="q-body" style="background:var(--bg);padding:14px 22px;border-bottom:1px solid var(--bl)">
+      <div class="qitems">
+        <div class="qi"><span class="ql">가.</span><span>ETL과 ELT의 비교 및 빅데이터 환경에서 ELT가 선호되는 이유</span></div>
+        <div class="qi"><span class="ql">나.</span><span>Apache Kafka의 아키텍처(Producer·Broker·Consumer·ZooKeeper) 및 핵심 동작 원리</span></div>
+        <div class="qi"><span class="ql">다.</span><span>Kafka Connect, Kafka Streams를 활용한 데이터 파이프라인 설계 및 CDC(Change Data Capture) 패턴</span></div>
+      </div>
+      <div class="hints" style="margin-top:12px">
+        <span class="hint">Kafka 아키텍처 필수</span><span class="hint">CDC 최신 트렌드</span><span class="hint">오프셋·파티션 개념</span>
+      </div>
+    </div>
+    <div class="ans-wrap">
+      <button class="atoggle" onclick="toggleA(this)">
+        <span class="atoggle-label">📄 모범 답안 보기</span>
+        <span class="arrow">▼</span>
+      </button>
+      <div class="abody">
+        <div class="atitle">ETL/ELT 비교, Kafka 아키텍처·동작 원리 및 실시간 데이터 파이프라인 설계</div>
+        <div class="chips">
+          <span class="chip ct">⏱ 목표 25분</span>
+          <span class="chip cp">📄 3.5~4페이지</span>
+          <span class="chip cs">💯 25점</span>
+        </div>
+
+        <div class="asec">
+          <div class="asec-title sc1">Ⅰ. 가. ETL vs ELT 비교 및 빅데이터 환경에서의 ELT 선호</div>
+          <table class="atable">
+            <tr><th>구분</th><th>ETL (Extract-Transform-Load)</th><th>ELT (Extract-Load-Transform)</th></tr>
+            <tr><td>처리 순서</td><td>추출 → 변환 → 적재</td><td>추출 → 적재 → 변환 (적재 후 변환)</td></tr>
+            <tr><td>변환 위치</td><td>중간 스테이징 서버(ETL 서버)</td><td>대상 스토리지 내부 (Spark, Hive, SQL)</td></tr>
+            <tr><td>원시 데이터 보존</td><td>변환 후 원시 데이터 손실</td><td>원시 데이터 Data Lake에 보존</td></tr>
+            <tr><td>적합 환경</td><td>전통적 DW, 소규모 정형 데이터</td><td>빅데이터 Data Lake, 클라우드 환경</td></tr>
+            <tr><td>유연성</td><td>낮음 (변환 로직 사전 고정)</td><td>높음 (분석 목적에 따라 변환 유연)</td></tr>
+          </table>
+          <div class="kbox green">
+            <div class="kb-title">ELT 선호 이유 (빅데이터 환경)</div>
+            ① 클라우드 스토리지(S3, ADLS) 비용 하락으로 원시 데이터 전량 보존 가능<br>
+            ② Spark·Trino·BigQuery 등 강력한 분산 처리 엔진으로 적재 후 변환 효율 향상<br>
+            ③ ML·AI를 위한 원시 Feature 보존 필요 → 재사용성·재처리 가능성 확보
+          </div>
+        </div>
+
+        <div class="asec">
+          <div class="asec-title sc2">Ⅱ. 나. Apache Kafka 아키텍처 및 동작 원리</div>
+          <div class="dbox">Apache Kafka 아키텍처
+
+[Producer]                    [Consumer Group A]
+  App1 ─────┐                ┌─── Consumer1 (Partition 0,1 처리)
+  App2 ─────┤                │
+             ▼                └─── Consumer2 (Partition 2,3 처리)
+      [Kafka Cluster]
+   Broker1  Broker2  Broker3  [Consumer Group B]
+   Topic: orders              └─── Consumer3 (모든 파티션)
+   ├─ Partition0 [Leader:B1, Replica:B2]
+   ├─ Partition1 [Leader:B2, Replica:B3]
+   └─ Partition2 [Leader:B3, Replica:B1]
+
+   [ZooKeeper / KRaft]  ← 브로커 메타데이터·리더 선출 관리</div>
+          <table class="atable">
+            <tr><th>구성요소</th><th>역할</th><th>핵심 개념</th></tr>
+            <tr><td>Producer</td><td>메시지를 Topic의 특정 파티션에 발행</td><td>파티셔닝 키로 동일 키는 동일 파티션 보장. Batch 전송으로 처리량 향상</td></tr>
+            <tr><td>Broker</td><td>메시지를 디스크에 순차 저장(로그 구조). 클러스터 내 복수 브로커 운영</td><td>로그 세그먼트 파일. 보존 기간(Retention Period) 설정. 수평 확장 용이</td></tr>
+            <tr><td>Consumer</td><td>Topic의 파티션에서 메시지를 오프셋(Offset) 기반으로 소비</td><td>오프셋: 파티션 내 메시지 위치 포인터. Consumer Group 내 파티션 할당(재분배)</td></tr>
+            <tr><td>Topic/Partition</td><td>메시지의 논리적 채널. 파티션으로 분산·병렬 처리</td><td>파티션 수 = 최대 병렬 소비자 수. 파티션 내 메시지 순서 보장</td></tr>
+            <tr><td>ZooKeeper/KRaft</td><td>브로커 메타데이터, 리더 선출, Consumer 그룹 조율</td><td>Kafka 3.x부터 KRaft 모드로 ZooKeeper 의존성 제거 진행 중</td></tr>
+          </table>
+        </div>
+
+        <div class="asec">
+          <div class="asec-title sc3">Ⅲ. 다. Kafka Connect·Streams 활용 파이프라인 및 CDC 패턴</div>
+          <div class="dbox">Kafka 기반 실시간 데이터 파이프라인
+
+[소스 시스템]                        [싱크 시스템]
+ MySQL DB ──Debezium              Elasticsearch
+           CDC Source ──┐    ┌─── Sink Connector
+ IoT 센서 ──MQTT         │    │
+           Connector ───┤    ├─── S3/HDFS Sink
+ REST API ──HTTP         │    │
+           Connector ───┘    └─── DW(Snowflake) Sink
+                    │
+            [Kafka Topic]
+                    │
+          [Kafka Streams / KSQL]
+           실시간 집계·필터·조인·이상탐지
+                    │
+            [Consumer Apps]</div>
+          <div class="kbox orange">
+            <div class="kb-title">CDC (Change Data Capture) 패턴</div>
+            RDBMS의 트랜잭션 로그(MySQL Binlog, PostgreSQL WAL)를 실시간으로 캡처하여 Kafka로 스트리밍하는 기법.<br>
+            <strong>도구</strong>: Debezium (오픈소스 CDC → Kafka Connector 기반)<br>
+            <strong>장점</strong>: ① 소스 DB 부하 없음 (로그 기반) ② 밀리초 단위 실시간 전파 ③ 데이터 손실 없음<br>
+            <strong>활용</strong>: 마이크로서비스 간 데이터 동기화, 데이터 레이크 실시간 업데이트, Outbox 패턴 구현
+          </div>
+          <ul class="aol">
+            <li><span class="onum on1">1</span><div><strong>Kafka Connect</strong>: 소스(Source) 및 싱크(Sink) 커넥터 플러그인을 통해 외부 시스템과 Kafka 간 데이터 이동 표준화. 코드 작성 없이 설정(JSON)만으로 파이프라인 구성</div></li>
+            <li><span class="onum on2">2</span><div><strong>Kafka Streams</strong>: Kafka 토픽 데이터를 상태 기반(Stateful) 처리하는 경량 스트림 처리 라이브러리. 별도 클러스터 불필요. 윈도우 집계, 조인, KTable 지원</div></li>
+            <li><span class="onum on3">3</span><div><strong>정확히 한 번(Exactly-Once) 보장</strong>: Kafka 0.11+에서 Producer Idempotency + Transactional API + Kafka Streams EOS 설정으로 중복 없는 메시지 처리 보장</div></li>
+          </ul>
+        </div>
+
+        <div class="conc">
+          <div class="conc-title">Ⅳ. 결론</div>
+          <p>빅데이터 파이프라인은 ELT 방식과 Kafka 기반 실시간 스트리밍의 결합으로 Data Lake의 원시 데이터 보존과 실시간 처리를 동시에 달성할 수 있다. CDC 패턴은 소스 DB 부하 없이 밀리초 단위 데이터 동기화를 가능하게 하며, Kafka Connect + Kafka Streams의 표준화된 생태계는 엔터프라이즈 데이터 통합 아키텍처의 핵심 허브로 자리잡고 있다.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  </div><!-- /ep2 -->
+
+  <!-- E-Q4 -->
+  <div class="panel" id="ep3">
+  <div class="qcard">
+    <div class="qhead">
+      <span class="qbadge b-essay">논술형</span>
+      <div>
+        <div class="qnum">논술형 Q4 · 2~4교시 · 25점</div>
+        <div class="qtitle">빅데이터 환경에서의 보안 위협과 대응 방안을 설명하시오.</div>
+      </div>
+    </div>
+    <div class="q-body" style="background:var(--bg);padding:14px 22px;border-bottom:1px solid var(--bl)">
+      <div class="qitems">
+        <div class="qi"><span class="ql">가.</span><span>빅데이터 환경의 특성으로 인한 보안 위협 유형 (수집·저장·처리·활용 단계별)</span></div>
+        <div class="qi"><span class="ql">나.</span><span>Hadoop 클러스터 보안 강화 방안 (인증·인가·암호화·감사)</span></div>
+        <div class="qi"><span class="ql">다.</span><span>빅데이터 분석 시 개인정보보호 방안 (PET 기술 연계) 및 감리 점검항목</span></div>
+      </div>
+      <div class="hints" style="margin-top:12px">
+        <span class="hint">Kerberos·Ranger 필수</span><span class="hint">PET 연계</span><span class="hint">감리 포인트</span>
+      </div>
+    </div>
+    <div class="ans-wrap">
+      <button class="atoggle" onclick="toggleA(this)">
+        <span class="atoggle-label">📄 모범 답안 보기</span>
+        <span class="arrow">▼</span>
+      </button>
+      <div class="abody">
+        <div class="atitle">빅데이터 보안 위협 유형, Hadoop 보안 강화 방안 및 개인정보보호·감리 점검항목</div>
+        <div class="chips">
+          <span class="chip ct">⏱ 목표 25분</span>
+          <span class="chip cp">📄 3.5~4페이지</span>
+          <span class="chip cs">💯 25점</span>
+        </div>
+
+        <div class="asec">
+          <div class="asec-title sc1">Ⅰ. 개요 — 빅데이터 보안의 특수성</div>
+          <div class="ap">빅데이터 환경은 대용량 데이터의 분산 저장·다양한 외부 데이터 수집·오픈소스 기반 처리 플랫폼이라는 특성으로 인해 전통적 보안 솔루션 적용이 어렵다. 특히 개인정보가 포함된 대규모 데이터의 처리는 개인정보보호법·GDPR 등 법규 준수와 함께 기술적 보안 통제가 필수적이다.</div>
+        </div>
+
+        <div class="asec">
+          <div class="asec-title sc2">Ⅱ. 가. 단계별 보안 위협 유형</div>
+          <table class="atable">
+            <tr><th>처리 단계</th><th>보안 위협</th><th>구체적 시나리오</th></tr>
+            <tr><td>수집 단계</td><td>데이터 위변조, 악성 데이터 주입</td><td>IoT 센서 데이터 조작, API 스크래핑 시 악성 페이로드 삽입, 비인가 데이터 수집</td></tr>
+            <tr><td>저장 단계</td><td>비인가 접근, 데이터 유출, 랜섬웨어</td><td>HDFS 비인가 접근(기본 설정 취약), S3 버킷 공개 노출, 내부자 위협</td></tr>
+            <tr><td>처리 단계</td><td>코드 인젝션, 중간자 공격, 작업 도용</td><td>MapReduce/Spark Job 변조, YARN 클러스터 악용(크립토마이닝), Shuffle 데이터 도청</td></tr>
+            <tr><td>분석 단계</td><td>추론 공격, 재식별, 모델 역전 공격</td><td>통계 쿼리를 통한 개인 정보 추론, ML 모델을 통한 학습 데이터 역추론</td></tr>
+            <tr><td>활용 단계</td><td>API 남용, 데이터 무단 공유</td><td>BI 대시보드 비인가 접근, 분석 결과물의 외부 유출, 목적 외 이용</td></tr>
+          </table>
+        </div>
+
+        <div class="asec">
+          <div class="asec-title sc3">Ⅲ. 나. Hadoop 클러스터 4계층 보안 강화</div>
+          <ul class="aol">
+            <li><span class="onum on1">1</span><div><strong>인증(Authentication) — Kerberos</strong>
+              <div class="sub-list">
+                <div class="sub-i">Hadoop 클러스터의 표준 인증 프로토콜. TGT(Ticket Granting Ticket) 기반 상호 인증</div>
+                <div class="sub-i">KDC(Key Distribution Center)에서 서비스 티켓 발급 → HDFS, YARN, HBase 모두 Kerberos 티켓으로 접근 제어</div>
+                <div class="sub-i">SPNEGO 프로토콜로 HTTP 기반 Hadoop UI에도 Kerberos 인증 적용</div>
+              </div>
+            </div></li>
+            <li><span class="onum on2">2</span><div><strong>인가(Authorization) — Apache Ranger</strong>
+              <div class="sub-list">
+                <div class="sub-i">HDFS 파일/디렉터리 수준 → Hive 테이블/컬럼 수준 → HBase 셀 수준 세밀한 접근 제어</div>
+                <div class="sub-i">ABAC(속성 기반 접근 제어) 지원. 동적 데이터 마스킹(컬럼 수준 마스킹) 정책 설정</div>
+                <div class="sub-i">Row-level 필터링: 특정 사용자는 특정 행만 조회 가능하도록 제어</div>
+              </div>
+            </div></li>
+            <li><span class="onum on3">3</span><div><strong>암호화(Encryption)</strong>
+              <div class="sub-list">
+                <div class="sub-i"><strong>저장 시 암호화(At-Rest)</strong>: HDFS 투명 암호화(HDFS TDE) — Encryption Zone 지정, KMS(Key Management Server)로 키 관리</div>
+                <div class="sub-i"><strong>전송 시 암호화(In-Transit)</strong>: TLS/SSL로 브로커 간, 클라이언트-브로커 통신 암호화. Kafka TLS 설정 필수</div>
+              </div>
+            </div></li>
+            <li><span class="onum on4">4</span><div><strong>감사(Audit) — Apache Ranger Audit + Atlas</strong>
+              <div class="sub-list">
+                <div class="sub-i">모든 데이터 접근 이력을 Solr/Elasticsearch에 저장. 누가·언제·어떤 데이터를 접근했는지 추적</div>
+                <div class="sub-i">Apache Atlas: 데이터 계보(Lineage) 추적으로 데이터 흐름 가시화, 개인정보 포함 여부 태깅</div>
+              </div>
+            </div></li>
+          </ul>
+        </div>
+
+        <div class="asec">
+          <div class="asec-title sc5">Ⅳ. 다. 개인정보보호 방안 및 감리 점검항목</div>
+          <table class="atable">
+            <tr><th>PET 기술</th><th>빅데이터 적용 방안</th></tr>
+            <tr><td>가명처리</td><td>수집 시 직접 식별자(이름, 주민번호) 즉시 가명화. 원본-가명 매핑 테이블은 별도 보안 저장소</td></tr>
+            <tr><td>차분 프라이버시</td><td>Hive/Spark 집계 쿼리 결과에 ε-DP 노이즈 추가. Apache Beam 기반 구현 가능</td></tr>
+            <tr><td>컬럼 마스킹</td><td>Apache Ranger 동적 마스킹으로 비인가 사용자에게 마스킹된 값 반환 (예: 주민번호 → XXX-XXXXXXX)</td></tr>
+            <tr><td>연합학습</td><td>기관 간 원시 데이터 공유 없이 ML 모델 파라미터만 집계하여 협업 학습</td></tr>
+          </table>
+          <div class="kbox red">
+            <div class="kb-title">🔍 감리 점검항목</div>
+            ① Kerberos 인증 활성화 여부 및 티켓 유효기간 설정 적절성<br>
+            ② Apache Ranger 컬럼/행 수준 접근 제어 정책 정의 및 적용 여부<br>
+            ③ HDFS TDE 암호화 Zone 설정 및 KMS 키 관리 절차 존재 여부<br>
+            ④ 개인정보 포함 데이터셋의 가명처리 수준 적정성 (k-익명성 k≥3)<br>
+            ⑤ 감사 로그 수집 범위·보존 기간(최소 1년)·접근 통제 여부<br>
+            ⑥ 외부 API를 통한 데이터 수집 시 개인정보 수집·이용 동의 획득 여부
+          </div>
+        </div>
+
+        <div class="conc">
+          <div class="conc-title">Ⅴ. 결론</div>
+          <p>빅데이터 보안은 Kerberos·Ranger·TDE의 기술적 통제와 함께 데이터 거버넌스 체계를 통한 관리적 통제가 병행되어야 한다. 개인정보보호법·GDPR 준수를 위해 Privacy by Design 원칙을 데이터 파이프라인 설계 초기 단계부터 적용하고, PET 기술을 활용하여 데이터 활용 가치와 프라이버시 보호를 동시에 달성하는 것이 빅데이터 보안의 궁극적 목표이다.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  </div><!-- /ep3 -->
+
+  <!-- E-Q5 -->
+  <div class="panel" id="ep4">
+  <div class="qcard">
+    <div class="qhead">
+      <span class="qbadge b-essay">논술형</span>
+      <div>
+        <div class="qnum">논술형 Q5 · 2~4교시 · 25점</div>
+        <div class="qtitle">실시간 스트리밍 데이터 처리를 위한 Apache Flink의 아키텍처와 핵심 기능을 설명하고, Spark Streaming과 비교하시오.</div>
+      </div>
+    </div>
+    <div class="q-body" style="background:var(--bg);padding:14px 22px;border-bottom:1px solid var(--bl)">
+      <div class="qitems">
+        <div class="qi"><span class="ql">가.</span><span>Apache Flink의 아키텍처(JobManager, TaskManager, Checkpoint) 및 스트림 처리 모델</span></div>
+        <div class="qi"><span class="ql">나.</span><span>이벤트 시간(Event Time)·처리 시간(Processing Time) 개념과 워터마크(Watermark)를 이용한 지연 데이터 처리</span></div>
+        <div class="qi"><span class="ql">다.</span><span>Flink vs Spark Streaming 비교 및 실시간 이상 탐지 파이프라인 설계</span></div>
+      </div>
+      <div class="hints" style="margin-top:12px">
+        <span class="hint">Watermark·윈도우 핵심</span><span class="hint">Exactly-Once 보장</span><span class="hint">실시간 이상 탐지 활용</span>
+      </div>
+    </div>
+    <div class="ans-wrap">
+      <button class="atoggle" onclick="toggleA(this)">
+        <span class="atoggle-label">📄 모범 답안 보기</span>
+        <span class="arrow">▼</span>
+      </button>
+      <div class="abody">
+        <div class="atitle">Apache Flink 아키텍처·이벤트 시간·Watermark 처리 및 Spark Streaming 비교</div>
+        <div class="chips">
+          <span class="chip ct">⏱ 목표 25분</span>
+          <span class="chip cp">📄 3.5~4페이지</span>
+          <span class="chip cs">💯 25점</span>
+        </div>
+
+        <div class="asec">
+          <div class="asec-title sc1">Ⅰ. 개요 — Apache Flink의 등장 배경</div>
+          <div class="ap">Apache Flink는 독일 베를린 공대(TU Berlin)에서 개발(2014)한 상태 기반(Stateful) 분산 스트림 처리 엔진으로, 진정한(True) 스트리밍 처리를 지원한다. Spark Streaming(마이크로 배치)과 달리 이벤트 단위로 처리하는 네이티브 스트리밍 아키텍처로, 밀리초 수준의 극저지연(Ultra-Low Latency)과 정확히 한 번(Exactly-Once) 처리를 보장한다.</div>
+        </div>
+
+        <div class="asec">
+          <div class="asec-title sc2">Ⅱ. 가. Flink 아키텍처 및 스트림 처리 모델</div>
+          <div class="dbox">Apache Flink 클러스터 아키텍처
+
+사용자 프로그램 (DataStream API / Table API)
+      │ 제출
+  [JobManager]
+  ├─ Dispatcher: REST 요청 수신, Job 제출 처리
+  ├─ ResourceManager: TaskManager 자원 관리
+  └─ JobMaster: Job 실행 그래프(DAG) 관리
+                Checkpoint 조율
+                장애 복구 결정
+          │ Task 배포
+  [TaskManager × N]
+  ├─ Task Slot: 병렬 처리 단위 (1 Slot = 1 Thread)
+  ├─ Operator: Source → Transform → Sink
+  └─ State Backend: 상태 저장 (RocksDB / Heap)</div>
+          <div class="kbox blue">
+            <div class="kb-title">Checkpoint 메커니즘 (Chandy-Lamport 알고리즘 기반)</div>
+            ① JobManager가 주기적으로 Barrier(체크포인트 마커)를 스트림에 삽입<br>
+            ② 각 Operator는 Barrier 수신 시 현재 상태를 State Backend에 비동기 스냅샷 저장<br>
+            ③ 장애 발생 시 가장 최근 완료된 체크포인트로 롤백 → <strong>Exactly-Once</strong> 보장<br>
+            ④ Savepoint: 수동 체크포인트. 버전 업그레이드·클러스터 마이그레이션에 활용
+          </div>
+        </div>
+
+        <div class="asec">
+          <div class="asec-title sc3">Ⅲ. 나. 이벤트 시간·처리 시간·Watermark</div>
+          <table class="atable">
+            <tr><th>시간 개념</th><th>정의</th><th>특성</th><th>활용</th></tr>
+            <tr><td>이벤트 시간 (Event Time)</td><td>이벤트가 실제로 발생한 시간 (소스 장치의 타임스탬프)</td><td>정확하나 지연 데이터(Late Event) 처리 필요</td><td>정확한 시간 기반 분석 (금융 거래, 클릭스트림)</td></tr>
+            <tr><td>처리 시간 (Processing Time)</td><td>스트림 처리 엔진이 레코드를 처리하는 시스템 시간</td><td>단순하나 이벤트 실제 발생 순서와 다를 수 있음</td><td>지연에 덜 민감한 실시간 모니터링</td></tr>
+            <tr><td>수집 시간 (Ingestion Time)</td><td>데이터가 Flink 소스에 도착한 시간</td><td>이벤트 시간과 처리 시간의 중간</td><td>소스 타임스탬프 없는 데이터</td></tr>
+          </table>
+          <div class="dbox">Watermark를 이용한 지연 데이터 처리
+
+시간축: ──────────────────────────────────────────▶
+이벤트:  E(t=1) E(t=3) E(t=2) E(t=5) E(t=4)   E(t=2)  ← 지연 도착
+                                                  (Late Event)
+
+Watermark(t=3) 발행 → "t≤3인 모든 이벤트가 도착했다고 선언"
+                      → [1,3] 윈도우 트리거 (t=2 이벤트는 포함)
+
+Watermark = max(이벤트 시간) - 허용 지연 시간(ε)
+예) max=5, ε=2 → Watermark=3
+
+t=2인 지연 이벤트:
+  Watermark(3) 발행 전 도착 → 정상 처리 (해당 윈도우에 포함)
+  Watermark(3) 발행 후 도착 → 지연 데이터 (allowedLateness로 추가 허용 또는 Side Output)</div>
+          <div class="kbox green">
+            <div class="kb-title">Flink 윈도우(Window) 유형</div>
+            <strong>Tumbling Window</strong>: 고정 크기, 겹치지 않는 시간 윈도우 (예: 매 5분)<br>
+            <strong>Sliding Window</strong>: 겹치는 윈도우. Slide &lt; Size (예: 10분 윈도우, 5분마다 슬라이드)<br>
+            <strong>Session Window</strong>: 이벤트 간 Gap 기반 동적 윈도우. 사용자 세션 분석에 적합
+          </div>
+        </div>
+
+        <div class="asec">
+          <div class="asec-title sc4">Ⅳ. 다. Flink vs Spark Streaming 비교 및 이상 탐지 파이프라인</div>
+          <table class="atable">
+            <tr><th>비교 항목</th><th>Apache Flink</th><th>Spark Structured Streaming</th></tr>
+            <tr><td>처리 모델</td><td>진정한 스트리밍 (이벤트 단위)</td><td>마이크로 배치 (100ms~수 초 단위)</td></tr>
+            <tr><td>지연시간</td><td>밀리초 수준 (극저지연)</td><td>수백 ms~수 초</td></tr>
+            <tr><td>상태 관리</td><td>풍부한 상태 관리(RocksDB, 매우 큰 상태)</td><td>제한적 상태 (메모리 기반)</td></tr>
+            <tr><td>이벤트 시간</td><td>완전 지원 (Watermark, Late Event)</td><td>부분 지원 (Watermark 지원, 제한적)</td></tr>
+            <tr><td>Exactly-Once</td><td>Checkpoint 기반 완전 보장</td><td>WAL/Idempotent Sink 기반</td></tr>
+            <tr><td>ML 통합</td><td>제한적 (FlinkML 미성숙)</td><td>우수 (MLlib, 배치-스트리밍 통합)</td></tr>
+            <tr><td>생태계</td><td>이벤트 드리븐 애플리케이션 강점</td><td>Spark 배치 워크로드와 통합 용이</td></tr>
+          </table>
+          <div class="dbox">실시간 금융 이상 탐지 파이프라인 (Flink 활용)
+
+[Kafka] 거래 이벤트
+    │ (Source Connector)
+[Flink Job]
+    ├─ 이벤트 시간 추출 + Watermark 설정
+    ├─ keyBy(userId) : 사용자별 파티셔닝
+    ├─ Sliding Window(10분, 1분 슬라이드)
+    │     집계: 거래 횟수·금액 합계·지리적 거리 계산
+    ├─ 이상 탐지 함수(ProcessFunction)
+    │     임계값 초과 또는 ML 모델 스코어 ≥ 0.8 → 이상 탐지
+    ├─ [정상 거래 Sink] → Kafka → DW
+    └─ [이상 거래 Sink] → Kafka → 실시간 알림 API → 결제 차단</div>
+        </div>
+
+        <div class="conc">
+          <div class="conc-title">Ⅴ. 결론</div>
+          <p>Apache Flink는 이벤트 시간 기반 처리, Watermark를 통한 지연 데이터 처리, Exactly-Once 보장, 풍부한 상태 관리로 금융 거래 이상 탐지·실시간 모니터링 등 극저지연이 요구되는 분야의 사실상 표준으로 자리잡고 있다. Spark Streaming은 ML/배치 워크로드와의 통합 편의성이 강점이므로, 요구사항(지연시간·ML 통합·생태계)에 따라 적합한 플랫폼을 선택하는 것이 중요하다.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  </div><!-- /ep4 -->
+
+  </main>
+</div><!-- /sec1 -->
+
+<script>
+var sCurrent=0,eCurrent=0;
+
+function showType(idx,btn){
+  document.querySelectorAll('.section').forEach((s,i)=>s.classList.toggle('active',i===idx));
+  document.querySelectorAll('.type-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function showPanel(type,idx,btn){
+  var prefix=type==='s'?'sp':'ep';
+  var total=type==='s'?5:5;
+  for(var i=0;i<total;i++){
+    var el=document.getElementById(prefix+i);
+    if(el) el.classList.toggle('active',i===idx);
+  }
+  var nav=btn.closest('nav');
+  nav.querySelectorAll('.sub-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  window.scrollTo({top:120,behavior:'smooth'});
+}
+
+function toggleA(btn){
+  var body=btn.nextElementSibling;
+  var arrow=btn.querySelector('.arrow');
+  var isOpen=body.classList.toggle('open');
+  arrow.classList.toggle('open',isOpen);
+  btn.querySelector('.atoggle-label').textContent=isOpen?'📄 답안 닫기':'📄 모범 답안 보기';
+}
+</script>
+</body>
+</html>

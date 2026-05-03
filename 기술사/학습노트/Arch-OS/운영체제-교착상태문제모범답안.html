@@ -1,0 +1,1306 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>교착상태(Deadlock) 기출유형 문제 & 모범답안</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700;900&family=Noto+Serif+KR:wght@400;600;700&family=JetBrains+Mono:wght@400;600&display=swap');
+:root{
+  --bg:#f5f7fa;--white:#fff;--s2:#eef1f6;--bd:#dde3ec;--bl:#eef1f6;
+  --blue:#1d4ed8;--bb:#3b82f6;--bbg:#eff6ff;--bbd:#bfdbfe;
+  --red:#b91c1c;--rbg:#fef2f2;--rbd:#fecaca;
+  --grn:#065f46;--gbg:#ecfdf5;--gbd:#a7f3d0;
+  --ora:#92400e;--obg:#fffbeb;--obd:#fde68a;
+  --pur:#5b21b6;--pbg:#f5f3ff;--pbd:#ddd6fe;
+  --tea:#0f766e;--tbg:#f0fdfa;--tbd:#99f6e4;
+  --rose:#9f1239;--rosbg:#fff1f2;--rosbd:#fecdd3;
+  --t1:#111827;--t2:#374151;--t3:#6b7280;--t4:#9ca3af;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--t1);font-family:'Noto Sans KR',sans-serif;font-size:14px;line-height:1.6}
+
+.hdr{background:linear-gradient(135deg,#0f172a 0%,#1e3a8a 40%,#1d4ed8 80%,#0369a1 100%);color:#fff;padding:28px 24px 22px;position:relative;overflow:hidden}
+.hdr::after{content:'';position:absolute;right:-50px;top:-50px;width:200px;height:200px;border-radius:50%;background:rgba(255,255,255,0.05)}
+.hdr::before{content:'';position:absolute;left:-30px;bottom:-30px;width:150px;height:150px;border-radius:50%;background:rgba(3,105,161,0.2)}
+.hi{max-width:1100px;margin:0 auto;position:relative}
+.eyebrow{font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:#7dd3fc;margin-bottom:6px}
+.htitle{font-size:clamp(18px,3.5vw,26px);font-weight:900;margin-bottom:6px;font-family:'Noto Serif KR',serif}
+.hsub{font-size:12px;color:#bae6fd}
+.hpills{display:flex;flex-wrap:wrap;gap:6px;margin-top:14px}
+.hpill{background:rgba(255,255,255,0.12);border:1px solid rgba(255,255,255,0.2);padding:3px 11px;border-radius:20px;font-size:11px;color:#e0f2fe}
+
+.tnav{background:var(--white);border-bottom:3px solid var(--bd);display:flex;overflow-x:auto;scrollbar-width:none;box-shadow:0 2px 8px rgba(0,0,0,0.06);position:sticky;top:0;z-index:200}
+.tnav::-webkit-scrollbar{display:none}
+.tbtn{flex:1;min-width:160px;padding:14px 16px;background:none;border:none;border-bottom:4px solid transparent;cursor:pointer;font-family:inherit;font-size:13px;font-weight:700;color:var(--t3);transition:all .18s;display:flex;align-items:center;justify-content:center;gap:8px}
+.tbtn:hover{color:var(--blue);background:var(--bbg)}
+.tbtn.active{color:var(--blue);border-bottom-color:var(--blue);background:var(--bbg)}
+.tbadge{font-size:10px;padding:2px 8px;border-radius:10px;font-weight:700}
+.tb-s{background:#fef3c7;color:#92400e}
+.tb-l{background:#ede9fe;color:#5b21b6}
+
+.qnav{background:#fff;border-bottom:1px solid var(--bd);overflow-x:auto;white-space:nowrap;padding:0 16px;scrollbar-width:none;box-shadow:0 1px 4px rgba(0,0,0,0.04)}
+.qnav::-webkit-scrollbar{display:none}
+.qbtn{display:inline-block;padding:10px 12px;font-size:12px;font-weight:600;color:var(--t3);background:none;border:none;border-bottom:3px solid transparent;cursor:pointer;font-family:inherit;transition:all .15s}
+.qbtn:hover{color:var(--blue)}
+.qbtn.active{color:var(--blue);border-bottom-color:var(--blue)}
+
+.main{max-width:1100px;margin:0 auto;padding:24px 16px 80px}
+.tp{display:none}.tp.active{display:block}
+.qp{display:none}.qp.active{display:block}
+
+.qcard{background:var(--white);border:1px solid var(--bd);border-radius:14px;overflow:hidden;box-shadow:0 2px 12px rgba(0,0,0,0.05);margin-bottom:20px}
+.qhdr{padding:18px 22px 14px;border-bottom:1px solid var(--bl);display:flex;align-items:flex-start;gap:14px}
+.qdom{flex-shrink:0;padding:4px 11px;border-radius:20px;font-size:10px;font-weight:700;letter-spacing:0.5px;margin-top:2px;background:#f0fdfa;color:#0f766e;border:1px solid #99f6e4}
+.qmeta{flex:1}
+.qtype{font-size:10px;color:var(--t3);font-weight:600;letter-spacing:0.5px;margin-bottom:4px}
+.qtitle{font-size:15px;font-weight:800;color:var(--t1);line-height:1.45}
+.qbody{background:var(--bg);padding:16px 22px;border-bottom:1px solid var(--bl)}
+.qitems{margin-top:8px;display:flex;flex-direction:column;gap:6px}
+.qi{display:flex;gap:10px;align-items:flex-start;font-size:13px;color:var(--t2)}
+.ql{font-weight:700;color:var(--blue);min-width:20px;flex-shrink:0}
+.qhints{display:flex;flex-wrap:wrap;gap:6px;margin-top:12px}
+.qhint{background:var(--bbg);border:1px solid var(--bbd);color:var(--blue);font-size:10px;font-weight:600;padding:2px 8px;border-radius:5px}
+
+.ac{background:var(--white)}
+.atog{width:100%;padding:14px 22px;background:none;border:none;display:flex;align-items:center;justify-content:space-between;cursor:pointer;font-family:inherit;transition:background .15s}
+.atog:hover{background:var(--bbg)}
+.albl{font-size:13px;font-weight:700;color:var(--blue)}
+.aarr{font-size:16px;color:var(--blue);transition:transform .25s}
+.aarr.open{transform:rotate(180deg)}
+.abody{display:none;padding:0 22px 24px}
+.abody.open{display:block}
+
+.atitle{font-size:17px;font-weight:900;color:var(--t1);font-family:'Noto Serif KR',serif;padding:18px 0 6px;border-bottom:2px solid var(--blue);margin-bottom:16px}
+.asec{margin-bottom:18px}
+.ast{font-size:12px;font-weight:800;color:#fff;padding:5px 12px;border-radius:6px;display:inline-block;margin-bottom:11px}
+.s1{background:var(--blue)}.s2{background:#059669}.s3{background:#7c3aed}
+.s4{background:#d97706}.s5{background:#dc2626}.s6{background:#0d9488}
+.s7{background:#be185d}.s8{background:#0369a1}
+
+.ap{font-size:13px;color:var(--t2);line-height:1.85;margin-bottom:10px}
+
+.at{width:100%;border-collapse:collapse;font-size:12px;margin:8px 0 12px}
+.at th{background:var(--s2);color:var(--t2);font-weight:700;padding:8px 12px;border:1px solid var(--bd);text-align:center}
+.at td{padding:8px 12px;border:1px solid var(--bd);vertical-align:top;line-height:1.6}
+.at td:first-child{font-weight:600;color:var(--blue);background:var(--bbg);text-align:center;white-space:nowrap}
+.at tr:nth-child(even) td:not(:first-child){background:#fafbfd}
+.at .c{text-align:center}
+.at .ok{color:#059669;font-weight:700;text-align:center}
+.at .no{color:#dc2626;font-weight:700;text-align:center}
+.at .warn{color:#d97706;font-weight:700;text-align:center}
+
+.aol{padding-left:0;list-style:none;display:flex;flex-direction:column;gap:9px;margin:6px 0}
+.aol li{display:flex;gap:10px;align-items:flex-start;font-size:13px;color:var(--t2);line-height:1.7}
+.on{flex-shrink:0;width:22px;height:22px;border-radius:50%;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;margin-top:1px;color:#fff}
+.on1{background:var(--blue)}.on2{background:#059669}.on3{background:#7c3aed}
+.on4{background:#d97706}.on5{background:#dc2626}.on6{background:#0d9488}
+
+.sub{margin-top:6px;display:flex;flex-direction:column;gap:4px}
+.si{display:flex;gap:8px;font-size:12px;color:var(--t3)}
+.si::before{content:'▸';color:var(--bb);flex-shrink:0}
+
+.db{background:#f8fafc;border:1px solid var(--bd);border-left:3px solid var(--blue);border-radius:8px;padding:12px 16px;margin:10px 0;font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--t2);line-height:1.9;overflow-x:auto;white-space:pre}
+
+.kb{border-radius:8px;padding:12px 16px;margin:10px 0;font-size:12px;line-height:1.75}
+.kb-blue{background:var(--bbg);border:1px solid var(--bbd);color:#1e40af}
+.kb-grn{background:var(--gbg);border:1px solid var(--gbd);color:var(--grn)}
+.kb-ora{background:var(--obg);border:1px solid var(--obd);color:var(--ora)}
+.kb-red{background:var(--rbg);border:1px solid var(--rbd);color:var(--red)}
+.kb-pur{background:var(--pbg);border:1px solid var(--pbd);color:var(--pur)}
+.kb-tea{background:var(--tbg);border:1px solid var(--tbd);color:var(--tea)}
+.kb-rose{background:var(--rosbg);border:1px solid var(--rosbd);color:var(--rose)}
+.kbt{font-weight:700;margin-bottom:4px;font-size:11px;letter-spacing:0.4px}
+
+.concl{background:linear-gradient(135deg,var(--bbg),var(--pbg));border:1px solid var(--bbd);border-radius:8px;padding:14px 16px;margin-top:14px}
+.ct{font-weight:700;color:var(--blue);font-size:12px;margin-bottom:6px}
+.concl p{font-size:12px;color:var(--t2);line-height:1.75}
+
+.chips{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px}
+.chip{font-size:11px;padding:3px 10px;border-radius:6px;font-weight:600}
+.cht{background:var(--obg);color:var(--ora);border:1px solid var(--obd)}
+.chp{background:var(--gbg);color:var(--grn);border:1px solid var(--gbd)}
+.chs{background:var(--rbg);color:var(--red);border:1px solid var(--rbd)}
+
+.sgrid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:10px 0}
+@media(max-width:640px){.sgrid{grid-template-columns:1fr}}
+.sc{background:var(--s2);border:1px solid var(--bd);border-radius:8px;padding:12px 14px}
+.sc-t{font-size:11px;font-weight:700;color:var(--blue);margin-bottom:6px}
+.sc p{font-size:12px;color:var(--t2);line-height:1.7}
+
+.qcount{font-size:11px;color:var(--t4);margin-bottom:16px;font-weight:600;letter-spacing:0.5px}
+
+/* process state colors */
+.ps-run{background:#dcfce7;color:#166534;border:1px solid #bbf7d0}
+.ps-wait{background:#fef3c7;color:#92400e;border:1px solid #fde68a}
+.ps-blk{background:#fee2e2;color:#991b1b;border:1px solid #fecaca}
+.ps-tag{display:inline-block;font-size:10px;font-weight:700;padding:1px 7px;border-radius:5px;font-family:'JetBrains Mono',monospace}
+</style>
+</head>
+<body>
+
+<header class="hdr">
+  <div class="hi">
+    <div class="eyebrow">💻 컴퓨터구조 / 운영체제 · OPERATING SYSTEMS</div>
+    <div class="htitle">컴퓨터시스템응용기술사<br>교착상태(Deadlock) 기출유형 문제 &amp; 모범답안</div>
+    <div class="hsub">단답형 5문제 (1~2페이지) + 논술형 5문제 (3~4페이지) · 전 문항 기술사 형식 모범답안 수록</div>
+    <div class="hpills">
+      <span class="hpill">Coffman 4조건 완전 분석</span>
+      <span class="hpill">은행원 알고리즘</span>
+      <span class="hpill">RAG 탐지</span>
+      <span class="hpill">분산 교착상태</span>
+      <span class="hpill">DB Lock 관리</span>
+    </div>
+  </div>
+</header>
+
+<nav class="tnav">
+  <button class="tbtn active" onclick="showT(0,this)">
+    📝 단답형 문제
+    <span class="tbadge tb-s">1~2페이지 · 5문제</span>
+  </button>
+  <button class="tbtn" onclick="showT(1,this)">
+    📄 논술형 문제
+    <span class="tbadge tb-l">3~4페이지 · 5문제</span>
+  </button>
+</nav>
+
+<!-- ══════════════════════════════════
+     단답형 섹션
+══════════════════════════════════ -->
+<div class="tp active" id="tp0">
+<nav class="qnav">
+  <button class="qbtn active" onclick="showQ(0,this,0)">①4가지 필요조건</button>
+  <button class="qbtn" onclick="showQ(1,this,0)">②은행원 알고리즘</button>
+  <button class="qbtn" onclick="showQ(2,this,0)">③자원 할당 그래프</button>
+  <button class="qbtn" onclick="showQ(3,this,0)">④교착상태 회복</button>
+  <button class="qbtn" onclick="showQ(4,this,0)">⑤라이브락·기아</button>
+</nav>
+<div class="main">
+
+<!-- S1: 4가지 필요조건 -->
+<div class="qp active" data-tp="0">
+<div class="qcount">📝 단답형 1번 / 5번</div>
+<div class="qcard">
+  <div class="qhdr">
+    <span class="qdom">컴퓨터구조 / OS</span>
+    <div class="qmeta">
+      <div class="qtype">1교시 단답형 · 10~15점 · 1~2페이지</div>
+      <div class="qtitle">교착상태(Deadlock)의 4가지 필요조건(Coffman Conditions)을 설명하고, 각 조건의 부정을 통한 예방(Prevention) 기법의 한계를 논하시오.</div>
+    </div>
+  </div>
+  <div class="qbody">
+    <div class="qhints">
+      <span class="qhint">매회 빈출 클래식</span><span class="qhint">4조건 동시 성립 시에만 교착상태</span><span class="qhint">예방 vs 회피 차이 명확히</span>
+    </div>
+  </div>
+  <div class="ac">
+    <button class="atog" onclick="tog(this)">
+      <span class="albl">📄 모범 답안 보기</span><span class="aarr">▼</span>
+    </button>
+    <div class="abody">
+      <div class="atitle">교착상태 4가지 필요조건 및 예방 기법의 특징과 한계</div>
+      <div class="chips">
+        <span class="chip cht">⏱ 목표 15분</span>
+        <span class="chip chp">📄 1.5~2페이지</span>
+        <span class="chip chs">💯 10~15점</span>
+      </div>
+      <div class="asec">
+        <div class="ast s1">Ⅰ. 교착상태의 개념</div>
+        <div class="ap">교착상태(Deadlock)는 두 개 이상의 프로세스(또는 스레드)가 각자 서로 상대방이 점유한 자원을 무한정 대기하면서 어떤 프로세스도 실행을 계속할 수 없는 상태를 말한다. 1965년 Dijkstra가 처음 공식화하였으며, 1971년 Coffman 외 3인이 4가지 필요조건을 정의하였다.</div>
+      </div>
+      <div class="asec">
+        <div class="ast s2">Ⅱ. 4가지 필요조건 (Coffman, 1971)</div>
+        <div class="kb kb-red">
+          <div class="kbt">⚠️ 핵심 원칙 — 4가지 조건이 동시에 성립할 때만 교착상태 발생</div>
+          하나라도 부정되면 교착상태는 발생하지 않는다 → 예방(Prevention)의 이론적 근거
+        </div>
+        <table class="at">
+          <tr><th>조건</th><th>영문</th><th>정의</th><th>설명</th></tr>
+          <tr><td>①<br>상호 배제</td><td>Mutual<br>Exclusion</td><td>자원은 한 번에 하나의 프로세스만 사용 가능</td><td>공유 불가 자원(프린터, 파일 쓰기)에만 적용. 읽기 전용 자원은 해당 없음</td></tr>
+          <tr><td>②<br>점유와 대기</td><td>Hold and<br>Wait</td><td>최소 하나의 자원을 점유하면서 다른 자원을 추가 요청하며 대기</td><td>프로세스가 R1을 보유하면서 R2를 기다리는 상태</td></tr>
+          <tr><td>③<br>비선점</td><td>No<br>Preemption</td><td>프로세스가 보유한 자원을 OS가 강제로 빼앗을 수 없음</td><td>자원은 프로세스가 자발적으로 반납할 때만 해제 가능</td></tr>
+          <tr><td>④<br>환형 대기</td><td>Circular<br>Wait</td><td>프로세스 집합이 순환 형태로 서로의 자원을 대기</td><td>P1→P2→P3→P1 형태의 원형 대기 체인 형성</td></tr>
+        </table>
+      </div>
+      <div class="asec">
+        <div class="ast s3">Ⅲ. 각 조건 부정을 통한 예방 기법 및 한계</div>
+        <table class="at">
+          <tr><th>부정할 조건</th><th>예방 기법</th><th>구현 방법</th><th>한계점</th></tr>
+          <tr><td>① 상호배제 부정</td><td>자원 공유</td><td>읽기 전용·공유 가능 자원으로 전환 (스풀링, 읽기 락)</td><td>임계 구역 자원(프린터 등)은 원천적 공유 불가. 적용 범위 극히 제한</td></tr>
+          <tr><td>② 점유와 대기 부정</td><td>일괄 요청 또는 점유 해제 후 요청</td><td>① 시작 전 모든 필요 자원을 한 번에 요청<br>② 새 자원 필요 시 기존 자원 모두 반납 후 재요청</td><td>자원 낭비(사용 안 해도 독점), 기아(Starvation) 발생 가능, 프로세스가 필요 자원 사전 예측 어려움</td></tr>
+          <tr><td>③ 비선점 부정</td><td>자원 선점 허용</td><td>높은 우선순위 프로세스가 요청 시 낮은 우선순위 프로세스의 자원 강제 회수</td><td>CPU·메모리는 가능하나 프린터·DB 트랜잭션 등 중간 상태 저장 불가 자원에 적용 불가. 롤백 비용 발생</td></tr>
+          <tr><td>④ 환형 대기 부정</td><td>자원 순서 번호 부여</td><td>모든 자원에 전역 순서(번호)를 부여. 프로세스는 오름차순으로만 자원 요청 허용</td><td>자원 번호 관리 복잡. 실제로 높은 번호 자원이 먼저 필요한 프로세스는 낮은 번호 자원을 불필요하게 유지해야 함</td></tr>
+        </table>
+      </div>
+      <div class="asec">
+        <div class="ast s4">Ⅳ. 예방과 회피의 비교</div>
+        <div class="kb kb-blue">
+          <div class="kbt">예방(Prevention) vs 회피(Avoidance) — 핵심 차이</div>
+          <strong>예방</strong>: 교착상태의 4가지 조건 중 하나를 원천 차단 → 교착상태 자체가 불가능한 시스템 설계. 과도한 자원 제약으로 자원 이용률 저하<br>
+          <strong>회피</strong>: 4가지 조건은 허용하되, 자원 할당 전 안전 상태(Safe State) 여부를 검사하여 불안전 상태로의 진입 차단 → 은행원 알고리즘
+        </div>
+      </div>
+      <div class="concl">
+        <div class="ct">Ⅴ. 결론 — 감리 포인트</div>
+        <p>교착상태 예방은 이론적으로 교착상태를 원천 차단하지만, 자원 낭비·기아·시스템 처리량 감소 등 부작용이 크다. 실제 운영체제(Linux, Windows)는 예방 대신 탐지+회복 방식을 채택하고, DBMS는 Wait-for 그래프 기반 탐지와 타임아웃 기반 롤백을 주로 사용한다. 감리 시에는 교착상태 방지 정책이 시스템 설계 문서에 명시되어 있는지 확인한다.</p>
+      </div>
+    </div>
+  </div>
+</div>
+</div><!-- /S1 -->
+
+<!-- S2: 은행원 알고리즘 -->
+<div class="qp" data-tp="0">
+<div class="qcount">📝 단답형 2번 / 5번</div>
+<div class="qcard">
+  <div class="qhdr">
+    <span class="qdom">컴퓨터구조 / OS</span>
+    <div class="qmeta">
+      <div class="qtype">1교시 단답형 · 10~15점 · 1~2페이지</div>
+      <div class="qtitle">교착상태 회피를 위한 은행원 알고리즘(Banker's Algorithm)의 개념, 안전 상태(Safe State)의 정의, 동작 원리를 예시를 들어 설명하시오.</div>
+    </div>
+  </div>
+  <div class="qbody">
+    <div class="qhints">
+      <span class="qhint">Dijkstra 제안</span><span class="qhint">안전 순서열 도출 과정 필수</span><span class="qhint">최대 요구량 사전 선언 조건</span>
+    </div>
+  </div>
+  <div class="ac">
+    <button class="atog" onclick="tog(this)">
+      <span class="albl">📄 모범 답안 보기</span><span class="aarr">▼</span>
+    </button>
+    <div class="abody">
+      <div class="atitle">은행원 알고리즘 — 개념·안전 상태·동작 원리 및 예시</div>
+      <div class="chips">
+        <span class="chip cht">⏱ 목표 15분</span>
+        <span class="chip chp">📄 1.5~2페이지</span>
+        <span class="chip chs">💯 10~15점</span>
+      </div>
+      <div class="asec">
+        <div class="ast s1">Ⅰ. 은행원 알고리즘의 개념</div>
+        <div class="ap">은행원 알고리즘(Banker's Algorithm)은 1965년 Dijkstra가 제안한 교착상태 회피(Avoidance) 알고리즘이다. 이름의 유래는 은행이 대출 시 전체 고객이 최대 대출을 요청해도 지급 가능한지 사전 검토하는 방식에서 착안하였다. 자원 할당 전에 시스템이 안전 상태(Safe State)를 유지하는지 검사하여, 불안전 상태로 전이될 경우 할당을 거부한다.</div>
+        <div class="kb kb-blue">
+          <div class="kbt">안전 상태(Safe State)의 정의</div>
+          시스템이 교착상태에 빠지지 않고 모든 프로세스를 순차적으로 완료할 수 있는 <strong>안전 순서열(Safe Sequence)</strong>이 존재하는 상태.<br>
+          안전 순서열: &lt;P1, P2, ..., Pn&gt;에서 각 Pi가 필요한 최대 자원 = 현재 가용 자원 + P1~Pi-1이 반납한 자원으로 충족 가능
+        </div>
+      </div>
+      <div class="asec">
+        <div class="ast s2">Ⅱ. 알고리즘 구성 요소 (자료구조)</div>
+        <table class="at">
+          <tr><th>변수</th><th>의미</th><th>크기</th></tr>
+          <tr><td>Available[j]</td><td>현재 가용 자원량 (자원 유형 j의 남은 개수)</td><td>1×m (m=자원 유형 수)</td></tr>
+          <tr><td>Max[i][j]</td><td>프로세스 i가 요구하는 자원 j의 최대량</td><td>n×m (n=프로세스 수)</td></tr>
+          <tr><td>Allocation[i][j]</td><td>프로세스 i에 현재 할당된 자원 j의 수</td><td>n×m</td></tr>
+          <tr><td>Need[i][j]</td><td>프로세스 i가 앞으로 필요한 자원 j의 수<br>= Max[i][j] − Allocation[i][j]</td><td>n×m</td></tr>
+        </table>
+      </div>
+      <div class="asec">
+        <div class="ast s3">Ⅲ. 동작 원리 — 안전성 알고리즘 예시</div>
+        <div class="ap"><strong>예시 설정</strong>: 프로세스 5개(P0~P4), 자원 A(10개)·B(5개)·C(7개)</div>
+        <div class="db">현재 할당 상태 (t=0):
+
+         Allocation    Max          Need(=Max-Alloc)   Available
+         A  B  C      A  B  C      A  B  C             A  B  C
+P0 │     0  1  0  │  7  5  3  │  7  4  3  │
+P1 │     2  0  0  │  3  2  2  │  1  2  2  │
+P2 │     3  0  2  │  9  0  2  │  6  0  0  │           3  3  2
+P3 │     2  1  1  │  2  2  2  │  0  1  1  │
+P4 │     0  0  2  │  4  3  3  │  4  3  1  │
+
+안전 순서열 탐색:
+  Step1: Available=(3,3,2) → P1의 Need(1,2,2) ≤ Available → P1 실행 후 반납
+         Available = (3,3,2)+(2,0,0) = (5,3,2)
+  Step2: Available=(5,3,2) → P3의 Need(0,1,1) ≤ Available → P3 실행 후 반납
+         Available = (5,3,2)+(2,1,1) = (7,4,3)
+  Step3: Available=(7,4,3) → P4의 Need(4,3,1) ≤ Available → P4 실행 후 반납
+         Available = (7,4,3)+(0,0,2) = (7,4,5)
+  Step4: Available=(7,4,5) → P0의 Need(7,4,3) ≤ Available → P0 실행 후 반납
+         Available = (7,4,5)+(0,1,0) = (7,5,5)
+  Step5: Available=(7,5,5) → P2의 Need(6,0,0) ≤ Available → P2 실행
+
+✅ 안전 순서열: &lt;P1, P3, P4, P0, P2&gt; → 안전 상태 확인</div>
+      </div>
+      <div class="asec">
+        <div class="ast s4">Ⅳ. 은행원 알고리즘의 한계</div>
+        <div class="sgrid">
+          <div class="sc">
+            <div class="sc-t">⚠️ 최대 자원 사전 선언</div>
+            <p>프로세스가 시작 전에 필요한 최대 자원량을 정확히 신고해야 함. 동적으로 변하는 환경에서는 적용 어려움</p>
+          </div>
+          <div class="sc">
+            <div class="sc-t">⚠️ 고정 프로세스·자원 수</div>
+            <p>알고리즘 실행 중 프로세스·자원이 추가되면 재계산 필요. 동적 시스템에 부적합</p>
+          </div>
+          <div class="sc">
+            <div class="sc-t">⚠️ 연산 오버헤드</div>
+            <p>매 자원 요청 시 O(n²m) 복잡도의 안전성 검사 수행. n(프로세스)·m(자원 유형) 증가 시 성능 저하</p>
+          </div>
+          <div class="sc">
+            <div class="sc-t">⚠️ 자원 이용률 저하</div>
+            <p>안전 상태 유지를 위해 실제로 사용 가능한 자원도 할당 거부. 시스템 처리량 감소</p>
+          </div>
+        </div>
+      </div>
+      <div class="concl">
+        <div class="ct">Ⅴ. 결론</div>
+        <p>은행원 알고리즘은 교착상태를 안전하게 회피하는 이론적으로 완전한 기법이나, 실용적 한계로 인해 범용 OS에서는 거의 사용되지 않는다. 대신 DBMS, 실시간 임베디드 시스템 등 자원 사용 패턴이 예측 가능한 특수 환경에서 변형 적용된다.</p>
+      </div>
+    </div>
+  </div>
+</div>
+</div><!-- /S2 -->
+
+<!-- S3: 자원 할당 그래프 -->
+<div class="qp" data-tp="0">
+<div class="qcount">📝 단답형 3번 / 5번</div>
+<div class="qcard">
+  <div class="qhdr">
+    <span class="qdom">컴퓨터구조 / OS</span>
+    <div class="qmeta">
+      <div class="qtype">1교시 단답형 · 10~15점 · 1~2페이지</div>
+      <div class="qtitle">교착상태 탐지에 사용하는 자원 할당 그래프(RAG)와 Wait-for 그래프의 개념, 구성 요소, 사이클과 교착상태의 관계를 단일/다중 인스턴스 자원으로 구분하여 설명하시오.</div>
+    </div>
+  </div>
+  <div class="qbody">
+    <div class="qhints">
+      <span class="qhint">단일·다중 인스턴스 구분 중요</span><span class="qhint">그래프 구성요소 정확히</span><span class="qhint">Wait-for 그래프 변환</span>
+    </div>
+  </div>
+  <div class="ac">
+    <button class="atog" onclick="tog(this)">
+      <span class="albl">📄 모범 답안 보기</span><span class="aarr">▼</span>
+    </button>
+    <div class="abody">
+      <div class="atitle">자원 할당 그래프(RAG)·Wait-for 그래프 — 구성 요소·사이클·교착상태 판정</div>
+      <div class="chips">
+        <span class="chip cht">⏱ 목표 15분</span>
+        <span class="chip chp">📄 1.5~2페이지</span>
+        <span class="chip chs">💯 10~15점</span>
+      </div>
+      <div class="asec">
+        <div class="ast s1">Ⅰ. 자원 할당 그래프(RAG) 개념 및 구성 요소</div>
+        <div class="ap">자원 할당 그래프(Resource Allocation Graph)는 프로세스와 자원 간의 할당·요청 관계를 방향 그래프로 표현한 것으로, 교착상태의 존재 여부를 시각적으로 탐지하는 도구이다.</div>
+        <table class="at">
+          <tr><th>구성 요소</th><th>표기</th><th>의미</th></tr>
+          <tr><td>프로세스 노드</td><td>○ (원)</td><td>시스템 내 각 프로세스를 나타내는 노드</td></tr>
+          <tr><td>자원 노드</td><td>□ (사각형)</td><td>자원 유형을 나타내는 노드. 내부의 ● 수 = 인스턴스 수</td></tr>
+          <tr><td>요청 간선 (Request Edge)</td><td>○ → □</td><td>프로세스가 자원을 요청하는 상태 (대기 중)</td></tr>
+          <tr><td>할당 간선 (Assignment Edge)</td><td>□ → ○</td><td>자원이 프로세스에 할당된 상태 (점유 중)</td></tr>
+        </table>
+        <div class="db">RAG 예시 (교착상태 발생)
+
+   P1 ──요청──→ [R2] ──할당──→ P2
+   P2 ──요청──→ [R1] ──할당──→ P1
+                    ↑____________↑
+              사이클(Cycle) 형성 → 교착상태 ✓
+
+   단일 인스턴스 자원: 사이클 존재 = 교착상태 확정
+   다중 인스턴스 자원: 사이클 존재 ≠ 반드시 교착상태 (가용 인스턴스 확인 필요)</div>
+      </div>
+      <div class="asec">
+        <div class="ast s2">Ⅱ. 단일 vs 다중 인스턴스 교착상태 판정</div>
+        <table class="at">
+          <tr><th>구분</th><th>단일 인스턴스 자원</th><th>다중 인스턴스 자원</th></tr>
+          <tr><td>자원 특성</td><td>각 자원 유형에 인스턴스 1개</td><td>각 자원 유형에 인스턴스 복수 개</td></tr>
+          <tr><td>교착상태 판정</td><td><strong>사이클 존재 = 교착상태 확정</strong></td><td>사이클 존재 → 가능성만 있음. 추가 분석 필요</td></tr>
+          <tr><td>탐지 알고리즘</td><td>DFS/BFS로 사이클 탐지 (O(n+e))</td><td>대기 행렬(Wait-for) 알고리즘 또는 자원 요청 행렬 분석</td></tr>
+          <tr><td>예시</td><td>P1→R1→P2→R2→P1 = 교착</td><td>R1(2개): P1·P2 할당, P3 대기 → 사이클이나 P1·P2 완료 후 해결 가능</td></tr>
+        </table>
+      </div>
+      <div class="asec">
+        <div class="ast s3">Ⅲ. Wait-for 그래프 — RAG의 간략 변환</div>
+        <div class="ap">Wait-for 그래프는 RAG에서 자원 노드를 제거하고, 프로세스 간 대기 관계만 남긴 단순화된 그래프이다. 단일 인스턴스 자원 시스템에서만 유효하게 적용된다.</div>
+        <div class="db">RAG → Wait-for 그래프 변환
+
+[RAG]                          [Wait-for 그래프]
+P1 → R1 → P2                  P1 → P2
+P2 → R2 → P1         →→→     P2 → P1
+P3 → R1 (대기)                 P3 → P2 (R1 보유자)
+
+Wait-for 그래프에서 사이클(P1↔P2) 탐지
+→ P1, P2 교착상태 확정
+→ P3는 교착상태 프로세스(P2)를 기다리므로 연쇄 영향
+
+탐지 주기: OS는 주기적(수 초 단위)으로 Wait-for 그래프 사이클 검사</div>
+      </div>
+      <div class="concl">
+        <div class="ct">Ⅳ. 결론 — 실제 OS 적용</div>
+        <p>Linux 커널은 mutex 락을 위한 lockdep이라는 런타임 락 의존성 탐지기를 내장하여 Wait-for 그래프 기반으로 교착상태 가능 락 순서를 실시간 검출한다. Oracle DBMS는 트랜잭션 Wait-for 그래프를 3초 간격으로 검사하여 교착상태 탐지 시 가장 최근에 시작한 트랜잭션을 희생자로 선택해 롤백한다.</p>
+      </div>
+    </div>
+  </div>
+</div>
+</div><!-- /S3 -->
+
+<!-- S4: 교착상태 회복 -->
+<div class="qp" data-tp="0">
+<div class="qcount">📝 단답형 4번 / 5번</div>
+<div class="qcard">
+  <div class="qhdr">
+    <span class="qdom">컴퓨터구조 / OS</span>
+    <div class="qmeta">
+      <div class="qtype">1교시 단답형 · 10~15점 · 1~2페이지</div>
+      <div class="qtitle">교착상태 탐지 후 회복(Recovery) 방법인 프로세스 종료와 자원 선점 방식을 비교하고, 희생자 선택(Victim Selection) 기준 및 기아(Starvation) 방지 방안을 설명하시오.</div>
+    </div>
+  </div>
+  <div class="qbody">
+    <div class="qhints">
+      <span class="qhint">탐지+회복 전략</span><span class="qhint">희생자 선택 기준 구체적으로</span><span class="qhint">기아 방지 Age 기법</span>
+    </div>
+  </div>
+  <div class="ac">
+    <button class="atog" onclick="tog(this)">
+      <span class="albl">📄 모범 답안 보기</span><span class="aarr">▼</span>
+    </button>
+    <div class="abody">
+      <div class="atitle">교착상태 회복 방법 — 프로세스 종료·자원 선점·희생자 선택·기아 방지</div>
+      <div class="chips">
+        <span class="chip cht">⏱ 목표 15분</span>
+        <span class="chip chp">📄 1.5~2페이지</span>
+        <span class="chip chs">💯 10~15점</span>
+      </div>
+      <div class="asec">
+        <div class="ast s1">Ⅰ. 교착상태 회복의 개념</div>
+        <div class="ap">탐지(Detection) 기반 시스템에서는 교착상태 발생을 허용한 후, 탐지 알고리즘이 사이클을 확인하면 회복(Recovery) 절차를 수행한다. 회복 방법은 크게 프로세스 종료와 자원 선점 두 가지로 분류된다.</div>
+      </div>
+      <div class="asec">
+        <div class="ast s2">Ⅱ. 회복 방법 1 — 프로세스 종료</div>
+        <table class="at">
+          <tr><th>방법</th><th>설명</th><th>장점</th><th>단점</th></tr>
+          <tr><td>전부 종료<br>(Abort All)</td><td>교착상태에 관련된 모든 프로세스를 한꺼번에 종료</td><td>즉각적 교착상태 해소, 구현 단순</td><td>완료에 근접한 프로세스의 작업 손실 과다, 비용 높음</td></tr>
+          <tr><td>하나씩 종료<br>(Abort One by One)</td><td>교착상태 해소될 때까지 프로세스를 하나씩 선택·종료. 매번 사이클 재탐지</td><td>최소한의 프로세스만 종료. 피해 최소화</td><td>사이클 탐지를 반복 수행해야 하므로 오버헤드 발생</td></tr>
+        </table>
+      </div>
+      <div class="asec">
+        <div class="ast s3">Ⅲ. 회복 방법 2 — 자원 선점 (Resource Preemption)</div>
+        <div class="ap">교착상태에 관련된 프로세스로부터 자원을 강제로 빼앗아 다른 프로세스에 할당하는 방법이다. 세 가지 핵심 이슈를 해결해야 한다.</div>
+        <ul class="aol">
+          <li><span class="on on2">1</span><div><strong>희생자 선택 (Victim Selection)</strong>
+            <div class="sub">
+              <div class="si">비용 최소화 원칙: 아래 기준으로 희생자 프로세스를 선정</div>
+              <div class="si">① 지금까지 사용한 자원의 양 (적을수록 손실 적음)</div>
+              <div class="si">② 프로세스의 우선순위 (낮을수록 희생자 선호)</div>
+              <div class="si">③ 프로세스 실행 시간 (짧을수록 재실행 비용 적음)</div>
+              <div class="si">④ 추가로 필요한 자원의 양</div>
+              <div class="si">⑤ 교착상태에 관련된 프로세스의 수 (선점으로 해소 가능한 수)</div>
+            </div>
+          </div></li>
+          <li><span class="on on3">2</span><div><strong>롤백 (Rollback)</strong>: 자원을 선점당한 프로세스는 안전한 이전 상태(Checkpoint)로 롤백. 선점된 자원을 반납하고 후에 재실행
+            <div class="sub">
+              <div class="si">전체 롤백: 프로세스를 완전히 종료 후 재시작 (단순하나 비용 큼)</div>
+              <div class="si">부분 롤백: 교착상태 해소에 필요한 최소한만 롤백 (체크포인트 활용)</div>
+            </div>
+          </div></li>
+          <li><span class="on on4">3</span><div><strong>기아(Starvation) 방지</strong>: 같은 프로세스가 반복적으로 희생자로 선택될 경우 무한히 진행 불가 상태에 빠짐
+            <div class="sub">
+              <div class="si"><strong>Age 기법</strong>: 희생자 선택 횟수(Count)를 비용 함수에 포함. 횟수가 많을수록 선택 비용 증가 → 다른 프로세스 선택 유도</div>
+              <div class="si"><strong>대기 시간 기반 우선순위</strong>: 오래 대기한 프로세스일수록 높은 우선순위 부여</div>
+            </div>
+          </div></li>
+        </ul>
+      </div>
+      <div class="asec">
+        <div class="ast s4">Ⅳ. 회복 방법 비교 요약</div>
+        <table class="at">
+          <tr><th>구분</th><th>프로세스 종료 (전부)</th><th>프로세스 종료 (순차)</th><th>자원 선점</th></tr>
+          <tr><td>교착상태 해소</td><td class="ok">즉시</td><td class="warn">단계적</td><td class="warn">단계적</td></tr>
+          <tr><td>작업 손실</td><td class="no">매우 큼</td><td class="warn">중간</td><td class="ok">최소화 가능</td></tr>
+          <tr><td>구현 복잡도</td><td class="ok">낮음</td><td class="warn">중간</td><td class="no">높음</td></tr>
+          <tr><td>기아 위험</td><td class="ok">없음</td><td class="ok">낮음</td><td class="no">있음 (Age 기법으로 완화)</td></tr>
+          <tr><td>실제 사용</td><td>DBMS 비상 복구</td><td>일반 OS</td><td>DBMS 트랜잭션 롤백</td></tr>
+        </table>
+      </div>
+      <div class="concl">
+        <div class="ct">Ⅴ. 결론</div>
+        <p>교착상태 회복은 시스템의 가용성(Availability) 회복과 데이터 무결성 보존 사이의 균형을 요구한다. DBMS(Oracle, MySQL)는 트랜잭션 롤백(자원 선점) 방식을 표준으로 채택하며, 가장 최근에 시작한·가장 변경이 적은 트랜잭션을 희생자로 자동 선택한다. 감리 시에는 교착상태 발생 이력, 롤백 정책, 모니터링 경보 설정 여부를 점검한다.</p>
+      </div>
+    </div>
+  </div>
+</div>
+</div><!-- /S4 -->
+
+<!-- S5: 라이브락·기아 -->
+<div class="qp" data-tp="0">
+<div class="qcount">📝 단답형 5번 / 5번</div>
+<div class="qcard">
+  <div class="qhdr">
+    <span class="qdom">컴퓨터구조 / OS</span>
+    <div class="qmeta">
+      <div class="qtype">1교시 단답형 · 10~15점 · 1~2페이지</div>
+      <div class="qtitle">교착상태(Deadlock), 라이브락(Livelock), 기아(Starvation)의 개념 차이를 비교하고, 각각의 탐지·해결 방법 및 실제 시스템에서의 발생 사례를 설명하시오.</div>
+    </div>
+  </div>
+  <div class="qbody">
+    <div class="qhints">
+      <span class="qhint">3가지 개념 혼동 주의</span><span class="qhint">라이브락은 실행 중이나 진전 없음</span><span class="qhint">기아는 자원 고갈</span>
+    </div>
+  </div>
+  <div class="ac">
+    <button class="atog" onclick="tog(this)">
+      <span class="albl">📄 모범 답안 보기</span><span class="aarr">▼</span>
+    </button>
+    <div class="abody">
+      <div class="atitle">Deadlock·Livelock·Starvation — 개념 비교·탐지·해결·실제 사례</div>
+      <div class="chips">
+        <span class="chip cht">⏱ 목표 15분</span>
+        <span class="chip chp">📄 1.5~2페이지</span>
+        <span class="chip chs">💯 10~15점</span>
+      </div>
+      <div class="asec">
+        <div class="ast s1">Ⅰ. 3가지 개념 정의 및 비교</div>
+        <table class="at">
+          <tr><th>구분</th><th>교착상태 (Deadlock)</th><th>라이브락 (Livelock)</th><th>기아 (Starvation)</th></tr>
+          <tr><td>상태</td><td>프로세스가 완전히 멈춤 (Blocked)</td><td>프로세스가 실행 중이나 진전 없음 (Active but stuck)</td><td>프로세스가 자원을 얻지 못해 무한 대기</td></tr>
+          <tr><td>원인</td><td>자원 순환 대기 (4가지 조건 동시 충족)</td><td>상호 간섭 회피 시도가 반복되며 교착 해소 실패</td><td>우선순위 스케줄링에서 낮은 우선순위 프로세스가 계속 밀림</td></tr>
+          <tr><td>CPU 사용</td><td>없음 (Block 상태)</td><td>있음 (바쁜 대기)</td><td>없거나 적음</td></tr>
+          <tr><td>자원 점유</td><td>자원을 점유하면서 대기</td><td>자원을 얻으려 시도하나 반복 실패</td><td>자원을 점유하지 못함</td></tr>
+          <tr><td>탐지</td><td>Wait-for 그래프 사이클</td><td>CPU 사용량은 높으나 실질적 진전 없음 감지 어려움</td><td>특정 프로세스의 대기 시간 모니터링</td></tr>
+          <tr><td>해결</td><td>프로세스 종료, 자원 선점</td><td>임의 대기 시간 도입 (Random Backoff)</td><td>Age 기법 (시간 경과에 따른 우선순위 상향)</td></tr>
+        </table>
+      </div>
+      <div class="asec">
+        <div class="ast s2">Ⅱ. 라이브락 상세 설명 및 해결</div>
+        <div class="ap">라이브락은 두 사람이 좁은 복도에서 서로 비켜주려다가 같은 방향으로 움직여 결국 아무도 통과하지 못하는 상황에 비유할 수 있다. 프로세스는 실행 중이나 의미 있는 작업을 수행하지 못한다.</div>
+        <div class="db">라이브락 발생 예시 (스핀락 환경)
+
+P1: 자원A 획득 시도 → P2가 점유 중 → 양보(Release) → 재시도
+P2: 자원B 획득 시도 → P1이 점유 중 → 양보(Release) → 재시도
+(P1, P2 동시에 양보·재시도를 무한 반복 → 진전 없음)
+
+해결: Exponential Backoff (이더넷 CSMA/CD 충돌 회피)
+  - 1차 충돌: 0~1 랜덤 대기
+  - 2차 충돌: 0~3 랜덤 대기
+  - n차 충돌: 0~(2^n-1) 랜덤 대기 → 충돌 확률 지수적 감소</div>
+      </div>
+      <div class="asec">
+        <div class="ast s3">Ⅲ. 기아 상세 설명 및 Age 기법</div>
+        <div class="kb kb-grn">
+          <div class="kbt">Age (에이징) 기법 — 기아 방지</div>
+          프로세스가 대기 중인 시간에 비례하여 우선순위를 점진적으로 높이는 기법.<br>
+          예: 대기 매 1초마다 우선순위 +1 증가 → 낮은 우선순위 프로세스도 결국 최고 우선순위에 도달하여 자원 획득 보장.<br>
+          적용: Linux의 CFS(완전 공정 스케줄러)에서 vruntime 기반 에이징 구현
+        </div>
+      </div>
+      <div class="asec">
+        <div class="ast s4">Ⅳ. 실제 시스템 발생 사례</div>
+        <div class="sgrid">
+          <div class="sc"><div class="sc-t">🔴 Deadlock — DBMS</div><p>트랜잭션 T1이 Row A 락 → Row B 요청, T2가 Row B 락 → Row A 요청. Oracle이 탐지 후 T2 롤백</p></div>
+          <div class="sc"><div class="sc-t">🟡 Livelock — 네트워크</div><p>이더넷 CSMA/CD에서 두 노드가 동시에 패킷 전송 후 동시 재전송 반복. Exponential Backoff로 해결</p></div>
+          <div class="sc"><div class="sc-t">🔵 Starvation — OS 스케줄러</div><p>FCFS 스케줄러에서 긴 CPU 버스트 프로세스가 계속 실행되어 I/O 중심 단기 프로세스가 무한 대기</p></div>
+          <div class="sc"><div class="sc-t">🟢 복합 — MSA 환경</div><p>마이크로서비스 간 분산 락에서 Deadlock 발생 시 타임아웃 기반 Livelock으로 변환될 수 있음. Circuit Breaker 패턴으로 방지</p></div>
+        </div>
+      </div>
+      <div class="concl">
+        <div class="ct">Ⅴ. 결론</div>
+        <p>교착상태·라이브락·기아는 모두 프로세스의 진행 불가능 상태이나 원인과 해결책이 다르다. 현대 분산 시스템에서는 세 가지가 복합적으로 발생하며, 분산 락(Redis Redlock)·타임아웃·Circuit Breaker·Age 기법을 종합적으로 적용하여 시스템 라이브니스(Liveness)를 보장해야 한다.</p>
+      </div>
+    </div>
+  </div>
+</div>
+</div><!-- /S5 -->
+
+</div><!-- /main -->
+</div><!-- /tp0 -->
+
+<!-- ══════════════════════════════════
+     논술형 섹션
+══════════════════════════════════ -->
+<div class="tp" id="tp1">
+<nav class="qnav">
+  <button class="qbtn active" onclick="showQ(0,this,1)">①예방·회피·탐지·회복 비교</button>
+  <button class="qbtn" onclick="showQ(1,this,1)">②은행원 알고리즘 심화</button>
+  <button class="qbtn" onclick="showQ(2,this,1)">③DB 교착상태·Lock</button>
+  <button class="qbtn" onclick="showQ(3,this,1)">④분산 교착상태</button>
+  <button class="qbtn" onclick="showQ(4,this,1)">⑤현대OS·클라우드</button>
+</nav>
+<div class="main">
+
+<!-- L1: 예방·회피·탐지·회복 비교 -->
+<div class="qp active" data-tp="1">
+<div class="qcount">📄 논술형 1번 / 5번</div>
+<div class="qcard">
+  <div class="qhdr">
+    <span class="qdom">컴퓨터구조 / OS</span>
+    <div class="qmeta">
+      <div class="qtype">2~4교시 논술형 · 25점 · 3~4페이지</div>
+      <div class="qtitle">교착상태(Deadlock) 해결 전략에 대하여 다음을 설명하시오.</div>
+    </div>
+  </div>
+  <div class="qbody">
+    <div class="qitems">
+      <div class="qi"><span class="ql">가.</span><span>교착상태 예방(Prevention), 회피(Avoidance), 탐지(Detection), 회복(Recovery)의 개념과 동작 원리</span></div>
+      <div class="qi"><span class="ql">나.</span><span>4가지 전략의 자원 이용률, 처리량, 오버헤드, 적용 환경 측면 비교</span></div>
+      <div class="qi"><span class="ql">다.</span><span>실제 운영체제(Linux, Windows)와 DBMS(Oracle, MySQL)에서의 교착상태 처리 방식 및 감리 점검항목</span></div>
+    </div>
+    <div class="qhints">
+      <span class="qhint">4전략 심층 비교</span><span class="qhint">실제 OS/DBMS 적용 사례</span><span class="qhint">감리 연계 필수</span>
+    </div>
+  </div>
+  <div class="ac">
+    <button class="atog" onclick="tog(this)">
+      <span class="albl">📄 모범 답안 보기</span><span class="aarr">▼</span>
+    </button>
+    <div class="abody">
+      <div class="atitle">교착상태 4대 해결 전략 비교, 실제 OS·DBMS 적용 방식 및 감리 점검항목</div>
+      <div class="chips">
+        <span class="chip cht">⏱ 목표 30분</span>
+        <span class="chip chp">📄 3.5~4페이지</span>
+        <span class="chip chs">💯 25점</span>
+      </div>
+      <div class="asec">
+        <div class="ast s1">Ⅰ. 개요 — 교착상태 해결 전략 분류</div>
+        <div class="ap">교착상태 해결 전략은 교착상태가 발생하는 시점을 기준으로 사전 방지(예방·회피)와 사후 처리(탐지·회복)로 나뉜다. 각 전략은 자원 이용률과 시스템 안전성 사이의 트레이드오프를 가지며, 시스템 특성에 맞는 선택이 중요하다.</div>
+        <div class="db">교착상태 해결 전략 분류 체계
+
+┌─────────────────────────────────────────────────┐
+│         교착상태 해결 전략                          │
+├────────────────┬────────────────────────────────┤
+│   사전 방지     │         사후 처리               │
+├────────┬───────┼──────────────┬─────────────────┤
+│ 예방   │ 회피  │    탐지      │     회복        │
+│(Prev.) │(Avoid)│ (Detect)    │  (Recovery)    │
+│4조건   │안전상 │Wait-for그래프│프로세스 종료    │
+│부정    │태 검사│주기적 탐지  │자원 선점        │
+└────────┴───────┴──────────────┴─────────────────┘</div>
+      </div>
+      <div class="asec">
+        <div class="ast s2">Ⅱ. 가. 4가지 전략의 개념과 동작 원리</div>
+        <ul class="aol">
+          <li><span class="on on1">1</span><div><strong>예방(Prevention)</strong>: Coffman 4가지 필요조건 중 하나 이상을 시스템 설계 단계에서 원천 차단
+            <div class="sub">
+              <div class="si">상호배제 부정: 자원 공유화 (읽기 전용 자원에 한해 적용 가능)</div>
+              <div class="si">점유대기 부정: 자원 일괄 요청 또는 보유 자원 해제 후 재요청</div>
+              <div class="si">비선점 부정: 자원 강제 선점 허용 (CPU·메모리 등 상태 저장 가능한 자원에 한정)</div>
+              <div class="si">환형대기 부정: 자원에 전역 번호 부여, 오름차순 요청 강제</div>
+            </div>
+          </div></li>
+          <li><span class="on on2">2</span><div><strong>회피(Avoidance)</strong>: 4가지 조건 허용, 자원 할당 전 안전 상태(Safe State) 검사. 불안전 상태 유발 요청 거부
+            <div class="sub">
+              <div class="si">은행원 알고리즘: 프로세스별 최대 자원 요구량 사전 신고 필요</div>
+              <div class="si">안전 순서열이 존재하면 안전 상태 → 할당 승인</div>
+              <div class="si">안전 순서열이 없으면 불안전 상태 → 할당 거부, 자원 해제까지 대기</div>
+            </div>
+          </div></li>
+          <li><span class="on on3">3</span><div><strong>탐지(Detection)</strong>: 교착상태 발생 허용 후 주기적으로 Wait-for 그래프 사이클 검사
+            <div class="sub">
+              <div class="si">단일 인스턴스: Wait-for 그래프에서 DFS로 O(n+e) 사이클 탐지</div>
+              <div class="si">다중 인스턴스: 자원 요청·할당 행렬 기반 탐지 알고리즘 O(n²m)</div>
+              <div class="si">탐지 주기: 너무 잦으면 오버헤드, 너무 드물면 교착상태 지속</div>
+            </div>
+          </div></li>
+          <li><span class="on on4">4</span><div><strong>회복(Recovery)</strong>: 탐지 후 교착상태 해소 조치
+            <div class="sub">
+              <div class="si">프로세스 종료: 교착 관련 전부 또는 순차적 종료 (작업 손실 발생)</div>
+              <div class="si">자원 선점: 희생자 선택 → 롤백 → 기아 방지(Age 기법)</div>
+            </div>
+          </div></li>
+        </ul>
+      </div>
+      <div class="asec">
+        <div class="ast s3">Ⅲ. 나. 4가지 전략 비교</div>
+        <table class="at">
+          <tr><th>비교 항목</th><th>예방</th><th>회피</th><th>탐지</th><th>회복</th></tr>
+          <tr><td>교착상태 가능성</td><td class="ok">없음 (원천 차단)</td><td class="ok">없음 (안전 상태 유지)</td><td class="no">있음 (허용 후 처리)</td><td class="no">있음 (탐지 후 처리)</td></tr>
+          <tr><td>자원 이용률</td><td class="no">매우 낮음</td><td class="warn">낮음</td><td class="ok">높음</td><td class="ok">높음</td></tr>
+          <tr><td>시스템 처리량</td><td class="no">낮음</td><td class="warn">중간</td><td class="ok">높음</td><td class="ok">높음</td></tr>
+          <tr><td>구현 복잡도</td><td class="warn">중간</td><td class="no">높음</td><td class="warn">중간</td><td class="warn">중간</td></tr>
+          <tr><td>런타임 오버헤드</td><td class="ok">낮음</td><td class="no">높음 (매 요청마다)</td><td class="warn">주기적 검사</td><td class="warn">발생 시만</td></tr>
+          <tr><td>사전 정보 요구</td><td class="ok">불필요</td><td class="no">최대 자원 신고 필수</td><td class="ok">불필요</td><td class="ok">불필요</td></tr>
+          <tr><td>작업 손실</td><td class="ok">없음</td><td class="ok">없음</td><td class="ok">없음</td><td class="no">있음 (롤백)</td></tr>
+          <tr><td>기아 가능성</td><td class="warn">가능 (점유대기 부정)</td><td class="warn">가능 (대기 중)</td><td class="ok">낮음</td><td class="warn">있음 (Age로 완화)</td></tr>
+          <tr><td>적합 환경</td><td>임베디드·실시간 시스템</td><td>자원 사용 예측 가능 시스템</td><td>범용 OS, DBMS</td><td>DBMS 트랜잭션 관리</td></tr>
+        </table>
+      </div>
+      <div class="asec">
+        <div class="ast s4">Ⅳ. 다. 실제 OS·DBMS 적용 방식</div>
+        <table class="at">
+          <tr><th>시스템</th><th>채택 전략</th><th>구체적 구현</th></tr>
+          <tr><td>Linux 커널</td><td>탐지 (부분)</td><td>lockdep: 커널 내 mutex/spinlock 간 락 순서 그래프를 실시간 추적. 락 의존성 사이클 발생 시 경고 출력. CONFIG_PROVE_LOCKING 옵션으로 활성화</td></tr>
+          <tr><td>Windows</td><td>예방 + 탐지</td><td>Wait Chain Traversal(WCT) API로 애플리케이션 수준 교착상태 탐지 지원. 락 계층 구조 강제로 환형 대기 부정</td></tr>
+          <tr><td>Oracle DB</td><td>탐지 + 회복</td><td>3초 간격으로 Wait-for 그래프 자동 탐지. 탐지 시 가장 최소 작업량 트랜잭션 선택 → ORA-00060 에러와 함께 자동 롤백. DEADLOCK_TIMEOUT 파라미터로 설정 가능</td></tr>
+          <tr><td>MySQL InnoDB</td><td>탐지 + 회복</td><td>innodb_lock_wait_timeout(기본 50초)으로 타임아웃 기반 탐지. 탐지 시 롤백 대상: undo log 양이 적은 트랜잭션(롤백 비용 최소화). innodb_deadlock_detect=ON으로 즉시 탐지 가능</td></tr>
+          <tr><td>PostgreSQL</td><td>탐지 + 회복</td><td>deadlock_timeout(기본 1s) 초과 시 Wait-for 그래프 탐지 시작. 탐지된 사이클에서 임의 트랜잭션 롤백</td></tr>
+        </table>
+        <div class="kb kb-ora">
+          <div class="kbt">🏛️ 감리 점검항목 — 교착상태 관리</div>
+          ① <strong>정책 문서화</strong>: 시스템 설계 문서에 교착상태 방지 전략이 명시되어 있는가<br>
+          ② <strong>DBMS 설정</strong>: innodb_deadlock_detect, deadlock_timeout 등 DBMS 파라미터 적절 설정 여부<br>
+          ③ <strong>모니터링</strong>: 교착상태 발생 이벤트에 대한 경보(Alert) 및 로깅 체계 구축 여부<br>
+          ④ <strong>애플리케이션 락 순서</strong>: 다중 자원 접근 시 일관된 락 획득 순서 코딩 표준 준수 여부<br>
+          ⑤ <strong>타임아웃 설정</strong>: 락 대기 타임아웃 설정으로 무한 대기 방지 여부<br>
+          ⑥ <strong>트랜잭션 최소화</strong>: 트랜잭션 범위를 최소화하여 락 보유 시간 단축 여부
+        </div>
+      </div>
+      <div class="concl">
+        <div class="ct">Ⅴ. 결론</div>
+        <p>현실 시스템에서는 단일 전략보다 복합 적용이 일반적이다. 범용 OS는 탐지+회복, DBMS는 탐지+회복(자동 롤백), 실시간 시스템은 예방 중심으로 운영한다. 공공 정보시스템 감리 시에는 DBMS 교착상태 탐지 설정 적절성, 애플리케이션 레벨 락 설계 표준 준수, 교착상태 이벤트 로깅·경보 체계를 핵심 점검항목으로 확인해야 한다.</p>
+      </div>
+    </div>
+  </div>
+</div>
+</div><!-- /L1 -->
+
+<!-- L2: 은행원 알고리즘 심화 -->
+<div class="qp" data-tp="1">
+<div class="qcount">📄 논술형 2번 / 5번</div>
+<div class="qcard">
+  <div class="qhdr">
+    <span class="qdom">컴퓨터구조 / OS</span>
+    <div class="qmeta">
+      <div class="qtype">2~4교시 논술형 · 25점 · 3~4페이지</div>
+      <div class="qtitle">교착상태 회피를 위한 은행원 알고리즘(Banker's Algorithm)에 대하여 다음을 설명하시오.</div>
+    </div>
+  </div>
+  <div class="qbody">
+    <div class="qitems">
+      <div class="qi"><span class="ql">가.</span><span>안전성 알고리즘(Safety Algorithm)의 절차와 안전 순서열 결정 방법</span></div>
+      <div class="qi"><span class="ql">나.</span><span>자원 요청 알고리즘(Resource-Request Algorithm)의 처리 절차</span></div>
+      <div class="qi"><span class="ql">다.</span><span>은행원 알고리즘의 한계 및 현대 시스템에서의 대안적 교착상태 회피 기법</span></div>
+    </div>
+    <div class="qhints">
+      <span class="qhint">알고리즘 절차 단계별 기술</span><span class="qhint">수치 예시 필수</span><span class="qhint">현대 대안 기법</span>
+    </div>
+  </div>
+  <div class="ac">
+    <button class="atog" onclick="tog(this)">
+      <span class="albl">📄 모범 답안 보기</span><span class="aarr">▼</span>
+    </button>
+    <div class="abody">
+      <div class="atitle">은행원 알고리즘 — 안전성·자원요청 알고리즘 절차·한계·현대 대안</div>
+      <div class="chips">
+        <span class="chip cht">⏱ 목표 30분</span>
+        <span class="chip chp">📄 3.5~4페이지</span>
+        <span class="chip chs">💯 25점</span>
+      </div>
+      <div class="asec">
+        <div class="ast s1">Ⅰ. 개요 — 은행원 알고리즘의 위치</div>
+        <div class="ap">은행원 알고리즘은 교착상태 회피(Avoidance) 전략의 대표 알고리즘으로, 자원 할당 전 시스템이 안전 상태(Safe State)를 유지하는지 사전 검증한다. 두 개의 하위 알고리즘으로 구성된다: ①안전성 알고리즘(시스템 상태 검사)과 ②자원 요청 알고리즘(개별 요청 처리).</div>
+        <table class="at">
+          <tr><th>자료구조</th><th>의미</th><th>계산</th></tr>
+          <tr><td>Available[m]</td><td>현재 가용 자원량</td><td>전체 자원 - 합계 할당량</td></tr>
+          <tr><td>Max[n][m]</td><td>각 프로세스의 최대 요구량</td><td>프로세스 시작 시 신고</td></tr>
+          <tr><td>Allocation[n][m]</td><td>현재 할당된 자원량</td><td>실시간 추적</td></tr>
+          <tr><td>Need[n][m]</td><td>아직 필요한 자원량</td><td>Max − Allocation</td></tr>
+        </table>
+      </div>
+      <div class="asec">
+        <div class="ast s2">Ⅱ. 가. 안전성 알고리즘 (Safety Algorithm)</div>
+        <div class="db">안전성 알고리즘 (의사코드)
+
+입력: Available, Max, Allocation, Need
+출력: 안전(Safe) / 불안전(Unsafe)
+
+1. Work = Available.copy()
+   Finish[i] = false for all i
+
+2. 다음 조건을 만족하는 i를 탐색:
+   조건1: Finish[i] == false
+   조건2: Need[i] ≤ Work  (i번 프로세스의 모든 자원 유형에 대해)
+
+3. 조건을 만족하는 i가 존재하면:
+   Work = Work + Allocation[i]   ← i가 완료 후 자원 반납
+   Finish[i] = true
+   2단계로 돌아감
+
+4. 모든 i에 대해 Finish[i] == true → 시스템 안전(Safe State)
+   일부 Finish[i] == false → 시스템 불안전(Unsafe State)</div>
+        <div class="ap" style="margin-top:12px"><strong>수치 예시 (자원 3종 A·B·C, 프로세스 5개):</strong></div>
+        <div class="db">초기 상태:
+         Allocation    Need          Available = (3,3,2)
+         A  B  C      A  B  C
+P0       0  1  0      7  4  3
+P1       2  0  0      1  2  2
+P2       3  0  2      6  0  0
+P3       2  1  1      0  1  1
+P4       0  0  2      4  3  1
+
+안전 순서열 탐색:
+ ① Work=(3,3,2): Need[P1]=(1,2,2) ≤ (3,3,2) ✓ → Work=(5,3,2), Finish[P1]=T
+ ② Work=(5,3,2): Need[P3]=(0,1,1) ≤ (5,3,2) ✓ → Work=(7,4,3), Finish[P3]=T
+ ③ Work=(7,4,3): Need[P4]=(4,3,1) ≤ (7,4,3) ✓ → Work=(7,4,5), Finish[P4]=T
+ ④ Work=(7,4,5): Need[P0]=(7,4,3) ≤ (7,4,5) ✓ → Work=(7,5,5), Finish[P0]=T
+ ⑤ Work=(7,5,5): Need[P2]=(6,0,0) ≤ (7,5,5) ✓ → Work=(10,5,7), Finish[P2]=T
+
+✅ 안전 순서열: &lt;P1, P3, P4, P0, P2&gt; → 안전 상태</div>
+      </div>
+      <div class="asec">
+        <div class="ast s3">Ⅲ. 나. 자원 요청 알고리즘 (Resource-Request Algorithm)</div>
+        <div class="db">자원 요청 알고리즘 (의사코드)
+입력: 프로세스 Pi의 자원 요청 Request[i]
+
+1. [요청 유효성 검사]
+   if Request[i] > Need[i]:
+       Error! 최대 요구량 초과 요청 → 오류 처리
+
+2. [가용 자원 확인]
+   if Request[i] > Available:
+       Pi를 대기 상태로 전환 (자원 부족)
+
+3. [가상 할당 수행 — 시뮬레이션]
+   Available = Available − Request[i]
+   Allocation[i] = Allocation[i] + Request[i]
+   Need[i] = Need[i] − Request[i]
+
+4. [안전성 검사]
+   if 안전성 알고리즘 결과 == Safe:
+       실제로 자원 할당 확정
+   else:
+       가상 할당 취소 (원상복구) → Pi 대기
+       Available, Allocation, Need 복원
+
+핵심: 가상 할당 후 안전 상태 검사 → 불안전 시 롤백</div>
+        <div class="kb kb-pur">
+          <div class="kbt">자원 요청 처리 예시</div>
+          위 예시에서 P1이 (1,0,2) 요청 시:<br>
+          ① (1,0,2) ≤ Need[P1]=(1,2,2) ✓<br>
+          ② (1,0,2) ≤ Available=(3,3,2) ✓<br>
+          ③ 가상 할당: Available=(2,3,0), Alloc[P1]=(3,0,2), Need[P1]=(0,2,0)<br>
+          ④ 안전성 검사: &lt;P1,P3,P4,P0,P2&gt; 안전 순서열 여전히 존재 → <strong>할당 승인</strong>
+        </div>
+      </div>
+      <div class="asec">
+        <div class="ast s4">Ⅳ. 다. 한계 및 현대 시스템 대안</div>
+        <table class="at">
+          <tr><th>한계점</th><th>상세 내용</th><th>대안 기법</th></tr>
+          <tr><td>최대 자원 사전 신고</td><td>동적 환경에서 최대 요구량 정확히 예측 불가</td><td>타임아웃 기반 탐지(DBMS), 낙관적 잠금(Optimistic Locking)</td></tr>
+          <tr><td>고정 프로세스·자원</td><td>런타임 중 프로세스·자원 추가 시 재계산 필요</td><td>분산 락 관리자(DLM: Distributed Lock Manager)</td></tr>
+          <tr><td>O(n²m) 복잡도</td><td>대규모 시스템에서 성능 저하</td><td>락 타임아웃 + 지수 백오프(Exponential Backoff)</td></tr>
+          <tr><td>자원 이용률 저하</td><td>안전 유지를 위해 실제 가용 자원도 할당 거부</td><td>낙관적 병행 제어(MVCC: Multi-Version Concurrency Control)</td></tr>
+          <tr><td>분산 시스템 미지원</td><td>단일 노드 가정. 마이크로서비스에 직접 적용 불가</td><td>Saga 패턴, 2PC, Saga Orchestrator</td></tr>
+        </table>
+        <div class="kb kb-tea">
+          <div class="kbt">현대 대안 기법</div>
+          ① <strong>낙관적 잠금(Optimistic Locking)</strong>: 충돌이 드물다는 가정 하에 락 없이 작업 후 커밋 시 충돌 검사. 충돌 시 재시도 (MVCC 구현)<br>
+          ② <strong>타임아웃 + 재시도</strong>: 락 대기 시간 제한 후 자동 타임아웃. 지수 백오프로 재시도. 구현 단순, DBMS 표준 기법<br>
+          ③ <strong>락 순서 강제(Lock Ordering)</strong>: 전역 락 획득 순서를 코딩 표준으로 강제하여 환형 대기 원천 차단<br>
+          ④ <strong>Try-Lock 패턴</strong>: 비블로킹 방식으로 락 시도. 실패 시 즉시 포기하고 재시도하여 라이브락 위험 있으나 Deadlock 방지 (Random 대기 시간 추가)
+        </div>
+      </div>
+      <div class="concl">
+        <div class="ct">Ⅴ. 결론</div>
+        <p>은행원 알고리즘은 교착상태 회피의 이론적 완성도가 높지만, 실용적 제약으로 범용 OS에서 채택되지 않는다. 현대 고성능 시스템에서는 MVCC 기반 낙관적 병행 제어(PostgreSQL, MySQL InnoDB)와 타임아웃+롤백 조합이 사실상 표준이다. 분산 환경에서는 Saga 패턴, 분산 락 관리자(Redis Redlock), Circuit Breaker 패턴이 교착상태 회피의 실용적 대안으로 사용된다.</p>
+      </div>
+    </div>
+  </div>
+</div>
+</div><!-- /L2 -->
+
+<!-- L3: DB 교착상태·Lock -->
+<div class="qp" data-tp="1">
+<div class="qcount">📄 논술형 3번 / 5번</div>
+<div class="qcard">
+  <div class="qhdr">
+    <span class="qdom">컴퓨터구조 / OS</span>
+    <div class="qmeta">
+      <div class="qtype">2~4교시 논술형 · 25점 · 3~4페이지</div>
+      <div class="qtitle">데이터베이스 환경에서의 교착상태(Deadlock)에 대하여 다음을 설명하시오.</div>
+    </div>
+  </div>
+  <div class="qbody">
+    <div class="qitems">
+      <div class="qi"><span class="ql">가.</span><span>데이터베이스 락(Lock)의 유형(공유 락·배타 락·의향 락)과 호환성 행렬</span></div>
+      <div class="qi"><span class="ql">나.</span><span>데이터베이스 교착상태의 발생 원인과 탐지·해결 방법</span></div>
+      <div class="qi"><span class="ql">다.</span><span>교착상태 예방을 위한 DBMS 설계 기법 및 애플리케이션 레벨 대응 방안</span></div>
+    </div>
+    <div class="qhints">
+      <span class="qhint">락 호환성 행렬 필수</span><span class="qhint">Oracle/MySQL 구현 연계</span><span class="qhint">MVCC 비교</span>
+    </div>
+  </div>
+  <div class="ac">
+    <button class="atog" onclick="tog(this)">
+      <span class="albl">📄 모범 답안 보기</span><span class="aarr">▼</span>
+    </button>
+    <div class="abody">
+      <div class="atitle">DB Lock 유형·호환성 행렬, DB 교착상태 탐지·해결 및 예방 설계 기법</div>
+      <div class="chips">
+        <span class="chip cht">⏱ 목표 30분</span>
+        <span class="chip chp">📄 3.5~4페이지</span>
+        <span class="chip chs">💯 25점</span>
+      </div>
+      <div class="asec">
+        <div class="ast s1">Ⅰ. 개요 — DB 환경에서 교착상태의 특수성</div>
+        <div class="ap">데이터베이스 교착상태는 두 개 이상의 트랜잭션이 서로 상대 트랜잭션이 보유한 락(Lock)을 기다리면서 모든 트랜잭션이 진행 불가 상태에 빠지는 것이다. OS 교착상태와 달리, DB에서는 락 단위가 행(Row)·페이지·테이블 등으로 세분화되고, 트랜잭션 롤백이라는 자연스러운 회복 수단이 있어 관리 방식이 다르다.</div>
+      </div>
+      <div class="asec">
+        <div class="ast s2">Ⅱ. 가. DB 락 유형 및 호환성 행렬</div>
+        <table class="at">
+          <tr><th>락 유형</th><th>기호</th><th>용도</th><th>동시 허용</th></tr>
+          <tr><td>공유 락 (Shared Lock)</td><td>S</td><td>읽기(SELECT) 작업. 여러 트랜잭션이 동시 공유 가능</td><td>다른 S 락과 공존 가능</td></tr>
+          <tr><td>배타 락 (Exclusive Lock)</td><td>X</td><td>쓰기(INSERT/UPDATE/DELETE). 단독 접근 보장</td><td>어떤 락과도 공존 불가</td></tr>
+          <tr><td>의향 공유 락 (Intent Shared)</td><td>IS</td><td>하위 레벨(행)에 S 락 획득 의도 표시. 테이블 레벨 락</td><td>IS·S·IX와 공존 가능</td></tr>
+          <tr><td>의향 배타 락 (Intent Exclusive)</td><td>IX</td><td>하위 레벨(행)에 X 락 획득 의도 표시</td><td>IS·IX와만 공존 가능</td></tr>
+          <tr><td>공유 의향 배타 락 (SIX)</td><td>SIX</td><td>테이블 전체 읽기 + 일부 행 쓰기</td><td>IS와만 공존 가능</td></tr>
+        </table>
+        <div class="ap" style="margin-top:10px"><strong>호환성 행렬 (○=호환, ✗=충돌):</strong></div>
+        <div class="db">       요청\보유 │  IS   S   IX   X   SIX
+       ──────────┼──────────────────────────
+       IS        │  ○    ○   ○    ✗    ○
+       S         │  ○    ○   ✗    ✗    ✗
+       IX        │  ○    ✗   ○    ✗    ✗
+       X         │  ✗    ✗   ✗    ✗    ✗
+       SIX       │  ○    ✗   ✗    ✗    ✗
+
+법칙: X(배타) 락은 어떤 락과도 공존 불가 → 교착상태 주요 원인</div>
+      </div>
+      <div class="asec">
+        <div class="ast s3">Ⅲ. 나. DB 교착상태 발생 원인 및 탐지·해결</div>
+        <div class="ap"><strong>주요 발생 패턴:</strong></div>
+        <div class="db">패턴 1 — 직접 순환 대기
+  T1: LOCK A → 대기(B 요청) → T2가 B 보유
+  T2: LOCK B → 대기(A 요청) → T1이 A 보유
+  결과: T1↔T2 순환 교착
+
+패턴 2 — 잠금 에스컬레이션
+  T1: SELECT * FROM Orders (S 락) → UPDATE 시도 (X 락 업그레이드 대기)
+  T2: 이미 Orders에 X 락 획득 후 T1의 S 락 해제 대기
+  결과: 락 업그레이드 충돌
+
+패턴 3 — 인덱스 갭 락 (MySQL InnoDB)
+  T1: SELECT ... WHERE id BETWEEN 1 AND 10 FOR UPDATE (Gap Lock)
+  T2: INSERT INTO ... WHERE id=5 (Gap Lock 충돌)
+  결과: Gap Lock 간 교착 (범위 쿼리 주의)</div>
+        <ul class="aol">
+          <li><span class="on on3">1</span><div><strong>탐지 방법</strong>
+            <div class="sub">
+              <div class="si"><strong>Wait-for 그래프 탐지</strong>: DBMS가 트랜잭션 간 대기 관계 그래프를 주기적 탐지 (Oracle: 3초, PostgreSQL: deadlock_timeout 기준)</div>
+              <div class="si"><strong>타임아웃 탐지</strong>: 설정된 락 대기 시간 초과 시 교착상태로 판단 (MySQL innodb_lock_wait_timeout=50초)</div>
+            </div>
+          </div></li>
+          <li><span class="on on4">2</span><div><strong>해결(회복) 방법</strong>
+            <div class="sub">
+              <div class="si"><strong>희생자 선택 기준</strong>: 롤백 비용 최소(UNDO 로그 양 기준), 트랜잭션 우선순위, 실행 시간</div>
+              <div class="si"><strong>Oracle</strong>: 가장 최근 트랜잭션 롤백 → ORA-00060 오류 반환</div>
+              <div class="si"><strong>MySQL InnoDB</strong>: UNDO 로그 양 적은 트랜잭션 롤백 (innodb_deadlock_detect=ON)</div>
+              <div class="si"><strong>전체 롤백 vs 부분 롤백</strong>: DBMS는 교착 관련 트랜잭션 중 하나만 롤백(최소 피해)</div>
+            </div>
+          </div></li>
+        </ul>
+      </div>
+      <div class="asec">
+        <div class="ast s5">Ⅳ. 다. 교착상태 예방을 위한 DBMS 설계·애플리케이션 대응</div>
+        <ul class="aol">
+          <li><span class="on on5">1</span><div><strong>MVCC(Multi-Version Concurrency Control) — 읽기-쓰기 교착 제거</strong>
+            <div class="sub">
+              <div class="si">읽기(SELECT) 시 락 없이 스냅숏(Snapshot)에서 읽음 → S 락 불필요 → S↔X 교착 제거</div>
+              <div class="si">PostgreSQL·MySQL InnoDB가 기본 채택. Oracle Read Consistency도 동일 원리</div>
+              <div class="si">쓰기 충돌(W-W)은 여전히 발생 → X 락 관리 필요</div>
+            </div>
+          </div></li>
+          <li><span class="on on5">2</span><div><strong>락 획득 순서 표준화</strong>
+            <div class="sub">
+              <div class="si">모든 트랜잭션이 동일한 순서로 테이블·행에 접근하도록 코딩 표준 수립</div>
+              <div class="si">예: 항상 Orders → OrderItems → Products 순서로 락 획득</div>
+            </div>
+          </div></li>
+          <li><span class="on on5">3</span><div><strong>애플리케이션 레벨 대응</strong>
+            <div class="sub">
+              <div class="si"><strong>트랜잭션 최소화</strong>: 트랜잭션 범위를 최소화하여 락 보유 시간 단축</div>
+              <div class="si"><strong>낙관적 잠금</strong>: version 컬럼 또는 timestamp로 충돌 감지. 충돌 시 재시도</div>
+              <div class="si"><strong>재시도 로직</strong>: 교착상태 오류(ORA-00060, MySQL Error 1213) 감지 후 자동 재시도 (지수 백오프 적용)</div>
+              <div class="si"><strong>배치 작업 분리</strong>: 대량 UPDATE/DELETE는 소규모 청크로 분할 실행하여 락 범위 최소화</div>
+            </div>
+          </div></li>
+          <li><span class="on on5">4</span><div><strong>인덱스 최적화</strong>
+            <div class="sub">
+              <div class="si">풀 테이블 스캔 발생 시 테이블 전체에 S 락 → 교착 위험 급증. 적절한 인덱스로 행 단위 락 유도</div>
+              <div class="si">MySQL Gap Lock 최소화: 범위 쿼리 대신 IN 조건 사용, READ COMMITTED 격리 수준 고려</div>
+            </div>
+          </div></li>
+        </ul>
+      </div>
+      <div class="concl">
+        <div class="ct">Ⅴ. 결론</div>
+        <p>DB 교착상태는 동시성 제어의 근본적 도전 과제이다. MVCC 기반 읽기-쓰기 분리, 락 순서 표준화, 트랜잭션 최소화 원칙을 설계 단계부터 적용하고, 애플리케이션에서 자동 재시도 로직을 구현함으로써 교착상태의 영향을 최소화해야 한다. 감리 시에는 DBMS 교착상태 로그 분석, 락 타임아웃 설정, 인덱스 최적화 여부를 중점 점검한다.</p>
+      </div>
+    </div>
+  </div>
+</div>
+</div><!-- /L3 -->
+
+<!-- L4: 분산 교착상태 -->
+<div class="qp" data-tp="1">
+<div class="qcount">📄 논술형 4번 / 5번</div>
+<div class="qcard">
+  <div class="qhdr">
+    <span class="qdom">컴퓨터구조 / OS</span>
+    <div class="qmeta">
+      <div class="qtype">2~4교시 논술형 · 25점 · 3~4페이지</div>
+      <div class="qtitle">분산 시스템에서의 교착상태(Distributed Deadlock)에 대하여 다음을 설명하시오.</div>
+    </div>
+  </div>
+  <div class="qbody">
+    <div class="qitems">
+      <div class="qi"><span class="ql">가.</span><span>분산 교착상태의 개념과 단일 노드 교착상태와의 차이점</span></div>
+      <div class="qi"><span class="ql">나.</span><span>분산 교착상태 탐지 알고리즘 — 집중화(Centralized), 분산화(Distributed), 계층적(Hierarchical) 방식 비교</span></div>
+      <div class="qi"><span class="ql">다.</span><span>마이크로서비스 아키텍처(MSA)에서 분산 교착상태 예방을 위한 Saga 패턴, Circuit Breaker, 분산 락(Distributed Lock) 적용 방안</span></div>
+    </div>
+    <div class="qhints">
+      <span class="qhint">MSA 연계 최신 출제</span><span class="qhint">분산 탐지 알고리즘 3방식</span><span class="qhint">Redis Redlock 포함</span>
+    </div>
+  </div>
+  <div class="ac">
+    <button class="atog" onclick="tog(this)">
+      <span class="albl">📄 모범 답안 보기</span><span class="aarr">▼</span>
+    </button>
+    <div class="abody">
+      <div class="atitle">분산 교착상태 개념·탐지 알고리즘 비교 및 MSA 환경 예방·대응 방안</div>
+      <div class="chips">
+        <span class="chip cht">⏱ 목표 30분</span>
+        <span class="chip chp">📄 3.5~4페이지</span>
+        <span class="chip chs">💯 25점</span>
+      </div>
+      <div class="asec">
+        <div class="ast s1">Ⅰ. 가. 분산 교착상태의 개념과 특수성</div>
+        <div class="ap">분산 교착상태(Distributed Deadlock)는 분산 시스템에서 복수의 노드에 걸쳐 있는 프로세스·트랜잭션들이 서로 다른 노드의 자원을 순환 대기하여 발생하는 교착상태이다. 단일 노드 교착상태와 달리, 전역 상태를 한 번에 파악하기 어렵고 네트워크 지연·파티션이 탐지를 복잡하게 만든다.</div>
+        <table class="at">
+          <tr><th>비교 항목</th><th>단일 노드 교착상태</th><th>분산 교착상태</th></tr>
+          <tr><td>자원 위치</td><td>단일 노드 내 자원</td><td>다수 노드에 분산된 자원</td></tr>
+          <tr><td>상태 가시성</td><td>OS가 전역 상태 즉시 파악</td><td>각 노드가 부분 상태만 파악. 전역 Wait-for 그래프 구성 필요</td></tr>
+          <tr><td>탐지 복잡도</td><td>O(n+e) DFS (단순)</td><td>메시지 전달 기반. 네트워크 오버헤드 및 지연 발생</td></tr>
+          <tr><td>유령 교착상태</td><td>없음</td><td>있음: 해소된 교착상태가 지연된 메시지로 인해 탐지되는 오탐</td></tr>
+          <tr><td>해결 복잡도</td><td>단순 (단일 OS 제어)</td><td>합의(Consensus) 프로토콜 필요. 롤백 시 분산 트랜잭션 관리</td></tr>
+        </table>
+      </div>
+      <div class="asec">
+        <div class="ast s2">Ⅱ. 나. 분산 교착상태 탐지 알고리즘 3방식 비교</div>
+        <ul class="aol">
+          <li><span class="on on1">1</span><div><strong>집중화 방식 (Centralized)</strong>
+            <div class="sub">
+              <div class="si">중앙 코디네이터가 모든 노드에서 로컬 Wait-for 그래프를 수집하여 전역 Wait-for 그래프 구성</div>
+              <div class="si">전역 그래프에서 사이클 탐지 → 교착상태 판정</div>
+              <div class="si">장점: 구현 단순, 정확한 탐지</div>
+              <div class="si">단점: 코디네이터 단일 장애점(SPOF), 대규모 시스템에서 병목</div>
+            </div>
+          </div></li>
+          <li><span class="on on2">2</span><div><strong>분산화 방식 (Distributed) — Chandy-Misra-Haas 알고리즘</strong>
+            <div class="sub">
+              <div class="si">각 노드가 Probe 메시지를 자신이 대기 중인 노드로 전파. 발신 노드로 Probe 메시지가 돌아오면 사이클 = 교착상태 탐지</div>
+              <div class="si">단계: ① Pi가 Pj를 대기 시 Probe(i,i,j) 발송 → ② Pj가 Pk를 대기 시 Probe(i,j,k) 전달 → ③ Pi에게 Probe 귀환 시 교착상태</div>
+              <div class="si">장점: 단일 장애점 없음, 노드 자율 탐지</div>
+              <div class="si">단점: 메시지 복잡도 높음, 유령 교착상태 가능성</div>
+            </div>
+          </div></li>
+          <li><span class="on on3">3</span><div><strong>계층적 방식 (Hierarchical)</strong>
+            <div class="sub">
+              <div class="si">노드를 계층적 클러스터로 구성. 클러스터 내부는 집중화, 클러스터 간은 분산화 방식 혼용</div>
+              <div class="si">장점: 확장성과 정확성의 균형. 대규모 분산 시스템에 적합</div>
+              <div class="si">단점: 클러스터 구성·관리 복잡</div>
+            </div>
+          </div></li>
+        </ul>
+        <table class="at">
+          <tr><th>방식</th><th>탐지 정확도</th><th>확장성</th><th>오버헤드</th><th>SPOF</th><th>적합 환경</th></tr>
+          <tr><td>집중화</td><td class="ok">높음</td><td class="no">낮음</td><td class="warn">중간</td><td class="no">있음</td><td>소규모 분산 DB</td></tr>
+          <tr><td>분산화 (CMH)</td><td class="warn">중간 (유령 가능)</td><td class="ok">높음</td><td class="no">높음</td><td class="ok">없음</td><td>P2P, 대규모 분산</td></tr>
+          <tr><td>계층적</td><td class="ok">높음</td><td class="ok">높음</td><td class="warn">중간</td><td class="ok">없음</td><td>클라우드, 대규모 MSA</td></tr>
+        </table>
+      </div>
+      <div class="asec">
+        <div class="ast s3">Ⅲ. 다. MSA 환경 분산 교착상태 예방·대응 방안</div>
+        <ul class="aol">
+          <li><span class="on on4">1</span><div><strong>Saga 패턴 — 분산 트랜잭션 교착 회피</strong>
+            <div class="sub">
+              <div class="si">2PC 대신 각 서비스의 로컬 트랜잭션 시퀀스로 분산 트랜잭션 분해</div>
+              <div class="si">락을 장시간 보유하지 않아 분산 교착상태 가능성 제거</div>
+              <div class="si">실패 시 보상 트랜잭션(Compensating Transaction)으로 결과적 일관성 보장</div>
+              <div class="si">Choreography Saga: 이벤트 기반 (Kafka/RabbitMQ). Orchestration Saga: 오케스트레이터가 조율</div>
+            </div>
+          </div></li>
+          <li><span class="on on5">2</span><div><strong>Circuit Breaker 패턴 — 연쇄 장애 및 교착 방지</strong>
+            <div class="sub">
+              <div class="si">서비스 호출 실패율이 임계값 초과 시 회로 차단(Open) → 즉시 실패 반환으로 대기 누적 차단</div>
+              <div class="si">상태: Closed(정상) → Open(차단) → Half-Open(복구 시도)</div>
+              <div class="si">Resilience4j, Hystrix, Istio의 DestinationRule로 구현</div>
+              <div class="si">교착상태 유발 서비스 호출 차단으로 전파 방지</div>
+            </div>
+          </div></li>
+          <li><span class="on on6">3</span><div><strong>분산 락 (Distributed Lock) — Redis Redlock</strong>
+            <div class="sub">
+              <div class="si">공유 자원에 대한 상호 배제 보장. Redis SET NX PX 명령 기반</div>
+              <div class="si">Redlock 알고리즘: N개 Redis 노드 중 과반수(N/2+1) 노드에서 락 획득 성공 시만 유효</div>
+              <div class="si">TTL(Time-To-Live) 설정으로 락 보유 프로세스 장애 시 자동 만료 → 교착상태 자동 해소</div>
+              <div class="si">락 획득 순서 일관성 유지로 환형 대기 방지</div>
+            </div>
+          </div></li>
+        </ul>
+        <div class="db">MSA 분산 교착상태 방지 아키텍처
+
+                    [API Gateway]
+                         │
+          ┌──────────────┼──────────────┐
+    [Service A]    [Service B]    [Service C]
+          │              │               │
+    [Redis Lock]   [Redis Lock]   [Redis Lock]
+    TTL=30s        TTL=30s        TTL=30s
+          │              │               │
+          └──── [Kafka Event Bus] ────────┘
+                   (Saga 이벤트)
+          │
+    [Circuit Breaker] ← 실패율 임계값 모니터링
+    (Resilience4j)
+          │
+    [Saga Orchestrator] ← 보상 트랜잭션 조율</div>
+      </div>
+      <div class="concl">
+        <div class="ct">Ⅳ. 결론</div>
+        <p>분산 교착상태는 MSA 환경에서 가장 다루기 어려운 동시성 문제이다. 설계 단계에서 Saga 패턴으로 장기 분산 트랜잭션을 회피하고, Circuit Breaker로 연쇄 장애를 방지하며, Redis 분산 락의 TTL로 교착상태 자동 해소 기전을 마련하는 것이 현대적 모범 사례이다. 감리 시에는 MSA 간 분산 락 설계, TTL 설정, Saga 보상 트랜잭션 로직 존재 여부를 핵심 점검항목으로 확인해야 한다.</p>
+      </div>
+    </div>
+  </div>
+</div>
+</div><!-- /L4 -->
+
+<!-- L5: 현대OS·클라우드 -->
+<div class="qp" data-tp="1">
+<div class="qcount">📄 논술형 5번 / 5번</div>
+<div class="qcard">
+  <div class="qhdr">
+    <span class="qdom">컴퓨터구조 / OS</span>
+    <div class="qmeta">
+      <div class="qtype">2~4교시 논술형 · 25점 · 3~4페이지</div>
+      <div class="qtitle">현대 운영체제 및 클라우드 환경에서의 교착상태 관리에 대하여 다음을 설명하시오.</div>
+    </div>
+  </div>
+  <div class="qbody">
+    <div class="qitems">
+      <div class="qi"><span class="ql">가.</span><span>멀티코어·멀티스레드 환경에서 교착상태 발생 유형과 뮤텍스(Mutex), 세마포어(Semaphore), 스핀락(Spinlock)의 비교</span></div>
+      <div class="qi"><span class="ql">나.</span><span>Linux 커널의 lockdep 메커니즘과 Java에서의 교착상태 탐지·예방 기법</span></div>
+      <div class="qi"><span class="ql">다.</span><span>컨테이너·쿠버네티스 환경에서의 교착상태 시나리오 및 예방을 위한 설계 원칙</span></div>
+    </div>
+    <div class="qhints">
+      <span class="qhint">최신 클라우드 환경 연계</span><span class="qhint">lockdep 세부 설명</span><span class="qhint">K8s 시나리오</span>
+    </div>
+  </div>
+  <div class="ac">
+    <button class="atog" onclick="tog(this)">
+      <span class="albl">📄 모범 답안 보기</span><span class="aarr">▼</span>
+    </button>
+    <div class="abody">
+      <div class="atitle">현대 OS·Java·K8s 환경 교착상태 — 동기화 기법·lockdep·컨테이너 설계 원칙</div>
+      <div class="chips">
+        <span class="chip cht">⏱ 목표 30분</span>
+        <span class="chip chp">📄 3.5~4페이지</span>
+        <span class="chip chs">💯 25점</span>
+      </div>
+      <div class="asec">
+        <div class="ast s1">Ⅰ. 가. 멀티코어 환경 동기화 기법 비교</div>
+        <div class="ap">멀티코어·멀티스레드 환경에서는 공유 자원에 대한 동시 접근이 증가하여 교착상태 위험이 높아진다. 동기화 기법의 특성을 이해하고 상황에 맞게 선택해야 한다.</div>
+        <table class="at">
+          <tr><th>동기화 기법</th><th>원리</th><th>블로킹 방식</th><th>교착상태 위험</th><th>적합 상황</th></tr>
+          <tr><td>뮤텍스 (Mutex)</td><td>단일 소유권 기반 상호 배제 락. 소유 스레드만 해제 가능</td><td>대기 시 슬립(Sleep) → 컨텍스트 스위치 발생</td><td>높음 (잘못된 락 순서 시)</td><td>임계 구역 보호, 비교적 긴 작업</td></tr>
+          <tr><td>세마포어 (Semaphore)</td><td>카운터 기반 접근 제어. 여러 스레드 동시 허용 가능 (count=N)</td><td>count=0일 때 대기. 슬립 기반</td><td>중간 (순환 P/V 연산 주의)</td><td>자원 풀 관리, 생산자-소비자 패턴</td></tr>
+          <tr><td>스핀락 (Spinlock)</td><td>락 해제를 기다리며 CPU를 점유하며 반복 확인 (Busy Waiting)</td><td>슬립 없음 → 컨텍스트 스위치 없음</td><td>높음 (인터럽트 비활성화 시)</td><td>대기 시간 극히 짧은 커널 임계 구역</td></tr>
+          <tr><td>읽기-쓰기 락 (RWLock)</td><td>다중 읽기 동시 허용, 쓰기는 단독 점유. 읽기 부하 높은 환경 최적화</td><td>쓰기 시 슬립</td><td>낮음 (W-W 교착 주의)</td><td>읽기 빈번·쓰기 드문 공유 데이터 구조</td></tr>
+        </table>
+        <div class="kb kb-red">
+          <div class="kbt">멀티코어 교착상태 주요 패턴</div>
+          ① <strong>역순 락 획득</strong>: 스레드 A가 M1→M2, 스레드 B가 M2→M1 순서로 획득 시 교착<br>
+          ② <strong>재귀 락</strong>: Non-recursive Mutex에서 같은 스레드가 같은 락 재획득 시도 → 자기 교착(Self-Deadlock)<br>
+          ③ <strong>인터럽트 핸들러 교착</strong>: 락 보유 중 인터럽트 발생 → 핸들러가 동일 락 시도 → 스핀락 기반 교착
+        </div>
+      </div>
+      <div class="asec">
+        <div class="ast s2">Ⅱ. 나. Linux lockdep 및 Java 교착상태 기법</div>
+        <div class="ap"><strong>Linux 커널 lockdep 메커니즘:</strong></div>
+        <div class="db">lockdep (Lock Dependency Engine) — CONFIG_PROVE_LOCKING
+
+원리: 커널 내 모든 락 획득·해제를 추적하여 락 의존성 그래프 구축
+탐지: 새로운 락 획득 시 기존 의존성 그래프에 역방향 간선 추가 여부 확인
+      → 사이클 형성 시 즉시 스택 트레이스 출력 후 커널 패닉 유발 (개발 단계)
+
+출력 예시:
+  ======================================================
+  WARNING: possible circular locking dependency detected
+  CPU 0: lock_A → lock_B
+  CPU 1: lock_B → lock_A
+  ======================================================
+  → 실제 교착 발생 전에 락 순서 오류 탐지 (정적 분석에 가까움)
+
+장점: 런타임에 교착상태 가능 락 순서를 사전 탐지
+용도: 커널 개발·디버깅 환경. 프로덕션에서는 오버헤드로 비활성화</div>
+        <div class="ap" style="margin-top:12px"><strong>Java에서의 교착상태 탐지·예방:</strong></div>
+        <ul class="aol">
+          <li><span class="on on2">1</span><div><strong>JVM 스레드 덤프 분석</strong>: jstack 또는 jcmd로 스레드 덤프 생성 → "Found one Java-level deadlock" 메시지로 교착 스레드 식별
+            <div class="sub"><div class="si">kill -3 &lt;pid&gt; 또는 jcmd &lt;pid&gt; Thread.print</div></div>
+          </div></li>
+          <li><span class="on on2">2</span><div><strong>tryLock() + 타임아웃</strong>: ReentrantLock.tryLock(long, TimeUnit)으로 지정 시간 내 락 획득 실패 시 포기 → 교착상태 방지
+            <div class="sub"><div class="si">synchronized 블록 대신 java.util.concurrent.locks.ReentrantLock 사용</div></div>
+          </div></li>
+          <li><span class="on on2">3</span><div><strong>락 순서 일관성</strong>: 코딩 표준으로 락 획득 순서를 ID 오름차순 등으로 강제 (환형 대기 부정)</div></li>
+          <li><span class="on on2">4</span><div><strong>ThreadMXBean</strong>: ManagementFactory.getThreadMXBean().findDeadlockedThreads()로 런타임 교착상태 감지 후 경보 발송 자동화</div></li>
+        </ul>
+      </div>
+      <div class="asec">
+        <div class="ast s3">Ⅲ. 다. 컨테이너·쿠버네티스 환경 교착상태</div>
+        <div class="ap"><strong>K8s 환경 교착상태 시나리오:</strong></div>
+        <div class="db">시나리오 1 — 초기화 컨테이너(InitContainer) 순환 의존
+  Pod A의 InitContainer → ConfigMap B 생성 대기
+  Pod B의 InitContainer → ConfigMap A 생성 대기
+  결과: 양쪽 Pod이 상대의 ConfigMap을 기다리며 영원히 Pending 상태
+
+시나리오 2 — Operator 리소스 교착
+  Operator X → CRD(Custom Resource) Y 생성 대기
+  Operator Y → CRD X 생성 후 시작 가능
+  결과: 두 Operator 모두 Running 상태 전환 불가
+
+시나리오 3 — 쿠버네티스 스케줄러 자원 교착
+  Pod A: CPU 4코어·Memory 8GB 요청. Node1에 CPU만 여유
+  Pod B: GPU 1개·Memory 4GB 요청. Node2에 GPU만 여유
+  (리소스 단편화로 인한 스케줄링 교착)</div>
+        <ul class="aol">
+          <li><span class="on on4">1</span><div><strong>K8s 교착상태 예방 설계 원칙</strong>
+            <div class="sub">
+              <div class="si"><strong>의존성 순환 제거</strong>: ArgoCD·Helm의 의존성 그래프 분석으로 순환 의존 사전 탐지. 초기화 순서 명시적 정의</div>
+              <div class="si"><strong>readinessProbe 설정</strong>: 의존 서비스 준비 상태 확인 후 트래픽 허용. 대기 타임아웃 명시</div>
+              <div class="si"><strong>Resource Quota + LimitRange</strong>: 네임스페이스별 자원 상한 설정으로 자원 독점 방지</div>
+              <div class="si"><strong>PodDisruptionBudget</strong>: 롤링 업데이트 시 최소 가용 Pod 수 보장. 업데이트 교착 방지</div>
+            </div>
+          </div></li>
+          <li><span class="on on5">2</span><div><strong>컨테이너 레벨 교착상태 모니터링</strong>
+            <div class="sub">
+              <div class="si">Prometheus + Grafana: 컨테이너 스레드 수·락 대기 시간 메트릭 수집</div>
+              <div class="si">Falco: 컨테이너 내 비정상적 시스템 콜 패턴(블로킹 락 과다) 탐지</div>
+              <div class="si">eBPF(bpftrace): 커널 수준 락 이벤트 비침투적 추적으로 컨테이너별 교착상태 분석</div>
+            </div>
+          </div></li>
+        </ul>
+      </div>
+      <div class="concl">
+        <div class="ct">Ⅳ. 결론</div>
+        <p>현대 클라우드·컨테이너 환경에서의 교착상태는 단순 OS 개념을 넘어 분산 락, 서비스 의존성, 자원 스케줄링 등 다층적 문제로 확장되었다. Linux lockdep으로 커널 락 의존성을 검증하고, Java tryLock·ThreadMXBean으로 애플리케이션 교착상태를 탐지하며, K8s의 readinessProbe·자원 할당량·eBPF 모니터링으로 컨테이너 환경 교착상태를 체계적으로 관리해야 한다. 감리 시에는 멀티스레드 설계 표준, 락 타임아웃 정책, 컨테이너 의존성 그래프 검증 절차를 중점 점검한다.</p>
+      </div>
+    </div>
+  </div>
+</div>
+</div><!-- /L5 -->
+
+</div><!-- /main -->
+</div><!-- /tp1 -->
+
+<script>
+function showT(idx,btn){
+  document.querySelectorAll('.tp').forEach((p,i)=>p.classList.toggle('active',i===idx));
+  document.querySelectorAll('.tbtn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+function showQ(idx,btn,tp){
+  var panels=document.querySelectorAll('[data-tp="'+tp+'"]');
+  panels.forEach((p,i)=>p.classList.toggle('active',i===idx));
+  btn.parentElement.querySelectorAll('.qbtn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+function tog(btn){
+  var body=btn.nextElementSibling;
+  var arr=btn.querySelector('.aarr');
+  var open=body.classList.toggle('open');
+  arr.classList.toggle('open',open);
+  btn.querySelector('.albl').textContent=open?'📄 답안 닫기':'📄 모범 답안 보기';
+}
+</script>
+</body>
+</html>
