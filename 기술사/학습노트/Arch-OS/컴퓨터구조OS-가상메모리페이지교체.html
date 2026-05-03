@@ -1,0 +1,1256 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>가상메모리·페이지 교체 기법 기출유형 문제 & 모범답안</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700;900&family=Noto+Serif+KR:wght@400;600;700&family=JetBrains+Mono:wght@400;600&display=swap');
+:root{
+  --bg:#f5f7fa;--white:#fff;--surface2:#eef1f6;--border:#dde3ec;--bl:#eef1f6;
+  --blue:#1d4ed8;--bblue:#3b82f6;--bluebg:#eff6ff;--blb:#bfdbfe;
+  --red:#b91c1c;--redbg:#fef2f2;--rdb:#fecaca;
+  --green:#065f46;--gbg:#ecfdf5;--gb:#a7f3d0;
+  --ora:#92400e;--obg:#fffbeb;--ob:#fde68a;
+  --pur:#5b21b6;--pubg:#f5f3ff;--pub:#ddd6fe;
+  --tea:#0f766e;--tbg:#f0fdfa;--tb:#99f6e4;
+  --rose:#9f1239;--rbg:#fff1f2;--roseb:#fecdd3;
+  --text:#111827;--text2:#374151;--text3:#6b7280;--text4:#9ca3af;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--text);font-family:'Noto Sans KR',sans-serif;font-size:14px;line-height:1.6}
+
+.hdr{background:linear-gradient(135deg,#134e4a 0%,#0f766e 45%,#0d9488 100%);color:#fff;padding:28px 24px 22px;position:relative;overflow:hidden}
+.hdr::after{content:'';position:absolute;right:-60px;top:-60px;width:240px;height:240px;border-radius:50%;background:rgba(255,255,255,0.06)}
+.hdr::before{content:'';position:absolute;left:-40px;bottom:-40px;width:180px;height:180px;border-radius:50%;background:rgba(20,184,166,0.12)}
+.hi{max-width:1100px;margin:0 auto;position:relative}
+.heyebrow{font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:#99f6e4;margin-bottom:6px}
+.htitle{font-size:clamp(18px,3.5vw,26px);font-weight:900;margin-bottom:6px;font-family:'Noto Serif KR',serif}
+.hsub{font-size:12px;color:#ccfbf1}
+.hpills{display:flex;flex-wrap:wrap;gap:6px;margin-top:14px}
+.hpill{background:rgba(255,255,255,0.12);border:1px solid rgba(255,255,255,0.22);padding:3px 11px;border-radius:20px;font-size:11px;color:#e6fffa}
+
+.type-nav{background:var(--white);border-bottom:3px solid var(--border);display:flex;max-width:100%;overflow-x:auto;scrollbar-width:none;box-shadow:0 2px 8px rgba(0,0,0,0.06);position:sticky;top:0;z-index:200}
+.type-nav::-webkit-scrollbar{display:none}
+.type-btn{flex:1;min-width:160px;padding:14px 16px;background:none;border:none;border-bottom:4px solid transparent;cursor:pointer;font-family:inherit;font-size:13px;font-weight:700;color:var(--text3);transition:all .18s;display:flex;align-items:center;justify-content:center;gap:8px}
+.type-btn:hover{color:var(--tea);background:var(--tbg)}
+.type-btn.active{color:var(--tea);border-bottom-color:var(--tea);background:var(--tbg)}
+.tb-s{background:#fef3c7;color:#92400e;font-size:10px;padding:2px 8px;border-radius:10px;font-weight:700}
+.tb-l{background:#ede9fe;color:#5b21b6;font-size:10px;padding:2px 8px;border-radius:10px;font-weight:700}
+
+.q-nav{background:#fff;border-bottom:1px solid var(--border);overflow-x:auto;white-space:nowrap;padding:0 16px;scrollbar-width:none;box-shadow:0 1px 4px rgba(0,0,0,0.04)}
+.q-nav::-webkit-scrollbar{display:none}
+.q-btn{display:inline-block;padding:10px 12px;font-size:12px;font-weight:600;color:var(--text3);background:none;border:none;border-bottom:3px solid transparent;cursor:pointer;font-family:inherit;transition:all .15s}
+.q-btn:hover{color:var(--tea)}
+.q-btn.active{color:var(--tea);border-bottom-color:var(--tea)}
+
+.main{max-width:1100px;margin:0 auto;padding:24px 16px 80px}
+.type-panel{display:none}.type-panel.active{display:block}
+.q-panel{display:none}.q-panel.active{display:block}
+
+.qcard{background:var(--white);border:1px solid var(--border);border-radius:14px;overflow:hidden;box-shadow:0 2px 12px rgba(0,0,0,0.05);margin-bottom:20px}
+.qhdr{padding:18px 22px 14px;border-bottom:1px solid var(--bl);display:flex;align-items:flex-start;gap:14px}
+.qdomain{flex-shrink:0;padding:4px 11px;border-radius:20px;font-size:10px;font-weight:700;letter-spacing:0.5px;margin-top:2px;background:#f0fdfa;color:#0f766e;border:1px solid #99f6e4}
+.qmeta{flex:1}
+.qtype-label{font-size:10px;color:var(--text3);font-weight:600;letter-spacing:0.5px;margin-bottom:4px}
+.qtitle{font-size:15px;font-weight:800;color:var(--text);line-height:1.45}
+.qbody{background:var(--bg);padding:16px 22px;border-bottom:1px solid var(--bl)}
+.qitems{margin-top:8px;display:flex;flex-direction:column;gap:6px}
+.qitem{display:flex;gap:10px;align-items:flex-start;font-size:13px;color:var(--text2)}
+.qlabel{font-weight:700;color:var(--blue);min-width:20px;flex-shrink:0}
+.qhints{display:flex;flex-wrap:wrap;gap:6px;margin-top:12px}
+.qhint{background:var(--tbg);border:1px solid var(--tb);color:var(--tea);font-size:10px;font-weight:600;padding:2px 8px;border-radius:5px}
+
+.acard{background:var(--white)}
+.atoggle{width:100%;padding:14px 22px;background:none;border:none;display:flex;align-items:center;justify-content:space-between;cursor:pointer;font-family:inherit;transition:background .15s}
+.atoggle:hover{background:var(--tbg)}
+.alabel{font-size:13px;font-weight:700;color:var(--tea)}
+.aarrow{font-size:16px;color:var(--tea);transition:transform .25s}
+.aarrow.open{transform:rotate(180deg)}
+.abody{display:none;padding:0 22px 24px}
+.abody.open{display:block}
+
+.atitle{font-size:17px;font-weight:900;color:var(--text);font-family:'Noto Serif KR',serif;padding:18px 0 6px;border-bottom:2px solid var(--tea);margin-bottom:16px}
+.asec{margin-bottom:18px}
+.asectitle{font-size:12px;font-weight:800;color:#fff;padding:5px 12px;border-radius:6px;display:inline-block;margin-bottom:11px}
+.s1{background:var(--blue)}.s2{background:#059669}.s3{background:#7c3aed}
+.s4{background:#d97706}.s5{background:#dc2626}.s6{background:#0d9488}.s7{background:#be185d}
+
+.ap{font-size:13px;color:var(--text2);line-height:1.85;margin-bottom:10px}
+
+.atable{width:100%;border-collapse:collapse;font-size:12px;margin:8px 0 12px}
+.atable th{background:var(--surface2);color:var(--text2);font-weight:700;padding:8px 12px;border:1px solid var(--border);text-align:center}
+.atable td{padding:8px 12px;border:1px solid var(--border);vertical-align:top;line-height:1.6}
+.atable td:first-child{font-weight:600;color:var(--blue);background:var(--bluebg);text-align:center;white-space:nowrap}
+.atable tr:nth-child(even) td:not(:first-child){background:#fafbfd}
+
+.aol{padding-left:0;list-style:none;display:flex;flex-direction:column;gap:9px;margin:6px 0}
+.aol li{display:flex;gap:10px;align-items:flex-start;font-size:13px;color:var(--text2);line-height:1.7}
+.onum{flex-shrink:0;width:22px;height:22px;border-radius:50%;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;margin-top:1px;color:#fff}
+.on1{background:var(--blue)}.on2{background:#059669}.on3{background:#7c3aed}
+.on4{background:#d97706}.on5{background:#dc2626}.on6{background:#0d9488}
+
+.sub{margin-top:6px;display:flex;flex-direction:column;gap:4px}
+.si{display:flex;gap:8px;font-size:12px;color:var(--text3)}
+.si::before{content:'▸';color:var(--tea);flex-shrink:0}
+
+.dbox{background:#f8fafc;border:1px solid var(--border);border-left:3px solid var(--tea);border-radius:8px;padding:12px 16px;margin:10px 0;font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--text2);line-height:1.85;overflow-x:auto;white-space:pre}
+
+.kbox{border-radius:8px;padding:12px 16px;margin:10px 0;font-size:12px;line-height:1.75}
+.kb-blue{background:var(--bluebg);border:1px solid var(--blb);color:#1e40af}
+.kb-green{background:var(--gbg);border:1px solid var(--gb);color:var(--green)}
+.kb-ora{background:var(--obg);border:1px solid var(--ob);color:var(--ora)}
+.kb-red{background:var(--redbg);border:1px solid var(--rdb);color:var(--red)}
+.kb-pur{background:var(--pubg);border:1px solid var(--pub);color:var(--pur)}
+.kb-tea{background:var(--tbg);border:1px solid var(--tb);color:var(--tea)}
+.kbt{font-weight:700;margin-bottom:4px;font-size:11px;letter-spacing:0.4px}
+
+.concl{background:linear-gradient(135deg,var(--tbg),var(--bluebg));border:1px solid var(--tb);border-radius:8px;padding:14px 16px;margin-top:14px}
+.concl-title{font-weight:700;color:var(--tea);font-size:12px;margin-bottom:6px}
+.concl p{font-size:12px;color:var(--text2);line-height:1.75}
+
+.chips{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px}
+.chip{font-size:11px;padding:3px 10px;border-radius:6px;font-weight:600}
+.ct{background:var(--obg);color:var(--ora);border:1px solid var(--ob)}
+.cp{background:var(--gbg);color:var(--green);border:1px solid var(--gb)}
+.cs{background:var(--redbg);color:var(--red);border:1px solid var(--rdb)}
+
+.sg{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:10px 0}
+@media(max-width:640px){.sg{grid-template-columns:1fr}}
+.sc{background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:12px 14px}
+.sc-title{font-size:11px;font-weight:700;color:var(--tea);margin-bottom:6px}
+.sc p{font-size:12px;color:var(--text2);line-height:1.7}
+
+.q-counter{font-size:11px;color:var(--text4);margin-bottom:16px;font-weight:600;letter-spacing:0.5px}
+
+/* page trace table */
+.ptrace{border-collapse:collapse;font-size:11px;font-family:'JetBrains Mono',monospace;margin:10px 0;width:100%}
+.ptrace th{background:#0d9488;color:#fff;padding:5px 8px;border:1px solid #0f766e;text-align:center}
+.ptrace td{padding:5px 8px;border:1px solid var(--border);text-align:center}
+.ptrace .pf{background:#fef2f2;color:#b91c1c;font-weight:700}
+.ptrace .hit{background:#ecfdf5;color:#065f46}
+.ptrace .rep{background:#fffbeb;color:#92400e;font-style:italic}
+</style>
+</head>
+<body>
+
+<header class="hdr">
+  <div class="hi">
+    <div class="heyebrow">💾 운영체제 · OPERATING SYSTEMS — 메모리 관리</div>
+    <div class="htitle">가상 메모리와 페이지 교체 기법<br>기출유형 문제 &amp; 모범답안</div>
+    <div class="hsub">단답형 5문제 (1~2페이지) + 논술형 5문제 (3~4페이지) · 전 문항 모범답안 수록</div>
+    <div class="hpills">
+      <span class="hpill">단답형 10~15점</span><span class="hpill">논술형 25점</span>
+      <span class="hpill">페이지 교체 추적 계산 포함</span><span class="hpill">OS 핵심 빈출 총정리</span>
+    </div>
+  </div>
+</header>
+
+<nav class="type-nav">
+  <button class="type-btn active" onclick="showType(0,this)">📝 단답형 문제 <span class="tb-s">1~2페이지 · 5문제</span></button>
+  <button class="type-btn" onclick="showType(1,this)">📄 논술형 문제 <span class="tb-l">3~4페이지 · 5문제</span></button>
+</nav>
+
+<!-- ═══════════════ 단답형 ═══════════════ -->
+<div class="type-panel active" id="tp0">
+<nav class="q-nav">
+  <button class="q-btn active" onclick="showQ(0,'s',this)">①페이징·세그멘테이션</button>
+  <button class="q-btn" onclick="showQ(1,'s',this)">②페이지 교체 알고리즘</button>
+  <button class="q-btn" onclick="showQ(2,'s',this)">③스래싱(Thrashing)</button>
+  <button class="q-btn" onclick="showQ(3,'s',this)">④요구 페이징·페이지 폴트</button>
+  <button class="q-btn" onclick="showQ(4,'s',this)">⑤워킹셋·지역성</button>
+</nav>
+<div class="main">
+
+<!-- ─── S1: 페이징·세그멘테이션 ─── -->
+<div class="q-panel active" id="s0">
+<div class="q-counter">📝 단답형 1번 / 5번</div>
+<div class="qcard">
+  <div class="qhdr">
+    <span class="qdomain">운영체제 / 메모리 관리</span>
+    <div class="qmeta">
+      <div class="qtype-label">1교시 단답형 · 10~15점 · 1~2페이지 분량</div>
+      <div class="qtitle">가상 메모리(Virtual Memory)의 개념을 설명하고, 메모리 관리 기법인 페이징(Paging)과 세그멘테이션(Segmentation)의 주소 변환 원리, 특징, 장단점을 비교 설명하시오.</div>
+    </div>
+  </div>
+  <div class="qbody">
+    <div class="qhints">
+      <span class="qhint">페이지 테이블 구조 필수</span><span class="qhint">내부·외부 단편화 구분</span><span class="qhint">OS 핵심 빈출</span>
+    </div>
+  </div>
+  <div class="acard">
+    <button class="atoggle" onclick="toggleA(this)">
+      <span class="alabel">📄 모범 답안 보기</span><span class="aarrow">▼</span>
+    </button>
+    <div class="abody">
+      <div class="atitle">가상 메모리 개념, 페이징과 세그멘테이션의 주소 변환·특징·장단점 비교</div>
+      <div class="chips">
+        <span class="chip ct">⏱ 목표 15분</span><span class="chip cp">📄 1.5~2페이지</span><span class="chip cs">💯 10~15점</span>
+      </div>
+
+      <div class="asec">
+        <div class="asectitle s1">Ⅰ. 가상 메모리의 개념</div>
+        <div class="ap">가상 메모리(Virtual Memory)는 프로세스가 실제 물리 메모리(RAM) 크기를 초과하는 주소 공간을 사용할 수 있도록 보조 기억장치(디스크)를 메모리처럼 활용하는 기법이다. 프로세스는 연속된 가상 주소 공간을 갖지만, 실제로는 일부만 물리 메모리에 적재되며 나머지는 디스크(스왑 영역)에 존재한다. 다중 프로그래밍 정도(Degree of Multiprogramming)를 높이고 메모리 활용 효율을 극대화한다.</div>
+      </div>
+
+      <div class="asec">
+        <div class="asectitle s2">Ⅱ. 페이징(Paging) — 고정 크기 분할</div>
+        <div class="ap"><strong>원리</strong>: 가상 주소 공간과 물리 메모리를 동일한 고정 크기의 <strong>페이지(Page) / 프레임(Frame)</strong>으로 분할한다. 가상 주소는 &lt;페이지 번호(p), 페이지 오프셋(d)&gt;로 구성되며, 페이지 테이블을 통해 물리 프레임 번호로 변환된다.</div>
+        <div class="dbox">가상 주소 → 물리 주소 변환 (페이징)
+
+가상 주소 [  페이지 번호(p)  |  오프셋(d)  ]
+                   │
+            [페이지 테이블]  (프로세스마다 존재)
+            p → 프레임 번호(f)
+                   │
+물리 주소 [  프레임 번호(f)  |  오프셋(d)  ]
+
+예) 페이지 크기 4KB, 가상 주소 0x3FFE
+  → p = 0x3FFE / 4096 = 0 번 페이지
+  → d = 0x3FFE % 4096 = 0x3FFE (오프셋)
+  → 페이지 테이블[0] = 프레임 5 → 물리 주소 = 5×4096 + 0x3FFE</div>
+        <table class="atable">
+          <tr><th>항목</th><th>내용</th></tr>
+          <tr><td>분할 단위</td><td>고정 크기 (4KB, 8KB, 64KB 등 — OS마다 상이)</td></tr>
+          <tr><td>단편화</td><td><strong>내부 단편화</strong>(Internal Fragmentation): 마지막 페이지의 남은 공간 낭비. 외부 단편화 없음</td></tr>
+          <tr><td>연속성</td><td>비연속 메모리 할당 가능. 공유 페이지(Copy-on-Write) 지원</td></tr>
+          <tr><td>페이지 테이블 크기</td><td>가상 주소 공간이 클수록 페이지 테이블 대형화 → 다단계(Multi-level) 페이지 테이블·역 페이지 테이블로 해결</td></tr>
+        </table>
+      </div>
+
+      <div class="asec">
+        <div class="asectitle s3">Ⅲ. 세그멘테이션(Segmentation) — 가변 크기 분할</div>
+        <div class="ap"><strong>원리</strong>: 프로그램을 논리적 의미 단위(코드·데이터·스택·힙 등)인 <strong>세그먼트</strong>로 분할한다. 가상 주소는 &lt;세그먼트 번호(s), 오프셋(d)&gt;로 구성되며, 세그먼트 테이블(기준 주소+한계 값)을 통해 변환된다.</div>
+        <div class="dbox">가상 주소 → 물리 주소 변환 (세그멘테이션)
+
+가상 주소 [  세그먼트 번호(s)  |  오프셋(d)  ]
+                    │
+             [세그먼트 테이블]
+             s → (Base, Limit)
+                    │
+             d &lt; Limit 검증 (한계 초과 시 → 세그멘테이션 폴트)
+                    │
+물리 주소 = Base + d</div>
+        <table class="atable">
+          <tr><th>항목</th><th>내용</th></tr>
+          <tr><td>분할 단위</td><td>가변 크기 (세그먼트 크기는 프로그램 구조에 따라 상이)</td></tr>
+          <tr><td>단편화</td><td><strong>외부 단편화</strong>(External Fragmentation): 세그먼트 할당·해제 반복 시 메모리 구멍 발생. 내부 단편화 없음</td></tr>
+          <tr><td>보호</td><td>세그먼트별 접근 권한(읽기·쓰기·실행) 설정 용이. 한계 레지스터로 경계 침범 방지</td></tr>
+          <tr><td>공유</td><td>논리 단위 공유 용이 (코드 세그먼트 공유)</td></tr>
+        </table>
+      </div>
+
+      <div class="asec">
+        <div class="asectitle s4">Ⅳ. 페이징 vs 세그멘테이션 종합 비교</div>
+        <table class="atable">
+          <tr><th>비교 항목</th><th>페이징</th><th>세그멘테이션</th></tr>
+          <tr><td>분할 기준</td><td>물리적 고정 크기</td><td>논리적 가변 크기</td></tr>
+          <tr><td>단편화 유형</td><td>내부 단편화</td><td>외부 단편화</td></tr>
+          <tr><td>주소 변환</td><td>페이지 테이블 (1개 레지스터)</td><td>세그먼트 테이블 (Base + Limit)</td></tr>
+          <tr><td>공유·보호</td><td>페이지 단위 (비직관적)</td><td>세그먼트 단위 (직관적)</td></tr>
+          <tr><td>구현 복잡도</td><td>단순</td><td>복잡 (가변 크기 관리)</td></tr>
+          <tr><td>현대 OS 적용</td><td>Linux·Windows 기본 방식</td><td>x86 보호 모드 (현재 페이징과 혼합)</td></tr>
+        </table>
+      </div>
+
+      <div class="kbox kb-tea">
+        <div class="kbt">📌 한 줄 암기</div>
+        페이징: <strong>고정 크기·내부 단편화·페이지 테이블</strong> &nbsp;|&nbsp; 세그멘테이션: <strong>가변 크기·외부 단편화·Base+Limit</strong>
+      </div>
+      <div class="concl">
+        <div class="concl-title">Ⅴ. 결론</div>
+        <p>현대 OS(Linux·Windows)는 세그멘테이션의 논리적 보호 특성과 페이징의 물리적 유연성을 결합한 <strong>세그멘테이션+페이징 혼합 방식</strong>을 사용한다. x86 아키텍처에서는 세그먼트 → 선형 주소 → 페이지 테이블 → 물리 주소의 2단계 변환으로 두 기법의 장점을 모두 활용한다.</p>
+      </div>
+    </div>
+  </div>
+</div>
+</div><!-- /s0 -->
+
+<!-- ─── S2: 페이지 교체 알고리즘 ─── -->
+<div class="q-panel" id="s1">
+<div class="q-counter">📝 단답형 2번 / 5번</div>
+<div class="qcard">
+  <div class="qhdr">
+    <span class="qdomain">운영체제 / 페이지 교체</span>
+    <div class="qmeta">
+      <div class="qtype-label">1교시 단답형 · 10~15점 · 1~2페이지 분량</div>
+      <div class="qtitle">페이지 교체 알고리즘인 FIFO, OPT(최적), LRU, Clock, LFU의 동작 원리와 특징을 비교하고, 페이지 참조 열(1, 2, 3, 4, 1, 2, 5, 1, 2, 3, 4, 5)에 대해 프레임 수 3인 경우의 FIFO와 LRU 페이지 교체 과정을 추적하여 페이지 폴트 횟수를 계산하시오.</div>
+    </div>
+  </div>
+  <div class="qbody">
+    <div class="qhints">
+      <span class="qhint">5가지 알고리즘 암기</span><span class="qhint">계산 추적 필수</span><span class="qhint">Belady의 이상현상 연계</span>
+    </div>
+  </div>
+  <div class="acard">
+    <button class="atoggle" onclick="toggleA(this)">
+      <span class="alabel">📄 모범 답안 보기</span><span class="aarrow">▼</span>
+    </button>
+    <div class="abody">
+      <div class="atitle">페이지 교체 알고리즘 5종 비교 및 FIFO·LRU 페이지 폴트 추적 계산</div>
+      <div class="chips">
+        <span class="chip ct">⏱ 목표 20분</span><span class="chip cp">📄 1.5~2페이지</span><span class="chip cs">💯 10~15점</span>
+      </div>
+
+      <div class="asec">
+        <div class="asectitle s1">Ⅰ. 페이지 교체 알고리즘 5종 비교</div>
+        <table class="atable">
+          <tr><th>알고리즘</th><th>교체 기준</th><th>특징</th><th>구현 복잡도</th><th>성능</th></tr>
+          <tr><td>FIFO<br>(First In First Out)</td><td>가장 먼저 메모리에 적재된 페이지 교체</td><td>구현 단순. <strong>Belady의 이상현상</strong> 발생 가능(프레임↑ → PF↑). 자주 사용되는 페이지도 교체될 수 있음</td><td>가장 단순 (큐)</td><td>비효율적</td></tr>
+          <tr><td>OPT<br>(Optimal)</td><td>앞으로 가장 오랫동안 사용되지 않을 페이지 교체</td><td>이론적 최적. Belady 이상현상 없음. <strong>미래 참조 정보 필요 → 실제 구현 불가</strong>. 성능 비교 기준(Benchmark)</td><td>구현 불가</td><td>최적</td></tr>
+          <tr><td>LRU<br>(Least Recently Used)</td><td>가장 오랫동안 사용되지 않은(최근 접근 시각 가장 오래된) 페이지 교체</td><td>OPT 근사. 지역성 원리 활용. Belady 이상현상 없음. 카운터/스택 구현. 오버헤드 존재</td><td>중간 (카운터·스택)</td><td>우수</td></tr>
+          <tr><td>Clock<br>(Second Chance)</td><td>참조 비트(Reference bit) 0인 페이지 교체. 1이면 0으로 초기화 후 다음 페이지 검사</td><td>LRU 근사를 하드웨어 지원 없이 구현. 원형 큐(시계 바늘) 구조. 실제 OS에서 가장 많이 사용</td><td>낮음 (원형 큐)</td><td>양호</td></tr>
+          <tr><td>LFU<br>(Least Frequently Used)</td><td>참조 횟수가 가장 적은 페이지 교체</td><td>자주 사용되는 페이지 보호. 초기에 자주 쓰였으나 현재 불필요한 페이지가 남을 수 있음</td><td>중간 (횟수 카운터)</td><td>상황 의존</td></tr>
+        </table>
+      </div>
+
+      <div class="asec">
+        <div class="asectitle s2">Ⅱ. FIFO 페이지 교체 추적 (프레임 수 = 3)</div>
+        <div class="ap">참조 열: 1 2 3 4 1 2 5 1 2 3 4 5</div>
+        <table class="ptrace">
+          <tr>
+            <th>참조 페이지</th><th>1</th><th>2</th><th>3</th><th>4</th><th>1</th><th>2</th><th>5</th><th>1</th><th>2</th><th>3</th><th>4</th><th>5</th>
+          </tr>
+          <tr>
+            <th>프레임 1</th>
+            <td class="pf">1</td><td>1</td><td>1</td><td class="rep">4</td><td>4</td><td>4</td><td class="rep">5</td><td>5</td><td>5</td><td class="rep">3</td><td>3</td><td>3</td>
+          </tr>
+          <tr>
+            <th>프레임 2</th>
+            <td>-</td><td class="pf">2</td><td>2</td><td>2</td><td class="rep">1</td><td>1</td><td>1</td><td class="rep">1*</td><td>1</td><td>1</td><td class="rep">4</td><td>4</td>
+          </tr>
+          <tr>
+            <th>프레임 3</th>
+            <td>-</td><td>-</td><td class="pf">3</td><td>3</td><td>3</td><td class="rep">2</td><td>2</td><td>2</td><td class="rep">2*</td><td>2</td><td>2</td><td class="rep">5</td>
+          </tr>
+          <tr>
+            <th>페이지 폴트</th>
+            <td class="pf">✗</td><td class="pf">✗</td><td class="pf">✗</td><td class="pf">✗</td><td class="pf">✗</td><td class="pf">✗</td><td class="pf">✗</td><td class="hit">○</td><td class="hit">○</td><td class="pf">✗</td><td class="pf">✗</td><td class="pf">✗</td>
+          </tr>
+        </table>
+        <div class="kbox kb-red">
+          <div class="kbt">FIFO 결과</div>
+          총 페이지 폴트 = <strong>9회</strong> &nbsp;(✗: 폴트, ○: 히트)<br>
+          교체 순서: 적재 순서(1→2→3→4→1→2→5→...)로 큐에서 가장 오래된 것 교체
+        </div>
+      </div>
+
+      <div class="asec">
+        <div class="asectitle s3">Ⅲ. LRU 페이지 교체 추적 (프레임 수 = 3)</div>
+        <div class="ap">참조 열: 1 2 3 4 1 2 5 1 2 3 4 5 &nbsp;&nbsp; [교체 기준: 가장 오랫동안 미사용 페이지]</div>
+        <table class="ptrace">
+          <tr>
+            <th>참조 페이지</th><th>1</th><th>2</th><th>3</th><th>4</th><th>1</th><th>2</th><th>5</th><th>1</th><th>2</th><th>3</th><th>4</th><th>5</th>
+          </tr>
+          <tr>
+            <th>프레임 상태</th>
+            <td class="pf">1</td>
+            <td class="pf">1,2</td>
+            <td class="pf">1,2,3</td>
+            <td class="pf">2,3,4<br><small>(1교체)</small></td>
+            <td class="pf">3,4,1<br><small>(2교체)</small></td>
+            <td class="pf">4,1,2<br><small>(3교체)</small></td>
+            <td class="pf">1,2,5<br><small>(4교체)</small></td>
+            <td class="hit">1,2,5<br><small>히트</small></td>
+            <td class="hit">1,2,5<br><small>히트</small></td>
+            <td class="pf">2,5,3<br><small>(1교체)</small></td>
+            <td class="pf">5,3,4<br><small>(2교체)</small></td>
+            <td class="hit">3,4,5<br><small>히트</small></td>
+          </tr>
+          <tr>
+            <th>페이지 폴트</th>
+            <td class="pf">✗</td><td class="pf">✗</td><td class="pf">✗</td><td class="pf">✗</td><td class="pf">✗</td><td class="pf">✗</td><td class="pf">✗</td><td class="hit">○</td><td class="hit">○</td><td class="pf">✗</td><td class="pf">✗</td><td class="hit">○</td>
+          </tr>
+        </table>
+        <div class="kbox kb-green">
+          <div class="kbt">LRU 결과</div>
+          총 페이지 폴트 = <strong>9회</strong> (이 참조 열에서 FIFO와 동일)<br>
+          <small>※ 일반적으로 LRU ≤ FIFO. 참조 열·프레임 수에 따라 결과 상이</small>
+        </div>
+      </div>
+
+      <div class="asec">
+        <div class="asectitle s4">Ⅳ. OPT 결과 비교 (참고)</div>
+        <div class="ap">동일 참조 열·프레임 3에서 OPT 적용 시: 페이지 폴트 <strong>7회</strong> (이론적 최솟값). FIFO·LRU 대비 2회 적음.</div>
+      </div>
+
+      <div class="concl">
+        <div class="concl-title">Ⅴ. 결론</div>
+        <p>실제 OS(Linux의 경우 향상된 Clock 알고리즘인 <strong>LRU 근사 Clock 알고리즘</strong>)는 구현 단순성과 성능의 균형을 위해 Clock 계열을 채택한다. OPT는 성능 비교 기준선으로만 활용되며, Belady의 이상현상(FIFO에서만 발생)은 스택 알고리즘(LRU·OPT)에서는 발생하지 않는다.</p>
+      </div>
+    </div>
+  </div>
+</div>
+</div><!-- /s1 -->
+
+<!-- ─── S3: 스래싱 ─── -->
+<div class="q-panel" id="s2">
+<div class="q-counter">📝 단답형 3번 / 5번</div>
+<div class="qcard">
+  <div class="qhdr">
+    <span class="qdomain">운영체제 / 스래싱</span>
+    <div class="qmeta">
+      <div class="qtype-label">1교시 단답형 · 10~15점 · 1~2페이지 분량</div>
+      <div class="qtitle">스래싱(Thrashing)의 개념, 발생 원인, 발생 과정을 설명하고, 스래싱 방지를 위한 워킹셋(Working Set) 모델과 페이지 폴트 빈도(PFF) 기법을 비교 설명하시오.</div>
+    </div>
+  </div>
+  <div class="qbody">
+    <div class="qhints">
+      <span class="qhint">CPU 이용률 그래프 필수</span><span class="qhint">워킹셋 vs PFF 비교</span><span class="qhint">매회 빈출 클래식</span>
+    </div>
+  </div>
+  <div class="acard">
+    <button class="atoggle" onclick="toggleA(this)">
+      <span class="alabel">📄 모범 답안 보기</span><span class="aarrow">▼</span>
+    </button>
+    <div class="abody">
+      <div class="atitle">스래싱 개념·발생 원인·과정 및 워킹셋 모델·PFF 기법 비교</div>
+      <div class="chips">
+        <span class="chip ct">⏱ 목표 15분</span><span class="chip cp">📄 1.5~2페이지</span><span class="chip cs">💯 10~15점</span>
+      </div>
+
+      <div class="asec">
+        <div class="asectitle s1">Ⅰ. 스래싱의 개념</div>
+        <div class="ap">스래싱(Thrashing)은 프로세스가 실제 실행보다 <strong>페이지 교체 작업에 대부분의 시간을 소비</strong>하여 CPU 이용률이 급격히 저하되는 현상이다. 다중 프로그래밍 정도를 높여 CPU 이용률을 높이려 할 때, 임계점을 초과하면 역설적으로 CPU 이용률이 폭락하는 현상이다.</div>
+      </div>
+
+      <div class="asec">
+        <div class="asectitle s2">Ⅱ. 스래싱 발생 과정</div>
+        <div class="dbox">스래싱 발생 메커니즘 (악순환)
+
+① CPU 이용률 낮음 → OS가 다중 프로그래밍 정도(MPD) 증가
+② 메모리에 더 많은 프로세스 적재 → 프레임 수 부족
+③ 각 프로세스의 워킹셋을 메모리에 유지 불가
+④ 페이지 폴트 빈발 → 프로세스가 페이지를 디스크에서 가져오려 대기
+⑤ 페이지 교체 빈발 → CPU 실제 실행 시간 감소
+⑥ CPU 이용률 더욱 낮아짐 → ①번으로 되돌아가 악순환 반복
+
+[CPU 이용률 그래프]
+CPU
+이용 │    ╭────╮
+률   │   ╱      ╲  ← 스래싱 임계점
+     │  ╱        ╲___________
+     │ ╱
+     └──────────────────────── 다중 프로그래밍 정도(MPD)</div>
+      </div>
+
+      <div class="asec">
+        <div class="asectitle s3">Ⅲ. 스래싱 방지 기법 비교</div>
+        <table class="atable">
+          <tr><th>비교 항목</th><th>워킹셋(Working Set) 모델</th><th>페이지 폴트 빈도(PFF)</th></tr>
+          <tr><td>제안자</td><td>Peter Denning (1968)</td><td>—</td></tr>
+          <tr><td>핵심 개념</td><td>최근 Δ 시간 내에 참조된 페이지 집합 = 워킹셋(WS). WS 크기만큼 프레임 보장</td><td>페이지 폴트 발생 빈도를 측정하여 프레임 수 동적 조절</td></tr>
+          <tr><td>동작 원리</td><td>∑|WS(i)| &gt; 전체 프레임 수 → 일부 프로세스 중단(스왑 아웃)</td><td>PFF &gt; 상한 → 프레임 추가 할당<br>PFF &lt; 하한 → 프레임 회수</td></tr>
+          <tr><td>장점</td><td>지역성 이론에 부합. 워킹셋 = 최소 필요 페이지 집합</td><td>구현 단순. PFF 직접 측정으로 즉각 반응</td></tr>
+          <tr><td>단점</td><td>Δ(델타) 창 크기 결정 어려움. 워킹셋 추적 오버헤드</td><td>PFF 상·하한 임계값 설정 어려움. 반응 지연 가능</td></tr>
+          <tr><td>적용 방식</td><td>사전 예방적 (프로세스 수 사전 제한)</td><td>사후 반응적 (폴트 발생 후 조절)</td></tr>
+        </table>
+      </div>
+
+      <div class="kbox kb-tea">
+        <div class="kbt">📌 핵심 공식</div>
+        <strong>워킹셋</strong>: WS(t, Δ) = {t-Δ &lt; τ ≤ t 구간에서 참조된 페이지 집합}<br>
+        <strong>PFF</strong>: 폴트 간격이 짧으면(PFF 높음) → 프레임 추가 / 간격이 길면(PFF 낮음) → 프레임 회수
+      </div>
+
+      <div class="concl">
+        <div class="concl-title">Ⅳ. 결론</div>
+        <p>스래싱은 메모리 과부하 상태의 가장 심각한 증상으로, 예방이 치료보다 중요하다. 운영 관점에서는 ① 다중 프로그래밍 정도 제한, ② 우선순위 낮은 프로세스 스왑 아웃, ③ 물리 메모리 증설, ④ 지역성 좋은 알고리즘 설계가 복합적으로 적용되어야 한다.</p>
+      </div>
+    </div>
+  </div>
+</div>
+</div><!-- /s2 -->
+
+<!-- ─── S4: 요구 페이징·페이지 폴트 ─── -->
+<div class="q-panel" id="s3">
+<div class="q-counter">📝 단답형 4번 / 5번</div>
+<div class="qcard">
+  <div class="qhdr">
+    <span class="qdomain">운영체제 / 요구 페이징</span>
+    <div class="qmeta">
+      <div class="qtype-label">1교시 단답형 · 10~15점 · 1~2페이지 분량</div>
+      <div class="qtitle">요구 페이징(Demand Paging)의 개념, 유효-무효 비트(Valid-Invalid bit)의 역할, 페이지 폴트(Page Fault) 처리 과정을 단계별로 설명하고, 유효 접근 시간(EAT: Effective Access Time)의 계산 방법을 설명하시오.</div>
+    </div>
+  </div>
+  <div class="qbody">
+    <div class="qhints">
+      <span class="qhint">9단계 처리 과정 순서 암기</span><span class="qhint">EAT 계산식 필수</span><span class="qhint">Copy-on-Write 연계</span>
+    </div>
+  </div>
+  <div class="acard">
+    <button class="atoggle" onclick="toggleA(this)">
+      <span class="alabel">📄 모범 답안 보기</span><span class="aarrow">▼</span>
+    </button>
+    <div class="abody">
+      <div class="atitle">요구 페이징 개념·유효-무효 비트·페이지 폴트 처리 과정·EAT 계산</div>
+      <div class="chips">
+        <span class="chip ct">⏱ 목표 15분</span><span class="chip cp">📄 1.5~2페이지</span><span class="chip cs">💯 10~15점</span>
+      </div>
+
+      <div class="asec">
+        <div class="asectitle s1">Ⅰ. 요구 페이징의 개념</div>
+        <div class="ap">요구 페이징(Demand Paging)은 프로세스 실행에 필요한 페이지를 <strong>실제로 요구할 때(접근 시점에)만 물리 메모리에 적재</strong>하는 지연 로딩(Lazy Loading) 기법이다. 초기에 프로세스 전체를 메모리에 적재하지 않아 메모리 효율을 극대화하며, 가상 메모리 구현의 핵심 기법이다.</div>
+        <div class="kbox kb-blue">
+          <div class="kbt">요구 페이징의 장점</div>
+          ① 프로세스 시작 시간 단축 (전체 로딩 불필요)<br>
+          ② 물리 메모리 요구량 감소 → 더 많은 프로세스 동시 실행<br>
+          ③ 실제 사용되지 않는 코드·데이터는 메모리 미점유 (예: 오류 처리 루틴)
+        </div>
+      </div>
+
+      <div class="asec">
+        <div class="asectitle s2">Ⅱ. 유효-무효 비트(Valid-Invalid Bit)</div>
+        <table class="atable">
+          <tr><th>비트 상태</th><th>의미</th><th>동작</th></tr>
+          <tr><td>Valid (v)</td><td>해당 페이지가 현재 물리 메모리(프레임)에 존재</td><td>정상적 메모리 접근 → 주소 변환 완료</td></tr>
+          <tr><td>Invalid (i)</td><td>해당 페이지가 메모리에 없음 (디스크 스왑 영역 또는 미할당)</td><td>하드웨어 트랩 발생 → OS 페이지 폴트 핸들러 호출</td></tr>
+        </table>
+      </div>
+
+      <div class="asec">
+        <div class="asectitle s3">Ⅲ. 페이지 폴트 처리 과정 (9단계)</div>
+        <div class="dbox">페이지 폴트 처리 흐름
+
+CPU가 가상 주소 접근 → 페이지 테이블 참조
+                                    │
+              유효(v) ──────────── 물리 주소 변환 후 접근 완료
+                                    │
+              무효(i) → [1] 트랩 발생 (하드웨어 → OS 전환)
+                        [2] OS: 유효한 참조인지 검증
+                              무효 참조 → 프로세스 종료(Segfault)
+                              유효 참조 → 다음 단계
+                        [3] 빈 프레임(Free Frame) 탐색
+                              없으면 → 페이지 교체 알고리즘으로 희생 프레임 선택
+                        [4] 희생 페이지가 변경됨(Dirty) → 디스크에 기록(Write-back)
+                        [5] 필요한 페이지를 디스크에서 빈 프레임으로 읽기(Swap-in)
+                        [6] 페이지 테이블 갱신: Invalid → Valid, 프레임 번호 기록
+                        [7] 트랩 발생 시점의 명령어 재시작(Restart)
+                        [8] CPU가 동일 가상 주소 재접근 → 이번엔 Valid
+                        [9] 물리 주소 변환 완료 → 정상 실행</div>
+      </div>
+
+      <div class="asec">
+        <div class="asectitle s4">Ⅳ. 유효 접근 시간(EAT) 계산</div>
+        <div class="kbox kb-tea">
+          <div class="kbt">📐 EAT(Effective Access Time) 계산식</div>
+          <strong>EAT = (1 - p) × ma + p × 페이지 폴트 처리 시간</strong><br><br>
+          • p: 페이지 폴트 발생 확률 (0 ≤ p ≤ 1)<br>
+          • ma: 메모리 접근 시간 (예: 200ns)<br>
+          • 페이지 폴트 처리 시간: 디스크 I/O 시간 (예: 8ms = 8,000,000ns)<br><br>
+          <strong>계산 예시</strong>: p = 0.001 (폴트율 0.1%), ma = 200ns, 폴트 처리 = 8,000,000ns<br>
+          EAT = (1 - 0.001) × 200 + 0.001 × 8,000,000<br>
+          &nbsp;&nbsp;&nbsp;&nbsp;= 0.999 × 200 + 8,000<br>
+          &nbsp;&nbsp;&nbsp;&nbsp;= 199.8 + 8,000 = <strong>약 8,200ns</strong> (메모리만 접근 시 대비 41배 느림)<br><br>
+          → p를 최소화(지역성 활용·충분한 프레임 확보)하는 것이 성능의 핵심
+        </div>
+      </div>
+
+      <div class="concl">
+        <div class="concl-title">Ⅴ. 결론</div>
+        <p>요구 페이징은 가상 메모리의 핵심 구현 기법으로, 페이지 폴트 처리 비용(디스크 I/O)이 성능을 좌우한다. SSD 보급으로 폴트 처리 시간이 HDD 대비 약 100배 단축되었으나, 여전히 메모리 접근 대비 수천 배 느려 페이지 폴트 최소화가 OS 성능의 핵심이다.</p>
+      </div>
+    </div>
+  </div>
+</div>
+</div><!-- /s3 -->
+
+<!-- ─── S5: 워킹셋·지역성 ─── -->
+<div class="q-panel" id="s4">
+<div class="q-counter">📝 단답형 5번 / 5번</div>
+<div class="qcard">
+  <div class="qhdr">
+    <span class="qdomain">운영체제 / 지역성</span>
+    <div class="qmeta">
+      <div class="qtype-label">1교시 단답형 · 10~15점 · 1~2페이지 분량</div>
+      <div class="qtitle">프로그램의 지역성(Locality) 원리의 3가지 유형(시간적·공간적·순차적)을 설명하고, 지역성과 워킹셋(Working Set), TLB(Translation Lookaside Buffer)의 관계를 설명하시오.</div>
+    </div>
+  </div>
+  <div class="qbody">
+    <div class="qhints">
+      <span class="qhint">TLB 히트율 연계</span><span class="qhint">캐시 계층 구조와 연결</span><span class="qhint">지역성 3종 암기</span>
+    </div>
+  </div>
+  <div class="acard">
+    <button class="atoggle" onclick="toggleA(this)">
+      <span class="alabel">📄 모범 답안 보기</span><span class="aarrow">▼</span>
+    </button>
+    <div class="abody">
+      <div class="atitle">지역성 원리 3가지 유형, 워킹셋·TLB와의 관계</div>
+      <div class="chips">
+        <span class="chip ct">⏱ 목표 15분</span><span class="chip cp">📄 1.5~2페이지</span><span class="chip cs">💯 10~15점</span>
+      </div>
+
+      <div class="asec">
+        <div class="asectitle s1">Ⅰ. 지역성(Locality)의 개념</div>
+        <div class="ap">지역성 원리(Principle of Locality)는 프로세스가 실행 중 <strong>특정 시간·공간 범위 내의 일부 메모리 영역에 집중적으로 접근</strong>하는 경향을 의미한다. 이 원리는 캐시·TLB·가상 메모리 시스템의 성능 근거가 된다.</div>
+      </div>
+
+      <div class="asec">
+        <div class="asectitle s2">Ⅱ. 지역성 3가지 유형</div>
+        <table class="atable">
+          <tr><th>유형</th><th>정의</th><th>예시</th><th>활용</th></tr>
+          <tr><td>시간적 지역성<br>(Temporal Locality)</td><td>최근에 참조된 항목은 가까운 미래에 다시 참조될 가능성이 높다</td><td>루프 변수(i), 자주 호출되는 함수, 스택 포인터</td><td>LRU 알고리즘의 이론적 근거. 캐시 유효성의 핵심</td></tr>
+          <tr><td>공간적 지역성<br>(Spatial Locality)</td><td>참조된 항목 근처의 항목도 곧 참조될 가능성이 높다</td><td>배열 순차 접근, 명령어 순차 실행, 인접 데이터 구조</td><td>페이지 단위 로딩(인접 데이터 함께 적재), 캐시 라인</td></tr>
+          <tr><td>순차적 지역성<br>(Sequential Locality)</td><td>명령어나 데이터가 순서대로 접근되는 경향</td><td>프로그램 코드의 순차 실행, 파일 순차 읽기</td><td>프리페칭(Prefetching), 스트림 버퍼</td></tr>
+        </table>
+      </div>
+
+      <div class="asec">
+        <div class="asectitle s3">Ⅲ. 지역성과 워킹셋의 관계</div>
+        <div class="ap">워킹셋(Working Set)은 지역성 원리의 실증적 구현이다. 프로세스는 특정 실행 단계에서 일정한 페이지 집합(지역 = Locality)에 집중적으로 접근하며, 이 집합이 워킹셋이다.</div>
+        <div class="dbox">워킹셋과 지역성의 관계
+
+프로그램 실행 타임라인:
+시간 → [루프 A 실행]         [함수 B 호출]         [배열 C 처리]
+지역:   {p1, p2, p3}  →  {p3, p4, p5}  →  {p5, p6, p7}
+
+각 구간에서 집중 참조되는 페이지 집합 = 해당 구간의 워킹셋
+지역 전환 시 → 워킹셋 변화 → 페이지 폴트 일시 증가(지역 전환 비용)
+
+∴ 워킹셋을 메모리에 완전히 유지 = 해당 지역의 페이지 폴트 거의 없음
+∴ 워킹셋 일부 누락 = 해당 지역 내에서도 빈번한 폴트 = 스래싱 전조</div>
+      </div>
+
+      <div class="asec">
+        <div class="asectitle s4">Ⅳ. 지역성과 TLB(Translation Lookaside Buffer)의 관계</div>
+        <div class="ap">TLB는 페이지 테이블의 최근 참조 항목을 저장하는 고속 하드웨어 캐시(연관 메모리)이다. 지역성 덕분에 TLB는 소용량(64~1024 엔트리)으로도 높은 적중률을 달성한다.</div>
+        <div class="kbox kb-blue">
+          <div class="kbt">📐 TLB를 포함한 유효 접근 시간</div>
+          <strong>EAT = α × (t_TLB + ma) + (1 - α) × (t_TLB + 2×ma)</strong><br><br>
+          • α: TLB 적중률(Hit Ratio), 시간적·공간적 지역성이 높을수록 α → 1<br>
+          • t_TLB: TLB 탐색 시간 (약 20ns)<br>
+          • ma: 메모리 접근 시간 (약 200ns)<br><br>
+          α = 0.99 (99% 적중) 시:<br>
+          EAT = 0.99 × (20+200) + 0.01 × (20+400) = 217.8 + 4.2 = <strong>222ns</strong><br>
+          → TLB 없이 두 번 메모리 접근(페이지 테이블+데이터) = 400ns 대비 44% 단축
+        </div>
+      </div>
+
+      <div class="concl">
+        <div class="concl-title">Ⅴ. 결론</div>
+        <p>지역성 원리는 가상 메모리·TLB·CPU 캐시 등 컴퓨터 시스템 전반의 계층적 메모리 구조가 실용적으로 동작할 수 있는 이론적 근거이다. 지역성이 좋은 프로그램(배열 순차 접근·루프 집중 실행)은 TLB 적중률이 높고 페이지 폴트가 적어 성능이 우수하며, 따라서 알고리즘·자료구조 설계 시 지역성을 고려하는 것이 중요하다.</p>
+      </div>
+    </div>
+  </div>
+</div>
+</div><!-- /s4 -->
+
+</div><!-- /main -->
+</div><!-- /tp0 -->
+
+<!-- ═══════════════ 논술형 ═══════════════ -->
+<div class="type-panel" id="tp1">
+<nav class="q-nav">
+  <button class="q-btn active" onclick="showQ(0,'l',this)">①가상 메모리 전체 구조</button>
+  <button class="q-btn" onclick="showQ(1,'l',this)">②페이지 교체 심층 분석</button>
+  <button class="q-btn" onclick="showQ(2,'l',this)">③스래싱 심층 분석</button>
+  <button class="q-btn" onclick="showQ(3,'l',this)">④페이징+세그멘테이션 결합</button>
+  <button class="q-btn" onclick="showQ(4,'l',this)">⑤현대 OS 메모리 관리</button>
+</nav>
+<div class="main">
+
+<!-- ─── L1: 가상 메모리 전체 구조 ─── -->
+<div class="q-panel active" id="l0">
+<div class="q-counter">📄 논술형 1번 / 5번</div>
+<div class="qcard">
+  <div class="qhdr">
+    <span class="qdomain">운영체제 / 가상 메모리</span>
+    <div class="qmeta">
+      <div class="qtype-label">2~4교시 논술형 · 25점 · 3~4페이지 분량</div>
+      <div class="qtitle">가상 메모리 시스템의 전체 구조와 주소 변환 메커니즘에 대하여 다음을 설명하시오.</div>
+    </div>
+  </div>
+  <div class="qbody">
+    <div class="qitems">
+      <div class="qitem"><span class="qlabel">가.</span><span>가상 주소 공간의 구조(코드·데이터·힙·스택)와 물리 메모리·스왑 공간과의 관계</span></div>
+      <div class="qitem"><span class="qlabel">나.</span><span>단일 레벨·2단계·역(Inverted) 페이지 테이블의 구조와 각각의 장단점 비교</span></div>
+      <div class="qitem"><span class="qlabel">다.</span><span>TLB를 포함한 완전한 주소 변환 과정 및 TLB 성능 최적화 방안</span></div>
+    </div>
+    <div class="qhints">
+      <span class="qhint">페이지 테이블 3종 비교 필수</span><span class="qhint">TLB 포함 EAT 계산</span><span class="qhint">역 페이지 테이블 구조 다이어그램</span>
+    </div>
+  </div>
+  <div class="acard">
+    <button class="atoggle" onclick="toggleA(this)">
+      <span class="alabel">📄 모범 답안 보기</span><span class="aarrow">▼</span>
+    </button>
+    <div class="abody">
+      <div class="atitle">가상 주소 공간 구조, 페이지 테이블 3종 비교 및 TLB 포함 주소 변환 과정</div>
+      <div class="chips">
+        <span class="chip ct">⏱ 목표 30분</span><span class="chip cp">📄 3.5~4페이지</span><span class="chip cs">💯 25점</span>
+      </div>
+
+      <div class="asec">
+        <div class="asectitle s1">Ⅰ. 개요 — 가상 메모리 시스템의 개념</div>
+        <div class="ap">가상 메모리는 프로세스에게 실제 물리 메모리보다 큰 연속된 주소 공간의 환상(Illusion)을 제공하는 OS의 핵심 메모리 관리 기법이다. 물리 메모리(RAM) + 스왑 공간(디스크)을 계층적으로 활용하며, 페이지 테이블과 TLB를 통한 주소 변환이 핵심이다.</div>
+      </div>
+
+      <div class="asec">
+        <div class="asectitle s2">Ⅱ. 가. 가상 주소 공간의 구조</div>
+        <div class="dbox">프로세스 가상 주소 공간 구조 (32비트 기준, 4GB)
+
+0xFFFFFFFF ┌─────────────────────────┐
+           │   커널 공간 (1GB)         │ ← OS 독점 (사용자 접근 불가)
+0xC0000000 ├─────────────────────────┤
+           │   스택(Stack)             │ ← 함수 호출, 지역 변수 (높은 주소→낮은 주소 성장)
+           │   ↓ (성장 방향)           │
+           │   (가드 페이지)            │
+           │   ↑ (성장 방향)           │
+           │   힙(Heap)               │ ← 동적 할당(malloc/new) (낮은→높은 주소 성장)
+           ├─────────────────────────┤
+           │   BSS 세그먼트            │ ← 초기화되지 않은 전역·정적 변수
+           │   데이터 세그먼트          │ ← 초기화된 전역·정적 변수
+           │   코드(텍스트) 세그먼트    │ ← 프로그램 코드 (읽기 전용)
+0x00000000 └─────────────────────────┘
+
+물리 메모리 (RAM):  프레임 단위로 분할. 현재 사용 중인 페이지만 적재
+스왑 공간 (Disk):   메모리에서 제거된 페이지 임시 보관 (페이지 파일)</div>
+        <div class="kbox kb-blue">
+          <div class="kbt">세그먼트별 보호 속성</div>
+          코드: <strong>읽기+실행</strong> (쓰기 불가) &nbsp;|&nbsp; 데이터·BSS: <strong>읽기+쓰기</strong> &nbsp;|&nbsp; 힙·스택: <strong>읽기+쓰기</strong>, 스택 오버플로 감지<br>
+          커널 공간: 커널 모드에서만 접근. 사용자 프로세스 접근 → 보호 폴트(Segfault)
+        </div>
+      </div>
+
+      <div class="asec">
+        <div class="asectitle s3">Ⅲ. 나. 페이지 테이블 3종 구조 및 비교</div>
+        <ul class="aol">
+          <li><span class="onum on1">1</span><div>
+            <strong>단일 레벨 페이지 테이블</strong>: 모든 페이지 번호를 하나의 선형 배열로 관리
+            <div class="sub">
+              <div class="si">구조: PT[p] → 프레임 번호(f). 32비트 주소·4KB 페이지 시 테이블 크기 = 2²⁰ × 4B = 4MB (프로세스당)</div>
+              <div class="si">단점: 프로세스당 테이블이 물리 메모리에 연속 존재해야 함. 희소(Sparse) 주소 공간 낭비 극심</div>
+            </div>
+          </div></li>
+          <li><span class="onum on1">2</span><div>
+            <strong>다단계(2단계) 페이지 테이블</strong>: 가상 주소를 &lt;p1|p2|d&gt;로 분할. 외부 PT → 내부 PT → 프레임
+            <div class="sub">
+              <div class="si">구조: CR3 → 외부 PT[p1] → 내부 PT 기주소 + p2 → 프레임 번호(f)</div>
+              <div class="si">장점: 사용하지 않는 주소 영역의 내부 PT 미생성 → 메모리 절약 (희소 주소 공간에 유리)</div>
+              <div class="si">단점: 메모리 접근 횟수 증가 (2회 + TLB 미스 시 추가). 64비트 주소 → 4단계(x86-64: PML4·PDP·PD·PT)</div>
+            </div>
+          </div></li>
+          <li><span class="onum on1">3</span><div>
+            <strong>역(Inverted) 페이지 테이블</strong>: 물리 프레임 수를 기준으로 하나의 전역 테이블 유지. 각 엔트리 = (PID, 페이지 번호)
+            <div class="sub">
+              <div class="si">구조: IPT[f] = (PID, p). 가상 주소 (PID, p)로 IPT를 해시 검색 → 프레임 번호 f</div>
+              <div class="si">장점: 테이블 크기 = 물리 메모리 크기 기준 (고정). 64비트 대용량 가상 주소 공간에 유리</div>
+              <div class="si">단점: 탐색 시간 O(n). 해시 충돌 처리 필요. 공유 메모리 구현 어려움. IBM RISC System/6000 적용</div>
+            </div>
+          </div></li>
+        </ul>
+        <table class="atable">
+          <tr><th>비교 항목</th><th>단일 레벨</th><th>다단계 (2단계)</th><th>역 페이지 테이블</th></tr>
+          <tr><td>테이블 크기</td><td>가상 주소 공간 비례 (매우 큼)</td><td>실제 사용 주소 비례 (절약)</td><td>물리 메모리 크기 고정 (소형)</td></tr>
+          <tr><td>변환 속도</td><td>1회 접근</td><td>2~4회 접근</td><td>해시 탐색 (가변)</td></tr>
+          <tr><td>희소 주소 공간</td><td>비효율</td><td>효율적</td><td>효율적</td></tr>
+          <tr><td>공유 메모리</td><td>용이</td><td>용이</td><td>어려움</td></tr>
+          <tr><td>적용 사례</td><td>초기 32비트 OS</td><td>x86-32, ARM, x86-64(4단계)</td><td>IBM PowerPC, IA-64</td></tr>
+        </table>
+      </div>
+
+      <div class="asec">
+        <div class="asectitle s4">Ⅳ. 다. TLB를 포함한 완전한 주소 변환 과정</div>
+        <div class="dbox">TLB 포함 주소 변환 흐름 (2단계 페이지 테이블 기준)
+
+CPU가 가상 주소 VA = &lt;p1, p2, d&gt; 생성
+              │
+    ┌─────────▼──────────┐
+    │   TLB 탐색 (병렬)   │  ← 연관 메모리(Associative Memory), 전체 TLB 동시 비교
+    └──────┬──────┬──────┘
+           │TLB Hit    │TLB Miss
+           │(~1ns)     │(~수백ns)
+           ▼           ▼
+     [프레임번호(f)]   [CR3 → 외부PT[p1] → 내부PT[p2] → 프레임번호(f)]
+           │           │   (메모리 2회 추가 접근 후 TLB 갱신)
+           └─────┬─────┘
+                 ▼
+       물리 주소 = f × 페이지크기 + d
+                 ▼
+           메모리 접근 완료</div>
+
+        <div class="asec">
+          <div class="asectitle s6">TLB 성능 최적화 방안</div>
+          <ul class="aol">
+            <li><span class="onum on6">1</span><div><strong>TLB 크기 증가</strong>: 엔트리 수 확대(128→1024)로 적중률 향상. 단, 하드웨어 비용·탐색 시간 증가 트레이드오프</div></li>
+            <li><span class="onum on6">2</span><div><strong>대형 페이지(Huge Page)</strong>: 4KB → 2MB·1GB 페이지 사용. 동일 TLB 엔트리로 더 넓은 메모리 커버 → 적중률 대폭 향상. Linux: <code style="font-family:monospace;font-size:11px">mmap(MAP_HUGETLB)</code>, Windows: Large Pages</div></li>
+            <li><span class="onum on6">3</span><div><strong>ASID(Address Space Identifier)</strong>: 컨텍스트 스위치 시 TLB 전체 플러시 대신 ASID로 프로세스 구분 → TLB 재사용률 향상</div></li>
+            <li><span class="onum on6">4</span><div><strong>멀티레벨 TLB</strong>: L1 TLB(소형·초고속) + L2 TLB(대형·고속)의 2단 구조. Intel x86의 경우 L1 ITLB/DTLB + 공유 L2 STLB</div></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="concl">
+        <div class="concl-title">Ⅴ. 결론</div>
+        <p>가상 메모리 주소 변환의 성능은 TLB 적중률에 의해 결정된다. 현대 x86-64 프로세서는 4단계 페이지 테이블(PML4)과 계층적 TLB(L1+L2)를 결합하여 64비트 대용량 가상 주소 공간을 효율적으로 관리한다. 대형 페이지 활용과 ASID 적용은 고성능 서버·데이터베이스 시스템에서 메모리 접근 성능을 획기적으로 향상시키는 핵심 최적화 기법이다.</p>
+      </div>
+    </div>
+  </div>
+</div>
+</div><!-- /l0 -->
+
+<!-- ─── L2: 페이지 교체 심층 분석 ─── -->
+<div class="q-panel" id="l1">
+<div class="q-counter">📄 논술형 2번 / 5번</div>
+<div class="qcard">
+  <div class="qhdr">
+    <span class="qdomain">운영체제 / 페이지 교체</span>
+    <div class="qmeta">
+      <div class="qtype-label">2~4교시 논술형 · 25점 · 3~4페이지 분량</div>
+      <div class="qtitle">페이지 교체 알고리즘에 대하여 다음을 설명하시오.</div>
+    </div>
+  </div>
+  <div class="qbody">
+    <div class="qitems">
+      <div class="qitem"><span class="qlabel">가.</span><span>FIFO·OPT·LRU·Clock·LFU 알고리즘의 동작 원리와 구현 방법 상세</span></div>
+      <div class="qitem"><span class="qlabel">나.</span><span>Belady의 이상현상(Belady's Anomaly)의 개념, 발생 원인 및 발생하지 않는 알고리즘의 특성(스택 알고리즘)</span></div>
+      <div class="qitem"><span class="qlabel">다.</span><span>전역 교체(Global Replacement)와 지역 교체(Local Replacement) 정책의 비교 및 프레임 할당 전략(균등·비례·우선순위 할당)</span></div>
+    </div>
+    <div class="qhints">
+      <span class="qhint">스택 알고리즘 개념 필수</span><span class="qhint">전역·지역 교체 비교</span><span class="qhint">프레임 할당 3가지</span>
+    </div>
+  </div>
+  <div class="acard">
+    <button class="atoggle" onclick="toggleA(this)">
+      <span class="alabel">📄 모범 답안 보기</span><span class="aarrow">▼</span>
+    </button>
+    <div class="abody">
+      <div class="atitle">페이지 교체 알고리즘 심층 분석·Belady 이상현상·전역/지역 교체·프레임 할당</div>
+      <div class="chips">
+        <span class="chip ct">⏱ 목표 30분</span><span class="chip cp">📄 3.5~4페이지</span><span class="chip cs">💯 25점</span>
+      </div>
+
+      <div class="asec">
+        <div class="asectitle s1">Ⅰ. 개요 — 페이지 교체의 필요성</div>
+        <div class="ap">페이지 교체는 물리 메모리의 빈 프레임이 없을 때 기존 페이지를 디스크로 내보내고 새 페이지를 적재하는 과정이다. 어떤 페이지를 교체하느냐(교체 정책)가 페이지 폴트 횟수와 시스템 성능에 직접 영향을 미친다.</div>
+      </div>
+
+      <div class="asec">
+        <div class="asectitle s2">Ⅱ. 가. 페이지 교체 알고리즘 구현 방법 상세</div>
+        <ul class="aol">
+          <li><span class="onum on2">1</span><div><strong>FIFO</strong>: <strong>큐(Queue)</strong> 자료구조 사용. 메모리 적재 순서대로 큐에 삽입. 교체 시 큐 앞(가장 오래된 것) 제거. 구현 단순. 하드웨어 지원 불필요</div></li>
+          <li><span class="onum on2">2</span><div><strong>OPT</strong>: 미래 참조 열을 스캔하여 다음 참조까지 거리가 가장 먼 페이지 교체. <strong>실제 구현 불가</strong> (미래 정보 필요). 성능 비교 기준선(Benchmark)으로만 사용</div></li>
+          <li><span class="onum on2">3</span><div><strong>LRU</strong>: 두 가지 구현 방법
+            <div class="sub">
+              <div class="si"><strong>카운터 기반</strong>: 각 페이지에 마지막 접근 타임스탬프 기록. 교체 시 가장 오래된 카운터 값 탐색 O(n). 하드웨어 타임스탬프 필요</div>
+              <div class="si"><strong>스택 기반</strong>: 이중 연결 리스트로 스택 구현. 접근 시 해당 노드를 스택 최상위로 이동. 교체 시 스택 최하위 제거. 교체 O(1), 이동 O(1). 하드웨어 지원 없이도 OS에서 구현 가능</div>
+            </div>
+          </div></li>
+          <li><span class="onum on2">4</span><div><strong>Clock (2차 기회 알고리즘)</strong>: 원형 큐(Ring Buffer) + 참조 비트(R-bit) 활용. 시계 바늘이 순환하며 R=0인 페이지 교체, R=1이면 0으로 초기화 후 다음 페이지로. <strong>LRU 근사를 가장 낮은 오버헤드로 구현</strong>. Linux·BSD의 기본 교체 알고리즘</div></li>
+          <li><span class="onum on2">5</span><div><strong>LFU</strong>: 각 페이지의 참조 횟수(Frequency Counter) 유지. 최솟값 탐색을 위한 힙(Min-Heap) 또는 버킷 정렬 구조 사용. 초기 빈번 접근 후 방치된 페이지가 오래 잔류하는 <strong>노화(Aging) 문제</strong> 발생 → 주기적 카운터 절반 감소(Aging 기법)로 해결</div></li>
+        </ul>
+      </div>
+
+      <div class="asec">
+        <div class="asectitle s3">Ⅲ. 나. Belady의 이상현상과 스택 알고리즘</div>
+        <div class="ap"><strong>Belady의 이상현상(Belady's Anomaly)</strong>: FIFO 알고리즘에서 프레임 수를 늘렸음에도 불구하고 페이지 폴트 횟수가 오히려 증가하는 반직관적 현상이다.</div>
+        <div class="dbox">Belady의 이상현상 예시 (참조 열: 1,2,3,4,1,2,5,1,2,3,4,5)
+
+프레임 3: 페이지 폴트 9회 (FIFO)
+프레임 4: 페이지 폴트 10회 (FIFO) ← 프레임 증가했는데 폴트 증가!
+
+원인: FIFO는 교체할 페이지 선택 시 '얼마나 최근에 사용됐는가'를 
+      고려하지 않아, 프레임 수가 늘면 적재 순서가 달라져 
+      오히려 더 자주 사용되는 페이지가 교체될 수 있음</div>
+
+        <div class="kbox kb-pur">
+          <div class="kbt">스택 알고리즘 (Stack Algorithm) — Belady 이상현상 없음</div>
+          <strong>정의</strong>: n개 프레임에서 메모리에 있는 페이지 집합이 n+1개 프레임에서의 집합의 부분집합이 되는 성질을 가진 알고리즘<br>
+          → S(n) ⊆ S(n+1) 항상 성립 → 프레임 증가 시 페이지 폴트 단조 감소 보장<br><br>
+          <strong>스택 알고리즘 해당</strong>: LRU, OPT, LFU(변형)<br>
+          <strong>비해당 (Belady 가능)</strong>: FIFO, Clock (FIFO 유사 계열)
+        </div>
+      </div>
+
+      <div class="asec">
+        <div class="asectitle s4">Ⅳ. 다. 전역/지역 교체 정책 및 프레임 할당 전략</div>
+        <table class="atable">
+          <tr><th>비교 항목</th><th>전역 교체 (Global Replacement)</th><th>지역 교체 (Local Replacement)</th></tr>
+          <tr><td>교체 범위</td><td>전체 프로세스의 프레임 중 교체 대상 선정</td><td>해당 프로세스 자신의 프레임에서만 교체</td></tr>
+          <tr><td>프레임 수</td><td>실행 중 프레임 수 동적 변화</td><td>할당된 프레임 수 고정</td></tr>
+          <tr><td>장점</td><td>메모리 이용률 높음. 고우선순위 프로세스가 더 많은 프레임 확보 가능</td><td>다른 프로세스의 성능에 영향 미치지 않음. 예측 가능한 성능</td></tr>
+          <tr><td>단점</td><td>다른 프로세스의 페이지를 교체 → 의도치 않은 성능 저하 유발</td><td>메모리 이용률 낮을 수 있음. 비효율적 프레임 고정</td></tr>
+          <tr><td>적용</td><td>Linux, Windows (기본값)</td><td>일부 실시간 시스템, 멀티테넌트 환경</td></tr>
+        </table>
+        <div class="ap" style="margin-top:12px"><strong>프레임 할당 전략 3가지:</strong></div>
+        <ul class="aol">
+          <li><span class="onum on4">1</span><div><strong>균등 할당(Equal Allocation)</strong>: 전체 프레임 수 / 프로세스 수. 모든 프로세스에 동일 프레임 배분. 단순하나 프로세스 크기·중요도 무시</div></li>
+          <li><span class="onum on4">2</span><div><strong>비례 할당(Proportional Allocation)</strong>: 프로세스 크기(가상 주소 공간)에 비례하여 프레임 할당. f_i = (s_i / Σs) × m (m: 전체 프레임). 크기가 큰 프로세스에 더 많은 프레임</div></li>
+          <li><span class="onum on4">3</span><div><strong>우선순위 기반 할당(Priority Allocation)</strong>: 프로세스 우선순위에 따라 프레임 할당. 높은 우선순위 프로세스가 더 많은 프레임 확보. 전역 교체 정책과 결합하여 낮은 우선순위 프레임을 높은 우선순위 프로세스가 가져갈 수 있음</div></li>
+        </ul>
+      </div>
+
+      <div class="concl">
+        <div class="concl-title">Ⅴ. 결론</div>
+        <p>페이지 교체 알고리즘의 선택은 시스템 성능에 직접적 영향을 미친다. 실제 OS는 OPT의 근사인 LRU를 Clock 알고리즘으로 구현하여 낮은 오버헤드로 높은 성능을 달성한다. 전역 교체와 비례 할당을 결합하고, 워킹셋 기반 프레임 관리를 통해 스래싱을 예방하는 것이 현대 OS 메모리 관리의 핵심 원칙이다.</p>
+      </div>
+    </div>
+  </div>
+</div>
+</div><!-- /l1 -->
+
+<!-- ─── L3: 스래싱 심층 분석 ─── -->
+<div class="q-panel" id="l2">
+<div class="q-counter">📄 논술형 3번 / 5번</div>
+<div class="qcard">
+  <div class="qhdr">
+    <span class="qdomain">운영체제 / 스래싱</span>
+    <div class="qmeta">
+      <div class="qtype-label">2~4교시 논술형 · 25점 · 3~4페이지 분량</div>
+      <div class="qtitle">스래싱(Thrashing)과 워킹셋 모델에 대하여 다음을 설명하시오.</div>
+    </div>
+  </div>
+  <div class="qbody">
+    <div class="qitems">
+      <div class="qitem"><span class="qlabel">가.</span><span>스래싱의 발생 메커니즘 — CPU 이용률과 다중 프로그래밍 정도의 관계, 지역성과 스래싱의 연관성</span></div>
+      <div class="qitem"><span class="qlabel">나.</span><span>워킹셋 모델의 수학적 정의, 워킹셋 윈도우(Δ) 크기 결정 방법, 워킹셋 기반 스래싱 방지 메커니즘</span></div>
+      <div class="qitem"><span class="qlabel">다.</span><span>스래싱 탐지 및 회복 기법과 현대 시스템에서의 스래싱 관리 방안</span></div>
+    </div>
+    <div class="qhints">
+      <span class="qhint">워킹셋 수학적 정의 필수</span><span class="qhint">CPU 이용률 그래프</span><span class="qhint">스왑 아웃 회복 절차</span>
+    </div>
+  </div>
+  <div class="acard">
+    <button class="atoggle" onclick="toggleA(this)">
+      <span class="alabel">📄 모범 답안 보기</span><span class="aarrow">▼</span>
+    </button>
+    <div class="abody">
+      <div class="atitle">스래싱 발생 메커니즘·워킹셋 모델·탐지·회복 및 현대 시스템 관리 방안</div>
+      <div class="chips">
+        <span class="chip ct">⏱ 목표 30분</span><span class="chip cp">📄 3.5~4페이지</span><span class="chip cs">💯 25점</span>
+      </div>
+
+      <div class="asec">
+        <div class="asectitle s1">Ⅰ. 가. 스래싱 발생 메커니즘</div>
+        <div class="ap">스래싱은 프로세스의 활성 지역(Locality)을 수용할 프레임이 부족할 때 발생한다. 각 프로세스는 특정 실행 단계에서 집중적으로 참조하는 페이지 집합(워킹셋)을 가지며, 이 집합이 메모리에 수용되지 못하면 지속적인 페이지 교체가 발생한다.</div>
+        <div class="dbox">CPU 이용률과 다중 프로그래밍 정도의 관계
+
+CPU    100% │                   ╭──────╮
+이용률      │                  ╱        ╲
+            │                 ╱          ╲  ← 스래싱 구간
+            │                ╱            ╲_______
+            │               ╱
+         0% └───────────────────────────────────────
+                            │
+                         임계점(Knee)
+                    ← 정상 구간 │ 스래싱 구간 →
+            다중 프로그래밍 정도(MPD)
+
+임계점 이전: MPD 증가 → CPU 이용률 증가 (정상 동작)
+임계점 이후: MPD 증가 → 페이지 폴트 폭발적 증가 → CPU는 I/O 대기
+            → CPU 이용률 급락 → OS가 MPD를 더 높임 → 악순환</div>
+
+        <div class="kbox kb-red">
+          <div class="kbt">지역성과 스래싱의 연관성</div>
+          프로세스는 실행 단계마다 다른 지역(Locality)을 가짐<br>
+          지역 A → B → C 전환 시 → 새 지역의 페이지 적재 필요 → 폴트 일시 증가 (정상)<br>
+          <strong>스래싱</strong> = 지역 크기 &gt; 할당 프레임 수 → 지역 내에서도 끊임없는 폴트 발생
+        </div>
+      </div>
+
+      <div class="asec">
+        <div class="asectitle s2">Ⅱ. 나. 워킹셋 모델 — 수학적 정의 및 스래싱 방지</div>
+        <div class="kbox kb-tea">
+          <div class="kbt">워킹셋 수학적 정의 (Peter Denning, 1968)</div>
+          <strong>WS(t, Δ) = {p | p는 (t-Δ, t] 구간에서 1회 이상 참조된 페이지}</strong><br><br>
+          • t: 현재 시각<br>
+          • Δ: 워킹셋 윈도우 크기 (Working Set Window)<br>
+          • WS(t, Δ): 시각 t에서 프로세스 i의 워킹셋 (t-Δ 이후 참조된 페이지 집합)<br><br>
+          예) 참조 열: 2,6,1,5,7,7,7,5,1,6 &nbsp; Δ=5 &nbsp; t=10<br>
+          WS(10, 5) = {5,1,6,7} ← 마지막 5회 참조에서 등장한 페이지 집합
+        </div>
+        <div class="ap"><strong>워킹셋 윈도우(Δ) 크기 결정:</strong></div>
+        <ul class="aol">
+          <li><span class="onum on2">1</span><div>Δ가 너무 작으면: 현재 지역을 완전히 포함하지 못함 → 워킹셋 과소 추정 → 폴트 증가</div></li>
+          <li><span class="onum on2">2</span><div>Δ가 너무 크면: 여러 지역에 걸친 페이지 포함 → 워킹셋 과대 추정 → 메모리 낭비</div></li>
+          <li><span class="onum on2">3</span><div>최적 Δ: 두 지역 전환 사이의 평균 실행 시간. 실제로는 샘플링과 실험적 측정으로 결정</div></li>
+        </ul>
+        <div class="dbox">워킹셋 기반 스래싱 방지 메커니즘
+
+1. 각 프로세스 i의 워킹셋 크기 |WS_i(t, Δ)| 주기적 측정
+2. 전체 필요 프레임 = D = Σ|WS_i(t, Δ)|  (모든 프로세스 합산)
+3. 판단:
+   D ≤ m (물리 프레임 총수)  → 정상. 새 프로세스 추가 가능
+   D > m                    → 스래싱 위험!
+                                → 우선순위 낮은 프로세스 선택
+                                → 해당 프로세스 일시 중단 + 스왑 아웃
+                                → 해방된 프레임을 나머지 프로세스 재분배
+                                → D ≤ m 될 때까지 반복</div>
+      </div>
+
+      <div class="asec">
+        <div class="asectitle s3">Ⅲ. 다. 스래싱 탐지·회복 및 현대 시스템 관리 방안</div>
+        <table class="atable">
+          <tr><th>탐지 방법</th><th>원리</th><th>한계</th></tr>
+          <tr><td>PFF(Page Fault Frequency) 감시</td><td>PFF &gt; 상한 임계값 → 프레임 부족. PFF &lt; 하한 → 프레임 여유</td><td>임계값 설정 어려움. 반응 지연</td></tr>
+          <tr><td>CPU 이용률 + 디스크 I/O 동시 감시</td><td>CPU 이용률 낮음 + 디스크 I/O 폭증 → 스래싱 의심</td><td>다른 원인(I/O 바운드)과 구분 어려움</td></tr>
+          <tr><td>워킹셋 크기 합산 감시</td><td>∑|WS_i| vs 총 프레임 수 비교</td><td>워킹셋 추적 오버헤드</td></tr>
+        </table>
+
+        <div class="ap" style="margin-top:10px"><strong>스래싱 회복 절차:</strong></div>
+        <ul class="aol">
+          <li><span class="onum on3">1</span><div><strong>프로세스 일시 중단(Suspend)</strong>: 우선순위 가장 낮은 프로세스를 선택하여 스왑 아웃. 해방된 프레임을 나머지 프로세스에 재분배. 가장 일반적인 회복 기법</div></li>
+          <li><span class="onum on3">2</span><div><strong>프레임 추가 할당</strong>: PFF 높은 프로세스에 프레임 추가. 여유 프레임이 없으면 다른 프로세스에서 회수</div></li>
+          <li><span class="onum on3">3</span><div><strong>프리페칭(Prefetching)</strong>: 스왑 아웃된 프로세스가 재개될 때 워킹셋 전체를 한꺼번에 프리로드. 재시작 시 폴트 감소</div></li>
+        </ul>
+
+        <div class="kbox kb-green">
+          <div class="kbt">현대 시스템에서의 스래싱 관리 방안</div>
+          ① <strong>메모리 오버커밋(Memory Overcommit)</strong>: Linux의 경우 물리 메모리 초과 가상 메모리 할당 허용. OOM Killer가 스래싱 진입 전 메모리 부족 프로세스를 강제 종료<br>
+          ② <strong>cgroups 메모리 제한</strong>: 컨테이너·프로세스 그룹별 메모리 상한 설정으로 스래싱 전파 차단. Kubernetes의 Resource Limits 연계<br>
+          ③ <strong>NUMA 인식 메모리 관리</strong>: 다중 소켓 서버에서 NUMA 노드별 로컬 메모리 우선 할당. 원격 메모리 접근(NUMA Miss) 최소화<br>
+          ④ <strong>대형 페이지(Transparent Huge Pages)</strong>: 2MB 페이지로 TLB 부하 감소. 워킹셋 크기 대비 TLB 커버리지 확대 → 폴트 감소<br>
+          ⑤ <strong>메모리 압축(zRAM/zswap)</strong>: 스왑 아웃 대신 메모리 내 압축으로 유효 메모리 용량 확대. 디스크 I/O 없이 스래싱 완화
+        </div>
+      </div>
+
+      <div class="concl">
+        <div class="concl-title">Ⅳ. 결론</div>
+        <p>스래싱은 메모리 과부하의 가장 심각한 증상으로, 예방이 회복보다 중요하다. 워킹셋 기반 관리는 이론적으로 가장 우수한 스래싱 방지 기법이나 구현 오버헤드가 크므로, 현대 OS는 PFF 기반 프레임 조절·OOM Killer·cgroups 제한·메모리 압축을 복합적으로 적용한다. 클라우드·컨테이너 환경에서는 Resource Limits 설정이 스래싱 예방의 핵심 수단이다.</p>
+      </div>
+    </div>
+  </div>
+</div>
+</div><!-- /l2 -->
+
+<!-- ─── L4: 페이징+세그멘테이션 결합 ─── -->
+<div class="q-panel" id="l3">
+<div class="q-counter">📄 논술형 4번 / 5번</div>
+<div class="qcard">
+  <div class="qhdr">
+    <span class="qdomain">운영체제 / 혼합 메모리 관리</span>
+    <div class="qmeta">
+      <div class="qtype-label">2~4교시 논술형 · 25점 · 3~4페이지 분량</div>
+      <div class="qtitle">세그멘테이션과 페이징을 결합한 메모리 관리 방식에 대하여 다음을 설명하시오.</div>
+    </div>
+  </div>
+  <div class="qbody">
+    <div class="qitems">
+      <div class="qitem"><span class="qlabel">가.</span><span>세그멘테이션과 페이징을 결합한 이유와 Segmentation with Paging의 주소 변환 과정 (Intel x86 아키텍처 연계)</span></div>
+      <div class="qitem"><span class="qlabel">나.</span><span>메모리 단편화(내부·외부) 문제와 해결 기법 — 압축(Compaction), 통합(Coalescing), 버디 시스템(Buddy System)</span></div>
+      <div class="qitem"><span class="qlabel">다.</span><span>메모리 보호(Protection) 기법 — 한계 레지스터·접근 권한 비트·NX 비트·ASLR의 개념과 보안적 의의</span></div>
+    </div>
+    <div class="qhints">
+      <span class="qhint">x86 세그멘트→선형→물리 3단계 변환</span><span class="qhint">버디 시스템 구조</span><span class="qhint">ASLR 보안 최신 트렌드</span>
+    </div>
+  </div>
+  <div class="acard">
+    <button class="atoggle" onclick="toggleA(this)">
+      <span class="alabel">📄 모범 답안 보기</span><span class="aarrow">▼</span>
+    </button>
+    <div class="abody">
+      <div class="atitle">세그멘테이션+페이징 결합 방식, 단편화 해결 기법, 메모리 보호 기법</div>
+      <div class="chips">
+        <span class="chip ct">⏱ 목표 30분</span><span class="chip cp">📄 3.5~4페이지</span><span class="chip cs">💯 25점</span>
+      </div>
+
+      <div class="asec">
+        <div class="asectitle s1">Ⅰ. 가. Segmentation with Paging — 결합 이유 및 주소 변환</div>
+        <div class="ap"><strong>결합 이유</strong>: 세그멘테이션은 논리적 보호·공유에 유리하지만 외부 단편화를 유발한다. 페이징은 외부 단편화가 없지만 논리적 보호·공유가 비직관적이다. 두 기법을 결합하면 <strong>세그먼트별 논리적 보호 + 페이지별 물리 배치 유연성</strong>을 모두 확보한다.</div>
+        <div class="dbox">Intel x86 보호 모드 — 3단계 주소 변환
+
+① 논리 주소(Logical Address) = &lt;세그먼트 셀렉터, 오프셋&gt;
+        │
+        ▼ 세그멘테이션 (GDT/LDT 참조)
+② 선형 주소(Linear Address) = 세그먼트 기주소 + 오프셋
+        │
+        ▼ 페이징 (CR3 레지스터 → 페이지 디렉터리 → 페이지 테이블)
+③ 물리 주소(Physical Address) = 프레임 기주소 + 페이지 오프셋
+
+[세그멘트 셀렉터] → GDT(전역 서술자 테이블) → 세그먼트 서술자
+                    {Base, Limit, 접근권한(DPL, Type)}
+[선형 주소 = Base + Offset]
+    │
+    ├→ TLB 탐색 → 히트 → 물리 주소
+    └→ TLB 미스 → 2단계 페이지 테이블 순회
+
+현대 Linux/x86-64: 세그멘테이션 최소화
+  (CS·DS·SS의 Base=0, Limit=최대 → 사실상 페이징만 사용)
+  → 64비트 모드에서 세그먼트 레지스터 역할 대폭 축소</div>
+      </div>
+
+      <div class="asec">
+        <div class="asectitle s2">Ⅱ. 나. 메모리 단편화 문제와 해결 기법</div>
+        <table class="atable">
+          <tr><th>단편화 유형</th><th>발생 원인</th><th>발생 기법</th><th>해결 기법</th></tr>
+          <tr><td>내부 단편화<br>(Internal Fragmentation)</td><td>할당 단위(페이지)보다 작은 요청으로 내부 남은 공간 낭비</td><td>페이징</td><td>페이지 크기 축소 (단, 페이지 테이블 증가). 슬랩 할당자</td></tr>
+          <tr><td>외부 단편화<br>(External Fragmentation)</td><td>가변 크기 할당·해제 반복으로 메모리 구멍 발생</td><td>세그멘테이션, 동적 메모리 할당</td><td>압축(Compaction), 통합(Coalescing), 버디 시스템</td></tr>
+        </table>
+        <ul class="aol">
+          <li><span class="onum on3">1</span><div><strong>압축(Compaction)</strong>: 사용 중인 메모리 블록을 한쪽으로 이동시켜 연속된 빈 공간 생성. 단점: 실행 중 메모리 이동 → 높은 오버헤드. 가상 메모리 환경에서는 페이지 테이블 갱신 필요</div></li>
+          <li><span class="onum on3">2</span><div><strong>통합(Coalescing)</strong>: 인접한 빈 메모리 블록을 하나로 합병. 해제 시 즉시 인접 블록 확인. 단편화 방지에 효과적. 연결 리스트 기반 free list에서 구현</div></li>
+          <li><span class="onum on3">3</span><div><strong>버디 시스템(Buddy System)</strong>: 메모리를 2의 거듭제곱 크기 블록으로 관리. 요청 크기에 맞는 최소 2^k 블록 할당. 해제 시 동일 크기의 '버디' 블록과 합병
+            <div class="sub">
+              <div class="si">분할: 2^n → 2^(n-1) + 2^(n-1) (요청보다 큰 블록을 반복 분할)</div>
+              <div class="si">합병: 인접 버디가 모두 비어있으면 2^(n+1)로 합병</div>
+              <div class="si">장점: 합병 빠름 O(log n). 외부 단편화 최소화</div>
+              <div class="si">단점: 내부 단편화 존재 (요청 크기가 2^k가 아닐 때). Linux 커널 페이지 할당자의 기반 알고리즘</div>
+            </div>
+          </div></li>
+        </ul>
+      </div>
+
+      <div class="asec">
+        <div class="asectitle s3">Ⅲ. 다. 메모리 보호 기법</div>
+        <table class="atable">
+          <tr><th>보호 기법</th><th>개념</th><th>보안적 의의</th></tr>
+          <tr><td>한계 레지스터<br>(Limit Register)</td><td>프로세스의 주소 범위 상한 설정. 범위 초과 접근 → 세그멘테이션 폴트</td><td>프로세스 간 메모리 침범 원천 차단. OS 커널 보호</td></tr>
+          <tr><td>접근 권한 비트<br>(Protection Bit)</td><td>페이지·세그먼트별 읽기(R)·쓰기(W)·실행(X) 권한 설정. 위반 시 보호 폴트</td><td>코드 섹션 읽기 전용 → 자기 수정 코드 방지. 데이터 실행 방지</td></tr>
+          <tr><td>NX 비트<br>(No-Execute Bit)</td><td>데이터 페이지에 실행 불가 표시. 스택·힙 등 비코드 영역 실행 차단</td><td>버퍼 오버플로 공격에서 셸코드 실행 방지. DEP(Data Execution Prevention)의 하드웨어 기반</td></tr>
+          <tr><td>ASLR<br>(Address Space Layout Randomization)</td><td>프로세스 주소 공간(스택·힙·라이브러리)의 시작 주소를 실행 시마다 무작위화</td><td>ROP(Return-Oriented Programming)·코드 재사용 공격 방어. 공격자가 대상 주소 예측 불가</td></tr>
+        </table>
+        <div class="kbox kb-red">
+          <div class="kbt">현대 메모리 보호 계층 (Linux 기준)</div>
+          ASLR(주소 무작위화) + NX/DEP(비코드 영역 실행 차단) + Stack Canary(스택 버퍼 오버플로 탐지) + PIE(Position Independent Executable) 조합으로 다층 메모리 보호 구현
+        </div>
+      </div>
+
+      <div class="concl">
+        <div class="concl-title">Ⅳ. 결론</div>
+        <p>세그멘테이션+페이징 결합은 현대 x86 아키텍처의 메모리 관리 기반이며, 두 기법의 장점을 활용하여 유연한 물리 배치와 강력한 논리적 보호를 동시에 달성한다. 버디 시스템은 Linux 커널의 핵심 메모리 할당 알고리즘이며, ASLR+NX 비트는 현대 보안의 필수 방어선으로 공공 정보시스템의 OS 보안 설정 감리 시 필수 점검항목이다.</p>
+      </div>
+    </div>
+  </div>
+</div>
+</div><!-- /l3 -->
+
+<!-- ─── L5: 현대 OS 메모리 관리 ─── -->
+<div class="q-panel" id="l4">
+<div class="q-counter">📄 논술형 5번 / 5번</div>
+<div class="qcard">
+  <div class="qhdr">
+    <span class="qdomain">운영체제 / 현대 OS 메모리</span>
+    <div class="qmeta">
+      <div class="qtype-label">2~4교시 논술형 · 25점 · 3~4페이지 분량</div>
+      <div class="qtitle">현대 운영체제에서의 가상 메모리 관리 기법에 대하여 다음을 설명하시오.</div>
+    </div>
+  </div>
+  <div class="qbody">
+    <div class="qitems">
+      <div class="qitem"><span class="qlabel">가.</span><span>Copy-on-Write(CoW)·메모리 맵(mmap)·파일 백업 페이지의 개념과 동작 원리</span></div>
+      <div class="qitem"><span class="qlabel">나.</span><span>Linux 메모리 관리 — 버디 시스템·슬랩 할당자(Slab Allocator)·OOM Killer·스왑 정책</span></div>
+      <div class="qitem"><span class="qlabel">다.</span><span>가상 메모리 성능 최적화 기법 — Huge Page·NUMA 인식 메모리 관리·메모리 압축(zRAM)·KSM(Kernel Samepage Merging)의 개념과 적용 효과</span></div>
+    </div>
+    <div class="qhints">
+      <span class="qhint">CoW fork() 연계</span><span class="qhint">슬랩 할당자 내부 구조</span><span class="qhint">클라우드·컨테이너 환경 최신 트렌드</span>
+    </div>
+  </div>
+  <div class="acard">
+    <button class="atoggle" onclick="toggleA(this)">
+      <span class="alabel">📄 모범 답안 보기</span><span class="aarrow">▼</span>
+    </button>
+    <div class="abody">
+      <div class="atitle">CoW·mmap·Linux 메모리 관리·Huge Page·NUMA·zRAM·KSM 최적화</div>
+      <div class="chips">
+        <span class="chip ct">⏱ 목표 30분</span><span class="chip cp">📄 3.5~4페이지</span><span class="chip cs">💯 25점</span>
+      </div>
+
+      <div class="asec">
+        <div class="asectitle s1">Ⅰ. 개요 — 현대 OS 가상 메모리 관리의 특성</div>
+        <div class="ap">현대 OS의 가상 메모리 관리는 단순한 페이지 교체를 넘어 다양한 최적화 기법을 복합적으로 적용한다. Linux를 중심으로 CoW·mmap·슬랩 할당자·Huge Page·NUMA·KSM 등이 계층적으로 동작하여 성능과 메모리 효율을 극대화한다.</div>
+      </div>
+
+      <div class="asec">
+        <div class="asectitle s2">Ⅱ. 가. CoW·mmap·파일 백업 페이지</div>
+        <ul class="aol">
+          <li><span class="onum on1">1</span><div><strong>Copy-on-Write (CoW, 쓰기 시 복사)</strong>
+            <div class="sub">
+              <div class="si"><strong>개념</strong>: 부모 프로세스가 fork()로 자식 생성 시, 페이지를 즉시 복사하지 않고 동일 페이지를 읽기 전용으로 공유. 쓰기 시도 시 보호 폴트 발생 → OS가 해당 페이지를 그때 복사</div>
+              <div class="si"><strong>효과</strong>: fork() 비용 O(1)으로 단축. 자식이 exec()로 바로 교체되면(shell의 fork-exec 패턴) 복사 불필요 → 메모리 낭비 없음</div>
+              <div class="si"><strong>적용</strong>: Linux fork(), Docker 컨테이너 이미지 레이어, Redis BGSAVE</div>
+            </div>
+          </div></li>
+          <li><span class="onum on1">2</span><div><strong>메모리 맵(mmap)</strong>
+            <div class="sub">
+              <div class="si"><strong>개념</strong>: 파일 또는 익명 메모리를 프로세스의 가상 주소 공간에 직접 매핑. 파일 접근이 일반 메모리 접근처럼 동작 → 시스템 콜 오버헤드 최소화</div>
+              <div class="si"><strong>파일 백업 페이지(File-backed Page)</strong>: mmap된 파일 페이지는 물리 프레임이 부족할 때 디스크(원본 파일)로 단순히 버릴 수 있음 (스왑 불필요). 재접근 시 파일에서 다시 로드</div>
+              <div class="si"><strong>익명 페이지(Anonymous Page)</strong>: 스택·힙처럼 파일 비연계. 교체 시 스왑 영역에 저장 필요</div>
+            </div>
+          </div></li>
+        </ul>
+        <div class="dbox">파일 백업 페이지 vs 익명 페이지 교체 차이
+
+파일 백업 페이지: 메모리→디스크 기록 불필요 (원본 파일이 이미 존재)
+                  교체 시: 페이지 테이블에서 제거만 하면 됨
+                  재접근 시: 파일에서 read-ahead로 재로드
+
+익명 페이지:      메모리→스왑 영역에 기록 후 교체 (별도 I/O 필요)
+                  재접근 시: 스왑 영역에서 read-in</div>
+      </div>
+
+      <div class="asec">
+        <div class="asectitle s3">Ⅲ. 나. Linux 메모리 관리 핵심 구성 요소</div>
+        <ul class="aol">
+          <li><span class="onum on2">1</span><div><strong>버디 시스템(Buddy System)</strong>: Linux 커널의 물리 페이지 할당자. 2의 거듭제곱 크기(4KB~4MB)로 페이지 블록 관리. 효율적 합병·분할로 외부 단편화 최소화. /proc/buddyinfo로 현황 확인</div></li>
+          <li><span class="onum on2">2</span><div><strong>슬랩 할당자(Slab Allocator)</strong>: 커널 객체(inode·task_struct·dentry 등) 전용 소형 객체 할당자
+            <div class="sub">
+              <div class="si">구조: Cache → Slab(1~수 페이지) → Object(동일 크기 구조체들)</div>
+              <div class="si">장점: 객체 초기화 비용 절약(미리 초기화된 객체 재사용). 내부 단편화 최소화. CPU 캐시 지역성 향상(같은 크기 객체 연속 배치)</div>
+              <div class="si">현대 Linux: SLUB 할당자(Slab 개선판) 사용. /proc/slabinfo로 현황 확인</div>
+            </div>
+          </div></li>
+          <li><span class="onum on2">3</span><div><strong>OOM Killer</strong>: 물리 메모리 완전 소진 시 프로세스를 강제 종료하여 메모리 회수. OOM Score(메모리 사용량·우선순위·실행 시간 기반 점수)가 가장 높은 프로세스 선택 종료
+            <div class="sub">
+              <div class="si">/proc/PID/oom_score_adj로 OOM 점수 조정(-1000: 종료 면제, +1000: 최우선 종료)</div>
+              <div class="si">컨테이너 환경: cgroups 메모리 상한 초과 시 컨테이너 OOM Killer 동작</div>
+            </div>
+          </div></li>
+          <li><span class="onum on2">4</span><div><strong>스왑 정책(vm.swappiness)</strong>: 0~100 값으로 스왑 공격성 조절. 100: 적극 스왑. 0: 가능한 스왑 안 함. 데이터베이스 서버는 vm.swappiness=1 권장 (갑작스런 성능 저하 방지)</div></li>
+        </ul>
+      </div>
+
+      <div class="asec">
+        <div class="asectitle s4">Ⅳ. 다. 가상 메모리 성능 최적화 기법</div>
+        <table class="atable">
+          <tr><th>기법</th><th>개념</th><th>적용 효과</th><th>적합 환경</th></tr>
+          <tr><td>대형 페이지<br>(Huge Page / THP)</td><td>4KB 대신 2MB·1GB 페이지 사용. Transparent Huge Pages(THP)는 자동 관리</td><td>TLB 미스 감소(동일 TLB로 더 넓은 메모리 커버). 페이지 테이블 크기 감소</td><td>대용량 메모리 사용 앱 (DB·JVM·HPC)</td></tr>
+          <tr><td>NUMA 인식<br>(NUMA-aware)</td><td>다중 소켓 서버에서 CPU와 가까운 메모리(로컬 NUMA 노드) 우선 할당</td><td>메모리 접근 지연 감소 (로컬 ~60ns vs 원격 ~100ns). 처리량 향상</td><td>멀티소켓 서버, 고성능 데이터베이스</td></tr>
+          <tr><td>zRAM / zswap<br>(메모리 압축)</td><td>스왑 아웃 대신 RAM 내에서 압축 보관. LZ4·ZSTD 압축 알고리즘 사용</td><td>디스크 I/O 없이 효과적 메모리 용량 확장. 저장장치 없는 임베디드·모바일에서 효과적</td><td>모바일(Android), 임베디드, 램 제약 환경</td></tr>
+          <tr><td>KSM<br>(Kernel Samepage Merging)</td><td>내용이 동일한 페이지를 탐지하여 하나의 CoW 읽기 전용 페이지로 합병. ksmd 백그라운드 데몬</td><td>동일 콘텐츠 VM·컨테이너에서 메모리 중복 제거. 수십% 메모리 절약 가능</td><td>KVM 가상화, 컨테이너 플랫폼(Kubernetes)</td></tr>
+        </table>
+        <div class="kbox kb-tea">
+          <div class="kbt">클라우드·컨테이너 환경 적용 효과</div>
+          Kubernetes Pod 환경: KSM으로 동일 이미지 컨테이너의 코드 페이지 공유 → 노드당 수십~수백 MB 절약<br>
+          VM 오버커밋: KSM + 메모리 발룬(Balloon Driver) + zswap 결합으로 물리 메모리 150~200% 오버커밋 가능<br>
+          대형 페이지: PostgreSQL·Oracle DB에서 THP 적용 시 TLB 히트율 향상으로 5~15% 처리 성능 향상
+        </div>
+      </div>
+
+      <div class="concl">
+        <div class="concl-title">Ⅴ. 결론</div>
+        <p>현대 OS의 가상 메모리 관리는 단순한 페이징·교체를 넘어 CoW·mmap·슬랩·KSM·Huge Page·NUMA·zRAM 등 다양한 최적화 기법이 계층적으로 조합된 정교한 시스템이다. 클라우드·컨테이너 환경에서는 cgroups 메모리 제한·KSM·Huge Page를 적절히 조합하여 밀도(Density)와 성능을 동시에 최적화하는 것이 핵심이며, 공공 정보시스템의 서버 튜닝·감리 시에도 이러한 메모리 관리 파라미터의 적절한 설정 여부를 확인해야 한다.</p>
+      </div>
+    </div>
+  </div>
+</div>
+</div><!-- /l4 -->
+
+</div><!-- /main -->
+</div><!-- /tp1 -->
+
+<script>
+function showType(idx,btn){
+  document.querySelectorAll('.type-panel').forEach((p,i)=>p.classList.toggle('active',i===idx));
+  document.querySelectorAll('.type-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+function showQ(idx,t,btn){
+  var pid=t==='s'?'tp0':'tp1';
+  document.querySelectorAll('#'+pid+' .q-panel').forEach((p,i)=>p.classList.toggle('active',i===idx));
+  btn.parentElement.querySelectorAll('.q-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+function toggleA(btn){
+  var body=btn.nextElementSibling;
+  var arrow=btn.querySelector('.aarrow');
+  var isOpen=body.classList.toggle('open');
+  arrow.classList.toggle('open',isOpen);
+  btn.querySelector('.alabel').textContent=isOpen?'📄 답안 닫기':'📄 모범 답안 보기';
+}
+</script>
+</body>
+</html>
